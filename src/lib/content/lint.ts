@@ -48,6 +48,9 @@ export function lintLessons(lessons: RawLesson[]): Issue[] {
     if (fm.video && !usesVideo) add(l.file, "video dichiarato nel frontmatter ma <Video /> manca nel corpo");
     if (!fm.video && usesVideo) add(l.file, "<Video /> nel corpo ma manca video: nel frontmatter");
     if (fm.status === "published" && !fm.video) add(l.file, "una lezione pubblicata deve avere un video");
+    if (fm.status === "published" && fm.video && !fm.video.reviewed) {
+      add(l.file, "il video va guardato dal titolare prima di pubblicare (video.reviewed: true)");
+    }
     if (fm.verification.type === "generated-numeric") {
       if (!fm.verification.generator || !isGeneratorId(fm.verification.generator)) {
         add(l.file, `verification.generator sconosciuto: ${fm.verification.generator ?? "(mancante)"}`);

@@ -23,6 +23,8 @@ const video = z.object({
   title: z.string().optional(),
   /** Lingua dell'audio. Con "en" il player chiede i sottotitoli in italiano, se esistono. */
   lang: z.enum(["it", "en"]).default("it"),
+  /** true solo dopo che il titolare ha guardato lo spezzone. Obbligatorio per pubblicare. */
+  reviewed: z.boolean().default(false),
 });
 
 /** Durata massima di uno spezzone incorporato, in secondi. */

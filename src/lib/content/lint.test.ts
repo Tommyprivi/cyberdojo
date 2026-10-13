@@ -62,7 +62,16 @@ describe("lintLessons", () => {
     expect(messages([lesson({}, body().replace("<Recap", "<Altro"))])).toContain("l'ultima schermata deve contenere <Recap>");
   });
 
-  const VIDEO = { provider: "youtube", id: "abcdefghijk", start: 10, end: 190, channel: "Canale di prova" };
+  const VIDEO = { provider: "youtube", id: "abcdefghijk", start: 10, end: 190, channel: "Canale di prova", reviewed: true };
+
+  it("non pubblica un video che il titolare non ha guardato", () => {
+    const v = { ...VIDEO, reviewed: false };
+    expect(
+      messages([lesson({ status: "published", approved: true, video: v }, body().replace("<Say", "<Video />\n<Say"))]).some((m) =>
+        m.includes("video.reviewed"),
+      ),
+    ).toBe(true);
+  });
   const withVideo = (b = body()) => b.replace("<Say", "<Video />\n<Say");
 
   it("richiede approvazione e video per pubblicare", () => {
