@@ -6,7 +6,7 @@ import {
   startVerification,
   type VerificationResult,
 } from "@/app/actions/verify";
-import type { PublicQuestion } from "@/lib/practice/generators";
+import type { GeneratorId, PublicQuestion } from "@/lib/practice/generators";
 import { usePlayer } from "./player-context";
 
 /**
@@ -15,14 +15,19 @@ import { usePlayer } from "./player-context";
  */
 export function Practice() {
   const { lessonId, markVerified } = usePlayer();
-  const [session, setSession] = useState<{ seed: string; questions: PublicQuestion[]; retries: number } | null>(null);
+  const [session, setSession] = useState<{
+    seed: string;
+    questions: PublicQuestion[];
+    retries: number;
+    generator: GeneratorId;
+  } | null>(null);
   const [answers, setAnswers] = useState<string[]>([]);
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [attempt, setAttempt] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
 
-  const apply = (s: { seed: string; questions: PublicQuestion[]; retries: number }) => {
+  const apply = (s: { seed: string; questions: PublicQuestion[]; retries: number; generator: GeneratorId }) => {
     setSession(s);
     setAnswers(Array(s.questions.length).fill(""));
     setResult(null);
@@ -89,12 +94,20 @@ export function Practice() {
       <div className="grid gap-3 lg:grid-cols-2">
       {session.questions.map((q, i) => (
         <label key={i} className="grid gap-1.5 rounded-2xl border-2 border-border bg-surface-muted p-3">
-          <span>
-            Ottetto {i + 1}: <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> vale…
-          </span>
+          {session.generator === "decimal-to-binary" ? (
+            <span>
+              Numero {i + 1}: <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> in 8 bit:
+            </span>
+          ) : (
+            <span>
+              Ottetto {i + 1}: <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> vale…
+            </span>
+          )}
           <input
             inputMode="numeric"
             autoComplete="off"
+            maxLength={session.generator === "decimal-to-binary" ? 9 : 6}
+            placeholder={session.generator === "decimal-to-binary" ? "00000000" : undefined}
             disabled={!!result}
             value={answers[i] ?? ""}
             onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}

@@ -6,7 +6,7 @@ import { LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
 import {
   GENERATORS,
   isGeneratorId,
-  parseIntegerAnswer,
+  type GeneratorId,
   type PublicQuestion,
 } from "@/lib/practice/generators";
 
@@ -34,11 +34,12 @@ export async function startVerification(lessonId: string): Promise<{
   seed: string;
   questions: PublicQuestion[];
   retries: number;
+  generator: GeneratorId;
 }> {
   const { gen, total, retries } = config(lessonId);
   const seed = randomUUID();
-  const questions = GENERATORS[gen](seed, total).map(({ prompt, data }) => ({ prompt, data }));
-  return { seed, questions, retries };
+  const questions = GENERATORS[gen].generate(seed, total).map(({ prompt, data }) => ({ prompt, data }));
+  return { seed, questions, retries, generator: gen };
 }
 
 export type VerificationResult = {
@@ -57,8 +58,9 @@ export async function checkVerification(
   if (typeof seed !== "string" || seed.length > 64 || !Array.isArray(answers)) {
     throw new Error("Richiesta non valida");
   }
-  const expected = GENERATORS[gen](seed, total);
-  const results = expected.map((q, i) => parseIntegerAnswer(String(answers[i] ?? "")) === q.answer);
+  const { generate, parse } = GENERATORS[gen];
+  const expected = generate(seed, total);
+  const results = expected.map((q, i) => parse(String(answers[i] ?? "")) === q.answer);
   const correct = results.filter(Boolean).length;
   return { results, correct, total, passed: correct >= need };
 }

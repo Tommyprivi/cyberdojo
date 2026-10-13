@@ -1,0 +1,145 @@
+---
+id: F.05.004
+course: fondamenta
+module: 5
+title: "La macchina .66"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.003]
+objectives:
+  - "Convertire un numero da 0 a 255 in un ottetto di 8 bit"
+  - "Scrivere sempre tutti gli 8 bit, anche con gli zeri a sinistra"
+video:
+  provider: youtube
+  id: "rWlW0hDI3SM"
+  start: 7
+  end: 65
+  channel: "Get the Cookie"
+  title: "Decimale → binario, un esempio svolto"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: decimal-to-binary
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Un ottetto ha sempre 8 bit: 1000010 non è un ottetto, 01000010 sì"
+  - "Si parte sempre dalla moneta più grande (128)"
+  - "Dopo aver acceso una moneta si toglie il suo valore e si lavora sul resto"
+commands: []
+---
+
+<Scene title="La macchina .66">
+Il caso di ieri notte non è chiuso. Il log dice che la connessione partiva da **192.168.1.66**: dentro l'azienda. Ma da *quale* scrivania?
+
+L'inventario delle postazioni è vecchio e stampa l'ultimo numero di ogni indirizzo **in bit**. Per ritrovare la macchina devi fare il percorso inverso di ieri: dal numero **66** ai suoi 8 bit.
+
+<Say who="sensei">Ieri hai letto i bit. Oggi li scrivi. Chi sa fare solo una delle due cose, non sa il binario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo delle monete">
+Hai le solite otto monete: 128, 64, 32, 16, 8, 4, 2, 1. Per costruire un numero, parti dalla più grande e per ogni moneta fai **una sola domanda**:
+
+<Callout kind="regola">
+**Ci sta?** Se la moneta è più piccola o uguale al numero che ti resta, **accendila (1)** e togli il suo valore. Se non ci sta, **lasciala spenta (0)**. Poi passa alla moneta successiva.
+</Callout>
+
+<Callout kind="attenzione">
+Scrivi **sempre 8 bit**, anche se i primi sono zeri. `01000010` è un ottetto, `1000010` no: gli strumenti di rete leggono la posizione, e un bit in meno sposta tutto.
+</Callout>
+
+<Callout kind="curiosita">
+Funziona sempre perché ogni moneta è **più grande di tutte quelle piccole messe insieme**: 64 è più di 32+16+8+4+2+1, che fanno 63. Una volta scelta una moneta grande, non si torna indietro.
+</Callout>
+
+<Say who="assistente">Una domanda sola, otto volte: ci sta? Se sì, accendi e sottrai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il numero 66, passo passo">
+Applichiamo il metodo al **66**.
+
+<Guided
+  steps={[
+    "128 ci sta in 66? No. Primo bit: 0. Il numero resta 66.",
+    { text: "64 ci sta in 66? Sì. Secondo bit: 1. Resto: 66 − 64 = 2.", bits: "01000000" },
+    "32, 16, 8 e 4 ci stanno in 2? No, nessuno. Bit: 0, 0, 0, 0.",
+    { text: "2 ci sta in 2? Sì. Settimo bit: 1. Resto: 0. L'ultima moneta (1) non serve: bit 0.", bits: "01000010" },
+    "Risultato: 66 = 01000010. Hai trovato la riga dell'inventario.",
+  ]}
+/>
+
+Vuoi vedere lo stesso metodo fatto alla lavagna, con un altro numero? Meno di un minuto:
+
+<Video />
+
+<Say who="sensei">Fatto il resto a zero, hai finito. Se il resto non è zero, hai sbagliato un passo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un'altra postazione risulta nel log con l'ultimo numero **100**. Componilo sul tavolo.
+
+<BitLab target={100} />
+
+<Callout kind="trucco">
+Controllo veloce: la **somma delle monete accese** deve fare il numero di partenza. Se non torna, hai sbagliato un passo: ricomincia dalla moneta da 128.
+</Callout>
+
+<Say who="assistente">Parti dal più grande che ci sta: 64. Ti restano 36. Poi?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale riga dell'inventario?">
+<Quiz
+  question="Il log dice .66. Quale riga dell'inventario è la macchina giusta?"
+  options={["01000100", "01000010", "00100010", "01000011"]}
+  answer={1}
+  explain="64 + 2 = 66, quindi 01000010. Le altre sono macchine vicine: 01000100 è la .68, 00100010 è la .34 e 01000011 è la .67. Un bit sbagliato è un'altra scrivania."
+/>
+
+<Say who="sensei">Un bit di differenza e accusi il collega sbagliato. In un'indagine, la precisione non è un lusso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Il sistema ha altre cinque postazioni da identificare. Per ognuna ti dà il numero: tu scrivi gli **8 bit**.
+
+Servono **tutte e cinque** giuste. Hai 3 tentativi, e a ogni tentativo i numeri cambiano.
+
+<Practice generator="decimal-to-binary" pass="5/5" retries={3} />
+
+<Say who="sensei">Otto bit, sempre. Gli zeri davanti sono parte della risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi c'era alla .66">
+<Recap xp={20}>
+- Da numero a bit: per ogni moneta, dalla più grande, chiediti "ci sta?". Se sì, accendi e togli il valore.
+- Un ottetto ha sempre 8 bit: gli zeri a sinistra si scrivono.
+- Controllo: la somma delle monete accese deve dare il numero iniziale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Scrivi 66 in 8 bit.", a: "01000010" },
+    { q: "Perché si parte dalla moneta da 128?", a: "È più grande di tutte le altre insieme: la scelta non si corregge dopo" },
+    { q: "Quanti bit ha sempre un ottetto?", a: "8, anche con gli zeri davanti" },
+    { q: "Il resto dopo l'ultimo passo deve essere…", a: "Zero. Se no, hai sbagliato un passo" },
+  ]}
+/>
+
+<Say who="sensei">Nell'inventario, la riga 01000010 è una postazione del reparto contabilità. Domani scopri cosa aveva aperto sul suo computer.</Say>
+</Scene>

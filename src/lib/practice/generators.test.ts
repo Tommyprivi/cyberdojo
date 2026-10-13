@@ -2,9 +2,72 @@ import { describe, expect, it } from "vitest";
 import {
   binaryToDecimal,
   binaryToDecimalSteps,
+  decimalToBinary,
   diagnoseBinaryToDecimal,
+  diagnoseDecimalToBinary,
+  GENERATORS,
+  isGeneratorId,
   parseIntegerAnswer,
+  parseOctetAnswer,
 } from "./generators";
+
+describe("decimalToBinary", () => {
+  it("è deterministico, senza duplicati né casi banali", () => {
+    expect(decimalToBinary("abc")).toEqual(decimalToBinary("abc"));
+    expect(decimalToBinary("abc")).not.toEqual(decimalToBinary("abd"));
+    for (let s = 0; s < 100; s++) {
+      const qs = decimalToBinary(`s${s}`);
+      expect(new Set(qs.map((q) => q.answer)).size).toBe(5);
+      for (const q of qs) {
+        expect(q.answer).toBeGreaterThanOrEqual(1);
+        expect(q.answer).toBeLessThanOrEqual(254);
+        expect(q.answer & (q.answer - 1)).not.toBe(0);
+        expect(q.data).toBe(String(q.answer));
+      }
+    }
+  });
+});
+
+describe("parseOctetAnswer", () => {
+  it("accetta solo 8 bit, tollerando gli spazi", () => {
+    expect(parseOctetAnswer("01000010")).toBe(66);
+    expect(parseOctetAnswer(" 0100 0010 ")).toBe(66);
+    expect(parseOctetAnswer("11111111")).toBe(255);
+  });
+
+  it("rifiuta 7 o 9 bit, cifre non binarie e testo", () => {
+    for (const bad of ["1000010", "001000010", "01000012", "sessantasei", "", "66", "0b01000010"]) {
+      expect(parseOctetAnswer(bad)).toBeNull();
+    }
+  });
+});
+
+describe("diagnoseDecimalToBinary", () => {
+  it("riconosce la risposta giusta", () => {
+    expect(diagnoseDecimalToBinary(66, "01000010").ok).toBe(true);
+  });
+
+  it("spiega i bit mancanti, il contrario e l'errore generico", () => {
+    expect(diagnoseDecimalToBinary(66, "1000010").message).toContain("aggiungi 1 zeri");
+    // 178 = 10110010 non è un palindromo: letto al contrario (01001101) vale 77.
+    expect(diagnoseDecimalToBinary(178, "01001101").message).toContain("al contrario");
+    expect(diagnoseDecimalToBinary(178, "10110010").ok).toBe(true);
+    expect(diagnoseDecimalToBinary(66, "11000010").message).toContain("valgono 194");
+    expect(diagnoseDecimalToBinary(66, "1020").message).toContain("solo 0 e 1");
+    expect(diagnoseDecimalToBinary(66, "").message).toBe("");
+  });
+});
+
+describe("GENERATORS", () => {
+  it("espone generate e parse per ogni generatore", () => {
+    expect(isGeneratorId("decimal-to-binary")).toBe(true);
+    expect(isGeneratorId("niente")).toBe(false);
+    for (const g of Object.values(GENERATORS)) {
+      const q = g.generate("x", 2)[0];
+      expect(typeof q.answer).toBe("number");
+    }
+  });
+});
 
 describe("binaryToDecimal", () => {
   it("è deterministico per lo stesso seme", () => {
