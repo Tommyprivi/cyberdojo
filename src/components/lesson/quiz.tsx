@@ -19,14 +19,16 @@ export function Quiz({
   const correct = picked === answer;
 
   return (
-    <fieldset className="my-6 rounded-xl border border-border bg-surface p-4">
-      <legend className="px-1 font-semibold">{question}</legend>
-      <div className="mt-2 grid gap-2">
-        {options.map((o, i) => (
+    <fieldset className="my-2 grid gap-3">
+      <legend className="mb-1 text-lg font-bold">{question}</legend>
+      {options.map((o, i) => {
+        const isRight = done && i === answer;
+        const isWrong = done && picked === i && !correct;
+        return (
           <label
             key={o}
-            className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 ${
-              done && i === answer ? "border-belt-green bg-surface-muted" : "border-border"
+            className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border-2 px-4 py-2 ${
+              isRight ? "border-primary bg-surface-muted" : isWrong ? "border-accent bg-surface-muted" : "border-border bg-surface"
             }`}
           >
             <input
@@ -35,14 +37,16 @@ export function Quiz({
               disabled={done}
               checked={picked === i}
               onChange={() => setPicked(i)}
-              className="size-5"
+              className="size-5 accent-[var(--primary)]"
             />
-            <span className="font-mono">{o}</span>
+            <span className="font-mono text-lg">{o}</span>
+            {isRight && <span className="ml-auto text-sm font-bold text-primary">Giusta</span>}
+            {isWrong && <span className="ml-auto text-sm font-bold text-accent">Non è questa</span>}
           </label>
-        ))}
-      </div>
-      <p role="status" className="mt-3 min-h-6 text-sm">
-        {done && (correct ? "Corretto. " : "Non è questa. ")}
+        );
+      })}
+      <p role="status" className="min-h-6 text-sm">
+        {done && (correct ? "Corretto. " : "")}
         {done && explain}
       </p>
     </fieldset>

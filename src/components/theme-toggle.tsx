@@ -2,18 +2,19 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 
-type Theme = "system" | "light" | "dark";
-const ORDER: Theme[] = ["system", "light", "dark"];
-const LABEL: Record<Theme, string> = { system: "Tema: sistema", light: "Tema: chiaro", dark: "Tema: scuro" };
+type Theme = "light" | "dark" | "system";
+const ORDER: Theme[] = ["light", "dark", "system"];
+const LABEL: Record<Theme, string> = { light: "Chiaro", dark: "Scuro", system: "Sistema" };
 
 // Piccolo store sul localStorage: la preferenza vive solo nel browser, nessun dato personale.
+// Predefinito: chiaro.
 const listeners = new Set<() => void>();
-let memory: Theme = "system"; // fallback se lo storage non è disponibile
+let memory: Theme = "light"; // fallback se lo storage non è disponibile
 
 function read(): Theme {
   try {
     const v = localStorage.getItem("theme");
-    return v === "light" || v === "dark" ? v : "system";
+    return v === "light" || v === "dark" || v === "system" ? v : "light";
   } catch {
     return memory;
   }
@@ -22,18 +23,11 @@ function read(): Theme {
 function write(t: Theme) {
   memory = t;
   try {
-    if (t === "system") localStorage.removeItem("theme");
-    else localStorage.setItem("theme", t);
+    localStorage.setItem("theme", t);
   } catch {
     /* la scelta vale solo per questa visita */
   }
   listeners.forEach((l) => l());
-}
-
-function apply(t: Theme) {
-  const el = document.documentElement;
-  if (t === "system") el.removeAttribute("data-theme");
-  else el.setAttribute("data-theme", t);
 }
 
 const subscribe = (l: () => void) => {
@@ -41,18 +35,30 @@ const subscribe = (l: () => void) => {
   return () => void listeners.delete(l);
 };
 
-export function ThemeToggle() {
-  const theme = useSyncExternalStore(subscribe, read, () => "system" as Theme);
+function useTheme(): Theme {
+  return useSyncExternalStore(subscribe, read, () => "light" as Theme);
+}
 
-  useEffect(() => apply(theme), [theme]);
+/** Montato nel layout radice: applica la preferenza anche nelle pagine senza interruttore. */
+export function ThemeSync() {
+  const theme = useTheme();
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+  return null;
+}
+
+export function ThemeToggle() {
+  const theme = useTheme();
 
   return (
     <button
       type="button"
       onClick={() => write(ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length])}
-      className="min-h-11 rounded-lg px-3 text-sm hover:bg-surface-muted"
+      aria-label={`Tema: ${LABEL[theme]}. Tocca per cambiare.`}
+      className="chip text-sm"
     >
-      {LABEL[theme]}
+      Tema: {LABEL[theme]}
     </button>
   );
 }

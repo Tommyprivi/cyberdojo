@@ -1,30 +1,38 @@
 @import "tailwindcss";
 
 /*
-  Design system CyberDojo.
-  Il tema segue il sistema; l'utente può forzarlo con data-theme="light|dark" su <html>.
-  I colori delle cinture sono identità: uguali nei due temi. Ogni cintura ha un colore di
-  riempimento (--belt-*) e un colore del testo sopra di esso (--belt-*-fg), con contrasto AA
-  verificato da scripts/check-contrast.mjs. Bianca e nera hanno sempre un bordo sottile.
+  Design system CyberDojo, v2: chiaro, morbido, da gioco, con identità dojo
+  (verde tatami, rosso sigillo, cinture). Predefinito: chiaro. L'utente sceglie chiaro,
+  scuro o sistema (data-theme="light|dark|system" su <html>).
+  Ogni coppia testo/sfondo è verificata (>= 4.5:1) da scripts/check-contrast.mjs.
 */
 
 :root {
-  --background: #faf8f4;
+  --background: #f3f8ec;
+  --hero-from: #dcf0b8;
   --surface: #ffffff;
-  --surface-muted: #f1ede6;
-  --foreground: #1b1a17;
-  --foreground-muted: #5a5750;
-  --border: #d9d4c8;
-  --accent: #b3261e;
+  --surface-muted: #e8f1da;
+  --foreground: #16301c;
+  --foreground-muted: #476150;
+  --border: #d2e0c0;
+
+  --primary: #23813a;
+  --primary-fg: #ffffff;
+  --primary-edge: #16572a;
+  --deep: #174f26;
+  --deep-fg: #ffffff;
+
+  --accent: #c0301c; /* rosso sigillo */
   --accent-fg: #ffffff;
   --focus: #1f5fbf;
+  --shadow: 0 10px 30px -12px rgb(22 80 40 / 0.25);
 
   --belt-white: #ffffff;
-  --belt-white-fg: #1b1a17;
+  --belt-white-fg: #16301c;
   --belt-yellow: #f5c400;
-  --belt-yellow-fg: #1b1a17;
+  --belt-yellow-fg: #16301c;
   --belt-orange: #e87500;
-  --belt-orange-fg: #1b1a17;
+  --belt-orange-fg: #16301c;
   --belt-green: #1a7a35;
   --belt-green-fg: #ffffff;
   --belt-blue: #1f5fbf;
@@ -37,31 +45,43 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --background: #14130f;
-    --surface: #1e1c17;
-    --surface-muted: #28251f;
-    --foreground: #f2efe8;
-    --foreground-muted: #b4afa3;
-    --border: #3a362d;
-    --accent: #ff6b5f;
-    --accent-fg: #14130f;
+  :root[data-theme="system"] {
+    --background: #0e1a11;
+    --hero-from: #17331f;
+    --surface: #16251a;
+    --surface-muted: #1f3324;
+    --foreground: #eaf4e4;
+    --foreground-muted: #a9c1b0;
+    --border: #2b4132;
+    --primary: #4cc062;
+    --primary-fg: #0a1c0f;
+    --primary-edge: #2e8a41;
+    --deep: #1d4328;
+    --deep-fg: #ffffff;
+    --accent: #ff7a66;
+    --accent-fg: #1a0a07;
     --focus: #7fb0ff;
-    --belt-outline: #8a8578;
+    --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
   }
 }
 
 :root[data-theme="dark"] {
-  --background: #14130f;
-  --surface: #1e1c17;
-  --surface-muted: #28251f;
-  --foreground: #f2efe8;
-  --foreground-muted: #b4afa3;
-  --border: #3a362d;
-  --accent: #ff6b5f;
-  --accent-fg: #14130f;
+  --background: #0e1a11;
+  --hero-from: #17331f;
+  --surface: #16251a;
+  --surface-muted: #1f3324;
+  --foreground: #eaf4e4;
+  --foreground-muted: #a9c1b0;
+  --border: #2b4132;
+  --primary: #4cc062;
+  --primary-fg: #0a1c0f;
+  --primary-edge: #2e8a41;
+  --deep: #1d4328;
+  --deep-fg: #ffffff;
+  --accent: #ff7a66;
+  --accent-fg: #1a0a07;
   --focus: #7fb0ff;
-  --belt-outline: #8a8578;
+  --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
 }
 
 @theme inline {
@@ -71,6 +91,11 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--foreground-muted);
   --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-edge: var(--primary-edge);
+  --color-deep: var(--deep);
+  --color-deep-fg: var(--deep-fg);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-focus: var(--focus);
@@ -97,7 +122,7 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(180deg, var(--hero-from) 0, var(--background) 360px) no-repeat, var(--background);
   color: var(--foreground);
   font-family: var(--font-plex-sans), system-ui, sans-serif;
 }
@@ -110,6 +135,74 @@ h1, h2, h3 {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+
+/* ---- Componenti di base ---- */
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .btn {
+    display: inline-grid;
+    place-items: center;
+    min-height: 3.25rem;
+    padding: 0 1.5rem;
+    border-radius: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--primary-fg);
+    box-shadow: 0 4px 0 var(--primary-edge);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--primary-edge);
+  }
+  .btn-ghost {
+    background: var(--surface);
+    color: var(--foreground);
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 0 var(--border);
+  }
+  .btn-ghost:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--border);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .field {
+    min-height: 3rem;
+    border-radius: 1rem;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    padding: 0 0.9rem;
+  }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.25s ease-out; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

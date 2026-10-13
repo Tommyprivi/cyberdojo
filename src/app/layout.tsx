@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { ThemeSync } from "@/components/theme-toggle";
 import { SITE } from "@/lib/config";
 import "./globals.css";
 
@@ -29,9 +30,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang={SITE.locale}
+      data-theme="light"
       className={`${bricolage.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }

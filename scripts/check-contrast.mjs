@@ -24,11 +24,18 @@ const belts = ["white", "yellow", "orange", "green", "blue", "brown", "black"];
 const pairs = [
   ["foreground", "background"],
   ["foreground", "surface"],
+  ["foreground", "surface-muted"],
+  ["foreground", "hero-from"],
   ["foreground-muted", "background"],
   ["foreground-muted", "surface"],
   ["foreground-muted", "surface-muted"],
+  ["foreground-muted", "hero-from"],
+  ["primary-fg", "primary"],
+  ["deep-fg", "deep"],
   ["accent-fg", "accent"],
-  ["accent", "background"], // testo di errore in colore accento
+  ["accent", "surface"], // testo di errore in colore sigillo
+  ["accent", "background"],
+  ["primary", "surface"], // testo/icone verdi su carte bianche
   ["focus", "background"],
   ...belts.map((b) => [`belt-${b}-fg`, `belt-${b}`]),
 ];

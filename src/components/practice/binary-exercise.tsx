@@ -57,8 +57,8 @@ function Exercise() {
   const status: Status = passed ? "superato" : tries > 0 || answers.some(Boolean) ? "in corso" : "non iniziato";
 
   return (
-    <div className="mt-6 grid gap-6">
-      <div role="radiogroup" aria-label="Difficoltà" className="grid gap-2 sm:grid-cols-3">
+    <div className="mt-5 grid gap-5">
+      <div role="radiogroup" aria-label="Difficoltà" className="grid grid-cols-3 gap-2">
         {LEVELS.map((l) => (
           <button
             key={l.id}
@@ -66,30 +66,30 @@ function Exercise() {
             role="radio"
             aria-checked={level === l.id}
             onClick={() => fresh(l.id)}
-            className={`min-h-12 rounded-lg border px-3 py-2 text-left ${
-              level === l.id ? "border-accent bg-surface-muted" : "border-border"
+            className={`min-h-12 rounded-2xl border-2 px-3 py-2 font-bold ${
+              level === l.id ? "border-primary bg-primary text-primary-fg" : "border-border bg-surface"
             }`}
           >
-            <span className="font-semibold">{l.label}</span>
+            {l.label}
           </button>
         ))}
       </div>
       <p className="text-sm text-muted">{LEVELS.find((l) => l.id === level)!.help}</p>
-      <p className="text-sm" aria-live="polite">
+      <p className="chip w-fit text-sm" aria-live="polite">
         Stato: <strong>{status}</strong> · tentativi: {tries}
         {xpSpent > 0 && ` · XP spesi in aiuti: ${xpSpent}`}
       </p>
 
-      <ol className="grid gap-5">
+      <ol className="grid gap-4">
         {questions.map((q, i) => {
           const diag = live ? diagnoseBinaryToDecimal(q.data, answers[i] ?? "") : null;
           const shown = stepsShown[i] ?? 0;
           const steps = binaryToDecimalSteps(q.data);
           return (
-            <li key={`${seed}-${i}`} className="rounded-xl border border-border bg-surface p-4">
+            <li key={`${seed}-${i}`} className="card p-4">
               <label className="grid gap-2">
                 <span>
-                  {i + 1}. Converti <span className="font-mono text-xl tracking-wider">{q.data}</span>
+                  {i + 1}. Converti <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span>
                 </span>
                 <input
                   inputMode="numeric"
@@ -97,16 +97,16 @@ function Exercise() {
                   value={answers[i] ?? ""}
                   onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}
                   aria-describedby={`fb-${i}`}
-                  className="min-h-12 rounded-lg border border-border bg-background px-3 font-mono text-lg"
+                  className="field font-mono text-lg"
                 />
               </label>
-              <p id={`fb-${i}`} role="status" className={`mt-2 min-h-6 text-sm ${diag?.ok ? "text-belt-green" : "text-accent"}`}>
+              <p id={`fb-${i}`} role="status" className={`mt-2 min-h-6 text-sm font-semibold ${diag?.ok ? "text-primary" : "text-accent"}`}>
                 {diag?.message}
               </p>
               {level !== "severo" && (
-                <div className="mt-2">
+                <div className="mt-2 grid gap-1">
                   {steps.slice(0, shown).map((s, k) => (
-                    <p key={k} className="text-sm">{k + 1}. {s}</p>
+                    <p key={k} className="pop rounded-xl bg-surface-muted px-3 py-2 text-sm">{k + 1}. {s}</p>
                   ))}
                   {shown < steps.length && (
                     <button
@@ -115,7 +115,7 @@ function Exercise() {
                         setStepsShown((s) => ({ ...s, [i]: shown + 1 }));
                         if (level === "medio") setXpSpent((x) => x + STEP_COST_XP);
                       }}
-                      className="mt-1 min-h-11 rounded-lg border border-border px-3 text-sm hover:bg-surface-muted"
+                      className="chip mt-1 w-fit text-sm hover:bg-surface-muted"
                     >
                       Mostrami il passo successivo{level === "medio" ? ` (−${STEP_COST_XP} XP)` : ""}
                     </button>
@@ -135,21 +135,17 @@ function Exercise() {
             setTries((t) => t + 1);
             if (allRight) setPassed(true);
           }}
-          className="min-h-12 rounded-lg bg-accent px-5 font-semibold text-accent-fg"
+          className="btn btn-primary"
         >
           Controlla
         </button>
-        <button
-          type="button"
-          onClick={() => fresh(level)}
-          className="min-h-12 rounded-lg border border-border px-5 font-medium hover:bg-surface-muted"
-        >
+        <button type="button" onClick={() => fresh(level)} className="btn btn-ghost">
           Nuovi esercizi
         </button>
       </div>
       {checked && (
-        <p role="status" className="font-semibold">
-          {allRight ? "Tutte giuste." : "Non ancora: controlla le risposte segnate."}
+        <p role="status" className="pop text-lg font-extrabold">
+          {allRight ? "Tutte giuste!" : "Non ancora: controlla le risposte segnate."}
         </p>
       )}
       <p className="text-sm text-muted">

@@ -71,19 +71,19 @@ export function Practice() {
 
   return (
     <form
-      className="my-6 grid gap-4 rounded-xl border border-border bg-surface p-4"
+      className="my-2 grid gap-4"
       onSubmit={(e) => {
         e.preventDefault();
         if (!result) submit();
       }}
     >
-      <p className="text-sm text-muted">
+      <p className="chip w-fit text-sm">
         Tentativo {Math.min(attempt, session.retries)} di {session.retries}
       </p>
       {session.questions.map((q, i) => (
-        <label key={i} className="grid gap-1">
+        <label key={i} className="grid gap-1.5 rounded-2xl border-2 border-border bg-surface-muted p-3">
           <span>
-            {i + 1}. Converti <span className="font-mono text-lg tracking-wider">{q.data}</span> in decimale
+            {i + 1}. Converti <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> in decimale
           </span>
           <input
             inputMode="numeric"
@@ -92,10 +92,10 @@ export function Practice() {
             value={answers[i] ?? ""}
             onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}
             aria-invalid={result ? !result.results[i] : undefined}
-            className="min-h-12 rounded-lg border border-border bg-background px-3 font-mono text-lg"
+            className="field font-mono text-lg"
           />
           {result && (
-            <span className={result.results[i] ? "text-belt-green" : "text-accent"}>
+            <span className={`text-sm font-bold ${result.results[i] ? "text-primary" : "text-accent"}`}>
               {result.results[i] ? "Giusta" : "Sbagliata"}
             </span>
           )}
@@ -103,33 +103,25 @@ export function Practice() {
       ))}
 
       {!result && (
-        <button
-          type="submit"
-          disabled={pending || answers.some((a) => a.trim() === "")}
-          className="min-h-12 rounded-lg bg-accent px-4 font-semibold text-accent-fg disabled:opacity-50"
-        >
+        <button type="submit" disabled={pending || answers.some((a) => a.trim() === "")} className="btn btn-primary">
           Controlla le risposte
         </button>
       )}
 
       {result && (
-        <div role="status" className="grid gap-2">
-          <p className="font-semibold">
+        <div role="status" className="pop grid gap-3 rounded-2xl border-2 border-border bg-surface-muted p-4">
+          <p className="text-lg font-extrabold">
             {passed
-              ? `Superata: ${result.correct} su ${result.total}.`
+              ? `Superata: ${result.correct} su ${result.total}!`
               : `${result.correct} su ${result.total}. Servono tutte.`}
           </p>
           {!passed && !outOfTries && (
-            <button
-              type="button"
-              onClick={retry}
-              className="min-h-12 rounded-lg border border-border px-4 font-medium hover:bg-surface-muted"
-            >
+            <button type="button" onClick={retry} className="btn btn-ghost w-fit">
               Riprova con nuove domande
             </button>
           )}
           {outOfTries && (
-            <p>Tentativi finiti. Ripassa la spiegazione e torna più tardi: l&apos;area Pratica ti aiuta a esercitarti.</p>
+            <p>Tentativi finiti. Ripassa la spiegazione e torna più tardi: la sezione Allenati ti aiuta a esercitarti.</p>
           )}
         </div>
       )}

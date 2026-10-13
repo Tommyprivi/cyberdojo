@@ -25,42 +25,45 @@ export function LessonPlayer({
 
   return (
     <PlayerContext.Provider value={ctx}>
-      <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pb-6 pt-4">
+      <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pb-4 pt-3">
         <header className="grid gap-3">
-          <div className="flex items-center justify-between gap-3">
-            <Link href="/" className="min-h-11 content-center text-sm underline">
-              Esci
+          <div className="flex items-center gap-3">
+            <Link
+              href="/percorso"
+              aria-label="Esci dalla lezione"
+              className="grid size-11 shrink-0 place-items-center rounded-full border-2 border-border bg-surface text-xl font-bold"
+            >
+              ×
             </Link>
-            <p className="truncate text-sm text-muted">{lessonId} · {title}</p>
+            <div
+              role="progressbar"
+              aria-label="Avanzamento nella lezione"
+              aria-valuemin={1}
+              aria-valuemax={screens.length}
+              aria-valuenow={index + 1}
+              className="h-4 flex-1 overflow-hidden rounded-full bg-surface-muted"
+            >
+              <div
+                className="h-full rounded-full bg-primary transition-[width] duration-300"
+                style={{ width: `${((index + 1) / screens.length) * 100}%` }}
+              />
+            </div>
             <button
               type="button"
               disabled
               title="L'audio arriva con la pipeline TTS (E6)"
-              className="min-h-11 rounded-lg border border-border px-3 text-sm opacity-60"
+              className="chip shrink-0 text-sm opacity-60"
             >
-              Audio non ancora disponibile
+              Audio: presto
             </button>
           </div>
-          <div
-            role="progressbar"
-            aria-label="Avanzamento nella lezione"
-            aria-valuemin={1}
-            aria-valuemax={screens.length}
-            aria-valuenow={index + 1}
-            className="h-2 overflow-hidden rounded-full bg-surface-muted"
-          >
-            <div
-              className="h-full bg-accent transition-[width] duration-300"
-              style={{ width: `${((index + 1) / screens.length) * 100}%` }}
-            />
-          </div>
           <p className="text-sm text-muted">
-            Schermata {index + 1} di {screens.length}
+            {lessonId} · {title} · schermata {index + 1} di {screens.length}
           </p>
         </header>
 
-        <main className="flex-1 py-6">
-          <h1 className="mb-4 text-3xl font-bold">{screen.title}</h1>
+        <main className="card mt-4 flex-1 p-5 sm:p-7">
+          <h1 className="mb-4 font-display text-3xl font-extrabold">{screen.title}</h1>
           {/* Tutte le schermate restano montate: la verifica non perde lo stato se si torna indietro. */}
           {screens.map((s, i) => (
             <section key={i} hidden={i !== index} aria-hidden={i !== index}>
@@ -69,17 +72,17 @@ export function LessonPlayer({
           ))}
         </main>
 
-        <nav className="sticky bottom-0 flex items-center justify-between gap-3 bg-background py-3">
+        <nav className="sticky bottom-0 -mx-4 mt-4 flex items-center justify-between gap-3 bg-background/95 px-4 py-3 backdrop-blur">
           <button
             type="button"
             onClick={() => setIndex((i) => i - 1)}
             disabled={index === 0}
-            className="min-h-12 rounded-lg border border-border px-5 font-medium disabled:opacity-40"
+            className="btn btn-ghost"
           >
             Indietro
           </button>
           {last ? (
-            <Link href="/" className="grid min-h-12 place-items-center rounded-lg bg-accent px-5 font-semibold text-accent-fg">
+            <Link href="/percorso" className="btn btn-primary">
               Completa la lezione
             </Link>
           ) : (
@@ -87,9 +90,9 @@ export function LessonPlayer({
               type="button"
               onClick={() => setIndex((i) => i + 1)}
               disabled={blocked}
-              className="min-h-12 rounded-lg bg-accent px-5 font-semibold text-accent-fg disabled:opacity-40"
+              className="btn btn-primary"
             >
-              {blocked ? "Supera la verifica per continuare" : "Avanti"}
+              {blocked ? "Prima la verifica" : "Avanti"}
             </button>
           )}
         </nav>
