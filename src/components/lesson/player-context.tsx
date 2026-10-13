@@ -8,6 +8,7 @@ export type LessonVideo = {
   end: number;
   channel: string;
   title?: string;
+  lang: "it" | "en";
 };
 
 type PlayerCtx = {

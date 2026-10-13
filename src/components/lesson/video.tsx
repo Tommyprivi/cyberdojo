@@ -17,7 +17,12 @@ export function Video() {
   const [loaded, setLoaded] = useState(false);
   if (!video) return null;
 
-  const params = new URLSearchParams({ start: String(video.start), end: String(video.end), rel: "0", autoplay: "1" });
+  const params = new URLSearchParams({ start: String(video.start), end: String(video.end), rel: "0", autoplay: "1", hl: "it" });
+  if (video.lang === "en") {
+    // Video in inglese: sottotitoli italiani attivi se il canale (o YouTube) li fornisce.
+    params.set("cc_load_policy", "1");
+    params.set("cc_lang_pref", "it");
+  }
   const src = `https://www.youtube-nocookie.com/embed/${video.id}?${params}`;
   const watch = `https://www.youtube.com/watch?v=${video.id}&t=${video.start}s`;
   const minutes = Math.max(1, Math.round((video.end - video.start) / 60));
@@ -45,7 +50,8 @@ export function Video() {
             </span>
             <span className="text-lg font-bold">{video.title ?? "Guarda il video"}</span>
             <span className="text-sm opacity-90">
-              circa {minutes} min · {video.channel} · si carica da YouTube solo se clicchi
+              circa {minutes} min · {video.channel}
+              {video.lang === "en" ? " · in inglese, sottotitoli in italiano" : ""} · si carica da YouTube solo se clicchi
             </span>
           </button>
         )}

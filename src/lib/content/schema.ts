@@ -21,6 +21,8 @@ const video = z.object({
   end: z.number().int().min(1),
   channel: z.string().min(1, "serve il nome del canale per la citazione"),
   title: z.string().optional(),
+  /** Lingua dell'audio. Con "en" il player chiede i sottotitoli in italiano, se esistono. */
+  lang: z.enum(["it", "en"]).default("it"),
 });
 
 /** Durata massima di uno spezzone incorporato, in secondi. */
