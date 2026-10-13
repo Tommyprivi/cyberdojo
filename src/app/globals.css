@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/*
+  Design system CyberDojo.
+  Il tema segue il sistema; l'utente può forzarlo con data-theme="light|dark" su <html>.
+  I colori delle cinture sono identità: uguali nei due temi. Ogni cintura ha un colore di
+  riempimento (--belt-*) e un colore del testo sopra di esso (--belt-*-fg), con contrasto AA
+  verificato da scripts/check-contrast.mjs. Bianca e nera hanno sempre un bordo sottile.
+*/
+
+:root {
+  --background: #faf8f4;
+  --surface: #ffffff;
+  --surface-muted: #f1ede6;
+  --foreground: #1b1a17;
+  --foreground-muted: #5a5750;
+  --border: #d9d4c8;
+  --accent: #b3261e;
+  --accent-fg: #ffffff;
+  --focus: #1f5fbf;
+
+  --belt-white: #ffffff;
+  --belt-white-fg: #1b1a17;
+  --belt-yellow: #f5c400;
+  --belt-yellow-fg: #1b1a17;
+  --belt-orange: #e87500;
+  --belt-orange-fg: #1b1a17;
+  --belt-green: #1a7a35;
+  --belt-green-fg: #ffffff;
+  --belt-blue: #1f5fbf;
+  --belt-blue-fg: #ffffff;
+  --belt-brown: #7a4a21;
+  --belt-brown-fg: #ffffff;
+  --belt-black: #111111;
+  --belt-black-fg: #ffffff;
+  --belt-outline: #8a8578;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #14130f;
+    --surface: #1e1c17;
+    --surface-muted: #28251f;
+    --foreground: #f2efe8;
+    --foreground-muted: #b4afa3;
+    --border: #3a362d;
+    --accent: #ff6b5f;
+    --accent-fg: #14130f;
+    --focus: #7fb0ff;
+    --belt-outline: #8a8578;
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: #14130f;
+  --surface: #1e1c17;
+  --surface-muted: #28251f;
+  --foreground: #f2efe8;
+  --foreground-muted: #b4afa3;
+  --border: #3a362d;
+  --accent: #ff6b5f;
+  --accent-fg: #14130f;
+  --focus: #7fb0ff;
+  --belt-outline: #8a8578;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-focus: var(--focus);
+
+  --color-belt-white: var(--belt-white);
+  --color-belt-white-fg: var(--belt-white-fg);
+  --color-belt-yellow: var(--belt-yellow);
+  --color-belt-yellow-fg: var(--belt-yellow-fg);
+  --color-belt-orange: var(--belt-orange);
+  --color-belt-orange-fg: var(--belt-orange-fg);
+  --color-belt-green: var(--belt-green);
+  --color-belt-green-fg: var(--belt-green-fg);
+  --color-belt-blue: var(--belt-blue);
+  --color-belt-blue-fg: var(--belt-blue-fg);
+  --color-belt-brown: var(--belt-brown);
+  --color-belt-brown-fg: var(--belt-brown-fg);
+  --color-belt-black: var(--belt-black);
+  --color-belt-black-fg: var(--belt-black-fg);
+  --color-belt-outline: var(--belt-outline);
+
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-bricolage);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
