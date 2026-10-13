@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /*
-  Design system CyberDojo, v2: chiaro, morbido, da gioco, con identità dojo
+  Design system CyberDojo, v2: chiaro, morbido, da gioco, con identitÃ  dojo
   (verde tatami, rosso sigillo, cinture). Predefinito: chiaro. L'utente sceglie chiaro,
   scuro o sistema (data-theme="light|dark|system" su <html>).
-  Ogni coppia testo/sfondo è verificata (>= 4.5:1) da scripts/check-contrast.mjs.
+  Ogni coppia testo/sfondo Ã¨ verificata (>= 4.5:1) da scripts/check-contrast.mjs.
 */
 
 :root {
@@ -116,19 +116,22 @@
   --color-belt-black-fg: var(--belt-black-fg);
   --color-belt-outline: var(--belt-outline);
 
-  --font-sans: var(--font-plex-sans);
-  --font-mono: var(--font-plex-mono);
-  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-text-face);
+  --font-mono: var(--font-mono-face);
+  --font-display: var(--font-display-face);
 }
 
 body {
   background: linear-gradient(180deg, var(--hero-from) 0, var(--background) 360px) no-repeat, var(--background);
   color: var(--foreground);
-  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  font-family: var(--font-text-face), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-family: var(--font-display-face), system-ui, sans-serif;
+  letter-spacing: 0.005em;
 }
 
 :focus-visible {

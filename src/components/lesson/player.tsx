@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { PlayerContext } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
@@ -23,9 +23,26 @@ export function LessonPlayer({
   const last = index === screens.length - 1;
   const blocked = screen.gated && !verified;
 
+  // Tastiera su PC: frecce per muoversi tra le schermate (non mentre si scrive in un campo).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target;
+      if (t instanceof Element && t.closest("input, textarea, select, [contenteditable]")) return;
+      if (e.key === "ArrowRight" && !last && !blocked) setIndex((i) => i + 1);
+      if (e.key === "ArrowLeft" && index > 0) setIndex((i) => i - 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [index, last, blocked]);
+
+  // Cambiando schermata si riparte dall'alto.
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [index]);
+
   return (
     <PlayerContext.Provider value={ctx}>
-      <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pb-4 pt-3">
+      <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pb-4 pt-3 lg:max-w-5xl lg:pt-6">
         <header className="grid gap-3">
           <div className="flex items-center gap-3">
             <Link
@@ -57,13 +74,14 @@ export function LessonPlayer({
               Audio: presto
             </button>
           </div>
-          <p className="text-sm text-muted">
-            {lessonId} · {title} · schermata {index + 1} di {screens.length}
+          <p className="flex flex-wrap justify-between gap-2 text-sm text-muted">
+            <span>{lessonId} · {title} · schermata {index + 1} di {screens.length}</span>
+            <span className="hidden lg:inline">Usa le frecce ← → della tastiera</span>
           </p>
         </header>
 
-        <main className="card mt-4 flex-1 p-5 sm:p-7">
-          <h1 className="mb-4 font-display text-3xl font-extrabold">{screen.title}</h1>
+        <main className="card mt-4 flex-1 p-5 sm:p-8 lg:p-10 lg:text-lg">
+          <h1 className="mb-5 font-display text-3xl font-semibold lg:text-4xl">{screen.title}</h1>
           {/* Tutte le schermate restano montate: la verifica non perde lo stato se si torna indietro. */}
           {screens.map((s, i) => (
             <section key={i} hidden={i !== index} aria-hidden={i !== index}>

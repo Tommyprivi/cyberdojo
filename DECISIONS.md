@@ -27,6 +27,13 @@ Data: 2026-10-13
 - `published` richiede l'approvazione esplicita del titolare. Per C8 (attacco etico) la revisione umana è obbligatoria
 - Revisione IA con checklist fissa: correttezza tecnica, comandi, tono, accessibilità
 
+## Design (sostituisce la sezione 8 della spec dove in conflitto)
+- Stile chiaro e da gioco, ispirato agli esempi forniti dal titolare: verde tatami (principale), rosso sigillo (accento), cinture per i livelli. Tema chiaro predefinito; scuro e "sistema" a scelta.
+- Font: **Fredoka** (titoli), **Nunito** (testo), **JetBrains Mono** (codice). Sostituiscono Bricolage Grotesque e IBM Plex.
+- Mascotte: "Onigiri Sensei", bozza SVG generata, da sostituire.
+- Su PC: navigazione in alto, esercizi affiancati, frecce ← → nelle lezioni, Invio passa alla domanda successiva.
+- Lezioni facili da capire e da ricordare: un concetto per schermata, un'immagine concreta, riquadri Regola / Attenzione / Esempio / Trucco, prova interattiva, schede di ripasso alla fine.
+
 ## Sito
 - Pubblici: home e **mappa dei corsi** (moduli, titoli, obiettivi). Lezioni, verifiche e progressi dietro account
 - Estetica: moderna con tocchi dojo. Tema che segue il sistema, interruttore nel profilo

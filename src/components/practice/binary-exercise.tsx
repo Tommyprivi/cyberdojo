@@ -56,8 +56,33 @@ function Exercise() {
   const allRight = questions.length > 0 && questions.every((q, i) => answers[i]?.trim() === String(q.answer));
   const status: Status = passed ? "superato" : tries > 0 || answers.some(Boolean) ? "in corso" : "non iniziato";
 
+  const check = () => {
+    setChecked(true);
+    setTries((t) => t + 1);
+    if (allRight) setPassed(true);
+  };
+
+  const actions = (
+    <>
+      <button type="button" onClick={check} className="btn btn-primary">
+        Controlla
+      </button>
+      <button type="button" onClick={() => fresh(level)} className="btn btn-ghost">
+        Nuovi esercizi
+      </button>
+    </>
+  );
+
+  const verdict = checked && (
+    <p role="status" className="pop text-lg font-extrabold">
+      {allRight ? "Tutte giuste!" : "Non ancora: controlla le risposte segnate."}
+    </p>
+  );
+
   return (
-    <div className="mt-5 grid gap-5">
+    <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
+      {/* Pannello: sopra su telefono, fisso a destra su PC */}
+      <aside className="grid gap-4 lg:rounded-3xl lg:border lg:border-border lg:bg-surface lg:shadow-[var(--shadow)] lg:sticky lg:top-4 lg:order-2 lg:p-5">
       <div role="radiogroup" aria-label="Difficoltà" className="grid grid-cols-3 gap-2">
         {LEVELS.map((l) => (
           <button
@@ -79,8 +104,20 @@ function Exercise() {
         Stato: <strong>{status}</strong> · tentativi: {tries}
         {xpSpent > 0 && ` · XP spesi in aiuti: ${xpSpent}`}
       </p>
+      {level !== "severo" && (
+        <div className="rounded-2xl bg-surface-muted p-3">
+          <p className="text-sm font-bold">Trucco: parti da 1 a destra e raddoppia</p>
+          <p className="mt-1 font-mono text-sm">
+            {level === "facile" ? "8 · 4 · 2 · 1" : "128 · 64 · 32 · 16 · 8 · 4 · 2 · 1"}
+          </p>
+        </div>
+      )}
+      <div className="hidden flex-wrap gap-3 lg:flex">{actions}</div>
+      <div className="hidden lg:block">{verdict}</div>
+      </aside>
 
-      <ol className="grid gap-4">
+      <div className="grid gap-5 lg:order-1">
+      <ol className="grid gap-4 xl:grid-cols-2">
         {questions.map((q, i) => {
           const diag = live ? diagnoseBinaryToDecimal(q.data, answers[i] ?? "") : null;
           const shown = stepsShown[i] ?? 0;
@@ -127,30 +164,12 @@ function Exercise() {
         })}
       </ol>
 
-      <div className="flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={() => {
-            setChecked(true);
-            setTries((t) => t + 1);
-            if (allRight) setPassed(true);
-          }}
-          className="btn btn-primary"
-        >
-          Controlla
-        </button>
-        <button type="button" onClick={() => fresh(level)} className="btn btn-ghost">
-          Nuovi esercizi
-        </button>
-      </div>
-      {checked && (
-        <p role="status" className="pop text-lg font-extrabold">
-          {allRight ? "Tutte giuste!" : "Non ancora: controlla le risposte segnate."}
-        </p>
-      )}
+      <div className="flex flex-wrap gap-3 lg:hidden">{actions}</div>
+      <div className="lg:hidden">{verdict}</div>
       <p className="text-sm text-muted">
         Stato e XP non vengono ancora salvati: arriveranno con l&apos;account.
       </p>
+      </div>
     </div>
   );
 }

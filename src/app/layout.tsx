@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fredoka, JetBrains_Mono, Nunito } from "next/font/google";
 import { ThemeSync } from "@/components/theme-toggle";
 import { SITE } from "@/lib/config";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+// Titoli: Fredoka (rotondo e amichevole). Testo: Nunito (molto leggibile a schermo). Codice: JetBrains Mono.
+const display = Fredoka({
+  variable: "--font-display-face",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+const text = Nunito({
+  variable: "--font-text-face",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const mono = JetBrains_Mono({
+  variable: "--font-mono-face",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang={SITE.locale}
       data-theme="light"
-      className={`${bricolage.variable} ${plexSans.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${display.variable} ${text.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />

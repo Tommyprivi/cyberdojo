@@ -1,5 +1,8 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { BitLab } from "./bit-lab";
+import { BitGrid, Callout } from "./bits";
 import { Recap, Say, Scene } from "./blocks";
+import { Flashcards } from "./flashcards";
 import { Guided } from "./guided";
 import { Practice } from "./practice";
 import { Quiz } from "./quiz";
@@ -13,9 +16,13 @@ export const lessonComponents = {
   Quiz,
   Guided,
   Practice,
+  BitGrid,
+  BitLab,
+  Callout,
+  Flashcards,
   p: (p: P<"p">) => <p {...p} className="leading-relaxed" />,
   ul: (p: P<"ul">) => <ul {...p} className="grid list-disc gap-1 pl-6" />,
-  strong: (p: P<"strong">) => <strong {...p} className="font-semibold" />,
+  strong: (p: P<"strong">) => <strong {...p} className="font-extrabold" />,
   table: (p: P<"table">) => (
     <div className="overflow-x-auto">
       <table {...p} className="w-full border-collapse text-center font-mono" />

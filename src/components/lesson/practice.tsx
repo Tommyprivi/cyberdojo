@@ -77,9 +77,16 @@ export function Practice() {
         if (!result) submit();
       }}
     >
-      <p className="chip w-fit text-sm">
-        Tentativo {Math.min(attempt, session.retries)} di {session.retries}
-      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="chip text-sm">
+          Tentativo {Math.min(attempt, session.retries)} di {session.retries}
+        </p>
+        <p className="chip font-mono text-sm" aria-label="Promemoria dei pesi">
+          Pesi: 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1
+        </p>
+        <p className="hidden text-sm text-muted lg:block">Invio passa alla domanda successiva.</p>
+      </div>
+      <div className="grid gap-3 lg:grid-cols-2">
       {session.questions.map((q, i) => (
         <label key={i} className="grid gap-1.5 rounded-2xl border-2 border-border bg-surface-muted p-3">
           <span>
@@ -91,6 +98,13 @@ export function Practice() {
             disabled={!!result}
             value={answers[i] ?? ""}
             onChange={(e) => setAnswers((a) => a.map((v, j) => (j === i ? e.target.value : v)))}
+            onKeyDown={(e) => {
+              // Invio: alla domanda successiva; sull'ultima invia il modulo come di consueto.
+              if (e.key !== "Enter" || i === session.questions.length - 1) return;
+              e.preventDefault();
+              const inputs = e.currentTarget.form?.querySelectorAll<HTMLInputElement>("input[inputmode=numeric]");
+              inputs?.[i + 1]?.focus();
+            }}
             aria-invalid={result ? !result.results[i] : undefined}
             className="field font-mono text-lg"
           />
@@ -101,6 +115,7 @@ export function Practice() {
           )}
         </label>
       ))}
+      </div>
 
       {!result && (
         <button type="submit" disabled={pending || answers.some((a) => a.trim() === "")} className="btn btn-primary">

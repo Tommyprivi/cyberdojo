@@ -4,7 +4,7 @@ course: fondamenta
 module: 5
 title: "Ottetti e binario"
 belt: gialla
-duration_min: 7
+duration_min: 8
 prerequisites: []
 objectives:
   - "Convertire un ottetto da binario a decimale"
@@ -20,82 +20,127 @@ human_reviewed: false
 known_pitfalls:
   - "Zeri a sinistra non cambiano il valore, zeri a destra sì"
   - "Il bit più a sinistra è quello che pesa di più"
+  - "Si sommano i pesi, non si contano gli uno"
 commands: []
 ---
 
 <Scene title="Un indirizzo da leggere">
-Sei l'amministratore di una piccola azienda. Un collega ti scrive: «La stampante è sull'indirizzo 192.168.1.10, ma non risponde».
+Sei l'amministratore di una piccola azienda. Un collega ti scrive: «La stampante è all'indirizzo **192.168.1.10**, ma non risponde».
 
-Quell'indirizzo sembra quattro numeri qualunque. In realtà il computer lo legge come **32 bit**, divisi in quattro gruppi da 8. Per capire una rete devi saper leggere questi gruppi.
+A te sembrano quattro numeri. Il computer invece vede **32 bit**, divisi in quattro gruppi da 8.
+
+Per capire una rete devi saper leggere questi gruppi. È quello che impari adesso.
 
 <Say who="sensei">Un indirizzo IP non è testo. Sono trentadue bit. Oggi impari a leggerne otto alla volta.</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Che cos'è un ottetto">
-Un **bit** vale 0 oppure 1. Un **ottetto** è un gruppo di 8 bit.
+<Scene title="Un bit è un interruttore">
+Immagina un interruttore della luce. Può essere solo **spento** o **acceso**.
 
-Ogni posizione ha un peso, che raddoppia andando verso sinistra:
+Un **bit** è uguale: vale **0** (spento) oppure **1** (acceso).
 
-| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
-|---|---|---|---|---|---|---|---|
+<Callout kind="regola">
+Un **ottetto** è una fila di **8 bit**, cioè 8 interruttori uno accanto all'altro.
+</Callout>
 
-Il valore dell'ottetto è la **somma dei pesi dove il bit è 1**. Con 8 bit i valori vanno da 0 a 255, cioè 256 combinazioni.
+<Say who="sensei">Zero è spento, uno è acceso. Otto interruttori in fila fanno un ottetto.</Say>
+</Scene>
 
-<Say who="sensei">Pesi: centoventotto, sessantaquattro, trentadue, sedici, otto, quattro, due, uno. Si sommano solo quelli sotto un uno.</Say>
+{/* screen */}
+
+<Scene title="Ogni posizione ha un peso">
+Ogni interruttore acceso aggiunge un valore, il suo **peso**. Il peso dipende dalla posizione.
+
+<Callout kind="trucco">
+Parti da **1 a destra** e **raddoppia** andando a sinistra: 1, 2, 4, 8, 16, 32, 64, **128**.
+</Callout>
+
+Per sapere quanto vale un ottetto, **somma i pesi degli interruttori accesi**:
+
+<BitGrid bits="00000101" />
+
+<Callout kind="attenzione">
+Si sommano i **pesi**, non si contano gli uno. Qui ci sono due uno, ma il valore è 5.
+</Callout>
+
+<Say who="assistente">Il trucco è solo questo: uno a destra, poi raddoppia. Ripetilo a voce una volta e non lo dimentichi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova tu con le mani">
+Tocca i bit per accenderli e spegnerli. Guarda come cambia il numero.
+
+<BitLab target={10} />
+
+<Callout kind="trucco">
+Tutti accesi fanno **255**: è il numero più grande che sta in un ottetto. Tutti spenti fanno **0**.
+</Callout>
+
+<Say who="assistente">Per fare 10, cerca i pesi che sommati danno 10. Parti dal più grande che ci sta: 8. Poi ti manca 2.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Prova subito">
-Un esempio breve, prima di entrare nel dettaglio.
-
 <Quiz
   question="Quanto vale l'ottetto 00000101?"
-  options={["5", "101", "10", "3"]}
+  options={["5", "101", "10", "2"]}
   answer={0}
-  explain="Sono accesi i bit con peso 4 e 1: 4 + 1 = 5. Il numero 101 sarebbe leggerlo come decimale, ma sono bit."
+  explain="Sono accesi i bit con peso 4 e 1: 4 + 1 = 5. Leggere 101 come decimale e contare gli uno (2) sono i due errori più comuni."
 />
 
-<Say who="assistente">Se hai sbagliato, niente paura: la trappola più comune è leggere le cifre come se fossero decimali. Guarda sempre i pesi.</Say>
+<Say who="assistente">Se hai sbagliato, va bene: è proprio qui che si impara. Guarda sempre i pesi, non le cifre.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Esempio guidato">
-Torniamo all'indirizzo del collega. I primi due gruppi sono 11000000 e 10101000. Convertiamoli un passo alla volta.
+Torniamo all'indirizzo del collega: **192.168**.1.10. Leggiamo i primi due ottetti, un passo alla volta.
 
 <Guided
   steps={[
-    "11000000: i bit a 1 sono i primi due, con pesi 128 e 64.",
-    "128 + 64 = 192. Il primo numero dell'indirizzo è 192.",
-    "10101000: bit a 1 con pesi 128, 32 e 8.",
-    "128 + 32 + 8 = 168. Il secondo numero è 168. Quindi l'inizio dell'indirizzo è 192.168.",
+    { text: "Primo ottetto: 11000000. Sono accesi i due bit più a sinistra.", bits: "11000000" },
+    "Pesi accesi: 128 e 64. Somma: 128 + 64 = 192. Ecco il primo numero.",
+    { text: "Secondo ottetto: 10101000. Accesi i bit con peso 128, 32 e 8.", bits: "10101000" },
+    "Somma: 128 + 32 + 8 = 168. L'indirizzo inizia con 192.168, come nel messaggio.",
   ]}
 />
 
-<Say who="assistente">Un passo alla volta: prima scrivi i pesi, poi tieni solo quelli sotto un uno, poi somma.</Say>
+<Say who="sensei">Sempre tre mosse: scrivi i pesi, tieni quelli accesi, somma.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Verifica pratica">
-Cinque ottetti, generati solo per te. Servono tutte e cinque le risposte giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+Cinque ottetti, generati solo per te. Servono **tutte e cinque** le risposte giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 
 <Practice generator="binary-to-decimal" pass="5/5" retries={3} />
 
-<Say who="sensei">Cinque su cinque. Non ci sono scorciatoie: se sbagli, ti spiego dove e riprovi.</Say>
+<Say who="sensei">Cinque su cinque. Niente scorciatoie: se sbagli, capisci dove e riprovi.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Riepilogo">
 <Recap xp={20}>
-- Un ottetto sono 8 bit, con pesi 128, 64, 32, 16, 8, 4, 2, 1.
-- Il valore è la somma dei pesi dei bit a 1, da 0 a 255.
-- Zeri a sinistra non cambiano il valore. Zeri a destra sì.
+- Un bit è un interruttore: 0 spento, 1 acceso.
+- Un ottetto sono 8 bit. Pesi: 1 a destra, poi raddoppia fino a 128.
+- Il valore è la somma dei pesi accesi, da 0 a 255.
 </Recap>
 
-<Say who="sensei">Ben fatto. Prossima lezione: il percorso inverso, dal decimale al binario.</Say>
+<Flashcards
+  cards={[
+    { q: "Quanti bit ci sono in un ottetto?", a: "8" },
+    { q: "Quanto pesa il bit più a sinistra?", a: "128" },
+    { q: "Quanto vale 11111111?", a: "255" },
+    { q: "Si contano gli uno o si sommano i pesi?", a: "Si sommano i pesi" },
+  ]}
+/>
+
+<Say who="sensei">Ben fatto. La prossima volta farai il contrario: dal numero ai bit.</Say>
 </Scene>
