@@ -50,6 +50,7 @@ const KINDS = {
   attenzione: { label: "Attenzione", cls: "border-accent" },
   esempio: { label: "Esempio", cls: "border-belt-blue" },
   trucco: { label: "Trucco per ricordarlo", cls: "border-belt-yellow" },
+  curiosita: { label: "Lo sapevi?", cls: "border-belt-orange" },
 } as const;
 
 export function Callout({ kind, children }: { kind: keyof typeof KINDS; children: React.ReactNode }) {

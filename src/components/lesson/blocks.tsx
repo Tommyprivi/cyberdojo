@@ -33,7 +33,7 @@ export function Recap({ xp, children }: { xp: number; children: ReactNode }) {
   return (
     <section className="my-2 grid gap-4">
       <div className="rounded-3xl bg-deep p-5 text-deep-fg">
-        <h3 className="text-xl font-extrabold">Cosa porti a casa</h3>
+        <h3 className="text-xl font-extrabold">Caso chiuso. Ecco cosa sai adesso</h3>
         <div className="mt-2 [&_li]:marker:text-primary">{children}</div>
       </div>
       <p className="chip w-fit font-extrabold text-primary">

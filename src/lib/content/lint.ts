@@ -2,7 +2,7 @@ import { isGeneratorId } from "../practice/generators";
 import { getCourseByFolder } from "./courses";
 import type { RawLesson } from "./load";
 import { splitScreens } from "./load";
-import { LESSON_ID, lessonFrontmatter, type LessonFrontmatter } from "./schema";
+import { LESSON_ID, lessonFrontmatter, MAX_VIDEO_SECONDS, type LessonFrontmatter } from "./schema";
 
 export type Issue = { file: string; message: string };
 
@@ -39,7 +39,15 @@ export function lintLessons(lessons: RawLesson[]): Issue[] {
     if (Number(m[2]) !== fm.module) add(l.file, `il modulo nell'ID (${m[2]}) non coincide con module: ${fm.module}`);
     if (dir !== `${m[1].toLowerCase()}${fm.module}`) add(l.file, `la cartella deve chiamarsi ${m[1].toLowerCase()}${fm.module}`);
 
+    // Video: ogni lezione pubblicata ne ha uno; frontmatter e corpo devono coincidere.
+    const usesVideo = l.body.includes("<Video");
     if (fm.video && fm.video.end <= fm.video.start) add(l.file, "video: end deve essere maggiore di start");
+    if (fm.video && fm.video.end - fm.video.start > MAX_VIDEO_SECONDS) {
+      add(l.file, `video: lo spezzone supera ${MAX_VIDEO_SECONDS / 60} minuti`);
+    }
+    if (fm.video && !usesVideo) add(l.file, "video dichiarato nel frontmatter ma <Video /> manca nel corpo");
+    if (!fm.video && usesVideo) add(l.file, "<Video /> nel corpo ma manca video: nel frontmatter");
+    if (fm.status === "published" && !fm.video) add(l.file, "una lezione pubblicata deve avere un video");
     if (fm.verification.type === "generated-numeric") {
       if (!fm.verification.generator || !isGeneratorId(fm.verification.generator)) {
         add(l.file, `verification.generator sconosciuto: ${fm.verification.generator ?? "(mancante)"}`);

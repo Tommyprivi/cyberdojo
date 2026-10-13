@@ -62,16 +62,30 @@ describe("lintLessons", () => {
     expect(messages([lesson({}, body().replace("<Recap", "<Altro"))])).toContain("l'ultima schermata deve contenere <Recap>");
   });
 
-  it("richiede approvazione per pubblicare", () => {
+  const VIDEO = { provider: "youtube", id: "abcdefghijk", start: 10, end: 190, channel: "Canale di prova" };
+  const withVideo = (b = body()) => b.replace("<Say", "<Video />\n<Say");
+
+  it("richiede approvazione e video per pubblicare", () => {
     expect(messages([lesson({ status: "published" })]).some((m) => m.includes("approved: true"))).toBe(true);
-    expect(lintLessons([lesson({ status: "published", approved: true })])).toEqual([]);
+    expect(messages([lesson({ status: "published", approved: true })])).toContain("una lezione pubblicata deve avere un video");
+    expect(lintLessons([lesson({ status: "published", approved: true, video: VIDEO }, withVideo())])).toEqual([]);
+  });
+
+  it("controlla che video nel frontmatter e <Video /> nel corpo coincidano", () => {
+    expect(messages([lesson({ video: VIDEO })]).some((m) => m.includes("<Video /> manca"))).toBe(true);
+    expect(messages([lesson({}, withVideo())]).some((m) => m.includes("manca video"))).toBe(true);
+  });
+
+  it("rifiuta spezzoni troppo lunghi o senza canale", () => {
+    expect(messages([lesson({ video: { ...VIDEO, end: 900 } }, withVideo())]).some((m) => m.includes("supera"))).toBe(true);
+    expect(lintLessons([lesson({ video: { ...VIDEO, channel: "" } }, withVideo())]).length).toBeGreaterThan(0);
   });
 
   it("richiede revisione umana per i moduli di attacco C8", () => {
     const c8 = (over: Record<string, unknown>) =>
       lesson(
-        { id: "C.08.001", course: "cybersecurity", module: 8, status: "published", approved: true, ...over },
-        body(),
+        { id: "C.08.001", course: "cybersecurity", module: 8, status: "published", approved: true, video: VIDEO, ...over },
+        withVideo(),
         "cybersecurity/c8/C.08.001.mdx",
       );
     expect(messages([c8({})]).some((m) => m.includes("human_reviewed"))).toBe(true);

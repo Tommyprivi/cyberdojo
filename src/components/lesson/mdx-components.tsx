@@ -6,6 +6,7 @@ import { Flashcards } from "./flashcards";
 import { Guided } from "./guided";
 import { Practice } from "./practice";
 import { Quiz } from "./quiz";
+import { Video } from "./video";
 
 type P<T extends keyof React.JSX.IntrinsicElements> = ComponentPropsWithoutRef<T>;
 
@@ -20,6 +21,7 @@ export const lessonComponents = {
   BitLab,
   Callout,
   Flashcards,
+  Video,
   p: (p: P<"p">) => <p {...p} className="leading-relaxed" />,
   ul: (p: P<"ul">) => <ul {...p} className="grid list-disc gap-1 pl-6" />,
   strong: (p: P<"strong">) => <strong {...p} className="font-extrabold" />,

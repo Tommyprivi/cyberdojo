@@ -54,5 +54,5 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
     }),
   );
 
-  return <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} />;
+  return <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} />;
 }

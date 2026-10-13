@@ -26,6 +26,7 @@
   --accent-fg: #ffffff;
   --focus: #1f5fbf;
   --shadow: 0 10px 30px -12px rgb(22 80 40 / 0.25);
+  --tatami-line: rgb(22 80 40 / 0.045);
 
   --belt-white: #ffffff;
   --belt-white-fg: #16301c;
@@ -62,6 +63,7 @@
     --accent-fg: #1a0a07;
     --focus: #7fb0ff;
     --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+    --tatami-line: rgb(255 255 255 / 0.03);
   }
 }
 
@@ -82,6 +84,7 @@
   --accent-fg: #1a0a07;
   --focus: #7fb0ff;
   --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
+    --tatami-line: rgb(255 255 255 / 0.03);
 }
 
 @theme inline {
@@ -122,7 +125,11 @@
 }
 
 body {
-  background: linear-gradient(180deg, var(--hero-from) 0, var(--background) 360px) no-repeat, var(--background);
+  /* Trama a tatami: righe sottili, quasi invisibili, sopra la sfumatura. */
+  background:
+    repeating-linear-gradient(90deg, transparent 0 58px, var(--tatami-line) 58px 60px),
+    linear-gradient(180deg, var(--hero-from) 0, var(--background) 360px) no-repeat,
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-text-face), system-ui, sans-serif;
   font-size: 1.0625rem;
@@ -180,6 +187,14 @@ h1, h2, h3 {
   .btn-ghost:active:not(:disabled) {
     transform: translateY(3px);
     box-shadow: 0 1px 0 var(--border);
+  }
+  /* Fascicolo di un caso: bordo superiore scuro come la copertina di una cartella. */
+  .dossier {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 6px solid var(--deep);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow);
   }
   .chip {
     display: inline-flex;

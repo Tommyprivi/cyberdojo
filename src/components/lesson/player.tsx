@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { PlayerContext } from "./player-context";
+import { PlayerContext, type LessonVideo } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
 
@@ -10,14 +10,16 @@ export function LessonPlayer({
   lessonId,
   title,
   screens,
+  video,
 }: {
   lessonId: string;
   title: string;
   screens: PlayerScreen[];
+  video?: LessonVideo;
 }) {
   const [index, setIndex] = useState(0);
   const [verified, setVerified] = useState(false);
-  const ctx = useMemo(() => ({ lessonId, markVerified: () => setVerified(true) }), [lessonId]);
+  const ctx = useMemo(() => ({ lessonId, video, markVerified: () => setVerified(true) }), [lessonId, video]);
 
   const screen = screens[index];
   const last = index === screens.length - 1;

@@ -2,12 +2,13 @@
 id: F.05.003
 course: fondamenta
 module: 5
-title: "Ottetti e binario"
+title: "Il pacchetto delle 03:12"
 belt: gialla
 duration_min: 8
 prerequisites: []
 objectives:
   - "Convertire un ottetto da binario a decimale"
+  - "Riconoscere un indirizzo privato 192.168.x.x"
 verification:
   type: generated-numeric
   generator: binary-to-decimal
@@ -24,123 +25,127 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="Un indirizzo da leggere">
-Sei l'amministratore di una piccola azienda. Un collega ti scrive: «La stampante è all'indirizzo **192.168.1.10**, ma non risponde».
+<Scene title="Il pacchetto delle 03:12">
+Sei di turno nel **SOC**, il centro che sorveglia la sicurezza dell'azienda. Alle **03:12** scatta un allarme: qualcuno prova ad accedere al server dei dati sulla porta 22, quella degli accessi remoti.
 
-A te sembrano quattro numeri. Il computer invece vede **32 bit**, divisi in quattro gruppi da 8.
+Lo strumento di analisi ti mostra l'indirizzo sorgente così com'è nel pacchetto, in bit:
 
-Per capire una rete devi saper leggere questi gruppi. È quello che impari adesso.
+<BitGrid bits="11000000" showSum={false} caption="primo di quattro ottetti: 11000000 · 10101000 · 00000001 · 01000010" />
 
-<Say who="sensei">Un indirizzo IP non è testo. Sono trentadue bit. Oggi impari a leggerne otto alla volta.</Say>
+La domanda del caso: **da dove arriva?** Da Internet, o da una scrivania dell'azienda?
+
+<Say who="sensei">Prima di dare l'allarme, si legge. Trentadue bit, quattro ottetti. Cominciamo.</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Un bit è un interruttore">
-Immagina un interruttore della luce. Può essere solo **spento** o **acceso**.
+<Scene title="Monete, non cifre">
+Dimentica le cifre. Pensa a **otto monete** sul tavolo, con questi valori: 128, 64, 32, 16, 8, 4, 2, 1.
 
-Un **bit** è uguale: vale **0** (spento) oppure **1** (acceso).
-
-<Callout kind="regola">
-Un **ottetto** è una fila di **8 bit**, cioè 8 interruttori uno accanto all'altro.
-</Callout>
-
-<Say who="sensei">Zero è spento, uno è acceso. Otto interruttori in fila fanno un ottetto.</Say>
-</Scene>
-
-{/* screen */}
-
-<Scene title="Ogni posizione ha un peso">
-Ogni interruttore acceso aggiunge un valore, il suo **peso**. Il peso dipende dalla posizione.
+Ogni bit dice se la sua moneta **c'è (1)** o **non c'è (0)**. Il valore dell'ottetto è il **totale delle monete presenti**.
 
 <Callout kind="trucco">
-Parti da **1 a destra** e **raddoppia** andando a sinistra: 1, 2, 4, 8, 16, 32, 64, **128**.
+Parti da **1 a destra** e **raddoppia**: 1, 2, 4, 8, 16, 32, 64, **128**. Otto monete, otto bit.
 </Callout>
 
-Per sapere quanto vale un ottetto, **somma i pesi degli interruttori accesi**:
+<Callout kind="curiosita">
+Con queste otto monete puoi comporre **ogni** numero da 0 a 255, e in **un solo modo**. È per questo che il binario funziona: niente ambiguità.
+</Callout>
 
-<BitGrid bits="00000101" />
+<Say who="sensei">Un uno è una moneta sul tavolo. Uno zero è un posto vuoto. Tutto qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo ottetto">
+Torniamo al pacchetto. Primo ottetto: **11000000**. Sul tavolo ci sono le monete da 128 e da 64.
+
+<BitGrid bits="11000000" />
 
 <Callout kind="attenzione">
-Si sommano i **pesi**, non si contano gli uno. Qui ci sono due uno, ma il valore è 5.
+Non contare gli uno. Qui ce ne sono due, ma il valore è **192**. Si sommano le monete, non si contano.
 </Callout>
 
-<Say who="assistente">Il trucco è solo questo: uno a destra, poi raddoppia. Ripetilo a voce una volta e non lo dimentichi più.</Say>
+<Callout kind="curiosita">
+Tutte le monete insieme fanno **255**, non 256. I valori possibili sono 256, ma il primo è lo **zero**.
+</Callout>
+
+<Say who="assistente">Il primo numero dell'indirizzo è 192. Già questo è un indizio: tienilo a mente.</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Prova tu con le mani">
-Tocca i bit per accenderli e spegnerli. Guarda come cambia il numero.
+<Scene title="Tocca a te">
+Il secondo ottetto vale **168**. Metti sul tavolo le monete giuste.
 
-<BitLab target={10} />
+<BitLab target={168} />
 
-<Callout kind="trucco">
-Tutti accesi fanno **255**: è il numero più grande che sta in un ottetto. Tutti spenti fanno **0**.
-</Callout>
-
-<Say who="assistente">Per fare 10, cerca i pesi che sommati danno 10. Parti dal più grande che ci sta: 8. Poi ti manca 2.</Say>
+<Say who="assistente">Parti dalla moneta più grande che ci sta: 128. Ti mancano 40. Quale moneta viene dopo, senza superarli?</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Prova subito">
+<Scene title="Il terzo ottetto">
 <Quiz
-  question="Quanto vale l'ottetto 00000101?"
-  options={["5", "101", "10", "2"]}
+  question="Terzo ottetto: 00000001. Quanto vale?"
+  options={["1", "128", "10000000", "8"]}
   answer={0}
-  explain="Sono accesi i bit con peso 4 e 1: 4 + 1 = 5. Leggere 101 come decimale e contare gli uno (2) sono i due errori più comuni."
+  explain="Sul tavolo c'è solo la moneta da 1. Gli zeri a sinistra sono posti vuoti: non pesano niente. Chi risponde 128 ha letto i bit al contrario."
 />
 
-<Say who="assistente">Se hai sbagliato, va bene: è proprio qui che si impara. Guarda sempre i pesi, non le cifre.</Say>
+<Say who="sensei">Gli zeri davanti non contano. Un uno in fondo vale uno. Non farti ingannare dalla lunghezza.</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Esempio guidato">
-Torniamo all'indirizzo del collega: **192.168**.1.10. Leggiamo i primi due ottetti, un passo alla volta.
+<Scene title="Chi c'è dietro">
+Manca l'ultimo ottetto. Poi rimettiamo insieme l'indirizzo.
 
 <Guided
   steps={[
-    { text: "Primo ottetto: 11000000. Sono accesi i due bit più a sinistra.", bits: "11000000" },
-    "Pesi accesi: 128 e 64. Somma: 128 + 64 = 192. Ecco il primo numero.",
-    { text: "Secondo ottetto: 10101000. Accesi i bit con peso 128, 32 e 8.", bits: "10101000" },
-    "Somma: 128 + 32 + 8 = 168. L'indirizzo inizia con 192.168, come nel messaggio.",
+    { text: "Quarto ottetto: 01000010. Monete presenti: 64 e 2.", bits: "01000010" },
+    "64 + 2 = 66. L'indirizzo completo è 192.168.1.66.",
+    "192.168 è una rete privata: questi indirizzi non viaggiano su Internet.",
+    "Conclusione: la connessione delle 03:12 parte da una macchina dentro l'azienda, non da fuori.",
   ]}
 />
 
-<Say who="sensei">Sempre tre mosse: scrivi i pesi, tieni quelli accesi, somma.</Say>
+<Callout kind="curiosita">
+Le reti private sono tre e conviene saperle a memoria: **10**.x.x.x, **172.16–31**.x.x e **192.168**.x.x. Se una di queste compare come sorgente in un registro interno, il traffico è partito da dentro.
+</Callout>
+
+<Say who="sensei">L'intruso non bussava da fuori. Era già in casa. Ricordatelo, la prossima volta che guardi un log.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Verifica pratica">
-Cinque ottetti, generati solo per te. Servono **tutte e cinque** le risposte giuste.
+Nella notte il sistema ha registrato altri **cinque ottetti** sospetti. Decodificali tutti, senza errori.
 
-Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+Hai 3 tentativi, e a ogni tentativo gli ottetti cambiano.
 
 <Practice generator="binary-to-decimal" pass="5/5" retries={3} />
 
-<Say who="sensei">Cinque su cinque. Niente scorciatoie: se sbagli, capisci dove e riprovi.</Say>
+<Say who="sensei">Cinque su cinque. In un SOC un ottetto sbagliato è un allarme a vuoto, o un intruso che passa.</Say>
 </Scene>
 
 {/* screen */}
 
-<Scene title="Riepilogo">
+<Scene title="Rapporto finale">
 <Recap xp={20}>
-- Un bit è un interruttore: 0 spento, 1 acceso.
-- Un ottetto sono 8 bit. Pesi: 1 a destra, poi raddoppia fino a 128.
-- Il valore è la somma dei pesi accesi, da 0 a 255.
+- Ogni bit è una moneta: 1 c'è, 0 non c'è. Monete da 128 a 1, raddoppiando da destra.
+- Il valore di un ottetto è il totale delle monete, da 0 a 255.
+- 192.168, 10 e 172.16–31 sono reti private: come sorgente in un log interno, il traffico parte da dentro.
 </Recap>
 
 <Flashcards
   cards={[
-    { q: "Quanti bit ci sono in un ottetto?", a: "8" },
-    { q: "Quanto pesa il bit più a sinistra?", a: "128" },
-    { q: "Quanto vale 11111111?", a: "255" },
-    { q: "Si contano gli uno o si sommano i pesi?", a: "Si sommano i pesi" },
+    { q: "Quanto vale 01000010?", a: "66 (64 + 2)" },
+    { q: "Perché il massimo è 255 e non 256?", a: "Perché si parte da 0" },
+    { q: "Le tre reti private?", a: "10.x · 172.16–31.x · 192.168.x" },
+    { q: "Vedi 192.168.1.66 come sorgente. Che cosa ne deduci?", a: "Il traffico parte da dentro la rete" },
   ]}
 />
 
-<Say who="sensei">Ben fatto. La prossima volta farai il contrario: dal numero ai bit.</Say>
+<Say who="sensei">Caso chiuso. Prossima lezione: il contrario, dal numero ai bit. E scopriremo chi era seduto alla macchina .66.</Say>
 </Scene>

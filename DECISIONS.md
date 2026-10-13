@@ -39,6 +39,8 @@ Data: 2026-10-13
 - Estetica: moderna con tocchi dojo. Tema che segue il sistema, interruttore nel profilo
 - Tono del Sensei: severo ma caldo
 - Video: solo citazione del canale, nessun avviso ai creatori
+- **Ogni lezione pubblicata ha un video** YouTube incorporato (nocookie, caricato al clic, massimo 10 minuti). Istruzioni: docs/video.md
+- Lezioni come **casi** (SOC, log, pacchetti), tono del Sensei secco e un po' ironico, curiosità vere, niente paragoni da manuale
 
 ## Legale (tutte bozze da far controllare a un professionista)
 Privacy, cookie, termini con uso etico, disclaimer sicurezza e lab, crediti e fonti, informativa minori, trattamento dati, esportazione e cancellazione GDPR, uso accettabile, divulgazione responsabile, voci sintetiche, contenuti di terzi, accessibilità.

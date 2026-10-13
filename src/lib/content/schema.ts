@@ -20,7 +20,11 @@ const video = z.object({
   start: z.number().int().min(0),
   end: z.number().int().min(1),
   channel: z.string().min(1, "serve il nome del canale per la citazione"),
+  title: z.string().optional(),
 });
+
+/** Durata massima di uno spezzone incorporato, in secondi. */
+export const MAX_VIDEO_SECONDS = 600;
 
 export const lessonFrontmatter = z
   .object({

@@ -18,8 +18,8 @@ export default function Percorso() {
     <div className="grid gap-6">
       <section className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-extrabold">Ciao!</h1>
-          <p className="text-muted">Una lezione al giorno e la cintura arriva.</p>
+          <h1 className="font-display text-3xl font-semibold">Il dojo è aperto.</h1>
+          <p className="text-muted">Un caso al giorno. Il Sensei controlla.</p>
         </div>
         <Mascot size={96} />
       </section>
@@ -44,7 +44,7 @@ export default function Percorso() {
 
       {next && (
         <section className="relative overflow-hidden rounded-[2rem] bg-deep p-5 text-deep-fg">
-          <p className="text-sm opacity-90">Continua da qui</p>
+          <p className="font-mono text-xs font-bold uppercase tracking-widest opacity-90">Prossimo caso</p>
           <h2 className="mt-1 text-2xl font-extrabold">{String(next.data.title)}</h2>
           <p className="text-sm opacity-90">
             {String(next.data.id)} · {String(next.data.duration_min)} minuti
@@ -53,7 +53,7 @@ export default function Percorso() {
             <div className="h-full w-0 bg-primary" />
           </div>
           <Link href={`/lezione/${next.data.id}`} className="btn btn-primary mt-5">
-            Inizia
+            Apri il caso
           </Link>
           <Mascot size={110} mood="stern" className="pointer-events-none absolute -bottom-3 right-2 opacity-95" />
         </section>

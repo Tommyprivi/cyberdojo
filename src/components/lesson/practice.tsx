@@ -90,7 +90,7 @@ export function Practice() {
       {session.questions.map((q, i) => (
         <label key={i} className="grid gap-1.5 rounded-2xl border-2 border-border bg-surface-muted p-3">
           <span>
-            {i + 1}. Converti <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> in decimale
+            Ottetto {i + 1}: <span className="font-mono text-xl font-medium tracking-wider">{q.data}</span> vale…
           </span>
           <input
             inputMode="numeric"
