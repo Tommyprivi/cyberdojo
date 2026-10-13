@@ -1,0 +1,101 @@
+---
+id: F.05.003
+course: fondamenta
+module: 5
+title: "Ottetti e binario"
+belt: gialla
+duration_min: 7
+prerequisites: []
+objectives:
+  - "Convertire un ottetto da binario a decimale"
+verification:
+  type: generated-numeric
+  generator: binary-to-decimal
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Zeri a sinistra non cambiano il valore, zeri a destra sì"
+  - "Il bit più a sinistra è quello che pesa di più"
+commands: []
+---
+
+<Scene title="Un indirizzo da leggere">
+Sei l'amministratore di una piccola azienda. Un collega ti scrive: «La stampante è sull'indirizzo 192.168.1.10, ma non risponde».
+
+Quell'indirizzo sembra quattro numeri qualunque. In realtà il computer lo legge come **32 bit**, divisi in quattro gruppi da 8. Per capire una rete devi saper leggere questi gruppi.
+
+<Say who="sensei">Un indirizzo IP non è testo. Sono trentadue bit. Oggi impari a leggerne otto alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un ottetto">
+Un **bit** vale 0 oppure 1. Un **ottetto** è un gruppo di 8 bit.
+
+Ogni posizione ha un peso, che raddoppia andando verso sinistra:
+
+| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+|---|---|---|---|---|---|---|---|
+
+Il valore dell'ottetto è la **somma dei pesi dove il bit è 1**. Con 8 bit i valori vanno da 0 a 255, cioè 256 combinazioni.
+
+<Say who="sensei">Pesi: centoventotto, sessantaquattro, trentadue, sedici, otto, quattro, due, uno. Si sommano solo quelli sotto un uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova subito">
+Un esempio breve, prima di entrare nel dettaglio.
+
+<Quiz
+  question="Quanto vale l'ottetto 00000101?"
+  options={["5", "101", "10", "3"]}
+  answer={0}
+  explain="Sono accesi i bit con peso 4 e 1: 4 + 1 = 5. Il numero 101 sarebbe leggerlo come decimale, ma sono bit."
+/>
+
+<Say who="assistente">Se hai sbagliato, niente paura: la trappola più comune è leggere le cifre come se fossero decimali. Guarda sempre i pesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio guidato">
+Torniamo all'indirizzo del collega. I primi due gruppi sono 11000000 e 10101000. Convertiamoli un passo alla volta.
+
+<Guided
+  steps={[
+    "11000000: i bit a 1 sono i primi due, con pesi 128 e 64.",
+    "128 + 64 = 192. Il primo numero dell'indirizzo è 192.",
+    "10101000: bit a 1 con pesi 128, 32 e 8.",
+    "128 + 32 + 8 = 168. Il secondo numero è 168. Quindi l'inizio dell'indirizzo è 192.168.",
+  ]}
+/>
+
+<Say who="assistente">Un passo alla volta: prima scrivi i pesi, poi tieni solo quelli sotto un uno, poi somma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque ottetti, generati solo per te. Servono tutte e cinque le risposte giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="binary-to-decimal" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Non ci sono scorciatoie: se sbagli, ti spiego dove e riprovi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riepilogo">
+<Recap xp={20}>
+- Un ottetto sono 8 bit, con pesi 128, 64, 32, 16, 8, 4, 2, 1.
+- Il valore è la somma dei pesi dei bit a 1, da 0 a 255.
+- Zeri a sinistra non cambiano il valore. Zeri a destra sì.
+</Recap>
+
+<Say who="sensei">Ben fatto. Prossima lezione: il percorso inverso, dal decimale al binario.</Say>
+</Scene>

@@ -1,11 +1,14 @@
-// Verifica il contrasto AA (>= 4.5:1) delle coppie colore/testo dichiarate in globals.css.
+// Verifica il contrasto AA (>= 4.5:1) delle coppie colore/testo di globals.css, in entrambi i temi.
 import { readFileSync } from "node:fs";
 
 const css = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
-const root = css.split("@media")[0];
-const vars = Object.fromEntries(
-  [...root.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]{6});/g)].map((m) => [m[1], m[2]]),
-);
+
+const grab = (block) =>
+  Object.fromEntries([...block.matchAll(/--([\w-]+):\s*(#[0-9a-fA-F]{6});/g)].map((m) => [m[1], m[2]]));
+
+const light = grab(css.slice(css.indexOf(":root {"), css.indexOf("@media")));
+const darkBlock = css.slice(css.indexOf(':root[data-theme="dark"]'), css.indexOf("@theme"));
+const dark = { ...light, ...grab(darkBlock) };
 
 const lum = (hex) => {
   const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
@@ -17,18 +20,27 @@ const ratio = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
+const belts = ["white", "yellow", "orange", "green", "blue", "brown", "black"];
 const pairs = [
   ["foreground", "background"],
+  ["foreground", "surface"],
   ["foreground-muted", "background"],
+  ["foreground-muted", "surface"],
+  ["foreground-muted", "surface-muted"],
   ["accent-fg", "accent"],
-  ...["white", "yellow", "orange", "green", "blue", "brown", "black"].map((b) => [`belt-${b}-fg`, `belt-${b}`]),
+  ["accent", "background"], // testo di errore in colore accento
+  ["focus", "background"],
+  ...belts.map((b) => [`belt-${b}-fg`, `belt-${b}`]),
 ];
 
 let failed = false;
-for (const [fg, bg] of pairs) {
-  const r = ratio(vars[fg], vars[bg]);
-  const ok = r >= 4.5;
-  if (!ok) failed = true;
-  console.log(`${ok ? "OK  " : "FAIL"} ${fg} su ${bg}: ${r.toFixed(2)}:1`);
+for (const [name, vars] of [["chiaro", light], ["scuro", dark]]) {
+  for (const [fg, bg] of pairs) {
+    const r = ratio(vars[fg], vars[bg]);
+    const ok = r >= 4.5;
+    if (!ok) failed = true;
+    if (!ok || process.argv.includes("--verbose")) console.log(`${ok ? "OK  " : "FAIL"} [${name}] ${fg} su ${bg}: ${r.toFixed(2)}:1`);
+  }
 }
+console.log(failed ? "Contrasto insufficiente." : "Tutte le coppie rispettano AA in entrambi i temi.");
 process.exit(failed ? 1 : 0);
