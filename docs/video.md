@@ -16,6 +16,7 @@ Ogni lezione **pubblicata** deve avere un video (regola del lint). Le bozze poss
    ```
 2. Nel corpo, nella schermata giusta (di solito la spiegazione): `<Video />`.
 3. `pnpm lint:content` controlla che frontmatter e corpo coincidano.
+4. `pnpm check:videos` chiede a YouTube se il video esiste, se l'incorporamento è attivo e se il canale coincide con `channel`. Un video non incorporabile va sostituito: l'incorporamento non si può forzare.
 
 ## Quali canali
 - Preferire canali **italiani**. In alternativa canali **inglesi** con sottotitoli italiani buoni o traccia audio doppiata in italiano.
