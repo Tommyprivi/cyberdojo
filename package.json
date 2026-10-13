@@ -12,6 +12,7 @@
     "lint:content": "tsx scripts/lint-content.ts",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:videos": "tsx scripts/check-videos.ts",
+    "check:video-candidates": "tsx scripts/check-video-candidates.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },

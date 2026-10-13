@@ -1,0 +1,782 @@
+[
+  {
+    "modulo": "F1",
+    "tema": "Com'è fatto un computer",
+    "id": "QFopGI2qcB8",
+    "titolo": "Come è fatto un pc",
+    "canale": "Edulia dal sapere Treccani",
+    "durata": "3:46",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Edulia dal sapere Treccani",
+      "titoloReale": "Come è fatto un pc",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F1",
+    "tema": "Com'è fatto un computer",
+    "id": "H4G4WLssTWg",
+    "titolo": "COME FUNZIONA UN COMPUTER?",
+    "canale": "Alberto Naska",
+    "durata": "19:53",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Alberto Naska",
+      "titoloReale": "COME FUNZIONA UN COMPUTER?",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F1",
+    "tema": "Kali in macchina virtuale",
+    "id": "GD_EFqnOi-U",
+    "titolo": "Come Installare Kali Linux 2024.2 in VirtualBox e iniziare con l'Ethical Hacking",
+    "canale": "Prime Radiant Security",
+    "durata": "11:08",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Prime Radiant Security",
+      "titoloReale": "Come Installare Kali Linux 2024.2 in VirtualBox e iniziare con l'Ethical Hacking",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F1",
+    "tema": "Kali in macchina virtuale",
+    "id": "eTHT5ipjeIQ",
+    "titolo": "Come installare Kali Linux 2024.3 ultima versione su Virtual Box",
+    "canale": "Eurohackers",
+    "durata": "21:35",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Eurohackers",
+      "titoloReale": "Come installare Kali Linux 2024.3 ultima versione su Virtual Box | Guida passo dopo passo [ITALIANO]",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F2",
+    "tema": "Terminale e shell",
+    "id": "GVTIjlFdHVY",
+    "titolo": "Introduzione al terminale e alla shell Linux",
+    "canale": "alternativalinux",
+    "durata": "20:44",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "alternativalinux",
+      "titoloReale": "Introduzione al terminale e alla shell Linux",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F2",
+    "tema": "Comandi base",
+    "id": "mBSH2B12gr4",
+    "titolo": "Comandi per Terminale Linux più usati e più utili - Lezione 01",
+    "canale": "Become Programmer",
+    "durata": "13:10",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Become Programmer",
+      "titoloReale": "Comandi per Terminale Linux piú usati e piú utili - Lezione 01",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F3",
+    "tema": "Permessi",
+    "id": "JX7Sd8U4G7M",
+    "titolo": "Permessi Linux per file e cartelle",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "8:28",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Permessi Linux per file e cartelle",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F3",
+    "tema": "Utenti, gruppi e permessi",
+    "id": "L2ZvdRxGoHc",
+    "titolo": "Linux: Utenti, Gruppi e Permessi",
+    "canale": "Franco Bugnano",
+    "durata": "7:37",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Franco Bugnano",
+      "titoloReale": "Linux: Utenti, Gruppi e Permessi",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F4",
+    "tema": "Introduzione a Bash",
+    "id": "gNZrkKaApbc",
+    "titolo": "Corso Shell BASH ITA - Lezione 1 - Introduzione della shell BASH",
+    "canale": "Simone Modiga",
+    "durata": "17:47",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Simone Modiga",
+      "titoloReale": "Corso Shell BASH ITA - Lezione 1 - Introduzione della shell BASH",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F4",
+    "tema": "Primo script",
+    "id": "-T3m6kGbHUE",
+    "titolo": "scripting Bash: creare un semplice script Bash",
+    "canale": "The Linux Nerd",
+    "durata": "14:58",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "The Linux Nerd",
+      "titoloReale": "scripting Bash: creare un semplice script Bash",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "Binario → decimale (in uso in F.05.003)",
+    "id": "rWlW0hDI3SM",
+    "titolo": "Conversione da Decimale a Binario e da Binario a Decimale",
+    "canale": "Get the Cookie",
+    "durata": "6:23",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Get the Cookie",
+      "titoloReale": "Conversione da Decimale a Binario e da Binario a Decimale",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "IP pubblici e privati (colpo di scena di F.05.003)",
+    "id": "XyQ2iE-ya3U",
+    "titolo": "Differenza tra IP pubblico e privato",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "2:18",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Differenza tra IP pubblico e privato",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "Indirizzo IP",
+    "id": "ZH-o2lewZOA",
+    "titolo": "Cos'è un indirizzo IP",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "10:40",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Cos'è un indirizzo IP",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "Modello OSI e TCP/IP",
+    "id": "msgf1d56jng",
+    "titolo": "Modelli di Rete: Pila TCP/IP e Modello ISO/OSI",
+    "canale": "Get the Cookie",
+    "durata": "9:07",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Get the Cookie",
+      "titoloReale": "Modelli di Rete: Pila TCP/IP e Modello ISO/OSI",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "Modello OSI",
+    "id": "gZEpBIMPW_M",
+    "titolo": "Modello ISO/OSI: panoramica dei 7 livelli",
+    "canale": "Sistemi e reti / TPSI - Prof. Francesco Urbano",
+    "durata": "15:09",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Sistemi e reti / TPSI - Prof. Francesco Urbano",
+      "titoloReale": "Modello ISO/OSI: panoramica dei 7 livelli",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F5",
+    "tema": "ARP",
+    "id": "H-rANwaumfM",
+    "titolo": "Protocollo ARP in 2 minuti",
+    "canale": "Informaticaso",
+    "durata": "2:21",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Informaticaso",
+      "titoloReale": "Protocollo ARP in 2 minuti",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F6",
+    "tema": "Subnetting",
+    "id": "vjO36BsDFQg",
+    "titolo": "Come calcolare le subnet",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "13:58",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Come calcolare le subnet",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F6",
+    "tema": "IP, subnet mask, gateway",
+    "id": "wbWuwiIHOyg",
+    "titolo": "Indirizzo IP, Subnet Mask e Default Gateway - Cosa sono e a cosa servono",
+    "canale": "Love IT - Esercizi Informatica e Telecomunicazioni",
+    "durata": "24:40",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Love IT - Esercizi Informatica e Telecomunicazioni",
+      "titoloReale": "Indirizzo IP, Subnet Mask e Default Gateway - Cosa sono e a cosa servono🌐",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F7",
+    "tema": "TCP e UDP",
+    "id": "P6WGbV7vxpA",
+    "titolo": "TCP e UDP - Protocolli di trasporto a confronto",
+    "canale": "Small Bytes",
+    "durata": "10:36",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Small Bytes",
+      "titoloReale": "TCP e UDP - Protocolli di trasporto a confronto",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F7",
+    "tema": "DNS",
+    "id": "qyzG02cEiYk",
+    "titolo": "DNS, cos'è e come funziona?",
+    "canale": "morrolinux",
+    "durata": "11:26",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "morrolinux",
+      "titoloReale": "DNS, cos'è e come funziona?",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F7",
+    "tema": "DNS (breve)",
+    "id": "-K3n2W1FmrQ",
+    "titolo": "Protocollo DNS in 3 minuti",
+    "canale": "Informaticaso",
+    "durata": "3:10",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Informaticaso",
+      "titoloReale": "Protocollo DNS in 3 minuti",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F8",
+    "tema": "Wireshark",
+    "id": "vf2UbArV1bk",
+    "titolo": "Wireshark per principianti - tool per sniffare e analizzare traffico di rete",
+    "canale": "Diario di Tecnologia",
+    "durata": "19:16",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Diario di Tecnologia",
+      "titoloReale": "Wireshark per principianti - tool per sniffare e analizzare traffico di rete (tutorial in Italiano)",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F8",
+    "tema": "VLAN",
+    "id": "555V1g0g8Y0",
+    "titolo": "Vi spiego le VLAN in modo SEMPLICE",
+    "canale": "I zuky",
+    "durata": "12:52",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "I zuky",
+      "titoloReale": "Vi spiego le VLAN in modo SEMPLICE (o lo spero...) (ita)",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F9",
+    "tema": "Python, primi passi",
+    "id": "zFA4pctRR1g",
+    "titolo": "PYTHON TUTORIAL ITA - Impara Python in tempo RECORD!",
+    "canale": "PitoneProgrammatore",
+    "durata": "5:30",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "PitoneProgrammatore",
+      "titoloReale": "PYTHON TUTORIAL ITA - Impara Python in tempo RECORD!",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F9",
+    "tema": "Variabili e tipi",
+    "id": "2ijbjW-PQ9w",
+    "titolo": "Lezione 1: Variabili e tipi di dato | Corso completo Python",
+    "canale": "Gloria Coding",
+    "durata": "26:35",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Gloria Coding",
+      "titoloReale": "Lezione 1: Variabili e tipi di dato | Corso completo Python",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F10",
+    "tema": "Rete su Packet Tracer",
+    "id": "mmhJdYo_tbA",
+    "titolo": "Creiamo una rete LAN su Packet Tracer",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "9:03",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Creiamo una rete LAN su Packet Tracer",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "F10",
+    "tema": "Due sottoreti e un router",
+    "id": "cY3WuHdmFmQ",
+    "titolo": "Come realizzare una rete composta da due sotto-reti e un router su Packet Tracer",
+    "canale": "Alex Miccichè",
+    "durata": "11:47",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Alex Miccichè",
+      "titoloReale": "Come realizzare una rete composta da due sotto-reti e un router su Packet Tracer - TUTORIAL",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C1",
+    "tema": "Triade CIA",
+    "id": "j7jnokBO0nY",
+    "titolo": "Cybersecurity da Zero – Lezione 1: Cosa dobbiamo proteggere? Asset e CIA Triad",
+    "canale": "Gianfranco Messina TechLab",
+    "durata": "6:56",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Gianfranco Messina TechLab",
+      "titoloReale": "Cybersecurity da Zero – Lezione 1: Cosa dobbiamo proteggere? Asset e CIA Triad",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C1",
+    "tema": "Triade CIA (Security+)",
+    "id": "SBcDGb9l6yo",
+    "titolo": "The CIA Triad - CompTIA Security+ SY0-701 - 1.2",
+    "canale": "Professor Messer",
+    "durata": "5:18",
+    "lang": "en",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Professor Messer",
+      "titoloReale": "The CIA Triad - CompTIA Security+ SY0-701 - 1.2",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C2",
+    "tema": "Crittografia simmetrica e asimmetrica",
+    "id": "H5dUt2sgHOc",
+    "titolo": "Crittografia simmetrica e asimmetrica",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "9:04",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Crittografia simmetrica e asimmetrica",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C2",
+    "tema": "Come funziona la crittografia",
+    "id": "dHhk195razs",
+    "titolo": "Come funziona la crittografia e cos'è il metodo che protegge i nostri dati",
+    "canale": "Geopop",
+    "durata": "10:53",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Geopop",
+      "titoloReale": "Come funziona la crittografia e cos'è il metodo che protegge i nostri dati",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C2",
+    "tema": "Funzioni di hash",
+    "id": "1b-iV1tHSs8",
+    "titolo": "Crittografia: Le funzioni di hash",
+    "canale": "L'Informatica Che Appassiona",
+    "durata": "9:56",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "L'Informatica Che Appassiona",
+      "titoloReale": "Crittografia: Le funzioni di hash",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C2",
+    "tema": "Funzioni di hash",
+    "id": "G3xcZJk7Q9Q",
+    "titolo": "Crittografia - Le funzioni di hash",
+    "canale": "Small Bytes",
+    "durata": "14:23",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Small Bytes",
+      "titoloReale": "Crittografia - Le funzioni di hash",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C3",
+    "tema": "2FA e MFA",
+    "id": "Spi7VPMWgzw",
+    "titolo": "2FA e MFA: come funziona l'autenticazione a due o più fattori",
+    "canale": "Veronica Paolucci - Cybersecurity Strategist",
+    "durata": "21:27",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Veronica Paolucci - Cybersecurity Strategist",
+      "titoloReale": "⚠️ 2FA e MFA: come funziona l'autenticazione a due o più fattori",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C3",
+    "tema": "2FA",
+    "id": "LZQXwYnuKGE",
+    "titolo": "Cos'è e come funziona la 2FA? | Autenticazione a due fattori",
+    "canale": "Ferry",
+    "durata": "18:20",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Ferry",
+      "titoloReale": "Cos'è e come funziona la 2FA ? | Autenticazione a due fattori",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C3",
+    "tema": "Hash delle password, salt e pepper",
+    "id": "--tnZMuoK3E",
+    "titolo": "Password Hashing, Salts, Peppers | Explained!",
+    "canale": "Seytonic",
+    "durata": "4:30",
+    "lang": "en",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Seytonic",
+      "titoloReale": "Password Hashing, Salts, Peppers | Explained!",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C4",
+    "tema": "Firewall e IDS",
+    "id": "VS-h5QDLGV8",
+    "titolo": "20. Firewall e Ids (teoria) - Corso Ethical Hacking italiano",
+    "canale": "Gcode",
+    "durata": "3:13",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Gcode",
+      "titoloReale": "20. Firewall e Ids (teoria) - Corso Ethical Hacking italiano - 2020",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C4",
+    "tema": "IDS, IPS e firewall",
+    "id": "l7FeR1MIRFY",
+    "titolo": "IDS vs IPS vs Firewall",
+    "canale": "TechWithEase",
+    "durata": "6:02",
+    "lang": "en",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "TechWithEase",
+      "titoloReale": "IDS vs IPS vs Firewall #networksecurity #firewall #IPS #IDS",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C5",
+    "tema": "OWASP Top 10",
+    "id": "nltBRygjsq8",
+    "titolo": "Le 10 vulnerabilità più comuni dei siti web: OWASP Top 10 2021",
+    "canale": "CinnamonSec",
+    "durata": "10:20",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "CinnamonSec",
+      "titoloReale": "Le 10 vulnerabilità più comuni dei siti web: OWASP Top 10 2021",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C5",
+    "tema": "OWASP Top 10 (2025)",
+    "id": "BTe8E0do9Ck",
+    "titolo": "OWASP Top 10 (2025) - La Guida Definitiva a Cause e Rimedi per la Sicurezza Web",
+    "canale": "Dario Capozzi",
+    "durata": "19:14",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Dario Capozzi",
+      "titoloReale": "OWASP Top 10 (2025) - La Guida Definitiva a Cause e Rimedi per la Sicurezza Web",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C6",
+    "tema": "SQL injection",
+    "id": "qfuNcvu2whM",
+    "titolo": "Come funziona l'SQL injection?",
+    "canale": "nFire",
+    "durata": "12:27",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "nFire",
+      "titoloReale": "Come funziona l'SQL injection?",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C6",
+    "tema": "SQL injection, XSS, CSRF",
+    "id": "DixjzBcGmUc",
+    "titolo": "SQL Injection, XSS e CSRF come non te li hanno mai spiegati prima",
+    "canale": "Veronica Paolucci - Cybersecurity Strategist",
+    "durata": "37:29",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Veronica Paolucci - Cybersecurity Strategist",
+      "titoloReale": "⚠️ SQL Injection, XSS e CSRF come non te li hanno mai spiegati prima",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C7",
+    "tema": "SIEM",
+    "id": "ctLU2CCLMqo",
+    "titolo": "Cos'è un SIEM? | Da zero a SOC Analyst Ep. 1",
+    "canale": "Infosec Wizard",
+    "durata": "7:30",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Infosec Wizard",
+      "titoloReale": "What is a SIEM? | Zero to SOC Analyst Ep. 1",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C7",
+    "tema": "Wazuh (SIEM open source)",
+    "id": "vn0ACxizrzU",
+    "titolo": "Vi spiego WAZUH - OpenSource per la Sicurezza informatica",
+    "canale": "I zuky",
+    "durata": "23:42",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "I zuky",
+      "titoloReale": "Vi spiego WAZUH - OpenSource per la Sicurezza informatica - Vulnerability assessment SIEM ITA",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C8",
+    "tema": "Scansione porte con Nmap (solo in lab)",
+    "id": "znf34ImMYj4",
+    "titolo": "NMAP tutorial in italiano: scansione delle porte da zero (Lezione 1)",
+    "canale": "Cyber Caffè",
+    "durata": "16:45",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Cyber Caffè",
+      "titoloReale": "NMAP tutorial in italiano: scansione delle porte da zero (Lezione 1)",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C8",
+    "tema": "Nmap",
+    "id": "4t4kBkMsDbQ",
+    "titolo": "Nmap Tutorial to find Network Vulnerabilities",
+    "canale": "NetworkChuck",
+    "durata": "17:09",
+    "lang": "en",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "NetworkChuck",
+      "titoloReale": "Nmap Tutorial to find Network Vulnerabilities",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C9",
+    "tema": "Cos'è la digital forensics",
+    "id": "sDdEm2Rk66o",
+    "titolo": "Cosa è la Digital Forensics",
+    "canale": "ISF Istituto di Scienze Forensi",
+    "durata": "1:59",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "ISF Istituto di Scienze Forensi",
+      "titoloReale": "Cosa è la Digital Forensics",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C9",
+    "tema": "Digital forensics",
+    "id": "PGHFichLFMc",
+    "titolo": "Digital Forensics: cos'è e come fanno a trovare i criminali?",
+    "canale": "CinnamonSec",
+    "durata": "6:54",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "CinnamonSec",
+      "titoloReale": "Digital Forensics: cos’è e come fanno a trovare i criminali?",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C10",
+    "tema": "Come funziona Tor",
+    "id": "GQzZD5hN5KY",
+    "titolo": "Come funziona TOR, la rete Internet del DARK WEB",
+    "canale": "Ferry",
+    "durata": "14:32",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Ferry",
+      "titoloReale": "Come funziona TOR, la rete Internet del DARK WEB",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C10",
+    "tema": "Anonimato e Tor",
+    "id": "-qHmgpNWGew",
+    "titolo": "Anonimato in rete: TOR come funziona",
+    "canale": "Roby79",
+    "durata": "13:35",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Roby79",
+      "titoloReale": "Anonimato in rete: TOR come funziona",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C11",
+    "tema": "Carriera, studi, certificazioni",
+    "id": "kXNR88iQWRI",
+    "titolo": "Carriera nella cyber security, studi, stipendi, certificazioni - Q&A completo",
+    "canale": "Cyber101",
+    "durata": "13:57",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "Cyber101",
+      "titoloReale": "Carriera nella cyber security, studi, stipendi, certificazioni - Q&A completo",
+      "data": "2026-10-13"
+    }
+  },
+  {
+    "modulo": "C11",
+    "tema": "Diventare Security Analyst",
+    "id": "uXi7bTGPea8",
+    "titolo": "Come Diventare Security Analyst: Guida Completa per Iniziare da Zero!",
+    "canale": "LeaveItaly",
+    "durata": "14:57",
+    "lang": "it",
+    "verifica": {
+      "stato": "ok",
+      "canaleReale": "LeaveItaly",
+      "titoloReale": "Come Diventare Security Analyst: Guida Completa per Iniziare da Zero!",
+      "data": "2026-10-13"
+    }
+  }
+]
