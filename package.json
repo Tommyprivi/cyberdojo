@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:clean": "node -e \"require(\\\"fs\\\").rmSync(\\\".next\\\",{recursive:true,force:true})\" && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -13,8 +14,8 @@
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:videos": "tsx scripts/check-videos.ts",
     "check:video-candidates": "tsx scripts/check-video-candidates.ts",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:generate": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs migrate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",

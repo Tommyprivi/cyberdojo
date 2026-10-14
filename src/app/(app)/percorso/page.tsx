@@ -16,22 +16,26 @@ export default function Percorso() {
 
   return (
     <div className="grid gap-6">
-      <section className="flex items-center justify-between gap-3">
+      <section className="rise flex items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl font-semibold">Il dojo è aperto.</h1>
           <p className="text-muted">Un caso al giorno. Il Sensei controlla.</p>
         </div>
-        <Mascot size={96} />
+        <Mascot size={96} animate />
       </section>
 
       <section aria-label="I tuoi numeri" className="grid grid-cols-3 gap-3">
         {[
-          { Icon: FlameIcon, label: "Serie", value: "0", unit: "giorni", tone: "text-accent" },
-          { Icon: BoltIcon, label: "XP", value: "0", unit: "totali", tone: "text-primary" },
-          { Icon: BeltIcon, label: "Cintura", value: "Bianca", unit: "in corso", tone: "text-foreground" },
-        ].map(({ Icon, label, value, unit, tone }) => (
-          <div key={label} className="card grid justify-items-center gap-0.5 p-3 text-center">
-            <Icon className={tone} width={28} height={28} />
+          { Icon: FlameIcon, label: "Serie", value: "0", unit: "giorni", tone: "text-accent", motion: "flicker" },
+          { Icon: BoltIcon, label: "XP", value: "0", unit: "totali", tone: "text-primary", motion: "zap" },
+          { Icon: BeltIcon, label: "Cintura", value: "Bianca", unit: "in corso", tone: "text-foreground", motion: "" },
+        ].map(({ Icon, label, value, unit, tone, motion }, i) => (
+          <div
+            key={label}
+            className="card rise lift grid justify-items-center gap-0.5 p-3 text-center"
+            style={{ "--d": `${0.12 + i * 0.1}s` } as React.CSSProperties}
+          >
+            <Icon className={`${tone} ${motion}`} width={28} height={28} />
             <span className="text-sm text-muted">{label}</span>
             <span className="text-xl font-extrabold">{value}</span>
             <span className="text-xs text-muted">{unit}</span>
@@ -43,19 +47,25 @@ export default function Percorso() {
       </p>
 
       {next && (
-        <section className="relative overflow-hidden rounded-[2rem] bg-deep p-5 text-deep-fg">
+        <section
+          className="rise relative overflow-hidden rounded-[2rem] bg-deep p-5 text-deep-fg"
+          style={{ "--d": "0.4s" } as React.CSSProperties}
+        >
           <p className="font-mono text-xs font-bold uppercase tracking-widest opacity-90">Prossimo caso</p>
           <h2 className="mt-1 text-2xl font-extrabold">{String(next.data.title)}</h2>
           <p className="text-sm opacity-90">
             {String(next.data.id)} · {String(next.data.duration_min)} minuti
           </p>
-          <div className="mt-4 h-3 w-3/4 overflow-hidden rounded-full bg-white/25" role="progressbar" aria-label="Avanzamento" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
+          <div className="shimmer relative mt-4 h-3 w-3/4 overflow-hidden rounded-full bg-white/25" role="progressbar" aria-label="Avanzamento" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
             <div className="h-full w-0 bg-primary" />
           </div>
-          <Link href={`/lezione/${next.data.id}`} className="btn btn-primary mt-5">
+          <Link href={`/lezione/${next.data.id}`} className="btn btn-primary pulse-ring mt-5">
             Apri il caso
           </Link>
-          <Mascot size={110} mood="stern" className="pointer-events-none absolute -bottom-3 right-2 opacity-95" />
+          {/* La mascotte spunta da sotto (wrapper) e poi fluttua (animate): due animazioni su due elementi. */}
+          <div className="peek pointer-events-none absolute -bottom-3 right-2" style={{ "--d": "0.7s" } as React.CSSProperties}>
+            <Mascot size={110} mood="stern" animate />
+          </div>
         </section>
       )}
 

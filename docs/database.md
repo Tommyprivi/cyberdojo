@@ -20,3 +20,11 @@ alter default privileges in schema public
 ## Regole per chi scrive query
 - Dati di un utente: sempre dentro `withUser(userId, tx => ...)` (`src/lib/db/scoped.ts`).
 - `certificates` e `audio_assets` non hanno RLS: i certificati si leggono per `public_code`, gli audio sono pubblici.
+
+## Stato (2026-10-14)
+- Database Neon collegato. Migrazione `0000_init` applicata con `pnpm db:migrate` (usa `DATABASE_URL`, il proprietario).
+- Creato il ruolo `cyberdojo_app` (non proprietario). L'app si collega con `DATABASE_URL_APP`; in produzione è obbligatoria (`src/lib/db/index.ts`).
+- Provata davvero la RLS con due utenti finti: ognuno vede e scrive solo le proprie righe; senza identità non si vede nulla; modifica e cancellazione di righe altrui bloccate.
+- Provato l'accesso su database vero: registrazione, uscita, accesso, password sbagliata (401), richiesta da un altro sito (403), link magico monouso, avvio di Google.
+- Non provato: accesso Google completo (richiede il consenso di un account reale), invio email vero con Resend.
+- `.env.local` non va mai su git. `pnpm dev:clean` cancella la cache `.next` e avvia il server (utile se le pagine mostrano stili vecchi).

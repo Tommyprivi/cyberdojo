@@ -50,3 +50,14 @@ Privacy, cookie, termini con uso etico, disclaimer sicurezza e lab, crediti e fo
 
 ## Asset
 Logo, cinture, illustrazioni e schemi: li genero io come bozza marcata "placeholder generato". Li sostituisci tu quando vuoi.
+
+## Laboratorio (sostituisce l'area "Allenati" come serie di esercizi)
+Deciso il 2026-10-14. L'area Allenati diventa una **postazione di lavoro professionale**: strumenti veri a sinistra/al centro, il **tutor (Sensei)** di fianco che guida, spiega a cosa serve ogni cosa e dice «ricordati questo».
+- **Strumenti, in questo ordine di lavoro:** terminale Linux simulato, analizzatore di pacchetti (stile Wireshark semplificato), calcolatore di rete (bit, esadecimale, subnet, CIDR), lettore di log del firewall.
+- **Tre modalità del tutor:** *Guidato* (un passo alla volta, il successivo si apre solo se quello è giusto, errori spiegati), *Aiutami* (libero, suggerimenti a richiesta), *Da solo* (nessun aiuto, per mettersi alla prova).
+- **«Ricordati»:** i punti da ricordare detti dal tutor si raccolgono in un taccuino per utente (richiede l'account).
+- **Voce:** solo testo per ora; la voce del Sensei con ElevenLabs si aggancia nella fase audio.
+- **Ordine dei lavori:** prima account (database Neon, Better Auth, salvataggio), poi il laboratorio.
+
+## Animazioni (Percorso)
+Deciso il 2026-10-14, su richiesta del titolare: mascotte (fluttua, sbatte le palpebre, code della fascia), schede dei numeri (entrata a scalare, fiamma e scintilla vive) e scheda «Prossimo caso» (luce sulla barra, onda sul pulsante, mascotte che spunta). Sostituisce la regola «movimento solo per XP/cintura/streak» per queste zone. Restano leggere e si fermano con «riduci movimento» del sistema. Il resto del sito resta fermo.

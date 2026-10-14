@@ -222,9 +222,84 @@ h1, h2, h3 {
 }
 .pop { animation: pop 0.25s ease-out; }
 
+/* ---- Animazioni leggere (Percorso). Ogni stato finale coincide con lo stato a riposo,
+   così "riduci movimento" le porta direttamente a fine corsa senza lasciare nulla nascosto. ---- */
+
+/* Entrata: sale di poco e compare. Il ritardo si imposta con la variabile --d. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0s); }
+
+/* La scheda "Prossimo caso": la mascotte spunta da sotto con un piccolo rimbalzo. */
+@keyframes peek {
+  0% { opacity: 0; transform: translateY(46px); }
+  60% { opacity: 1; transform: translateY(-6px); }
+  100% { opacity: 1; transform: none; }
+}
+.peek { animation: peek 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0.35s); }
+
+/* Mascotte: fluttua, sbatte le palpebre, le code della fascia ondeggiano. */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(7deg); }
+}
+.mascot-animated { animation: float 3.4s ease-in-out infinite; }
+.mascot-animated .mascot-eye { transform-box: fill-box; transform-origin: center; animation: blink 5s ease-in-out infinite; }
+.mascot-animated .mascot-tail { transform-origin: 89px 56px; animation: sway 2.2s ease-in-out infinite; }
+
+/* Icone delle statistiche: la serie ha una fiamma viva, gli XP una scintilla ogni tanto. */
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.08) rotate(-3deg); }
+  55% { transform: scale(0.96) rotate(2deg); }
+  80% { transform: scale(1.05) rotate(-1deg); }
+}
+@keyframes zap {
+  0%, 82%, 100% { transform: scale(1); filter: none; }
+  88% { transform: scale(1.22); filter: drop-shadow(0 0 6px currentColor); }
+}
+.flicker { transform-origin: 50% 90%; animation: flicker 1.8s ease-in-out infinite; }
+.zap { animation: zap 4s ease-in-out infinite; }
+
+/* Barra di avanzamento a zero: una luce la attraversa, per invitare a cominciare. */
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(260%); }
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  animation: shimmer 2.6s ease-in-out infinite;
+}
+
+/* Pulsante principale: un'onda leggera ogni tanto. */
+@keyframes ring {
+  0%, 70%, 100% { box-shadow: 0 4px 0 var(--primary-edge), 0 0 0 0 rgb(76 192 98 / 0); }
+  85% { box-shadow: 0 4px 0 var(--primary-edge), 0 0 0 10px rgb(76 192 98 / 0.28); }
+}
+.pulse-ring { animation: ring 3.2s ease-out infinite; }
+
+/* Le schede dei numeri si sollevano al passaggio. */
+.lift { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.lift:hover { transform: translateY(-3px); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
