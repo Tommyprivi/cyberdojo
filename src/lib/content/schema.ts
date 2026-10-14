@@ -54,3 +54,11 @@ export const lessonFrontmatter = z
   .strict();
 
 export type LessonFrontmatter = z.infer<typeof lessonFrontmatter>;
+
+/**
+ * Le bozze si vedono in sviluppo o con SHOW_DRAFTS=1 (anteprime). In produzione solo `published`:
+ * una lezione non approvata non deve raggiungere gli studenti.
+ */
+export function isVisible(status: LessonFrontmatter["status"]): boolean {
+  return status === "published" || process.env.NODE_ENV !== "production" || process.env.SHOW_DRAFTS === "1";
+}

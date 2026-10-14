@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { AGE_BANDS } from "../age-bands";
 import {
   boolean,
   index,
@@ -82,7 +83,6 @@ export const verification = pgTable("verification", {
 
 // ---------- Dati CyberDojo ----------
 
-export const AGE_BANDS = ["14-17", "18-25", "26-40", "41+"] as const;
 
 export const profiles = pgTable(
   "profiles",

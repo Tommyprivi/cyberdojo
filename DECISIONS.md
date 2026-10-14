@@ -61,3 +61,15 @@ Deciso il 2026-10-14. L'area Allenati diventa una **postazione di lavoro profess
 
 ## Animazioni (Percorso)
 Deciso il 2026-10-14, su richiesta del titolare: mascotte (fluttua, sbatte le palpebre, code della fascia), schede dei numeri (entrata a scalare, fiamma e scintilla vive) e scheda «Prossimo caso» (luce sulla barra, onda sul pulsante, mascotte che spunta). Sostituisce la regola «movimento solo per XP/cintura/streak» per queste zone. Restano leggere e si fermano con «riduci movimento» del sistema. Il resto del sito resta fermo.
+
+## Account, accesso e salvataggio (fatto il 2026-10-14)
+- **Pubblico:** home, mappa dei corsi, pagine di accesso e registrazione. **Privato (serve l'account):** Percorso, lezioni, verifiche, profilo.
+- **Registrazione:** nome, email, password (almeno 10 caratteri), fascia d'età, dichiarazione di avere almeno 14 anni (senza, non ci si registra), obiettivo, minuti al giorno, obiettivo giornaliero. Si accede anche con Google e con il link via email. Chi arriva senza profilo (Google, link) passa da «Benvenuto».
+- **Ordine obbligatorio:** una lezione si apre solo se i prerequisiti sono completati, e il server lo controlla anche per la verifica.
+- **Verifica registrata sul server:** il browser riceve solo un identificativo del tentativo, mai il seme né le risposte giuste. Un tentativo si valuta una volta sola.
+- **XP:** lezione 10 + verifica 10 + 5 se primo tentativo perfetto, una sola volta per lezione (vincolo del database). Il numero scritto in `<Recap xp>` è ignorato.
+- **Serie:** conta il giorno nel fuso dell'utente, solo se supera una verifica; +1 congelamento ogni 7 giorni (massimo 2); un congelamento copre un giorno saltato.
+- **DECISIONE DA CONFERMARE (presa da me):** dopo `retries` tentativi falliti nelle ultime 24 ore si aspetta 24 ore dal primo errore (come per gli esami di modulo). La spec non lo diceva per le lezioni.
+- **Bozze:** in produzione si vedono solo le lezioni `published`; in sviluppo anche le bozze, o con `SHOW_DRAFTS=1`.
+- **GDPR:** dal profilo si scaricano tutti i propri dati (senza password né chiavi) e si cancella l'account con tutto ciò che contiene.
+- **Non fatto:** test d'ingresso, verifica dell'email (serve Resend), obbligo di dichiarazione sulla privacy (le pagine legali non esistono ancora), blocco degli accessi ripetuti oltre quello di Better Auth.

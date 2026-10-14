@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { XP } from "@/lib/progress/xp";
 import { BoltIcon, BulbIcon } from "../icons";
 import { Mascot } from "../mascot";
 
@@ -29,7 +30,12 @@ export function Say({ who, children }: { who: "sensei" | "assistente"; children:
   );
 }
 
-export function Recap({ xp, children }: { xp: number; children: ReactNode }) {
+/**
+ * Riepilogo di fine lezione. I punti veri li assegna il server (src/lib/progress/xp.ts) quando si
+ * supera la verifica: la prop `xp` scritta nell'MDX è ignorata, così le lezioni non possono mentire.
+ */
+export function Recap({ children }: { xp?: number; children: ReactNode }) {
+  const base = XP.lesson + XP.verification;
   return (
     <section className="my-2 grid gap-4">
       <div className="rounded-3xl bg-deep p-5 text-deep-fg">
@@ -37,7 +43,7 @@ export function Recap({ xp, children }: { xp: number; children: ReactNode }) {
         <div className="mt-2 [&_li]:marker:text-primary">{children}</div>
       </div>
       <p className="chip w-fit font-extrabold text-primary">
-        <BoltIcon width={18} height={18} /> +{xp} XP quando completi la lezione
+        <BoltIcon width={18} height={18} /> +{base} XP superando la verifica, +{XP.firstTry} se al primo tentativo
       </p>
     </section>
   );

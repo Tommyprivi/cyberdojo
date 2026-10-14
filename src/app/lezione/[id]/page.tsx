@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { LessonPlayer, type PlayerScreen } from "@/components/lesson/player";
 import { lessonComponents } from "@/components/lesson/mdx-components";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
-import { LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
-
-// TODO (con auth): richiedere sessione e verificare che i prerequisiti siano completati.
-// TODO: mostrare solo lezioni `published` in produzione.
+import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
+import { requireMember } from "@/lib/session";
 
 async function load(id: string) {
   if (!LESSON_ID.test(id)) return null;
   const raw = getRawLesson(id);
   if (!raw) return null;
   const parsed = lessonFrontmatter.safeParse(raw.data);
-  return parsed.success ? { fm: parsed.data, body: raw.body } : null;
+  return parsed.success && isVisible(parsed.data.status) ? { fm: parsed.data, body: raw.body } : null;
 }
 
 export function generateStaticParams() {
@@ -39,6 +37,10 @@ export default function LessonPage({ params }: PageProps<"/lezione/[id]">) {
 async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"] }) {
   const lesson = await load((await params).id);
   if (!lesson) notFound();
+
+  // Le lezioni sono private: serve l'account, e si va in ordine (prerequisiti completati).
+  const member = await requireMember(`/lezione/${lesson.fm.id}`);
+  if (!lesson.fm.prerequisites.every((id) => member.completed.has(id))) redirect("/percorso");
 
   const screens: PlayerScreen[] = await Promise.all(
     splitScreens(lesson.body).map(async (source, i) => {

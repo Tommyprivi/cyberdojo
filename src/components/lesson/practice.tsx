@@ -1,34 +1,51 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useState, useTransition } from "react";
 import {
   checkVerification,
   startVerification,
+  type StartResult,
   type VerificationResult,
 } from "@/app/actions/verify";
-import type { GeneratorId, PublicQuestion } from "@/lib/practice/generators";
+import type { GeneratorId } from "@/lib/practice/generators";
 import { usePlayer } from "./player-context";
 
-type Session = { seed: string; questions: PublicQuestion[]; retries: number; generator: GeneratorId; needed: number };
+type Open = Extract<StartResult, { blocked: false }>;
 
 /** Esercizi che riguardano gli ottetti: per loro ha senso il promemoria dei pesi. */
 const BIT_GENERATORS: GeneratorId[] = ["binary-to-decimal", "decimal-to-binary"];
 
+const MESSAGES: Record<string, string> = {
+  "Accedi per fare la verifica.": "Accedi per fare la verifica.",
+  "Completa prima le lezioni precedenti.": "Completa prima le lezioni precedenti: si va in ordine.",
+};
+
+function friendly(e: unknown, fallback: string) {
+  const m = e instanceof Error ? e.message : "";
+  return MESSAGES[m] ?? (m.startsWith("Questo tentativo") ? m : fallback);
+}
+
 /**
- * Verifica pratica valutata dal server. Le props scritte nell'MDX (generator, pass, retries) sono
- * solo leggibili da chi scrive la lezione: il server legge sempre il frontmatter, mai il client.
+ * Verifica pratica valutata dal server e registrata. Le props scritte nell'MDX (generator, pass,
+ * retries) sono solo leggibili da chi scrive la lezione: il server legge sempre il frontmatter.
  */
 export function Practice() {
   const { lessonId, markVerified } = usePlayer();
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Open | null>(null);
+  const [blockedUntil, setBlockedUntil] = useState<string | null>(null);
   const [answers, setAnswers] = useState<string[]>([]);
   const [result, setResult] = useState<VerificationResult | null>(null);
-  const [attempt, setAttempt] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
   const groupId = useId();
 
-  const apply = (s: Session) => {
+  const apply = (s: StartResult) => {
+    if (s.blocked) {
+      setBlockedUntil(s.until);
+      return;
+    }
+    setBlockedUntil(null);
     setSession(s);
     setAnswers(Array(s.questions.length).fill(""));
     setResult(null);
@@ -39,7 +56,7 @@ export function Practice() {
     let cancelled = false;
     startVerification(lessonId)
       .then((s) => !cancelled && apply(s))
-      .catch(() => !cancelled && setError("Non riesco a caricare la verifica. Riprova tra poco."));
+      .catch((e) => !cancelled && setError(friendly(e, "Non riesco a caricare la verifica. Riprova tra poco.")));
     return () => {
       cancelled = true;
     };
@@ -48,32 +65,42 @@ export function Practice() {
   // Nuovo tentativo: domande nuove, su richiesta dell'utente.
   const retry = () => {
     setError(null);
-    setAttempt((n) => n + 1);
     start(async () => {
       try {
         apply(await startVerification(lessonId));
-      } catch {
-        setError("Non riesco a caricare la verifica. Riprova tra poco.");
+      } catch (e) {
+        setError(friendly(e, "Non riesco a caricare la verifica. Riprova tra poco."));
       }
     });
   };
 
   if (error) return <p role="alert" className="my-6 text-accent">{error}</p>;
+  if (blockedUntil) {
+    const when = new Date(blockedUntil).toLocaleString("it-IT", { weekday: "long", hour: "2-digit", minute: "2-digit" });
+    return (
+      <div role="status" className="my-2 grid gap-3 rounded-2xl border-2 border-border bg-surface-muted p-4">
+        <p className="text-lg font-extrabold">Tentativi finiti per ora.</p>
+        <p>
+          Ripassa la spiegazione e riprova da <strong>{when}</strong>. Nel frattempo la sezione{" "}
+          <Link href="/pratica" className="font-semibold text-primary underline">Allenati</Link> ti aiuta a esercitarti.
+        </p>
+      </div>
+    );
+  }
   if (!session) return <p className="my-6">Preparo le domande…</p>;
 
   const passed = result?.passed === true;
-  const outOfTries = !!result && !passed && attempt >= session.retries;
   const hasTyping = session.questions.some((q) => !q.choices);
   const setAnswer = (i: number, value: string) => setAnswers((a) => a.map((v, j) => (j === i ? value : v)));
 
   const submit = () =>
     start(async () => {
       try {
-        const r = await checkVerification(lessonId, session.seed, answers);
+        const r = await checkVerification(lessonId, session.attemptId, answers);
         setResult(r);
         if (r.passed) markVerified();
-      } catch {
-        setError("Non riesco a controllare le risposte. Riprova.");
+      } catch (e) {
+        setError(friendly(e, "Non riesco a controllare le risposte. Riprova."));
       }
     });
 
@@ -94,7 +121,7 @@ export function Practice() {
     >
       <div className="flex flex-wrap items-center gap-2">
         <p className="chip text-sm">
-          Tentativo {Math.min(attempt, session.retries)} di {session.retries}
+          Tentativo {Math.min(session.attemptNumber, session.retries)} di {session.retries}
         </p>
         <p className="chip text-sm">Per passare: {session.needed} giuste su {session.questions.length}</p>
         {BIT_GENERATORS.includes(session.generator) && (
@@ -182,13 +209,22 @@ export function Practice() {
               ? `Superata: ${result.correct} su ${result.total}!`
               : `${result.correct} su ${result.total}. Non basta: ${result.needed} su ${result.total} per passare.`}
           </p>
-          {!passed && !outOfTries && (
-            <button type="button" onClick={retry} className="btn btn-ghost w-fit">
+          {result.reward && (
+            <ul className="flex flex-wrap gap-2" aria-label="Premio">
+              {result.reward.xpGained > 0 ? (
+                <li className="chip font-extrabold text-primary">+{result.reward.xpGained} XP</li>
+              ) : (
+                <li className="chip text-muted">Già completata: nessun XP in più</li>
+              )}
+              {result.reward.firstTryPerfect && <li className="chip">Primo tentativo perfetto</li>}
+              <li className="chip">Serie: {result.reward.streak} {result.reward.streak === 1 ? "giorno" : "giorni"}</li>
+              {result.reward.freezeEarned && <li className="chip">Congelamento guadagnato</li>}
+            </ul>
+          )}
+          {!passed && (
+            <button type="button" onClick={retry} disabled={pending} className="btn btn-ghost w-fit">
               Riprova con nuove domande
             </button>
-          )}
-          {outOfTries && (
-            <p>Tentativi finiti. Ripassa la spiegazione e torna più tardi: la sezione Allenati ti aiuta a esercitarti.</p>
           )}
         </div>
       )}

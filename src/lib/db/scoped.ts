@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { getDb } from "./index";
 
-type Tx = Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0];
+export type Tx = Parameters<Parameters<ReturnType<typeof getDb>["transaction"]>[0]>[0];
 
 /**
  * Esegue `fn` in una transazione in cui `app.user_id` vale l'utente corrente.

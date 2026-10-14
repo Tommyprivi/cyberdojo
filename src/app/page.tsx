@@ -32,11 +32,11 @@ export default function Home() {
               Otto minuti alla volta, una cintura alla volta.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/lezione/F.05.003" className="btn btn-primary">
-                Apri il primo caso
+              <Link href="/registrati" className="btn btn-primary">
+                Crea il tuo account
               </Link>
-              <Link href="/pratica/intruso" className="btn btn-ghost">
-                Caccia all&apos;intruso
+              <Link href="/corsi" className="btn btn-ghost">
+                Guarda i corsi
               </Link>
             </div>
           </div>
