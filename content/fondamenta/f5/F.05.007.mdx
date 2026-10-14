@@ -1,0 +1,143 @@
+---
+id: F.05.007
+course: fondamenta
+module: 5
+title: "Chi ha il 192.168.1.1?"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.006]
+objectives:
+  - "Spiegare a cosa serve ARP e come funziona la richiesta"
+  - "Capire perché ARP è un punto debole della rete locale"
+video:
+  provider: youtube
+  id: "H-rANwaumfM"
+  start: 0
+  end: 141
+  channel: "Informaticaso"
+  title: "Il protocollo ARP in due minuti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: arp-concepts
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "ARP trova il MAC partendo dall'IP; il DNS trova l'IP partendo dal nome: non vanno confusi"
+  - "La richiesta ARP va a tutti, la risposta solo a chi ha chiesto"
+  - "Per uscire dalla rete serve il MAC del router, non quello del destinatario"
+commands: []
+---
+
+<Scene title="Il computer che non conosce il vicino">
+La postazione .66 vuole parlare con il router della sua rete, **192.168.1.1**. Conosce il suo indirizzo IP, ma sulla rete locale i pacchetti viaggiano con gli indirizzi **MAC**, e il MAC del router **non lo sa**.
+
+Come fa a scoprirlo? Chiedendolo. A tutti.
+
+<Say who="sensei">Un computer non può consegnare a un indirizzo che non sa tradurre. Prima si chiede. È il protocollo più antico e più ingenuo della rete.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La domanda a tutti">
+Il protocollo si chiama **ARP**: associa un indirizzo IP al suo MAC.
+
+<Log
+  lines={[
+    "richiesta  da=192.168.1.66  a=FF:FF:FF:FF:FF:FF  «Chi ha 192.168.1.1?»",
+    "risposta  da=192.168.1.1  a=solo la .66  «Sono io: il mio MAC è 00:00:5E:00:53:01»",
+  ]}
+  caption="La richiesta va a «tutti» (l'indirizzo che hai visto nella lezione sul MAC). La risposta torna solo a chi ha chiesto."
+/>
+
+<Callout kind="regola">
+**Richiesta**: in broadcast, la sentono tutti. **Risposta**: solo il dispositivo che ha quell'IP, e arriva solo a chi ha chiesto. Poi il computer **ricorda** la coppia IP-MAC in una tabella.
+</Callout>
+
+<Say who="assistente">Una domanda gridata a tutta la stanza, una risposta detta a bassa voce a chi l'ha fatta. Questo è ARP.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il percorso, passo dopo passo">
+Il PC della contabilità deve inviare un pacchetto al server dei dati, che sta in un'altra rete.
+
+<Guided
+  steps={[
+    "Il server dei dati è fuori dalla rete locale: il PC non lo può raggiungere direttamente.",
+    "Allora il pacchetto va al router, il gateway. Il PC conosce il suo IP (192.168.1.1) ma non il MAC.",
+    "Il PC invia una richiesta ARP in broadcast: «Chi ha 192.168.1.1?».",
+    "Il router risponde con il proprio MAC. Il PC lo salva nella tabella ARP e lo usa per spedire il pacchetto.",
+    "Attenzione al dettaglio: il MAC usato è quello del router, non quello del server. Il MAC vale solo dentro la rete locale.",
+  ]}
+/>
+
+<Say who="sensei">Per uscire dalla rete serve il MAC del router. Chi lo dimentica non capisce mai cosa vede in una cattura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="A chi va la domanda?">
+<Quiz
+  question="Un PC non conosce il MAC del router. A chi invia la richiesta ARP?"
+  options={["A tutti i dispositivi della rete (broadcast)", "Solo al router", "A un server su Internet", "A nessuno: indovina il MAC"]}
+  answer={0}
+  explain="Non sapendo chi ha quell'IP, il PC lo chiede a tutti. Solo il dispositivo giusto risponde. Se la richiesta andasse solo al router, il PC dovrebbe già conoscerne il MAC."
+/>
+
+<Say who="assistente">Se già sapessi a chi chiedere, non avresti bisogno di chiedere. Per questo la domanda va a tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il punto debole">
+Guarda come funziona ARP: chiunque risponda, viene creduto. **Nessuno verifica** che il MAC sia davvero quello del router.
+
+<Callout kind="attenzione">
+Un dispositivo malevolo sulla stessa rete può rispondere «io sono il router». Se la vittima gli crede, il suo traffico passa da lui. Si chiama **ARP spoofing**. Lo vedrai solo in un laboratorio isolato, nel modulo sull'attacco etico: mai su reti vere.
+</Callout>
+
+<Callout kind="curiosita">
+ARP funziona **solo dentro la rete locale**. Per questo l'ARP spoofing può farlo solo chi è già collegato alla stessa rete, e per questo un attacco dall'**interno** è tanto più delicato di uno da fuori.
+</Callout>
+
+<Video />
+
+<Say who="sensei">Fiducia cieca. È una buona lezione, valida ben oltre ARP: in rete, molte cose funzionano perché nessuno controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ARP. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="arp-concepts" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi chiede, a chi chiede, chi risponde. Se queste tre cose sono chiare, ARP lo sai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fiducia cieca">
+<Recap xp={20}>
+- ARP traduce un indirizzo IP nel MAC corrispondente, dentro la rete locale.
+- La richiesta va a tutti (broadcast), la risposta solo a chi ha chiesto; la coppia si salva in una tabella.
+- Per uscire dalla rete serve il MAC del router. ARP non verifica nessuno: per questo si può ingannare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "ARP traduce…", a: "un indirizzo IP in un MAC" },
+    { q: "A chi va la richiesta ARP?", a: "A tutti (broadcast)" },
+    { q: "Per uscire dalla rete, di quale MAC serve?", a: "Quello del router (gateway)" },
+    { q: "Come si chiama l'inganno su ARP?", a: "ARP spoofing" },
+  ]}
+/>
+
+<Say who="sensei">Abbiamo visto gli indirizzi, i MAC, la ricerca. Ora ti serve una mappa per non perderti: i livelli della rete.</Say>
+</Scene>

@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { BitLab } from "./bit-lab";
-import { BitGrid, Callout } from "./bits";
+import { BitGrid, Callout, Envelope, Log } from "./bits";
 import { Recap, Say, Scene } from "./blocks";
 import { Flashcards } from "./flashcards";
 import { Guided } from "./guided";
@@ -20,6 +20,8 @@ export const lessonComponents = {
   BitGrid,
   BitLab,
   Callout,
+  Envelope,
+  Log,
   Flashcards,
   Video,
   p: (p: P<"p">) => <p {...p} className="leading-relaxed" />,

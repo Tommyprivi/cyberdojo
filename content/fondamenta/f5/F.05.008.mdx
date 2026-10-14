@@ -1,0 +1,145 @@
+---
+id: F.05.008
+course: fondamenta
+module: 5
+title: "I sette livelli"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.007]
+objectives:
+  - "Elencare i sette livelli del modello OSI nell'ordine giusto"
+  - "Collocare ai livelli giusti MAC, IP, porte e protocolli applicativi"
+video:
+  provider: youtube
+  id: "msgf1d56jng"
+  start: 18
+  end: 91
+  channel: "Get the Cookie"
+  title: "Modello ISO/OSI e modello TCP/IP"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: osi-layers
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Si contano dal basso: il livello 1 è il fisico, il 7 l'applicazione"
+  - "Il router lavora al livello 3, lo switch al 2: non scambiarli"
+  - "OSI è un modello per capire, non un elenco di strumenti: la rete vera usa TCP/IP"
+commands: []
+---
+
+<Scene title="«La rete non va»">
+Alle 07:30 arriva il collega del reparto vendite: «La rete non funziona». Può voler dire dieci cose diverse: un cavo staccato, un indirizzo sbagliato, un sito che non risponde.
+
+Se non sai **dove** guardare, perdi la mattina. Il **modello OSI** serve a questo: dividere la rete in **sette livelli**, così ogni guasto ha un posto.
+
+<Say who="sensei">«Non funziona» non è una diagnosi. Il livello in cui si rompe, sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sette livelli, una frase">
+Si contano **dal basso**. Ogni livello fa un solo mestiere.
+
+| Livello | Nome | Unità di dati | Esempio |
+|---|---|---|---|
+| 7 | Applicazione | dati | HTTP, DNS, SSH |
+| 6 | Presentazione | dati | codifica, compressione |
+| 5 | Sessione | dati | apertura e chiusura del dialogo |
+| 4 | Trasporto | segmento | TCP, UDP, porte |
+| 3 | Rete | pacchetto | IP, router |
+| 2 | Collegamento dati | frame | MAC, switch |
+| 1 | Fisico | bit | cavi, segnali |
+
+<Callout kind="trucco">
+Dal basso verso l'alto: **F**isico, **D**ati, **R**ete, **T**rasporto, **S**essione, **P**resentazione, **A**pplicazione. Frase per ricordarlo: **«Fai Di Ritorno Telefonate Senza Perdere Appunti»**.
+</Callout>
+
+<Say who="assistente">Una frase da ripetere una volta a voce alta. Le iniziali sono nell'ordine giusto: non serve altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ritrovare i vecchi amici">
+Ogni cosa che hai imparato in questo modulo ha già un posto nel modello.
+
+<Guided
+  steps={[
+    "Gli indirizzi MAC e lo switch: livello 2, collegamento dati. L'unità si chiama frame.",
+    "Gli indirizzi IP e il router: livello 3, rete. L'unità si chiama pacchetto.",
+    "Le porte (22, 80, 443) e TCP: livello 4, trasporto. L'unità si chiama segmento.",
+    "HTTP, DNS, SSH: livello 7, applicazione. Sono i protocolli con cui parlano i programmi.",
+    "Il cavo e il segnale elettrico: livello 1, fisico. Qui l'unità è il singolo bit.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Quando qualcosa non va, **parti dal basso**: il cavo è collegato (1)? La scheda vede la rete (2)? Ha un IP valido (3)? Il servizio risponde sulla porta giusta (4 e 7)? Quasi tutti i guasti si trovano nei primi tre passi.
+</Callout>
+
+<Say who="sensei">Partire dal basso risparmia le ore. Chi controlla il sito prima del cavo ha già perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che livello è?">
+<Quiz
+  question="Il router sceglie il percorso di un pacchetto in base all'indirizzo IP. A quale livello lavora?"
+  options={["Rete (3)", "Collegamento dati (2)", "Trasporto (4)", "Fisico (1)"]}
+  answer={0}
+  explain="Il router ragiona con gli indirizzi IP: livello 3, rete. Lo switch invece usa i MAC (livello 2). Confonderli è l'errore più comune."
+/>
+
+<Say who="assistente">Switch, MAC, livello 2. Router, IP, livello 3. Se tieni queste due coppie, sei già avanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un modello, non la realtà">
+Nella rete vera si usa il modello **TCP/IP**, che ha meno livelli: i livelli 5, 6 e 7 si fondono in uno solo, «applicazione». OSI resta il linguaggio comune di chi lavora in rete e in sicurezza: quando qualcuno dice «è un problema di livello 3», tutti capiscono.
+
+<Video />
+
+<Callout kind="curiosita">
+I tuoi primi due allarmi parlavano di **livello 3** (gli indirizzi IP, dentro o fuori) e di **livello 4** (la porta 22). Senza saperlo, stavi già ragionando per livelli.
+</Callout>
+
+<Say who="sensei">Il modello è una mappa. La mappa non è il territorio, ma senza mappa ti perdi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: ognuna descrive qualcosa e tu dici **a quale livello** appartiene. Ne servono **quattro giuste**. Hai 3 tentativi e le domande cambiano.
+
+<Practice generator="osi-layers" pass="4/5" retries={3} />
+
+<Say who="sensei">Se una domanda ti blocca, riparti dal basso. Funziona sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La mappa">
+<Recap xp={20}>
+- I livelli OSI, dal basso: Fisico, Collegamento dati, Rete, Trasporto, Sessione, Presentazione, Applicazione.
+- MAC e switch sono al livello 2, IP e router al 3, porte e TCP al 4, HTTP/DNS/SSH al 7.
+- Per diagnosticare un guasto si parte dal basso. La rete vera usa TCP/IP; OSI è il linguaggio comune.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la frase per ricordare i livelli?", a: "Fai Di Ritorno Telefonate Senza Perdere Appunti" },
+    { q: "A quale livello lavora il router?", a: "Livello 3, rete" },
+    { q: "Come si chiama l'unità di dati del livello 2?", a: "Frame" },
+    { q: "Da dove si parte per diagnosticare un guasto?", a: "Dal basso, dal cavo (livello 1)" },
+  ]}
+/>
+
+<Say who="sensei">Ora hai la mappa. Resta da vedere come un pacchetto la percorre davvero, una busta alla volta.</Say>
+</Scene>

@@ -1,0 +1,140 @@
+---
+id: F.05.001
+course: fondamenta
+module: 5
+title: "Il turno di notte"
+belt: gialla
+duration_min: 7
+prerequisites: []
+objectives:
+  - "Leggere una riga di log: sorgente, destinazione, porta, protocollo"
+  - "Riconoscere le tre porte più comuni: 22, 80, 443"
+video:
+  provider: youtube
+  id: "ZH-o2lewZOA"
+  start: 170
+  end: 238
+  channel: "L'Informatica Che Appassiona"
+  title: "Cosa sono gli indirizzi IP"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: packet-basics
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "La sorgente è chi invia, la destinazione è chi riceve: non confonderle nel log"
+  - "La porta non è un indirizzo: dice quale servizio si vuole raggiungere"
+commands: []
+---
+
+<Scene title="Il tuo primo turno">
+Sono le tre di notte. Sei al **SOC**, il centro che sorveglia la sicurezza dell'azienda, e davanti a te scorre il registro delle connessioni: il **log**.
+
+Il tuo lavoro per le prossime settimane è tutto qui: **leggere righe come questa** e capire quali sono normali e quali no.
+
+<Log lines={["03:07  src=203.0.113.9  dst=10.0.0.5  porta=443  protocollo=TCP"]} caption="Una riga di log. Sembra un codice, ma è una frase in quattro parti." />
+
+<Say who="sensei">Un buon analista non conosce a memoria gli attacchi. Sa leggere una riga. Cominciamo da questa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una riga, quattro risposte">
+Ogni connessione è fatta di **pacchetti**: piccoli blocchi di dati con un'intestazione che dice chi li manda e dove vanno. Il log ne riassume l'intestazione:
+
+- **src** (sorgente): chi ha inviato il pacchetto
+- **dst** (destinazione): a chi è diretto
+- **porta**: quale servizio si vuole raggiungere sulla destinazione
+- **protocollo**: il linguaggio usato, qui TCP
+
+<Callout kind="regola">
+**Sorgente** = da dove arriva. **Destinazione** = dove va. **Porta** = a quale servizio bussa.
+</Callout>
+
+<Callout kind="trucco">
+Tre porte da ricordare: **22** per l'accesso remoto (SSH), **80** per il web in chiaro (HTTP), **443** per il web sicuro (HTTPS). Le incontrerai ogni giorno.
+</Callout>
+
+<Say who="assistente">Non devi saperle tutte, le porte. Queste tre sì: coprono la maggior parte di ciò che vedrai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggila con me">
+Rileggiamo la riga delle 03:07, un campo alla volta.
+
+<Guided
+  steps={[
+    "src=203.0.113.9: il pacchetto arriva da questo indirizzo. È l'origine: la prima cosa da guardare.",
+    "dst=10.0.0.5: è diretto a questo indirizzo, un server dell'azienda.",
+    "porta=443: chiede il servizio web sicuro (HTTPS). Normale per un sito.",
+    "Conclusione: qualcuno da fuori sta aprendo una pagina web sicura sul server. Niente di strano, finché non vedi altre porte.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Gli indirizzi 203.0.113.x sono **riservati alla documentazione**: manuali e corsi li usano per non indicare computer veri. Se li incontri in un esempio, sai che nessuna macchina reale ha quell'indirizzo.
+</Callout>
+
+<Video />
+
+<Say who="sensei">Prima l'origine, poi la destinazione, poi la porta. Sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Alle 03:12 qualcosa cambia">
+Una nuova riga compare sul registro:
+
+<Log lines={["03:12  src=sconosciuto  dst=server-dati  porta=22  protocollo=TCP"]} />
+
+<Quiz
+  question="Un indirizzo sconosciuto bussa alla porta 22 del server dei dati. Cosa sta cercando di fare?"
+  options={["Accedere da remoto al server", "Aprire una pagina web", "Leggere la posta", "Spegnere il router"]}
+  answer={0}
+  explain="La porta 22 è l'accesso remoto (SSH). Uno sconosciuto che la prova di notte, sul server che contiene i dati, merita attenzione. È l'inizio del caso che seguirai nelle prossime lezioni."
+/>
+
+<Callout kind="curiosita">
+Un server esposto a Internet riceve tentativi sulla porta 22 in continuazione: ci sono programmi automatici che scansionano la rete cercando proprio quella porta aperta. Per questo la riga da sola non basta: serve capire **da dove** arriva.
+</Callout>
+
+<Say who="assistente">Una porta 22 non è un allarme. Una porta 22 di notte, da uno sconosciuto, verso il server dei dati: quella sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla lettura del log. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="packet-basics" pass="4/5" retries={3} />
+
+<Say who="sensei">Un analista che confonde sorgente e destinazione accusa il collega sbagliato. Qui non si indovina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il caso è aperto">
+<Recap xp={20}>
+- Un log riassume l'intestazione di un pacchetto: sorgente, destinazione, porta, protocollo.
+- Si legge sempre nell'ordine: da dove arriva, dove va, a quale servizio bussa.
+- Porte da ricordare: 22 (accesso remoto), 80 (web), 443 (web sicuro).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Il campo src indica…", a: "chi ha inviato il pacchetto" },
+    { q: "La porta 22 serve di solito per…", a: "l'accesso remoto (SSH)" },
+    { q: "Quale porta usa il web sicuro?", a: "443 (HTTPS)" },
+    { q: "In che ordine si legge una riga di log?", a: "Sorgente, destinazione, porta" },
+  ]}
+/>
+
+<Say who="sensei">Domani guardiamo gli indirizzi da vicino. Perché quattro numeri separati da punti sono, in realtà, trentadue bit.</Say>
+</Scene>

@@ -1,4 +1,4 @@
-import { rng } from "./generators";
+import { rng } from "./core";
 
 /**
  * Indirizzi IPv4 per l'esercizio "Caccia all'intruso".

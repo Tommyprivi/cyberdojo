@@ -1,0 +1,146 @@
+---
+id: F.05.006
+course: fondamenta
+module: 5
+title: "Il nome della scheda"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.005]
+objectives:
+  - "Spiegare che cos'è un indirizzo MAC e com'è fatto"
+  - "Convertire un byte esadecimale in decimale"
+video:
+  provider: youtube
+  id: "zuZJSaSpkAw"
+  start: 0
+  end: 118
+  channel: "L'Informatica Che Appassiona"
+  title: "Cos'è il MAC Address"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: hex-byte-to-decimal
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Le lettere A-F sono cifre: A=10, B=11, C=12, D=13, E=14, F=15"
+  - "Un byte esadecimale sono sempre due cifre, anche quando la prima è zero"
+  - "Il MAC si può cambiare via software: non prova chi sei"
+commands: []
+---
+
+<Scene title="Un indirizzo che non è un IP">
+Per rintracciare il computer .66 dentro l'azienda, il collega della rete apre la tabella dello **switch**: l'apparecchio a cui sono collegate le postazioni. Lì non ci sono indirizzi IP, ma righe come questa:
+
+<Log lines={["porta=7  mac=00:00:5E:00:53:AF"]} caption="Un indirizzo MAC: sei coppie di cifre e lettere, separate da due punti." />
+
+Quello strano codice è il **MAC**, l'indirizzo della scheda di rete.
+
+<Say who="sensei">L'IP dice dove sei nella rete. Il MAC dice quale scheda sei. Lo switch ragiona con il secondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="48 bit in sei byte">
+Un indirizzo MAC è lungo **48 bit**, cioè **6 byte**. Ogni byte si scrive con **due cifre esadecimali**.
+
+<Callout kind="regola">
+I primi **tre byte** identificano il **produttore** della scheda. Gli altri tre la distinguono dalle altre dello stesso produttore.
+</Callout>
+
+<Callout kind="curiosita">
+L'indirizzo **FF:FF:FF:FF:FF:FF** vuol dire **«tutti»**: si chiama broadcast. Lo ritroverai quando scoprirai come i dispositivi si cercano a vicenda.
+</Callout>
+
+<Callout kind="attenzione">
+Il MAC si può cambiare via software. Un MAC nel log **non prova chi è** il dispositivo: è un indizio, non un documento d'identità. Gli esempi dei manuali usano indirizzi riservati alla documentazione, come il 00:00:5E:00:53:xx di questa lezione.
+</Callout>
+
+<Say who="assistente">Sei byte. Tre per il produttore, tre per la scheda. E gli «tutti uno» significano tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esadecimale in due minuti">
+L'esadecimale usa **16 simboli**: le cifre da 0 a 9 e le lettere da A a F.
+
+| A | B | C | D | E | F |
+|---|---|---|---|---|---|
+| 10 | 11 | 12 | 13 | 14 | 15 |
+
+<Callout kind="trucco">
+Ogni cifra esadecimale vale **4 bit**. Due cifre fanno quindi **8 bit: un ottetto**. Il byte **FF** è 1111 1111, cioè **255**.
+</Callout>
+
+Per convertire un byte: **cifra di sinistra × 16 + cifra di destra**.
+
+<Say who="sensei">L'esadecimale non è un'altra materia. È il binario scritto in forma breve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Convertiamo AF e A4">
+Prendiamo l'ultimo byte del MAC, **AF**, e poi **A4**.
+
+<Guided
+  steps={[
+    "AF: A vale 10 e F vale 15.",
+    "10 × 16 = 160. Poi 160 + 15 = 175. Quindi AF = 175.",
+    { text: "Controllo in binario: A = 1010 e 4 = 0100, quindi A4 = 1010 0100.", bits: "10100100" },
+    "128 + 32 + 4 = 164. Lo stesso risultato con il metodo di prima: 10 × 16 + 4 = 164.",
+  ]}
+/>
+
+<Video />
+
+<Say who="assistente">Due strade per lo stesso numero. Se danno risultati diversi, hai sbagliato uno dei passaggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto vale FF?">
+<Quiz
+  question="Quanto vale il byte esadecimale FF?"
+  options={["255", "256", "15", "16"]}
+  answer={0}
+  explain="F vale 15, quindi 15 × 16 + 15 = 255. È anche 1111 1111, tutti i bit accesi: il massimo di un byte. 256 non esiste in un byte."
+/>
+
+<Say who="sensei">255. Lo hai già incontrato: lo stesso numero, scritto in un altro modo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque byte presi da indirizzi MAC. Scrivi il valore **in decimale**. Servono **tutte e cinque** giuste. Hai 3 tentativi e i byte cambiano.
+
+<Practice generator="hex-byte-to-decimal" pass="5/5" retries={3} />
+
+<Say who="sensei">Prima cifra per sedici, più la seconda. Le lettere sono numeri: non farti spaventare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il nome della scheda">
+<Recap xp={20}>
+- Il MAC è l'indirizzo della scheda di rete: 48 bit, 6 byte, scritti in esadecimale.
+- I primi tre byte sono del produttore. FF:FF:FF:FF:FF:FF vuol dire «a tutti».
+- Ogni cifra esadecimale è 4 bit. Un byte = cifra sinistra × 16 + cifra destra.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti byte ha un MAC?", a: "6 (48 bit)" },
+    { q: "Quanto valgono A, B, C, D, E, F?", a: "10, 11, 12, 13, 14, 15" },
+    { q: "Quanto vale FF?", a: "255 (1111 1111)" },
+    { q: "Il MAC prova chi sei?", a: "No: si può cambiare via software" },
+  ]}
+/>
+
+<Say who="sensei">Sappiamo che cos'è un MAC. Domani scopri come un computer trova quello giusto, partendo solo da un IP.</Say>
+</Scene>

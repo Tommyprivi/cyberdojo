@@ -44,6 +44,70 @@ export function BitGrid({ bits, showSum = true, caption }: { bits: string; showS
   );
 }
 
+/**
+ * Righe di un registro (log). I campi separati da due spazi; quelli del tipo chiave=valore
+ * mostrano la chiave attenuata e il valore in evidenza, così si impara a leggerli.
+ */
+export function Log({ lines, caption }: { lines: string[]; caption?: string }) {
+  return (
+    <figure className="my-2 grid gap-2">
+      <div className="overflow-x-auto rounded-2xl bg-deep p-4 font-mono text-sm leading-relaxed text-deep-fg sm:text-base">
+        {lines.map((line, i) => (
+          <p key={i} className="mb-3 last:mb-0">
+            {line.split(/ {2,}/).map((token, k) => {
+              const eq = token.indexOf("=");
+              return (
+                <span key={k} className="mr-4 inline-block max-w-full align-top">
+                  {eq > 0 ? (
+                    <>
+                      <span className="opacity-70">{token.slice(0, eq + 1)}</span>
+                      <strong>{token.slice(eq + 1)}</strong>
+                    </>
+                  ) : (
+                    <span className="opacity-90">{token}</span>
+                  )}
+                </span>
+              );
+            })}
+          </p>
+        ))}
+      </div>
+      {caption && <figcaption className="text-sm text-muted">{caption}</figcaption>}
+    </figure>
+  );
+}
+
+/** Le quattro buste di un pacchetto, una dentro l'altra: Ethernet ⊃ IP ⊃ TCP ⊃ dati. */
+export function Envelope() {
+  return (
+    <figure className="my-2" aria-label="Un pacchetto: busta Ethernet, dentro busta IP, dentro busta TCP, dentro i dati">
+      <div className="rounded-3xl border-4 border-belt-blue bg-surface-muted p-3">
+        <p className="text-sm font-extrabold">
+          Busta Ethernet <span className="font-normal text-muted">· indirizzi MAC · livello 2</span>
+        </p>
+        <div className="mt-2 rounded-2xl border-4 border-belt-orange bg-surface p-3">
+          <p className="text-sm font-extrabold">
+            Busta IP <span className="font-normal text-muted">· indirizzi IP · livello 3</span>
+          </p>
+          <div className="mt-2 rounded-xl border-4 border-primary bg-surface-muted p-3">
+            <p className="text-sm font-extrabold">
+              Busta TCP <span className="font-normal text-muted">· porte · livello 4</span>
+            </p>
+            <div className="mt-2 rounded-lg border-2 border-dashed border-border bg-surface p-3">
+              <p className="text-sm font-extrabold">
+                Dati <span className="font-normal text-muted">· ciò che vuole l&apos;applicazione</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption className="mt-2 text-sm text-muted">
+        Chi invia aggiunge le buste da dentro verso fuori. Chi riceve le toglie da fuori verso dentro.
+      </figcaption>
+    </figure>
+  );
+}
+
 /** Riquadri di spiegazione: una regola, un errore da evitare, un esempio. */
 const KINDS = {
   regola: { label: "Regola", cls: "border-primary" },

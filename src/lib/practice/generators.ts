@@ -1,42 +1,14 @@
 /**
- * Generatori di esercizi a numeri casuali. Puri e deterministici: stesso seme, stesse domande.
- * Il seme viene salvato con il tentativo, quindi la correzione si può rifare e le domande
- * non sono uguali per tutti.
+ * Generatori di esercizi. Puri e deterministici: stesso seme, stesse domande.
+ * I mattoni comuni (tipi, numeri casuali) stanno in core.ts; le domande a scelta in banks.ts.
  */
+import { BANKS, hexByteToDecimal, ipPrivatePublic, ipValid } from "./banks";
+import { parseChoiceAnswer, rng, type Question } from "./core";
+
+export { rng, shuffle, parseChoiceAnswer } from "./core";
+export type { Question, PublicQuestion } from "./core";
 
 export type Difficulty = "facile" | "medio" | "severo";
-
-export type Question = {
-  /** Testo mostrato all'utente. */
-  prompt: string;
-  /** Dato grezzo dell'esercizio (es. gli 8 bit). */
-  data: string;
-  /** Risposta attesa. Non va mai inviata al client nelle verifiche valutate. */
-  answer: number;
-};
-
-export type PublicQuestion = Omit<Question, "answer">;
-
-/** Hash di una stringa in un intero a 32 bit (cyrb128 semplificato). */
-function hashSeed(seed: string): number {
-  let h = 1779033703 ^ seed.length;
-  for (let i = 0; i < seed.length; i++) {
-    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353);
-    h = (h << 13) | (h >>> 19);
-  }
-  return h >>> 0;
-}
-
-/** mulberry32: PRNG piccolo e riproducibile. */
-export function rng(seed: string): () => number {
-  let a = hashSeed(seed);
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 const BITS: Record<Difficulty, number> = { facile: 4, medio: 8, severo: 8 };
 
@@ -56,7 +28,7 @@ export function binaryToDecimal(seed: string, count = 5, difficulty: Difficulty 
     if (difficulty !== "facile" && (value & (value - 1)) === 0) continue; // potenza di 2
     seen.add(value);
     const data = value.toString(2).padStart(bits, "0");
-    out.push({ prompt: `Ottetto ${data}: quanto vale?`, data, answer: value });
+    out.push({ prompt: "Quanto vale questo ottetto?", data, answer: value });
   }
   return out;
 }
@@ -74,7 +46,7 @@ export function decimalToBinary(seed: string, count = 5): Question[] {
     if (seen.has(value) || (value & (value - 1)) === 0) continue;
     seen.add(value);
     const data = String(value);
-    out.push({ prompt: `Scrivi ${data} in 8 bit`, data, answer: value });
+    out.push({ prompt: "Scrivilo in 8 bit.", data, answer: value });
   }
   return out;
 }
@@ -98,6 +70,13 @@ export function parseOctetAnswer(raw: string): number | null {
 export const GENERATORS = {
   "binary-to-decimal": { generate: binaryToDecimal, parse: parseIntegerAnswer },
   "decimal-to-binary": { generate: decimalToBinary, parse: parseOctetAnswer },
+  "hex-byte-to-decimal": { generate: hexByteToDecimal, parse: parseIntegerAnswer },
+  "ip-valid": { generate: ipValid, parse: parseChoiceAnswer },
+  "ip-private-public": { generate: ipPrivatePublic, parse: parseChoiceAnswer },
+  "packet-basics": { generate: BANKS["packet-basics"], parse: parseChoiceAnswer },
+  "arp-concepts": { generate: BANKS["arp-concepts"], parse: parseChoiceAnswer },
+  "osi-layers": { generate: BANKS["osi-layers"], parse: parseChoiceAnswer },
+  "encapsulation": { generate: BANKS["encapsulation"], parse: parseChoiceAnswer },
 } as const;
 
 export type GeneratorId = keyof typeof GENERATORS;

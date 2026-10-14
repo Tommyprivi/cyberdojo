@@ -1,0 +1,140 @@
+---
+id: F.05.005
+course: fondamenta
+module: 5
+title: "Dentro o fuori?"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.004]
+objectives:
+  - "Riconoscere le tre reti private: 10.x, 172.16–31.x, 192.168.x"
+  - "Capire perché un indirizzo come 172.40.x.x non è interno"
+video:
+  provider: youtube
+  id: "XyQ2iE-ya3U"
+  start: 0
+  end: 138
+  channel: "L'Informatica Che Appassiona"
+  title: "Indirizzo privato e indirizzo pubblico, in pratica"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: ip-private-public
+  pass: "7/8"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "172.16–172.31 sono privati; 172.15 e 172.32 no"
+  - "Un indirizzo che «sembra interno» non è per forza interno"
+commands: []
+---
+
+<Scene title="Alle 04:40 arriva un secondo allarme">
+La postazione .66 è del reparto contabilità: sai che è dentro l'azienda. Ma alle **04:40** il registro mostra un nuovo tentativo verso il server dei dati.
+
+<Log lines={["04:40  src=172.40.12.9  dst=server-dati  porta=22  protocollo=TCP"]} caption="Il collega dice: «172, quindi è interno, lascia perdere». Ha ragione?" />
+
+Decidere se un indirizzo è **dentro** o **fuori** la rete è la prima domanda di qualsiasi indagine.
+
+<Say who="sensei">«Sembra interno» è la frase che precede i guai. Si controlla, non si presume.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre reti private">
+Esistono tre blocchi di indirizzi riservati alle reti interne. Non si instradano su Internet, quindi lì dentro possono usarli tutte le aziende e tutte le case.
+
+| Blocco | Da | A |
+|---|---|---|
+| 10.0.0.0/8 | 10.0.0.0 | 10.255.255.255 |
+| 172.16.0.0/12 | 172.16.0.0 | 172.31.255.255 |
+| 192.168.0.0/16 | 192.168.0.0 | 192.168.255.255 |
+
+<Callout kind="trucco">
+Per ricordarli: **10** da solo basta. **172** solo da **16 a 31**. **192** solo se segue **168**. Tutto il resto è pubblico.
+</Callout>
+
+<Say who="assistente">Tre blocchi, tre regole brevissime. Ripetile finché non vengono da sole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La trappola del 172">
+Torniamo all'allarme: **172.40**. Il 172 inganna, perché il blocco privato **non** è tutto il 172, ma solo il secondo numero da **16 a 31**.
+
+Guarda i bit del secondo ottetto:
+
+<BitGrid bits="00010000" caption="16: l'inizio del blocco privato" />
+<BitGrid bits="00011111" caption="31: la fine del blocco privato" />
+<BitGrid bits="00100000" caption="32: già fuori, e 40 è ancora più in là" />
+
+<Callout kind="curiosita">
+Ecco perché il blocco si scrive **/12**: tutti i secondi ottetti da 16 a 31 iniziano con **0001**. Appena il bit cambia (32 = 00100000), l'indirizzo non è più privato. Il binario non è teoria: è il motivo per cui l'intervallo è proprio quello.
+</Callout>
+
+<Say who="sensei">172.40 non appartiene a nessun blocco privato. Il tuo collega ha letto «172» e si è fermato. Tu leggi il secondo numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché esistono">
+Gli indirizzi pubblici sono pochi, come hai visto. Perciò dentro una rete si usano indirizzi **privati**, e il **router** presenta all'esterno **un solo indirizzo pubblico** per tutti.
+
+Quando un computer interno esce su Internet, il router sostituisce l'indirizzo privato con il proprio pubblico. Questo meccanismo si chiama **NAT**. Un'indagine ci inciampa spesso: dall'esterno non vedi mai il computer vero, vedi il router.
+
+<Video />
+
+<Callout kind="attenzione">
+Nel log di un'azienda, una **sorgente privata** vuol dire traffico partito dall'interno. Una **sorgente pubblica** vuol dire traffico arrivato da fuori. Per il traffico in uscita, invece, è la **destinazione** a essere pubblica.
+</Callout>
+
+<Say who="assistente">Il video mostra la stessa cosa dal vivo: il computer ha un indirizzo, ma Internet ne vede un altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dentro o fuori?">
+<Quiz
+  question="Il log mostra come sorgente 172.40.12.9. Da dove arriva?"
+  options={["Da Internet: è un indirizzo pubblico", "Da dentro l'azienda: inizia con 172", "Dal router, perché è un 172", "Non si può sapere"]}
+  answer={0}
+  explain="Il blocco privato è 172.16–172.31. 172.40 sta fuori, quindi è un indirizzo pubblico: il tentativo delle 04:40 arriva da Internet. Il collega si è fermato al primo numero."
+/>
+
+<Say who="sensei">Due allarmi, due origini diverse. La prima da dentro, la seconda da fuori. Non è una coincidenza da ignorare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Il registro ha otto nuove connessioni. Per ognuna dì se la sorgente è **dentro** l'azienda o **da Internet**. Ne servono **sette giuste**: con una scelta secca si può indovinare. Hai 3 tentativi e gli indirizzi cambiano.
+
+<Practice generator="ip-private-public" pass="7/8" retries={3} />
+
+<Say who="sensei">Attenzione ai 172. Uno solo sbagliato e il tentativo è perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due allarmi, due origini">
+<Recap xp={20}>
+- Le reti private sono tre: 10.x.x.x, 172.16–31.x.x e 192.168.x.x.
+- Il 172 è privato solo con il secondo numero tra 16 e 31: 172.40 è pubblico.
+- Una sorgente privata nel log interno vuol dire traffico partito dall'interno.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le tre reti private?", a: "10.x · 172.16–31.x · 192.168.x" },
+    { q: "172.20.5.5 è privato?", a: "Sì: il secondo numero è tra 16 e 31" },
+    { q: "172.40.12.9 è privato?", a: "No: è pubblico" },
+    { q: "Che cosa fa il NAT?", a: "Sostituisce l'IP privato con quello pubblico del router" },
+  ]}
+/>
+
+<Say who="sensei">Sappiamo da dove arrivano le due connessioni. Ora serve capire come un dispositivo dentro la rete trova gli altri.</Say>
+</Scene>

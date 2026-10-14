@@ -1,0 +1,140 @@
+---
+id: F.05.002
+course: fondamenta
+module: 5
+title: "Trentadue bit"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.001]
+objectives:
+  - "Spiegare perché un indirizzo IPv4 ha quattro numeri da 0 a 255"
+  - "Riconoscere un indirizzo IPv4 non valido"
+video:
+  provider: youtube
+  id: "ZH-o2lewZOA"
+  start: 238
+  end: 352
+  channel: "L'Informatica Che Appassiona"
+  title: "Gli ottetti e perché non superano 255"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: ip-valid
+  pass: "7/8"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "256 non esiste in un ottetto: il massimo è 255"
+  - "Un indirizzo IPv4 ha sempre esattamente quattro numeri, né tre né cinque"
+commands: []
+---
+
+<Scene title="La regola rifiutata">
+Il collega della rete ti scrive, nervoso: «Ho provato a bloccare un indirizzo sul firewall e la regola viene rifiutata».
+
+L'indirizzo è **192.168.1.300**. Il firewall non sbaglia: quell'indirizzo **non può esistere**. Capire perché è l'oggetto di questa lezione.
+
+<Say who="sensei">Quando uno strumento rifiuta un indirizzo, di solito ha ragione. Impara a vedere perché prima di insistere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro ottetti, trentadue bit">
+Un indirizzo IPv4 è composto da **4 ottetti**, e ogni ottetto è fatto di **8 bit**. In tutto, 4 × 8 = **32 bit**.
+
+Gli ottetti si scrivono in decimale e si separano con un punto:
+
+<BitGrid bits="11000000" showSum caption="un ottetto: 8 bit, che in decimale valgono al massimo 255" />
+
+<Callout kind="regola">
+Un indirizzo IPv4 valido ha **esattamente quattro numeri**, ognuno **da 0 a 255**, separati da punti. Niente lettere, niente altri simboli.
+</Callout>
+
+<Say who="assistente">Quattro numeri, quattro volte otto bit. Tutto il resto, per ora, è un dettaglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché proprio 255">
+Con 8 bit, l'ottetto più grande ha **tutti i bit accesi**. Prova.
+
+<BitLab target={255} />
+
+<Callout kind="curiosita">
+Per scrivere 256 servirebbe un **nono bit**, e un ottetto ne ha solo otto. Per questo 192.168.1.300 è impossibile: il 300 non entra nell'ottetto.
+</Callout>
+
+<Callout kind="curiosita">
+Con 32 bit si possono scrivere circa **4,3 miliardi** di indirizzi (2 elevato alla 32 fa 4.294.967.296). Sembrano tanti, ma non bastano: nel 2011 sono stati assegnati gli ultimi blocchi liberi. Per questo esiste IPv6, che usa 128 bit.
+</Callout>
+
+<Video />
+
+<Say who="sensei">Un limite fisico, non una convenzione. Otto bit non contengono 256.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro modi di sbagliare">
+Gli indirizzi non validi che incontrerai sono quasi sempre di quattro tipi. Impara a riconoscerli.
+
+<Guided
+  steps={[
+    "192.168.1.300: il 300 supera 255. Un ottetto è troppo grande.",
+    "10.0.0: sono solo tre numeri. Ne manca uno.",
+    "172.16.0.1.5: cinque numeri. Ce n'è uno in più.",
+    "10.0.o.1: c'è una lettera «o» al posto di uno zero. Capita davvero copiando da un documento.",
+    "Un indirizzo valido, invece: 8.8.8.8. Quattro numeri, tutti tra 0 e 255.",
+  ]}
+/>
+
+<Say who="assistente">Controlla sempre due cose: quanti numeri sono, e se qualcuno supera 255.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale va bene?">
+<Quiz
+  question="Quale di questi è un indirizzo IPv4 valido?"
+  options={["192.168.1.256", "10.0.0.1", "172.16.0", "8.8.8.8.8"]}
+  answer={1}
+  explain="10.0.0.1 ha quattro numeri e tutti sono tra 0 e 255. 192.168.1.256 ha un ottetto troppo grande, 172.16.0 ne ha solo tre, 8.8.8.8.8 ne ha cinque."
+/>
+
+<Say who="sensei">Uno solo è corretto. Gli altri tre sono errori che vedrai ogni settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Otto indirizzi: per ognuno, dì se è **valido o no**. Ne servono **sette giusti**, perché con una scelta secca si può indovinare. Hai 3 tentativi e gli indirizzi cambiano.
+
+<Practice generator="ip-valid" pass="7/8" retries={3} />
+
+<Say who="sensei">Sette su otto. Se hai indovinato, il tentativo dopo te lo farà pagare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regola chiusa">
+<Recap xp={20}>
+- Un indirizzo IPv4 sono 32 bit: quattro ottetti da 8 bit.
+- Ogni ottetto va da 0 a 255, perché con 8 bit non si scrive di più.
+- È valido solo con quattro numeri, tutti tra 0 e 255.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti bit ha un indirizzo IPv4?", a: "32 (quattro ottetti da 8)" },
+    { q: "Perché 256 non è ammesso in un ottetto?", a: "Servirebbe un nono bit" },
+    { q: "10.0.0 è valido?", a: "No: ha solo tre numeri" },
+    { q: "Quanti indirizzi IPv4 esistono?", a: "Circa 4,3 miliardi (2 alla 32)" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai leggere un indirizzo. Nella prossima lezione imparerai a leggere un indirizzo vero, bit per bit.</Say>
+</Scene>
