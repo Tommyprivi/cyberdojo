@@ -33,7 +33,7 @@ function friendly(e: unknown, fallback: string) {
 export function Practice() {
   const { lessonId, markVerified } = usePlayer();
   const [session, setSession] = useState<Open | null>(null);
-  const [blockedUntil, setBlockedUntil] = useState<string | null>(null);
+  const [blocked, setBlocked] = useState<{ until: string; minutes: number } | null>(null);
   const [answers, setAnswers] = useState<string[]>([]);
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -42,10 +42,10 @@ export function Practice() {
 
   const apply = (s: StartResult) => {
     if (s.blocked) {
-      setBlockedUntil(s.until);
+      setBlocked({ until: s.until, minutes: s.minutes });
       return;
     }
-    setBlockedUntil(null);
+    setBlocked(null);
     setSession(s);
     setAnswers(Array(s.questions.length).fill(""));
     setResult(null);
@@ -75,13 +75,15 @@ export function Practice() {
   };
 
   if (error) return <p role="alert" className="my-6 text-accent">{error}</p>;
-  if (blockedUntil) {
-    const when = new Date(blockedUntil).toLocaleString("it-IT", { weekday: "long", hour: "2-digit", minute: "2-digit" });
+  if (blocked) {
+    const { minutes } = blocked;
+    const when = new Date(blocked.until).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
     return (
       <div role="status" className="my-2 grid gap-3 rounded-2xl border-2 border-border bg-surface-muted p-4">
         <p className="text-lg font-extrabold">Tentativi finiti per ora.</p>
         <p>
-          Ripassa la spiegazione e riprova da <strong>{when}</strong>. Nel frattempo la sezione{" "}
+          Ripassa la spiegazione e riprova tra circa <strong>{minutes} {minutes === 1 ? "minuto" : "minuti"}</strong> (alle{" "}
+          <strong>{when}</strong>). Nel frattempo la sezione{" "}
           <Link href="/pratica" className="font-semibold text-primary underline">Allenati</Link> ti aiuta a esercitarti.
         </p>
       </div>

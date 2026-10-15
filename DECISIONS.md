@@ -69,7 +69,14 @@ Deciso il 2026-10-14, su richiesta del titolare: mascotte (fluttua, sbatte le pa
 - **Verifica registrata sul server:** il browser riceve solo un identificativo del tentativo, mai il seme né le risposte giuste. Un tentativo si valuta una volta sola.
 - **XP:** lezione 10 + verifica 10 + 5 se primo tentativo perfetto, una sola volta per lezione (vincolo del database). Il numero scritto in `<Recap xp>` è ignorato.
 - **Serie:** conta il giorno nel fuso dell'utente, solo se supera una verifica; +1 congelamento ogni 7 giorni (massimo 2); un congelamento copre un giorno saltato.
-- **DECISIONE DA CONFERMARE (presa da me):** dopo `retries` tentativi falliti nelle ultime 24 ore si aspetta 24 ore dal primo errore (come per gli esami di modulo). La spec non lo diceva per le lezioni.
+- **Attesa dopo i tentativi falliti (decisa dal titolare il 2026-10-15):** dopo `retries` errori negli ultimi **10 minuti** si aspetta che il primo esca dalla finestra. Serve solo a impedire di riprovare a raffica indovinando.
 - **Bozze:** in produzione si vedono solo le lezioni `published`; in sviluppo anche le bozze, o con `SHOW_DRAFTS=1`.
 - **GDPR:** dal profilo si scaricano tutti i propri dati (senza password né chiavi) e si cancella l'account con tutto ciò che contiene.
 - **Non fatto:** test d'ingresso, verifica dell'email (serve Resend), obbligo di dichiarazione sulla privacy (le pagine legali non esistono ancora), blocco degli accessi ripetuti oltre quello di Better Auth.
+
+## Richieste del titolare ancora da progettare (2026-10-15)
+Elenco da trasformare in decisioni; nessuna è stata implementata.
+- **Email automatiche:** benvenuto, link di accesso (già pronto, serve solo l'invio vero), promemoria di studio, serie in pericolo, riepilogo settimanale, certificato emesso. Serve Resend con dominio verificato (cyberdojo.it, da registrare).
+- **Notifiche:** solo dopo consenso esplicito e con orario scelto dall'utente (spec, sezione 7). Canali possibili: email, notifica del browser/PWA.
+- **Tornei:** classifiche settimanali facoltative (spec: fase 2) e/o sfide a tempo tra studenti. Da definire regole, privacy dei nomi, minori (14-17 anni).
+- **Altre funzioni possibili:** ripasso programmato (scatole Leitner), badge, taccuino «ricordati», certificati con link pubblico, esami di modulo.

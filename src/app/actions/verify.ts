@@ -16,11 +16,12 @@ import { getSessionUser } from "@/lib/session";
   - La configurazione (generatore, soglia, tentativi) viene SEMPRE dal file della lezione, mai dal client.
   - Il seme sta nel tentativo salvato nel database: il client riceve solo un identificativo, quindi non
     può scegliersi le domande né rigiocare lo stesso tentativo. Le risposte giuste non lasciano il server.
-  - Tentativi: `retries` falliti nelle ultime 24 ore, poi si aspetta (come per gli esami di modulo).
+  - Tentativi: `retries` falliti negli ultimi 10 minuti, poi si aspetta che il primo esca dalla finestra.
   - Quando si supera: lezione completata, XP (una sola volta, vincolo xp_once) e serie aggiornata.
 */
 
-const WINDOW_MS = 24 * 60 * 60 * 1000;
+// Attesa dopo i tentativi falliti: decisa dal titolare il 2026-10-15 (10 minuti).
+const WINDOW_MS = 10 * 60 * 1000;
 const OPEN_ATTEMPT_MS = 60 * 60 * 1000;
 
 function config(lessonId: string) {
@@ -45,7 +46,7 @@ async function requireUser() {
 
 export type StartResult =
   | { blocked: false; attemptId: string; questions: PublicQuestion[]; retries: number; generator: GeneratorId; needed: number; attemptNumber: number }
-  | { blocked: true; until: string; retries: number };
+  | { blocked: true; until: string; minutes: number; retries: number };
 
 export async function startVerification(lessonId: string): Promise<StartResult> {
   const user = await requireUser();
@@ -79,7 +80,8 @@ export async function startVerification(lessonId: string): Promise<StartResult> 
 
     if (failed.length >= retries) {
       const until = new Date(failed[0].createdAt.getTime() + WINDOW_MS);
-      return { blocked: true as const, until: until.toISOString(), retries };
+      const minutes = Math.max(1, Math.ceil((until.getTime() - Date.now()) / 60_000));
+      return { blocked: true as const, until: until.toISOString(), minutes, retries };
     }
 
     // Se c'è un tentativo aperto di recente (pagina ricaricata), si riprende: stesse domande.
