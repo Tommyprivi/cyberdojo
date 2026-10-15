@@ -100,6 +100,11 @@ export const profiles = pgTable(
     goal: text("goal"), // lavoro SOC, pentester, curiosità, sicurezza personale, scuola
     dailyMinutes: integer("daily_minutes"),
     placementDone: boolean("placement_done").notNull().default(false),
+    // Promemoria di studio via email: spenti di default. Si attivano solo con il consenso esplicito
+    // dell'utente, che sceglie l'ora (nel proprio fuso). `lastReminderDay` evita il doppio invio nello stesso giorno.
+    reminderEmail: boolean("reminder_email").notNull().default(false),
+    reminderHour: integer("reminder_hour").notNull().default(18),
+    lastReminderDay: text("last_reminder_day"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   () => [ownRow("id")],

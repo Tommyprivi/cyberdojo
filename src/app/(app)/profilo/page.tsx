@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AccountActions } from "@/components/account-actions";
+import { ReminderSettings } from "@/components/reminder-settings";
 import { displayName } from "@/lib/display-name";
 import { GOALS } from "@/lib/profile-options";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
@@ -62,6 +63,16 @@ async function ProfiloContent() {
             </div>
           ))}
         </dl>
+      </section>
+
+      <section className="card grid gap-3 p-5" aria-labelledby="promemoria">
+        <h2 id="promemoria" className="font-display text-xl font-semibold">Promemoria di studio</h2>
+        <ReminderSettings
+          initialEnabled={profile.reminderEmail}
+          initialHour={profile.reminderHour}
+          emailVerified={user.emailVerified}
+          email={user.email}
+        />
       </section>
 
       <section className="card grid gap-3 p-5" aria-labelledby="diritti">

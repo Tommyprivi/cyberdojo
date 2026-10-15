@@ -8,6 +8,20 @@
       "when": 1791912390971,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792077682581,
+      "tag": "0001_reminders-columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792077683355,
+      "tag": "0002_reminders-function",
+      "breakpoints": true
     }
   ]
 }

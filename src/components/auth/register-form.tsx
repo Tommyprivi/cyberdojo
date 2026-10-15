@@ -30,7 +30,7 @@ export function RegisterForm() {
     if (password.length < 10) return setError("La password è troppo corta: servono almeno 10 caratteri.");
 
     setBusy(true);
-    const { error: signUpError } = await authClient.signUp.email({ name: name.trim(), email, password });
+    const { error: signUpError } = await authClient.signUp.email({ name: name.trim(), email, password, callbackURL: "/profilo" });
     if (signUpError) {
       setError(authErrorMessage(signUpError));
       return setBusy(false);

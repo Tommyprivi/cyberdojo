@@ -4,26 +4,12 @@ import { Suspense } from "react";
 import { BeltIcon, BoltIcon, CheckIcon, FlameIcon, LockIcon, PlayIcon, TargetIcon } from "@/components/icons";
 import { Mascot } from "@/components/mascot";
 import { COURSES } from "@/lib/content/courses";
-import { readRawLessons } from "@/lib/content/load";
-import { isVisible, lessonFrontmatter } from "@/lib/content/schema";
+import { loadCatalog, type LessonInfo } from "@/lib/content/catalog";
 import { firstName as firstNameOf } from "@/lib/display-name";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 
 export const metadata: Metadata = { title: "Percorso" };
-
-type LessonInfo = { id: string; title: string; course: string; module: number; minutes: number; prerequisites: string[] };
-
-function loadLessons(): LessonInfo[] {
-  return readRawLessons()
-    .flatMap((l) => {
-      const fm = lessonFrontmatter.safeParse(l.data);
-      return fm.success && isVisible(fm.data.status)
-        ? [{ id: fm.data.id, title: fm.data.title, course: l.file.split("/")[0], module: fm.data.module, minutes: fm.data.duration_min, prerequisites: fm.data.prerequisites }]
-        : [];
-    })
-    .sort((a, b) => a.id.localeCompare(b.id));
-}
 
 export default function Percorso() {
   return (
@@ -45,7 +31,7 @@ function Skeleton() {
 
 async function PercorsoContent() {
   const { user, profile, completed, completedAt, xp, streak } = await requireMember("/percorso");
-  const lessons = loadLessons();
+  const lessons = loadCatalog();
 
   const stateOf = (l: LessonInfo): "done" | "open" | "locked" =>
     completed.has(l.id) ? "done" : l.prerequisites.every((p) => completed.has(p)) ? "open" : "locked";

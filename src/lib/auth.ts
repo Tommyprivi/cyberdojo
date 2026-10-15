@@ -3,7 +3,8 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { magicLink } from "better-auth/plugins";
 import { getDb, schema } from "./db";
-import { sendEmail } from "./email";
+import { sendMail } from "./email";
+import { magicLinkEmail, verificationEmail } from "./mail/templates";
 
 let instance: ReturnType<typeof create> | undefined;
 
@@ -21,15 +22,20 @@ function create() {
   return betterAuth({
     database: drizzleAdapter(getDb(), { provider: "pg", schema }),
     emailAndPassword: { enabled: true, minPasswordLength: 10 },
+    // La conferma dell'email parte alla registrazione ma NON blocca l'accesso: serve ad attivare
+    // i promemoria di studio, così nessuno riceve messaggi per un indirizzo scritto male.
+    emailVerification: {
+      sendOnSignUp: true,
+      autoSignInAfterVerification: true,
+      sendVerificationEmail: async ({ user, url }) => {
+        await sendMail({ to: user.email, mail: verificationEmail({ name: user.name, email: user.email, url }) });
+      },
+    },
     socialProviders: google,
     plugins: [
       magicLink({
         sendMagicLink: async ({ email, url }) => {
-          await sendEmail({
-            to: email,
-            subject: "Il tuo link di accesso a CyberDojo",
-            text: `Apri questo link per entrare (vale pochi minuti):\n\n${url}\n\nSe non l'hai chiesto tu, ignora questa email.`,
-          });
+          await sendMail({ to: email, mail: magicLinkEmail({ url }) });
         },
       }),
       nextCookies(), // deve restare ultimo

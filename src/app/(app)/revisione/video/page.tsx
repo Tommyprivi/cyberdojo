@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { internalToolsEnabled } from "@/lib/internal";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { COURSES } from "@/lib/content/courses";
@@ -33,6 +35,7 @@ const STATUS_STYLE: Record<string, string> = {
 
 /** Strumento interno: lista dei video candidati per modulo, da approvare dal titolare. */
 export default function VideoReview() {
+  if (!internalToolsEnabled()) notFound();
   const list = load();
   const modules = COURSES.flatMap((c) => c.modules.map((m) => ({ code: `${c.id}${m.n}`, title: m.title, course: c.title })));
   const ok = list.filter((c) => c.verifica?.stato === "ok").length;

@@ -1,10 +1,15 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 import { schema } from "@/lib/db";
 import { withUser } from "@/lib/db/scoped";
+import { sendMail } from "@/lib/email";
+import { welcomeEmail } from "@/lib/mail/templates";
 import { profileInput } from "@/lib/profile-options";
 import { getSessionUser } from "@/lib/session";
+
+const reminderInput = z.object({ enabled: z.boolean(), hour: z.number().int().min(0).max(23) });
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -17,8 +22,9 @@ export async function saveProfile(input: unknown): Promise<ActionResult> {
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Dati non validi." };
   const p = parsed.data;
 
-  await withUser(user.id, (tx) =>
-    tx
+  const isNew = await withUser(user.id, async (tx) => {
+    const [existing] = await tx.select({ id: schema.profiles.id }).from(schema.profiles).where(eq(schema.profiles.id, user.id)).limit(1);
+    await tx
       .insert(schema.profiles)
       .values({
         id: user.id,
@@ -32,7 +38,41 @@ export async function saveProfile(input: unknown): Promise<ActionResult> {
       .onConflictDoUpdate({
         target: schema.profiles.id,
         set: { ageBand: p.ageBand, goal: p.goal, dailyMinutes: p.dailyMinutes, dailyGoal: p.dailyGoal, timezone: p.timezone },
-      }),
+      });
+    return !existing;
+  });
+
+  // Il benvenuto parte solo alla prima creazione del profilo, non a ogni salvataggio. Se l'invio
+  // fallisce, la registrazione resta valida: un'email persa non deve bloccare nessuno.
+  if (isNew) {
+    try {
+      await sendMail({ to: user.email, mail: welcomeEmail({ name: user.name, email: user.email }) });
+    } catch (e) {
+      console.error("Invio dell'email di benvenuto non riuscito:", e instanceof Error ? e.message : e);
+    }
+  }
+  return { ok: true };
+}
+
+/**
+ * Preferenze sui promemoria di studio. Spenti di default: si attivano solo con una scelta esplicita e
+ * solo se l'email è verificata (altrimenti si scriverebbe a chi non ha chiesto nulla).
+ */
+export async function saveReminderPrefs(input: { enabled: boolean; hour: number }): Promise<ActionResult> {
+  const user = await getSessionUser();
+  if (!user) return { ok: false, error: "Sessione scaduta: accedi di nuovo." };
+
+  const parsed = reminderInput.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Scegli un'ora valida." };
+  if (parsed.data.enabled && !user.emailVerified) {
+    return { ok: false, error: "Prima conferma la tua email: ti abbiamo mandato un link." };
+  }
+
+  await withUser(user.id, (tx) =>
+    tx
+      .update(schema.profiles)
+      .set({ reminderEmail: parsed.data.enabled, reminderHour: parsed.data.hour })
+      .where(eq(schema.profiles.id, user.id)),
   );
   return { ok: true };
 }

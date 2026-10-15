@@ -1,0 +1,100 @@
+import { firstName } from "../display-name";
+import { siteUrl } from "../site-url";
+import { renderHtml, renderText, type EmailContent } from "./layout";
+
+export type Mail = { subject: string; html: string; text: string };
+
+const build = (c: EmailContent): Mail => ({ subject: c.subject, html: renderHtml(c), text: renderText(c) });
+
+const SERVICE_FOOTER = [{ text: "Questa è un'email di servizio di CyberDojo, la scuola gratuita di cybersecurity in italiano." }];
+
+/** Link di accesso: la prima email che molti utenti vedono, quindi la più sobria possibile. */
+export function magicLinkEmail({ url }: { url: string }): Mail {
+  return build({
+    subject: "Il tuo link di accesso a CyberDojo",
+    preheader: "Apri il link per entrare. Vale pochi minuti e una volta sola.",
+    title: "Entra nel dojo",
+    blocks: [
+      { type: "p", text: "Hai chiesto di accedere a CyberDojo. Usa il pulsante qui sotto: il link vale pochi minuti e una volta sola." },
+      { type: "button", label: "Entra in CyberDojo", url },
+      { type: "note", text: "Non sei stato tu? Ignora questa email: senza il link nessuno può entrare nel tuo account." },
+    ],
+    footer: SERVICE_FOOTER,
+  });
+}
+
+/** Benvenuto: una sola cosa da fare, aprire il primo caso. */
+export function welcomeEmail({ name, email }: { name: string | null; email: string }): Mail {
+  const first = firstName({ name, email });
+  const base = siteUrl();
+  return build({
+    subject: `Benvenuto nel dojo, ${first}`,
+    preheader: "Il tuo account è pronto. Il primo caso ti aspetta: sono sette minuti.",
+    title: `Benvenuto, ${first}.`,
+    blocks: [
+      { type: "p", text: "Il tuo account è pronto. Qui si impara la cybersecurity risolvendo casi veri, otto minuti alla volta, e ogni lezione finisce con una prova pratica." },
+      { type: "p", text: "Il primo caso si chiama «Il turno di notte»: leggerai la tua prima riga di log. Non serve sapere niente prima." },
+      { type: "button", label: "Apri il primo caso", url: `${base}/percorso` },
+      { type: "note", text: "I tuoi dati sono tuoi: dal profilo puoi scaricarli o cancellare l'account quando vuoi." },
+    ],
+    footer: [...SERVICE_FOOTER, { text: "Vuoi un promemoria per studiare con regolarità? Puoi attivarlo, solo se lo vuoi, dal tuo profilo:", link: { label: "apri il profilo", url: `${base}/profilo` } }],
+  });
+}
+
+/** Promemoria di studio: parte solo se l'utente lo ha chiesto, e ogni email porta il modo di disattivarlo. */
+export function reminderEmail({
+  name,
+  email,
+  streak,
+  nextLessonTitle,
+  unsubscribeUrl,
+}: {
+  name: string | null;
+  email: string;
+  streak: number;
+  nextLessonTitle: string | null;
+  unsubscribeUrl: string;
+}): Mail {
+  const first = firstName({ name, email });
+  const base = siteUrl();
+  const atRisk = streak > 0;
+  const subject = atRisk ? `La tua serie di ${streak} ${streak === 1 ? "giorno" : "giorni"} ti aspetta` : "Il Sensei ti aspetta: un caso oggi?";
+
+  const blocks: EmailContent["blocks"] = [
+    {
+      type: "p",
+      text: atRisk
+        ? `${first}, oggi non hai ancora superato nessuna verifica. Una lezione e la tua serie di ${streak} ${streak === 1 ? "giorno" : "giorni"} continua.`
+        : `${first}, oggi non hai ancora studiato. Basta una lezione da otto minuti per ricominciare.`,
+    },
+  ];
+  if (nextLessonTitle) blocks.push({ type: "p", text: `Il prossimo caso: «${nextLessonTitle}».` });
+  blocks.push({ type: "button", label: nextLessonTitle ? "Apri il caso" : "Vai al percorso", url: `${base}/percorso` });
+
+  return build({
+    subject,
+    preheader: atRisk ? "Una verifica superata oggi e la serie continua." : "Otto minuti bastano per ricominciare.",
+    title: atRisk ? "La tua serie è in gioco." : "Un caso oggi?",
+    blocks,
+    footer: [
+      { text: "Ricevi questo promemoria perché lo hai attivato tu, all'orario che hai scelto." },
+      { text: "Non lo vuoi più?", link: { label: "Disattiva i promemoria", url: unsubscribeUrl } },
+    ],
+  });
+}
+
+/** Conferma dell'indirizzo: serve per i promemoria, così nessuno riceve messaggi per un indirizzo scritto male. */
+export function verificationEmail({ name, email, url }: { name: string | null; email: string; url: string }): Mail {
+  const first = firstName({ name, email });
+  return build({
+    subject: "Conferma il tuo indirizzo email",
+    preheader: "Un clic per confermare che questa email è tua.",
+    title: "Conferma la tua email",
+    blocks: [
+      { type: "p", text: `Ciao ${first}, conferma che questo indirizzo è tuo. Serve per poterti mandare i promemoria di studio, se vorrai attivarli.` },
+      { type: "button", label: "Conferma l'email", url },
+      { type: "note", text: "Non hai creato tu un account su CyberDojo? Ignora questa email: senza il link non succede nulla." },
+    ],
+    footer: SERVICE_FOOTER,
+  });
+}
