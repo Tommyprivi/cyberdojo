@@ -80,3 +80,11 @@ Elenco da trasformare in decisioni; nessuna è stata implementata.
 - **Notifiche:** solo dopo consenso esplicito e con orario scelto dall'utente (spec, sezione 7). Canali possibili: email, notifica del browser/PWA.
 - **Tornei:** classifiche settimanali facoltative (spec: fase 2) e/o sfide a tempo tra studenti. Da definire regole, privacy dei nomi, minori (14-17 anni).
 - **Altre funzioni possibili:** ripasso programmato (scatole Leitner), badge, taccuino «ricordati», certificati con link pubblico, esami di modulo.
+
+## Design v3 e impianti per PC e telefono (2026-10-15, su richiesta del titolare)
+Il titolare ha giudicato il design precedente «da app qualsiasi, troppo affollato, colori e caratteri brutti» e ha chiesto **un impianto interamente diverso per PC**.
+- **Identità «carta e inchiostro»:** carta (washi), inchiostro (sumi), indaco (ai) come colore principale, rosso del sigillo per marchio ed errori, verde solo per le risposte giuste. Superfici piatte con filetti, angoli poco arrotondati, niente ombre 3D. Cinture invariate. Contrasto AA verificato in chiaro e scuro.
+- **Caratteri:** Shippori Mincho (titoli), IBM Plex Sans (testo), IBM Plex Mono (dati e codice). Sostituiscono Fredoka e Nunito.
+- **PC:** barra laterale fissa; Percorso come pannello a due colonne (programma a sinistra, «Oggi» a destra); lezioni con indice laterale delle schermate e colonna di lettura; **laboratorio a tutto schermo** (strumento + tutor a destra a tutta altezza, senza menu).
+- **Telefono:** intestazione e barra in basso, una colonna; nel laboratorio il tutor è un pannello che sale dal basso.
+- Le animazioni del Percorso restano, leggere.

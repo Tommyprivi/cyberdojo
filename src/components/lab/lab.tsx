@@ -150,6 +150,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
   const [reportResult, setReportResult] = useState<{ correct: number; total: number; passed: boolean } | null>(null);
   const [saved, setSaved] = useState<string[]>([]);
   const [saveState, setSaveState] = useState<"idle" | "ok" | "login">("idle");
+  const [open, setOpen] = useState(false); // pannello del tutor su telefono
   const recorded = useRef(false);
 
   // Taccuino già salvato da questo utente (vuoto se non è collegato).
@@ -209,13 +210,44 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
   const pendingStep = pending ? steps.find((s) => s.id === pending) : undefined;
   const currentIdx = steps.findIndex((s) => !done.includes(s.id));
 
-  return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_26rem] lg:items-start">
-      <div className="order-last lg:order-first">
-        <Calculator state={calc} onChange={setCalc} />
-      </div>
+  const summary = finished
+    ? "Missione compiuta"
+    : mode === "guidato"
+      ? currentIdx >= 0 ? `Passo ${done.length + 1} di ${steps.length}: ${steps[currentIdx].title}` : ""
+      : mode === "aiutami"
+        ? `${done.length} di ${steps.length} passi fatti`
+        : "Da solo: consegna il rapporto";
 
-      <aside aria-label="Il tutor" className="dossier grid gap-4 p-5 lg:sticky lg:top-4">
+  /* Postazione a tutto schermo: barra sottile, strumento che occupa lo spazio, tutor in colonna a destra.
+     Su telefono il tutor è un pannello che sale dal basso. */
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
+      <header className="flex items-center gap-4 border-b border-border bg-surface px-4 py-2.5">
+        <Link href="/pratica" aria-label="Torna al laboratorio" className="flex min-h-10 items-center gap-1.5 font-semibold text-muted hover:text-foreground">
+          <span aria-hidden>←</span>
+          <span className="hidden sm:inline">Laboratorio</span>
+        </Link>
+        <div className="min-w-0">
+          <p className="font-mono text-[0.7rem] font-bold uppercase tracking-widest text-muted">Calcolatore di rete</p>
+          <h1 className="truncate font-display text-lg font-bold leading-tight">{scenario.title}</h1>
+        </div>
+        <span className="chip ml-auto text-sm">{MODES.find((m) => m.id === mode)!.label}</span>
+      </header>
+
+      <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,1fr)_27rem]">
+        <main className="min-h-0 overflow-y-auto p-4 pb-24 lg:p-8 lg:pb-8">
+          <div className="mx-auto max-w-4xl">
+            <Calculator state={calc} onChange={setCalc} />
+          </div>
+        </main>
+
+        <aside
+          aria-label="Il tutor"
+          className={`${open ? "flex" : "hidden"} fixed inset-x-0 bottom-0 z-30 max-h-[82dvh] flex-col gap-4 overflow-y-auto border-t-4 border-foreground bg-surface p-5 lg:static lg:flex lg:max-h-none lg:border-l lg:border-t-0 lg:border-border`}
+        >
+          <button type="button" onClick={() => setOpen(false)} className="chip ml-auto min-h-9 text-sm lg:hidden">
+            Chiudi
+          </button>
         <header className="flex items-center gap-3">
           <Mascot size={56} mood="stern" animate />
           <div>
@@ -389,7 +421,17 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
         {!finished && (done.length > 0 || calc.ip !== "") && (
           <button type="button" onClick={reset} className="chip w-fit text-sm hover:bg-surface-muted">Ricomincia la missione</button>
         )}
-      </aside>
+        </aside>
+      </div>
+
+      {/* Telefono: barra con il passo corrente, per aprire il tutor */}
+      <div className="fixed inset-x-0 bottom-0 z-20 flex items-center gap-3 border-t border-border bg-surface px-4 py-3 lg:hidden">
+        <Mascot size={36} mood="stern" />
+        <p className="min-w-0 flex-1 truncate text-sm font-semibold">{summary}</p>
+        <button type="button" onClick={() => setOpen(true)} className="btn btn-primary min-h-10 px-4 text-sm">
+          Tutor
+        </button>
+      </div>
     </div>
   );
 }

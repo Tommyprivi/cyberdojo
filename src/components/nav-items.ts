@@ -1,9 +1,9 @@
 import { BookIcon, DumbbellIcon, MapIcon } from "./icons";
 
-/** Voci di navigazione condivise tra barra in basso (telefono) e barra in alto (PC). */
+/** Voci di navigazione condivise tra barra in basso (telefono) e barra laterale (PC). */
 export const NAV_ITEMS = [
   { href: "/percorso", label: "Percorso", Icon: MapIcon },
-  { href: "/pratica", label: "Allenati", Icon: DumbbellIcon },
+  { href: "/pratica", label: "Laboratorio", Icon: DumbbellIcon },
   { href: "/corsi", label: "Corsi", Icon: BookIcon },
 ] as const;
 

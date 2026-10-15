@@ -1,39 +1,40 @@
 @import "tailwindcss";
 
 /*
-  Design system CyberDojo, v2: chiaro, morbido, da gioco, con identitÃ  dojo
-  (verde tatami, rosso sigillo, cinture). Predefinito: chiaro. L'utente sceglie chiaro,
-  scuro o sistema (data-theme="light|dark|system" su <html>).
-  Ogni coppia testo/sfondo Ã¨ verificata (>= 4.5:1) da scripts/check-contrast.mjs.
+  Design system CyberDojo, v3: «carta e inchiostro».
+  Washi (carta), sumi (inchiostro), ai (indaco) e il rosso del sigillo. Superfici piatte con filetti
+  sottili, angoli poco arrotondati, molto spazio. Le cinture restano i colori dei livelli.
+  Predefinito: chiaro. L'utente sceglie chiaro, scuro o sistema (data-theme su <html>).
+  Ogni coppia testo/sfondo è verificata (>= 4.5:1) da scripts/check-contrast.mjs.
 */
 
 :root {
-  --background: #f3f8ec;
-  --hero-from: #dcf0b8;
-  --surface: #ffffff;
-  --surface-muted: #e8f1da;
-  --foreground: #16301c;
-  --foreground-muted: #476150;
-  --border: #d2e0c0;
+  --background: #f4efe6;
+  --surface: #fffdf8;
+  --surface-muted: #ece6d9;
+  --foreground: #1a1612;
+  --foreground-muted: #5c5448;
+  --border: #d8d0bf;
 
-  --primary: #23813a;
+  --primary: #1f3a5f; /* ai: indaco */
   --primary-fg: #ffffff;
-  --primary-edge: #16572a;
-  --deep: #174f26;
-  --deep-fg: #ffffff;
+  --primary-edge: #12243d;
+  --deep: #1a1612; /* sumi: blocchi scuri */
+  --deep-fg: #f4efe6;
 
-  --accent: #c0301c; /* rosso sigillo */
+  --accent: #b8321c; /* rosso del sigillo: errori e marchio */
   --accent-fg: #ffffff;
+  --success: #2d6a4f; /* risposte giuste */
+  --success-fg: #ffffff;
   --focus: #1f5fbf;
-  --shadow: 0 10px 30px -12px rgb(22 80 40 / 0.25);
-  --tatami-line: rgb(22 80 40 / 0.045);
+  --shadow: 0 1px 0 rgb(26 22 18 / 0.04), 0 10px 28px -18px rgb(26 22 18 / 0.28);
 
   --belt-white: #ffffff;
-  --belt-white-fg: #16301c;
+  --belt-white-fg: #1a1612;
   --belt-yellow: #f5c400;
-  --belt-yellow-fg: #16301c;
+  --belt-yellow-fg: #1a1612;
   --belt-orange: #e87500;
-  --belt-orange-fg: #16301c;
+  --belt-orange-fg: #1a1612;
   --belt-green: #1a7a35;
   --belt-green-fg: #ffffff;
   --belt-blue: #1f5fbf;
@@ -47,44 +48,44 @@
 
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
-    --background: #0e1a11;
-    --hero-from: #17331f;
-    --surface: #16251a;
-    --surface-muted: #1f3324;
-    --foreground: #eaf4e4;
-    --foreground-muted: #a9c1b0;
-    --border: #2b4132;
-    --primary: #4cc062;
-    --primary-fg: #0a1c0f;
-    --primary-edge: #2e8a41;
-    --deep: #1d4328;
-    --deep-fg: #ffffff;
-    --accent: #ff7a66;
-    --accent-fg: #1a0a07;
+    --background: #14110e;
+    --surface: #1c1814;
+    --surface-muted: #26211b;
+    --foreground: #f1ebdd;
+    --foreground-muted: #b0a695;
+    --border: #3a3329;
+    --primary: #8fb4ee;
+    --primary-fg: #0d1b30;
+    --primary-edge: #5f86c4;
+    --deep: #26211b;
+    --deep-fg: #f1ebdd;
+    --accent: #ff7d66;
+    --accent-fg: #1c0a06;
+    --success: #86d6a6;
+    --success-fg: #08170f;
     --focus: #7fb0ff;
-    --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
-    --tatami-line: rgb(255 255 255 / 0.03);
+    --shadow: 0 10px 28px -18px rgb(0 0 0 / 0.7);
   }
 }
 
 :root[data-theme="dark"] {
-  --background: #0e1a11;
-  --hero-from: #17331f;
-  --surface: #16251a;
-  --surface-muted: #1f3324;
-  --foreground: #eaf4e4;
-  --foreground-muted: #a9c1b0;
-  --border: #2b4132;
-  --primary: #4cc062;
-  --primary-fg: #0a1c0f;
-  --primary-edge: #2e8a41;
-  --deep: #1d4328;
-  --deep-fg: #ffffff;
-  --accent: #ff7a66;
-  --accent-fg: #1a0a07;
+  --background: #14110e;
+  --surface: #1c1814;
+  --surface-muted: #26211b;
+  --foreground: #f1ebdd;
+  --foreground-muted: #b0a695;
+  --border: #3a3329;
+  --primary: #8fb4ee;
+  --primary-fg: #0d1b30;
+  --primary-edge: #5f86c4;
+  --deep: #26211b;
+  --deep-fg: #f1ebdd;
+  --accent: #ff7d66;
+  --accent-fg: #1c0a06;
+  --success: #86d6a6;
+  --success-fg: #08170f;
   --focus: #7fb0ff;
-  --shadow: 0 10px 30px -12px rgb(0 0 0 / 0.6);
-    --tatami-line: rgb(255 255 255 / 0.03);
+  --shadow: 0 10px 28px -18px rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -101,6 +102,8 @@
   --color-deep-fg: var(--deep-fg);
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
+  --color-success: var(--success);
+  --color-success-fg: var(--success-fg);
   --color-focus: var(--focus);
 
   --color-belt-white: var(--belt-white);
@@ -124,21 +127,26 @@
   --font-display: var(--font-display-face);
 }
 
+/* Angoli poco arrotondati in tutto il sito: carattere più serio, meno «app». */
+@theme {
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.5rem;
+  --radius-3xl: 0.625rem;
+}
+
 body {
-  /* Trama a tatami: righe sottili, quasi invisibili, sopra la sfumatura. */
-  background:
-    repeating-linear-gradient(90deg, transparent 0 58px, var(--tatami-line) 58px 60px),
-    linear-gradient(180deg, var(--hero-from) 0, var(--background) 360px) no-repeat,
-    var(--background);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-text-face), system-ui, sans-serif;
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display-face), system-ui, sans-serif;
-  letter-spacing: 0.005em;
+  font-family: var(--font-display-face), Georgia, serif;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
 :focus-visible {
@@ -151,19 +159,27 @@ h1, h2, h3 {
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 1.5rem;
-    box-shadow: var(--shadow);
+    border-radius: 0.625rem;
+  }
+
+  /* Fascicolo: filetto scuro in alto, come la costa di una cartella. */
+  .dossier {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--foreground);
+    border-radius: 0.5rem;
   }
 
   .btn {
     display: inline-grid;
     place-items: center;
-    min-height: 3.25rem;
-    padding: 0 1.5rem;
-    border-radius: 1rem;
-    font-weight: 700;
+    min-height: 2.9rem;
+    padding: 0 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
     letter-spacing: 0.01em;
-    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    border: 1px solid transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
   .btn:disabled {
     opacity: 0.45;
@@ -172,67 +188,59 @@ h1, h2, h3 {
   .btn-primary {
     background: var(--primary);
     color: var(--primary-fg);
-    box-shadow: 0 4px 0 var(--primary-edge);
   }
-  .btn-primary:active:not(:disabled) {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 var(--primary-edge);
+  .btn-primary:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--primary) 85%, var(--foreground));
   }
   .btn-ghost {
-    background: var(--surface);
+    background: transparent;
     color: var(--foreground);
-    border: 2px solid var(--border);
-    box-shadow: 0 4px 0 var(--border);
+    border-color: var(--foreground);
   }
-  .btn-ghost:active:not(:disabled) {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 var(--border);
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--surface-muted);
   }
-  /* Fascicolo di un caso: bordo superiore scuro come la copertina di una cartella. */
-  .dossier {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-top: 6px solid var(--deep);
-    border-radius: 1.25rem;
-    box-shadow: var(--shadow);
-  }
+
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    min-height: 2.5rem;
-    padding: 0 0.9rem;
-    border-radius: 999px;
+    min-height: 2.25rem;
+    padding: 0 0.75rem;
+    border-radius: 0.375rem;
     background: var(--surface);
     border: 1px solid var(--border);
-    font-weight: 600;
+    font-weight: 500;
   }
   .field {
-    min-height: 3rem;
-    border-radius: 1rem;
-    border: 2px solid var(--border);
+    min-height: 2.9rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--foreground-muted);
     background: var(--surface);
-    padding: 0 0.9rem;
+    padding: 0 0.85rem;
+  }
+  .field:focus-visible {
+    border-color: var(--primary);
   }
 }
 
+/* ---- Animazioni leggere (Percorso). Ogni stato finale coincide con lo stato a riposo,
+   così «riduci movimento» le porta direttamente a fine corsa senza lasciare nulla nascosto. ---- */
+
 @keyframes pop {
-  0% { transform: scale(0.9); opacity: 0; }
+  0% { transform: scale(0.97); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
-.pop { animation: pop 0.25s ease-out; }
-
-/* ---- Animazioni leggere (Percorso). Ogni stato finale coincide con lo stato a riposo,
-   così "riduci movimento" le porta direttamente a fine corsa senza lasciare nulla nascosto. ---- */
+.pop { animation: pop 0.2s ease-out; }
 
 /* Entrata: sale di poco e compare. Il ritardo si imposta con la variabile --d. */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: none; }
 }
-.rise { animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0s); }
+.rise { animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: var(--d, 0s); }
 
-/* La scheda "Prossimo caso": la mascotte spunta da sotto con un piccolo rimbalzo. */
+/* La mascotte spunta da sotto con un piccolo rimbalzo. */
 @keyframes peek {
   0% { opacity: 0; transform: translateY(46px); }
   60% { opacity: 1; transform: translateY(-6px); }
@@ -271,7 +279,7 @@ h1, h2, h3 {
 .flicker { transform-origin: 50% 90%; animation: flicker 1.8s ease-in-out infinite; }
 .zap { animation: zap 4s ease-in-out infinite; }
 
-/* Barra di avanzamento a zero: una luce la attraversa, per invitare a cominciare. */
+/* Barra di avanzamento: una luce la attraversa, per invitare a cominciare. */
 @keyframes shimmer {
   from { transform: translateX(-100%); }
   to { transform: translateX(260%); }
@@ -281,20 +289,19 @@ h1, h2, h3 {
   position: absolute;
   inset: 0;
   width: 40%;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
   animation: shimmer 2.6s ease-in-out infinite;
 }
 
 /* Pulsante principale: un'onda leggera ogni tanto. */
 @keyframes ring {
-  0%, 70%, 100% { box-shadow: 0 4px 0 var(--primary-edge), 0 0 0 0 rgb(76 192 98 / 0); }
-  85% { box-shadow: 0 4px 0 var(--primary-edge), 0 0 0 10px rgb(76 192 98 / 0.28); }
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgb(143 180 238 / 0); }
+  85% { box-shadow: 0 0 0 8px rgb(143 180 238 / 0.3); }
 }
 .pulse-ring { animation: ring 3.2s ease-out infinite; }
 
-/* Le schede dei numeri si sollevano al passaggio. */
-.lift { transition: transform 0.18s ease, box-shadow 0.18s ease; }
-.lift:hover { transform: translateY(-3px); }
+.lift { transition: transform 0.18s ease; }
+.lift:hover { transform: translateY(-2px); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

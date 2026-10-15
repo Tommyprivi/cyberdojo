@@ -25,17 +25,19 @@ const pairs = [
   ["foreground", "background"],
   ["foreground", "surface"],
   ["foreground", "surface-muted"],
-  ["foreground", "hero-from"],
   ["foreground-muted", "background"],
   ["foreground-muted", "surface"],
   ["foreground-muted", "surface-muted"],
-  ["foreground-muted", "hero-from"],
   ["primary-fg", "primary"],
   ["deep-fg", "deep"],
   ["accent-fg", "accent"],
+  ["success-fg", "success"],
+  ["success", "surface"], // testo delle risposte giuste
+  ["success", "background"],
+  ["primary", "background"], // link e testo indaco
   ["accent", "surface"], // testo di errore in colore sigillo
   ["accent", "background"],
-  ["primary", "surface"], // testo/icone verdi su carte bianche
+  ["primary", "surface"], // testo e icone indaco sulle superfici
   ["focus", "background"],
   ...belts.map((b) => [`belt-${b}-fg`, `belt-${b}`]),
 ];
