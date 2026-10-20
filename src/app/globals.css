@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 /*
   Design system CyberDojo, v3: «carta e inchiostro».
@@ -312,3 +312,43 @@ h1, h2, h3 {
     scroll-behavior: auto !important;
   }
 }
+
+/* Pagine di accesso: griglia tecnica e bagliore indaco con i colori dell'app (seguono chiaro/scuro). */
+.auth-grid {
+  background-image:
+    radial-gradient(55% 45% at 85% 0%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 70%),
+    linear-gradient(color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
+}
+
+/* Angoli «mirino» per riquadri tecnici. */
+.brackets { position: relative; }
+.brackets::before,
+.brackets::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--primary);
+  pointer-events: none;
+}
+.brackets::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.brackets::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scanline::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--primary) 18%, transparent), transparent);
+    height: 30%;
+    animation: scan 5s linear infinite;
+    pointer-events: none;
+  }
+}
+

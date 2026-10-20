@@ -1,10 +1,4 @@
-import { SiteHeader } from "@/components/site-header";
-
+/** Le pagine di accesso occupano tutto lo schermo: niente intestazione del sito, il marchio sta nella cornice. */
 export default function AuthLayout({ children }: LayoutProps<"/">) {
-  return (
-    <>
-      <SiteHeader wide />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-0 pb-12 sm:px-4 sm:pt-6 lg:px-8 lg:pt-10">{children}</main>
-    </>
-  );
+  return <main className="min-h-dvh">{children}</main>;
 }
