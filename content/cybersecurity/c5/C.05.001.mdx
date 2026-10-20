@@ -1,0 +1,160 @@
+---
+id: C.05.001
+course: cybersecurity
+module: 5
+title: "Come funziona un'applicazione web"
+belt: arancione
+duration_min: 8
+prerequisites: [C.04.006]
+objectives:
+  - "Descrivere il giro di una richiesta e di una risposta HTTP"
+  - "Distinguere ciò che sta nel browser da ciò che sta nel server"
+  - "Spiegare perché il server non deve mai fidarsi dei dati che arrivano dal browser"
+verification:
+  type: generated-numeric
+  generator: c05-webapp
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un controllo fatto nella pagina (JavaScript nel browser) basti a proteggere il server"
+  - "Credere che un campo nascosto del modulo non possa essere cambiato dall'utente"
+  - "Confondere il cookie (un biglietto che il browser rimanda) con una prova di identità che nessuno può copiare"
+commands: []
+---
+
+<Scene title="Il prezzo che cambia">
+Una pizzeria fittizia, «Da Gigi», ha un sito per ordinare online. Nel modulo d'ordine c'è un campo che l'utente non vede: **prezzo=12.00**.
+
+Un cliente curioso apre gli strumenti del browser, cambia il valore in **prezzo=0.10** e preme «Ordina». Il sito conferma l'ordine a dieci centesimi.
+
+Nessuno ha «bucato» niente di complicato. Il sito si è fidato di ciò che gli è arrivato.
+
+La domanda del caso: **chi decide davvero il prezzo, il browser o il server?**
+
+<Say who="sensei">Per capire dove si rompe un'applicazione web, devi prima sapere chi fa cosa. Partiamo dal giro completo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Richiesta e risposta">
+Un'applicazione web è una **conversazione**. Il **browser** (il programma con cui navighi) fa una **richiesta**. Il **server** (il computer che ospita il sito) manda una **risposta**.
+
+Il protocollo è **HTTP** (e la sua versione cifrata, HTTPS). Una richiesta contiene tre cose principali:
+
+- l'**indirizzo** (URL) di ciò che vuoi;
+- il **metodo**, cioè il verbo: che cosa vuoi fare;
+- delle **intestazioni** (header) e, a volte, un **corpo** con dei dati.
+
+<Log lines={[
+  "GET /menu HTTP/1.1",
+  "Host: dagigi.example",
+  "Cookie: sessione=a81f...",
+  "",
+  "HTTP/1.1 200 OK",
+  "Content-Type: text/html",
+]} />
+
+<Say who="assistente">Le prime righe sono la richiesta. Dopo la riga vuota, la risposta: 200 vuol dire «tutto bene».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'URL e i metodi">
+L'**URL** si legge a pezzi: lo schema (`https`), il nome del server (`dagigi.example`), il percorso (`/ordini/42`) e, dopo un punto interrogativo, i **parametri** (`?pagina=2`).
+
+I metodi più comuni:
+
+- **GET**: chiedo di leggere qualcosa. I parametri stanno nell'URL.
+- **POST**: invio dei dati, per esempio un modulo. Stanno nel corpo.
+- **PUT / DELETE**: modifico o cancello una risorsa.
+
+<Callout kind="attenzione">
+Mettere i dati nel corpo (POST) invece che nell'URL **non li protegge**. Chiunque usi il browser può vederli e cambiarli prima di inviarli.
+</Callout>
+
+<Say who="sensei">I parametri sono scritti da chi sta dall'altra parte. Trattali come biglietti scritti da uno sconosciuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il cookie: un biglietto">
+HTTP non ricorda niente: ogni richiesta è nuova. Come fa il sito a sapere che sei sempre tu, dopo il login?
+
+Il server ti dà un **cookie**: un piccolo biglietto con un codice di **sessione**. Il browser lo rimanda a ogni richiesta. Il server guarda il codice e pensa: «Ah, è lui».
+
+<Callout kind="regola">
+Il cookie è come il braccialetto di un parco giochi: chi lo ha addosso entra. Se qualcuno copia il tuo codice di sessione, il server lo scambia per te.
+</Callout>
+
+<Say who="assistente">Per questo i cookie di sessione vanno protetti. Ne parleremo nelle lezioni sulle sessioni e sulle difese.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Browser e server">
+Dividi il mondo in due.
+
+- **Nel browser** (lato client): la pagina, i pulsanti, i controlli in JavaScript. Li gestisce **l'utente**, che può guardarli, cambiarli o saltarli.
+- **Nel server** (lato server): le regole vere, i dati, le password, i prezzi. Li gestisce **l'azienda**.
+
+<Callout kind="regola">
+**Mai fidarsi del browser.** I controlli nella pagina servono a essere gentili con l'utente (un messaggio subito, senza aspettare). I controlli nel server servono a essere **sicuri**. Servono tutti e due, ma solo il secondo protegge.
+</Callout>
+
+Chi sa inviare una richiesta a mano, senza passare dalla pagina, salta ogni controllo del browser.
+
+<Say who="sensei">Il browser è il territorio di chi ti scrive. Il server è casa tua. Le regole si applicano in casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel sito della pizzeria il prezzo è in un campo nascosto del modulo. Quale correzione risolve davvero il problema?"
+  options={[
+    "Il server ricalcola il prezzo dal proprio listino e ignora quello ricevuto",
+    "Nascondere meglio il campo con JavaScript",
+    "Aggiungere un controllo nella pagina che blocca i prezzi sotto 5 euro",
+    "Passare il prezzo con POST invece che con GET",
+  ]}
+  answer={0}
+  explain="Tutto ciò che sta nel browser può essere modificato da chi lo usa. Solo il server, che ha il listino, può decidere il prezzo. Nascondere il campo, controllarlo nella pagina o cambiare metodo non impedisce di inviare una richiesta costruita a mano."
+/>
+
+<Say who="assistente">Chiediti sempre: chi ha scritto questo dato? Se è l'utente, il server deve controllarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su richieste, risposte, cookie e fiducia. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c05-webapp" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Se sbagli, rileggi la schermata sul browser e il server: è lì il cuore della lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'applicazione web è una conversazione: il browser fa richieste, il server risponde.
+- Il cookie di sessione è il biglietto che dice al server «sono sempre io»: chi lo copia può farsi passare per te.
+- Tutto ciò che arriva dal browser lo scrive l'utente: il server deve controllarlo sempre.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene una richiesta HTTP?", a: "URL, metodo, intestazioni e a volte un corpo" },
+    { q: "A cosa serve un cookie di sessione?", a: "Dice al server che le richieste vengono dallo stesso utente già entrato" },
+    { q: "Un controllo in JavaScript nella pagina protegge il server?", a: "No: l'utente può saltarlo, serve il controllo lato server" },
+    { q: "Un campo nascosto è sicuro?", a: "No: è nascosto solo alla vista, ma modificabile" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso: il prezzo lo decide il server. Prossima lezione: la mappa dei rischi più comuni, l'OWASP Top 10.</Say>
+</Scene>

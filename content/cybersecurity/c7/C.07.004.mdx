@@ -1,0 +1,161 @@
+---
+id: C.07.004
+course: cybersecurity
+module: 7
+title: "Monitoraggio e allarmi"
+belt: verde
+duration_min: 9
+prerequisites: [C.07.003]
+objectives:
+  - "Scegliere che cosa tenere sotto controllo e con quali soglie"
+  - "Spiegare perché troppi falsi positivi producono stanchezza da allarmi"
+  - "Applicare un triage semplice a un allarme"
+verification:
+  type: generated-numeric
+  generator: c07-allarmi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Impostare soglie troppo basse «per sicurezza» e ritrovarsi sommersi di avvisi"
+  - "Ignorare un tipo di allarme perché «è sempre un falso positivo» senza mai riguardarlo"
+  - "Chiudere un allarme senza annotare perché: il collega del turno dopo ricomincia da capo"
+commands: []
+---
+
+<Scene title="Duecento avvisi, un turno">
+Alle 08:00 Giulia, analista della «Rossi Forniture», apre la coda degli avvisi del SIEM. Ce ne sono duecento, arrivati dalla notte.
+
+<Log lines={[
+  "07:58  MEDIA  Password sbagliate: utente=amministrazione (6 in 2 min)",
+  "07:41  BASSA  Porta 22 sondata da 203.0.113.12",
+  "07:12  ALTA   Login da paese insolito: utente=bianchi, da=198.51.100.77",
+  "06:55  BASSA  Porta 22 sondata da 203.0.113.25",
+  "06:30  BASSA  Porta 22 sondata da 203.0.113.31",
+]} caption="Cinque righe della coda." />
+
+La domanda del caso: **da dove si comincia, se non si può guardare tutto con la stessa attenzione?**
+
+<Say who="sensei">Duecento avvisi non sono duecento problemi. Sono duecento righe da mettere in ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa tenere d'occhio">
+Non si controlla tutto. Si scelgono **segnali** legati a ciò che conta per l'azienda.
+
+- **Accessi**: molti fallimenti, accessi da luoghi o orari insoliti, nuovi account creati.
+- **Privilegi**: qualcuno diventa amministratore, o cambia i permessi di una cartella.
+- **Dati**: invii insolitamente grandi verso l'esterno.
+- **Sistema**: servizi spenti da soli, antivirus disattivato, log cancellati.
+
+<Callout kind="regola">
+Ogni segnale risponde a una domanda: «che cosa farebbe un attaccante a questo punto?». Se non sai rispondere, probabilmente è rumore.
+</Callout>
+
+<Say who="assistente">Non è importante che sia strano. È importante che sia strano in un punto dove un'intrusione lascerebbe traccia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Soglie: né troppo basse né troppo alte">
+Una **soglia** è il numero oltre il quale scatta l'allarme: «più di 5 password sbagliate in 2 minuti».
+
+<Callout kind="attenzione">
+Soglia troppo **bassa**: scattano allarmi anche per un utente distratto. Troppo **alta**: l'attacco lento passa sotto la soglia senza essere visto.
+</Callout>
+
+Non esiste il numero giusto per tutti. Dipende da come lavora l'azienda. Si parte da un valore ragionevole e si **regola** guardando i risultati.
+
+<Say who="sensei">Una soglia non si indovina. Si misura, si prova e si corregge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Falsi positivi e stanchezza da allarmi">
+Un **falso positivo** è un allarme che scatta senza che ci sia un attacco. Un **falso negativo** è un attacco che non fa scattare niente. Quello è il più pericoloso.
+
+Quando i falsi positivi sono troppi, le persone smettono di guardare: è la **stanchezza da allarmi**. È la causa di molti incidenti: l'avviso giusto era lì, ma sepolto tra cento inutili.
+
+<Callout kind="regola">
+Meglio **pochi allarmi buoni** che tanti dubbi. Ogni allarme che scatta sempre per niente va **corretto** (regola più precisa, eccezione documentata) oppure spento.
+</Callout>
+
+<Say who="assistente">Un allarme che suona sempre è come un allarme che non suona mai: nessuno lo ascolta più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il triage">
+**Triage** vuol dire «smistare», come al pronto soccorso: si decide che cosa guardare prima.
+
+<Guided
+  steps={[
+    "Gravità: quanto sarebbe grave se fosse vero? Dati dei clienti e account amministrativi vengono prima.",
+    "Affidabilità: quante volte questo avviso era un falso positivo? Un avviso quasi sempre falso va dopo.",
+    "Contesto: chi è l'utente, che cosa fa di solito, che cosa è successo prima e dopo?",
+    "Decisione: è un falso allarme (annota perché), è da approfondire, oppure è un incidente (si avvia la procedura).",
+  ]}
+/>
+
+<Callout kind="trucco">
+Segna sempre il motivo della chiusura: «utente verificato per telefono», «prova del tecnico». Il collega del turno dopo ti ringrazierà.
+</Callout>
+
+<Say who="sensei">Prima ciò che costa di più se è vero. Poi il resto. Mai l'ordine di arrivo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torna alla coda di Giulia.
+
+<Log lines={[
+  "07:58  MEDIA  Password sbagliate: utente=amministrazione (6 in 2 min)",
+  "07:41  BASSA  Porta 22 sondata da 203.0.113.12",
+  "07:12  ALTA   Login da paese insolito: utente=bianchi, da=198.51.100.77",
+  "06:55  BASSA  Porta 22 sondata da 203.0.113.25",
+]} caption="Che cosa guardi per primo?" />
+
+<Quiz
+  question="Quale avviso Giulia deve guardare per primo?"
+  options={[
+    "Il login da paese insolito dell'utente bianchi",
+    "Le sonde sulla porta 22, perché sono le più numerose",
+    "Le password sbagliate di amministrazione, perché sono le più recenti",
+    "Nessuno: basta aspettare che se ne generi un altro",
+  ]}
+  answer={0}
+  explain="Un login riuscito da un posto insolito è un possibile accesso già avvenuto, ed è l'unico di gravità alta. Le sonde sulla porta 22 sono rumore di fondo di Internet, e le password sbagliate sono dei tentativi non riusciti. Ordinare per quantità o per ora è l'errore tipico."
+/>
+
+<Say who="assistente">Cerca l'unico in cui qualcuno ha già superato la porta, non solo bussato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari di allarme da smistare. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-allarmi" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Si monitorano segnali legati a ciò che farebbe un attaccante: accessi, privilegi, dati, sistema.
+- Soglie troppo basse creano rumore, troppo alte nascondono gli attacchi lenti: si regolano nel tempo.
+- Il triage ordina gli allarmi per gravità, affidabilità e contesto, e annota sempre il motivo della chiusura.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un falso positivo?", a: "Un allarme che scatta senza che ci sia un attacco" },
+    { q: "Che cos'è la stanchezza da allarmi?", a: "Quando i troppi avvisi inutili spingono a ignorare anche quelli veri" },
+    { q: "Che cosa vuol dire triage?", a: "Smistare gli allarmi, guardando prima i più gravi" },
+    { q: "Perché annotare il motivo della chiusura?", a: "Per non far ricominciare da zero chi viene dopo" },
+  ]}
+/>
+
+<Say who="sensei">Alcuni allarmi si possono lasciare alla macchina. Prossima lezione: la risposta automatica, con fail2ban.</Say>
+</Scene>

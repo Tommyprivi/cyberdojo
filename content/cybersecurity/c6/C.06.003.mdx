@@ -1,0 +1,154 @@
+---
+id: C.06.003
+course: cybersecurity
+module: 6
+title: "Query parametrizzate"
+belt: verde
+duration_min: 8
+prerequisites: [C.06.002]
+objectives:
+  - "Spiegare come una query parametrizzata separa il codice dai dati"
+  - "Distinguere la difesa corretta dal «pulire» gli apici"
+  - "Riconoscere una query sicura e una a rischio nel codice"
+verification:
+  type: generated-numeric
+  generator: c06-parametri
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che togliere o raddoppiare gli apici basti: è una difesa fragile e incompleta"
+  - "Parametrizzare il valore ma poi incollare nella query un nome di colonna o di tabella preso dall'utente"
+  - "Pensare che il controllo lato browser (JavaScript nel modulo) sostituisca la difesa sul server"
+commands: []
+---
+
+<Scene title="La correzione di Luca">
+Luca, lo sviluppatore del negozio di Marta, ha letto della SQL injection. Corre ai ripari e scrive una funzione che **toglie tutti gli apici** dal testo dell'utente prima di incollarlo nella query.
+
+Soddisfatto, chiude il lavoro. Poche settimane dopo, un collega fa notare che la difesa è fragile: basta un caso che Luca non aveva previsto.
+
+La domanda del caso: **perché «pulire» il testo non è la difesa giusta, e qual è?**
+
+<Say who="sensei">Luca ha fatto qualcosa. Ma ha inseguito i sintomi. La difesa vera cambia la struttura, non il testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segnaposto">
+Una **query parametrizzata** (o «prepared statement») si scrive in due tempi.
+
+Prima si manda al database la **forma** della query, con dei segnaposto al posto dei valori:
+
+<Log lines={[
+  "SELECT * FROM utenti WHERE nome = ? AND password = ?",
+]} caption="Il punto interrogativo è un posto vuoto, non ancora riempito." />
+
+Poi, **separatamente**, si mandano i valori. Il database ha già capito la struttura della domanda, e i valori vanno solo nei posti vuoti.
+
+<Say who="assistente">Come un modulo prestampato: le domande sono già stampate, tu riempi solo gli spazi. Non puoi aggiungere una domanda nuova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché funziona">
+Con la query parametrizzata, i valori viaggiano come **dati**, mai come codice. Anche se un utente scrive nel campo qualcosa che sembra SQL, il database lo tratta come un semplice testo da confrontare.
+
+Se qualcuno scrive come nome `x' OR '1'='1`, il database cerca un utente che si chiami proprio così, apici compresi. Non lo trova. Fine.
+
+<Callout kind="regola">
+Codice e dati viaggiano separati. È questo il principio: il testo dell'utente non può mai diventare istruzione.
+</Callout>
+
+<Callout kind="curiosita">
+La stessa idea esiste in quasi ogni linguaggio e libreria: cambia la sintassi (`?`, `$1`, `:nome`), non il principio.
+</Callout>
+
+<Say who="sensei">Non si impedisce all'utente di scrivere cose strane. Si fa in modo che le cose strane restino dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché «pulire» non basta">
+Togliere o raddoppiare gli apici sembra ragionevole. Ma è una difesa **fragile**:
+
+<Callout kind="attenzione">
+Bisogna prevedere ogni carattere speciale, ogni codifica, ogni caso. E ogni database ha regole sue. Basta dimenticarne uno. Inoltre i numeri non hanno apici: una query con un numero incollato non si protegge togliendo apici.
+</Callout>
+
+La difesa corretta non deve **indovinare** cosa è pericoloso. Separa codice e dati, e il problema non nasce.
+
+Un'altra trappola: i segnaposto valgono per i **valori**. Non si possono usare per i nomi di tabelle o colonne (per esempio un ordinamento scelto dall'utente). In quel caso si sceglie da un elenco fisso di valori ammessi, scritto dallo sviluppatore.
+
+<Say who="sensei">Pulire è tappare buchi uno a uno. Parametrizzare è costruire un muro senza buchi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un collega propone: «Controlliamo il campo con JavaScript nel modulo, così l'utente non può scrivere apici». Basta per difendersi dalla SQL injection?"
+  options={[
+    "No: chi attacca può inviare richieste senza passare dal modulo, quindi la difesa va sul server, con query parametrizzate",
+    "Sì: se il browser blocca gli apici, il server riceve solo testo pulito",
+    "Sì, purché il controllo sia scritto bene e in più lingue",
+    "Sì, ma solo per il campo password",
+  ]}
+  answer={0}
+  explain="Il controllo nel browser si aggira: una richiesta si può costruire a mano, senza usare il modulo. La difesa deve stare dove i dati arrivano alla query, cioè sul server, e deve essere la parametrizzazione."
+/>
+
+<Say who="assistente">Indizio: il browser lo controlla l'utente. Il server no. Dove metti la serratura?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima e dopo">
+<Guided
+  steps={[
+    "Prima: la query è una stringa costruita con + e il testo dell'utente dentro. A rischio.",
+    "Passo uno: scrivi la forma della query con i segnaposto, senza nessun valore dentro.",
+    "Passo due: passa i valori alla libreria del database come parametri, a parte.",
+    "Dopo: anche se il valore contiene apici o parole SQL, resta un dato. Il comportamento della query non cambia.",
+    "Controllo finale: nel codice non c'è più nessun punto in cui il testo dell'utente viene incollato in una stringa SQL.",
+  ]}
+/>
+
+<Say who="sensei">Un controllo per il tuo prossimo codice: cerca il segno + dentro una query. Se c'è un valore dell'utente, riscrivila.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono mostrati alcuni frammenti di codice fittizi. Per ognuno devi dire se la query è sicura o no, e perché.
+
+Hai 3 tentativi, e a ogni tentativo i frammenti cambiano.
+
+<Practice generator="c06-parametri" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai distinguere una difesa vera da una toppa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Query parametrizzata: prima la forma con segnaposto, poi i valori a parte. Codice e dati restano separati.
+- «Pulire» gli apici è una difesa fragile; il controllo nel browser non protegge il server.
+- I segnaposto valgono per i valori, non per nomi di tabelle o colonne: lì si usa un elenco fisso di scelte ammesse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la difesa corretta dalla SQL injection?", a: "Le query parametrizzate" },
+    { q: "Perché funzionano?", a: "I valori sono sempre dati, mai codice" },
+    { q: "Perché togliere gli apici non basta?", a: "Bisogna prevedere ogni caso speciale, ed è facile dimenticarne uno" },
+    { q: "Il controllo nel modulo del browser protegge il server?", a: "No: si può aggirare inviando la richiesta a mano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: e se qualcosa sfugge comunque? Il database deve limitare i danni. Si chiamano privilegi.</Say>
+</Scene>

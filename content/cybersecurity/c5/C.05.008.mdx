@@ -1,0 +1,139 @@
+---
+id: C.05.008
+course: cybersecurity
+module: 5
+title: "Le difese di un'applicazione web"
+belt: verde
+duration_min: 9
+prerequisites: [C.05.007]
+objectives:
+  - "Spiegare validazione dell'input e codifica dell'output"
+  - "Dire a cosa servono CSP, HttpOnly e Secure"
+  - "Descrivere il ruolo e i limiti di un WAF"
+verification:
+  type: generated-numeric
+  generator: c05-difese
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un WAF sostituisca la correzione del codice"
+  - "Credere che HttpOnly impedisca l'XSS: limita soltanto cosa può leggere uno script"
+  - "Mettere una sola difesa e fermarsi, invece di stratificarle"
+commands: []
+---
+
+<Scene title="Il castello a più cinte">
+Torniamo al guestbook di «Gatti di Quartiere». La sviluppatrice, Giulia, ha corretto l'errore e codifica l'output. Ma vuole di più: se un domani qualcuno lascia aperto un varco, vuole che il danno resti piccolo.
+
+La domanda del caso: **come si costruisce un'applicazione che non dipende da una sola difesa?**
+
+<Say who="sensei">Una cinta di mura sola cade al primo colpo. Un buon castello ne ha tre. Si chiama difesa a strati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Validare input, codificare output">
+Le due difese di base, che hai già incontrato:
+
+- **Validare l'input**: il server accetta solo dati con la forma e i valori giusti (un numero è un numero, una data è una data, la lunghezza ha un limite). Si accetta ciò che è **ammesso**, non si cerca di togliere ciò che è vietato.
+- **Codificare l'output**: prima di mostrare un dato in una pagina, lo si neutralizza in base a **dove** finisce (nel testo HTML, in un attributo, in un indirizzo).
+
+<Callout kind="regola">
+La validazione riduce i dati strani. La codifica impedisce che un dato diventi comando. Non sono alternative: si fanno entrambe, sul **server**.
+</Callout>
+
+<Say who="assistente">Una controlla cosa entra, l'altra cosa esce. Due porte, due guardie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Intestazioni e cookie sicuri">
+Il server può dare al browser istruzioni di sicurezza con le **intestazioni di risposta**.
+
+- **Content-Security-Policy (CSP)**: elenca da quali fonti la pagina può caricare script e risorse. Se un testo malevolo finisce nella pagina, il browser può rifiutarsi di eseguirlo.
+- **HttpOnly** (sul cookie): gli script della pagina non possono leggere il cookie. Un XSS fa più fatica a rubare la sessione.
+- **Secure** (sul cookie): il browser lo manda solo su HTTPS, mai in chiaro.
+- **SameSite** (sul cookie): limita l'invio del cookie nelle richieste che partono da altri siti.
+
+<Log lines={[
+  "Set-Cookie: sessione=...; HttpOnly; Secure; SameSite=Lax",
+  "Content-Security-Policy: default-src 'self'",
+]} />
+
+<Callout kind="attenzione">
+Queste intestazioni sono una **rete di sicurezza**, non una cura. HttpOnly non impedisce l'XSS, e una CSP non corregge un output non codificato.
+</Callout>
+
+<Say who="sensei">Si aggiungono, non si sostituiscono. Il difetto va corretto alla radice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="WAF e aggiornamenti">
+Un **WAF** (Web Application Firewall) è un filtro posto davanti all'applicazione. Guarda le richieste e blocca quelle che somigliano ad attacchi noti.
+
+Serve per:
+
+- fermare il traffico più banale e automatico;
+- guadagnare tempo quando esce una falla e la correzione non è ancora pronta (una «toppa virtuale»);
+- avere un punto dove osservare ciò che arriva.
+
+Ma ha limiti: un WAF può essere aggirato, può bloccare richieste legittime, e **non corregge** il difetto dietro di sé.
+
+Poi ci sono gli **aggiornamenti**: librerie, framework, sistema operativo, aggiornati con regolarità. È la difesa meno vistosa e una delle più efficaci.
+
+<Say who="assistente">Il WAF è il vigilante al cancello. Utile, ma se la porta di casa è aperta, il vigilante non basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda scopre un difetto di codice in un'applicazione. Mentre prepara la correzione, mette un WAF con una regola temporanea. Che cosa sta facendo, e che cosa deve fare dopo?"
+  options={[
+    "Una protezione provvisoria: poi deve correggere il codice e togliere la dipendenza dal WAF",
+    "Ha risolto il problema in modo definitivo: può smettere di cercare il difetto",
+    "Sta sostituendo la validazione dell'input, che quindi non serve più",
+    "Sta cifrando il traffico, quindi il difetto non è più sfruttabile",
+  ]}
+  answer={0}
+  explain="Il WAF può comprare tempo, ma il difetto resta nel codice. La correzione vera si fa nell'applicazione, e la validazione dell'input resta necessaria."
+/>
+
+<Say who="sensei">Le toppe si mettono in fretta, e si tolgono quando il lavoro vero è finito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sulle difese di un'applicazione. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-difese" pass="5/5" retries={3} />
+
+<Say who="sensei">Mettere alla prova le difese di un sito che non è tuo, senza permesso scritto, è accesso abusivo (art. 615-ter c.p.). Nel modulo C6 lavorerai su applicazioni vulnerabili installate in locale, nel tuo laboratorio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Validare l'input (accetta solo ciò che è ammesso) e codificare l'output (neutralizza ciò che mostri), sempre sul server.
+- CSP, HttpOnly, Secure e SameSite sono reti di sicurezza: limitano il danno, non correggono il difetto.
+- Il WAF filtra il traffico noto e compra tempo, ma non sostituisce correzioni e aggiornamenti: servono difese a strati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A cosa serve HttpOnly su un cookie?", a: "Impedisce agli script della pagina di leggerlo" },
+    { q: "A cosa serve Secure su un cookie?", a: "Il cookie viaggia solo su HTTPS" },
+    { q: "Che cosa fa una CSP?", a: "Dice al browser da quali fonti può caricare script e risorse" },
+    { q: "Un WAF sostituisce la correzione del codice?", a: "No: filtra, ma il difetto resta" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo è chiuso. Hai la mappa, i difetti e le difese. Dal prossimo modulo si lavora in laboratorio, su applicazioni tue.</Say>
+</Scene>

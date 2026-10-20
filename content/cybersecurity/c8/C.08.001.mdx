@@ -1,0 +1,150 @@
+---
+id: C.08.001
+course: cybersecurity
+module: 8
+title: "Regole d'ingaggio"
+belt: blu
+duration_min: 8
+prerequisites: [C.07.006]
+objectives:
+  - "Spiegare perché permesso scritto e ambito sono la differenza tra un test e un reato"
+  - "Distinguere hacker etico e criminale in base a permesso, ambito e comportamento"
+  - "Descrivere la divulgazione responsabile e il ruolo di un bug bounty"
+verification:
+  type: generated-numeric
+  generator: c08-ingaggio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «lo faccio a fin di bene» sostituisca il permesso: senza autorizzazione è accesso abusivo anche se l'intento è buono"
+  - "Pensare che il permesso orale o di un collega basti: serve scritto e di chi ha davvero il potere di concederlo"
+  - "Uscire dall'ambito concordato perché «tanto è lo stesso server» o «ho trovato un'altra porta aperta»"
+commands: []
+---
+
+<Scene title="Il messaggio di Elia">
+Elia, 16 anni, ha imparato a usare uno scanner. Scrive alla classe: «Ho provato il sito del negozio di mio zio, senza dirgli niente. Ho trovato un buco! Lo avviso, così mi ringrazia.»
+
+Lo zio non ha mai detto di sì. Nessuno ha scritto nulla. Elia pensa di aver fatto una buona azione.
+
+La domanda del caso: **dove passa il confine tra un aiuto e un reato?**
+
+<Say who="sensei">Prima di toccare qualsiasi strumento in questo modulo, si impara una sola regola. Senza di essa, tutto il resto è pericoloso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La legge, in parole semplici">
+In Italia l'**accesso abusivo a un sistema informatico** è un reato: articolo **615-ter del codice penale**. Vale quando entri in un sistema protetto senza autorizzazione, o ti trattieni dopo che ti hanno detto di uscire.
+
+Conta l'**autorizzazione**, non l'intenzione. «Volevo solo controllare» non cancella il problema.
+
+<Callout kind="regola">
+Si prova solo ciò che è **tuo**, oppure ciò per cui hai un **permesso scritto** di chi ne ha il potere.
+</Callout>
+
+<Say who="sensei">Questa non è una lezione di legge: è una lezione di mestiere. Un professionista che non rispetta il confine non lavora più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il permesso scritto">
+Chi fa test di sicurezza per mestiere firma prima un accordo con il cliente. Dentro ci sono almeno queste cose:
+
+- **chi autorizza** (una persona che ha il potere di farlo, non un impiegato qualsiasi);
+- **ambito**: quali sistemi si possono provare, e quali no;
+- **periodo**: da quando a quando;
+- **regole**: cosa è permesso e cosa vietato (per esempio, niente prove che fermino il servizio);
+- **contatti**: chi chiamare se qualcosa va storto.
+
+<Callout kind="attenzione">
+Un «sì» a voce o il consenso di un collega non bastano. Se non è scritto e firmato da chi decide, per te non esiste.
+</Callout>
+
+<Say who="assistente">Pensa al permesso come al biglietto del treno: senza, non importa quanto sei gentile, non puoi salire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ambito: il perimetro">
+L'**ambito** è il recinto del test. Esempio: «il sito vetrina di Rossi Srl e il suo server di prova». Tutto ciò che sta fuori non si tocca.
+
+Succede spesso di trovare qualcosa di interessante appena fuori dal recinto: un altro server, il sistema di un fornitore. **Si ferma e si segnala.** Non si prova a «dare solo un'occhiata».
+
+<Callout kind="trucco">
+Dubbio sull'ambito? La risposta è sempre «no, finché non me lo confermano per iscritto».
+</Callout>
+
+<Say who="sensei">Nel dubbio ci si ferma. Nessun cliente ti rimprovera di aver chiesto in più. Molti ti denunciano per aver fatto di meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Etico o criminale?">
+Che cosa distingue un hacker etico da un criminale? Non le competenze: sono le stesse. Cambiano tre cose:
+
+1. **Il permesso**: l'uno ce l'ha, l'altro no.
+2. **Il rispetto dell'ambito**: l'uno resta nel recinto, l'altro no.
+3. **Il comportamento dopo**: l'uno documenta e segnala, l'altro prende dati, vende o ricatta.
+
+Nel caso di Elia l'intento era buono, ma i punti 1 e 2 mancano. Per questo non è un test autorizzato.
+
+**Divulgazione responsabile**: se trovi per caso un problema, lo comunichi al responsabile in modo riservato e gli dai tempo di correggere, senza diffonderlo in pubblico e senza copiare dati.
+
+Molte aziende pubblicano regole e un contatto per questo. Alcune hanno un **bug bounty**: un programma con regole scritte, ambito dichiarato e ricompensa per chi segnala. Le regole del programma sono il tuo permesso: fuori da esse, non lo sei.
+
+<Say who="sensei">Un bug bounty non è una licenza generale. È un permesso con un perimetro. Leggi sempre le regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda ha un programma di bug bounty che include solo il suo sito web «www». Tu noti che anche un server «test» lì vicino sembra debole. Che cosa fai?"
+  options={[
+    "Non lo provo: è fuori dall'ambito. Se vuoi, scrivo al contatto del programma per segnalare ciò che ho notato senza testarlo",
+    "Lo provo un po': l'azienda è la stessa, quindi è coperta",
+    "Lo provo solo se nessuno se ne accorge",
+    "Lo provo e poi lo pubblico, così l'azienda si sbriga",
+  ]}
+  answer={0}
+  explain="Il permesso vale solo per ciò che è scritto nell'ambito. «Stessa azienda» non significa «stesso permesso». La strada giusta è fermarsi e chiedere. Pubblicare prima di avvisare è l'opposto della divulgazione responsabile."
+/>
+
+<Say who="assistente">Indizio: la parola chiave è «scritto». Se non c'è nel documento, non c'è nel permesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su permesso, ambito e comportamento. Hai 3 tentativi: a ogni tentativo le domande cambiano.
+
+<Practice generator="c08-ingaggio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Su questo argomento non esiste «quasi giusto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Senza autorizzazione, entrare in un sistema è accesso abusivo (art. 615-ter c.p.), anche con buone intenzioni.
+- Il permesso deve essere scritto, firmato da chi ha il potere e dichiarare ambito, periodo e regole.
+- Hacker etico e criminale hanno le stesse competenze: cambiano permesso, rispetto dell'ambito e comportamento.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa si può provare?", a: "Solo ciò che è tuo o per cui hai un permesso scritto" },
+    { q: "Che cos'è l'ambito?", a: "Il perimetro dei sistemi che si possono testare; il resto non si tocca" },
+    { q: "Che cos'è la divulgazione responsabile?", a: "Segnalare un problema in modo riservato al responsabile, dandogli il tempo di correggerlo" },
+    { q: "Un bug bounty ti autorizza a provare qualsiasi sistema dell'azienda?", a: "No: solo quello che le regole del programma includono" },
+  ]}
+/>
+
+<Say who="sensei">Regole imparate. Prossima lezione: dove si prova, allora? In un laboratorio che è tuo e che non tocca nessun altro.</Say>
+</Scene>

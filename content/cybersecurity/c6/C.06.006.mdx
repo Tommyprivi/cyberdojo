@@ -1,0 +1,165 @@
+---
+id: C.06.006
+course: cybersecurity
+module: 6
+title: "Dati personali e cifratura"
+belt: verde
+duration_min: 9
+prerequisites: [C.06.005]
+objectives:
+  - "Distinguere cifratura a riposo e in transito"
+  - "Applicare minimizzazione e pseudonimizzazione ai dati personali"
+  - "Spiegare che cosa chiede il GDPR in pratica a chi gestisce dati"
+verification:
+  type: generated-numeric
+  generator: c06-dati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che cifrare il disco protegga da una SQL injection: l'applicazione vede i dati già decifrati"
+  - "Raccogliere «per ogni evenienza» dati che non servono"
+  - "Credere che la pseudonimizzazione renda i dati anonimi: sono ancora dati personali"
+commands: []
+---
+
+<Scene title="Il portatile dimenticato">
+Un dipendente del negozio di Marta lascia il portatile sul treno. Dentro c'è una copia dell'elenco dei clienti: nomi, indirizzi, email, storico degli ordini.
+
+Se il disco **non** è cifrato, chi lo trova può leggere tutto. Se è cifrato, trova solo dati illeggibili.
+
+Marta ha un altro problema: deve sapere se, per legge, deve avvisare qualcuno.
+
+La domanda del caso: **come si proteggono i dati personali, e che cosa chiede la legge?**
+
+<Say who="sensei">I dati dei clienti non sono tuoi. Te li hanno affidati. Chi li perde risponde di come li ha custoditi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dato personale">
+Un **dato personale** è qualunque informazione che riguarda una persona identificata o identificabile: nome, email, indirizzo, telefono, ma anche un numero cliente o un indirizzo IP, se permette di risalire a qualcuno.
+
+Alcuni dati sono più delicati (salute, convinzioni, dati biometrici): si chiamano **categorie particolari** e servono cautele maggiori.
+
+Il regolamento europeo che disciplina il tutto si chiama **GDPR**. Vale per chi tratta dati di persone nell'Unione europea, anche per un piccolo negozio.
+
+<Callout kind="curiosita">
+In Italia il Garante per la protezione dei dati personali vigila sull'applicazione del GDPR e può imporre sanzioni.
+</Callout>
+
+<Say who="assistente">Se un dato aiuta a capire di chi stiamo parlando, probabilmente è personale. Meglio trattarlo con cura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifrare: a riposo e in transito">
+**Cifrare** vuol dire trasformare i dati in modo che solo chi ha la chiave possa leggerli. I dati vanno protetti in due momenti:
+
+<Log lines={[
+  "a riposo   : dati fermi su disco, nel database, nei backup",
+  "in transito: dati che viaggiano in rete tra browser e sito, o tra sito e database",
+]} caption="Due momenti, due protezioni." />
+
+**A riposo**: cifratura del disco o del database e dei backup. Protegge se il portatile viene rubato o se qualcuno ottiene la copia di un backup.
+
+**In transito**: collegamenti protetti (HTTPS tra browser e sito, connessioni cifrate verso il database). Protegge dall'ascolto lungo il percorso.
+
+<Callout kind="attenzione">
+La cifratura a riposo non ferma una SQL injection: l'applicazione, per lavorare, vede i dati già decifrati, e una query ingannata li restituisce così. Ogni difesa copre un rischio diverso.
+</Callout>
+
+<Say who="sensei">Dove stanno i dati, e dove viaggiano? In entrambi i posti serve una serratura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Meno dati, meno guai">
+Il modo più sicuro di proteggere un dato è **non averlo**. Questo è il principio della **minimizzazione**: si raccoglie e si conserva solo ciò che serve per lo scopo dichiarato, e solo per il tempo necessario.
+
+Per spedire una candela servono nome, indirizzo, forse un telefono per il corriere. La data di nascita? Non serve. La copia del documento d'identità? Nemmeno.
+
+<Callout kind="regola">
+Ogni dato in più è un dato in più da proteggere, e da perdere. Prima di aggiungere una colonna alla tabella, chiediti: mi serve davvero?
+</Callout>
+
+La **pseudonimizzazione** sostituisce gli identificativi diretti con un codice (al posto di «Giulia Ferri» compare «cliente 4821»), con la tabella di corrispondenza conservata separatamente e protetta. Riduce il rischio nelle analisi e nei test, ma i dati restano **personali**, perché con la tabella si risale alla persona.
+
+<Say who="sensei">Il dato che non hai raccolto non può essere rubato. Raccogli il minimo, conserva il minimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il GDPR in pratica">
+Senza entrare nei dettagli legali, ecco che cosa il GDPR chiede in pratica a chi custodisce dati:
+
+<Guided
+  steps={[
+    "Avere un motivo chiaro e dichiarato per raccogliere ogni dato, e dirlo alle persone (l'informativa).",
+    "Raccogliere e conservare solo il necessario, per il tempo necessario.",
+    "Proteggere i dati con misure adeguate al rischio: accessi limitati, cifratura, backup, aggiornamenti.",
+    "Permettere alle persone di esercitare i propri diritti: accedere ai dati, correggerli, chiederne la cancellazione.",
+    "In caso di violazione dei dati personali che presenti un rischio per le persone, avvisare il Garante entro 72 ore da quando se ne è venuti a conoscenza, e in certi casi anche gli interessati.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Questa è una guida per capire, non una consulenza legale. Per un'attività vera, serve parlarne con un esperto o con il responsabile della protezione dei dati, se previsto.
+</Callout>
+
+<Say who="assistente">Il filo comune è semplice: raccogli poco, proteggi bene, sii trasparente, avvisa se qualcosa va storto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il portatile con l'elenco clienti, non cifrato, viene perso su un treno. Che cosa è corretto fare?"
+  options={[
+    "Valutare il rischio per i clienti e, se c'è, comunicare la violazione al Garante entro 72 ore dalla scoperta",
+    "Aspettare un mese per vedere se qualcuno usa i dati, poi decidere",
+    "Non fare nulla, perché i dati sono soltanto nomi ed email",
+    "Cancellare la tabella clienti dal server per pareggiare i conti",
+  ]}
+  answer={0}
+  explain="La perdita di un dispositivo con dati personali non protetti è una violazione dei dati. Va valutato il rischio e, se c'è, va notificata al Garante entro 72 ore da quando la si scopre. Aspettare o cancellare i dati dal server non risolve nulla e peggiora la situazione."
+/>
+
+<Say who="sensei">Ogni ora conta. Chi ha un piano sa che cosa fare; chi non ce l'ha perde tempo a decidere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono descritte alcune situazioni fittizie su dati personali e cifratura. Per ognuna devi scegliere la misura corretta o riconoscere l'errore.
+
+Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c06-dati" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: sai leggere SQL, difenderlo, limitarne i danni, salvarlo e rispettare chi ti affida i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Cifratura a riposo (dischi, database, backup) e in transito (HTTPS e connessioni cifrate): due momenti, due protezioni.
+- Minimizzazione: meno dati si raccolgono, meno se ne perdono. La pseudonimizzazione non rende i dati anonimi.
+- GDPR in pratica: scopo chiaro, dati minimi, misure adeguate, diritti delle persone, notifica entro 72 ore in caso di violazione a rischio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire cifrare «a riposo»?", a: "Proteggere i dati fermi: disco, database, backup" },
+    { q: "Che cosa vuol dire cifrare «in transito»?", a: "Proteggere i dati mentre viaggiano in rete (HTTPS)" },
+    { q: "Che cos'è la minimizzazione?", a: "Raccogliere e conservare solo i dati necessari" },
+    { q: "Una violazione dei dati a rischio: entro quanto va notificata al Garante?", a: "Entro 72 ore da quando se ne ha conoscenza" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Prossimo: il blue team, chi controlla i log e scopre l'attacco mentre succede. Hai imparato a proteggere i dati; ora impari a vedere chi li cerca.</Say>
+</Scene>

@@ -1,0 +1,161 @@
+---
+id: C.02.002
+course: cybersecurity
+module: 2
+title: "L'impronta digitale dei dati"
+belt: bianca
+duration_min: 8
+prerequisites: [C.02.001]
+objectives:
+  - "Descrivere le proprietà di una funzione di hash"
+  - "Distinguere l'hash dalla cifratura"
+  - "Spiegare come l'hash serve a verificare l'integrità di un file e a conservare le password"
+video:
+  provider: youtube
+  id: "1b-iV1tHSs8"
+  start: 0
+  end: 596
+  channel: "L'Informatica Che Appassiona"
+  title: "Crittografia: Le funzioni di hash"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c02-hash
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un hash si possa «decifrare» per riavere il dato originale"
+  - "Salvare le password in chiaro, o con un hash semplice e senza altre difese"
+  - "Pensare che un hash uguale garantisca anche che il file sia autentico, cioè mandato da chi dice di averlo mandato"
+commands: []
+---
+
+<Scene title="Il file che pesa uguale">
+Luca scarica un programma da un sito di software. Il sito mostra, accanto al pulsante, una lunga sequenza di lettere e numeri e scrive: «Controlla che il codice coincida».
+
+Luca non capisce a cosa serva. Il file si apre, funziona, sembra a posto.
+
+La domanda del caso: **come fa una sequenza di caratteri a dire se il file è stato modificato lungo la strada?**
+
+<Say who="sensei">Un file può essere cambiato senza che tu te ne accorga. L'hash ti permette di accorgertene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un hash">
+Una **funzione di hash** prende un dato qualsiasi, una parola, una foto, un programma intero, e produce una sequenza di **lunghezza fissa**. Quella sequenza si chiama **hash**, o impronta.
+
+Un esempio reale: la funzione **SHA-256** produce sempre 256 bit, cioè 64 caratteri in esadecimale, che sia partita da una parola o da un film.
+
+<Callout kind="trucco">
+Pensa a un frullatore: ci metti dentro quello che vuoi e ne esce sempre un frullato della stessa quantità. Dal frullato però non torni più alla frutta.
+</Callout>
+
+<Say who="assistente">L'hash è come l'impronta digitale di una persona: identifica, ma da un'impronta non ricostruisci la persona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le proprietà">
+Una buona funzione di hash ha quattro proprietà. Ricordale per scenari, non a memoria.
+
+- **Deterministica**: lo stesso dato dà sempre lo stesso hash.
+- **Effetto valanga**: cambi una virgola nel dato e l'hash diventa completamente diverso.
+- **A senso unico**: dall'hash non si risale al dato.
+- **Senza collisioni**: è praticamente impossibile trovare due dati diversi con lo stesso hash.
+
+<Callout kind="curiosita">
+Una **collisione** è il caso di due dati diversi con lo stesso hash. Esistono per forza (i dati possibili sono infiniti, gli hash no), ma in una funzione buona nessuno sa trovarle.
+</Callout>
+
+<Say who="sensei">Un solo carattere cambiato, un hash tutto diverso. È questo che ti permette di scoprire una modifica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hash non è cifratura">
+L'errore più comune: confondere i due strumenti.
+
+- La **cifratura** si può invertire: con la chiave giusta torni al dato originale. Serve a **nascondere**.
+- L'hash **non si inverte**: non esiste una chiave per tornare indietro. Serve a **verificare**.
+
+<Callout kind="attenzione">
+Se qualcuno ti dice «ho cifrato la password con SHA-256», sta usando le parole sbagliate: ha calcolato un hash, non ha cifrato niente.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Guarda i primi minuti:
+
+<Video />
+
+<Say who="sensei">Cifrare è chiudere un cassetto, con la chiave si riapre. L'hash è un timbro: dal timbro non riavrai il documento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due usi, un'idea">
+**Uso 1, integrità.** Il sito pubblica l'hash del programma. Luca lo scarica, calcola l'hash del suo file e lo confronta. Se coincide, il file è identico. Se differisce anche di un solo carattere, il file è stato cambiato o scaricato male.
+
+**Uso 2, password.** Un sito serio non conserva la tua password: conserva il suo hash. Quando accedi, calcola l'hash di quello che scrivi e lo confronta. Se il database viene rubato, i ladri trovano impronte, non password.
+
+<Callout kind="attenzione">
+Per le password serve di più di un hash semplice: servono un dato casuale aggiunto (il **salt**) e funzioni volutamente lente. Lo vedrai nel modulo sull'autenticazione. Per ora ricorda: **mai** password in chiaro.
+</Callout>
+
+<Say who="assistente">E se due persone hanno la stessa password? Con un hash semplice avrebbero lo stesso hash, e questo tradirebbe l'informazione. È uno dei motivi del salt.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito di scaricamenti ti mostra l'hash di un file. Tu lo scarichi, calcoli l'hash e vedi che è diverso da quello pubblicato. Che cosa concludi?"
+  options={[
+    "Il file che hai non è identico all'originale: scaricamento incompleto o file modificato, non fidarti",
+    "Va tutto bene: ogni scaricamento produce un hash diverso",
+    "Hai dimenticato di inserire la chiave giusta per decifrare il file",
+    "L'hash pubblicato è sbagliato per forza, perché il tuo computer è più affidabile",
+  ]}
+  answer={0}
+  explain="La stessa funzione sullo stesso file dà sempre lo stesso hash: se differisce, il file è diverso. Non c'è nessuna chiave da inserire, perché l'hash non è una cifratura."
+/>
+
+<Say who="sensei">Un hash diverso non si discute. Butta il file e riscaricalo da una fonte fidata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su hash, integrità e password. Ragiona sullo scenario, non sulle sigle.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-hash" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. L'hash non nasconde niente, ma tradisce ogni modifica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un hash è un'impronta di lunghezza fissa: stesso dato, stesso hash; dato diverso, hash del tutto diverso.
+- L'hash non si inverte e non è una cifratura: serve a verificare, non a nascondere.
+- Si usa per l'integrità dei file e per conservare le password (con salt e funzioni lente).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'effetto valanga?", a: "Cambiare un po' il dato cambia completamente l'hash" },
+    { q: "L'hash si può decifrare?", a: "No: è a senso unico, non esiste una chiave per tornare indietro" },
+    { q: "Che cos'è una collisione?", a: "Due dati diversi con lo stesso hash" },
+    { q: "Perché un sito salva l'hash e non la password?", a: "Se il database viene rubato, non contiene le password vere" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la cifratura simmetrica. Qui sì, con la chiave si torna al messaggio.</Say>
+</Scene>

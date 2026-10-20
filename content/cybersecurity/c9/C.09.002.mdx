@@ -1,0 +1,166 @@
+---
+id: C.09.002
+course: cybersecurity
+module: 9
+title: "Raccogliere le prove"
+belt: blu
+duration_min: 9
+prerequisites: [C.09.001]
+objectives:
+  - "Ordinare le fonti di prova dalla più volatile alla meno volatile"
+  - "Spiegare perché si lavora su copie forensi verificate con un hash"
+  - "Descrivere la catena di custodia e perché non si spegne subito la macchina"
+video:
+  provider: youtube
+  id: "sDdEm2Rk66o"
+  start: 0
+  end: 119
+  channel: "ISF Istituto di Scienze Forensi"
+  title: "Cosa è la Digital Forensics"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c09-prove
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Spegnere il computer subito: si perde per sempre il contenuto della memoria RAM"
+  - "Lavorare direttamente sul disco originale invece che su una copia"
+  - "Dimenticare di annotare chi ha avuto le prove in mano e quando"
+commands: []
+---
+
+<Scene title="Il portatile acceso">
+Alla Rossi Serramenti c'è un sospetto: da un portatile dell'ufficio sono usciti dei listini riservati. Il portatile è ancora acceso, sulla scrivania. Il tecnico, con buone intenzioni, allunga la mano verso il tasto di spegnimento.
+
+<Log lines={["09:12  portatile-ufficio  connessione verso 198.51.100.20 porta 443  ancora attiva", "09:12  portatile-ufficio  processo sconosciuto in esecuzione"]} caption="Connessione ancora in corso. Fra un minuto potrebbe non esserci più nulla da vedere." />
+
+La domanda del caso: **spegnere o no? E che cosa si salva, in che ordine?**
+
+<Say who="sensei">Ferma la mano. Ogni gesto su una macchina compromessa cambia le prove. Si pensa, poi si agisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le prove spariscono a velocità diverse">
+Non tutte le tracce durano uguale. Pensa a un ghiacciolo, a una pozzanghera e a una pietra: al sole, il ghiacciolo sparisce per primo.
+
+È l'**ordine di volatilità**: si raccoglie prima ciò che sparisce prima.
+
+1. **Memoria (RAM)** e stato dei processi: spariscono allo spegnimento.
+2. **Connessioni di rete attive**: cambiano di secondo in secondo.
+3. **File temporanei e swap**: possono essere sovrascritti.
+4. **Disco** (file, registri): resta, ma può essere modificato.
+5. **Log remoti e backup**: durano di più.
+
+<Callout kind="regola">
+Si parte dal più volatile. La RAM prima del disco, il disco prima degli archivi.
+</Callout>
+
+<Say who="assistente">Se aspetti, il ghiacciolo si scioglie. Il disco, invece, ti aspetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché non spegnere subito">
+Nella **RAM**, la memoria di lavoro del computer, ci sono cose che sul disco non esistono: i programmi in esecuzione, le connessioni aperte, a volte password e chiavi usate in quel momento.
+
+Spegnere con il tasto cancella tutto questo. Staccare la corrente può anche danneggiare i file in uso.
+
+<Callout kind="attenzione">
+Non è una regola assoluta. Se un ransomware sta cifrando i file in questo momento, isolare la macchina dalla rete (non spegnerla) è il primo gesto. Si decide e si **annota** perché.
+</Callout>
+
+<Callout kind="curiosita">
+Il termine tecnico per «salvare ciò che c'è nella RAM» è fare un **dump di memoria**. Se ne parla meglio nella lezione sulla memoria e sul disco.
+</Callout>
+
+<Say who="sensei">Spegnere è un'azione irreversibile. Isolare dalla rete, di solito, no. Preferisci ciò che si può disfare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Copie forensi e hash">
+Il disco originale non si tocca. Si fa una **copia forense**: un duplicato identico, bit per bit, anche dello spazio apparentemente vuoto. L'analisi si fa sulla copia.
+
+Per dimostrare che la copia è identica e non è stata alterata si usa un **hash**: un'impronta digitale del contenuto, calcolata con un algoritmo come SHA-256. Cambi un solo bit e l'impronta cambia del tutto.
+
+<Log lines={["originale   SHA-256  9f2c...e41a", "copia        SHA-256  9f2c...e41a", "esito: le impronte coincidono, la copia è fedele"]} caption="Impronte abbreviate per leggibilità." />
+
+<Callout kind="trucco">
+Per bloccare la scrittura sul disco originale si usa un **write blocker**: un dispositivo che lascia solo leggere, mai scrivere.
+</Callout>
+
+<Say who="assistente">L'hash è come il sigillo di ceralacca: se è intatto, nessuno ha aperto la busta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La catena di custodia">
+Una prova serve a poco se qualcuno può dire: «chi ti dice che non l'hai modificata?». La **catena di custodia** è il registro che risponde.
+
+Per ogni prova si scrive:
+
+- **che cos'è** (modello, numero di serie, hash);
+- **chi** l'ha raccolta, **quando** e **dove**;
+- **a chi** è passata, a che ora, e **dove** è conservata;
+- ogni volta che qualcuno l'ha aperta o copiata.
+
+<Callout kind="regola">
+Senza catena di custodia, una prova può essere contestata. E una prova contestata, in un procedimento, può valere pochissimo.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di due minuti:
+
+<Video />
+
+<Say who="sensei">Scrivi tutto, con l'ora. Se non è scritto, per gli altri non è successo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il portatile è acceso, con una connessione sospetta ancora attiva. Qual è la scelta più prudente?"
+  options={[
+    "Isolarlo dalla rete, salvare ciò che c'è in memoria, annotare ogni gesto e poi fare la copia del disco",
+    "Spegnerlo subito col tasto, così non si perde altro",
+    "Riavviarlo per vedere se il problema sparisce",
+    "Cancellare il processo sconosciuto e continuare a lavorare",
+  ]}
+  answer={0}
+  explain="Si segue l'ordine di volatilità: prima ciò che sparisce, poi il disco, e si annota tutto. Spegnere o riavviare distrugge la RAM; cancellare il processo distrugge una prova. Chi vuole «far sparire il problema» cancella proprio ciò che serve a capirlo."
+/>
+
+<Say who="assistente">Indizio: le tre risposte sbagliate fanno tutte la stessa cosa. Quale?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande su prove, hash e custodia. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-prove" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Si raccoglie prima ciò che sparisce prima: RAM, rete, file temporanei, disco, archivi.
+- Si lavora su una copia forense, e un hash dimostra che è identica all'originale.
+- La catena di custodia registra chi ha avuto la prova, quando e dove. Si isola la macchina; non la si spegne di riflesso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa si raccoglie per prima?", a: "Ciò che è più volatile: RAM e connessioni" },
+    { q: "A cosa serve l'hash?", a: "A dimostrare che la copia è identica all'originale" },
+    { q: "Cosa registra la catena di custodia?", a: "Chi ha avuto la prova, quando e dove" },
+    { q: "Perché non spegnere subito?", a: "Si perde il contenuto della RAM" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i log. Con le prove in mano, si ricostruisce la storia, riga dopo riga.</Say>
+</Scene>

@@ -1,0 +1,168 @@
+---
+id: C.10.001
+course: cybersecurity
+module: 10
+title: "Che cosa sanno di te"
+belt: marrone
+duration_min: 8
+prerequisites: [C.09.006]
+objectives:
+  - "Riconoscere un dato personale e il motivo valido per cui un'azienda può usarlo"
+  - "Elencare i diritti dell'utente e applicare la minimizzazione dei dati"
+  - "Sapere cosa fare, da utente e da azienda, dopo un data breach"
+verification:
+  type: generated-numeric
+  generator: c10-privacy
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il dato personale sia solo nome e cognome: anche email, IP e foto lo sono"
+  - "Credere che il consenso sia l'unica base giuridica possibile"
+  - "Raccogliere «per sicurezza» più dati del necessario"
+commands: []
+---
+
+<Scene title="L'email di «Palestra Zenith»">
+Marta riceve un'email da una palestra dove non va da due anni: «Abbiamo subito un incidente informatico. Potrebbero essere stati copiati nome, telefono, data di nascita e codice fiscale dei nostri iscritti».
+
+Marta si chiede: perché la palestra ha ancora i miei dati? Dovevano chiederli tutti? E ora che cosa devo fare?
+
+La domanda del caso: **che cosa può fare un'azienda con i tuoi dati, e che cosa puoi fare tu?**
+
+<Say who="sensei">Dopo aver difeso i sistemi, si difendono le persone. Oggi si parla dei dati di chi sta dall'altra parte dello schermo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un dato personale">
+Un **dato personale** è qualsiasi informazione che permette di **identificare una persona**, da sola o insieme ad altre.
+
+Non c'è solo il nome. Sono dati personali anche: email, telefono, indirizzo, foto del volto, codice fiscale, targa, posizione GPS e, in certi casi, l'indirizzo IP.
+
+<Callout kind="attenzione">
+«Non ho dato il cognome, quindi è anonimo» è un errore. Una data di nascita, un CAP e un sesso insieme bastano spesso a trovare una sola persona.
+</Callout>
+
+La legge europea che regola tutto questo è il **GDPR**, valido anche in Italia. Il **Garante per la protezione dei dati personali** è l'autorità italiana che controlla che sia rispettato.
+
+<Say who="sensei">Se con quell'informazione si può arrivare a una persona, è un dato personale. Punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il motivo valido">
+Un'azienda non può usare i tuoi dati «perché sì». Le serve un motivo valido, chiamato **base giuridica**. Le principali, in parole semplici:
+
+- **Contratto**: serve per darti ciò che hai comprato (l'indirizzo per spedire il pacco).
+- **Obbligo di legge**: la legge impone di conservarli (le fatture).
+- **Consenso**: hai detto sì liberamente, per uno scopo preciso (la newsletter).
+- **Interesse legittimo**: un interesse ragionevole dell'azienda che non danneggia i tuoi diritti (antifrode di base).
+
+<Callout kind="trucco">
+Il consenso è solo **una** delle basi. Per spedirti un pacco non serve il tuo «sì»: basta il contratto. Ma per mandarti pubblicità, di solito, sì.
+</Callout>
+
+<Say who="assistente">Fatti una domanda semplice: perché hanno questo dato? Se la risposta è «non si sa», c'è un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tuoi diritti">
+Il GDPR ti dà dei diritti. I principali:
+
+- **Accesso**: sapere quali dati hanno su di te e come li usano.
+- **Rettifica**: far correggere i dati sbagliati.
+- **Cancellazione**: chiedere di eliminarli (il «diritto all'oblio»), quando non c'è un motivo per tenerli.
+- **Opposizione**: dire no a certi usi, come il marketing.
+- **Portabilità**: ricevere i tuoi dati in un formato leggibile per portarli altrove.
+
+Si esercitano scrivendo all'azienda, spesso a un indirizzo indicato nell'informativa. Se non risponde, ci si può rivolgere al Garante.
+
+<Callout kind="attenzione">
+Non sono diritti assoluti: un'azienda può tenere i dati che la legge la obbliga a conservare, anche se chiedi di cancellarli.
+</Callout>
+
+<Say who="sensei">I diritti esistono, ma vanno esercitati. Nessuno ti avvisa che li hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Meno dati, meno guai">
+Torniamo alla palestra. Nome e telefono servono per l'iscrizione. Il **codice fiscale**? Forse per la fattura. Ma perché conservarlo, due anni dopo?
+
+Due regole del GDPR, entrambe di buon senso:
+
+- **Minimizzazione**: raccogli solo i dati che servono davvero allo scopo.
+- **Limitazione della conservazione**: tienili solo per il tempo necessario, poi cancellali.
+
+<Callout kind="curiosita">
+È anche una difesa tecnica. Un dato che non hai non può essere rubato. Nel caso di Marta, i dati vecchi hanno trasformato un incidente piccolo in uno grande.
+</Callout>
+
+<Quiz
+  question="Un sito di ricette chiede il codice fiscale a chi si iscrive alla newsletter. Che cosa non va?"
+  options={["Il dato non serve allo scopo: va contro la minimizzazione", "Il codice fiscale non è un dato personale", "Niente, più dati ha meglio può proteggere l'utente", "Va bene solo se il sito è italiano"]}
+  answer={0}
+  explain="Per una newsletter basta l'email. Chiedere altro è raccogliere dati inutili, e ogni dato inutile è un rischio in caso di furto. Chi risponde «più dati, più sicurezza» confonde protezione e accumulo."
+/>
+
+<Say who="sensei">Prima di chiedere un dato, giustifica la richiesta. Se non sai spiegarla, non chiederlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dopo un data breach">
+Un **data breach** è una violazione dei dati: furto, perdita o accesso non autorizzato. Che cosa succede dopo, passo per passo?
+
+<Guided
+  steps={[
+    "L'azienda scopre l'incidente, lo contiene e capisce quali dati sono coinvolti.",
+    "Valuta il rischio per le persone. Se c'è rischio, deve avvisare il Garante entro 72 ore dalla scoperta.",
+    "Se il rischio è alto (per esempio password in chiaro o dati sanitari), deve avvisare anche gli interessati, in modo chiaro.",
+    "Tu, utente: cambia la password su quel servizio e ovunque l'avevi riusata, attiva la verifica in due passaggi, diffida di email e SMS che citano i dati rubati.",
+  ]}
+/>
+
+<Callout kind="regola">
+L'azienda deve anche documentare ogni violazione, anche quelle che non notifica. È la stessa disciplina dell'incident response del modulo precedente.
+</Callout>
+
+<Say who="assistente">Marta ha fatto bene a diffidare di un'email che chiede i dati «per verifica». Il vero avviso non chiede di cliccare per dare altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sulla privacy, estratti da una banca più ampia. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="c10-privacy" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi tratta i dati degli altri risponde delle proprie scelte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Dato personale è ogni informazione che porta a una persona, non solo il nome.
+- Per usare i dati serve una base giuridica (contratto, legge, consenso, interesse legittimo): il consenso è solo una delle basi.
+- Raccogli il minimo, conserva per poco; dopo un breach si avvisa il Garante entro 72 ore e, se il rischio è alto, anche le persone.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato personale?", a: "Un'informazione che permette di identificare una persona" },
+    { q: "Quali sono i diritti principali dell'utente?", a: "Accesso, rettifica, cancellazione, opposizione, portabilità" },
+    { q: "Che cos'è la minimizzazione?", a: "Raccogliere solo i dati che servono davvero allo scopo" },
+    { q: "Entro quanto si notifica un breach al Garante?", a: "Entro 72 ore dalla scoperta, se c'è rischio per le persone" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chi ti segue mentre navighi, anche quando non ti accorgi di niente.</Say>
+</Scene>

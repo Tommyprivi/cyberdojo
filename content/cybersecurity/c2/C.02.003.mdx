@@ -1,0 +1,167 @@
+---
+id: C.02.003
+course: cybersecurity
+module: 2
+title: "Una chiave sola per tutti"
+belt: bianca
+duration_min: 8
+prerequisites: [C.02.002]
+objectives:
+  - "Spiegare come funziona la cifratura simmetrica e a che cosa serve AES"
+  - "Riconoscere il problema dello scambio della chiave"
+  - "Calcolare quante chiavi servono quando il gruppo cresce"
+video:
+  provider: youtube
+  id: "H5dUt2sgHOc"
+  start: 0
+  end: 544
+  channel: "L'Informatica Che Appassiona"
+  title: "Crittografia simmetrica e asimmetrica"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c02-simmetrica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mandare la chiave segreta sullo stesso canale insicuro del messaggio cifrato"
+  - "Credere che una chiave più lunga renda inutile proteggere la chiave stessa"
+  - "Dimenticare che con tante persone le chiavi da gestire crescono molto in fretta"
+commands: []
+---
+
+<Scene title="Il diario nel cassetto">
+Sara e Nico lavorano a un progetto segreto per una gara. Si scambiano file cifrati, e va benissimo, finché Sara non scrive a Nico in chat: «Ho cambiato la password del file. Eccola: `rondine-77`».
+
+Poco dopo, un compagno che sta guardando la chat ride: «Grazie, ora lo apro anch'io».
+
+La domanda del caso: **dov'è l'errore, se il file era cifrato davvero?**
+
+<Say who="sensei">La cifratura più forte del mondo non serve a niente se regali la chiave. Vediamo perché succede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifratura simmetrica">
+Nella **cifratura simmetrica** si usa **una chiave sola**: la stessa chiude e apre. Chi ha la chiave può cifrare e decifrare.
+
+È come un lucchetto con una sola chiave, di cui esistono due copie: una a Sara e una a Nico.
+
+<Callout kind="regola">
+Simmetrica = **stessa chiave** per cifrare e decifrare. Veloce, adatta a grandi quantità di dati.
+</Callout>
+
+<Say who="assistente">Il nome ti aiuta: simmetrica vuol dire che i due lati sono uguali. La stessa chiave, da una parte e dall'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="AES in parole semplici">
+L'algoritmo simmetrico oggi più diffuso è **AES** (Advanced Encryption Standard). Lo usano il Wi-Fi sicuro, gli archivi cifrati, il telefono, le connessioni dei siti.
+
+Ecco che cosa devi sapere, senza entrare nella matematica:
+
+- lavora a **blocchi** di 128 bit;
+- la chiave può essere di **128, 192 o 256 bit**;
+- è **pubblico**: lo ha scelto una gara internazionale, e per questo tutti lo hanno studiato (ricordi Kerckhoffs?);
+- nessuno conosce un modo pratico per romperlo: l'unica strada è provare le chiavi, e sono troppe.
+
+<Callout kind="curiosita">
+Con una chiave di 128 bit le chiavi possibili sono un numero di 39 cifre. Nessun computer al mondo potrebbe provarle tutte in tempi umani.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Guarda i primi minuti:
+
+<Video />
+
+<Say who="sensei">Non devi saper rifare AES a mano. Devi saperlo usare bene: algoritmo giusto, chiave giusta, chiave protetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il problema della chiave">
+Qui sta il punto debole. Se Sara e Nico devono avere la stessa chiave, **come se la scambiano**?
+
+- Se la mandano in chat, chi ascolta la chat la ruba.
+- Se si incontrano di persona, funziona, ma non è pratico con persone lontane.
+- Se la cifrano con un'altra chiave, ora il problema è come scambiare quella.
+
+<Callout kind="attenzione">
+È il **problema dello scambio delle chiavi**: la cifratura simmetrica è fortissima, ma richiede di far arrivare il segreto all'altra persona in modo sicuro. La prossima lezione mostra come lo si risolve.
+</Callout>
+
+<Say who="sensei">Chiave e messaggio non viaggiano mai insieme sullo stesso canale insicuro. Mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando il gruppo cresce">
+C'è un secondo problema. Se ogni coppia di persone vuole un canale segreto, serve **una chiave per ogni coppia**.
+
+<Guided
+  steps={[
+    "2 persone: 1 chiave.",
+    "4 persone: 6 chiavi (ognuna con tutte le altre).",
+    "10 persone: 45 chiavi.",
+    "100 persone: 4.950 chiavi. La formula è n × (n − 1) / 2.",
+  ]}
+/>
+
+<Say who="assistente">Più persone partecipano, più chiavi servono. E ognuna va protetta e scambiata. Una situazione che non regge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sara cifra un file con AES e manda a Nico, nella stessa email, il file e la password per aprirlo. Dov'è la debolezza?"
+  options={[
+    "Chi legge l'email ha sia il file sia la chiave: la cifratura non protegge più nulla",
+    "AES non va bene per i file, serve un altro algoritmo",
+    "La password è troppo breve: con una più lunga l'email sarebbe sicura",
+    "Nessuna debolezza: la cifratura AES resiste anche se la chiave è nota",
+  ]}
+  answer={0}
+  explain="Con la chiave in mano si decifra qualunque messaggio, anche con l'algoritmo più forte. La chiave va fatta arrivare per un'altra strada. Una password più lunga non aiuta se viaggia insieme al file."
+/>
+
+<Say who="sensei">La forza dell'algoritmo non basta. Conta anche come tratti la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su chiavi, AES e scambio dei segreti. Ragiona sugli scenari.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-simmetrica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. L'algoritmo è solo metà del lavoro: l'altra metà è custodire la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Nella cifratura simmetrica una sola chiave cifra e decifra: è veloce e adatta a molti dati.
+- AES è lo standard di oggi: pubblico, a blocchi di 128 bit, chiavi da 128, 192 o 256 bit.
+- Il punto debole è scambiare la chiave in modo sicuro, e con tanti utenti le chiavi crescono come n × (n − 1) / 2.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire «simmetrica»?", a: "Si usa la stessa chiave per cifrare e decifrare" },
+    { q: "Quali lunghezze di chiave ammette AES?", a: "128, 192 o 256 bit" },
+    { q: "Qual è il problema principale della cifratura simmetrica?", a: "Come scambiare la chiave in modo sicuro" },
+    { q: "Quante chiavi servono a 10 persone che vogliono parlarsi a coppie?", a: "45" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la cifratura asimmetrica. Due chiavi, e il problema dello scambio si scioglie.</Say>
+</Scene>

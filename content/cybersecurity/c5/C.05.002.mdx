@@ -1,0 +1,149 @@
+---
+id: C.05.002
+course: cybersecurity
+module: 5
+title: "OWASP Top 10: la mappa dei rischi"
+belt: arancione
+duration_min: 8
+prerequisites: [C.05.001]
+objectives:
+  - "Spiegare che cos'è OWASP e a cosa serve la lista Top 10"
+  - "Riconoscere le principali categorie di rischio delle applicazioni web"
+  - "Collegare un incidente semplice alla categoria giusta"
+video:
+  provider: youtube
+  id: "nltBRygjsq8"
+  start: 0
+  end: 600
+  channel: "CinnamonSec"
+  title: "Le 10 vulnerabilità più comuni dei siti web: OWASP Top 10 2021"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c05-owasp
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la Top 10 sia un elenco di dieci attacchi da imparare a memoria: sono categorie di errori"
+  - "Credere che l'ordine della lista sia fisso: viene aggiornata ogni qualche anno"
+  - "Pensare che bastino dieci controlli per essere al sicuro"
+commands: []
+---
+
+<Scene title="Tre incidenti, un solo quaderno">
+Tre notizie arrivano nella stessa settimana, da tre aziende fittizie.
+
+- Un negozio online mostra a un cliente l'ordine di un altro, cambiando un numero nell'indirizzo.
+- Un forum pubblica una pagina che fa partire uno script nel browser dei visitatori.
+- Un servizio ha lasciato aperto un pannello di amministrazione con la password «admin».
+
+Sono problemi diversi. Ma qualcuno, da anni, li tiene in ordine in un unico quaderno.
+
+La domanda del caso: **esiste una mappa dei rischi più comuni, e come si legge?**
+
+<Say who="sensei">Prima di cacciare i difetti bisogna sapere come si chiamano. Ti presento la mappa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è OWASP">
+**OWASP** (Open Worldwide Application Security Project) è una comunità aperta e senza scopo di lucro. Produce guide, strumenti e liste gratuite per rendere sicure le applicazioni.
+
+La sua lista più famosa è la **OWASP Top 10**: le dieci **categorie** di rischio più diffuse nelle applicazioni web, ricavate dai dati di molte organizzazioni.
+
+<Callout kind="curiosita">
+La lista viene **aggiornata ogni qualche anno** (versioni 2017, 2021, 2025). Le categorie cambiano nome, ordine e peso. L'idea resta la stessa: sapere da dove arrivano i guai più frequenti.
+</Callout>
+
+<Say who="assistente">Non è una legge e non è un esame: è una bussola. Serve a chi sviluppa, a chi testa e a chi decide dove investire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le categorie, in panoramica">
+Nella versione 2021, in sintesi:
+
+- **Controllo degli accessi rotto**: utenti che fanno o vedono ciò che non dovrebbero.
+- **Errori crittografici**: dati sensibili non cifrati o cifrati male.
+- **Injection**: dati dell'utente trattati come comandi (compreso lo XSS).
+- **Progettazione insicura**: il difetto sta nell'idea, prima del codice.
+- **Configurazioni errate**: impostazioni di default, pannelli aperti, messaggi d'errore troppo ricchi.
+
+<Say who="sensei">Cinque categorie. Leggile come famiglie di errori, non come dieci trucchi diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le altre categorie">
+Le restanti della versione 2021:
+
+- **Componenti vulnerabili e obsoleti**: librerie vecchie con falle note.
+- **Identificazione e autenticazione difettose**: password deboli, sessioni gestite male.
+- **Integrità di software e dati**: aggiornamenti e pacchetti di cui nessuno verifica la provenienza.
+- **Log e monitoraggio insufficienti**: l'attacco avviene e nessuno se ne accorge.
+- **SSRF**: il server viene indotto a fare richieste verso indirizzi scelti da altri.
+
+<Callout kind="attenzione">
+Non serve imparare i numeri (A01, A02…). Serve capire **quale errore** c'è dietro ogni nome. Le prove di questo corso partono dai casi, non dalle sigle.
+</Callout>
+
+Vuoi sentirla spiegare da un'altra voce? Dieci minuti, con esempi:
+
+<Video />
+
+<Say who="assistente">Ogni categoria diventerà una lezione di questo modulo, o del modulo sulle vulnerabilità del database.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda scopre che il suo gestionale usa una libreria di tre anni fa, con una falla pubblica. Il difetto non è nel codice scritto da loro. In quale famiglia di rischi rientra?"
+  options={[
+    "Componenti vulnerabili e obsoleti",
+    "Injection",
+    "Controllo degli accessi rotto",
+    "Log e monitoraggio insufficienti",
+  ]}
+  answer={0}
+  explain="La falla sta in un componente di terzi che nessuno ha aggiornato: è la famiglia dei componenti vulnerabili e obsoleti. L'injection riguarda i dati trattati come comandi, il controllo degli accessi chi può fare cosa."
+/>
+
+<Say who="sensei">Non chiederti «che attacco è?». Chiediti «che errore c'è dietro?». La mappa serve a questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi da riportare alla famiglia giusta. Hai 3 tentativi, e a ogni tentativo i casi cambiano.
+
+<Practice generator="c05-owasp" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa nominare l'errore sa anche dove cercare la difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- OWASP è una comunità aperta; la Top 10 elenca le categorie di rischio più diffuse nelle applicazioni web.
+- Sono famiglie di errori, non attacchi singoli: accessi, crittografia, injection, configurazioni, componenti, autenticazione, log e altre.
+- La lista cambia nel tempo: conta capire l'errore, non memorizzare i numeri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la OWASP Top 10?", a: "Un elenco delle categorie di rischio più comuni nelle applicazioni web" },
+    { q: "È una lista fissa?", a: "No: viene aggiornata ogni qualche anno" },
+    { q: "Una libreria vecchia con falla nota: che categoria?", a: "Componenti vulnerabili e obsoleti" },
+    { q: "Pannello admin con password di default: che categoria?", a: "Configurazione errata" },
+  ]}
+/>
+
+<Say who="sensei">Mappa in mano. Ora si entra nei territori: la prossima lezione parla di injection, il dato che diventa comando.</Say>
+</Scene>

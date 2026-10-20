@@ -1,0 +1,142 @@
+---
+id: C.09.003
+course: cybersecurity
+module: 9
+title: "Log e timeline"
+belt: blu
+duration_min: 9
+prerequisites: [C.09.002]
+objectives:
+  - "Costruire una timeline mettendo in ordine eventi di più fonti"
+  - "Correlare righe di log diverse per ricostruire una sequenza"
+  - "Riportare orari in fusi diversi alla stessa base prima di confrontarli"
+verification:
+  type: generated-numeric
+  generator: c09-timeline
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confrontare orari senza controllare il fuso: una differenza di ore sembra un'incoerenza o nasconde un legame"
+  - "Fidarsi di una sola fonte: un log può essere incompleto o modificato"
+  - "Credere che la prima riga sospetta sia l'inizio dell'incidente: spesso è solo la prima che si è vista"
+commands: []
+---
+
+<Scene title="Tre registri, una storia">
+Alla Rossi Serramenti i listini riservati sono finiti fuori. Hai tre registri davanti: quello del **firewall** (chi entra ed esce dalla rete), quello del **server** (chi si è collegato) e quello del **portatile** dell'ufficio commerciale.
+
+Ognuno racconta un pezzetto. Nessuno racconta tutto.
+
+<Log lines={["firewall  14:02  src=203.0.113.50  dst=server-file  porta=22  ACCEPT", "server    14:03  login riuscito utente=mbianchi da 203.0.113.50", "portatile 14:09  copia di listini.zip verso server-file"]} caption="Tre fonti diverse. Quanto sono collegate?" />
+
+La domanda del caso: **come si trasforma un mucchio di righe in una storia?**
+
+<Say who="sensei">Un log è un testimone. Un solo testimone può sbagliare o mentire. Se ne interrogano tre, e si confrontano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La timeline">
+La **timeline** è l'elenco di tutti gli eventi rilevanti, in ordine di tempo, da fonti diverse, in un'unica tabella.
+
+Per ogni riga ti servono quattro cose:
+
+- **quando** (data e ora, con il fuso);
+- **dove** (da quale fonte viene);
+- **chi o cosa** (utente, indirizzo, file);
+- **che cosa è successo**.
+
+<Callout kind="regola">
+Una timeline si costruisce con i **fatti**. Le ipotesi si scrivono a parte, con l'etichetta «ipotesi».
+</Callout>
+
+<Say who="assistente">Come il diario di un detective: prima si mettono le cose in fila, solo dopo si cerca di capire perché.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Correlare le fonti">
+**Correlare** vuol dire collegare righe di fonti diverse che parlano della stessa cosa. Il filo che le unisce può essere un **indirizzo IP**, un **nome utente**, un **nome di file**, un orario vicino.
+
+<Guided
+  steps={[
+    "Il firewall registra alle 14:02 una connessione sulla porta 22 da 203.0.113.50, accettata.",
+    "Un minuto dopo il server segna un accesso riuscito dell'utente mbianchi dallo stesso indirizzo: il filo è l'IP.",
+    "Alle 14:09 il portatile copia listini.zip: un file con un nome simile compare poi tra i trasferimenti verso l'esterno.",
+    "Dubbio: mbianchi lavora davvero da 203.0.113.50? Se la risposta è no, è un account usato da qualcun altro.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Correlare non è dimostrare. Due eventi vicini nel tempo possono non avere niente a che fare. Si cercano **almeno due fili** in comune prima di legarli.
+</Callout>
+
+<Say who="sensei">Il filo che regge è quello che si ritrova in più registri. Quello che compare una volta sola, si guarda con sospetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il problema dei fusi orari">
+Uno degli errori più comuni: mettere in fila orari che non sono nello stesso fuso.
+
+Molti sistemi (server, cloud, firewall) registrano in **UTC**, il tempo universale di riferimento. Un portatile italiano registra l'ora locale: UTC+1 in inverno, UTC+2 in estate.
+
+<Log lines={["server (UTC)       13:03  login utente=mbianchi", "portatile (Italia) 14:09  copia listini.zip", "In inverno: 14:09 italiane = 13:09 UTC"]} caption="Senza conversione sembra passata più di un'ora tra login e copia. In realtà sono sei minuti." />
+
+<Callout kind="trucco">
+Regola d'oro: porta **tutto in UTC** prima di mettere in fila. Poi, se serve, riconverti al fuso di chi leggerà il rapporto.
+</Callout>
+
+<Callout kind="curiosita">
+Un altro errore classico: l'**orologio sbagliato**. Se un computer ha l'ora che va avanti o indietro di qualche minuto, la timeline si sposta. Si annota lo scarto rispetto a un'ora di riferimento.
+</Callout>
+
+<Say who="assistente">Chiediti sempre: questa ora è UTC o locale? Se non lo sai, non è ancora un'ora, è un numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il firewall (in UTC) registra un accesso alle 13:02. Il portatile (ora italiana, inverno) segna la copia di un file alle 14:09. Che cosa si può dire?"
+  options={[
+    "La copia è avvenuta 7 minuti dopo l'accesso: possono far parte della stessa sequenza",
+    "La copia è avvenuta 67 minuti dopo l'accesso: sono troppo distanti per essere legati",
+    "Il portatile ha l'orologio sbagliato, quindi la riga va scartata",
+    "I due eventi sono avvenuti nello stesso minuto",
+  ]}
+  answer={0}
+  explain="14:09 italiane in inverno equivalgono a 13:09 UTC, cioè 7 minuti dopo le 13:02. Chi risponde 67 minuti ha sottratto senza convertire il fuso, e scambia una sequenza stretta per due fatti lontani."
+/>
+
+<Say who="assistente">Indizio: converti prima. Poi sottrai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande su timeline, correlazione e fusi. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-timeline" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- La timeline mette in ordine di tempo gli eventi di più fonti: fatti da una parte, ipotesi dall'altra.
+- Correlare significa collegare righe diverse con fili comuni (IP, utente, file); meglio avere almeno due fili.
+- Prima di confrontare gli orari si portano tutti nello stesso fuso, di solito UTC.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è una timeline?", a: "Gli eventi di più fonti messi in ordine di tempo" },
+    { q: "Cosa vuol dire correlare?", a: "Collegare righe di fonti diverse con un filo comune" },
+    { q: "Che fuso si usa per confrontare?", a: "UTC, per tutte le fonti" },
+    { q: "Perché più fonti e non una?", a: "Un log può essere incompleto o alterato" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: oltre i log. La memoria e il disco conservano tracce che nessun registro scrive.</Say>
+</Scene>

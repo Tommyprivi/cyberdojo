@@ -1,0 +1,165 @@
+---
+id: C.03.002
+course: cybersecurity
+module: 3
+title: "Dentro il database rubato"
+belt: gialla
+duration_min: 9
+prerequisites: [C.03.001]
+objectives:
+  - "Spiegare perché un servizio non deve mai conservare le password in chiaro"
+  - "Descrivere a cosa servono hash e salt"
+  - "Sapere che cosa fare se un servizio che usi subisce un data breach"
+video:
+  provider: youtube
+  id: "--tnZMuoK3E"
+  start: 0
+  end: 270
+  channel: "Seytonic"
+  title: "Password Hashing, Salts, Peppers | Explained!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c03-conservazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un hash sia una cifratura che si può «aprire» con la chiave giusta"
+  - "Credere che il salt sia un segreto da nascondere: è un valore casuale conservato accanto all'hash"
+  - "Pensare che con l'hash la password sia al sicuro anche se è debole"
+commands: []
+---
+
+<Scene title="Dentro il database rubato">
+Sei un tecnico della piattaforma di ripetizioni «StudiaPiù» (azienda fittizia). Un cliente avvisa: i suoi dati sono comparsi in un elenco in rete. Si scopre che qualcuno ha copiato la tabella degli utenti.
+
+Apri una riga della tabella e vedi: **utente: marta.r · password: ...**
+
+Cosa c'è scritto al posto dei puntini? La risposta cambia tutto: se è la password vera, il danno è totale. Se è altro, hai ancora una speranza.
+
+<Say who="sensei">Un database prima o poi può essere rubato. Il compito è fare in modo che il ladro, a quel punto, abbia in mano il meno possibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mai in chiaro">
+Se il servizio conserva le password **in chiaro** (così come le scrivi), chi ruba il database le legge subito. Basta una copia per entrare in tutti gli account, e probabilmente anche in quelli degli altri servizi dove gli utenti hanno riusato la stessa.
+
+Anche chi lavora nell'azienda le vedrebbe. Non c'è motivo che qualcuno debba saperle.
+
+<Callout kind="regola">
+Il servizio **non ha bisogno di conoscere** la tua password. Deve solo poter controllare che quella che scrivi sia giusta.
+</Callout>
+
+<Say who="assistente">Come il portiere che ti riconosce senza sapere come ti chiami davvero: gli basta un segno che coincide.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'hash: un frullatore a senso unico">
+La soluzione è l'**hash**: una funzione che trasforma qualsiasi testo in una sequenza di caratteri di lunghezza fissa. Due proprietà:
+
+- Lo stesso testo dà **sempre** lo stesso risultato.
+- Dal risultato **non si torna indietro** al testo. È a senso unico, come un frullatore: dalla frutta fai il frullato, non il contrario.
+
+Al login il servizio calcola l'hash di quello che scrivi e lo confronta con quello salvato. Se coincidono, la password è giusta, e la password vera non è mai stata conservata.
+
+<Callout kind="attenzione">
+L'hash non è una cifratura: non esiste una chiave per «aprirlo». Chi attacca prova password probabili, ne calcola l'hash e confronta.
+</Callout>
+
+<Say who="sensei">Se la password è debole, l'hash non la salva. «123456» ha sempre lo stesso hash, e chi attacca lo ha già calcolato da tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il salt: un pizzico di sale diverso per ognuno">
+Problema: due utenti con la stessa password avrebbero lo stesso hash. Un attaccante calcola una volta sola gli hash delle password più comuni e li confronta con l'intero database.
+
+Il **salt** è un valore casuale, **diverso per ogni utente**, aggiunto alla password prima di calcolare l'hash. Il salt viene conservato accanto all'hash: non è un segreto.
+
+<Log lines={["utente=marta.r   salt=7f3a9c   hash=e19b…41", "utente=luca.b    salt=02d8e1   hash=a77c…09"]} caption="Stessa password per entrambi? Gli hash sono comunque diversi. Valori inventati, ridotti a scopo didattico." />
+
+Con il salt l'attaccante non può riusare lavoro già fatto: deve ricominciare **per ogni singolo utente**.
+
+<Say who="assistente">Il salt non nasconde la password. Rovina i calcoli preparati in anticipo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hash lenti e un'altra voce">
+Per le password si usano hash **progettati per essere lenti** (nomi da ricordare: bcrypt, scrypt, Argon2). Per te al login un decimo di secondo non cambia nulla. Per chi prova miliardi di password cambia tutto.
+
+Hash veloci come MD5 o SHA-1 usati da soli non vanno bene per le password: sono nati per altro.
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, quattro minuti e mezzo. Parla anche del «pepper», un segreto extra tenuto fuori dal database:
+
+<Video />
+
+<Say who="sensei">Hash lento, salt diverso per ognuno. Questa è la ricetta minima. Un servizio che non la rispetta ha un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se il database è stato rubato">
+Torniamo al caso. Nella riga di Marta c'era un hash con il suo salt. Il ladro non la legge: deve provare le password una per una, utente per utente. Le password **deboli e comuni cadono per prime**, quelle lunghe e casuali reggono.
+
+Cosa fai tu, utente di un servizio che ha subìto un **data breach** (violazione dei dati)?
+
+<Guided
+  steps={[
+    "Cambia la password di quel servizio, subito, con una nuova e lunga.",
+    "Se la stessa password era usata altrove, cambia anche quelle: l'attaccante proverà a riutilizzarla.",
+    "Attiva l'autenticazione a più fattori dove possibile (la vedremo nella prossima lezione).",
+    "Diffida delle email che citano la violazione: spesso sono phishing che sfrutta la notizia.",
+  ]}
+/>
+
+<Say who="sensei">Non puoi sapere se il servizio ha fatto le cose per bene. Ti difendi come se non l'avesse fatto: password diversa per ogni servizio.</Say>
+
+**Tocca a te.**
+<Quiz
+  question="Un servizio conserva per ogni utente un hash con salt. Cosa ottiene un ladro che copia il database?"
+  options={["Non le password vere: dovrà provarle una per una, e cadranno prima quelle deboli", "Tutte le password in chiaro, perché basta decifrarle", "Niente di utile, perché con il salt nessuna password può essere scoperta", "Solo le password degli utenti che le hanno riusate altrove"]}
+  answer={0}
+  explain="Hash e salt non rendono le password indecifrabili in assoluto: costringono a provarle una per una, utente per utente. Le password deboli cadono comunque. Per questo servono sia il servizio fatto bene sia utenti con password lunghe."
+/>
+
+<Say who="assistente">Indizio: il salt rende il lavoro più lungo, non impossibile. Quanto resiste dipende anche da te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sul salvataggio delle password. Servono tutte giuste. Hai 3 tentativi.
+
+<Practice generator="c03-conservazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi capisce dove stanno le password, capisce dove stanno i rischi. Cinque su cinque.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un servizio non deve mai conservare le password in chiaro: conserva un hash, calcolato con un salt diverso per ogni utente.
+- L'hash è a senso unico. Il salt impedisce di riusare calcoli già fatti. Le password deboli cadono comunque.
+- Dopo un data breach: cambia la password di quel servizio e di ogni altro dove l'avevi riusata.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Si può tornare dall'hash alla password?", a: "No, è a senso unico: si possono solo provare password e confrontare gli hash" },
+    { q: "A cosa serve il salt?", a: "A far sì che password uguali abbiano hash diversi e a impedire calcoli preparati in anticipo" },
+    { q: "Il salt è un segreto?", a: "No, si conserva accanto all'hash" },
+    { q: "Il primo gesto dopo un data breach?", a: "Cambiare la password di quel servizio (e dove era riusata)" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come proteggere un account anche quando la password è finita in mani sbagliate. Si chiama secondo fattore.</Say>
+</Scene>

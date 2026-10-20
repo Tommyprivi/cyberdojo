@@ -1,0 +1,169 @@
+---
+id: C.09.004
+course: cybersecurity
+module: 9
+title: "Memoria e disco"
+belt: blu
+duration_min: 9
+prerequisites: [C.09.003]
+objectives:
+  - "Dire quali tracce si trovano nella RAM e quali sul disco"
+  - "Spiegare perché un file cancellato può essere ancora recuperabile"
+  - "Riconoscere cosa sono gli artefatti e a cosa servono nell'analisi"
+video:
+  provider: youtube
+  id: "PGHFichLFMc"
+  start: 0
+  end: 414
+  channel: "CinnamonSec"
+  title: "Digital Forensics: cos'è e come fanno a trovare i criminali?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c09-memoria-disco
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che cancellare un file lo faccia sparire dal disco"
+  - "Cercare nel disco ciò che esiste solo nella memoria (processi, connessioni, chiavi in uso)"
+  - "Trattare un artefatto come una prova definitiva: è un indizio da confermare con altre fonti"
+commands: []
+---
+
+<Scene title="Il file che non c'è più">
+Alla Rossi Serramenti il portatile sospetto è stato copiato in modo forense. L'utente giura: «Quel file di listini non l'ho mai aperto. E comunque l'ho cancellato io una settimana fa».
+
+Sul disco, nella cartella, il file non c'è. Eppure l'analista non è convinto.
+
+<Log lines={["analisi-disco  listini-2026.xlsx  non presente nella cartella Documenti", "analisi-disco  listini-2026.xlsx  trovato come file eliminato, ancora recuperabile"]} caption="Non presente non vuol dire sparito." />
+
+La domanda del caso: **dove si nascondono le tracce, anche quando qualcuno ha cancellato?**
+
+<Say who="sensei">Un computer ricorda più di quanto dovrebbe. Il tuo lavoro è sapere dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La RAM: il banco di lavoro">
+La **RAM** è la memoria in cui il computer tiene ciò che sta usando adesso. Pensa al banco di un falegname: gli attrezzi in uso sono lì sopra.
+
+Nella RAM si possono trovare:
+
+- i **processi** in esecuzione, anche quelli nascosti;
+- le **connessioni di rete** aperte e verso chi;
+- frammenti di **testo digitato** o di pagine aperte;
+- a volte **chiavi di cifratura** o password usate da poco;
+- programmi malevoli che esistono *solo* in memoria, senza lasciare file.
+
+<Callout kind="attenzione">
+La RAM si svuota con lo spegnimento. Per questo si raccoglie *per prima*: lo hai visto nella lezione sulle prove.
+</Callout>
+
+<Say who="assistente">Il disco è l'armadio, la RAM è il banco. Il banco, la sera, si ripulisce da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il disco: l'archivio">
+Sul **disco** resta ciò che è stato scritto: documenti, programmi, registri, cronologia del browser, file temporanei.
+
+Il disco ha una piccola indicizzazione che dice dove sta ogni file. **Cancellare** un file, di solito, toglie solo la voce dall'indice: i dati restano lì finché qualcun altro non li sovrascrive.
+
+<Callout kind="trucco">
+Un'immagine: togli il numero del libro dallo schedario della biblioteca. Il libro è ancora sullo scaffale, ma nessuno sa più dove cercarlo. L'analista sa cercarlo.
+</Callout>
+
+<Callout kind="attenzione">
+Non è garantito. Su molti dischi moderni (SSD) e con la cifratura il recupero è più difficile o impossibile. Si dice «può essere recuperabile», mai «è sicuramente recuperabile».
+</Callout>
+
+<Say who="sensei">Cancellare non è distruggere. Distruggere richiede sovrascrivere, o un disco rotto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli artefatti">
+Gli **artefatti** sono le piccole tracce che i sistemi e i programmi lasciano mentre lavorano, senza che l'utente se ne accorga. Non sono i file dell'utente: sono i *segni del suo passaggio*.
+
+Alcuni esempi, a livello concettuale:
+
+- l'elenco dei **file aperti di recente**;
+- la **cronologia** del browser e i file scaricati;
+- i **programmi eseguiti** e quando;
+- le **chiavette USB** collegate al computer;
+- i registri di **accesso e di sistema**.
+
+<Callout kind="regola">
+Un artefatto è un **indizio**, non una sentenza. «Il file è stato aperto» non dice *chi* l'ha aperto. Si confronta con timeline e altri log.
+</Callout>
+
+<Say who="assistente">Come le impronte nel fango: dicono che qualcuno è passato, non necessariamente chi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli strumenti, solo i nomi">
+Esistono strumenti specifici per queste analisi. Ne conosci i nomi, senza usarli adesso: serve capire a cosa servono.
+
+- **Volatility**: analizza una copia della memoria RAM.
+- **Autopsy**: analizza immagini di disco e recupera file e artefatti.
+- **Wireshark**: esamina il traffico di rete registrato.
+
+<Callout kind="attenzione">
+Si usano solo su dati tuoi o per cui hai un permesso scritto. Frugare nel computer di un'altra persona senza autorizzazione è reato (in Italia, tra gli altri, accesso abusivo a sistema informatico, art. 615-ter del codice penale).
+</Callout>
+
+Vuoi sentirlo raccontare da un'altra voce? È un video più lungo, guardalo con calma:
+
+<Video />
+
+<Say who="sensei">Lo strumento non pensa. Pensi tu. Un buon analista sa spiegare cosa cerca prima di aprire il programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="L'analista trova un processo sconosciuto con una connessione aperta verso l'esterno, ma sul disco non c'è nessun file con quel nome. Dove si trovava più probabilmente questa traccia?"
+  options={[
+    "Nella RAM, perché i processi attivi e le connessioni vivono in memoria",
+    "Nel cestino, dove finiscono i file cancellati",
+    "Nella cronologia del browser",
+    "Nel registro delle stampe",
+  ]}
+  answer={0}
+  explain="Processi e connessioni attive vivono nella RAM, e un programma può esistere solo lì. Chi risponde «cestino» confonde i file cancellati con i processi in esecuzione: sono due cose diverse."
+/>
+
+<Say who="assistente">Indizio: la traccia è attiva adesso o è un ricordo di qualcosa di passato?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande su RAM, disco e artefatti. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-memoria-disco" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- La RAM contiene ciò che è attivo adesso (processi, connessioni, a volte chiavi) e si perde allo spegnimento.
+- Il disco conserva i file; cancellare di solito toglie solo la voce dall'indice, quindi il file può essere recuperabile.
+- Gli artefatti sono tracce lasciate dai sistemi: indizi da confermare con altre fonti, mai prove da soli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa si trova solo nella RAM?", a: "Processi attivi, connessioni aperte, a volte chiavi in uso" },
+    { q: "Perché un file cancellato può tornare?", a: "Si toglie la voce dall'indice, i dati restano finché non sono sovrascritti" },
+    { q: "Cos'è un artefatto?", a: "Una traccia lasciata dal sistema o da un programma" },
+    { q: "Nomi di tre strumenti?", a: "Volatility (memoria), Autopsy (disco), Wireshark (rete)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: contenere ed eliminare. Ora sai cosa è successo; è il momento di fermarlo, senza distruggere ciò che hai raccolto.</Say>
+</Scene>

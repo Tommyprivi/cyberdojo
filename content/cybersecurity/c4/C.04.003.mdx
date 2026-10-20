@@ -1,0 +1,170 @@
+---
+id: C.04.003
+course: cybersecurity
+module: 4
+title: "Le stanze della rete: segmentazione e DMZ"
+belt: arancione
+duration_min: 8
+prerequisites: [C.04.002]
+objectives:
+  - "Spiegare perché una rete divisa in zone limita i danni di un attacco"
+  - "Descrivere a cosa serve una DMZ e cosa vi si mette"
+  - "Ragionare su cosa può raggiungere un attaccante che controlla un solo computer"
+verification:
+  type: generated-numeric
+  generator: c04-segmentazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che dividere la rete la renda impenetrabile: rallenta l'attaccante, non lo ferma per sempre"
+  - "Mettere nella DMZ anche i server con i dati riservati"
+  - "Dividere le zone ma poi permettere tutto da una zona all'altra"
+commands: []
+---
+
+<Scene title="Un pc cade, e cade tutto">
+Alla **Verdi Consulting** c'è una sola grande rete. Dentro ci sono i pc degli impiegati, il server dei contratti, le stampanti, la telecamera dell'ingresso e il server del sito web.
+
+Un lunedì un impiegato clicca su un allegato infetto. Entro sera l'attaccante, partendo da quel solo pc, ha raggiunto il server dei contratti e ha copiato tutto.
+
+<Log lines={["18:02  src=pc-impiegato-14  dst=server-contratti  porta=445  esito=ACCETTATO", "18:03  src=pc-impiegato-14  dst=server-contratti  porta=445  esito=ACCETTATO"]} caption="Un pc di un impiegato che parla direttamente col server dei contratti. Era normale? Nessuno si era mai chiesto." />
+
+La domanda del caso: **come si impedisce che un solo pc compromesso apra la strada a tutto il resto?**
+
+<Say who="sensei">Se tutto sta nella stessa stanza, chi entra da una finestra può prendere tutto. Si costruiscono più stanze, con porte e serrature.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dividere la rete in zone">
+La **segmentazione** vuol dire dividere la rete in **zone** (segmenti), e controllare con il firewall che cosa può passare da una zona all'altra.
+
+Un esempio per la Verdi Consulting:
+
+- zona **uffici**: i pc degli impiegati;
+- zona **server interni**: contratti e archivi;
+- zona **ospiti**: il Wi-Fi per i clienti;
+- zona **dispositivi**: stampanti, telecamere.
+
+Il firewall tra le zone ha regole semplici, sempre con **default deny**: gli ospiti non raggiungono i server interni; le telecamere non parlano con gli uffici; gli uffici raggiungono solo le porte dei server che servono.
+
+<Callout kind="trucco">
+Pensa alle paratie di una nave. Se si apre una falla, si allaga un compartimento, non tutta la nave.
+</Callout>
+
+<Say who="sensei">Ogni zona è una stanza. Ogni porta tra le stanze ha una regola. Più stretta è la regola, meno cammina l'intruso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se un pc cade">
+Rifacciamo la stessa serata, con la rete divisa in zone.
+
+L'allegato infetto cade sul pc dell'impiegato, nella zona uffici. L'attaccante ora controlla quel pc. Cosa può raggiungere?
+
+- Gli altri pc degli uffici: sì, stanno nella stessa zona.
+- Il server dei contratti: **solo** sulle porte che il firewall permette agli uffici, e solo se l'attaccante ha anche le credenziali giuste.
+- Il Wi-Fi ospiti o le telecamere: no, nessuna regola lo permette.
+
+L'attaccante non è fermato per sempre, ma deve fare **più passi**. Ogni passo è un'occasione per essere visto da chi sorveglia (ricordi l'IDS?).
+
+<Callout kind="attenzione">
+La segmentazione non toglie l'errore dell'impiegato. Riduce il **raggio d'azione** dell'errore. È una difesa a strati: nessuna da sola basta.
+</Callout>
+
+<Say who="assistente">Non devi impedire ogni caduta. Devi fare in modo che una caduta non trascini giù tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La DMZ">
+Un problema: il sito web della Verdi Consulting deve essere raggiungibile da **chiunque su Internet**. Dove lo mettiamo?
+
+Dentro la rete interna sarebbe pericoloso: se qualcuno buca il sito, è già in casa. Fuori da ogni protezione è peggio.
+
+La soluzione è la **DMZ** (*zona demilitarizzata*): una zona intermedia, tra Internet e la rete interna. Ci vanno i server che devono parlare con l'esterno: il sito, il server di posta, un server per scambiare file con i clienti.
+
+Le regole tipiche:
+
+- da **Internet** alla DMZ: solo le porte necessarie (per esempio la 443 per il sito);
+- dalla **DMZ** alla rete interna: quasi niente, solo ciò che serve davvero;
+- dalla **rete interna** alla DMZ: permesso per gestirla.
+
+<Callout kind="regola">
+Il server in DMZ si considera **già esposto**. Se cade, l'attaccante si trova in una stanza dove non c'è nulla di prezioso, e davanti ha un'altra porta chiusa.
+</Callout>
+
+<Say who="sensei">La DMZ è il corridoio d'ingresso. Ricevi lì gli ospiti. Non li fai mai entrare nella stanza della cassaforte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La Verdi Consulting deve mettere online un nuovo server per il sito dei clienti, raggiungibile da Internet. Dove va collocato?"
+  options={["In una DMZ, separata dalla rete interna dei contratti", "Nella rete interna, vicino al server dei contratti", "Nella zona ospiti, insieme ai pc dei visitatori", "Direttamente su Internet, senza firewall"]}
+  answer={0}
+  explain="Un server visibile a tutti è il più esposto: va in una zona intermedia, la DMZ, così se viene attaccato non si arriva ai server con i contratti. Metterlo vicino ai contratti, o nella zona ospiti, o senza firewall, annulla il vantaggio delle zone."
+/>
+
+<Say who="sensei">Chi è esposto a tutti non convive con chi custodisce i segreti. Questa è la regola della DMZ.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un ragionamento passo per passo">
+Il server del sito in DMZ viene attaccato e l'attaccante lo controlla. Cosa succede dopo?
+
+<Guided
+  steps={[
+    "Il server web è in DMZ. L'attaccante è dentro quel server, e vede solo quella zona.",
+    "Prova a raggiungere il server dei contratti. Il firewall tra DMZ e rete interna dice: default deny, tranne la porta del database usata dal sito.",
+    "Se il sito usa un database interno, quella porta è aperta. Per questo si limita a un solo indirizzo e una sola porta, e si usa un account con permessi minimi.",
+    "Il tentativo, insolito per quel server, fa scattare l'IDS. Il tecnico è avvisato e isola il server.",
+    "Il danno resta nella DMZ. I contratti non sono stati toccati.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Anche a casa si può segmentare: molti router permettono una rete «ospiti» separata, utile anche per telecamere e dispositivi smart.
+</Callout>
+
+<Say who="assistente">Vedi come ogni strato fa la sua parte? Firewall, zone, sorveglianza: nessuno è perfetto, insieme ti danno il tempo di reagire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla Verdi Consulting: dove mettere i server, cosa può raggiungere un attaccante e quali regole servono tra le zone.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-segmentazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Progettare le zone è decidere dove si ferma un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Segmentare vuol dire dividere la rete in zone e controllare con regole (default deny) cosa passa da una all'altra.
+- Se un pc cade, l'attaccante raggiunge solo ciò che le regole della sua zona permettono: il danno resta contenuto.
+- La DMZ è la zona intermedia per i server esposti a Internet: se cadono, non portano diretti alla rete interna.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché si divide la rete in zone?", a: "Per limitare i danni: un pc compromesso non raggiunge tutto" },
+    { q: "Cos'è una DMZ?", a: "Una zona intermedia per i server raggiungibili da Internet" },
+    { q: "Si mette il server dei contratti in DMZ?", a: "No: i dati riservati stanno nella rete interna, protetti" },
+    { q: "Cosa permette di solito la DMZ verso la rete interna?", a: "Quasi niente: solo lo stretto necessario" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la VPN. Un tunnel cifrato: cosa protegge, e cosa non protegge.</Say>
+</Scene>

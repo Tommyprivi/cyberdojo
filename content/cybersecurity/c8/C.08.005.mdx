@@ -1,0 +1,167 @@
+---
+id: C.08.005
+course: cybersecurity
+module: 8
+title: "Valutazione delle vulnerabilità"
+belt: blu
+duration_min: 9
+prerequisites: [C.08.004]
+objectives:
+  - "Spiegare che cosa sono CVE e CVSS e come si usano per stabilire le priorità"
+  - "Riconoscere un falso positivo e distinguere scansione di vulnerabilità e penetration test"
+  - "Descrivere come si segnala una vulnerabilità senza sfruttarla"
+verification:
+  type: generated-numeric
+  generator: c08-vulnerabilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ordinare i problemi solo per punteggio CVSS, ignorando dove si trova il sistema e quanto vale"
+  - "Considerare vero ogni risultato dello scanner: i falsi positivi esistono e vanno verificati"
+  - "Confondere «segnalare» con «dimostrare sfruttando»: per segnalare non serve entrare"
+commands: []
+---
+
+<Scene title="Duecento righe di rosso">
+Il responsabile della Rossi Srl riceve il report di uno scanner di vulnerabilità sui suoi sistemi (con permesso scritto, ambito concordato): **duecento voci**, molte «critiche». Chiede: «Da dove comincio? Mi stanno dicendo che è tutto rotto?»
+
+Non è tutto rotto. Ma serve un metodo per decidere.
+
+La domanda del caso: **come si trasformano duecento voci in una lista di cose da fare?**
+
+<Say who="sensei">Un elenco senza priorità è rumore. Il tuo lavoro è trasformarlo in ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CVE e CVSS: nome e gravità">
+Quando si scopre una vulnerabilità in un programma pubblico, riceve un identificativo: il **CVE** (*Common Vulnerabilities and Exposures*). Ha la forma «CVE-anno-numero», per esempio **CVE-2099-12345** (inventato).
+
+Serve per **parlare tutti dello stesso problema**: lo scanner, il produttore e il responsabile usano lo stesso nome e trovano la stessa scheda.
+
+<Callout kind="curiosita">
+Un CVE non è un attacco e non contiene un attacco: è un'etichetta con una descrizione del problema e delle versioni coinvolte.
+</Callout>
+
+Il **CVSS** (*Common Vulnerability Scoring System*) dà alla vulnerabilità un punteggio da **0 a 10** e una fascia:
+
+- 0,1 – 3,9: **bassa**
+- 4,0 – 6,9: **media**
+- 7,0 – 8,9: **alta**
+- 9,0 – 10: **critica**
+
+Il punteggio considera, tra l'altro, se si sfrutta da remoto, quanto è difficile, se serve un accesso preventivo e quale danno fa a riservatezza, integrità e disponibilità.
+
+<Callout kind="attenzione">
+Il CVSS misura la gravità **in generale**, non per **te**. Un 9,8 su una macchina isolata e senza dati può contare meno di un 6,0 sul server pubblico dei clienti.
+</Callout>
+
+<Say who="sensei">Il numero è il punto di partenza. La priorità la decidi tu, guardando il contesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La priorità">
+Per ordinare i problemi si guardano insieme:
+
+1. **Gravità** (CVSS).
+2. **Esposizione**: il sistema è raggiungibile da Internet o solo dall'interno?
+3. **Valore**: che dati o servizi contiene?
+4. **Rimedio**: esiste un aggiornamento o una contromisura semplice?
+
+<Log lines={[
+  "A  sito pubblico clienti    CVSS 7,5   esposto a Internet   patch disponibile   -> PRIORITÀ ALTA",
+  "B  stampante ufficio        CVSS 9,1   solo rete interna    patch disponibile   -> media, ma da pianificare",
+  "C  server di prova spento   CVSS 9,8   non raggiungibile    -                   -> bassa (poi da ritirare)",
+]} caption="Esempio fittizio di ordine delle priorità" />
+
+<Say who="assistente">Vedi? Il 9,8 non è il primo. Il primo è quello che più persone possono raggiungere e che più costerebbe perdere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Falsi positivi e due mestieri diversi">
+Uno scanner indovina dalle versioni e dalle risposte. A volte sbaglia. Un **falso positivo** è una voce segnalata come problema che in realtà **non esiste** (per esempio perché il fornitore ha già corretto il programma senza cambiare il numero di versione). Prima di allarmare qualcuno, si **verifica**.
+
+Due attività da non confondere:
+
+- **Scansione di vulnerabilità**: automatica, ampia, produce un elenco di problemi **possibili**. Non entra nei sistemi.
+- **Penetration test**: lavoro di persone esperte, con incarico scritto e regole concordate, che valutano **se e come** quei problemi portano a un danno reale.
+
+<Callout kind="regola">
+Anche un penetration test ha ambito e permesso scritti. Nel nostro corso non si eseguono su sistemi reali: qui si impara a ragionare, leggere e riferire.
+</Callout>
+
+<Say who="sensei">La scansione dice «forse». Chi verifica, con permesso, dice «sì» o «no». E chi segnala non ha bisogno di entrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnalare senza sfruttare">
+Per segnalare una vulnerabilità **non serve dimostrarla entrando**. Bastano:
+
+- il **nome** del problema (CVE, se esiste);
+- **dove** si trova (sistema e versione);
+- l'**evidenza** minima: la riga dello scanner o la versione rilevata;
+- il **rischio** in parole semplici;
+- un **suggerimento** per risolvere.
+
+<Callout kind="trucco">
+Se la prova richiederebbe di entrare dove non hai il permesso, ti fermi alla riga dello scanner. L'evidenza minima basta.
+</Callout>
+
+<Say who="assistente">Chi legge il tuo rapporto vuole sapere che cosa fare lunedì mattina, non vedere una dimostrazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Lo scanner segnala un CVE «critico» su un vecchio server di prova, spento e scollegato dalla rete. Intanto il sito pubblico dei clienti ha una voce «alta» con aggiornamento già disponibile. Che cosa metti per primo nella lista?"
+  options={[
+    "Il sito pubblico: è esposto, contiene dati dei clienti e il rimedio esiste",
+    "Il server di prova: ha il punteggio più alto",
+    "Nessuno dei due finché non ho il tempo di provarli entrambi in produzione",
+    "Quello più facile da spiegare al capo",
+  ]}
+  answer={0}
+  explain="Il punteggio non basta: contano esposizione, valore dei dati e disponibilità del rimedio. Il server spento e isolato è un rischio molto basso (e si può semplicemente ritirare). Provare le vulnerabilità in produzione, senza ambito concordato, non si fa."
+/>
+
+<Say who="assistente">Indizio: chi può essere raggiunto da più persone, e chi costa di più se cade.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su CVE, CVSS, priorità e falsi positivi. A ogni tentativo le domande cambiano.
+
+<Practice generator="c08-vulnerabilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai trasformare un elenco in un piano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- CVE è il nome unico di un problema noto; CVSS è la sua gravità da 0 a 10, ma non dice tutto sul tuo caso.
+- La priorità nasce da gravità, esposizione, valore del sistema e disponibilità del rimedio.
+- Scansione di vulnerabilità e penetration test sono cose diverse; si segnala senza sfruttare e sempre dentro ambito e permesso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un CVE?", a: "L'identificativo pubblico di una vulnerabilità nota, per esempio CVE-anno-numero" },
+    { q: "Che cos'è il CVSS?", a: "Un punteggio da 0 a 10 che esprime la gravità generale di una vulnerabilità" },
+    { q: "Che cos'è un falso positivo?", a: "Un problema segnalato dallo scanner che in realtà non esiste" },
+    { q: "Differenza tra scansione e penetration test?", a: "La prima è automatica e produce un elenco di possibili problemi; il secondo è un lavoro di persone, con incarico scritto, che verifica l'impatto reale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il rapporto. Un problema non comunicato bene è un problema non risolto.</Say>
+</Scene>

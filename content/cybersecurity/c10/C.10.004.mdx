@@ -1,0 +1,172 @@
+---
+id: C.10.004
+course: cybersecurity
+module: 10
+title: "Tor e la cipolla"
+belt: marrone
+duration_min: 9
+prerequisites: [C.10.003]
+objectives:
+  - "Descrivere a grandi linee come Tor protegge l'identità con più nodi"
+  - "Elencare limiti e usi legittimi di Tor"
+  - "Spiegare perché l'anonimato è difficile da mantenere"
+video:
+  provider: youtube
+  id: "-qHmgpNWGew"
+  start: 0
+  end: 600
+  channel: "Roby79"
+  title: "Anonimato in rete: TOR come funziona"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c10-tor
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che Tor serva solo ai criminali: è legale e molto usato per aggirare la censura"
+  - "Accedere al proprio account personale mentre si usa Tor e credersi ancora anonimi"
+  - "Credere che Tor garantisca anonimato assoluto, qualunque cosa si faccia"
+commands: []
+---
+
+<Scene title="La giornalista">
+Elena è una giornalista. Sta indagando su un'azienda e vuole consultare dei documenti senza che l'azienda, o altri, sappiano che è lei a farlo.
+
+Una VPN non basta: dovrebbe fidarsi del fornitore. Qualcuno le consiglia **Tor**.
+
+La domanda del caso: **come può un sistema nascondere chi sei senza chiederti di fidarti di un solo intermediario?**
+
+<Say who="sensei">Questa non è una lezione per scappare dalla legge. È una lezione su uno strumento che protegge chi non ha altre protezioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il percorso a tre tappe">
+**Tor** è una rete di server gestiti da volontari. Quando navighi con il **Tor Browser**, il tuo traffico non va direttamente al sito: passa da **tre nodi** scelti a caso.
+
+- **Nodo di ingresso**: conosce il tuo IP, ma non sa dove stai andando.
+- **Nodo intermedio**: sa solo da quale nodo arriva e a quale va.
+- **Nodo di uscita**: parla con il sito, ma non sa chi sei.
+
+<Callout kind="trucco">
+Nessun nodo conosce **insieme** chi sei e dove vai. Per ricostruire tutto, bisognerebbe osservare più punti nello stesso momento.
+</Callout>
+
+<Say who="assistente">La fiducia non sta in uno solo: sta distribuita. È la differenza principale con una VPN.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché «cipolla»">
+Il messaggio viene avvolto in **tre strati di cifratura**, uno per ogni nodo, come gli strati di una cipolla.
+
+- Il primo nodo toglie il suo strato e capisce solo a chi passare il pacchetto.
+- Il secondo toglie il suo e passa oltre.
+- Il terzo toglie l'ultimo e invia la richiesta al sito.
+
+Ogni nodo conosce solo il passo prima e il passo dopo. Per questo il sistema si chiama **onion routing**, instradamento a cipolla.
+
+<Callout kind="curiosita">
+Esistono anche servizi **.onion**, raggiungibili solo dentro Tor, che nascondono anche la posizione del server. Molti giornali e organizzazioni li usano per ricevere segnalazioni in sicurezza.
+</Callout>
+
+Vuoi ascoltarlo da un'altra voce? Guarda con attenzione la parte sul percorso dei nodi:
+
+<Video />
+
+<Say who="sensei">Strati. Uno per nodo. Nessuno vede il quadro completo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti di Tor">
+Tor non è magia. I suoi limiti:
+
+- **Lentezza**: il percorso è più lungo e cifrato più volte.
+- **Nodo di uscita**: se il sito non usa HTTPS, chi gestisce quel nodo può leggere il contenuto (ma non sa chi sei).
+- **Analisi del traffico**: un avversario che osserva tantissimi nodi può, in teoria, collegare ingresso e uscita.
+- **Siti che bloccano Tor**: alcuni servizi non accettano il traffico da nodi di uscita.
+
+<Callout kind="attenzione">
+Tor protegge il percorso, non ciò che fai. Se accedi al tuo account personale, il sito sa chi sei, anche se non vede il tuo IP.
+</Callout>
+
+<Say who="sensei">Uno strumento forte non protegge da chi lo usa male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché l'anonimato è difficile">
+<Quiz
+  question="Elena usa Tor Browser, poi scarica un PDF e lo apre con il suo programma abituale. Che cosa rischia?"
+  options={["Il programma può collegarsi a Internet senza passare da Tor e rivelare il suo IP reale", "Niente: il PDF è dentro Tor anche aperto fuori", "Tor smette di funzionare per un'ora", "Il PDF si cifra da solo e non si apre"]}
+  answer={0}
+  explain="Tor protegge solo il traffico del Tor Browser. Un file aperto fuori dal browser può contattare Internet direttamente. Chi risponde che il PDF resta dentro Tor ha confuso il browser con tutto il computer."
+/>
+
+<Callout kind="regola">
+L'anonimato si rompe con **piccoli errori**: un login personale, la stessa abitudine, lo stesso nome, un file aperto fuori. Non serve un super attacco: basta una distrazione.
+</Callout>
+
+<Say who="assistente">Per questo la sicurezza è fatta più di abitudini che di strumenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Usi legittimi e legge">
+Tor è **legale** in Italia. Chi lo usa?
+
+<Guided
+  steps={[
+    "Giornalisti e attivisti che comunicano con fonti riservate.",
+    "Cittadini in paesi con censura che vogliono accedere a notizie bloccate.",
+    "Chi fa ricerca sulla sicurezza e studia la rete (in modo lecito).",
+    "Persone che temono sorveglianza e vogliono ridurre il tracciamento.",
+  ]}
+/>
+
+<Callout kind="regola">
+Ciò che è reato senza Tor è reato anche con Tor (in Italia, ad esempio, l'accesso abusivo a un sistema è punito dall'art. 615-ter del codice penale). Si prova solo ciò che è proprio o per cui si ha un permesso scritto.
+</Callout>
+
+<Say who="sensei">Lo strumento non è né buono né cattivo. Lo è l'uso che ne fai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su Tor, estratti da una banca più ampia. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="c10-tor" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi capisce i limiti dell'anonimato ci arriva più vicino di chi crede di averlo già.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tor fa passare il traffico da tre nodi con strati di cifratura: nessun nodo conosce insieme chi sei e dove vai.
+- Ha dei limiti: lentezza, nodo di uscita, analisi del traffico, e non salva da login personali o file aperti fuori.
+- È legale e ha usi legittimi importanti; la legge vale anche con Tor.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sa il nodo di ingresso?", a: "Il tuo IP, ma non il sito di destinazione" },
+    { q: "Che cosa sa il nodo di uscita?", a: "Il sito di destinazione, ma non chi sei" },
+    { q: "Perché «cipolla»?", a: "Ci sono più strati di cifratura, uno tolto da ogni nodo" },
+    { q: "Che cosa può rompere l'anonimato?", a: "Un login personale, un file aperto fuori da Tor, abitudini riconoscibili" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i dettagli che ti tradiscono anche senza Tor, i metadati.</Say>
+</Scene>

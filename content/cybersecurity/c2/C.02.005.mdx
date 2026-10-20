@@ -1,0 +1,152 @@
+---
+id: C.02.005
+course: cybersecurity
+module: 2
+title: "Chi lo dice, e chi lo garantisce"
+belt: gialla
+duration_min: 8
+prerequisites: [C.02.004]
+objectives:
+  - "Spiegare come una firma digitale garantisce autenticità e integrità"
+  - "Dire quale chiave firma e quale verifica"
+  - "Descrivere il ruolo di certificati e autorità di certificazione"
+verification:
+  type: generated-numeric
+  generator: c02-firme-certificati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la firma digitale nasconda il contenuto: firmare non è cifrare"
+  - "Scambiare le chiavi: si firma con la privata, si verifica con la pubblica"
+  - "Fidarsi di una chiave pubblica solo perché «sta sul sito», senza un certificato"
+commands: []
+---
+
+<Scene title="L'email del direttore">
+A scuola arriva un'email firmata «Il Direttore»: chiede di cambiare subito l'IBAN dei pagamenti della gita. Il testo è identico a quelli che il direttore scrive sempre.
+
+La segreteria la apre e si ferma: **chi garantisce che l'abbia scritta davvero lui?** E se qualcuno l'ha modificata lungo la strada?
+
+<Say who="sensei">Scrivere un nome in fondo non costa niente. Serve una firma che non si possa copiare né spostare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La firma digitale">
+Con le due chiavi della lezione scorsa si può fare una cosa nuova: **firmare**. Il ruolo delle chiavi si rovescia.
+
+<Guided
+  steps={[
+    "Il mittente calcola l'hash del messaggio (l'impronta).",
+    "Cifra quell'hash con la sua chiave privata: questa è la firma.",
+    "Il destinatario decifra la firma con la chiave pubblica del mittente e ottiene l'hash.",
+    "Calcola da solo l'hash del messaggio ricevuto e confronta i due.",
+    "Se coincidono: il messaggio è proprio quello firmato.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si **firma con la chiave privata** (solo il proprietario può farlo) e si **verifica con la chiave pubblica** (chiunque può controllare).
+</Callout>
+
+<Say who="assistente">Vedi come ritorna l'hash? Si firma l'impronta del messaggio, non il messaggio intero. È più veloce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa garantisce">
+Una firma valida dà due garanzie, più una terza.
+
+- **Autenticità**: il messaggio viene da chi possiede la chiave privata.
+- **Integrità**: se anche una sola lettera cambia, l'hash non coincide e la verifica fallisce.
+- **Non ripudio**: chi ha firmato non può dire «non sono stato io» (a patto che nessuno gli abbia rubato la chiave).
+
+<Callout kind="attenzione">
+La firma **non nasconde** il contenuto. Il messaggio resta leggibile: la firma dice solo **chi** lo ha scritto e che **non è stato toccato**. Per nasconderlo serve in più la cifratura.
+</Callout>
+
+<Say who="sensei">Firmare è come sigillare con la ceralacca. Tutti vedono la lettera, ma si accorgono se il sigillo è rotto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ma questa chiave è sua?">
+C'è un buco. La segreteria verifica la firma con la chiave pubblica del direttore. Ma **chi garantisce che quella chiave sia davvero del direttore**? Un truffatore potrebbe mandare la sua chiave pubblica dicendo: «Questa è del direttore».
+
+Serve qualcuno di cui tutti si fidano, che attesti: «Questa chiave pubblica appartiene a questa persona (o a questo sito)». Questo attestato è il **certificato digitale**.
+
+<Callout kind="curiosita">
+Il certificato contiene il nome del proprietario, la sua chiave pubblica, la data di scadenza e la **firma di chi lo ha emesso**.
+</Callout>
+
+<Say who="assistente">Un certificato è come una carta d'identità: dice chi sei, ed è firmata da un ente riconosciuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le autorità di certificazione">
+Chi emette i certificati si chiama **autorità di certificazione**, in inglese **CA** (Certificate Authority). Prima di emetterne uno, verifica che chi lo chiede controlli davvero il dominio o l'identità.
+
+Il tuo browser e il tuo sistema conoscono già l'elenco delle CA fidate. Un sito mostra il proprio certificato; il browser controlla che sia firmato da una CA dell'elenco, anche passando per **certificati intermedi** (la **catena di fiducia**). Controlla anche che non sia scaduto e che riguardi proprio quel sito.
+
+<Callout kind="attenzione">
+Se il certificato è scaduto, o è emesso per un altro nome, o è firmato da una CA sconosciuta, il browser ti avvisa. **Non cliccare «procedi comunque»** senza capire perché.
+</Callout>
+
+<Say who="sensei">La fiducia si costruisce a catena. Se un anello è falso, tutta la catena cade. Per questo il browser controlla ogni passaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Arriva un contratto in PDF con firma digitale valida. Un collega dice: «Il contenuto è anche segreto, perché è firmato». Che cosa rispondi?"
+  options={[
+    "Sbagliato: la firma garantisce autore e integrità, ma il testo resta leggibile da chiunque lo riceva",
+    "Giusto: la firma digitale cifra automaticamente il documento",
+    "Giusto: solo il firmatario può aprire un documento firmato",
+    "Sbagliato: la firma garantisce solo che il documento sia stato scritto da un computer",
+  ]}
+  answer={0}
+  explain="Firmare e cifrare sono due operazioni diverse. La firma serve per l'autenticità e l'integrità; per la riservatezza serve la cifratura. Chi risponde che il documento è segreto confonde i due strumenti."
+/>
+
+<Say who="sensei">Se vuoi due cose, fai due cose: firmi per dimostrare chi sei, cifri per nascondere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su firme, certificati e autorità di certificazione.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-firme-certificati" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda le due direzioni: cifri con la pubblica di chi riceve, firmi con la tua privata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La firma digitale è l'hash del messaggio cifrato con la chiave privata; chiunque la verifica con la chiave pubblica.
+- Dà autenticità e integrità (e non ripudio), ma non nasconde il contenuto.
+- Un certificato lega una chiave pubblica a un'identità ed è firmato da una autorità di certificazione fidata.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con quale chiave si firma?", a: "Con la chiave privata del firmatario" },
+    { q: "Con quale chiave si verifica una firma?", a: "Con la chiave pubblica del firmatario" },
+    { q: "Che cosa garantisce una firma valida?", a: "Chi ha scritto il messaggio e che non è stato modificato" },
+    { q: "Che cos'è una CA?", a: "Un ente fidato che emette certificati legando una chiave pubblica a un'identità" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: TLS e HTTPS. Metteremo insieme tutto quello che hai imparato, in un solo lucchetto.</Say>
+</Scene>

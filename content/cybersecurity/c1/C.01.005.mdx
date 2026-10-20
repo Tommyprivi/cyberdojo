@@ -1,0 +1,150 @@
+---
+id: C.01.005
+course: cybersecurity
+module: 1
+title: "Difesa in profondità e privilegio minimo"
+belt: gialla
+duration_min: 9
+prerequisites: [C.01.004]
+objectives:
+  - "Spiegare perché un solo controllo non basta e come si costruiscono più livelli di difesa"
+  - "Applicare il privilegio minimo a un caso concreto di permessi"
+verification:
+  type: generated-numeric
+  generator: c01-difesa
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un buon firewall o un buon antivirus bastino da soli"
+  - "Dare permessi larghi «per comodità» e non toglierli quando non servono più"
+  - "Ripetere lo stesso controllo più volte invece di mettere controlli di tipo diverso"
+commands: []
+---
+
+<Scene title="Un clic, tutto aperto">
+Alla Verdi Contabilità, un fornitore fittizio di servizi per piccole imprese, Elena riceve una mail che sembra del suo commercialista. Clicca sul link. Il filtro antispam non l'ha fermata.
+
+Il suo computer viene infettato. Elena ha un account da **amministratore**, cioè con tutti i permessi, perché «così non deve chiamare nessuno». Il programma dannoso, con quei permessi, arriva ai file di tutti i clienti dello studio.
+
+Non c'erano altri controlli. Il filtro era l'unico.
+
+La domanda del caso: **come si costruisce una difesa che non cada al primo errore?**
+
+<Say who="sensei">Un controllo solo è un punto solo. Basta aggirare quello, e hai finito. Oggi si impara a non dipendere da un solo punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più barriere">
+La **difesa in profondità** consiste nel mettere **più livelli di protezione**, di tipo diverso. Se uno cade, ne restano altri.
+
+Esempio: una cassaforte in una banca. Non c'è solo la cassaforte. C'è la porta, il vigilante, la telecamera, l'allarme, la stanza blindata. Ognuno ha un compito diverso.
+
+<Callout kind="regola">
+Nessun controllo è perfetto. Per questo se ne mettono più di uno, e ognuno copre ciò che l'altro può mancare.
+</Callout>
+
+<Say who="assistente">Come una cipolla: per arrivare al centro devi attraversare tanti strati, e ogni strato ti rallenta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I livelli di Elena">
+Ecco i livelli che avrebbero fermato, o almeno ridotto, il danno della mail:
+
+- **Il filtro antispam**: ferma molte email false. Non tutte.
+- **La persona preparata**: sa riconoscere un messaggio sospetto prima di cliccare.
+- **Un account con pochi permessi**: anche se il computer è infettato, il danno resta piccolo.
+- **Le copie di riserva**: se i file vengono rovinati, si ripristinano.
+- **Il rilevamento**: un avviso che segnala comportamenti strani del computer.
+
+<Callout kind="attenzione">
+Errore tipico: mettere tre volte lo stesso tipo di controllo. Tre antivirus sullo stesso computer non sono tre livelli: è un livello ripetuto. I livelli devono essere **diversi**.
+</Callout>
+
+<Say who="sensei">Prevenire, rilevare, ripristinare. Tre verbi, tre tipi di difesa. Se ne manca uno, c'è un buco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Privilegio minimo">
+Il **privilegio minimo** è una regola semplice: **ogni persona e ogni programma ha solo i permessi che servono per il proprio lavoro, e niente di più.**
+
+Esempio: il fattorino ha le chiavi del portone, non quelle dell'ufficio. Il contabile legge il gestionale, ma non lo amministra.
+
+Perché funziona: se un account viene compromesso, l'attaccante ottiene **gli stessi permessi** di quell'account. Pochi permessi, pochi danni.
+
+<Callout kind="trucco">
+Domanda guida per ogni permesso: **«Che cosa non funzionerebbe, se lo togliessi?»** Se la risposta è «niente», toglilo.
+</Callout>
+
+<Say who="assistente">Il caso di Elena: un account normale per il lavoro di ogni giorno, e quello da amministratore solo quando serve davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un ex dipendente di un'azienda ha ancora l'accesso al gestionale dopo sei mesi dall'uscita. Quale principio non è stato rispettato?"
+  options={["Il privilegio minimo: non gli servono più, quindi vanno tolti", "La difesa in profondità: manca un secondo firewall", "La disponibilità: il gestionale era spento", "Nessuno: gli accessi non scadono mai"]}
+  answer={0}
+  explain="Un accesso che non serve più è un permesso in più, e ogni permesso in più è un'occasione in più per chi vuole fare danno (o per chi gli ruba la password). Il privilegio minimo vale anche nel tempo: quando il lavoro finisce, i permessi si tolgono."
+/>
+
+<Say who="sensei">I permessi hanno una scadenza. Quando il bisogno finisce, il permesso finisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Costruire i livelli">
+Rimettiamo in ordine la difesa della Verdi Contabilità.
+
+<Guided
+  steps={[
+    "Primo livello, prevenire: filtro per le email, aggiornamenti dei programmi, password lunghe con secondo controllo.",
+    "Secondo livello, ridurre il danno: account normali per il lavoro quotidiano, permessi ridotti, rete divisa per aree.",
+    "Terzo livello, rilevare: avvisi se un computer fa cose insolite, controlli sugli accessi strani.",
+    "Quarto livello, ripristinare: copie di riserva fatte regolarmente e provate, così da ripartire in poco tempo.",
+    "Alla prossima mail finta: l'antispam ne ferma tante. Se una passa, la persona la riconosce. Se clicca, l'account ha pochi permessi. Se i file si rovinano, ci sono le copie. Quattro occasioni, non una.",
+  ]}
+/>
+
+<Say who="sensei">Un attaccante deve riuscire in tutto. Tu devi riuscire solo in una cosa. Questa è la forza dei livelli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su livelli di difesa e permessi minimi. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-difesa" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Più livelli diversi, permessi stretti. Con questo si comincia a difendere sul serio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Difesa in profondità: più livelli di protezione, di tipo diverso, perché nessun controllo è perfetto.
+- I livelli servono a prevenire, rilevare e ripristinare.
+- Privilegio minimo: ognuno ha solo i permessi che servono, e solo finché servono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la difesa in profondità?", a: "Più livelli di protezione, diversi tra loro" },
+    { q: "Che cos'è il privilegio minimo?", a: "Dare solo i permessi che servono al lavoro" },
+    { q: "Perché un account da amministratore usato sempre è un rischio?", a: "Se viene compromesso, l'attaccante ha tutti i permessi" },
+    { q: "Tre antivirus sullo stesso computer sono tre livelli?", a: "No, è lo stesso tipo di controllo ripetuto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: etica, legge e hacker etico. Perché sapere non basta: bisogna sapere anche dove non entrare.</Say>
+</Scene>

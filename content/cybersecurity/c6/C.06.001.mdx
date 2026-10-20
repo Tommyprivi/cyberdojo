@@ -1,0 +1,180 @@
+---
+id: C.06.001
+course: cybersecurity
+module: 6
+title: "SQL in dieci minuti"
+belt: arancione
+duration_min: 9
+prerequisites: [C.05.008]
+objectives:
+  - "Leggere una tabella come righe e colonne"
+  - "Scrivere una SELECT con WHERE per trovare i dati che servono"
+  - "Capire perché un database è il posto dove stanno i dati da proteggere"
+verification:
+  type: generated-numeric
+  generator: c06-sql
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il WHERE: la query restituisce tutte le righe, non solo quelle volute"
+  - "Confondere SELECT (leggere) con UPDATE o DELETE (modificare o cancellare)"
+  - "Pensare che il database sia «il sito»: è un programma a parte, con i dati dentro"
+commands: []
+---
+
+<Scene title="Il negozio di Marta">
+Marta ha un piccolo negozio online di candele e saponi artigianali: «Il Cesto di Marta». Il sito mostra i prodotti, i prezzi, gli ordini. Ma dove stanno davvero queste informazioni?
+
+Non dentro le pagine. Stanno in un **database**: un programma separato che conserva i dati in ordine e risponde alle domande del sito.
+
+Per fare domande a quasi tutti i database si usa un linguaggio che si chiama **SQL**. Chi attacca un sito molto spesso cerca di arrivare lì, perché lì ci sono i dati.
+
+La domanda del caso: **come si parla con un database, e perché è un bersaglio?**
+
+<Say who="sensei">Prima di difendere un database bisogna saperci parlare. Dieci minuti, poi sai leggere SQL.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una tabella è un foglio a righe">
+Un database è fatto di **tabelle**. Una tabella è come un foglio di calcolo: ogni **colonna** è un tipo di informazione, ogni **riga** è una cosa concreta.
+
+La tabella `prodotti` del negozio di Marta:
+
+<Log lines={[
+  "id | nome            | prezzo | giacenza",
+  "1  | candela vaniglia | 12.50  | 40",
+  "2  | sapone lavanda   | 6.00   | 85",
+  "3  | candela cedro    | 18.00  | 12",
+  "4  | profumatore      | 24.00  | 0",
+]} caption="Quattro righe, quattro colonne. Dati inventati." />
+
+<Callout kind="trucco">
+Colonne = cosa sappiamo di ogni cosa. Righe = le cose. Una riga è un prodotto, un cliente, un ordine.
+</Callout>
+
+<Say who="assistente">Se sai leggere un foglio di calcolo, sai già leggere una tabella. SQL serve a fare domande a quel foglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="SELECT: leggere">
+La parola chiave per **leggere** è `SELECT`. Si dice cosa vuoi (le colonne) e da dove (la tabella).
+
+<Log lines={[
+  "SELECT nome, prezzo FROM prodotti;",
+  "",
+  "candela vaniglia | 12.50",
+  "sapone lavanda   | 6.00",
+  "candela cedro    | 18.00",
+  "profumatore      | 24.00",
+]} caption="Si legge: «scegli nome e prezzo dalla tabella prodotti»." />
+
+Il punto e virgola chiude la domanda. Con `SELECT *` si chiedono **tutte** le colonne.
+
+<Callout kind="attenzione">
+`SELECT` non cambia niente: legge e basta. Per scrivere o cancellare esistono altre parole (`INSERT`, `UPDATE`, `DELETE`), e sono quelle da proteggere di più.
+</Callout>
+
+<Say who="sensei">SELECT guarda, non tocca. Ricordalo: più avanti conterà molto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="WHERE: filtrare">
+Quasi mai servono tutte le righe. Con `WHERE` si mette una **condizione**: il database restituisce solo le righe per cui la condizione è vera.
+
+<Log lines={[
+  "SELECT nome FROM prodotti WHERE prezzo < 15;",
+  "",
+  "candela vaniglia",
+  "sapone lavanda",
+  "",
+  "SELECT nome FROM prodotti WHERE giacenza = 0;",
+  "",
+  "profumatore",
+]} caption="Due domande, due filtri." />
+
+Le condizioni si possono unire: `AND` vuole che siano vere **tutte e due**, `OR` ne basta **una**.
+
+<Callout kind="regola">
+Il testo va tra apici: `WHERE nome = 'sapone lavanda'`. I numeri no. Tieni a mente gli apici: sono il cuore del problema che vedremo nella prossima lezione.
+</Callout>
+
+<Say who="assistente">WHERE è un setaccio. Passa solo ciò che rispetta la condizione. Con OR passa di più, con AND passa di meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta vuole l'elenco dei prodotti che costano più di 10 euro e di cui ha ancora almeno un pezzo. Quale query scrive?"
+  options={[
+    "SELECT nome FROM prodotti WHERE prezzo > 10 AND giacenza > 0;",
+    "SELECT nome FROM prodotti WHERE prezzo > 10 OR giacenza > 0;",
+    "SELECT nome FROM prodotti;",
+    "DELETE FROM prodotti WHERE giacenza = 0;",
+  ]}
+  answer={0}
+  explain="Servono due condizioni vere insieme: AND. Con OR comparirebbe anche un prodotto da 6 euro solo perché è disponibile. Senza WHERE escono tutte le righe. E DELETE non legge: cancella."
+/>
+
+<Say who="sensei">Due condizioni che devono valere insieme? AND. Una qualunque delle due? OR. Sbagliarli cambia il risultato, e in sicurezza cambia chi vede cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché è un bersaglio">
+Nella tabella `clienti` di Marta ci sono nomi, indirizzi, email. Un `SELECT * FROM clienti` senza `WHERE` li restituirebbe **tutti**.
+
+<Log lines={[
+  "SELECT email FROM clienti WHERE id = 7;",
+  "",
+  "giulia.ferri@esempio.it",
+]} caption="Uso normale: il sito chiede un cliente alla volta. Dati inventati." />
+
+Il sito costruisce domande come questa ogni volta che qualcuno entra, cerca, ordina. Se qualcuno riuscisse a cambiare la domanda, potrebbe farsi dare molto più del dovuto.
+
+<Callout kind="curiosita">
+Per questo i database sono tra i sistemi più importanti da difendere: le difese dei prossimi capitoli (query sicure, permessi, backup, cifratura) partono tutte da qui.
+</Callout>
+
+<Say who="sensei">Il database è la cassaforte, il sito è la porta. Chi attacca la porta vuole arrivare alla cassaforte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono date alcune query sul negozio di Marta. Per ognuna devi capire cosa restituisce o cosa fa.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c06-sql" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Leggere una query senza eseguirla è la base di ogni controllo di sicurezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un database è fatto di tabelle: le colonne sono le informazioni, le righe sono le cose.
+- SELECT legge, WHERE filtra; AND richiede tutte le condizioni, OR ne basta una.
+- I dati stanno nel database, per questo è il bersaglio più prezioso di un sito.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa SELECT?", a: "Legge i dati, senza modificarli" },
+    { q: "Che cosa fa WHERE?", a: "Tiene solo le righe che rispettano la condizione" },
+    { q: "Differenza tra AND e OR?", a: "AND: tutte le condizioni vere. OR: ne basta una" },
+    { q: "Perché un attaccante punta al database?", a: "Perché lì stanno i dati" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: cosa succede quando un sito costruisce la query incollando il testo di chi lo usa. Un errore famoso, e vecchio di decenni.</Say>
+</Scene>

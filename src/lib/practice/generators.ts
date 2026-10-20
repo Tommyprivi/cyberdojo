@@ -1,8 +1,9 @@
-/**
+﻿/**
  * Generatori di esercizi. Puri e deterministici: stesso seme, stesse domande.
  * I mattoni comuni (tipi, numeri casuali) stanno in core.ts; le domande a scelta in banks.ts.
  */
 import { BANKS, hexByteToDecimal, ipPrivatePublic, ipValid } from "./banks";
+import { CYBER_BANKS } from "./banks-cyber";
 import { parseChoiceAnswer, rng, type Question } from "./core";
 
 export { rng, shuffle, parseChoiceAnswer } from "./core";
@@ -67,7 +68,12 @@ export function parseOctetAnswer(raw: string): number | null {
 }
 
 /** Ogni generatore sa produrre le domande e leggere le risposte. */
+const CYBER_GENERATORS = Object.fromEntries(
+  Object.entries(CYBER_BANKS).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
+) as Record<string, { generate: (seed: string, count?: number) => Question[]; parse: typeof parseChoiceAnswer }>;
+
 export const GENERATORS = {
+  ...CYBER_GENERATORS,
   "binary-to-decimal": { generate: binaryToDecimal, parse: parseIntegerAnswer },
   "decimal-to-binary": { generate: decimalToBinary, parse: parseOctetAnswer },
   "hex-byte-to-decimal": { generate: hexByteToDecimal, parse: parseIntegerAnswer },
@@ -159,3 +165,4 @@ export function binaryToDecimalSteps(bits: string): string[] {
     `Sommali: ${ones.join(" + ")} = ${ones.reduce((a, b) => a + b, 0)}.`,
   ];
 }
+

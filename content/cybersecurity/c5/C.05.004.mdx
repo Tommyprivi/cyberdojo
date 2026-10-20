@@ -1,0 +1,140 @@
+---
+id: C.05.004
+course: cybersecurity
+module: 5
+title: "Cross-site scripting (XSS)"
+belt: arancione
+duration_min: 8
+prerequisites: [C.05.003]
+objectives:
+  - "Spiegare perché il browser esegue il contenuto che riceve dal sito"
+  - "Riconoscere dove un guestbook fittizio mostra testo altrui senza protezione"
+  - "Indicare la difesa: l'escape dell'output"
+verification:
+  type: generated-numeric
+  generator: c05-xss
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'XSS colpisca il server: il danno avviene nel browser dei visitatori"
+  - "Credere che filtrare l'input basti, senza codificare l'output"
+  - "Pensare che un sito piccolo o senza password non sia un bersaglio utile"
+commands: []
+---
+
+<Scene title="Il guestbook">
+Un piccolo sito fittizio, «Gatti di Quartiere», ha un **guestbook**: una pagina dove i visitatori lasciano un messaggio che resta visibile a tutti.
+
+Un giorno, aprendo la pagina, una visitatrice vede comparire un avviso strano che non c'è mai stato. Nessuno ha toccato il sito. Il messaggio di qualcun altro, però, **non era solo testo**.
+
+La domanda del caso: **come fa un messaggio a comportarsi da programma nel browser di chi lo legge?**
+
+<Say who="sensei">Stessa idea della lezione scorsa: un dato che diventa comando. Ma stavolta l'esecutore è il browser dei tuoi visitatori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il browser esegue ciò che riceve">
+Il server manda al browser una pagina scritta in **HTML**, il linguaggio che descrive titoli, paragrafi e pulsanti. Dentro l'HTML ci può essere anche **JavaScript**, un linguaggio di programmazione che il browser esegue.
+
+Il browser ha un solo compito: leggere ciò che arriva e farlo. **Non sa chi l'ha scritto.** Se la pagina contiene un pezzo di codice, lo esegue, anche se l'ha scritto un visitatore.
+
+<Callout kind="regola">
+Il browser si fida del sito. Se il sito inserisce nella pagina testo altrui così com'è, il browser si fiderà anche di quello.
+</Callout>
+
+<Say who="assistente">Come un lettore che esegue ogni istruzione scritta sul foglio che gli passano, senza chiedersi di chi sia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'XSS">
+Il **cross-site scripting (XSS)** accade quando un sito inserisce nella pagina un testo scritto da altri **senza neutralizzarlo**, e quel testo contiene codice che il browser esegue.
+
+Nel guestbook succede così, a livello di concetto:
+
+- Ada lascia un messaggio che contiene del codice invece di parole.
+- Il sito lo salva e lo mostra a tutti.
+- Il browser di ogni visitatore lo esegue **con i poteri del sito**.
+
+Con quei poteri il codice può leggere ciò che la pagina vede, modificare la pagina, e in certi casi usare la sessione del visitatore.
+
+<Callout kind="attenzione">
+La vittima non è il server, ma **chi visita la pagina**. È per questo che si parla di rischio per gli utenti, anche se il difetto sta nel sito.
+</Callout>
+
+<Say who="sensei">Non ti mostro il codice: non ti serve. Ti serve capire dove sta l'errore, e sta nel sito che ha dato fiducia al messaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La difesa: l'escape dell'output">
+La difesa principale è l'**escape dell'output** (o codifica): prima di mettere un testo nella pagina, si trasformano i caratteri speciali in una forma che il browser tratta come **semplice testo da mostrare**.
+
+<Log lines={[
+  "testo ricevuto :  <b>ciao</b>",
+  "senza escape   :  il browser mostra «ciao» in grassetto (lo ha eseguito)",
+  "con escape     :  il browser mostra la scritta <b>ciao</b> (testo)",
+]} />
+
+Quasi tutti i framework moderni lo fanno da soli. Il guaio nasce quando uno sviluppatore **lo disattiva** o inserisce HTML a mano.
+
+<Callout kind="trucco">
+Regola pratica: **valida l'input** (accetta ciò che ha senso) e **codifica l'output** (neutralizza ciò che mostri). Se devi sceglierne una, scegli la codifica dell'output.
+</Callout>
+
+<Say who="assistente">L'escape è come mettere il messaggio dentro una teca: si vede, ma non si può azionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il guestbook ora toglie solo la parola «script» dai messaggi, ma stampa tutto il resto così com'è. Perché non è una difesa solida?"
+  options={[
+    "Il codice può essere scritto in altri modi: va codificato l'output, non cercata una parola",
+    "Perché toglie anche i messaggi legittimi",
+    "Perché il server non riesce a leggere la parola",
+    "Perché l'XSS funziona solo con quella parola e quindi non serve altro",
+  ]}
+  answer={0}
+  explain="Le liste di parole vietate si aggirano. Codificare l'output funziona per costruzione, qualunque cosa ci sia scritta nel messaggio."
+/>
+
+<Say who="sensei">Se la tua difesa dipende dall'indovinare cosa scriverà un altro, hai già perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sul guestbook e sul browser. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-xss" pass="5/5" retries={3} />
+
+<Say who="sensei">Si prova solo ciò che è tuo o per cui hai un permesso scritto. Provare l'XSS su siti altrui è accesso abusivo (art. 615-ter c.p.): usa solo il tuo laboratorio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il browser esegue ciò che riceve dal sito, senza sapere chi l'ha scritto.
+- XSS: testo altrui inserito nella pagina senza neutralizzarlo diventa codice nel browser dei visitatori.
+- Difesa: codificare (escape) l'output e validare l'input; non basta togliere parole.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Chi subisce un XSS?", a: "I visitatori della pagina, nel loro browser" },
+    { q: "Perché il browser esegue il codice?", a: "Si fida del sito e non sa chi ha scritto il contenuto" },
+    { q: "Qual è la difesa principale?", a: "Codificare (escape) l'output" },
+    { q: "Togliere la parola «script» basta?", a: "No: il codice può essere scritto in altri modi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi sei e per quanto tempo resti dentro. Autenticazione e sessioni difettose.</Say>
+</Scene>

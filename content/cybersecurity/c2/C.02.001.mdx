@@ -1,0 +1,163 @@
+---
+id: C.02.001
+course: cybersecurity
+module: 2
+title: "Il biglietto che nessuno doveva leggere"
+belt: bianca
+duration_min: 8
+prerequisites: [C.01.006]
+objectives:
+  - "Spiegare che cosa fa un cifrario e che ruolo ha la chiave"
+  - "Decifrare un messaggio col cifrario di Cesare"
+  - "Spiegare perché la sicurezza non può dipendere da un algoritmo tenuto segreto"
+video:
+  provider: youtube
+  id: "dHhk195razs"
+  start: 0
+  end: 600
+  channel: "Geopop"
+  title: "Come funziona la crittografia e cos'è il metodo che protegge i nostri dati"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c02-perche-cifrare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un cifrario sia sicuro perché nessuno conosce il suo funzionamento"
+  - "Confondere il cifrario (il metodo) con la chiave (il segreto che lo regola)"
+  - "Credere che cifrare serva solo a nascondere, e non anche a proteggere dalle modifiche"
+commands: []
+---
+
+<Scene title="Il biglietto in classe">
+Marta passa a Davide un biglietto durante l'intervallo. Un compagno curioso lo intercetta e lo legge davanti a tutti. Figuraccia.
+
+Il giorno dopo Marta ci riprova, ma scrive così:
+
+<Log lines={["FLDR GDYLGH", "VDEDWR DOOH 5"]} />
+
+Il compagno curioso guarda quelle lettere e non capisce niente. Davide invece sì.
+
+La domanda del caso: **come fa Davide a leggere ciò che gli altri non riescono a leggere?**
+
+<Say who="sensei">Nascondere un messaggio è un'arte antica. Oggi la chiamiamo crittografia. Cominciamo dall'inizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il cifrario di Cesare">
+Giulio Cesare usava un trucco semplice: spostava ogni lettera di **tre posti** avanti nell'alfabeto. La A diventava D, la B diventava E, la C diventava F.
+
+Il messaggio originale si chiama **testo in chiaro**. Quello trasformato si chiama **testo cifrato**. Il metodo che trasforma uno nell'altro è un **cifrario**.
+
+<Callout kind="trucco">
+Per **decifrare** si fa il contrario: si torna indietro di tre posti. D diventa A, L diventa I.
+</Callout>
+
+<Say who="sensei">Prendi il biglietto di Marta. La prima parola è FLDR. Torna indietro di tre lettere, una alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La chiave">
+FLDR diventa **CIAO**. E la seconda riga dice «sabato alle 5»: Marta e Davide si danno appuntamento.
+
+Notato il numero **tre**? Marta e Davide si erano messi d'accordo: «sposta di tre». Quel numero è la **chiave**: il piccolo segreto che dice al cifrario come comportarsi.
+
+<Callout kind="regola">
+Il **cifrario** è il metodo. La **chiave** è il segreto che lo regola. Con chiavi diverse, lo stesso cifrario produce messaggi cifrati diversi.
+</Callout>
+
+<Say who="assistente">Pensa a una serratura: il modello è uguale per tutte, ma ognuna si apre con la sua chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il compagno insiste">
+Il compagno curioso non si arrende. Prova a spostare le lettere di un posto: niente. Di due: niente. Di tre: ecco il messaggio.
+
+Con le 26 lettere dell'alfabeto le chiavi possibili sono solo 25. Provarle tutte è questione di minuti, anche a mano. Questo metodo si chiama **forza bruta**: provare ogni chiave finché una funziona.
+
+<Callout kind="attenzione">
+Un cifrario con **poche chiavi possibili** non protegge: chi attacca le prova tutte. Per questo i cifrari moderni hanno un numero di chiavi così grande che provarle tutte richiederebbe un tempo assurdo, anche con computer potentissimi.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Guarda i primi minuti:
+
+<Video />
+
+<Say who="sensei">Un buon cifrario non si salva perché è difficile da indovinare a mano. Si salva perché le chiavi sono troppe da provare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo segreto">
+Davide ha un'idea: «Inventiamo un cifrario nostro, che nessuno conosce. Così nessuno lo rompe».
+
+Sembra furbo. Non lo è.
+
+Se il metodo resta segreto e basta, la sicurezza dura finché il segreto regge. Basta che un amico lo racconti, o che qualcuno lo deduca dai messaggi, e tutto crolla. In più, nessun esperto lo ha mai provato a rompere, quindi nessuno sa se regge davvero.
+
+<Callout kind="regola">
+**Principio di Kerckhoffs** (1883): un sistema deve restare sicuro anche se il nemico conosce tutto del suo funzionamento. Deve restare segreta **solo la chiave**.
+</Callout>
+
+<Say who="sensei">I cifrari seri sono pubblici. Tutti li studiano, tutti provano a romperli. Quelli che resistono sono quelli di cui ti puoi fidare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda dice: «I nostri dati sono sicuri perché usiamo un metodo di cifratura inventato da noi e tenuto segreto». Qual è il problema principale?"
+  options={[
+    "Se il metodo viene scoperto o non regge, non c'è più protezione: nessun esperto lo ha mai messo alla prova",
+    "I metodi inventati in casa sono sempre troppo lenti per essere usati",
+    "Cifrare con un metodo proprio è vietato dalla legge",
+    "Il problema non c'è: un metodo segreto è più sicuro di uno pubblico",
+  ]}
+  answer={0}
+  explain="La sicurezza deve poggiare sulla chiave, non sul segreto del metodo (principio di Kerckhoffs). Chi pensa che un metodo segreto sia più sicuro confonde oscurità e protezione. Non è questione di lentezza né di divieti."
+/>
+
+<Say who="assistente">Indizio: chiediti che cosa resta, se il nemico scopre come funziona il cifrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cifrari, chiavi e testo cifrato. Nessuna sigla da imparare a memoria: ragiona sugli scenari.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-perche-cifrare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La crittografia comincia da qui: il metodo è pubblico, la chiave è segreta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un cifrario trasforma il testo in chiaro in testo cifrato; la chiave è il segreto che lo regola.
+- Con poche chiavi possibili la forza bruta le prova tutte: il cifrario di Cesare si rompe in minuti.
+- Un metodo segreto non è una protezione: deve restare segreta solo la chiave (principio di Kerckhoffs).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra cifrario e chiave?", a: "Il cifrario è il metodo, la chiave è il segreto che lo regola" },
+    { q: "Che cos'è la forza bruta?", a: "Provare tutte le chiavi possibili finché una funziona" },
+    { q: "Che cosa dice il principio di Kerckhoffs?", a: "Il sistema è sicuro anche se il nemico ne conosce il funzionamento: segreta è solo la chiave" },
+    { q: "Perché il cifrario di Cesare è debole?", a: "Ha pochissime chiavi possibili: si provano tutte in fretta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'hash, l'impronta digitale dei dati. Non nasconde niente, ma scopre chi ha toccato un file.</Say>
+</Scene>

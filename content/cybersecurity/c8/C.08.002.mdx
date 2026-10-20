@@ -1,0 +1,160 @@
+---
+id: C.08.002
+course: cybersecurity
+module: 8
+title: "Il laboratorio isolato"
+belt: blu
+duration_min: 8
+prerequisites: [C.08.001]
+objectives:
+  - "Descrivere come è fatto un laboratorio isolato con rete solo-host"
+  - "Spiegare a che cosa servono snapshot e bersagli didattici"
+  - "Riconoscere perché non si prova mai su sistemi altrui"
+verification:
+  type: generated-numeric
+  generator: c08-laboratorio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Collegare la macchina bersaglio alla rete di casa o a Internet «solo per un attimo»"
+  - "Dimenticare lo snapshot prima di una prova e non poter tornare indietro"
+  - "Pensare che una macchina virtuale sia sempre isolata: dipende da come è configurata la sua rete"
+commands: []
+---
+
+<Scene title="Il portatile che ha sbagliato rete">
+Marta ha installato due macchine virtuali: una per studiare, una «volutamente fragile». Per comodità le ha collegate alla rete di casa. Dopo una settimana scopre che la macchina fragile è raggiungibile da tutti i dispositivi della famiglia. E, per un errore del router, anche da fuori.
+
+Nessun danno, questa volta. Ma la macchina fragile era un invito aperto.
+
+La domanda del caso: **come si costruisce un laboratorio dove sbagliare non fa male a nessuno?**
+
+<Say who="sensei">Il laboratorio non è un lusso. È la condizione per poter imparare senza violare nulla. Costruiscilo prima di tutto il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La macchina virtuale">
+Una **macchina virtuale** (VM) è un computer finto che gira dentro il tuo computer vero. Ha il suo sistema operativo, i suoi file, la sua rete. Se la rovini, il computer vero non si accorge di niente.
+
+Per un laboratorio servono almeno due VM, **entrambe tue**:
+
+- una **macchina di lavoro**, da cui osservi e provi;
+- una **macchina bersaglio**, volutamente fragile, che serve da prova.
+
+<Callout kind="regola">
+Nel laboratorio ci sono solo macchine che hai installato tu, sul tuo computer. Niente di altrui, niente di «prestato» senza permesso scritto.
+</Callout>
+
+<Say who="assistente">Pensa a un poligono di tiro: bersagli di cartone, in un campo recintato. Non bersagli per strada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La rete solo-host">
+Le VM comunicano attraverso una rete virtuale. Per un laboratorio la scelta giusta è la rete **solo-host** (in inglese *host-only*): le VM si vedono **tra loro e con il tuo computer**, ma **non** raggiungono Internet né la rete di casa.
+
+<Log lines={[
+  "rete virtuale del laboratorio:  192.168.56.0/24  (solo-host)",
+  "macchina-lavoro   192.168.56.10",
+  "bersaglio-didattico   192.168.56.20",
+  "accesso a Internet: NO    accesso alla rete di casa: NO",
+]} caption="Esempio di laboratorio ben isolato (indirizzi privati)" />
+
+<Callout kind="attenzione">
+Altre modalità di rete (come quella «a ponte») mettono la VM sulla rete reale. Per la macchina fragile sono la scelta sbagliata.
+</Callout>
+
+<Say who="sensei">Un laboratorio senza isolamento è una porta aperta con un cartello «interno». Il cartello non ferma nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Snapshot: il tasto «torna indietro»">
+Uno **snapshot** è una fotografia dello stato della VM in un dato momento. Se qualcosa va storto, la riporti com'era in pochi secondi.
+
+Abitudine da professionisti:
+
+1. Installi e configuri la macchina.
+2. Fai uno snapshot e gli dai un nome chiaro («pulita, giorno 1»).
+3. Fai la tua prova.
+4. Torni allo snapshot e riparti da capo.
+
+<Callout kind="trucco">
+Lo snapshot ti permette di sbagliare senza paura. Chi ha paura di rompere, impara meno.
+</Callout>
+
+<Say who="assistente">Anche una prova riuscita merita il ritorno allo stato pulito: così ripeti l'esercizio con le stesse condizioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Bersagli didattici e mai sistemi altrui">
+Esistono macchine create apposta per esercitarsi: i **bersagli didattici**. Sono applicazioni e sistemi **dichiaratamente vulnerabili**, pensati per essere studiati in un laboratorio privato. Si scaricano e si installano sulla *propria* macchina virtuale, leggendo le istruzioni del progetto che le distribuisce.
+
+Perché non si prova mai su sistemi altrui, nemmeno «piano piano»?
+
+- è accesso abusivo (art. 615-ter c.p.) anche se non si rompe nulla;
+- non sai che cosa c'è dietro: ospedali, scuole, servizi di altri;
+- una prova innocente può fermare un servizio vero;
+- il tuo indirizzo resta nei registri di chi hai toccato.
+
+<Callout kind="regola">
+Anche i servizi «di prova» pubblicati su Internet vanno usati solo se i proprietari scrivono chiaramente che si può e con quali limiti. Nel dubbio, si usa il proprio laboratorio.
+</Callout>
+
+<Say who="sensei">Il tuo laboratorio ti insegna quanto quello altrui, e non ti costa una denuncia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La macchina bersaglio non risponde bene e, per risolvere in fretta, pensi di spostarla sulla rete di casa «solo un attimo». Che cosa fai?"
+  options={[
+    "Non la sposto: una macchina volutamente fragile non va mai sulla rete reale; cerco il problema restando in solo-host",
+    "La sposto un attimo, tanto in casa non c'è nessuno di pericoloso",
+    "La sposto e la lascio così, è più comodo",
+    "La sposto ma spengo il Wi-Fi dei vicini",
+  ]}
+  answer={0}
+  explain="Una macchina fragile sulla rete di casa è raggiungibile da ogni dispositivo collegato. L'isolamento si rompe in un attimo, e l'attimo può diventare giorni. Si risolve il problema senza toccare la rete."
+/>
+
+<Say who="assistente">Indizio: il laboratorio funziona solo finché i suoi confini non si spostano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su laboratorio, rete solo-host e snapshot. A ogni tentativo le domande cambiano.
+
+<Practice generator="c08-laboratorio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un laboratorio ben fatto protegge te e gli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il laboratorio è fatto solo di macchine virtuali tue, sul tuo computer, collegate con una rete solo-host.
+- Lo snapshot è il «torna indietro» che permette di ripetere le prove da uno stato pulito.
+- I bersagli didattici sono vulnerabili per scelta e vivono solo nel tuo laboratorio; i sistemi altrui non si provano mai senza permesso scritto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una rete solo-host?", a: "Una rete virtuale in cui le VM vedono solo se stesse e il computer ospite, senza Internet né rete di casa" },
+    { q: "A che cosa serve uno snapshot?", a: "A riportare la VM a uno stato salvato, così si può sbagliare e ripartire" },
+    { q: "Che cos'è un bersaglio didattico?", a: "Un sistema dichiaratamente vulnerabile, fatto per essere studiato in un laboratorio privato" },
+    { q: "Perché non provare su un sistema altrui «solo per vedere»?", a: "È accesso abusivo e può causare danni a servizi e persone che non conosci" },
+  ]}
+/>
+
+<Say who="sensei">Il laboratorio è pronto. Prossima lezione: la ricognizione, cioè capire che cosa è già pubblico prima di toccare qualunque cosa.</Say>
+</Scene>

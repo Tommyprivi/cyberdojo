@@ -1,0 +1,161 @@
+---
+id: C.06.004
+course: cybersecurity
+module: 6
+title: "Privilegi sul database"
+belt: verde
+duration_min: 8
+prerequisites: [C.06.003]
+objectives:
+  - "Spiegare il principio del privilegio minimo applicato a un database"
+  - "Scegliere i permessi giusti per un utente applicativo"
+  - "Capire perché la web app non deve collegarsi con l'utente amministratore"
+verification:
+  type: generated-numeric
+  generator: c06-privilegi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Collegare l'applicazione con l'utente amministratore «perché così funziona subito»"
+  - "Dare lo stesso utente a tutte le applicazioni e a tutte le tabelle"
+  - "Pensare che i privilegi servano solo contro gli estranei: limitano anche gli errori interni"
+commands: []
+---
+
+<Scene title="Un errore costoso">
+Il negozio di Marta ha una vulnerabilità che nessuno ha ancora trovato. Una sera, una richiesta anomala arriva al sito. La query si comporta in modo strano.
+
+Quello che succede dopo dipende da una scelta fatta mesi prima, durante la configurazione: **con quale utente il sito si collega al database?**
+
+Se usa l'utente amministratore (spesso chiamato `root`), chi riesce a far eseguire una query al sito ha **tutti** i poteri: leggere tutto, cancellare tutto, creare altri utenti.
+
+La domanda del caso: **come si limita il danno anche quando qualcosa va storto?**
+
+<Say who="sensei">La prevenzione può fallire. Per questo si progetta il danno massimo, prima che arrivi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il privilegio minimo">
+Ogni utente del database ha dei **privilegi**: l'elenco di cose che può fare. Leggere una tabella, scrivere in un'altra, cancellare, creare tabelle, creare utenti.
+
+Il principio si chiama **privilegio minimo**: a ciascuno si danno solo i permessi che servono per il suo lavoro. Né uno di più.
+
+<Callout kind="trucco">
+Analogia: il fattorino ha la chiave del portone, non quella della cassaforte. Se la perde, il danno è piccolo.
+</Callout>
+
+<Say who="assistente">Chiediti sempre: di cosa ha bisogno davvero questo utente per lavorare? Il resto, nega.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'utente applicativo">
+Il sito di Marta, per funzionare, deve leggere i prodotti, creare ordini, aggiornare la giacenza. Non deve cancellare tabelle, né creare utenti, né leggere altri database sullo stesso server.
+
+Si crea quindi un utente apposta, `sito_negozio`, con permessi mirati:
+
+<Log lines={[
+  "GRANT SELECT, UPDATE ON negozio.prodotti TO sito_negozio;",
+  "GRANT SELECT, INSERT ON negozio.ordini TO sito_negozio;",
+  "GRANT SELECT, UPDATE ON negozio.clienti TO sito_negozio;",
+  "-- nessun DROP, nessun DELETE, nessun accesso ad altri database",
+]} caption="Sintassi indicativa: cambia un po' da un database all'altro." />
+
+Il `GRANT` è un permesso concesso. Tutto ciò che non è concesso, è vietato.
+
+<Callout kind="regola">
+Mai `root` dalla web app. L'amministratore serve a chi gestisce il database, non al sito che i visitatori usano ogni giorno.
+</Callout>
+
+<Say who="sensei">Se il sito viene compromesso, l'attaccante eredita i permessi del sito. Meno ne ha, meno può fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un secondo muro">
+I privilegi non sostituiscono le query parametrizzate: sono un **secondo muro**.
+
+Immagina che la vulnerabilità esista e qualcuno riesca a far eseguire una query. Con l'utente `sito_negozio` non può cancellare la tabella dei prodotti (manca il permesso) e non può leggere i dati di un altro progetto sullo stesso server.
+
+<Callout kind="attenzione">
+Meno privilegi non vuol dire nessun danno. Se l'utente può leggere i clienti, una falla può ancora farli leggere. Per questo i permessi vanno stretti tabella per tabella, non solo «tolti i più pericolosi».
+</Callout>
+
+<Callout kind="curiosita">
+Questo schema si chiama difesa in profondità: più livelli, ciascuno imperfetto, insieme robusti. Lo ritroverai nel modulo sul blue team.
+</Callout>
+
+<Say who="assistente">Parametri e privilegi lavorano in squadra. Uno previene, l'altro limita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito mostra soltanto un catalogo di prodotti, senza ordini online né area clienti. Quali privilegi dovrebbe avere il suo utente del database?"
+  options={[
+    "SELECT sulle tabelle del catalogo, e nient'altro",
+    "SELECT, INSERT, UPDATE e DELETE su tutto il database, così non ci sono sorprese",
+    "Tutti i privilegi, ma solo di notte",
+    "Nessun privilegio, perché il sito legge i dati da un file",
+  ]}
+  answer={0}
+  explain="Il sito deve solo leggere il catalogo: SELECT su quelle tabelle basta. Dare di più «per comodità» è proprio l'errore che aumenta il danno in caso di falla. E senza privilegi non potrebbe leggere nulla."
+/>
+
+<Say who="sensei">«Per ora funziona» non è un criterio. Il criterio è: serve davvero?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un controllo da fare">
+<Guided
+  steps={[
+    "Elenca cosa fa davvero l'applicazione: quali tabelle legge, quali scrive, quali non tocca mai.",
+    "Crea un utente dedicato a quell'applicazione, con una password lunga e unica, conservata nella configurazione e non nel codice.",
+    "Concedi solo i permessi necessari, tabella per tabella. Se un permesso serve poco, concedilo solo a quel pezzo.",
+    "Separa gli utenti: uno per l'applicazione, uno per i backup, uno per chi amministra. Mai lo stesso per tutti.",
+    "Riguarda i permessi ogni tanto e togli ciò che non serve più.",
+  ]}
+/>
+
+<Say who="sensei">Un controllo di dieci minuti oggi, e un incidente molto più piccolo domani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono descritte alcune applicazioni fittizie. Per ognuna devi scegliere i permessi corretti o riconoscere l'errore di configurazione.
+
+Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c06-privilegi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai pensato al danno massimo prima che arrivasse. È il lavoro di chi difende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Privilegio minimo: ogni utente ha solo i permessi che servono al suo lavoro.
+- La web app usa un utente dedicato con permessi stretti, mai l'amministratore (root).
+- I privilegi sono un secondo muro: limitano il danno, non sostituiscono le query parametrizzate.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il privilegio minimo?", a: "Dare solo i permessi strettamente necessari" },
+    { q: "Con quale utente si collega la web app al database?", a: "Un utente dedicato con permessi limitati, mai root" },
+    { q: "Perché separare gli utenti (app, backup, admin)?", a: "Se uno è compromesso, gli altri poteri restano al sicuro" },
+    { q: "I privilegi bastano contro la SQL injection?", a: "No: limitano il danno, la difesa principale resta la parametrizzazione" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: e se i dati vengono persi o cifrati da un ricatto? Backup, e una regola da ricordare: 3-2-1.</Say>
+</Scene>

@@ -1,0 +1,163 @@
+---
+id: C.01.001
+course: cybersecurity
+module: 1
+title: "Cosa dobbiamo proteggere"
+belt: bianca
+duration_min: 7
+prerequisites: []
+objectives:
+  - "Spiegare che cos'è un asset e riconoscerne di diversi tipi"
+  - "Valutare il valore di un asset dal danno che subisci se lo perdi"
+video:
+  provider: youtube
+  id: "j7jnokBO0nY"
+  start: 0
+  end: 416
+  channel: "Gianfranco Messina TechLab"
+  title: "Cybersecurity da Zero – Lezione 1: Cosa dobbiamo proteggere? Asset e CIA Triad"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c01-asset
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un asset sia solo un computer: sono asset anche dati, servizi e reputazione"
+  - "Proteggere tutto allo stesso modo invece di partire da ciò che costa di più perdere"
+  - "Valutare un asset dal prezzo di acquisto e non dal danno che causa la sua perdita"
+commands: []
+---
+
+<Scene title="Il lunedì senza fatture">
+Lunedì mattina. Giulia, che gestisce uno studio di grafica di quattro persone, accende il computer e trova la cartella «Fatture» vuota. Un guasto al disco, nella notte. Nessuna copia.
+
+Il computer si ricompra in un giorno. Ma lo studio non sa più chi deve pagare, quanto, e entro quando.
+
+La domanda del caso: **che cosa aveva davvero valore, in quello studio?**
+
+<Say who="sensei">Non il computer. Il computer era la scatola. Ciò che manca è dentro. Cominciamo da qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un asset">
+In sicurezza informatica si chiama **asset** qualsiasi cosa abbia valore per chi la possiede e che quindi vada protetta.
+
+Non solo oggetti. Asset sono anche:
+
+- i **dati**: elenchi di clienti, fatture, progetti;
+- i **servizi**: il sito, la posta elettronica;
+- le **persone** e le loro competenze;
+- la **reputazione**: la fiducia che i clienti hanno in te.
+
+<Callout kind="regola">
+Un asset è ciò che ti farebbe male perdere. Se non ti farebbe male, non è un asset da proteggere con fatica.
+</Callout>
+
+<Say who="assistente">Prova a guardarti intorno: nel tuo telefono, quale cosa non vorresti mai perdere? Quella è un tuo asset.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il valore non è il prezzo">
+Il valore di un asset non si legge sull'etichetta. Si misura con una domanda:
+
+**«Che cosa succede se lo perdo, se si rompe o se finisce in mani sbagliate?»**
+
+Una chiavetta USB costa pochi euro. Ma se contiene i progetti di un cliente, la perdita può costare un contratto.
+
+<Callout kind="attenzione">
+Errore tipico: valutare un asset dal prezzo pagato. Un computer da 600 euro è sostituibile. Un archivio di dieci anni di lavoro no.
+</Callout>
+
+<Say who="sensei">Il prezzo dice quanto hai speso. Il danno dice quanto vale. Guarda sempre il danno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre modi di perdere un asset">
+Un asset si può perdere in tre modi, e ognuno fa un danno diverso:
+
+1. **Finisce in mani sbagliate**: i dati dei clienti vengono letti da chi non doveva. Danno: fiducia, multe, cause.
+2. **Viene alterato**: qualcuno cambia un IBAN su una fattura. Danno: soldi pagati alla persona sbagliata.
+3. **Non è più disponibile**: il sito è spento, i file sono spariti. Danno: attività ferma.
+
+<Callout kind="curiosita">
+Questi tre modi hanno un nome preciso: sono la base della **triade CIA**, che vedremo nella prossima lezione.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Il video dura meno di sette minuti e tocca anche la triade:
+
+<Video />
+
+<Say who="assistente">Non serve capire tutto subito. Per ora tieni a mente solo i tre danni: leggere, cambiare, bloccare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una pasticceria ha un forno nuovo, un elenco di 300 clienti con indirizzi e un profilo social con 50 follower. Se potessi proteggere bene una sola cosa questa settimana, da quale partiresti?"
+  options={["Dall'elenco dei clienti: perdita o diffusione farebbero il danno più serio", "Dal forno, perché è la cosa più costosa", "Dal profilo social, perché è visibile a tutti", "Da tutti e tre allo stesso modo, senza distinzioni"]}
+  answer={0}
+  explain="Il forno si ricompra e un profilo si recupera. Un elenco di clienti perso o diffuso può costare fiducia e problemi con la legge. Si parte da dove il danno è maggiore, non da dove il prezzo è maggiore."
+/>
+
+<Say who="sensei">Risorse limitate, attenzione limitata. Proteggere tutto allo stesso modo vuol dire proteggere male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'elenco di Giulia">
+Torniamo allo studio di Giulia. Ecco come ragiona chi fa sicurezza.
+
+<Guided
+  steps={[
+    "Primo passo: fare un elenco di ciò che ha valore. Fatture, progetti dei clienti, sito web, posta elettronica, nome dello studio.",
+    "Secondo passo: per ognuno chiedersi che cosa succede se lo perde. Le fatture perse: non si sa più chi incassare. Il sito spento: nessuno trova lo studio.",
+    "Terzo passo: mettere in ordine, dal danno più grave al meno grave. In cima: fatture e progetti dei clienti.",
+    "Quarto passo: proteggere prima ciò che sta in cima. Una copia di riserva delle fatture avrebbe trasformato il lunedì nero in un'ora di lavoro.",
+  ]}
+/>
+
+<Say who="sensei">Senza elenco non c'è difesa. Non si protegge ciò che non si sa di avere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su asset, valore e danno. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-asset" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Se sbagli, riparti dal danno: è la domanda che apre ogni ragionamento di sicurezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un asset è tutto ciò che ha valore per chi lo possiede: dati, servizi, persone, reputazione, non solo computer.
+- Il valore si misura dal danno se lo perdi, lo vedi alterato o diventa inutilizzabile, non dal prezzo.
+- Si parte da un elenco ordinato per gravità del danno e si protegge prima ciò che sta in cima.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un asset?", a: "Qualsiasi cosa con valore per chi la possiede" },
+    { q: "Come si misura il valore di un asset?", a: "Dal danno se lo perdi, lo cambiano o non è più disponibile" },
+    { q: "Dati, servizi, persone: sono asset?", a: "Sì, non solo i computer" },
+    { q: "Da dove si comincia a proteggere?", a: "Da un elenco degli asset, ordinato dal danno più grave" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la triade CIA. Tre parole che ti dicono come può andare male un asset.</Say>
+</Scene>

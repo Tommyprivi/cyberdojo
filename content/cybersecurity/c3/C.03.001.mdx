@@ -1,0 +1,151 @@
+---
+id: C.03.001
+course: cybersecurity
+module: 3
+title: "La password che sembrava forte"
+belt: gialla
+duration_min: 8
+prerequisites: [C.02.007]
+objectives:
+  - "Spiegare perché la lunghezza conta più della complessità apparente"
+  - "Capire come funzionano a livello di concetto gli attacchi a dizionario e a forza bruta"
+  - "Riconoscere il rischio di riusare la stessa password su più servizi"
+verification:
+  type: generated-numeric
+  generator: c03-password
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una password con simboli e maiuscole sia forte anche se è corta o prevedibile"
+  - "Cambiare solo un numero in fondo (Estate2024! diventa Estate2025!) pensando di averla rinnovata"
+  - "Riusare la stessa password su più servizi perché «tanto è forte»"
+commands: []
+---
+
+<Scene title="La password che sembrava forte">
+Marta lavora nell'ufficio acquisti di una piccola azienda di arredi, la «Legnami Rossi». Per l'account di posta ha scelto **M@rta2024!**. Ha una maiuscola, un numero e un simbolo. Il sistema l'ha accettata con la scritta «Password forte».
+
+Due mesi dopo, qualcuno legge la sua posta. Nessun virus, nessun trucco: ha semplicemente **indovinato** la password.
+
+La domanda del caso: **come si indovina una password che il sistema chiama forte?**
+
+<Say who="sensei">Il sistema che dice «forte» controlla le regole. Chi attacca non controlla le regole: controlla le abitudini delle persone. Vediamo quali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lunghezza, non simboli">
+Chi attacca una password non «forza la serratura». Prova tante password, una dopo l'altra, finché una funziona. Un programma può provarne un numero enorme al secondo.
+
+Il punto non è se una password è impossibile da indovinare. Il punto è **quanto tempo serve**. Più combinazioni ci sono, più tempo serve.
+
+<Callout kind="regola">
+Una password è forte quando **servono troppe prove** per indovinarla. Non quando soddisfa una lista di regole.
+</Callout>
+
+<Say who="assistente">Pensa a un lucchetto a combinazione: con tre cifre lo apri in poco, con dieci ti serve una vita. Cambia solo il numero di combinazioni.</Say>
+
+**Lunghezza contro complessità.** Ogni carattere in più **moltiplica** le combinazioni possibili. Un simbolo in più nella stessa lunghezza le aumenta solo un po'.
+
+Un confronto con i numeri: una password di **8 caratteri** scelti tra lettere, numeri e simboli ha circa 6,6 milioni di miliardi di combinazioni. Una di **12 sole lettere minuscole** ne ha circa 95 milioni di miliardi: **di più**, anche se sembra «semplice».
+
+<Callout kind="attenzione">
+Qui si parla di password scelte a caso. Se la scegli tu seguendo un modello (nome, anno, punto esclamativo) le combinazioni reali sono molte meno, perché il modello è prevedibile.
+</Callout>
+
+<Say who="sensei">Corta e complicata perde contro lunga e semplice. A parità di casualità, vince la lunghezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Frasi lunghe">
+Il modo più semplice per avere una password lunga che ricordi è una **frase**: quattro o cinque parole non collegate tra loro, per esempio **«tazza giraffa lunedì scala»**.
+
+È lunga (più di 20 caratteri), si ricorda con un'immagine buffa e nessuno la scrive nei dizionari come «password comune».
+
+<Callout kind="trucco">
+Le parole devono essere **casuali**. Una citazione famosa, il titolo di una canzone o «ilmiocanepippo» non vanno bene: sono frasi che un attaccante può provare.
+</Callout>
+
+<Say who="assistente">Se non riesci a inventarle a caso, fai scegliere le parole a un gestore di password. Ne parleremo ancora: oggi basta l'idea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dizionario e forza bruta">
+Gli attacchi sono di due famiglie. Spiegazione a livello di concetto, senza ricette.
+
+**Forza bruta**: si provano tutte le combinazioni possibili, in ordine. Con password lunghe diventa impraticabile.
+
+**Dizionario**: si provano prima le password che le persone usano davvero: «password», «123456», nomi, squadre di calcio, e le loro variazioni tipiche (la «a» che diventa «@», un numero in fondo). Funziona perché siamo prevedibili.
+
+La password di Marta, **M@rta2024!**, era nome + variazione classica + anno + punto esclamativo. Per un dizionario era tra le prime da provare.
+
+<Callout kind="attenzione">
+Provare ad accedere a un account altrui è reato: in Italia è accesso abusivo a sistema informatico, art. 615-ter del codice penale. Si prova solo ciò che è tuo o per cui hai un permesso scritto.
+</Callout>
+
+<Say who="sensei">Le «sostituzioni furbe» le conoscono tutti, compreso il dizionario. Non sei più furbo di lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riuso: una chiave per tutte le porte">
+Marta usava **M@rta2024!** anche per un negozio online di hobby. Quel negozio ha subìto una violazione e le password sono finite in rete. Chi le ha trovate le ha provate **su altri servizi**, compresa la posta di Marta.
+
+Questo si chiama **riuso delle password** ed è uno dei modi più comuni per perdere un account: il servizio sicuro cade a causa di un servizio debole.
+
+<Callout kind="regola">
+Una password diversa per ogni servizio. Almeno per posta, banca e account di lavoro, che sono le «chiavi di casa».
+</Callout>
+
+<Say who="assistente">Ricordare cento password è impossibile. Per questo esistono i gestori di password: ne ricordi una sola, lunga, e il resto lo fa lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale di queste password è la scelta migliore per un account importante?"
+  options={["pane vulcano ombrello sedici", "P@ssw0rd!", "Roma2024!", "Xk9#mP2$"]}
+  answer={0}
+  explain="La frase di quattro parole casuali è lunga, quindi ha moltissime combinazioni, e non è in nessun dizionario. P@ssw0rd! e Roma2024! seguono schemi prevedibili. Xk9#mP2$ ha l'aspetto giusto ma è corta: solo 8 caratteri."
+/>
+
+<Say who="sensei">Se sei tentato di dire «Xk9», ricorda che l'aspetto complicato inganna. Conta la lunghezza e conta la casualità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi di password e di attacchi da valutare, senza errori. Hai 3 tentativi, e a ogni tentativo le domande si mescolano.
+
+<Practice generator="c03-password" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sbaglia in aula impara. Chi sbaglia in azienda, apre la porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una password è forte quando servono troppe prove per indovinarla: la lunghezza pesa più dei simboli.
+- Le frasi di parole casuali sono lunghe e facili da ricordare. Gli schemi prevedibili (nome + anno + punto esclamativo) cadono per primi con un attacco a dizionario.
+- Mai la stessa password su più servizi: se uno cade, cadono tutti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un attacco a dizionario?", a: "Si provano prima le password più usate dalle persone e le loro variazioni tipiche" },
+    { q: "Che cos'è la forza bruta?", a: "Provare tutte le combinazioni possibili, una dopo l'altra" },
+    { q: "Perché una frase lunga di parole casuali è una buona password?", a: "È lunga, quindi ha moltissime combinazioni, ed è facile da ricordare" },
+    { q: "Perché non riusare la stessa password?", a: "Se un servizio viene violato, l'attaccante la prova su tutti gli altri" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: dove finiscono le password quando un servizio le conserva, e cosa succede se le rubano.</Say>
+</Scene>

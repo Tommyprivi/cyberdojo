@@ -1,0 +1,154 @@
+---
+id: C.10.003
+course: cybersecurity
+module: 10
+title: "VPN: cosa fa e cosa no"
+belt: marrone
+duration_min: 8
+prerequisites: [C.10.002]
+objectives:
+  - "Spiegare cosa nasconde una VPN e a chi"
+  - "Distinguere quando una VPN serve e quando no"
+  - "Riconoscere le promesse esagerate nella pubblicità delle VPN"
+verification:
+  type: generated-numeric
+  generator: c10-vpn
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la VPN renda anonimi: sposta la fiducia, non la elimina"
+  - "Pensare che con la VPN il sito non sappia chi sei, anche se hai fatto il login"
+  - "Scegliere una VPN solo per il prezzo o per la pubblicità"
+commands: []
+---
+
+<Scene title="Lo spot della VPN">
+Giulia guarda un video e parte lo spot: «Con la nostra VPN sei invisibile. Nessuno vede cosa fai. Anonimato totale, a 2 euro al mese».
+
+Giulia sta per pagare. Ma vuole capire che cosa compra davvero.
+
+La domanda del caso: **che cosa fa una VPN, e che cosa non può fare?**
+
+<Say who="sensei">Gli spot promettono, io verifico. Oggi smontiamo una promessa pezzo per pezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un tunnel verso un altro punto">
+Una **VPN** (rete privata virtuale) crea un **tunnel cifrato** tra il tuo dispositivo e un server del fornitore. Da lì il traffico esce verso Internet.
+
+Il risultato:
+
+- il tuo provider di casa vede solo che sei collegato alla VPN, non cosa visiti;
+- il sito vede l'indirizzo **IP** del server della VPN, non il tuo.
+
+<Callout kind="trucco">
+È come spedire una lettera dentro una busta chiusa a un amico, che poi la rispedisce con il suo indirizzo. Chi guarda la tua cassetta non legge nulla. Ma il tuo amico sa tutto.
+</Callout>
+
+<Say who="sensei">La VPN non fa sparire il tuo traffico. Lo sposta. Capisci dove, e capisci i rischi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi vede ancora cosa">
+Mettiamo i fatti in fila. Con una VPN attiva:
+
+- Il **fornitore della VPN** vede il tuo IP reale e i siti a cui ti colleghi. Prima li vedeva il provider, ora li vede lui.
+- Il **sito** non vede il tuo IP, ma vede **tutto il resto**: cookie, account, impronta del browser.
+- Se fai il login con il tuo account, il sito sa chi sei, VPN o no.
+
+<Callout kind="attenzione">
+La VPN **non ti rende anonimo**. Cambia chi può vederti, ma non elimina chi può vederti. Il fornitore diventa una persona di cui devi fidarti.
+</Callout>
+
+<Say who="assistente">Pensa a due domande: chi vedeva prima? Chi vede adesso? Se la risposta è «solo uno diverso», non sei anonimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando serve">
+Una VPN è utile in casi precisi:
+
+- **Wi-Fi pubblico**, come bar, stazione o albergo: cifra il traffico tra te e la VPN, così chi è sulla stessa rete non lo legge.
+- **Lavoro da casa**: la VPN aziendale ti collega in modo cifrato alla rete interna.
+- Nascondere il tuo IP a un sito, o a un provider che vuoi tenere all'oscuro delle tue visite.
+
+Quando serve poco: a casa, con siti in **HTTPS** (il lucchetto), dove il contenuto è già cifrato (il provider vede comunque il nome del sito) e dove i siti ti riconoscono dall'account.
+
+<Callout kind="curiosita">
+HTTPS cifra già il contenuto tra te e il sito. La VPN aggiunge una protezione soprattutto su reti che non controlli e su chi vede il tuo IP.
+</Callout>
+
+<Say who="sensei">Scegli lo strumento per il problema. Una VPN non è un giubbotto antiproiettile per ogni situazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Accedi al tuo account Google mentre usi una VPN. Che cosa sa ancora Google?"
+  options={["Che sei tu, perché sei entrato con il tuo account", "Niente: la VPN nasconde anche l'account", "Solo il paese da cui ti colleghi, non chi sei", "Solo il nome del tuo provider internet"]}
+  answer={0}
+  explain="La VPN cambia l'IP che il sito vede, non l'identità con cui accedi. Chi risponde «niente» pensa che la VPN cancelli ogni informazione: nasconde l'IP, non il login."
+/>
+
+<Say who="sensei">Se ti presenti con nome e cognome, non serve a niente cambiare cappotto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come scegliere, e come non farsi ingannare">
+<Guided
+  steps={[
+    "Diffida di «anonimato totale», «invisibile», «impossibile da tracciare»: nessuna VPN può promettere questo.",
+    "Una VPN gratuita deve guadagnare in qualche modo: spesso con i tuoi dati di navigazione.",
+    "«Zero log» è una dichiarazione del fornitore: valgono di più gli audit indipendenti e la trasparenza su chi gestisce il servizio.",
+    "Se vuoi una VPN per il Wi-Fi pubblico, scegli un fornitore noto e trasparente, non il più economico.",
+    "Ricorda: la VPN non ferma il phishing, né un file infetto che apri tu.",
+  ]}
+/>
+
+<Callout kind="regola">
+La legge vale anche con la VPN. Il fornitore conosce il tuo IP e, se un'autorità glielo ordina, può essere costretto a collaborare. Ciò che è reato resta reato.
+</Callout>
+
+<Say who="assistente">Giulia ha deciso: la userà in treno e al bar, e non si fiderà dello slogan «anonimato totale». È una scelta informata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sulle VPN, estratti da una banca più ampia. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="c10-vpn" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi sa cosa fa una VPN non compra la promessa, compra la funzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una VPN cifra il tunnel verso il fornitore e nasconde il tuo IP al sito, ma il fornitore ti vede.
+- Non rende anonimi: login, cookie e impronta continuano a identificarti.
+- Serve su Wi-Fi pubblici e per il lavoro da remoto; diffida di «anonimato totale» e delle VPN gratuite.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che IP vede il sito se usi una VPN?", a: "Quello del server della VPN, non il tuo" },
+    { q: "Chi può vedere i siti che visiti con la VPN?", a: "Il fornitore della VPN" },
+    { q: "La VPN ti rende anonimo?", a: "No: sposta la fiducia dal provider al fornitore della VPN" },
+    { q: "Quando serve davvero?", a: "Wi-Fi pubblici, lavoro da remoto, nascondere l'IP a un sito" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: Tor, che affronta lo stesso problema in un altro modo.</Say>
+</Scene>

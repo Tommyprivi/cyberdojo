@@ -1,0 +1,152 @@
+---
+id: C.06.005
+course: cybersecurity
+module: 6
+title: "Backup e regola 3-2-1"
+belt: verde
+duration_min: 8
+prerequisites: [C.06.004]
+objectives:
+  - "Decidere cosa salvare e ogni quanto in base ai dati che si possono perdere"
+  - "Applicare la regola 3-2-1"
+  - "Spiegare perché un backup non provato non è un backup, e come aiuta contro il ransomware"
+verification:
+  type: generated-numeric
+  generator: c06-backup
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare i backup ma non provare mai a ripristinarli"
+  - "Tenere la copia sullo stesso disco o sullo stesso server dei dati originali"
+  - "Lasciare il backup sempre collegato e raggiungibile: il ransomware cifra anche quello"
+commands: []
+---
+
+<Scene title="Lunedì mattina">
+Lunedì mattina Marta apre il portatile del negozio. Tutti i file hanno strane estensioni e c'è un messaggio: per riavere i dati bisogna pagare.
+
+È un **ransomware**: un programma che cifra i dati e chiede un riscatto per restituirli. Marta ha una copia di sicurezza, un disco esterno sempre attaccato al computer.
+
+Apre il disco. Anche quello è cifrato.
+
+La domanda del caso: **come si fa un backup che resti utile anche in un giorno come questo?**
+
+<Say who="sensei">Un backup non serve il giorno in cui tutto va bene. Serve il giorno in cui tutto va male. Si progetta per quel giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa e quanto spesso">
+Prima domanda: **cosa** salvare? Il database dei clienti e degli ordini, i file di configurazione, i documenti del negozio. Il programma del sito spesso si può reinstallare; i dati no.
+
+Seconda domanda: **quanto spesso**? Dipende da quanto lavoro puoi permetterti di perdere.
+
+<Callout kind="trucco">
+Se il backup è giornaliero, nel peggiore dei casi perdi **un giorno** di ordini. Se è settimanale, una settimana. Chiediti: quanto posso perdere senza che sia un disastro? Quello decide la frequenza.
+</Callout>
+
+<Say who="assistente">Più i dati cambiano in fretta, più spesso va la copia. Un negozio che riceve ordini ogni ora non può fidarsi di una copia mensile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola 3-2-1">
+Una regola semplice, usata ovunque:
+
+<Callout kind="regola">
+**3** copie dei dati (l'originale più due backup). Su **2** tipi diversi di supporto (per esempio disco del computer e disco esterno, o cloud). **1** copia **fuori sede**, lontana dal luogo dove stanno gli originali.
+</Callout>
+
+Perché? Un solo guasto, furto, incendio o errore non deve poterle cancellare tutte. Supporti diversi non si rompono per la stessa ragione. La copia lontana sopravvive a ciò che colpisce l'ufficio.
+
+<Log lines={[
+  "copia 1: database del negozio (server)",
+  "copia 2: backup notturno su disco esterno (ufficio)",
+  "copia 3: backup cifrato nel cloud (fuori sede)",
+]} caption="Un esempio di 3-2-1 per il negozio di Marta." />
+
+<Say who="sensei">Non fidarti di un solo posto. Ogni copia è un'assicurazione contro un guasto diverso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ransomware e la copia scollegata">
+Il ransomware cifra ciò che trova **raggiungibile**. Un disco sempre collegato, o una cartella di rete aperta in scrittura, viene cifrato insieme al resto. Il disco di Marta è finito così.
+
+Per questo almeno una copia dovrebbe essere **isolata**: scollegata dopo il backup (copia «offline»), oppure in un archivio dove i file, una volta scritti, non si possono modificare o cancellare per un certo periodo («immutabile»).
+
+<Callout kind="attenzione">
+Con una copia buona e isolata non sei costretto a trattare con chi ti ricatta. Ma una copia sempre collegata e modificabile può fare la stessa fine dei dati.
+</Callout>
+
+<Say who="assistente">Una copia che l'attaccante non può toccare è l'unica che il ricatto non raggiunge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare il ripristino">
+C'è un errore diffusissimo: fare i backup per anni e non provare mai a **ripristinarli**. Il giorno dell'emergenza si scopre che il file è vuoto, danneggiato, o che la password per aprirlo è stata dimenticata.
+
+<Callout kind="regola">
+Un backup che non è mai stato ripristinato è una speranza, non un backup. Ogni tanto si fa una prova: si ripristina una copia in un posto di prova e si controlla che i dati ci siano e siano leggibili.
+</Callout>
+
+Ci vuole anche una **procedura scritta**: chi ripristina, da dove, in quanto tempo. Scritta quando c'è calma, non nel panico.
+
+<Say who="sensei">La prova di ripristino è noiosa. Il giorno in cui serve, è tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda salva ogni notte il database su un disco USB sempre collegato al server, e non ha mai provato a ripristinarlo. Quale problema è più grave?"
+  options={[
+    "La copia è raggiungibile dal server, quindi anche da un ransomware, e non si sa se il ripristino funzioni",
+    "Il backup è fatto di notte invece che di giorno",
+    "Il disco USB è troppo piccolo per essere un supporto serio",
+    "Il database è troppo grande per essere salvato in una volta",
+  ]}
+  answer={0}
+  explain="Una copia sempre collegata si cifra insieme ai dati originali, e un ripristino mai provato può rivelarsi inutile. L'orario del backup o il formato del supporto sono dettagli, non il rischio principale."
+/>
+
+<Say who="sensei">Due difetti, un solo effetto: nessuna copia buona nel giorno peggiore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono descritte alcune situazioni fittizie di backup. Per ognuna devi riconoscere se rispetta la regola 3-2-1 e che cosa manca.
+
+Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c06-backup" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai che cosa chiedere a chi dice «tanto abbiamo il backup».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si salva ciò che non si può ricreare; la frequenza dipende da quanto lavoro si può perdere.
+- Regola 3-2-1: tre copie, due tipi di supporto, una fuori sede. Almeno una copia isolata dal ransomware.
+- Un backup mai ripristinato è solo una speranza: il ripristino si prova e la procedura si scrive.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa 3-2-1?", a: "3 copie, 2 tipi di supporto, 1 fuori sede" },
+    { q: "Perché un disco sempre collegato è un rischio?", a: "Il ransomware cifra ciò che trova raggiungibile, anche il backup" },
+    { q: "Che cosa decide la frequenza dei backup?", a: "Quanto lavoro si può permettere di perdere" },
+    { q: "Come si sa che un backup funziona?", a: "Provando a ripristinarlo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: i dati personali, la cifratura e che cosa chiede il GDPR nella pratica.</Say>
+</Scene>

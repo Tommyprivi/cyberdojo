@@ -1,0 +1,143 @@
+---
+id: C.02.004
+course: cybersecurity
+module: 2
+title: "Il lucchetto aperto"
+belt: gialla
+duration_min: 8
+prerequisites: [C.02.003]
+objectives:
+  - "Spiegare la differenza tra chiave pubblica e chiave privata"
+  - "Dire quale chiave si usa per cifrare e quale per decifrare"
+  - "Spiegare perché la cifratura asimmetrica si usa insieme a quella simmetrica"
+verification:
+  type: generated-numeric
+  generator: c02-asimmetrica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scambiare i ruoli: cifrare con la chiave privata per mandare un segreto"
+  - "Mandare in giro la chiave privata come se fosse pubblica"
+  - "Pensare che la cifratura asimmetrica sostituisca del tutto quella simmetrica"
+commands: []
+---
+
+<Scene title="La cassetta delle lettere">
+Sara vuole ricevere messaggi segreti da chiunque nella scuola, anche da persone che non ha mai incontrato. Con la cifratura simmetrica dovrebbe vedere ognuno di persona per consegnare la chiave.
+
+Allora Sara fa una cosa strana: appende in bacheca un **lucchetto aperto**, con scritto «Chiunque può chiuderlo». La chiave che lo apre la tiene in tasca.
+
+La domanda del caso: **perché è sicuro lasciare il lucchetto a disposizione di tutti?**
+
+<Say who="sensei">Se la lezione scorsa ti ha lasciato con un problema, eccoti la soluzione. Un'idea tra le più eleganti della matematica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due chiavi, non una">
+Nella **cifratura asimmetrica** ogni persona ha una **coppia di chiavi**, legate matematicamente tra loro:
+
+- la **chiave pubblica**: si dà a tutti, come il lucchetto aperto;
+- la **chiave privata**: resta segreta, come la chiave del lucchetto.
+
+Quello che chiude una chiave, lo apre solo l'altra.
+
+<Callout kind="regola">
+Per mandare un segreto a Sara: si cifra con la **chiave pubblica di Sara**. Solo Sara, con la **sua chiave privata**, può decifrare.
+</Callout>
+
+<Say who="assistente">Nico non ha bisogno di nessun segreto per scrivere a Sara. Prende il lucchetto in bacheca e lo chiude. Tutto qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi può leggere?">
+Immagina che un compagno curioso copi il lucchetto aperto e intercetti il messaggio cifrato di Nico.
+
+- Il lucchetto (chiave pubblica) lo ha anche lui, ma serve solo a **chiudere**.
+- La chiave per **aprire** (chiave privata) ce l'ha solo Sara.
+
+<Callout kind="attenzione">
+La chiave privata non si manda, non si condivide, non si carica su un sito. Se qualcuno la ottiene, può leggere tutto ciò che era destinato a te e farsi passare per te.
+</Callout>
+
+<Say who="sensei">Una chiave pubblica la regali. Una chiave privata la custodisci come la tua identità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché non basta">
+Allora perché non usare solo questa? Perché è **lenta**: molto più lenta della simmetrica. Va bene per piccole quantità di dati, non per un film.
+
+La soluzione è unire i due mondi:
+
+<Guided
+  steps={[
+    "Nico crea una chiave simmetrica casuale, per esempio per AES.",
+    "Cifra la chiave simmetrica con la chiave pubblica di Sara e la manda.",
+    "Sara la decifra con la sua chiave privata: ora entrambi hanno la stessa chiave segreta.",
+    "Da qui in poi parlano con la cifratura simmetrica, veloce.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Gli algoritmi asimmetrici più noti sono **RSA** e quelli basati sulle **curve ellittiche**. Sono costruiti su problemi matematici facili in un verso e difficilissimi nell'altro.
+</Callout>
+
+<Say who="sensei">L'asimmetrica serve ad accordarsi sul segreto. La simmetrica porta il carico. Così funziona la sicurezza di Internet.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Elisa vuole mandare un messaggio che solo Marco possa leggere, usando la cifratura asimmetrica. Con quale chiave deve cifrarlo?"
+  options={[
+    "Con la chiave pubblica di Marco",
+    "Con la chiave privata di Marco",
+    "Con la sua chiave privata",
+    "Con la chiave pubblica di Elisa",
+  ]}
+  answer={0}
+  explain="Si cifra con la chiave pubblica del destinatario: solo la sua chiave privata la riapre. Cifrare con la privata di Marco sarebbe impossibile, perché Elisa non l'ha. Cifrare con la propria chiave non dà nessun vantaggio a Marco."
+/>
+
+<Say who="assistente">Indizio: il lucchetto aperto è di chi riceve, non di chi manda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su chiavi pubbliche e private. Pensa a chi ha cosa in tasca.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-asimmetrica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Pubblica per chiudere, privata per aprire. Non scambiarle mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ogni persona ha una coppia di chiavi: la pubblica si distribuisce, la privata resta segreta.
+- Per un segreto al destinatario si cifra con la sua chiave pubblica; solo la sua privata decifra.
+- L'asimmetrica è lenta: si usa per accordarsi su una chiave simmetrica, poi si prosegue con quella.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa si fa con la chiave pubblica?", a: "Si distribuisce a tutti; serve a cifrare per il proprietario" },
+    { q: "Che cosa succede se la chiave privata viene rubata?", a: "Chi la ha può leggere i messaggi destinati al proprietario e farsi passare per lui" },
+    { q: "Perché si combinano asimmetrica e simmetrica?", a: "L'asimmetrica è lenta ma risolve lo scambio della chiave; la simmetrica è veloce" },
+    { q: "Nomina due famiglie di algoritmi asimmetrici.", a: "RSA e curve ellittiche" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le firme digitali e i certificati. Con le due chiavi si può anche dimostrare chi sei.</Say>
+</Scene>

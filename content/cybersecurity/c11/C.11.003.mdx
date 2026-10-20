@@ -1,0 +1,149 @@
+---
+id: C.11.003
+course: cybersecurity
+module: 11
+title: "Certificazioni: servono davvero?"
+belt: marrone
+duration_min: 9
+prerequisites: [C.11.002]
+objectives:
+  - "Spiegare a cosa servono le certificazioni e a cosa no"
+  - "Orientarsi tra livelli base, intermedio e avanzato"
+  - "Scegliere se e quando investire in una certificazione"
+video:
+  provider: youtube
+  id: "kXNR88iQWRI"
+  start: 0
+  end: 600
+  channel: "Cyber101"
+  title: "Carriera nella cyber security, studi, stipendi, certificazioni - Q&A completo"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c11-certificazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una certificazione garantisca un lavoro"
+  - "Spendere per una certificazione avanzata senza avere esperienza"
+  - "Non controllare requisiti, costi e scadenza sul sito ufficiale"
+commands: []
+---
+
+<Scene title="Il corso che promette il lavoro">
+Davide ha 34 anni e vuole passare dall'amministrazione di un'azienda alla sicurezza. Su un social vede un annuncio: «Prendi la certificazione X e il lavoro è assicurato». Costa moltissimo.
+
+Davide si chiede se serva davvero. La domanda del caso: **a cosa serve una certificazione, e a che cosa non serve?**
+
+<Say who="sensei">Se qualcuno ti promette un lavoro in cambio di un pagamento, chiedi le prove. Il lavoro non lo promette nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa è e che cosa non è">
+Una **certificazione** è un esame, a pagamento, che attesta che a una certa data hai dimostrato certe conoscenze. Serve a:
+
+- **strutturare** lo studio: hai un programma e una scadenza;
+- avere un **linguaggio comune** con chi assume;
+- a volte superare un **filtro** nelle selezioni, soprattutto in aziende grandi o nel settore pubblico.
+
+Non serve a:
+
+- sostituire **l'esperienza pratica**;
+- garantirti un lavoro;
+- dimostrare che sai fare, se non l'hai mai fatto.
+
+<Callout kind="regola">
+Nessuna certificazione sostituisce la pratica. Un esame si supera in un giorno; una competenza si costruisce in mesi.
+</Callout>
+
+<Say who="assistente">Pensa alla patente: dice che hai superato un esame. Guidare bene lo impari dopo, con i chilometri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una mappa onesta dei livelli">
+Un'idea generale dei livelli (i nomi e i prezzi cambiano: verifica sempre sul sito ufficiale, controllo fatto in ottobre 2026 solo per l'esistenza degli enti):
+
+- **Base**: per chi comincia. Esempi: certificazioni di ingresso di **CompTIA** (comptia.org) o di **ISC2** (isc2.org). Costi: di solito centinaia di euro per l'esame.
+- **Intermedio**: richiedono più competenze pratiche, su un ruolo specifico (difesa, test di intrusione, analisi). Costi più alti, spesso con corsi a parte.
+- **Avanzato**: pensate per professionisti con anni di esperienza. Alcune richiedono di **dimostrare anni di lavoro** nel settore; non sono un traguardo da inseguire all'inizio.
+
+<Callout kind="attenzione">
+I prezzi in euro dipendono da paese, formato (esame solo o corso più esame) e anno. Non fidarti di cifre trovate in rete senza data: leggi la pagina ufficiale.
+</Callout>
+
+<Say who="sensei">Non si comincia dall'ultimo gradino. Si comincia dal primo, e solo se serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi, quando, quanto">
+Come cambia il consiglio:
+
+- **14-17 anni**: spesso conviene rimandare. Piuttosto fai pratica, CTF e, se hai l'età, CyberChallenge.IT. Gli esami hanno costi che pesano e non c'è fretta: i contenuti cambiano.
+- **18-25**: se studi informatica, spesso l'università e la pratica pesano di più. Una certificazione di base può aiutare per un primo colloquio.
+- **26-40 e 41+**: chi cambia lavoro può usare una certificazione per **dimostrare serietà** e dare struttura. Meglio se unita a un piccolo progetto personale (un home lab, un report).
+
+Vuoi sentire un'altra voce parlare di carriera e certificazioni? Un video, solo i primi dieci minuti:
+
+<Video />
+
+<Say who="assistente">Chiedi sempre: la mia azienda target la richiede? Se nessuna offerta che mi interessa la nomina, forse non mi serve ora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Davide ha letto che una certificazione avanzata «garantisce l'assunzione». Che cosa gli conviene fare?"
+  options={[
+    "Controllare i requisiti sul sito ufficiale, guardare le offerte che gli interessano e partire da un livello base con un progetto pratico",
+    "Pagare subito il corso più costoso, perché è quello più riconosciuto",
+    "Ignorare le certificazioni: contano solo le CTF",
+    "Prenderne più di una insieme, per essere sicuro",
+  ]}
+  answer={0}
+  explain="Una certificazione non garantisce un lavoro. Si sceglie guardando cosa richiedono davvero le offerte, partendo dal livello giusto e unendola alla pratica. Ignorarle del tutto o accumularle senza criterio sono errori opposti."
+/>
+
+<Say who="sensei">Prima guarda cosa chiede il mercato. Poi decidi. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi su come ragionare sulle certificazioni.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c11-certificazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Ottimo. Il tuo tempo e il tuo denaro valgono: spendili dove portano risultati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una certificazione dà struttura e un filtro in selezione, ma non sostituisce la pratica né garantisce un lavoro.
+- Livelli: base per cominciare, intermedio per un ruolo, avanzato dopo anni di esperienza. Costi e requisiti si controllano sul sito ufficiale.
+- A 14-17 anni conviene la pratica; chi cambia lavoro può usarla per dimostrare impegno, insieme a un progetto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A cosa serve una certificazione?", a: "A strutturare lo studio e a dare un riferimento a chi assume" },
+    { q: "Cosa NON garantisce?", a: "Un lavoro, né la capacità pratica" },
+    { q: "Dove controlli costi e requisiti?", a: "Sul sito ufficiale dell'ente, con la data" },
+    { q: "A 15 anni, meglio un esame costoso o la pratica?", a: "La pratica: CTF, piattaforme, home lab" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: costruisci il tuo laboratorio a casa. Con regole di sicurezza ferree.</Say>
+</Scene>

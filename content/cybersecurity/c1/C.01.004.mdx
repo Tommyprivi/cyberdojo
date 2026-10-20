@@ -1,0 +1,160 @@
+---
+id: C.01.004
+course: cybersecurity
+module: 1
+title: "Il modello di minaccia"
+belt: bianca
+duration_min: 9
+prerequisites: [C.01.003]
+objectives:
+  - "Costruire un semplice modello di minaccia: chi attacca, cosa vuole, da dove entra"
+  - "Individuare i punti d'ingresso più probabili di una piccola azienda"
+verification:
+  type: generated-numeric
+  generator: c01-modello
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Immaginare solo attaccanti da film e dimenticare quelli ordinari: criminali a tappeto, errori interni"
+  - "Fare il modello una volta sola e non aggiornarlo quando cambia l'azienda"
+  - "Trascurare gli ingressi banali (password riusate, email) per inseguire attacchi sofisticati"
+commands: []
+---
+
+<Scene title="Dolci Brezza">
+Dolci Brezza è una pasticceria fittizia con tre persone: Anna, la titolare, Luca, che cura le vendite online, e Sara, che aiuta in laboratorio.
+
+Hanno un sito per gli ordini, un computer in cassa con la lista dei clienti, il Wi-Fi che usano anche i clienti seduti ai tavoli, e la posta elettronica di Anna.
+
+Anna chiede: «Devo preoccuparmi di hacker che puntano proprio a noi?»
+
+La domanda del caso: **chi può davvero attaccare una pasticceria, e da dove?**
+
+<Say who="sensei">Prima di comprare qualsiasi difesa, si ragiona. Si chiama modello di minaccia. Si fa con carta e penna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre domande">
+Un **modello di minaccia** è un ragionamento ordinato su tre cose:
+
+1. **Chi** può attaccare?
+2. **Cosa** vuole?
+3. **Da dove** può entrare?
+
+Non serve un programma. Serve un foglio, e la fantasia di mettersi dalla parte di chi attacca.
+
+<Callout kind="regola">
+Il modello di minaccia dice dove mettere le difese. Senza, si compra tutto a caso, o niente.
+</Callout>
+
+<Say who="assistente">Come un vigile che guarda una piantina del quartiere prima di decidere dove mettere le telecamere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi attacca, cosa vuole">
+Per Dolci Brezza gli attaccanti realistici sono pochi.
+
+- **Il criminale che attacca a tappeto**: manda email truffa a migliaia di aziende, senza sapere chi sono. Vuole **soldi**: cifrare i file e chiedere un riscatto, o rubare dati da rivendere.
+- **La minaccia interna**: un dipendente scontento, o un errore di distrazione. Può volere vendetta, o non volere niente: basta un clic sbagliato.
+- **Il curioso**: chi prova la rete ospiti solo perché c'è. Di solito non fa grandi danni, ma può trovare qualcosa di lasciato aperto.
+
+Una spia di Stato che punta alla ricetta della torta? Poco realistico: non è nel modello di Dolci Brezza.
+
+<Callout kind="curiosita">
+Mettere nel modello anche ciò che **non** è probabile aiuta: eviti di spendere soldi per difenderti da rischi che per te non esistono.
+</Callout>
+
+<Say who="sensei">Le piccole aziende non sono attaccate perché interessanti. Sono attaccate perché facili. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove entra">
+L'insieme dei punti da cui qualcuno può provare a entrare si chiama **superficie d'attacco**. Per Dolci Brezza:
+
+- **La posta di Anna**: un'email finta, un clic, e l'attaccante ha le sue credenziali.
+- **Le password**: una password debole o riusata su più servizi è una porta aperta.
+- **Il Wi-Fi condiviso**: i clienti sono sulla stessa rete del computer in cassa.
+- **Il sito degli ordini**: un programma non aggiornato è un punto debole.
+- **Le persone**: Sara non sa riconoscere un'email truffa.
+
+<Callout kind="attenzione">
+Errore tipico: pensare solo a ingressi sofisticati. Nella realtà, le porte più usate sono quelle banali: password deboli ed email ingannevoli.
+</Callout>
+
+<Say who="assistente">Quale di queste cinque porte è la più facile da usare per uno sconosciuto? Parti da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Dolci Brezza ha il Wi-Fi usato dai clienti sulla stessa rete del computer in cassa con la lista dei clienti. Che problema c'è nel modello di minaccia?"
+  options={["Chi si collega al Wi-Fi arriva vicino ai sistemi interni, senza che nessuno lo controlli", "Nessun problema: i clienti sono sempre persone di fiducia", "Il problema è solo che la rete è più lenta", "Il Wi-Fi non può mai essere un punto d'ingresso"]}
+  answer={0}
+  explain="Un Wi-Fi condiviso mette sullo stesso livello clienti e sistemi aziendali: chiunque si colleghi, anche con cattive intenzioni, è già vicino alla cassa. La difesa è separare le reti. Chi risponde «nessun problema» dà fiducia a chi non conosce."
+/>
+
+<Say who="sensei">Dove entra chi non dovrebbe entrare? Se la risposta è «da una porta che abbiamo lasciato noi», hai trovato un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il foglio di Anna">
+Mettiamo tutto su un foglio, come farebbe Anna.
+
+<Guided
+  steps={[
+    "Asset (lezione 1): lista dei clienti, ordini del sito, la posta di Anna.",
+    "Chi attacca: criminali che mandano email truffa a tappeto, errori interni, il curioso sul Wi-Fi.",
+    "Cosa vogliono: soldi (riscatto, rivendita dati) o semplicemente accesso a ciò che è lasciato aperto.",
+    "Da dove entrano: email, password deboli, Wi-Fi condiviso, sito non aggiornato.",
+    "Difese in ordine di convenienza: password lunghe e diverse con secondo controllo, formazione sulle email truffa, Wi-Fi separato per i clienti, aggiornamento del sito, copie di riserva.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Il modello non è una foto: è un film. Ogni volta che cambia qualcosa (un nuovo servizio, una nuova persona, nuovi dati) si rifà.
+</Callout>
+
+<Say who="sensei">Un foglio, mezz'ora, e hai un piano. Fare sicurezza non vuol dire spendere: vuol dire scegliere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul modello di minaccia. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-modello" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi attacca, cosa vuole, da dove entra. Tre domande che valgono per ogni azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un modello di minaccia risponde a tre domande: chi attacca, cosa vuole, da dove entra.
+- Per le piccole aziende gli attaccanti più probabili sono criminali a tappeto che vogliono soldi, ed errori interni.
+- Gli ingressi più usati sono banali: email ingannevoli, password deboli, reti condivise, programmi non aggiornati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le tre domande del modello di minaccia?", a: "Chi attacca, cosa vuole, da dove entra" },
+    { q: "Che cos'è la superficie d'attacco?", a: "L'insieme dei punti da cui si può provare a entrare" },
+    { q: "Perché le piccole aziende vengono attaccate?", a: "Perché sono facili, non perché sono interessanti" },
+    { q: "Quando si rifà il modello di minaccia?", a: "Ogni volta che cambia qualcosa nell'azienda" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: difesa in profondità e privilegio minimo. Come si organizzano le difese, una volta scelto dove metterle.</Say>
+</Scene>

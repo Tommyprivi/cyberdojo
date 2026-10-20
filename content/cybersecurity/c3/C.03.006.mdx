@@ -1,0 +1,159 @@
+---
+id: C.03.006
+course: cybersecurity
+module: 3
+title: "L'email delle 08:47"
+belt: arancione
+duration_min: 9
+prerequisites: [C.03.005]
+objectives:
+  - "Riconoscere gli indizi di un'email o di un sito di phishing"
+  - "Sapere che cosa fare subito se si è cliccato o si sono inseriti i dati"
+  - "Segnalare correttamente un tentativo di phishing"
+verification:
+  type: generated-numeric
+  generator: c03-phishing
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi del nome del mittente senza guardare l'indirizzo vero"
+  - "Credere che il lucchetto (HTTPS) garantisca che il sito sia quello giusto"
+  - "Vergognarsi di aver cliccato e non dirlo a nessuno: il ritardo peggiora il danno"
+commands: []
+---
+
+<Scene title="L'email delle 08:47">
+Alle 08:47 Marta, dell'ufficio acquisti della «Legnami Rossi», trova questa email:
+
+<Log lines={["Da: Assistenza Posta <supporto@legnami-rossi-posta.example>", "Oggetto: URGENTE - la tua casella verrà sospesa oggi", "Testo: La tua password scade tra 2 ore. Clicca qui per mantenere l'accesso."]} caption="Indirizzi fittizi. Il dominio vero dell'azienda è legnamirossi.example." />
+
+Clicca. Si apre una pagina identica a quella di login della posta. Inserisce utente e password. La pagina si ricarica e non succede niente.
+
+La domanda del caso: **dov'erano gli indizi, e cosa deve fare Marta ora?**
+
+<Say who="sensei">Nessun virus, nessuna falla. Marta ha consegnato lei la chiave. Non è stupidità: è un'email fatta bene, all'ora giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cos'è il phishing">
+Il **phishing** è un inganno che ti spinge a consegnare un accesso: una password, un codice, i dati della carta. Arriva per email, SMS, messaggio sui social o telefonata.
+
+Funziona su una leva semplice: ti fa **agire senza pensare**. Fretta, paura, curiosità, o la voce di un capo che chiede un favore.
+
+<Callout kind="attenzione">
+Qui descriviamo gli inganni per riconoscerli. Creare pagine false o inviare email del genere è reato (truffa, accesso abusivo, art. 615-ter c.p.): nelle esercitazioni si lavora solo in laboratori autorizzati.
+</Callout>
+
+<Say who="assistente">Più un messaggio ti mette fretta, più devi rallentare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli indizi nell'email">
+Rileggiamo l'email di Marta.
+
+<Guided
+  steps={[
+    "Il nome visibile dice «Assistenza Posta», ma conta l'**indirizzo vero**: legnami-rossi-posta.example non è il dominio dell'azienda (legnamirossi.example). Somiglia, non coincide.",
+    "L'oggetto grida **URGENTE** e minaccia una sospensione: serve a non farti pensare.",
+    "Il testo non usa il tuo nome e non spiega niente: i messaggi veri sono più precisi.",
+    "Il link: passa il mouse sopra senza cliccare (o tieni premuto sul telefono) e leggi dove porta davvero.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Tre domande: **chi** scrive davvero? **Perché** ho fretta? **Dove** porta il link? Una risposta strana basta per fermarsi.
+</Callout>
+
+<Say who="sensei">Un solo indizio può essere un caso. Tre indizi sono una trappola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il sito falso">
+La pagina in cui è finita Marta copiava la schermata della posta. Come si smaschera?
+
+- **L'indirizzo nella barra** non è quello giusto, anche se il resto è identico. Controlla sempre il nome del sito, dopo «https://» e fino alla prima barra.
+- Il **lucchetto** vuol dire solo che la connessione è cifrata, non che il sito sia onesto: anche i siti falsi lo hanno.
+- Il modo più sicuro: **non passare dal link**. Apri tu il sito digitando l'indirizzo o usando un segnalibro, e guarda se la notifica compare anche lì.
+
+<Callout kind="regola">
+Mai inserire le credenziali dopo aver cliccato un link ricevuto. Vai sempre al sito per conto tuo.
+</Callout>
+
+<Say who="assistente">Se vuoi sapere se la tua posta sta davvero per scadere, apri la posta da solo e guarda. Se è vero, te lo dice lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ho cliccato. Adesso?">
+È successo: Marta ha inserito la password. Ogni minuto conta. Cosa fa?
+
+<Guided
+  steps={[
+    "**Non nascondere**. Avvisa subito il responsabile informatico (o l'assistenza): chi lo sa presto limita i danni.",
+    "Cambia la password dell'account dal sito vero, aperto a mano, da un dispositivo di cui ti fidi. Cambia anche le altre dove usi la stessa.",
+    "Esci da tutte le sessioni attive e controlla i dispositivi collegati (lezione 4). Se la 2FA è disponibile, attivala.",
+    "Se hai inserito dati della carta o della banca, chiama subito la banca e blocca la carta.",
+    "Se hai solo cliccato e non hai inserito nulla, avvisa comunque: serve a controllare il dispositivo.",
+  ]}
+/>
+
+<Say who="sensei">Chi cliccò e lo disse in cinque minuti è un collega. Chi cliccò e tacque per tre giorni è un incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnalare, e il caso della 2FA">
+Segnalare serve a proteggere anche gli altri: se Marta l'ha ricevuta, anche i colleghi.
+
+- In azienda: usa il pulsante «Segnala» o inoltra al responsabile informatico, e **non** rispondere né cliccare.
+- Per i privati: si può segnalare alla **Polizia Postale** e al servizio da cui sembra arrivare il messaggio. Poi elimina l'email.
+
+Un'ultima cosa: alcune pagine false chiedono anche il **codice della 2FA** e lo girano subito al vero sito. Per questo le chiavi fisiche e le passkey (lezione 3) sono più forti: il sito falso non riesce a farle funzionare.
+
+<Quiz
+  question="Un'email dell'«assistenza» dice che il conto sarà chiuso e chiede di cliccare per confermare i dati. Che cosa fai?"
+  options={["Non clicco: apro io il sito o chiamo il numero ufficiale e segnalo il messaggio", "Clicco, ma controllo almeno che ci sia il lucchetto", "Rispondo all'email per chiedere se è davvero la banca", "Clicco e inserisco solo il nome utente, non la password"]}
+  answer={0}
+  explain="Un link ricevuto non va usato per accedere: si apre il sito per conto proprio. Il lucchetto non prova che il sito sia quello giusto. Rispondere conferma all'attaccante che l'indirizzo è attivo. Anche il solo nome utente è una informazione utile per lui."
+/>
+
+<Say who="assistente">Indizio: la risposta giusta è quella in cui il link non lo tocchi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su email e siti sospetti. Servono tutte giuste. Hai 3 tentativi.
+
+<Practice generator="c03-phishing" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa fermarsi tre secondi davanti a un link vale più di qualsiasi filtro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il phishing ruba un accesso con un inganno, non con un virus: fretta, paura e un indirizzo che somiglia a quello vero.
+- Indizi: mittente vero diverso dal nome, urgenza, link che porta altrove. Non inserire mai le credenziali dopo un link ricevuto.
+- Se hai cliccato: avvisa subito, cambia la password dal sito vero, chiudi le sessioni, blocca la carta se hai dato dati bancari. Poi segnala.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si guarda per capire chi scrive davvero un'email?", a: "All'indirizzo vero del mittente, non al nome visibile" },
+    { q: "Il lucchetto nel browser garantisce che il sito sia quello giusto?", a: "No: dice solo che la connessione è cifrata" },
+    { q: "Hai inserito la password su un sito sospetto. Primo gesto?", a: "Avvisare subito il responsabile e cambiare la password dal sito vero" },
+    { q: "Perché una passkey resiste meglio al phishing?", a: "Perché funziona solo sul sito vero: un sito falso non può usarla" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai visto come si scelgono le password, come si conservano, come si proteggono, come si perdono. Ora sai guardare un accesso con occhi diversi.</Say>
+</Scene>

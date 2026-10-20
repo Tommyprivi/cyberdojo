@@ -1,0 +1,183 @@
+---
+id: C.07.002
+course: cybersecurity
+module: 7
+title: "SIEM: mettere i log insieme"
+belt: verde
+duration_min: 9
+prerequisites: [C.07.001]
+objectives:
+  - "Spiegare che cosa fa un SIEM: raccoglie, normalizza e correla i log"
+  - "Capire perché un solo log non basta a vedere un attacco"
+  - "Leggere una semplice regola di rilevamento"
+video:
+  provider: youtube
+  id: "ctLU2CCLMqo"
+  start: 0
+  end: 450
+  channel: "Infosec Wizard"
+  title: "Cos'è un SIEM? | Da zero a SOC Analyst Ep. 1"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c07-siem
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il SIEM «trovi gli attacchi da solo»: rileva ciò che le regole sanno descrivere"
+  - "Raccogliere tutti i log senza scegliere: troppo rumore e costi alti, poco valore"
+  - "Dimenticare che orari e formati diversi vanno resi uguali (normalizzazione) prima di correlare"
+commands: []
+---
+
+<Scene title="Tre log, nessun allarme">
+Alla «Rossi Forniture» ci sono tre sistemi, ognuno con il suo log.
+
+<Log lines={[
+  "VPN      02:30  login riuscito  utente=bianchi  da=203.0.113.40",
+  "Server   02:34  accesso a /clienti/export.csv  utente=bianchi",
+  "Firewall 02:41  uscita di 450 MB verso 198.51.100.77  da=srv-clienti",
+]} caption="Tre sistemi, tre diari separati." />
+
+Guardata da sola, ogni riga è normale: un login, un file letto, un po' di traffico. Insieme raccontano un furto di dati.
+
+La domanda del caso: **come si fa a vedere la storia, se ogni sistema ne conosce solo un pezzo?**
+
+<Say who="sensei">Nessun testimone ha visto il crimine intero. Serve qualcuno che metta le testimonianze una accanto all'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un SIEM">
+Un **SIEM** (Security Information and Event Management) è il posto dove i log di tutti i sistemi arrivano e vengono studiati **insieme**.
+
+Fa tre cose:
+
+- **raccoglie** i log da server, firewall, VPN, postazioni;
+- **normalizza**: rende uguali formati e orari diversi, così le righe si possono confrontare;
+- **correla**: collega eventi diversi che, messi in fila, hanno un significato.
+
+<Callout kind="curiosita">
+Esistono SIEM commerciali e anche open source. Wazuh, per esempio, è un progetto aperto che molte piccole aziende usano.
+</Callout>
+
+<Say who="assistente">Pensa a una sala di controllo con tanti monitor, e una sola persona che capisce come i monitor si parlano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché un log solo non basta">
+Riguarda il caso. La VPN dice: «bianchi è entrato alle 02:30». Normale, magari lavora fino a tardi.
+
+Il server dice: «bianchi ha letto un file di clienti». Normale, è il suo lavoro.
+
+Il firewall dice: «450 MB sono usciti verso un indirizzo esterno». Può essere un backup.
+
+<Callout kind="attenzione">
+Ogni sistema vede solo la sua parte e ha ragione a non allarmarsi. L'allarme nasce solo **mettendo insieme le tre righe**: stesso utente, di notte, da un indirizzo nuovo, subito prima di un grosso invio di dati.
+</Callout>
+
+<Say who="sensei">L'attacco vive negli spazi tra un log e l'altro. Il SIEM serve a guardare lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di rilevamento">
+Il SIEM non ha intuito: segue **regole** scritte da persone. Una regola dice «se succede questo, allora avvisa».
+
+<Guided
+  steps={[
+    "Regola semplice: più di 5 password sbagliate per lo stesso utente in 2 minuti → avviso «possibile forza bruta».",
+    "Regola con correlazione: un login VPN da un paese mai visto per quell'utente, seguito entro 1 ora da un grosso invio di dati → avviso ad alta gravità.",
+    "Se la regola è troppo stretta, l'attacco passa senza essere visto. Se è troppo larga, arrivano allarmi inutili.",
+    "Le regole si migliorano nel tempo, guardando che cosa ha funzionato e che cosa ha dato falsi allarmi.",
+  ]}
+/>
+
+<Say who="sensei">Un SIEM trova ciò che sai descrivere. Per questo le regole le scrivi tu, e le rivedi di continuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi sentirlo spiegare da un'altra voce? Sono pochi minuti, e dicono bene che cos'è un SIEM e a che cosa serve.
+
+<Video />
+
+<Callout kind="trucco">
+Mentre guardi, cerca le tre parole: **raccogliere**, **normalizzare**, **correlare**. Se le ritrovi, hai capito.
+</Callout>
+
+<Say who="assistente">Non ti serve ricordare i nomi dei prodotti. Ti serve l'idea: tanti log, un posto solo, regole che collegano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Log lines={[
+  "10:02  utente=verdi   login riuscito  da=192.0.2.15 (ufficio)",
+  "10:03  utente=verdi   apre /fatture/2026",
+  "10:05  utente=verdi   login riuscito  da=203.0.113.99 (estero)",
+  "10:06  utente=verdi   scarica 2 GB di archivio",
+]} caption="Stesso utente, due luoghi, cinque minuti." />
+
+<Quiz
+  question="Quale regola di correlazione avrebbe fatto scattare l'allarme su queste righe?"
+  options={[
+    "Due accessi dello stesso utente da luoghi molto lontani in pochi minuti",
+    "Un utente che apre una cartella delle fatture",
+    "Un utente che accede in orario d'ufficio",
+    "Un download maggiore di 1 MB",
+  ]}
+  answer={0}
+  explain="Una persona non può essere in ufficio e all'estero nello stesso quarto d'ora: probabilmente qualcuno usa le sue credenziali. Aprire una cartella o accedere in orario di lavoro è normale, e una soglia di 1 MB farebbe scattare allarmi continui."
+/>
+
+<Say who="assistente">Ti aiuto: quale riga, da sola, è normale, ma insieme a un'altra diventa impossibile?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa raccogliere">
+Non si raccoglie tutto: si sceglie. Troppi log costano soldi e coprono quelli importanti.
+
+<Callout kind="regola">
+Comincia dalle fonti che dicono **chi entra e che cosa tocca**: accessi (VPN, server, posta), firewall, antivirus o EDR sulle postazioni, i sistemi che custodiscono dati importanti.
+</Callout>
+
+<Callout kind="attenzione">
+Un SIEM senza qualcuno che guarda gli avvisi è un allarme in una casa vuota. Servono persone, e un metodo per decidere che cosa fare quando scatta. Ne parliamo tra due lezioni.
+</Callout>
+
+<Say who="sensei">Meglio dieci fonti ben scelte e capite, che cento sorgenti di rumore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque domande su raccolta e correlazione. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-siem" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Il SIEM raccoglie i log da tanti sistemi, li rende confrontabili e li correla.
+- Un attacco si vede spesso solo mettendo insieme righe che, da sole, sembrano normali.
+- Il SIEM segue regole scritte da persone: troppo strette lasciano passare, troppo larghe fanno rumore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire correlare?", a: "Collegare eventi di fonti diverse che insieme hanno un significato" },
+    { q: "Che cosa vuol dire normalizzare i log?", a: "Rendere uguali formati e orari per poterli confrontare" },
+    { q: "Perché un solo log spesso non basta?", a: "Ogni sistema vede solo una parte dell'attacco" },
+    { q: "Il SIEM scopre da solo ogni attacco?", a: "No: rileva ciò che le sue regole sanno descrivere" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: ridurre il lavoro dell'attaccante prima ancora che inizi. Si chiama hardening.</Say>
+</Scene>

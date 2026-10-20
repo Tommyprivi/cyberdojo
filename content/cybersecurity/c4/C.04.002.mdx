@@ -1,0 +1,162 @@
+---
+id: C.04.002
+course: cybersecurity
+module: 4
+title: "Il sorvegliante: IDS e IPS"
+belt: arancione
+duration_min: 8
+prerequisites: [C.04.001]
+objectives:
+  - "Distinguere un IDS (rileva e avvisa) da un IPS (rileva e blocca)"
+  - "Spiegare la differenza tra rilevamento a firme e per anomalie"
+  - "Riconoscere un falso positivo e capire perché un IPS troppo severo può fare danni"
+video:
+  provider: youtube
+  id: "l7FeR1MIRFY"
+  start: 0
+  end: 362
+  channel: "TechWithEase"
+  title: "IDS vs IPS vs Firewall"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c04-ids-ips
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un IDS blocchi gli attacchi: l'IDS avvisa soltanto, a bloccare è l'IPS"
+  - "Pensare che un allarme sia sempre un attacco: molti sono falsi positivi"
+  - "Pensare che le firme riconoscano anche gli attacchi mai visti prima"
+commands: []
+---
+
+<Scene title="L'allarme delle 14:05">
+Alla **Bianchi Logistica** il firewall è a posto: default deny, poche porte aperte. Eppure alle 14:05 compare questo avviso nel pannello del tecnico:
+
+<Log lines={["14:05  ALERT  regola=\"tentativo di accesso a un file di sistema\"", "       src=203.0.113.50  dst=server-web  porta=443  gravità=alta"]} caption="Il traffico era sulla porta 443, che il firewall permette. È passato. Ma qualcosa se n'è accorto." />
+
+Il firewall guarda l'etichetta del pacco. Qui qualcuno ha guardato **dentro**. (Il traffico sulla 443 è cifrato: per leggerlo, lo strumento lavora dove è già stato decifrato, per esempio sul server del sito.)
+
+La domanda del caso: **chi guarda dentro i pacchetti, e cosa fa quando vede qualcosa di strano?**
+
+<Say who="sensei">Il portiere ha lasciato passare il pacco perché l'etichetta era in regola. Adesso serve qualcuno che controlli cosa c'è dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rilevare o bloccare">
+Due strumenti, due compiti.
+
+Un **IDS** (*Intrusion Detection System*, sistema di rilevamento delle intrusioni) è una **telecamera con allarme**: osserva il traffico e, se vede qualcosa di sospetto, **avvisa** una persona. Non ferma niente.
+
+Un **IPS** (*Intrusion Prevention System*, sistema di prevenzione) è una **guardia che ferma**: oltre a vedere, **blocca** il traffico sospetto, di solito subito e da solo.
+
+<Callout kind="trucco">
+D come **D**etection: scopre e avvisa. P come **P**revention: previene, cioè blocca.
+</Callout>
+
+L'IDS di solito si mette «di lato» e guarda una copia del traffico, quindi non rallenta la rete e, se si rompe, la rete continua a funzionare. L'IPS sta «in mezzo» al percorso del traffico: se si rompe può bloccare tutto.
+
+<Say who="sensei">Chi guarda e avvisa è un IDS. Chi guarda e ferma è un IPS. Dimentica le sigle: ricorda il verbo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Firme e anomalie">
+Come fa a decidere che qualcosa è sospetto? Ci sono due metodi.
+
+**Rilevamento a firme.** Ha un elenco di «impronte» di attacchi già noti, come uno schedario dei ricercati. Se il traffico assomiglia a un'impronta, scatta l'allarme. È preciso con gli attacchi conosciuti, ma **non riconosce quelli nuovi**, finché la lista non viene aggiornata.
+
+**Rilevamento per anomalie.** Impara com'è il traffico *normale* e segnala ciò che se ne discosta. Per esempio: un pc contabile che di notte manda gigabyte di dati all'esterno. Può accorgersi anche di cose mai viste, ma sbaglia più spesso.
+
+<Callout kind="attenzione">
+Nessun metodo è perfetto. Le firme dimenticano le novità. Le anomalie vedono «strano» anche ciò che è solo insolito, per esempio un aggiornamento enorme scaricato di lunedì mattina.
+</Callout>
+
+<Say who="assistente">Le firme dicono «questo lo conosco». Le anomalie dicono «questo non è normale». Spesso si usano insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I falsi positivi">
+Torniamo all'allarme delle 14:05. Il tecnico indaga. Era il programma di backup dell'azienda, che per leggere i file usava un percorso che somigliava a un attacco.
+
+Non era un attacco. Un allarme che scatta per qualcosa di innocuo si chiama **falso positivo**. Il caso opposto, un attacco vero che passa senza allarme, è un **falso negativo**.
+
+Perché i falsi positivi sono importanti? Con un **IDS** costano tempo: qualcuno deve controllare ogni avviso, e a forza di allarmi inutili si smette di leggerli. Con un **IPS** costano di più: il traffico innocuo viene **bloccato davvero**. Se l'IPS ferma il backup, o l'accesso di un cliente, l'azienda smette di lavorare.
+
+<Callout kind="regola">
+Un IPS va tarato con cura. Spesso si comincia con la modalità «solo avviso» (come un IDS), si guardano i falsi positivi per qualche settimana, poi si attiva il blocco.
+</Callout>
+
+<Say who="sensei">Un allarme non è una condanna. Prima si verifica, poi si decide. Un IPS che blocca tutto è un guasto, non una difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda mette in rete un sistema che, quando vede un traffico simile a un attacco noto, lo scarta subito senza chiedere a nessuno. Come si chiama?"
+  options={["IPS", "IDS", "Antivirus del pc", "Registro degli accessi"]}
+  answer={0}
+  explain="Scartare il traffico subito e da solo vuol dire bloccare: è un IPS. Un IDS si limiterebbe ad avvisare una persona. Chi risponde IDS ricorda la sigla ma non il verbo: rilevare non è bloccare."
+/>
+
+<Say who="sensei">Guarda cosa fa, non come si chiama. Se avvisa, è un IDS. Se ferma, è un IPS.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi sentirlo spiegare da un'altra voce? Circa sei minuti, in inglese: confronta firewall, IDS e IPS.
+
+<Video />
+
+Mettiamo ordine sui tre strumenti, perché si completano:
+
+- il **firewall** decide chi può passare, in base a indirizzi e porte;
+- l'**IDS** osserva ciò che passa e avvisa;
+- l'**IPS** osserva ciò che passa e blocca.
+
+Un'azienda seria non sceglie uno solo: li mette in fila, ognuno copre i buchi dell'altro.
+
+<Say who="assistente">Se non senti bene l'inglese, attiva i sottotitoli. Ti basta capire il confronto finale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla Bianchi Logistica: allarmi, blocchi sbagliati e scelte tra IDS e IPS.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-ids-ips" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Saper dire quando un allarme è vero è il mestiere dell'analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IDS rileva e avvisa; l'IPS rileva e blocca. Il firewall filtra per indirizzi e porte, l'IDS e l'IPS guardano cosa c'è dentro il traffico.
+- Le firme riconoscono gli attacchi noti, le anomalie segnalano ciò che è fuori dal normale ma sbagliano più spesso.
+- Un falso positivo è un allarme per qualcosa di innocuo: con un IPS può bloccare traffico buono, quindi va tarato con cura.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "IDS o IPS: chi blocca il traffico?", a: "L'IPS. L'IDS avvisa soltanto" },
+    { q: "Che cos'è un rilevamento a firme?", a: "Il confronto con impronte di attacchi già noti" },
+    { q: "Che cos'è un falso positivo?", a: "Un allarme scattato per qualcosa di innocuo" },
+    { q: "Perché i falsi positivi pesano di più su un IPS?", a: "Perché blocca davvero il traffico buono" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: perché non tutti i computer devono stare nella stessa rete. Segmentazione e DMZ.</Say>
+</Scene>

@@ -1,0 +1,184 @@
+---
+id: C.07.006
+course: cybersecurity
+module: 7
+title: "Conoscere l'avversario"
+belt: blu
+duration_min: 10
+prerequisites: [C.07.005]
+objectives:
+  - "Descrivere un attacco come una sequenza di fasi"
+  - "Usare MITRE ATT&CK come mappa per capire che cosa si sta vedendo"
+  - "Distinguere indicatori di compromissione e threat intelligence e saperli usare"
+verification:
+  type: generated-numeric
+  generator: c07-avversario
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che ATT&CK sia una lista di attacchi da imparare a memoria: è una mappa per ragionare"
+  - "Cercare solo indicatori già noti (un indirizzo, un file) e dimenticare i comportamenti"
+  - "Considerare un indicatore di compromissione una prova definitiva: va sempre verificato nel contesto"
+commands: []
+---
+
+<Scene title="Un attacco ha una forma">
+La «Rossi Forniture» riceve tre segnalazioni in due settimane, in sistemi diversi.
+
+<Log lines={[
+  "Sett. 1  Posta  un dipendente apre un allegato in una mail «fattura»",
+  "Sett. 1  PC     compare un nuovo programma che parte all'avvio",
+  "Sett. 2  Rete   un PC contatta ogni notte un indirizzo esterno mai visto",
+  "Sett. 2  Server un account normale legge cartelle che non ha mai aperto",
+]} caption="Quattro eventi, sembrano separati." />
+
+La domanda del caso: **sono quattro problemi o un solo attacco visto a pezzi?**
+
+<Say who="sensei">Chi attacca non fa un gesto solo. Segue un percorso. Se conosci il percorso, riconosci i passi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ciclo di un attacco">
+Un attacco ben fatto procede per **fasi**. Semplificando:
+
+1. **Preparazione**: l'attaccante studia l'obiettivo.
+2. **Primo accesso**: entra, per esempio con una mail ingannevole.
+3. **Stabilirsi**: si assicura di poter restare, anche dopo un riavvio.
+4. **Muoversi**: esplora la rete e cerca account e dati di valore.
+5. **Obiettivo**: ruba, cifra o distrugge.
+
+<Callout kind="regola">
+Ogni fase lascia **tracce diverse**. Se perdi la prima, puoi ancora vedere la terza o la quarta. Un solo anello che vedi basta a rompere la catena.
+</Callout>
+
+<Say who="assistente">Ripensa al caso: la mail è la fase 2, il programma all'avvio la 3, le cartelle lette la 4. È una storia sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="MITRE ATT&CK: una mappa">
+**MITRE ATT&CK** è un catalogo pubblico, gratuito, in cui sono descritti i comportamenti usati dagli attaccanti nei casi reali. È organizzato in:
+
+- **tattiche**: gli obiettivi di ogni fase (accesso iniziale, persistenza, movimento laterale, esfiltrazione dati…);
+- **tecniche**: i modi concreti per raggiungere quell'obiettivo.
+
+<Callout kind="curiosita">
+Ogni tecnica ha un codice, per esempio «T1566» per il phishing. Non serve impararli a memoria: servono a **parlare la stessa lingua** tra analisti e strumenti.
+</Callout>
+
+<Callout kind="attenzione">
+ATT&CK non è un elenco da studiare, è una **mappa**. Serve a chiedersi: «in quale fase siamo? che cosa verrà dopo? che cosa dovrei vedere nei log?»
+</Callout>
+
+<Say who="sensei">Una mappa non cammina per te. Ti dice dove sei e dove potresti andare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Usare la mappa nel lavoro">
+<Guided
+  steps={[
+    "Metti le regole del SIEM «sulla mappa»: per quali fasi hai un sensore e per quali sei cieco?",
+    "Dopo un incidente, ricostruisci il percorso: da quale tecnica è entrato, come è rimasto, dove è andato.",
+    "Scegli che cosa migliorare: meglio coprire due fasi vuote che affinare ancora una già coperta.",
+    "Riconosci la fase che stai vedendo, e cerca quella che potrebbe seguire.",
+  ]}
+/>
+
+<Say who="assistente">È come guardare il tabellone delle partenze: sai dove sei, e vedi quali treni stai ancora perdendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indicatori di compromissione">
+Un **indicatore di compromissione** (IoC) è una traccia che suggerisce che un sistema potrebbe essere stato violato.
+
+- un **indirizzo IP** o un **dominio** usato da un attaccante;
+- l'**impronta (hash)** di un file malevolo noto;
+- un **nome di file** o una chiave di registro creata dal malware;
+- un **comportamento**: un account che alle 3 di notte legge cartelle mai viste.
+
+<Callout kind="attenzione">
+Gli IoC «facili» (un indirizzo, un file) si cambiano in pochi minuti: l'attaccante usa un indirizzo diverso. I **comportamenti** sono più difficili da nascondere. Cercali entrambi.
+</Callout>
+
+<Callout kind="regola">
+Un IoC è un **sospetto**, non una condanna. Verifica sempre nel contesto prima di dichiarare un incidente.
+</Callout>
+
+<Say who="sensei">Un indirizzo cattivo, ieri, può essere oggi il sito di un cliente. Ricontrolla sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Threat intelligence in poche righe">
+La **threat intelligence** è l'informazione sulle minacce: chi attacca, con quali tecniche, contro chi. Arriva da fonti diverse: rapporti pubblici, gruppi di settore, strumenti commerciali.
+
+Serve a rispondere a tre domande:
+
+- **Chi** potrebbe attaccare un'azienda come la nostra?
+- **Come** lo farebbe (quali tecniche ATT&CK)?
+- **Che cosa** dovremmo cercare nei log (quali IoC)?
+
+<Callout kind="regola">
+L'intelligence utile è **adatta a te**. Un rapporto su un attacco a banche interessa poco a una piccola azienda di forniture; uno sulle truffe via fattura falsa, molto.
+</Callout>
+
+<Say who="assistente">Conoscere il nemico non vuol dire temerlo: vuol dire sapere dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Tre righe da un incidente fittizio.
+
+<Log lines={[
+  "02:10  PC-contabilita  nuovo servizio «aggiornamento_sistema» che parte all'avvio",
+  "02:14  PC-contabilita  esegue comandi per elencare gli utenti del dominio",
+  "02:30  PC-contabilita  accede a 3 server mai visitati da questo PC",
+]} caption="Che cosa fa questo computer?" />
+
+<Quiz
+  question="In quale sequenza di fasi del ciclo di attacco ci troviamo?"
+  options={[
+    "Stabilirsi (servizio all'avvio) e poi muoversi nella rete (esplorare utenti e server)",
+    "Preparazione: l'attaccante sta studiando l'obiettivo",
+    "Obiettivo finale: i dati sono già stati rubati",
+    "Nessuna: sono normali attività di manutenzione",
+  ]}
+  answer={0}
+  explain="Un servizio che parte all'avvio serve a restare nel sistema; elencare utenti e visitare altri server è esplorare la rete. Siamo a metà del percorso: c'è ancora tempo per fermarlo. Dire «manutenzione» ignora il nome sospetto e l'orario."
+/>
+
+<Say who="assistente">Ordina i tre eventi: prima resta, poi guarda in giro. Che fase è quella dopo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari sul ciclo di attacco, ATT&CK e gli indicatori. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-avversario" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- Un attacco procede per fasi, e ogni fase lascia tracce: basta vederne una per intervenire.
+- MITRE ATT&CK è una mappa di tattiche e tecniche: serve a capire dove si è e che cosa aspettarsi.
+- Gli IoC sono tracce da verificare nel contesto; la threat intelligence dice dove cercarle.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è MITRE ATT&CK?", a: "Un catalogo pubblico delle tattiche e tecniche degli attaccanti, usato come mappa" },
+    { q: "Che cos'è un indicatore di compromissione?", a: "Una traccia (indirizzo, file, comportamento) che suggerisce una violazione" },
+    { q: "Perché i comportamenti valgono più di un indirizzo IP?", a: "Perché sono più difficili da cambiare per l'attaccante" },
+    { q: "A che cosa serve la threat intelligence?", a: "A sapere chi attacca, come e che cosa cercare nei log" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo del blue team finisce qui: vedi, ordini, blocchi, capisci. Prossimo modulo: l'altra parte del tavolo, l'attacco etico, sempre in laboratorio e sempre con permesso.</Say>
+</Scene>

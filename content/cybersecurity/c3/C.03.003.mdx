@@ -1,0 +1,152 @@
+---
+id: C.03.003
+course: cybersecurity
+module: 3
+title: "Il codice che arriva sul telefono"
+belt: gialla
+duration_min: 9
+prerequisites: [C.03.002]
+objectives:
+  - "Distinguere i tre tipi di fattore: qualcosa che sai, che hai, che sei"
+  - "Confrontare SMS, app di autenticazione e chiavi fisiche"
+  - "Spiegare perché un secondo fattore ferma chi ha rubato solo la password"
+video:
+  provider: youtube
+  id: "LZQXwYnuKGE"
+  start: 0
+  end: 600
+  channel: "Ferry"
+  title: "Cos'è e come funziona la 2FA? | Autenticazione a due fattori"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c03-mfa
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che due password siano due fattori: sono due cose che si sanno, quindi un solo tipo di fattore"
+  - "Considerare l'SMS sicuro quanto una chiave fisica"
+  - "Condividere o comunicare a chiunque il codice a sei cifre, anche a chi dice di essere dell'assistenza"
+commands: []
+---
+
+<Scene title="Il codice che arriva sul telefono">
+Luca ha la stessa password per anni sulla posta. Il suo servizio è stato violato e la password è finita in un elenco in rete. Qualcuno la prova sulla posta di Luca: è giusta.
+
+Ma l'accesso non si apre. Sul telefono di Luca è arrivata una notifica: «Qualcuno sta provando ad accedere. Inserisci il codice». Luca non fa nulla. L'estraneo resta fuori.
+
+La domanda del caso: **cosa ha salvato Luca, se la password era già nelle mani sbagliate?**
+
+<Say who="sensei">La password da sola è una chiave che si copia. Serve una seconda cosa che il ladro non può copiare da lontano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre tipi di fattore">
+Per dimostrare chi sei puoi usare tre tipi di prova, detti **fattori**:
+
+- **Qualcosa che sai**: una password, un PIN.
+- **Qualcosa che hai**: il telefono, una chiavetta, una carta.
+- **Qualcosa che sei**: l'impronta digitale, il volto.
+
+**2FA** (autenticazione a due fattori) usa due fattori di **tipo diverso**. **MFA** (a più fattori) è il nome generico: due o più.
+
+<Callout kind="attenzione">
+Password più domanda segreta non sono due fattori: sono due cose che **sai**. Un attaccante che le scopre entrambe ha fatto un solo lavoro.
+</Callout>
+
+<Say who="assistente">Il bancomat lo conosci bene: la carta (che hai) più il PIN (che sai). Due tipi diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché funziona">
+Un attaccante lontano può rubare la password con un archivio violato o un finto sito. È molto più difficile avere anche il tuo telefono o la tua chiavetta in mano.
+
+Il secondo fattore trasforma un furto facile (una password) in un furto difficile (password **e** oggetto fisico).
+
+<Callout kind="curiosita">
+Non rende l'account invulnerabile: alcuni attacchi di phishing provano a farti consegnare anche il codice (lo vedremo nell'ultima lezione del modulo). Ma alza molto il costo per l'attaccante.
+</Callout>
+
+<Say who="sensei">Nessuna difesa è perfetta. Un lucchetto in più basta per far scegliere al ladro un'altra porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal più debole al più forte">
+I secondi fattori non sono tutti uguali.
+
+**SMS**: il codice arriva per messaggio. È il livello più debole: un attaccante può convincere l'operatore a trasferire il tuo numero su un'altra SIM (**SIM swap**), oppure intercettare i messaggi. Meglio di niente, ma non è il massimo.
+
+**App di autenticazione**: genera codici a sei cifre che cambiano ogni 30 secondi circa e non passano dalla rete telefonica. Molto meglio.
+
+**Chiave fisica** (o **passkey**): un dispositivo o una credenziale che controlla anche **su quale sito** stai accedendo, quindi un finto sito non riesce a farsela dare. È il livello più alto.
+
+<Callout kind="regola">
+Usa il fattore più forte che il servizio offre. L'SMS solo quando non c'è altro.
+</Callout>
+
+<Say who="sensei">Un SMS è meglio di niente. Ma «meglio di niente» non è «sicuro». Sappi la differenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce, e un avviso">
+Vuoi sentirlo spiegare da un'altra voce? Sono i primi dieci minuti di un video più lungo, in italiano:
+
+<Video />
+
+Una regola vale per ogni tipo di fattore: **il codice non si dice a nessuno**. Né per telefono, né in chat, né a chi si presenta come «assistenza della banca». Nessun servizio serio ti chiede il codice che hai appena ricevuto.
+
+<Say who="assistente">Se qualcuno ti chiede il codice, vuol dire che sta entrando lui. Chiudi e chiama tu il servizio, dal numero ufficiale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda chiede password e risposta a una domanda segreta («come si chiamava il tuo primo cane?»). Sono due fattori diversi?"
+  options={["No: sono entrambi qualcosa che sai, quindi un solo tipo di fattore", "Sì: sono due prove diverse", "Sì, se la domanda è difficile", "Dipende dalla lunghezza della password"]}
+  answer={0}
+  explain="I fattori si contano per tipo, non per numero di prove: sai, hai, sei. Due cose che sai sono un solo tipo e chi ruba una può spesso scoprire anche l'altra. L'autenticazione a due fattori vera mescola due tipi."
+/>
+
+<Say who="sensei">Non contare quante domande ti fanno. Conta di che tipo sono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su fattori e autenticazione. Servono tutte giuste. Hai 3 tentativi.
+
+<Practice generator="c03-mfa" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con questo ragionamento, un furto di password diventa un fastidio, non un disastro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I fattori sono di tre tipi: qualcosa che sai, che hai, che sei. 2FA ne usa due di tipo diverso.
+- Dal più debole al più forte: SMS, app di autenticazione, chiave fisica o passkey. L'SMS è esposto al SIM swap.
+- Il codice monouso non si comunica a nessuno, nemmeno a chi dice di essere dell'assistenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "I tre tipi di fattore?", a: "Qualcosa che sai, qualcosa che hai, qualcosa che sei" },
+    { q: "Perché l'SMS è il secondo fattore più debole?", a: "Perché il numero può essere trasferito su un'altra SIM (SIM swap) o i messaggi intercettati" },
+    { q: "Che cosa ha in più una chiave fisica?", a: "Controlla il sito su cui stai accedendo: un sito falso non riesce a ottenere l'accesso" },
+    { q: "Qualcuno al telefono ti chiede il codice appena ricevuto. Cosa fai?", a: "Non lo dici, chiudi e chiami tu il servizio dal numero ufficiale" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: dopo il login, che cosa dimostra che sei ancora tu? Sessioni e cookie.</Say>
+</Scene>

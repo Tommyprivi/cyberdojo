@@ -1,0 +1,153 @@
+---
+id: C.02.006
+course: cybersecurity
+module: 2
+title: "Che cosa c'è dietro il lucchetto"
+belt: gialla
+duration_min: 9
+prerequisites: [C.02.005]
+objectives:
+  - "Descrivere in alto livello i passi dell'handshake TLS"
+  - "Spiegare che cosa garantisce HTTPS e che cosa non garantisce"
+  - "Riconoscere un avviso di certificato e reagire in modo corretto"
+verification:
+  type: generated-numeric
+  generator: c02-tls-https
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il lucchetto garantisca che il sito sia onesto o non sia una truffa"
+  - "Pensare che HTTPS cifri tutto con la chiave pubblica del sito, invece che con una chiave di sessione simmetrica"
+  - "Ignorare gli avvisi del browser sul certificato e cliccare «procedi»"
+commands: []
+---
+
+<Scene title="Il caffè con il Wi-Fi gratuito">
+Chiara è in un bar e si collega al Wi-Fi libero. Apre il sito della sua banca e scrive la password. Vicino a lei, qualcuno potrebbe ascoltare tutto il traffico del locale.
+
+Eppure, per tutto quel tempo, nel browser c'era un **lucchetto** vicino all'indirizzo.
+
+La domanda del caso: **che cosa succede, in pochi istanti, quando il browser mostra quel lucchetto?**
+
+<Say who="sensei">Il lucchetto è il risultato di una conversazione veloce tra il tuo browser e il sito. Ora la ricostruiamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="HTTP, HTTPS e TLS">
+**HTTP** è il linguaggio con cui il browser chiede pagine ai siti. Da solo viaggia **in chiaro**: chi sta nel mezzo può leggerlo e modificarlo.
+
+**HTTPS** è HTTP dentro un tunnel protetto. Il tunnel si chiama **TLS** (Transport Layer Security). I siti con HTTPS usano di solito la porta **443**.
+
+<Callout kind="curiosita">
+Prima di TLS c'era **SSL**, ma le sue versioni sono considerate rotte e non si usano più. La gente dice ancora «certificato SSL» per abitudine: oggi si parla di TLS, e la versione attuale è la **1.3**.
+</Callout>
+
+<Say who="assistente">Quando leggi https:// davanti all'indirizzo, la «s» sta per «secure». Il tunnel TLS è già pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'handshake, in sei mosse">
+Prima di mandare qualsiasi dato, browser e sito fanno una **stretta di mano** (handshake). Tutto avviene in una frazione di secondo.
+
+<Guided
+  steps={[
+    "Il browser saluta il sito e dice quali algoritmi di cifratura sa usare.",
+    "Il sito sceglie quelli da usare e manda il suo certificato (lezione scorsa).",
+    "Il browser controlla il certificato: firmato da una CA fidata? Non scaduto? Valido proprio per quel dominio?",
+    "I due si accordano su una chiave segreta usando la cifratura asimmetrica, senza mai mandarla in chiaro.",
+    "Da quella chiave ognuno ricava la stessa chiave di sessione, simmetrica.",
+    "Da qui in poi tutto il traffico è cifrato con la chiave di sessione (per esempio con AES).",
+  ]}
+/>
+
+<Say who="sensei">Riconosci tutti i pezzi? Certificati per l'identità, asimmetrica per accordarsi, simmetrica per il carico. Il quadro si completa qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa protegge">
+Con HTTPS, chi sta in mezzo (il Wi-Fi del bar, un provider) non può:
+
+- **leggere** ciò che mandi (**riservatezza**);
+- **modificare** i dati in viaggio senza che il browser se ne accorga (**integrità**);
+- farsi passare per il sito senza un certificato valido per quel nome (**autenticità del sito**).
+
+<Callout kind="trucco">
+La chiave di sessione dura **solo** quella connessione. Alla successiva se ne crea una nuova. Anche se un giorno una chiave venisse scoperta, le conversazioni passate non si leggerebbero.
+</Callout>
+
+<Say who="assistente">Chiara può stare tranquilla sul Wi-Fi del bar: l'ascoltatore vede solo dati incomprensibili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa NON garantisce">
+Attenzione a un'idea sbagliata, molto diffusa.
+
+<Callout kind="attenzione">
+Il lucchetto significa: «la connessione è cifrata e il certificato è valido per **questo nome di dominio**». **Non** significa che il sito sia onesto. Un sito di truffa, con un nome che somiglia a quello della banca, può avere un certificato valido e il suo bel lucchetto.
+</Callout>
+
+- HTTPS non protegge il tuo **computer**: se hai un virus, il virus vede tutto prima della cifratura.
+- HTTPS protegge il **percorso**, non il **sito** dietro: se il sito viene hackerato, i dati sono comunque a rischio.
+- Un avviso del browser su un certificato scaduto o errato non va ignorato: può essere solo una svista del sito, ma può anche essere qualcuno nel mezzo.
+
+<Say who="sensei">Prima del lucchetto guarda il nome. banca-sicura.example non è lo stesso nome della tua banca, anche se è carino e col lucchetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Chiara apre una pagina del tipo «https://il-tuo-conto-sicuro.example» ricevuta per messaggio. Ha il lucchetto e il certificato è valido. Può fidarsi?"
+  options={[
+    "No: il lucchetto garantisce la connessione cifrata, non che il sito sia quello della banca; si controlla il nome e si usa l'indirizzo ufficiale",
+    "Sì: se c'è il lucchetto significa che il sito è stato verificato e approvato dalla banca",
+    "Sì: HTTPS impedisce l'esistenza di siti truffa",
+    "No, ma solo perché il Wi-Fi del bar non è sicuro, altrimenti il lucchetto basterebbe",
+  ]}
+  answer={0}
+  explain="Un certificato valido dice che il sito controlla quel nome di dominio, non che sia onesto. Chi si fida del solo lucchetto confonde cifratura e affidabilità: i siti di truffa possono avere HTTPS."
+/>
+
+<Say who="assistente">Indizio: chiediti chi ha scelto il nome del sito. Chi te lo ha mandato?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su TLS, HTTPS e certificati. Ragiona sulle scene, non sulle sigle.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-tls-https" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il lucchetto protegge la strada. Il resto, il giudizio, tocca a te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- HTTPS è HTTP dentro TLS: nell'handshake il browser controlla il certificato, poi i due si accordano su una chiave di sessione simmetrica.
+- Garantisce riservatezza, integrità e che il sito sia chi dice di essere per quel dominio.
+- Non garantisce che il sito sia onesto né che il tuo dispositivo sia pulito: gli avvisi sul certificato non si ignorano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa l'handshake TLS?", a: "Verifica il certificato e crea una chiave di sessione condivisa" },
+    { q: "Con che cosa viene cifrato il traffico dopo l'handshake?", a: "Con una chiave di sessione simmetrica (per esempio AES)" },
+    { q: "Il lucchetto vuol dire che il sito è onesto?", a: "No: dice solo che la connessione è cifrata e il certificato è valido per quel dominio" },
+    { q: "Che cosa fare davanti a un avviso di certificato?", a: "Fermarsi, capire perché, non cliccare «procedi» alla cieca" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione, l'ultima del modulo: gli errori comuni. Perché la crittografia giusta, usata male, non protegge.</Say>
+</Scene>

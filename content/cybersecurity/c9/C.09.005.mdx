@@ -1,0 +1,158 @@
+---
+id: C.09.005
+course: cybersecurity
+module: 9
+title: "Contenere ed eliminare"
+belt: marrone
+duration_min: 9
+prerequisites: [C.09.004]
+objectives:
+  - "Isolare un sistema compromesso senza distruggere le prove"
+  - "Elencare quali credenziali ruotare e perché"
+  - "Spiegare come si verifica che l'intruso sia davvero fuori"
+verification:
+  type: generated-numeric
+  generator: c09-contenere
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Eliminare il malware senza cambiare le credenziali: l'intruso rientra con la password rubata"
+  - "Pensare che bastino l'antivirus e un riavvio: possono restare backdoor"
+  - "Dichiarare chiuso l'incidente senza verificarlo con un periodo di osservazione"
+commands: []
+---
+
+<Scene title="Il portatile è ancora in rete">
+Alla Rossi Serramenti l'analisi ha confermato: l'account di Marta Bianchi è stato usato da un estraneo, che ha copiato i listini. L'estraneo potrebbe essere ancora dentro.
+
+<Log lines={["10:31  server-file  login utente=mbianchi da 203.0.113.50", "10:34  server-file  creato account servizio-backup2", "10:40  server-file  nuova regola di avvio automatico"]} caption="Un nuovo account e una regola di avvio: non è più solo una password rubata." />
+
+La domanda del caso: **come lo si ferma, senza buttare via le prove e senza lasciare porte aperte?**
+
+<Say who="sensei">Fermare e distruggere non sono la stessa cosa. Tu fermi. Le prove restano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contenere: isolare, non spegnere">
+Il **contenimento** ferma la diffusione del danno. Due livelli:
+
+- **Breve termine**: staccare subito il sistema dalla rete (cavo scollegato, porta della rete disabilitata, regola nel firewall). La macchina resta accesa.
+- **Medio termine**: spostare i servizi su sistemi puliti, chiudere gli accessi dei conti coinvolti, segmentare la rete.
+
+<Callout kind="regola">
+**Isolare** = togliere la rete. **Non** = spegnere, cancellare, reinstallare. Prima le prove (lezione 2), poi l'eradicazione.
+</Callout>
+
+<Callout kind="attenzione">
+Un intruso può accorgersi dell'isolamento e reagire (cancellare tracce, cifrare altro). Per questo isolamento e raccolta dei dati volatili si fanno in rapida successione, e si annota l'ora.
+</Callout>
+
+<Say who="assistente">Come chiudere la porta di una stanza in cui c'è un guaio, senza buttare giù il muro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le credenziali da ruotare">
+Se l'intruso ha avuto accesso, assumi che **abbia visto** tutto ciò che quel sistema conosceva. Ruotare vuol dire cambiare.
+
+Si cambiano, in quest'ordine di priorità:
+
+1. le **password** degli account coinvolti, e degli amministratori;
+2. le **chiavi** e i **token** usati dai programmi (chiavi di accesso remoto, chiavi di servizi in cloud);
+3. le **sessioni** attive: si chiudono, altrimenti un accesso già aperto continua a funzionare;
+4. i **segreti condivisi** (password Wi-Fi, certificati) se il sistema li custodiva.
+
+<Callout kind="trucco">
+Cambia le credenziali da un **computer pulito**. Se la tastiera della macchina compromessa è spiata, la nuova password finisce nelle mani dell'intruso.
+</Callout>
+
+<Say who="sensei">Ripulire il sistema senza cambiare le password è come sostituire la serratura e lasciare la copia delle chiavi all'estraneo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le backdoor">
+Gli intrusi spesso lasciano una **backdoor**, una porta sul retro: un modo per rientrare anche dopo che la password è stata cambiata. A livello concettuale:
+
+- un **account nuovo** creato apposta (come servizio-backup2 del caso);
+- un'**attività pianificata** o un avvio automatico che riavvia un programma malevolo;
+- una **chiave di accesso** aggiunta tra quelle autorizzate;
+- un programma legittimo **modificato**.
+
+<Callout kind="attenzione">
+Per questo l'eradicazione non è «eliminare il file cattivo». Si cerca *tutto* ciò che l'intruso ha cambiato, usando timeline e artefatti.
+</Callout>
+
+<Say who="assistente">Nella timeline, ogni nuova riga di creazione o modifica dopo l'ingresso dell'intruso è una domanda. Non tutte sono cattive, ma tutte vanno verificate.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eradicare e verificare">
+**Eradicare** vuol dire rimuovere la causa: malware, account non autorizzati, regole di avvio, chiavi aggiunte; e **chiudere la falla** da cui è entrato (aggiornamenti mancanti, password debole, accesso senza secondo fattore).
+
+Nei casi dubbi, la scelta più sicura è **ricostruire** il sistema da un'immagine pulita, non ripulire a mano.
+
+<Callout kind="regola">
+Non si dichiara finita finché non si è **verificato**: log che non mostrano più attività dell'intruso, nessun account o regola strana, monitoraggio attivo per giorni.
+</Callout>
+
+<Guided
+  steps={[
+    "Cerca nei log ogni traccia dell'IP o dell'account dell'intruso dopo l'isolamento: devono essere zero.",
+    "Controlla account, attività pianificate e avvii automatici: tutto ciò che è nuovo dev'essere spiegato.",
+    "Aumenta il livello di log e allarmi per qualche giorno.",
+    "Solo allora si passa al ripristino.",
+  ]}
+/>
+
+<Say who="sensei">«Credo sia finita» non è una verifica. Una verifica ha un controllo, un risultato, un'ora scritta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un tecnico elimina il programma sospetto dal server, riavvia e dichiara chiuso l'incidente. Non ha cambiato password né cercato altri account. Qual è il rischio principale?"
+  options={[
+    "L'intruso rientra con le credenziali rubate o con una backdoor lasciata prima",
+    "Il server sarà più lento dopo il riavvio",
+    "Il programma eliminato tornerà da solo dopo qualche ora",
+    "Nessuno, perché un riavvio ripulisce sempre tutto",
+  ]}
+  answer={0}
+  explain="Togliere il programma non cancella ciò che l'intruso sa (password) o ha lasciato (account, avvii automatici). Chi pensa che il riavvio ripulisca tutto dimentica che le backdoor sopravvivono ai riavvii."
+/>
+
+<Say who="assistente">Indizio: cosa sa ancora l'intruso, anche dopo che il suo programma è sparito?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande su contenimento, credenziali e verifica. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-contenere" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Si contiene isolando dalla rete, senza spegnere né reinstallare: le prove restano.
+- Si ruotano password, chiavi, token e sessioni, da un computer pulito.
+- Si cercano le backdoor, si chiude la falla di ingresso e si verifica con log e monitoraggio prima di dire «finito».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Isolare significa...", a: "Togliere la rete, senza spegnere né cancellare" },
+    { q: "Cos'è una backdoor?", a: "Un accesso nascosto lasciato per rientrare" },
+    { q: "Perché ruotare le credenziali?", a: "L'intruso potrebbe averle viste o rubate" },
+    { q: "Quando è davvero finita?", a: "Dopo verifiche e un periodo di osservazione" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione: ripristino e post-mortem. Tornare in servizio, imparare, e rispettare gli obblighi di legge.</Say>
+</Scene>

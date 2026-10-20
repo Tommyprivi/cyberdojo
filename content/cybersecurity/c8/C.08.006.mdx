@@ -1,0 +1,152 @@
+---
+id: C.08.006
+course: cybersecurity
+module: 8
+title: "Il report"
+belt: blu
+duration_min: 9
+prerequisites: [C.08.005]
+objectives:
+  - "Elencare le parti di un rapporto di sicurezza: sintesi, rischio, evidenza, rimedio"
+  - "Scrivere un finding chiaro per un responsabile non tecnico"
+  - "Riconoscere un finding scritto male e correggerlo"
+verification:
+  type: generated-numeric
+  generator: c08-report
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere solo termini tecnici che il responsabile non capisce"
+  - "Dire che c'è un problema senza dire quale rischio comporta e cosa fare"
+  - "Inserire nel rapporto dati sensibili veri (password, dati di persone) invece di un'evidenza minima"
+commands: []
+---
+
+<Scene title="Il rapporto che nessuno ha letto">
+Un consulente ha fatto un ottimo lavoro in laboratorio e sulla rete della Rossi Srl (con incarico scritto). Ha consegnato quaranta pagine di righe di scanner. Tre mesi dopo, nessun problema è stato risolto: il titolare non ha capito che cosa fare.
+
+Il lavoro tecnico c'era. È mancata la comunicazione.
+
+La domanda del caso: **come si scrive un rapporto che porta davvero a correggere?**
+
+<Say who="sensei">Un problema trovato e non comunicato bene è un problema che resta. Il rapporto è metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La struttura del rapporto">
+Un rapporto utile ha quattro parti, in quest'ordine:
+
+1. **Sintesi**: una pagina per chi decide. Cosa abbiamo fatto, cosa abbiamo trovato in poche righe, cosa fare per primo.
+2. **Rischio**: perché conta, in parole semplici, e quanto è grave.
+3. **Evidenza**: la prova minima del problema (una riga di scanner, una versione, una schermata senza dati sensibili).
+4. **Rimedio**: che cosa fare, chi lo fa, in che ordine.
+
+Prima di tutto, in testa al rapporto: **ambito e permesso**. Che cosa è stato esaminato, con quale autorizzazione, in quali date.
+
+<Say who="assistente">Pensa a chi legge: non ha tempo. Gli bastano la prima pagina e la prima riga di ogni problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un finding, parte per parte">
+Un **finding** è una singola scoperta del rapporto. Esempio ben scritto (fittizio, dal laboratorio):
+
+<Log lines={[
+  "TITOLO:  Servizio di trasferimento file non cifrato e non aggiornato",
+  "SISTEMA: server-file (192.168.56.20), porta 21",
+  "RISCHIO: ALTO. Le credenziali e i file passano in chiaro e la versione è molto vecchia: chi si trova sulla stessa rete potrebbe leggerli.",
+  "EVIDENZA: la scansione del 14/10 mostra 21/tcp aperta, servizio FTP, versione 2.3.",
+  "RIMEDIO: spegnere il servizio se non serve; altrimenti sostituirlo con un trasferimento cifrato e aggiornare. Responsabile: amministratore di sistema. Entro 30 giorni.",
+]} caption="Un finding con titolo, sistema, rischio, evidenza e rimedio" />
+
+<Callout kind="trucco">
+Il titolo dice **che cosa è sbagliato**, non il nome della tecnologia. «Servizio non cifrato» si capisce. «Problema FTP v2.3» no.
+</Callout>
+
+<Say who="sensei">Se il responsabile deve chiamarti per capire, il finding è scritto male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scrivere per chi non è tecnico">
+Il titolare di un negozio non sa che cos'è una porta. Sa che cosa significa **perdere i dati dei clienti** o **fermare il sito per un giorno**.
+
+Traduci sempre in **conseguenza per l'azienda**:
+
+- non «versione obsoleta con vulnerabilità nota», ma «un programma non aggiornato che potrebbe permettere a un estraneo di leggere i dati dei clienti»;
+- non «porta esposta», ma «un servizio raggiungibile da chiunque, che non dovrebbe esserlo».
+
+<Callout kind="attenzione">
+Nell'evidenza mostra il **minimo necessario**. Mai password vere, dati di persone, o contenuti che non servono a dimostrare il problema. E non esagerare: il rischio va descritto per quello che è, senza allarmismi né minimizzazioni.
+</Callout>
+
+<Say who="assistente">Un buon rapporto non spaventa e non addormenta. Dice le cose come stanno, e dice cosa fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dopo il rapporto">
+Il rapporto è **riservato**: va solo a chi ha dato l'incarico, attraverso un canale sicuro. Non si pubblica, non si mostra ad altri, non si usa come vanto.
+
+Una buona pratica è fissare una **verifica successiva**: dopo i rimedi, si ripete la scansione nell'ambito concordato e si annota che il problema è sparito.
+
+<Callout kind="regola">
+Ogni rapporto ricorda ambito e permesso: che cosa è stato esaminato, da chi è stato autorizzato, in quale periodo. Senza questa riga, il documento non ha valore.
+</Callout>
+
+<Say who="sensei">Chiudere il cerchio significa controllare che il rimedio abbia funzionato. Non basta aver scritto «fatto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale tra questi finding è scritto meglio per il titolare di un piccolo negozio?"
+  options={[
+    "«Il pannello di gestione del sito è raggiungibile da Internet e usa un programma non aggiornato: un estraneo potrebbe arrivare ai dati dei clienti. Da fare: limitare l'accesso alla sola rete interna e aggiornare entro 15 giorni.»",
+    "«CVE-2099-12345 su porta 8080, CVSS 8,8, vedi allegato.»",
+    "«Il sito è vulnerabile, bisogna sistemarlo.»",
+    "«Ho provato ad entrare e ci sono riuscito: ecco le password che ho trovato.»",
+  ]}
+  answer={0}
+  explain="Il primo dice che cosa c'è, perché conta e cosa fare, in parole comprensibili. Il secondo è comprensibile solo a un tecnico. Il terzo non dice né dove né come. Il quarto espone dati reali e suggerisce un'azione fuori ambito."
+/>
+
+<Say who="assistente">Indizio: cerca il finding che dice cosa, perché e cosa fare, senza gergo e senza dati sensibili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su struttura del rapporto e scrittura dei finding. A ogni tentativo le domande cambiano.
+
+<Practice generator="c08-report" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi scrive chiaro si fa capire, e fa correggere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rapporto ha sintesi, rischio, evidenza e rimedio, e ricorda ambito e permesso.
+- Un finding si scrive per chi decide: cosa c'è, perché conta, cosa fare, senza gergo.
+- L'evidenza è minima, senza dati sensibili; il rapporto è riservato e si chiude con una verifica successiva.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le quattro parti di un rapporto?", a: "Sintesi, rischio, evidenza, rimedio" },
+    { q: "Che cos'è un finding?", a: "Una singola scoperta del rapporto, con titolo, sistema, rischio, evidenza e rimedio" },
+    { q: "Che cosa deve contenere l'evidenza?", a: "La prova minima del problema, senza dati sensibili" },
+    { q: "Che cosa si fa dopo i rimedi?", a: "Si ripete la verifica nell'ambito concordato e si annota che il problema è risolto" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo è concluso: permesso, laboratorio, ricognizione, scansioni, valutazione, rapporto. Tutto in quest'ordine, sempre dentro l'ambito. Prossimo modulo: quando l'incidente è già successo, forensics e risposta.</Say>
+</Scene>

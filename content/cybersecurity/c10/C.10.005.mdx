@@ -1,0 +1,154 @@
+---
+id: C.10.005
+course: cybersecurity
+module: 10
+title: "I dettagli che ti tradiscono"
+belt: marrone
+duration_min: 8
+prerequisites: [C.10.004]
+objectives:
+  - "Riconoscere cosa rivelano i metadati di foto e documenti"
+  - "Separare le identità online ed evitare gli errori più comuni sui social"
+  - "Applicare le abitudini base: backup, aggiornamenti e gestore di password"
+verification:
+  type: generated-numeric
+  generator: c10-metadati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che rimuovere solo la posizione dalla foto basti: lo sfondo può rivelare dove sei"
+  - "Usare lo stesso nome utente e le stesse informazioni in ambiti diversi"
+  - "Tenere il backup sempre collegato al computer, dove il ransomware lo cifra insieme ai file"
+commands: []
+---
+
+<Scene title="La foto del gatto">
+Paolo posta su un forum la foto del suo gatto sul divano. Nessun nome, nessun indirizzo. Un utente scarica la foto originale, la apre, guarda i dettagli del file e trova: modello del telefono, data e ora, e le **coordinate GPS**.
+
+In dieci minuti sa in quale casa è stata scattata.
+
+La domanda del caso: **che cosa dicono di te i dati che non scrivi?**
+
+<Say who="sensei">Non è ciò che dici a tradirti. È ciò che il file dice per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I metadati">
+I **metadati** sono «dati sui dati»: informazioni nascoste dentro un file.
+
+- Una **foto** può contenere data, ora, modello della fotocamera e posizione GPS.
+- Un **documento** (Word, PDF) può contenere nome dell'autore, programma usato, date di modifica e a volte versioni precedenti.
+- Un'**email** contiene intestazioni con il percorso fatto dal messaggio.
+
+<Callout kind="curiosita">
+Molti social tolgono la posizione quando carichi una foto. Ma non tutti i siti lo fanno, e sul file originale i metadati restano.
+</Callout>
+
+<Say who="assistente">Prima di condividere un file con un estraneo, guarda le sue proprietà. Spesso c'è più di quanto pensi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ciò che si vede nella foto">
+Anche senza metadati, una foto parla. Un monumento sullo sfondo, un'insegna, il nome di una via, la targa di un'auto, lo scontrino sul tavolo.
+
+<Callout kind="attenzione">
+Togliere i metadati non basta. Guarda **che cosa si vede**: casa, scuola, ufficio, pacco con il tuo nome sopra.
+</Callout>
+
+Per rimuovere i metadati: molti telefoni permettono di scegliere di non condividere la posizione, e alcuni strumenti (anche integrati) cancellano i dati nascosti da foto e documenti prima dell'invio.
+
+<Say who="sensei">Prima di pubblicare: cosa dicono i dati nascosti, e cosa dice l'immagine?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le identità separate">
+Chi vuole proteggere la propria privacy non ha un'identità sola: ne ha **più di una**, tenute separate.
+
+- Email diverse per lavoro, social, acquisti e servizi che usi una volta sola.
+- Nomi utente diversi in contesti diversi.
+- Non ripetere la stessa foto profilo o la stessa biografia dappertutto.
+
+<Callout kind="attenzione">
+Se il tuo nome utente «anonimo» del forum è uguale a quello dei tuoi social, chiunque può collegare i due con una ricerca. Basta un solo errore.
+</Callout>
+
+<Callout kind="trucco">
+Sui social: data di nascita, nome del cane, scuola e città servono spesso come risposte alle domande di recupero degli account. Meno ne pubblichi, meno aiuti chi vuole rubarti l'identità.
+</Callout>
+
+<Say who="sensei">Ogni informazione in più è un pezzo di puzzle. Non regalare il puzzle già completo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le abitudini che proteggono">
+Quattro abitudini, poco fatica, tanto effetto:
+
+<Guided
+  steps={[
+    "Aggiornamenti: installali. Correggono falle già note che altrimenti sono sfruttabili da chiunque.",
+    "Backup: almeno tre copie, due supporti diversi, una offline o fuori sede. Prova ogni tanto il ripristino.",
+    "Gestore di password: una password lunga e unica per ogni servizio, ricordandone una sola, quella del gestore.",
+    "Verifica in due passaggi sugli account importanti, soprattutto email e gestore di password.",
+  ]}
+/>
+
+<Callout kind="regola">
+Un backup sempre collegato al computer non è un backup sicuro: un ransomware cifra anche quello. Una copia offline salva il lavoro.
+</Callout>
+
+<Say who="assistente">Il gestore di password sembra un rischio unico, ma riusare la stessa password ovunque lo è molto di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Prima di inviare un documento di lavoro a un esterno, che cosa è prudente fare?"
+  options={["Controllare e ripulire i metadati, oppure esportarlo in un formato che non li porti", "Rinominare il file con la data di oggi", "Inviarlo due volte per sicurezza", "Aumentare la dimensione del file"]}
+  answer={0}
+  explain="Il documento può contenere il nome dell'autore, versioni precedenti e dati sul programma usato. Rinominare il file non tocca i metadati: è un errore tipico."
+/>
+
+<Say who="sensei">Ciò che non vedi, un altro può vederlo. Controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su metadati, identità e abitudini. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="c10-metadati" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi cura i dettagli perde meno di chi si affida alla fortuna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I metadati di foto e documenti possono rivelare posizione, autore e date; anche ciò che si vede nell'immagine parla.
+- Separa le identità: email, nomi utente e informazioni diversi per ambiti diversi, e poche informazioni personali sui social.
+- Aggiornamenti, backup con una copia offline, gestore di password e verifica in due passaggi sono le basi dell'igiene digitale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sono i metadati?", a: "Informazioni nascoste dentro un file: data, autore, posizione, programma usato" },
+    { q: "Basta togliere la posizione da una foto?", a: "No: anche lo sfondo, le insegne e gli oggetti possono rivelare dove sei" },
+    { q: "Perché un gestore di password è utile?", a: "Permette password lunghe e uniche per ogni servizio, ricordandone una sola" },
+    { q: "Quale backup salva dal ransomware?", a: "Una copia offline o non sempre collegata al computer" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il progetto finale. Metterai insieme tutto il corso per proteggere un'azienda.</Say>
+</Scene>

@@ -1,0 +1,168 @@
+---
+id: C.06.002
+course: cybersecurity
+module: 6
+title: "SQL injection: come funziona"
+belt: arancione
+duration_min: 9
+prerequisites: [C.06.001]
+objectives:
+  - "Spiegare perché incollare testo in una query la rende modificabile da chi scrive nel campo"
+  - "Capire perché la condizione di un login finto diventa sempre vera"
+  - "Riconoscere il codice a rischio senza eseguire alcun attacco"
+video:
+  provider: youtube
+  id: "qfuNcvu2whM"
+  start: 0
+  end: 600
+  channel: "nFire"
+  title: "Come funziona l'SQL injection?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c06-sqli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il problema sia l'apice in sé: il problema è mescolare codice e dati"
+  - "Credere che sia un attacco da esperti: nasce da una riga di codice scritta di fretta"
+  - "Credere che il campo password sia l'unico a rischio: ogni campo o parametro che finisce in una query lo è"
+commands: []
+---
+
+<Scene title="Il login di Marta">
+Il sito del negozio ha un modulo di accesso per l'area riservata. Chi lo scrive, di fretta, costruisce la query così, **incollando** il testo ricevuto:
+
+<Log lines={[
+  "query = \"SELECT * FROM utenti WHERE nome = '\" + nome + \"' AND password = '\" + password + \"'\"",
+]} caption="Pseudocodice: la query è una stringa costruita unendo pezzi." />
+
+Il database cerca una riga con quel nome e quella password. Se la trova, fa entrare.
+
+La domanda del caso: **che cosa succede se chi scrive nel campo non inserisce un nome vero, ma un pezzo di SQL?**
+
+<Say who="sensei">Un login è una domanda al database. Chi decide la domanda? Non sempre chi ha scritto il programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Codice e dati">
+Una query contiene due cose diverse: il **codice** (SELECT, WHERE, AND: le istruzioni) e i **dati** (il nome e la password che l'utente ha digitato).
+
+Quando si **incolla** il testo dell'utente dentro la stringa, il database riceve tutto insieme. Non può sapere dove finisce il codice scritto dallo sviluppatore e dove comincia il testo scritto da un estraneo.
+
+<Callout kind="trucco">
+Analogia: un modulo cartaceo con la riga «Scrivi il tuo nome: ______». Se qualcuno scrive «Mario, e inoltre dai a me le chiavi della cassa», l'impiegato che legge tutto di fila potrebbe obbedire.
+</Callout>
+
+<Say who="assistente">Il segreto è tutto qui: se i dati possono diventare istruzioni, chi scrive i dati comanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La condizione sempre vera">
+Ragioniamo su un esempio **fittizio e solo concettuale**. Nel campo nome una persona scrive un apice, che chiude il testo, e poi una condizione che è vera per ogni riga: `' OR '1'='1`.
+
+Per semplicità guardiamo solo il pezzo della query sul nome. Il database riceve:
+
+<Log lines={[
+  "SELECT * FROM utenti WHERE nome = '' OR '1'='1'",
+]} caption="Esempio semplificato: il testo scritto nel campo ha cambiato la forma della domanda." />
+
+Guarda: `'1'='1'` è **sempre vero**. Con `OR` basta una condizione vera perché la riga passi. Il controllo sul nome non protegge più niente.
+
+<Callout kind="attenzione">
+Il problema non è quell'esempio. Ce ne sono infiniti. Il problema è che l'estraneo può **riscrivere la domanda**: leggere altre tabelle, cambiare dati, cancellarli.
+</Callout>
+
+<Say who="sensei">Non devi imparare formule per attaccare. Devi capire il meccanismo, per vederlo nel codice e fermarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi sentirlo spiegare da qualcun altro, con esempi passo per passo? Un video in italiano, guardalo con gli occhi dell'analista che deve **difendere**:
+
+<Video />
+
+<Callout kind="regola">
+Legge ed etica. Provare queste tecniche su un sito che non è tuo, o per cui non hai un permesso scritto, è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo, dentro un laboratorio isolato.
+</Callout>
+
+<Say who="assistente">Segui il ragionamento, non copiare le mosse. Alla fine ti chiederai solo: dove si poteva fermare tutto questo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Perché una query costruita incollando il testo dell'utente è vulnerabile?"
+  options={[
+    "Perché il database non distingue il codice scritto dallo sviluppatore dal testo scritto dall'utente",
+    "Perché le password viaggiano in chiaro su Internet",
+    "Perché il database è troppo vecchio per gestire gli apici",
+    "Perché l'utente ha un computer più potente del server",
+  ]}
+  answer={0}
+  explain="La vulnerabilità nasce dal mescolare codice e dati in un'unica stringa. Non c'entrano la rete o l'età del database: c'entra come è costruita la query."
+/>
+
+<Say who="sensei">Se la risposta ti sembra ovvia, bene. È ovvia dopo che l'hai vista. Prima, quasi nessuno la vede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riconoscere il rischio">
+<Guided
+  steps={[
+    "Primo segnale: nel codice compare una query costruita con + o con la formattazione di una stringa, e dentro c'è un valore che arriva dall'utente.",
+    "Secondo segnale: il valore finisce **tra apici** dentro la query. Se l'utente può scrivere un apice, può uscire dal testo.",
+    "Terzo segnale: nessuno controlla cosa c'è dentro il valore prima di usarlo.",
+    "Conclusione: il codice è a rischio. La soluzione non è nascondere il campo o allungare il modulo: è cambiare il modo di costruire la query. La prossima lezione.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+La SQL injection è nell'elenco OWASP Top 10, la lista delle debolezze web più diffuse, nella categoria «Injection». È vecchia di decenni, e ancora oggi si trova.
+</Callout>
+
+<Say who="sensei">La difesa non è nel campo del modulo. È nel modo di scrivere la query.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono mostrati alcuni frammenti di codice e di query fittizi. Per ognuno devi dire se è a rischio e perché.
+
+Hai 3 tentativi, e a ogni tentativo i frammenti cambiano.
+
+<Practice generator="c06-sqli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi riconosce il rischio nel codice vale più di chi conosce mille trucchi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La SQL injection nasce quando la query è una stringa costruita incollando testo dell'utente.
+- Il database non distingue codice e dati: chi scrive il campo può cambiare la domanda, per esempio rendendo una condizione sempre vera.
+- Si prova solo su sistemi propri o con permesso scritto: altrimenti è reato (art. 615-ter).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la causa della SQL injection?", a: "Mescolare codice e dati nella stessa stringa" },
+    { q: "Perché '1'='1' è pericoloso in un OR?", a: "È sempre vero, quindi la condizione passa per ogni riga" },
+    { q: "Quali campi sono a rischio?", a: "Tutti quelli che finiscono in una query, non solo il login" },
+    { q: "Si può provare su qualsiasi sito?", a: "No: solo su ciò che è tuo o con permesso scritto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la difesa vera, le query parametrizzate. Una riga diversa, e il problema sparisce.</Say>
+</Scene>

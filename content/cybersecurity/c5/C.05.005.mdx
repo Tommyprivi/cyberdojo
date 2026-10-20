@@ -1,0 +1,140 @@
+---
+id: C.05.005
+course: cybersecurity
+module: 5
+title: "Autenticazione e sessioni difettose"
+belt: arancione
+duration_min: 8
+prerequisites: [C.05.004]
+objectives:
+  - "Riconoscere i difetti tipici di login, password e sessioni"
+  - "Spiegare perché un token di sessione deve essere imprevedibile e scadere"
+  - "Elencare le difese di base: password robuste, blocco dei tentativi, secondo fattore"
+verification:
+  type: generated-numeric
+  generator: c05-auth
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che basti avere una password lunga se il sito permette tentativi illimitati"
+  - "Credere che un identificativo di sessione facile da indovinare sia un problema minore"
+  - "Dimenticare il logout e la scadenza: la sessione resta valida per giorni anche dopo l'uscita"
+commands: []
+---
+
+<Scene title="Il codice 1043">
+Un portale fittizio di prenotazioni dà a ogni utente, dopo il login, un codice di sessione. Sara nota che il suo è **1043**. Il giorno dopo, rientrando, è **1051**.
+
+Il codice cresce di poco ogni volta. Chiunque, in teoria, potrebbe provare 1044, 1045, 1046… e farsi passare per un altro utente già entrato.
+
+La domanda del caso: **che cosa rende solida o fragile una prova di identità sul web?**
+
+<Say who="sensei">Autenticarsi vuol dire dimostrare chi sei. Se la prova è facile da indovinare o da copiare, non dimostra niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Autenticazione e sessione">
+Due momenti diversi:
+
+- **Autenticazione**: il login. Dimostri chi sei, per esempio con nome e password.
+- **Sessione**: dopo il login, il server ti dà un **token** (un codice) che il browser rimanda a ogni richiesta, di solito dentro un cookie.
+
+Sono due punti deboli distinti. Chi non riesce a rubare la password può provare a rubare o indovinare il token.
+
+<Callout kind="regola">
+Il token di sessione vale quanto una chiave di casa: chi lo ha, entra. Deve quindi essere **lungo, casuale e imprevedibile**.
+</Callout>
+
+<Say who="assistente">Password e token: due chiavi diverse per la stessa porta. Bisogna proteggerle tutte e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I difetti più comuni">
+Sul lato **login**:
+
+- password deboli o riutilizzate («123456», il nome del gatto);
+- **tentativi illimitati**: si può provare mille password senza essere fermati;
+- credenziali di default mai cambiate;
+- messaggi d'errore che rivelano troppo («utente inesistente» e «password errata» sono due risposte diverse: dicono quali nomi esistono).
+
+Sul lato **sessione**:
+
+- token **prevedibili** (numeri progressivi, come nel caso di Sara);
+- sessioni che **non scadono** mai, o restano valide dopo il logout;
+- token passati nell'indirizzo, dove finiscono nei log e nella cronologia.
+
+<Say who="sensei">Ogni voce dell'elenco è un caso reale. Impara a riconoscerle, una per una, nei sistemi che ti capitano davanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le difese">
+Cosa fa un sito fatto bene:
+
+- accetta password **lunghe** e le salva **solo come hash con sale** (mai in chiaro), con algoritmi pensati per le password;
+- **limita i tentativi** di login: rallenta o blocca dopo troppi errori;
+- offre il **secondo fattore (MFA)**: una password rubata non basta;
+- genera token di sessione **casuali e lunghi**, li fa **scadere** e li invalida al logout;
+- dà **un solo messaggio** d'errore generico per login sbagliato.
+
+<Callout kind="trucco">
+Dopo il login, il sito deve anche cambiare il token di sessione. Se ne riutilizza uno già visto prima del login, qualcuno potrebbe averlo preparato in anticipo.
+</Callout>
+
+<Say who="assistente">Più fattori vuol dire più porte da forzare. La password da sola è una porta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app genera i codici di sessione contando 1043, 1044, 1045… Qual è il problema principale?"
+  options={[
+    "Sono prevedibili: chi ne conosce uno può indovinare quelli degli altri utenti",
+    "Sono troppo corti per essere salvati nel database",
+    "Il browser non riesce a leggere i numeri",
+    "Il server li consuma troppo in fretta",
+  ]}
+  answer={0}
+  explain="Un token di sessione deve essere casuale e lungo: se è un contatore, basta provare i numeri vicini. Corto o lungo, quel che conta è che sia imprevedibile."
+/>
+
+<Say who="sensei">Imprevedibile, lungo, a scadenza. Tre parole da ricordare per ogni sessione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su login e sessioni. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-auth" pass="5/5" retries={3} />
+
+<Say who="sensei">Verificare le password o le sessioni di un servizio che non è tuo, anche per «provare», è accesso abusivo (art. 615-ter c.p.). Si lavora solo sul proprio laboratorio o con permesso scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Autenticazione (il login) e sessione (il token dopo il login) sono due punti deboli distinti.
+- Difetti tipici: password deboli, tentativi illimitati, token prevedibili, sessioni che non scadono.
+- Difese: password salvate con hash e sale, limite ai tentativi, secondo fattore, token casuali con scadenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il token di sessione?", a: "Il codice che prova al server che sei già entrato" },
+    { q: "Perché i tentativi di login vanno limitati?", a: "Per impedire di provare moltissime password" },
+    { q: "Che cosa deve fare una sessione al logout?", a: "Diventare invalida anche lato server" },
+    { q: "Perché serve il secondo fattore?", a: "Perché una password rubata da sola non basta per entrare" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: sei dentro, ma cosa puoi vedere? Il controllo degli accessi rotto.</Say>
+</Scene>

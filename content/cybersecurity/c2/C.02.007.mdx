@@ -1,0 +1,157 @@
+---
+id: C.02.007
+course: cybersecurity
+module: 2
+title: "La crittografia giusta, usata male"
+belt: gialla
+duration_min: 9
+prerequisites: [C.02.006]
+objectives:
+  - "Riconoscere gli errori più comuni nell'uso della crittografia"
+  - "Distinguere gli algoritmi obsoleti da quelli ancora adatti"
+  - "Spiegare perché non si inventa un cifrario proprio e perché le chiavi non si riusano né si scrivono nel codice"
+verification:
+  type: generated-numeric
+  generator: c02-errori-comuni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere chiavi, password o token direttamente nel codice o in un repository"
+  - "Usare ancora MD5, SHA-1 o DES perché «funzionano»"
+  - "Inventare un proprio algoritmo invece di usare librerie standard e collaudate"
+commands: []
+---
+
+<Scene title="La chiave dimenticata">
+Una piccola azienda fittizia, la «Pizzeria Rossi», fa un sito per le ordinazioni. Lo sviluppatore cifra i dati dei clienti con AES-256, come da manuale. Poi, per comodità, scrive la chiave in un file del codice e carica tutto su un servizio di condivisione pubblico.
+
+Un giorno, un ragazzo curioso trova il progetto, apre il file e legge la chiave.
+
+La domanda del caso: **se l'algoritmo era fortissimo, che cosa è andato storto?**
+
+<Say who="sensei">Gli attacchi alla crittografia, nella pratica, quasi mai rompono la matematica. Cercano un errore umano. Eccone i quattro più comuni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore 1: la chiave nel codice">
+Scrivere una chiave, una password o un token **dentro il codice** è l'errore più diffuso. Il codice si copia, si condivide, si archivia per anni. Se finisce in un repository pubblico, chiunque lo può leggere.
+
+<Callout kind="regola">
+Le chiavi vivono **fuori** dal codice: in variabili d'ambiente, in un gestore di segreti, in un modulo hardware dedicato. Mai in un file del progetto.
+</Callout>
+
+<Callout kind="attenzione">
+Se una chiave è finita nel codice pubblico, **considerala bruciata**: cancellare il file non basta, la cronologia conserva tutto. Si **revoca** la chiave e se ne crea una nuova.
+</Callout>
+
+<Say who="assistente">Una chiave dentro il codice è come la chiave di casa sotto lo zerbino: il primo posto dove guardano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore 2: algoritmi obsoleti">
+Gli algoritmi invecchiano. Con il tempo qualcuno trova scorciatoie, e i computer diventano più veloci.
+
+- **MD5** e **SHA-1** (hash): sono state trovate **collisioni**, cioè due dati diversi con lo stesso hash. Non vanno più usati per firme e integrità. Meglio **SHA-256** o superiori.
+- **DES** (simmetrico): la chiave è di 56 bit, troppo corta, oggi si prova tutta in poco tempo. Meglio **AES**.
+- **SSL** e le prime versioni di TLS: sono considerati insicuri. Meglio **TLS 1.2 o 1.3**.
+
+<Callout kind="attenzione">
+Anche gli hash «moderni» come SHA-256 non bastano da soli per le **password**: servono funzioni lente apposta, con salt (modulo sull'autenticazione).
+</Callout>
+
+<Say who="sensei">«Funziona ancora» non vuol dire «è sicuro». Controlla periodicamente che cosa usi, e sostituisci ciò che è invecchiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore 3: cifrare da soli">
+Un'idea che torna sempre: «Mi invento un cifrario mio, mescolando un po' di operazioni». Spesso suona geniale a chi lo inventa.
+
+È un errore: i cifrari seri sono stati **studiati per anni da migliaia di esperti** che hanno provato a romperli. Il tuo, no. Ricordi Kerckhoffs? Un metodo non collaudato non è sicuro solo perché è segreto.
+
+Lo stesso vale per **come** usi gli algoritmi giusti: scrivere da zero la propria implementazione di AES, o scegliere modalità inadatte, apre falle sottili.
+
+<Callout kind="regola">
+**Non inventare la tua crittografia.** Usa librerie e protocolli standard, aggiornati e ben mantenuti, con le impostazioni consigliate.
+</Callout>
+
+<Say who="assistente">Il cifrario inventato da te lo sai rompere solo tu? No: lo rompe il primo esperto che ci mette le mani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore 4: riusare le chiavi">
+Usare **la stessa chiave** ovunque sembra comodo: un segreto solo da ricordare. Ma se quella chiave viene scoperta, cade **tutto** quello che proteggeva, in ogni sistema.
+
+<Guided
+  steps={[
+    "La chiave K cifra i backup, il database e le email.",
+    "Un attaccante scopre K da un solo vecchio file di prova.",
+    "Ora può leggere backup, database e email: un solo errore, tre disastri.",
+    "Con chiavi diverse per ogni scopo, il danno sarebbe rimasto limitato a una cosa sola.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Una chiave, **uno scopo**. E si cambiano a intervalli regolari (**rotazione**), così una chiave rubata ha vita breve.
+</Callout>
+
+<Say who="sensei">Se hai una chiave per tutto, hai un solo punto di rottura. Separa, ruota, limita il danno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app salva le password degli utenti con MD5, le chiavi di cifratura sono scritte nel codice e il cifrario per i messaggi è stato inventato dal team. Qual è la correzione più importante sul piano della crittografia?"
+  options={[
+    "Usare algoritmi standard e collaudati, togliere le chiavi dal codice e proteggere le password con funzioni lente e salt",
+    "Allungare la chiave scritta nel codice, così non si indovina",
+    "Tenere segreto il codice sorgente, così nessuno scopre né il cifrario né le chiavi",
+    "Sostituire MD5 con SHA-1, che è più recente",
+  ]}
+  answer={0}
+  explain="Servono tutte e tre le correzioni: algoritmi standard, chiavi fuori dal codice, password con funzioni adatte. Allungare la chiave non serve se è leggibile da tutti, la segretezza del codice non è una difesa (Kerckhoffs), e SHA-1 è a sua volta obsoleto."
+/>
+
+<Say who="assistente">Indizio: ognuno dei tre problemi ha un nome che hai incontrato in questa lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari di errori comuni: riconosci che cosa non va e quale controllo l'avrebbe evitato.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c02-errori-comuni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La matematica è solida. A rompersi, di solito, è chi la usa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le chiavi non vanno mai nel codice: si tengono in un gestore di segreti e, se trapelano, si revocano.
+- MD5, SHA-1, DES e SSL sono obsoleti: oggi AES, SHA-256 e superiori, TLS 1.2 o 1.3.
+- Non si inventa la propria crittografia e non si riusa la stessa chiave per tutto: una chiave, uno scopo, e rotazione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove non va mai scritta una chiave?", a: "Nel codice o in un repository" },
+    { q: "Quali algoritmi sono obsoleti?", a: "MD5, SHA-1, DES, SSL" },
+    { q: "Perché non si inventa un cifrario?", a: "Perché non è stato studiato e attaccato da esperti: non si sa se regge" },
+    { q: "Che cosa si fa se una chiave finisce in un repository pubblico?", a: "Si considera compromessa: si revoca e se ne crea una nuova" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Hai gli strumenti della crittografia. Il prossimo modulo parla di identità: chi sei, e come lo dimostri.</Say>
+</Scene>

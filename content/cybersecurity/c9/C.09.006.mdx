@@ -1,0 +1,152 @@
+---
+id: C.09.006
+course: cybersecurity
+module: 9
+title: "Ripristino e post-mortem"
+belt: marrone
+duration_min: 9
+prerequisites: [C.09.005]
+objectives:
+  - "Descrivere come si torna in servizio in modo sicuro"
+  - "Spiegare cos'è un post-mortem senza colpe e cosa deve contenere"
+  - "Riconoscere gli obblighi di notifica, come il data breach entro 72 ore del GDPR"
+verification:
+  type: generated-numeric
+  generator: c09-ripristino
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ripristinare da un backup già infetto: l'incidente ricomincia"
+  - "Cercare il colpevole invece della causa: le persone smettono di segnalare i problemi"
+  - "Dimenticare che le 72 ore partono da quando si viene a conoscenza della violazione, non da quando si finisce l'indagine"
+commands: []
+---
+
+<Scene title="Lunedì mattina">
+Alla Rossi Serramenti l'incidente è stato contenuto e l'intruso estromesso. Lunedì i dipendenti vogliono lavorare. L'amministratrice chiede: «Possiamo riaccendere tutto?».
+
+<Log lines={["lun 08:10  server-file  ricostruito da immagine pulita", "lun 08:25  backup di giovedì  controllo: nessun file sospetto", "lun 08:40  monitoraggio rafforzato attivo su server-file"]} caption="Il ritorno in servizio, passo dopo passo." />
+
+La domanda del caso: **come si torna a lavorare senza riaprire la porta, e che cosa si deve ancora fare?**
+
+<Say who="sensei">La fretta di ripartire è comprensibile. È anche il modo più comune di ripetere l'incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ripristinare con cautela">
+Il **ripristino** rimette in servizio i sistemi puliti. Le regole sono semplici:
+
+- si parte da un'**immagine o un backup pulito**, controllato: se il backup è successivo all'ingresso dell'intruso, può contenere già l'infezione;
+- si **applicano gli aggiornamenti** e la correzione che chiude la falla;
+- si riattivano i sistemi **a gruppi**, i più importanti per primi, osservando;
+- si **verifica** che tutto funzioni, anche i dati ripristinati.
+
+<Callout kind="attenzione">
+Il backup giusto è l'ultimo **precedente** all'ingresso dell'intruso, che si ricava dalla timeline. Per questo la timeline serve anche qui.
+</Callout>
+
+<Say who="assistente">Ripristinare da un backup infetto è come rimettere nel frigorifero il cibo già avariato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Monitoraggio rafforzato">
+Dopo il ritorno in servizio, per giorni o settimane si guarda **con più attenzione**:
+
+- allarmi più sensibili su accessi, nuovi account, trasferimenti insoliti;
+- controllo dei **segni noti** dell'incidente (l'indirizzo dell'intruso, i nomi dei file, gli orari);
+- log conservati a lungo e controllati da una persona, non solo da una macchina.
+
+<Callout kind="regola">
+Si guarda soprattutto per **ciò che si è già visto**. Gli intrusi tornano spesso per la stessa strada.
+</Callout>
+
+<Say who="sensei">Dopo un furto, la polizia passa più spesso. Anche tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il post-mortem senza colpe">
+Entro pochi giorni si fa una riunione: il **post-mortem** (o «lezioni apprese»). Si produce un rapporto che risponde a:
+
+- che cosa è successo, con la **timeline**;
+- come è stato **scoperto**, e quanto ci è voluto;
+- che cosa ha **funzionato** e che cosa no;
+- quali **azioni concrete** si faranno, con un responsabile e una data.
+
+<Callout kind="regola">
+**Senza colpe**: si cerca *quale processo ha permesso l'errore*, non *chi* ha sbagliato. Se chi sbaglia viene punito, la prossima volta nasconderà il problema.
+</Callout>
+
+<Callout kind="trucco">
+Per esempio: «Marta ha riutilizzato la password» diventa «il sistema permetteva password riutilizzate e non richiedeva un secondo fattore». La seconda frase si può correggere.
+</Callout>
+
+<Say who="assistente">Il rapporto serve a migliorare, non a punire. E si aggiornano le difese: nuove regole, formazione, controlli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli obblighi di notifica">
+Se nell'incidente sono stati coinvolti **dati personali** di persone (clienti, dipendenti), la legge impone di avvisare.
+
+Secondo il **GDPR** (il regolamento europeo sulla protezione dei dati), chi tratta quei dati deve notificare la violazione (**data breach**) all'**autorità di controllo** (in Italia, il Garante per la protezione dei dati personali) **entro 72 ore** da quando ne viene a conoscenza, se c'è un rischio per le persone. Se il rischio è alto, vanno avvisate anche le persone coinvolte.
+
+<Callout kind="attenzione">
+Le 72 ore partono da quando **si scopre** la violazione, non da quando finisce l'indagine. Per questo il diario con le ore e la timeline sono importanti anche per la legge.
+</Callout>
+
+<Callout kind="curiosita">
+Possono esserci altri obblighi (settori regolati, contratti con i clienti, assicurazioni). Per i casi reali si coinvolge sempre chi si occupa di protezione dei dati o un legale: qui impari che esistono.
+</Callout>
+
+<Say who="sensei">Quando scatta l'obbligo, il tempo conta. Chi aspetta di «avere tutto chiaro» spesso ha già superato il limite.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giovedì alle 10:00 la Rossi Serramenti scopre che i dati personali di alcuni clienti sono stati copiati da un intruso. L'indagine durerà una settimana. Cosa va fatto riguardo alla notifica?"
+  options={[
+    "Valutare subito e, se c'è rischio per le persone, notificare al Garante entro 72 ore da giovedì 10:00, anche se l'indagine non è finita",
+    "Aspettare la fine dell'indagine e poi notificare entro 72 ore da quel giorno",
+    "Non serve notificare se l'intruso è già stato estromesso",
+    "Avvisare solo i clienti, mai il Garante",
+  ]}
+  answer={0}
+  explain="Le 72 ore partono dalla conoscenza della violazione, non dalla fine dell'indagine. La notifica può essere fatta per fasi, completando le informazioni dopo. Chi pensa che estromettere l'intruso annulli l'obbligo confonde la risposta tecnica con quella legale."
+/>
+
+<Say who="assistente">Indizio: da quando si «viene a conoscenza»? Da quel momento, il tempo scorre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande su ripristino, post-mortem e notifiche. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-ripristino" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Si ripristina da immagini o backup puliti e precedenti all'ingresso dell'intruso, poi si monitora con più attenzione.
+- Il post-mortem senza colpe cerca la causa nel processo, non la colpa nella persona, e finisce con azioni concrete.
+- In caso di data breach con rischio per le persone, il GDPR chiede la notifica al Garante entro 72 ore da quando si scopre la violazione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da quale backup si ripristina?", a: "Da uno pulito, precedente all'ingresso dell'intruso" },
+    { q: "Cosa vuol dire post-mortem senza colpe?", a: "Si cercano le cause nel processo, non il colpevole" },
+    { q: "Entro quanto si notifica un data breach al Garante?", a: "Entro 72 ore da quando se ne viene a conoscenza" },
+    { q: "Perché monitorare di più dopo il ripristino?", a: "Gli intrusi spesso rientrano dalla stessa strada" },
+  ]}
+/>
+
+<Say who="sensei">Hai chiuso il modulo: dal primo allarme al rapporto finale. Un incidente gestito bene è un incidente da cui si esce più forti.</Say>
+</Scene>

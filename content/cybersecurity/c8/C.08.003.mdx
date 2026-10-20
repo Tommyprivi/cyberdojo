@@ -1,0 +1,155 @@
+---
+id: C.08.003
+course: cybersecurity
+module: 8
+title: "Ricognizione: cosa è già pubblico"
+belt: blu
+duration_min: 8
+prerequisites: [C.08.002]
+objectives:
+  - "Spiegare che cos'è la ricognizione passiva (OSINT) a livello concettuale"
+  - "Elencare quali informazioni pubbliche di un'azienda fittizia aiutano chi attacca e chi difende"
+  - "Leggere un registro DNS d'esempio e capire quali informazioni espone"
+verification:
+  type: generated-numeric
+  generator: c08-ricognizione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «è pubblico» significhi «posso usarlo come voglio»: le persone e i loro dati vanno comunque rispettati"
+  - "Fare ricognizione su persone reali o su un'azienda senza incarico, anche solo «per esercizio»"
+  - "Credere che le informazioni pubbliche siano innocue: messe insieme raccontano molto"
+commands: []
+---
+
+<Scene title="Il sito della Rossi Srl">
+La **Rossi Srl** è un'azienda fittizia. Ha un sito web, un profilo su un social professionale, offerte di lavoro pubblicate e un indirizzo email generico nel sito. Nessuno ha rubato nulla.
+
+Un consulente, incaricato per iscritto dalla Rossi Srl, prima di ogni test passa un'ora a raccogliere ciò che l'azienda mostra già al mondo.
+
+La domanda del caso: **che cosa si può imparare da un'azienda senza toccare nessun suo sistema?**
+
+<Say who="sensei">Prima di bussare a una porta, si guarda la casa dalla strada. Quello che si vede dalla strada lo vedono tutti, compresi i malintenzionati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'OSINT">
+**OSINT** significa *open source intelligence*: informazioni raccolte da **fonti aperte**, cioè pubbliche. Siti web, annunci di lavoro, documenti pubblicati, registri pubblici dei nomi di dominio.
+
+La ricognizione si dice **passiva** quando non invii nulla ai sistemi dell'azienda: leggi solo ciò che è già in giro.
+
+<Callout kind="attenzione">
+In questa lezione la ricognizione riguarda **aziende fittizie o la tua organizzazione con un incarico scritto**. Mai su persone reali: profili, famiglie, abitudini di singoli individui non sono materiale di esercizio.
+</Callout>
+
+<Say who="assistente">Anche «è pubblico» ha dei limiti: il fatto che qualcosa si possa leggere non vuol dire che sia giusto usarlo contro qualcuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa racconta un'azienda">
+Dalla sola Rossi Srl, un osservatore può ricavare:
+
+- **Tecnologie usate**: un annuncio dice «cercasi sistemista con esperienza su un certo sistema di gestione dei documenti».
+- **Persone e ruoli**: l'elenco dei dipendenti suggerisce chi è il responsabile amministrativo.
+- **Formato delle email**: nome.cognome seguito dal dominio dell'azienda.
+- **Sedi e fornitori**: indicati nel sito o nei comunicati.
+
+Per chi difende, la stessa lista è un esame: **cosa vogliamo davvero che sia pubblico?**
+
+<Callout kind="curiosita">
+Un annuncio di lavoro troppo dettagliato può rivelare nomi e versioni dei programmi usati. Si può descrivere la competenza senza elencare ogni prodotto interno.
+</Callout>
+
+<Say who="sensei">Ogni pezzetto da solo sembra innocuo. Messi insieme disegnano la pianta dell'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il DNS: la rubrica di Internet">
+Il **DNS** è la rubrica di Internet: traduce i nomi (come «rossi-srl.example») negli indirizzi numerici dei server. È un registro pubblico per natura: serve a tutti per raggiungere il sito.
+
+Un esempio di cosa può mostrare per una zona fittizia:
+
+<Log lines={[
+  "rossi-srl.example      A      192.0.2.10        (sito web)",
+  "mail.rossi-srl.example A      192.0.2.25        (posta)",
+  "rossi-srl.example      MX     10 mail.rossi-srl.example",
+  "vecchio-test.rossi-srl.example  A  192.0.2.77   (?)",
+]} caption="Registri DNS d'esempio (indirizzi di documentazione, azienda fittizia)" />
+
+Le prime righe sono normali. L'ultima, **vecchio-test**, è una spia: un nome dimenticato che punta a un server forse non più curato.
+
+<Say who="assistente">Cerca le cose che nessuno ricorda di avere. Spesso sono le meno protette.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fa il difensore con tutto questo">
+La ricognizione serve prima di tutto a chi difende: è l'inventario di ciò che l'azienda **espone**.
+
+1. **Elenca** tutti i nomi e i server pubblici.
+2. **Confronta** con l'inventario interno: c'è qualcosa che non dovrebbe esserci?
+3. **Riduci**: togli dalla vista ciò che non serve (vecchi server, pagine di prova, informazioni nei documenti pubblicati).
+4. **Ripeti** ogni tanto: l'esposizione cambia.
+
+<Callout kind="regola">
+Anche la ricognizione passiva rientra nell'ambito: si fa solo sulla tua organizzazione, su un'azienda fittizia di esercizio o con incarico scritto.
+</Callout>
+
+<Say who="sensei">Chi conosce la propria esposizione prima degli altri ha già vinto metà della partita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel DNS della Rossi Srl compare «vecchio-test.rossi-srl.example», che nessun dipendente riconosce. Qual è la mossa giusta del difensore?"
+  options={[
+    "Verificare chi lo gestisce e, se non serve più, spegnerlo o toglierlo dal DNS",
+    "Lasciarlo: se nessuno lo usa non può essere un problema",
+    "Cancellarlo dal DNS ma lasciare il server acceso",
+    "Provare ad accedervi da fuori per vedere se funziona",
+  ]}
+  answer={0}
+  explain="Un server dimenticato spesso non riceve più aggiornamenti: è un bersaglio comodo. Si accerta il proprietario e lo si ritira. Togliere solo il nome non basta, il server resta acceso. Provare ad accedere senza ambito concordato non è ricognizione ma attacco."
+/>
+
+<Say who="assistente">Indizio: «dimenticato» non vuol dire «sicuro». Spesso vuol dire «senza aggiornamenti».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su OSINT, esposizione e DNS. A ogni tentativo le domande cambiano.
+
+<Practice generator="c08-ricognizione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Osservare è già un mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'OSINT usa solo fonti aperte; la ricognizione passiva non invia nulla ai sistemi dell'azienda.
+- Informazioni pubbliche apparentemente innocue, messe insieme, mostrano tecnologie, ruoli e sistemi dimenticati.
+- Si fa su aziende fittizie, sulla propria organizzazione o con incarico scritto: mai su persone reali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa OSINT?", a: "Informazioni raccolte da fonti aperte, cioè pubbliche" },
+    { q: "Che cos'è il DNS?", a: "La rubrica di Internet: collega i nomi agli indirizzi dei server" },
+    { q: "Perché un nome DNS dimenticato è un rischio?", a: "Può puntare a un server non più aggiornato né sorvegliato" },
+    { q: "Su chi non si fa mai ricognizione per esercizio?", a: "Su persone reali" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai che cosa vede chi guarda da fuori. Prossima lezione: le porte, cioè come un servizio si fa trovare, e solo nel tuo laboratorio.</Say>
+</Scene>

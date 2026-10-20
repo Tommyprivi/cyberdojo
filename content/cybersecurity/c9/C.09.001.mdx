@@ -1,0 +1,157 @@
+---
+id: C.09.001
+course: cybersecurity
+module: 9
+title: "Il ciclo dell'incident response"
+belt: blu
+duration_min: 8
+prerequisites: [C.08.006]
+objectives:
+  - "Elencare le sei fasi della risposta a un incidente nell'ordine giusto"
+  - "Distinguere un evento da un incidente"
+  - "Spiegare perché servono ruoli chiari e un canale di comunicazione"
+verification:
+  type: generated-numeric
+  generator: c09-ciclo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Saltare subito all'eradicazione: se non si capisce cosa è successo, l'intruso rientra"
+  - "Pensare che l'incident response cominci quando scatta l'allarme: comincia molto prima, con la preparazione"
+  - "Dimenticare le lezioni apprese: senza quelle, il prossimo incidente andrà uguale"
+commands: []
+---
+
+<Scene title="Venerdì, ore 17:40">
+La **Rossi Serramenti**, una piccola azienda fittizia, sta chiudendo per il fine settimana. Poi squilla il telefono dell'amministratrice: un dipendente dice che sullo schermo del suo computer c'è un messaggio che chiede un riscatto.
+
+Nessuno sa che fare. Uno propone di spegnere tutto. Un altro di chiamare un amico che «ne capisce». Un terzo vuole avvisare i clienti subito.
+
+<Log lines={["17:38  pc-contabilita  file modificati: 1.204 in 2 minuti", "17:40  pc-contabilita  nuovo file: LEGGIMI.txt"]} caption="Le prime righe che qualcuno nota. Tutto il resto è ancora da capire." />
+
+La domanda del caso: **che cosa si fa, e in quale ordine?**
+
+<Say who="sensei">Quando c'è il caos, vince chi ha un piano. Oggi impari il piano che usano i professionisti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Evento o incidente?">
+Ogni giorno nei log compaiono centinaia di **eventi**: un accesso, un file aperto, una password sbagliata. Quasi tutti sono normali.
+
+Un **incidente** è un evento (o un insieme di eventi) che mette davvero a rischio dati, servizi o persone. Per esempio: file cifrati da qualcuno che non dovrebbe, un account usato da un estraneo.
+
+<Callout kind="regola">
+Un evento è un fatto. Un incidente è un fatto che fa **danno o può farlo**. Non tutti gli eventi diventano incidenti.
+</Callout>
+
+La **incident response** (risposta agli incidenti) è il modo organizzato di gestire un incidente: ridurre il danno, capire cosa è successo, tornare a lavorare.
+
+<Say who="assistente">Una password sbagliata è un evento. Cinquecento password sbagliate in un minuto, seguite da un accesso riuscito: quello comincia a sembrare un incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le sei fasi">
+Il ciclo si ripete uguale ogni volta. Sei fasi, in ordine:
+
+1. **Preparazione**: piani, strumenti, persone formate, backup. Si fa *prima*.
+2. **Rilevazione**: accorgersi che qualcosa non va e decidere se è un incidente.
+3. **Contenimento**: fermare la diffusione del danno.
+4. **Eradicazione**: eliminare la causa (il malware, l'accesso dell'intruso).
+5. **Ripristino**: rimettere in servizio i sistemi, in modo sicuro.
+6. **Lezioni apprese**: capire cosa migliorare per la prossima volta.
+
+<Callout kind="trucco">
+Un'immagine: **un incendio**. Prepari estintori e uscite, ti accorgi del fumo, chiudi le porte, spegni le fiamme, rientri quando è sicuro, poi correggi l'impianto che ha causato il corto circuito.
+</Callout>
+
+<Say who="sensei">L'ordine non è decorativo. Chi spegne le fiamme senza aver chiuso le porte, vede il fuoco spostarsi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché la preparazione viene prima">
+La fase più importante è quella in cui **non succede niente**. Se alle 17:40 nessuno sa chi chiamare, ogni minuto si perde.
+
+Prepararsi vuol dire, in piccolo:
+
+- un **elenco di contatti** aggiornato (chi decide, chi è tecnico, chi parla con l'esterno);
+- **backup** che funzionano davvero e che non stanno sulla stessa rete;
+- **log attivi** e conservati abbastanza a lungo;
+- un **piano scritto**, anche di una pagina, provato almeno una volta.
+
+<Callout kind="attenzione">
+Un backup mai provato è una speranza, non un backup. Si prova a ripristinarlo *prima* di averne bisogno.
+</Callout>
+
+<Say who="assistente">Il piano non deve essere perfetto. Deve esistere, ed essere trovabile alle 17:40 di un venerdì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ruoli e comunicazione">
+In un incidente servono poche persone con compiti chiari:
+
+- **Responsabile dell'incidente**: coordina e decide. Una sola voce.
+- **Tecnici**: indagano e agiscono sui sistemi.
+- **Comunicazione**: parla con dipendenti, clienti, autorità. I tecnici non improvvisano comunicati.
+- **Chi tiene il diario**: scrive *cosa* è stato fatto e *a che ora*.
+
+<Callout kind="regola">
+Tutto si scrive subito, con l'ora. Il diario dell'incidente è la memoria di tutti: la fretta la cancella in fretta.
+</Callout>
+
+Anche il **canale** conta: se l'intruso ha preso la posta aziendale, scrivere lì i piani di difesa è come discuterli davanti a lui. Si usa un canale alternativo, per esempio telefono o un'altra chat.
+
+<Say who="sensei">Un responsabile, un diario, un canale sicuro. Il resto è dettaglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Alla Rossi Serramenti, i file di un PC sono cifrati e compare la richiesta di riscatto. Un collega propone di reinstallare subito il computer per «far ripartire il lavoro». Perché è un errore?"
+  options={[
+    "Si distruggono le tracce e non si capisce come l'intruso è entrato: l'incidente può ripetersi",
+    "Reinstallare è sempre vietato dalla legge",
+    "Il computer reinstallato sarebbe più lento di prima",
+    "Non serve, perché un riscatto si risolve solo pagando",
+  ]}
+  answer={0}
+  explain="Prima si capisce e si contiene, poi si ripristina. Reinstallare subito cancella le prove e lascia aperta la porta da cui l'intruso è entrato. Chi risponde «è vietato» confonde una cattiva pratica con un divieto di legge."
+/>
+
+<Say who="assistente">Indizio: in quale fase del ciclo siamo? E che cosa manca ancora a quel punto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica e rapporto finale">
+Cinque domande sul ciclo e sui ruoli. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c09-ciclo" pass="5/5" retries={3} />
+
+<Say who="sensei">Nel caos non si improvvisa l'ordine delle cose. Lo si ricorda.</Say>
+
+<Recap xp={20}>
+- Le sei fasi: preparazione, rilevazione, contenimento, eradicazione, ripristino, lezioni apprese.
+- Un evento è un fatto; un incidente è un fatto che mette a rischio dati, servizi o persone.
+- Servono ruoli chiari, un diario con le ore e un canale di comunicazione che l'intruso non controlla.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la prima fase del ciclo?", a: "La preparazione, prima che accada qualcosa" },
+    { q: "Differenza tra evento e incidente?", a: "L'incidente mette a rischio dati, servizi o persone" },
+    { q: "Perché un diario con le ore?", a: "Per ricostruire cosa è stato fatto e quando" },
+    { q: "Perché un canale alternativo?", a: "L'intruso potrebbe leggere la posta aziendale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le prove. Prima di toccare qualunque cosa, bisogna sapere come si raccoglie ciò che ti servirà dopo.</Say>
+</Scene>

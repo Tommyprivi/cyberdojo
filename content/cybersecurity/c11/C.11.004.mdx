@@ -1,0 +1,135 @@
+---
+id: C.11.004
+course: cybersecurity
+module: 11
+title: "Costruire il tuo home lab"
+belt: marrone
+duration_min: 9
+prerequisites: [C.11.003]
+objectives:
+  - "Elencare hardware e software minimi per un home lab"
+  - "Spiegare perché la rete del lab va isolata e a cosa servono gli snapshot"
+  - "Riconoscere gli errori che rendono pericoloso un laboratorio"
+verification:
+  type: generated-numeric
+  generator: c11-homelab
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Collegare una macchina vulnerabile a Internet"
+  - "Non fare snapshot prima di sperimentare"
+  - "Usare il computer di tutti i giorni con i dati personali come bersaglio o come lab senza separazione"
+commands: []
+---
+
+<Scene title="Il portatile che si è «infettato»">
+Elisa ha scaricato una macchina volutamente vulnerabile per esercitarsi. L'ha avviata sul portatile di famiglia, con la rete in modalità «ponte»: la macchina ora è sulla stessa rete di casa, con la stessa porta verso Internet. Non sa che ha creato un problema.
+
+Un home lab è fantastico, ma **un lab fatto male è un rischio**. La domanda del caso: **come si costruisce un laboratorio sicuro, a casa, con poca spesa?**
+
+<Say who="sensei">Un bersaglio vulnerabile è una porta aperta. Se è sulla tua rete, si apre sulla tua casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa serve">
+Per cominciare basta poco.
+
+- **Un computer** con almeno 16 GB di memoria e spazio libero sul disco è una base comoda; con 8 GB si può cominciare con una o due macchine virtuali leggere.
+- Un **programma di virtualizzazione**: permette di far girare un computer finto (macchina virtuale) dentro il tuo. Ci sono opzioni gratuite, come VirtualBox (virtualbox.org).
+- Un sistema per attaccare (di solito una distribuzione Linux pensata per la sicurezza) e uno o più **bersagli volutamente vulnerabili** presi da fonti affidabili e note.
+
+<Callout kind="curiosita">
+Non serve un server dedicato. Un portatile usato e il tempo di imparare bastano per molti mesi.
+</Callout>
+
+<Say who="assistente">Parti con due macchine virtuali: una per attaccare, una da attaccare. Poi aggiungi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rete isolata e snapshot">
+Due regole contano più di ogni altra.
+
+**1. Rete isolata.** Le macchine del lab parlano solo tra loro, in una rete interna del programma di virtualizzazione, senza uscita verso Internet e senza accesso alla tua rete di casa. Se ti serve scaricare aggiornamenti, lo fai prima, e poi stacchi.
+
+**2. Snapshot.** È una «fotografia» dello stato della macchina. Se sbagli o rompi qualcosa, torni indietro in un minuto.
+
+<Callout kind="regola">
+Mai collegare bersagli vulnerabili a Internet. Basta una sola macchina dimenticata online: qualcun altro può trovarla e usarla.
+</Callout>
+
+<Say who="sensei">Prima di ogni esperimento, snapshot. Dopo ogni esperimento, ripristina. Così non hai paura di sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errori da evitare, e legge">
+Gli errori più comuni:
+
+- rete in modalità «ponte» con bersagli vulnerabili;
+- fare le prove sul computer con i dati personali, senza una copia di sicurezza;
+- scaricare macchine da fonti sconosciute;
+- usare gli strumenti del lab contro sistemi che **non sono tuoi**.
+
+<Callout kind="attenzione">
+Le tecniche che impari nel lab valgono solo dentro il lab. Accedere a un sistema altrui senza autorizzazione è reato (art. 615-ter del codice penale). Si prova solo ciò che è tuo o per cui hai un permesso scritto.
+</Callout>
+
+<Say who="sensei">Il tuo lab è il tuo cortile. Il resto del quartiere non è tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Elisa vuole esercitarsi con una macchina vulnerabile. Qual è la configurazione più sicura?"
+  options={[
+    "Rete interna isolata del programma di virtualizzazione, senza accesso a Internet, con uno snapshot iniziale",
+    "Rete in modalità ponte, così la macchina funziona meglio e si aggiorna",
+    "Rete di casa, ma con la password del Wi-Fi cambiata",
+    "Installare la macchina vulnerabile direttamente sul computer di famiglia",
+  ]}
+  answer={0}
+  explain="Una macchina volutamente vulnerabile non deve vedere né Internet né la rete di casa. Una rete interna isolata più lo snapshot permette di sbagliare senza conseguenze. Le altre opzioni espongono i dispositivi di casa."
+/>
+
+<Say who="sensei">Se hai dubbi sulla rete, stacca il cavo. Il dubbio si risolve prima di provare, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari di laboratorio. Scegli la soluzione sicura.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c11-homelab" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Un lab sicuro è un lab che puoi usare con tranquillità, per anni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per un home lab bastano un computer con memoria sufficiente, un programma di virtualizzazione e bersagli volutamente vulnerabili da fonti affidabili.
+- La rete del lab è isolata, e si fa uno snapshot prima di ogni esperimento.
+- Mai collegare bersagli vulnerabili a Internet, mai usare gli strumenti su sistemi non tuoi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché isolare la rete del lab?", a: "Perché le macchine vulnerabili non devono raggiungere né Internet né la rete di casa" },
+    { q: "A cosa serve uno snapshot?", a: "A tornare indietro allo stato precedente se qualcosa va storto" },
+    { q: "Cosa serve per cominciare?", a: "Un computer, un programma di virtualizzazione, due macchine virtuali" },
+    { q: "Dove puoi usare le tecniche che impari?", a: "Solo nel tuo lab o con permesso scritto" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del corso: il tuo percorso. Hai gli attrezzi. Ora scegli la strada.</Say>
+</Scene>

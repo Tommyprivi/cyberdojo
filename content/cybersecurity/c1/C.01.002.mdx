@@ -1,0 +1,168 @@
+---
+id: C.01.002
+course: cybersecurity
+module: 1
+title: "La triade CIA"
+belt: bianca
+duration_min: 8
+prerequisites: [C.01.001]
+objectives:
+  - "Definire riservatezza, integrità e disponibilità con parole proprie"
+  - "Riconoscere quale delle tre proprietà viene violata in un caso concreto"
+video:
+  provider: youtube
+  id: "SBcDGb9l6yo"
+  start: 0
+  end: 318
+  channel: "Professor Messer"
+  title: "The CIA Triad - CompTIA Security+ SY0-701 - 1.2"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c01-cia
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere riservatezza e integrità: leggere non è cambiare"
+  - "Pensare che cifrare i file basti: se li perdi o non li apri, la disponibilità è violata"
+  - "Credere che la sicurezza sia solo segretezza e dimenticare che il servizio deve funzionare"
+commands: []
+---
+
+<Scene title="Tre problemi in una settimana">
+Alla Rossi Forniture, una piccola azienda, nella stessa settimana succede questo:
+
+- Martedì: l'elenco degli stipendi finisce, per errore, nella mail a tutti i dipendenti.
+- Giovedì: qualcuno cambia l'IBAN di un fornitore su una fattura, prima del pagamento.
+- Sabato: il sito dei clienti non risponde per sei ore.
+
+Tre problemi, e sembrano diversi. Lo sono davvero: ognuno rompe una cosa diversa.
+
+La domanda del caso: **che cosa si è rotto, ogni volta?**
+
+<Say who="sensei">Tre guasti, tre nomi. Chi sa dare il nome giusto sa anche scegliere la difesa giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riservatezza">
+La **riservatezza** vuol dire: **solo chi ha il permesso può leggere l'informazione.**
+
+Esempio: la lettera chiusa in una busta. Se il postino la apre e legge, la riservatezza è rotta, anche se la lettera arriva intatta.
+
+Nel caso della Rossi: gli stipendi letti da tutti. Nessun dato è stato cambiato, nessun servizio si è fermato. È stata violata solo la riservatezza.
+
+<Callout kind="trucco">
+Domanda guida: **«Chi ha letto, e non doveva?»** Se la risposta è qualcuno, parliamo di riservatezza.
+</Callout>
+
+<Say who="assistente">Pensa al diario con il lucchetto. Il lucchetto non cambia il diario: gli impedisce di essere letto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Integrità">
+L'**integrità** vuol dire: **l'informazione non viene cambiata senza permesso, né per errore.**
+
+Esempio: una ricetta con un ingrediente sostituito di nascosto. Si legge benissimo, ma è sbagliata, e può far male.
+
+Nel caso della Rossi: l'IBAN cambiato. Nessuno ha letto di troppo, il sito funzionava, ma il dato non è più vero. I soldi vanno a chi non deve riceverli.
+
+<Callout kind="attenzione">
+Errore tipico: confondere integrità e riservatezza. Leggere non è cambiare. Chi altera un dato viola l'integrità, anche senza averlo mai letto davvero.
+</Callout>
+
+<Say who="sensei">Un dato di cui non puoi fidarti è peggio di un dato mancante. Almeno sai che manca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Disponibilità">
+La **disponibilità** vuol dire: **dati e servizi sono utilizzabili quando servono.**
+
+Esempio: un negozio con la saracinesca bloccata. La merce è dentro, intatta e riservata, ma nessuno compra.
+
+Nel caso della Rossi: il sito spento sei ore. I dati erano a posto e non li ha letti nessuno, ma i clienti non hanno potuto ordinare.
+
+<Callout kind="curiosita">
+Anche un ransomware, un programma che cifra i tuoi file e chiede un riscatto, colpisce prima di tutto la disponibilità: i file ci sono, ma tu non puoi più aprirli.
+</Callout>
+
+Vuoi sentire la triade da un'altra voce? È in inglese, ma i concetti sono quelli che hai appena visto:
+
+<Video />
+
+<Say who="assistente">Riservatezza, integrità, disponibilità: in inglese le iniziali fanno CIA. Per questo si chiama triade CIA.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un ransomware cifra tutti i file dello studio di un medico. Il titolare non riesce più ad aprire le cartelle dei pazienti. Quale proprietà viene colpita per prima?"
+  options={["La disponibilità: i file ci sono ma non sono più utilizzabili", "La riservatezza, perché i file sono cifrati", "L'integrità, perché è entrato un virus", "Nessuna, perché i file esistono ancora"]}
+  answer={0}
+  explain="Il danno immediato è che il titolare non può usare i file: è disponibilità. Chi risponde «riservatezza» confonde la cifratura fatta dall'attaccante con quella fatta per proteggere. Il ransomware di solito non serve a far leggere i dati a qualcuno, ma a bloccarli."
+/>
+
+<Say who="sensei">Guarda l'effetto sul lavoro, non il nome dell'arma. Che cosa non riesci più a fare?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre domande">
+Per classificare ogni incidente, fai tre domande in fila.
+
+<Guided
+  steps={[
+    "Qualcuno ha letto ciò che non doveva? Allora è stata violata la riservatezza.",
+    "Qualcuno ha cambiato un dato senza permesso, o è cambiato per errore? Allora è stata violata l'integrità.",
+    "Qualcuno non riesce più a usare dati o servizi quando servono? Allora è stata violata la disponibilità.",
+    "A volte rispondi sì a più di una domanda. Va bene: un attacco può rompere due proprietà insieme. Parti dalla prima che si è rotta.",
+  ]}
+/>
+
+<Callout kind="regola">
+Le tre proprietà si tirano a vicenda. Un archivio con permessi così stretti che nemmeno chi ne ha diritto riesce ad aprirlo è molto riservato ma poco disponibile. La sicurezza è cercare un equilibrio, non spingere una sola.
+</Callout>
+
+<Say who="sensei">Tutte e tre servono. Se ne sacrifichi una per rinforzare un'altra, hai solo spostato il problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: definizioni e casi. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-cia" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Quando leggi un incidente, chiediti sempre: letto, cambiato o bloccato?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Riservatezza: solo chi ha il permesso può leggere. Violata se qualcuno legge ciò che non doveva.
+- Integrità: i dati non cambiano senza permesso. Violata se un dato è alterato.
+- Disponibilità: dati e servizi funzionano quando servono. Violata se non puoi più usarli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa protegge la riservatezza?", a: "Che solo chi ha il permesso possa leggere" },
+    { q: "Un IBAN cambiato su una fattura: quale proprietà?", a: "Integrità" },
+    { q: "Il sito è spento per ore: quale proprietà?", a: "Disponibilità" },
+    { q: "Perché un ransomware colpisce soprattutto la disponibilità?", a: "I file ci sono ma non si possono più usare" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: minacce, vulnerabilità e rischio. Tre parole che si confondono sempre, e che noi non confonderemo.</Say>
+</Scene>

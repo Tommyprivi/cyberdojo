@@ -1,0 +1,169 @@
+---
+id: C.04.001
+course: cybersecurity
+module: 4
+title: "Il portiere della rete: il firewall"
+belt: arancione
+duration_min: 8
+prerequisites: [C.03.006]
+objectives:
+  - "Spiegare che cosa fa un firewall e cosa significa «default deny»"
+  - "Leggere una tabella di regole semplice, dall'alto in basso"
+  - "Indicare quale regola mancava quando un traffico passa o viene bloccato per errore"
+video:
+  provider: youtube
+  id: "VS-h5QDLGV8"
+  start: 0
+  end: 193
+  channel: "Gcode"
+  title: "20. Firewall e Ids (teoria) - Corso Ethical Hacking italiano"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c04-firewall
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il firewall protegga da tutto: filtra il traffico, non ripara un programma vulnerabile o una password debole"
+  - "Leggere le regole nell'ordine sbagliato: vince la prima che corrisponde, non l'ultima"
+  - "Aprire una porta «per provare» e dimenticarla aperta"
+commands: []
+---
+
+<Scene title="Il server che risponde a tutti">
+Una piccola azienda, la **Rossi Stampe**, ha un server interno con l'archivio dei clienti. Un giorno il tecnico guarda il registro degli accessi e trova questo:
+
+<Log lines={["02:41  src=198.51.100.23  dst=server-archivio  porta=3389  esito=ACCETTATO", "02:41  src=198.51.100.23  dst=server-archivio  porta=3389  esito=ACCETTATO", "02:42  src=198.51.100.23  dst=server-archivio  porta=3389  esito=ACCETTATO"]} caption="Un indirizzo sconosciuto bussa alla porta 3389, quella del desktop remoto. E la porta si apre." />
+
+Nessuno aveva deciso che quella porta dovesse essere raggiungibile da Internet. Ma nessuno l'aveva nemmeno vietato.
+
+La domanda del caso: **chi decide quale traffico entra e quale no?**
+
+<Say who="sensei">Una rete senza regole è una casa senza porta. Oggi impari a metterla, e a decidere chi passa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il portiere">
+Un **firewall** è un portiere. Sta tra due reti (per esempio Internet e la rete dell'azienda) e guarda ogni pacchetto che passa.
+
+Per ogni pacchetto si fa le stesse domande che hai già incontrato nelle lezioni sulle reti: **da quale indirizzo arriva, a quale indirizzo va, su quale porta, con quale protocollo**. Poi applica le sue regole e decide.
+
+Le decisioni possibili sono due:
+
+- **allow** (permetti): il pacchetto passa;
+- **deny** (nega): il pacchetto viene scartato.
+
+<Callout kind="trucco">
+Il firewall non «capisce» di che cosa si parla. Guarda l'etichetta del pacco (indirizzi, porta), non il contenuto. Per questo è veloce, ma da solo non basta.
+</Callout>
+
+<Say who="sensei">Il portiere non apre i pacchi. Legge l'etichetta e decide. Tienilo a mente: ci torneremo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una tabella di regole">
+Le regole di un firewall stanno in una **tabella**. Ecco quella della Rossi Stampe, dopo che il tecnico l'ha messa a posto:
+
+<Log lines={["1  ALLOW  da: qualsiasi        a: server-web      porta: 443", "2  ALLOW  da: rete-ufficio    a: server-archivio  porta: 445", "3  ALLOW  da: rete-ufficio    a: qualsiasi        porta: 80, 443", "4  DENY   da: qualsiasi        a: qualsiasi        porta: qualsiasi"]} caption="Quattro righe. Si leggono dall'alto in basso." />
+
+Come si legge: il pacchetto scende lungo la tabella. La **prima regola che corrisponde** decide, e le altre non si guardano più.
+
+<Callout kind="attenzione">
+Conta l'**ordine**. Una regola «DENY tutto» messa per prima bloccherebbe anche il traffico buono. Una «ALLOW tutto» messa troppo in alto renderebbe inutili le regole sotto.
+</Callout>
+
+<Say who="assistente">Prova a leggere la riga 4: nega tutto, da chiunque a chiunque. Ti suggerisco di guardarla bene, perché è la più importante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Default deny">
+La riga 4 è la **regola di chiusura**. Quello che nessuna regola sopra ha permesso, viene negato.
+
+Questa idea si chiama **default deny**: *di base si nega, si permette solo ciò che serve*. È il contrario del «default allow», dove di base passa tutto e si vieta solo ciò che si conosce come pericoloso.
+
+Perché è meglio il default deny? Perché le minacce nuove non hanno ancora un nome. Con il default deny una porta che nessuno ha mai pensato di aprire resta chiusa. Con il default allow resta aperta, finché qualcuno non se ne accorge.
+
+<Callout kind="regola">
+**Default deny**: tutto è vietato, tranne ciò che è permesso in modo esplicito e con un motivo.
+</Callout>
+
+Nel caso della Rossi Stampe, il firewall non aveva la riga 4. Per questo la porta 3389 era aperta a chiunque.
+
+<Say who="sensei">Prima si chiude tutto. Poi si apre una porta alla volta, e per ognuna si scrive il motivo. Chi apre «per provare» dimentica di richiudere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Usa la tabella della Rossi Stampe. Arriva un pacchetto da **Internet** (non dalla rete dell'ufficio) verso il **server-archivio**, porta **445**.
+
+<Quiz
+  question="Con la tabella a quattro righe vista prima, che fine fa il pacchetto da Internet verso server-archivio sulla porta 445?"
+  options={["Viene negato dalla riga 4", "Passa, perché la porta 445 è nella riga 2", "Passa, perché la riga 3 permette tutto verso l'esterno", "Dipende dal contenuto del pacchetto"]}
+  answer={0}
+  explain="La riga 2 permette la 445 solo da rete-ufficio, e questo pacchetto viene da Internet. Le righe 1 e 3 non corrispondono. Resta la riga 4, che nega. Chi risponde «passa» ha letto la porta ma non l'origine: una regola vale solo se corrispondono tutti i campi."
+/>
+
+<Say who="sensei">Una regola corrisponde solo se tutti i campi tornano: origine, destinazione e porta. Uno solo che non torna, e si scende alla riga dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa il firewall non fa">
+Vuoi sentirlo spiegare da un'altra voce? Circa tre minuti, in italiano:
+
+<Video />
+
+Un firewall è una difesa **a livello di rete**. Fa bene una cosa: filtrare chi parla con chi, e su quale porta. Ma ci sono cose che non vede.
+
+- Se tu **permetti** la porta 443 (le pagine web sicure), un pacchetto dannoso su quella porta passa lo stesso: la porta è permessa.
+- Se una persona dentro la rete apre un allegato infetto, il traffico parte da dentro e spesso è permesso.
+- Se una password è debole, il firewall non può saperlo.
+
+<Callout kind="curiosita">
+Esistono firewall più evoluti, che guardano anche il contenuto e l'applicazione. Ma il principio resta quello: regole chiare, e default deny.
+</Callout>
+
+<Say who="assistente">Il firewall è uno strato, non la soluzione. Più avanti vedremo gli altri strati che lavorano con lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Qui riprendi il caso della Rossi Stampe: devi leggere tabelle di regole e decidere cosa succede ai pacchetti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-firewall" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una regola letta male è una porta aperta, oppure un reparto che non lavora più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il firewall è un portiere: per ogni pacchetto guarda indirizzi, porta e protocollo, poi permette (allow) o nega (deny).
+- Le regole si leggono dall'alto in basso: vince la prima che corrisponde, quindi l'ordine conta.
+- Il default deny chiude tutto e apre solo ciò che serve. Il firewall però non vede il contenuto, quindi non basta da solo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire «default deny»?", a: "Si nega tutto, e si permette solo ciò che è scritto in una regola" },
+    { q: "Quale regola decide, in una tabella?", a: "La prima che corrisponde, scendendo dall'alto" },
+    { q: "Cosa guarda un firewall semplice?", a: "Indirizzo di origine, destinazione, porta e protocollo" },
+    { q: "Il firewall ferma un pacchetto dannoso su una porta permessa?", a: "No: la porta è permessa, quindi passa" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chi guarda dentro i pacchetti che il portiere lascia passare. Si chiamano IDS e IPS.</Say>
+</Scene>

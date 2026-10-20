@@ -1,0 +1,154 @@
+---
+id: C.11.005
+course: cybersecurity
+module: 11
+title: "Il tuo percorso"
+belt: marrone
+duration_min: 10
+prerequisites: [C.11.004]
+objectives:
+  - "Scegliere un primo indirizzo tra difesa, test di intrusione, analisi, governance e privacy"
+  - "Pianificare passi concreti a 3, 6 e 12 mesi adatti alla propria fascia d'età"
+  - "Sapere dove chiedere aiuto"
+video:
+  provider: youtube
+  id: "uXi7bTGPea8"
+  start: 0
+  end: 600
+  channel: "LeaveItaly"
+  title: "Come Diventare Security Analyst: Guida Completa per Iniziare da Zero!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c11-percorso
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere di dover scegliere una specializzazione definitiva subito"
+  - "Aspettarsi un lavoro in pochi mesi senza esperienza pratica"
+  - "Studiare da soli senza una comunità"
+commands: []
+---
+
+<Scene title="Quattro persone, quattro strade">
+Sara (15 anni) ama le gare. Marco (22) studia informatica. Giulia (35) lavora in un ufficio legale e le interessa la privacy. Franco (52) ha una lunga carriera in amministrazione di sistemi.
+
+Hanno tutti finito lo stesso corso, ma non hanno lo stesso obiettivo né lo stesso tempo. La domanda del caso: **quale strada per ciascuno, e con quali passi?**
+
+<Say who="sensei">Non esiste un percorso unico. Esiste il tuo: parte da chi sei e da quanto tempo hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cinque direzioni">
+Il mondo della sicurezza è grande. Cinque direzioni principali:
+
+- **Difesa** (per esempio il lavoro in un SOC): sorvegliare, rilevare, rispondere agli incidenti. Turni, attenzione, lavoro di squadra.
+- **Test di intrusione**: simulare attacchi, con autorizzazione scritta, per trovare i punti deboli. Richiede molta pratica e curiosità.
+- **Analisi**: studiare malware, tracce e incidenti per capire che cosa è successo.
+- **Governance e conformità**: regole, rischi, audit, normative. Meno tecnica, più organizzazione.
+- **Privacy**: proteggere i dati personali e applicare le norme; in Italia è un tema seguito dal Garante per la protezione dei dati personali (garanteprivacy.it).
+
+<Callout kind="curiosita">
+Non devi scegliere subito. Molti cambiano direzione dopo un paio d'anni. Le basi che hai appena imparato servono in tutte.
+</Callout>
+
+<Say who="assistente">Chiediti: preferisco costruire, rompere, indagare o organizzare? La risposta ti indica una direzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passi a 3, 6 e 12 mesi">
+Un piano realistico, senza promesse di lavoro facile. Le fasce sono quelle del sito.
+
+<Guided
+  steps={[
+    "14-17 anni — 3 mesi: una piattaforma guidata, due o tre ore a settimana. 6 mesi: la prima CTF per principianti, possibilmente in squadra. 12 mesi: informati su CyberChallenge.IT (dai 16 anni) e su gare scolastiche.",
+    "18-25 anni — 3 mesi: home lab funzionante e un diario di pratica. 6 mesi: una CTF e un progetto da mostrare. 12 mesi: tirocinio o primo contatto con aziende; una certificazione di base solo se serve.",
+    "26-40 anni — 3 mesi: scegli la direzione partendo dal tuo mestiere attuale. 6 mesi: un progetto che parli di te (un lab, un report). 12 mesi: colloqui o richieste interne; valuta una certificazione base.",
+    "41+ anni — 3 mesi: capisci come la tua esperienza si lega alla sicurezza (sistemi, processi, legge). 6 mesi: un progetto concreto. 12 mesi: ruolo vicino al tuo (governance, privacy, difesa) prima di una svolta radicale.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un anno di studio costante può aprire porte, ma non garantisce un posto. Dipende dal mercato, dal tuo impegno e da quanto lavori sulle cose pratiche.
+</Callout>
+
+<Say who="sensei">Poco ma ogni settimana batte tanto una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non sei solo">
+Imparare da soli è difficile. Cerca:
+
+- **comunità** locali e universitarie, gruppi studenteschi di sicurezza, meetup;
+- i **forum delle piattaforme** che usi, dove si chiede aiuto senza chiedere la soluzione;
+- risorse ufficiali: **OWASP** (owasp.org) per la sicurezza delle applicazioni, **ACN** (acn.gov.it) e il **CSIRT Italia** (csirt.gov.it) per avvisi e informazioni nazionali.
+
+Vuoi ascoltare un'altra voce su come si diventa analista partendo da zero? Dieci minuti:
+
+<Video />
+
+<Callout kind="trucco">
+Quando chiedi aiuto, scrivi che cosa hai provato e dove ti sei bloccato. Le risposte arrivano più in fretta, e sono più utili.
+</Callout>
+
+<Say who="assistente">Chiedere aiuto non è un difetto. Nessuno nel settore ha imparato tutto da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giulia (35 anni, ufficio legale) ama la parte di regole e dati personali. Qual è un primo passo coerente?"
+  options={[
+    "Esplorare privacy e governance, collegando la sua esperienza legale alle norme sulla protezione dei dati, con un piccolo progetto",
+    "Puntare subito al test di intrusione, perché è il più pagato",
+    "Aspettare di sapere tutto di tecnica prima di muoversi",
+    "Cambiare lavoro in tre mesi: ormai ha finito il corso",
+  ]}
+  answer={0}
+  explain="Il percorso migliore parte da ciò che si ha già. Le competenze legali sono un vantaggio per privacy e governance. Scegliere solo per lo stipendio, aspettare di essere perfetti o aspettarsi un cambio in tre mesi porta a delusioni."
+/>
+
+<Say who="sensei">La tua storia è un punto di partenza, non un ostacolo. Usala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi di scelta del percorso. Ragiona sulla persona, non sulla moda.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c11-percorso" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi sceglie con la testa cammina più a lungo di chi segue la moda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Cinque direzioni (difesa, test di intrusione, analisi, governance, privacy): si sceglie dai propri interessi e dal punto di partenza, e si può cambiare.
+- Piani a 3, 6 e 12 mesi diversi per fascia d'età, senza promesse di lavoro facile.
+- Si cresce con una comunità: chiedi aiuto spiegando che cosa hai provato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le cinque direzioni?", a: "Difesa, test di intrusione, analisi, governance, privacy" },
+    { q: "Devi scegliere una specializzazione definitiva subito?", a: "No: le basi servono in tutte e si può cambiare" },
+    { q: "Come si chiede aiuto bene?", a: "Spiegando cosa hai provato e dove ti sei bloccato" },
+    { q: "Un anno di studio garantisce un lavoro?", a: "No: apre porte, ma dipende da pratica, impegno e mercato" },
+  ]}
+/>
+
+<Say who="sensei">Il corso finisce qui. Il tuo cammino comincia adesso. Un passo alla settimana, ogni settimana.</Say>
+</Scene>

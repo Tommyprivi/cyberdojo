@@ -1,0 +1,163 @@
+---
+id: C.10.002
+course: cybersecurity
+module: 10
+title: "Chi ti segue mentre navighi"
+belt: marrone
+duration_min: 8
+prerequisites: [C.10.001]
+objectives:
+  - "Spiegare come funzionano cookie, tracker e fingerprinting"
+  - "Capire cosa raccolgono le app e perché i permessi contano"
+  - "Applicare tre impostazioni concrete per ridurre il tracciamento"
+verification:
+  type: generated-numeric
+  generator: c10-tracciamento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la modalità anonima renda invisibili ai siti e al provider"
+  - "Pensare che cancellare i cookie basti a non essere riconosciuti"
+  - "Concedere i permessi alle app senza chiedersi a cosa servono"
+commands: []
+---
+
+<Scene title="Le scarpe che ti inseguono">
+Luca guarda un paio di scarpe rosse su un negozio online. Non compra. Il giorno dopo, sul sito di un giornale, compaiono le stesse scarpe. Poi sul telefono, in un gioco. Poi di nuovo il giorno dopo.
+
+Luca si chiede: chi ha detto al giornale che cosa ho guardato? Mi hanno hackerato?
+
+La domanda del caso: **come fa un sito a riconoscerti su altri siti?**
+
+<Say who="sensei">Nessun hacker. È un'industria intera, perfettamente legale. Vediamo come lavora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il cookie">
+Un **cookie** è un piccolo file di testo che un sito salva nel tuo browser. Quando torni, il browser lo rimanda al sito, che così ti riconosce.
+
+Ci sono cookie utili: tengono il login attivo o il carrello della spesa. Sono i **cookie tecnici**.
+
+Poi ci sono i **cookie di terze parti**: messi non dal sito che visiti, ma da un'azienda esterna (spesso pubblicitaria) che ha un suo pezzo di codice su tanti siti. Lo stesso cookie ti segue da un sito all'altro.
+
+<Callout kind="trucco">
+Immagina un cartellino con un numero che un negozio ti attacca al cappotto. Se un'altra azienda mette lo stesso cartellino in dieci negozi, sa che sei sempre tu.
+</Callout>
+
+<Say who="assistente">Il banner «accetta tutti i cookie» serve a questo. Gestire le preferenze e rifiutare i non essenziali è la scelta più prudente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tracker">
+Un **tracker** è un pezzetto di codice, o un servizio, inserito in siti e app che registra che cosa fai e lo manda a un'azienda. Un solo articolo di giornale può caricare decine di tracker di aziende diverse.
+
+Che cosa registrano? Quale pagina guardi, quanto tempo resti, che dispositivo usi, da dove ti colleghi. Con queste informazioni costruiscono un **profilo pubblicitario**.
+
+<Callout kind="curiosita">
+I dati di un profilo spesso valgono soldi. Per questo molti servizi «gratuiti» lo sono: il prodotto, in un certo senso, sei tu.
+</Callout>
+
+<Callout kind="attenzione">
+Non serve nome e cognome per avere un profilo. Un numero abbinato alle tue abitudini basta, e il GDPR lo considera comunque un dato personale.
+</Callout>
+
+<Say who="sensei">Se non paghi con i soldi, di solito paghi con i dati. Chiediti quanto vale per te quello scambio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'impronta del browser">
+Luca svuota i cookie. Sorpresa: il giornale lo riconosce ancora. Come?
+
+Con il **fingerprinting**, cioè l'**impronta del browser**. Il sito legge caratteristiche come:
+
+- dimensione dello schermo e lingua;
+- fuso orario e font installati;
+- versione del browser e del sistema;
+- estensioni e alcune caratteristiche della scheda grafica.
+
+Ognuna da sola non dice niente. Messe insieme, formano una combinazione quasi unica tra milioni di persone, come un'impronta digitale.
+
+<Callout kind="attenzione">
+Cancellare i cookie non cancella l'impronta. Un browser molto personalizzato, con tante estensioni rare, può essere **più** riconoscibile.
+</Callout>
+
+<Say who="sensei">Ciò che ti rende unico è anche ciò che ti identifica. Meno sei strano, più ti confondi nella folla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le app sul telefono">
+Le app raccolgono più dei siti, perché hanno **permessi**: posizione, contatti, microfono, fotocamera, foto, notifiche. Il telefono ha anche un **ID pubblicitario**, un numero che serve proprio a riconoscerti tra le app.
+
+Un'app torcia che chiede i contatti e la posizione non ne ha bisogno per accendere la luce. Quel permesso serve ad altro.
+
+<Quiz
+  question="Un'app gratuita di meteo chiede la posizione precisa sempre attiva, anche in background. Qual è il rischio principale?"
+  options={["Può ricostruire dove vivi, dove lavori e i tuoi spostamenti, e venderli a terzi", "Consuma solo un po' di batteria in più", "Può leggere le password salvate nel browser", "Nessuno: il meteo ha bisogno della posizione sempre"]}
+  answer={0}
+  explain="Per il meteo basta la posizione approssimativa, e solo quando usi l'app. La posizione precisa e continua racconta casa, lavoro e abitudini. Chi pensa che sia solo batteria sottovaluta quanto sia prezioso quel dato."
+/>
+
+<Say who="assistente">Regola semplice: il permesso deve avere a che fare con ciò che l'app fa. Se non c'entra, nega.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come ridurlo">
+Non si diventa invisibili, ma si può ridurre molto. Alcune mosse concrete:
+
+<Guided
+  steps={[
+    "Nel browser: blocca i cookie di terze parti e usa un blocco dei tracker (nelle impostazioni o come estensione).",
+    "Nei banner: scegli «gestisci preferenze» e rifiuta i cookie non essenziali.",
+    "Sul telefono: rivedi i permessi delle app, azzera o limita l'ID pubblicitario, disinstalla le app che non usi.",
+    "Ricorda: la modalità anonima non salva la cronologia sul tuo dispositivo, ma i siti e il provider vedono comunque quello che fai.",
+  ]}
+/>
+
+<Callout kind="regola">
+Meno estensioni, aggiornamenti attivi e impostazioni di privacy standard: così ti confondi tra tanti altri utenti, e l'impronta vale meno.
+</Callout>
+
+<Say who="sensei">Non cerco la perfezione. Cerco abitudini che costano poco e tolgono molto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su cookie, tracker, impronta e app. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="c10-tracciamento" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi capisce come lo seguono può scegliere quanto farsi seguire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I cookie di terze parti e i tracker ti seguono da un sito all'altro e costruiscono un profilo pubblicitario.
+- Il fingerprinting riconosce il browser dalle sue caratteristiche anche senza cookie.
+- Si riduce il tracciamento con blocco dei tracker, preferenze sui banner e permessi delle app ridotti al minimo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un cookie di terze parti?", a: "Un cookie messo da un'azienda esterna al sito che visiti, spesso per la pubblicità" },
+    { q: "Che cos'è il fingerprinting?", a: "Riconoscere un browser dall'insieme delle sue caratteristiche, senza cookie" },
+    { q: "La modalità anonima nasconde l'IP?", a: "No: non salva la cronologia in locale, ma siti e provider vedono la tua attività" },
+    { q: "Quale permesso nega un'app torcia?", a: "Contatti, posizione e microfono: non servono per accendere la luce" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la VPN, lo strumento più venduto e meno capito della privacy.</Say>
+</Scene>

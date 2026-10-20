@@ -1,0 +1,170 @@
+---
+id: C.07.005
+course: cybersecurity
+module: 7
+title: "Risposta automatica: fail2ban"
+belt: blu
+duration_min: 9
+prerequisites: [C.07.004]
+objectives:
+  - "Spiegare come fail2ban legge i log e blocca un indirizzo"
+  - "Riconoscere il rischio di bloccare utenti legittimi o se stessi"
+  - "Usare una whitelist e tempi di blocco ragionevoli"
+verification:
+  type: generated-numeric
+  generator: c07-fail2ban
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che fail2ban sostituisca password robuste e autenticazione a più fattori"
+  - "Dimenticare di mettere in whitelist il proprio indirizzo e chiudersi fuori dal server"
+  - "Credere che bloccare un indirizzo fermi un attaccante che ne cambia di continuo"
+commands: []
+---
+
+<Scene title="Mille tentativi in un'ora">
+Il server della «Rossi Forniture» riceve di continuo tentativi di accesso. Un esempio dal log:
+
+<Log lines={[
+  "Oct 14 03:11:02 srv1 sshd[4100]: Failed password for root from 203.0.113.50 port 40110 ssh2",
+  "Oct 14 03:11:03 srv1 sshd[4102]: Failed password for admin from 203.0.113.50 port 40114 ssh2",
+  "Oct 14 03:11:04 srv1 sshd[4104]: Failed password for test from 203.0.113.50 port 40118 ssh2",
+  "Oct 14 03:11:05 srv1 sshd[4106]: Failed password for user from 203.0.113.50 port 40122 ssh2",
+  "Oct 14 03:11:06 srv1 sshd[4108]: Failed password for oracle from 203.0.113.50 port 40126 ssh2",
+]} caption="Un tentativo al secondo, nomi utente comuni." />
+
+Nessun umano è attento a quest'ora. La domanda del caso: **può il server difendersi da solo, senza svegliare nessuno?**
+
+<Say who="sensei">Ciò che si ripete uguale, si automatizza. Ma si automatizza con prudenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come funziona fail2ban">
+**fail2ban** è un programma che **legge i log** e agisce. Il meccanismo ha tre pezzi:
+
+- un **filtro**: una regola che riconosce nel log le righe sospette (per esempio «Failed password»);
+- una **soglia**: quanti errori, in quanto tempo (per esempio 5 in 10 minuti);
+- un'**azione**: che cosa fare, di solito aggiungere una regola al firewall che **blocca l'indirizzo** per un certo tempo.
+
+Alla fine del tempo di blocco, l'indirizzo viene **sbloccato** da solo.
+
+<Callout kind="curiosita">
+Esistono altri strumenti dello stesso genere, e molti firewall e servizi in cloud hanno funzioni simili. L'idea è sempre: osserva, riconosci, blocca per un po'.
+</Callout>
+
+<Say who="assistente">È un buttafuori che ha una regola: dopo cinque tentativi sbagliati, resti fuori per un'ora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio di configurazione">
+Le impostazioni sono in un file di testo. Una versione molto semplificata:
+
+<Log lines={[
+  "[sshd]",
+  "enabled  = true",
+  "maxretry = 5",
+  "findtime = 10m",
+  "bantime  = 1h",
+  "ignoreip = 127.0.0.1/8 192.0.2.10",
+]} caption="Cinque errori in 10 minuti: blocco di un'ora. L'indirizzo 192.0.2.10 non si blocca mai." />
+
+- `maxretry`: quanti errori sono troppi.
+- `findtime`: la finestra di tempo in cui si contano.
+- `bantime`: per quanto si blocca.
+- `ignoreip`: la **whitelist**, gli indirizzi mai bloccati.
+
+<Say who="sensei">Quattro numeri, una lista. Ogni numero è una scelta, e ogni scelta ha un prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi: bloccarsi da soli">
+Un blocco automatico colpisce chi rispetta la regola, **non chi ha ragione**.
+
+<Callout kind="attenzione">
+Immagina: il tecnico sbaglia la password quattro volte, la quinta sbaglia ancora. fail2ban lo blocca per un'ora, dal suo stesso ufficio, nel mezzo di un'emergenza. Il rischio di **chiudersi fuori** è reale.
+</Callout>
+
+Altri rischi:
+
+- **Indirizzo condiviso**: se un intero ufficio esce da un solo indirizzo, un utente distratto blocca tutti.
+- **Falsa sicurezza**: gli attaccanti seri cambiano indirizzo di continuo, e il blocco non basta.
+
+<Say who="assistente">Prima di accendere un blocco automatico, chiediti: «chi potrei bloccare per sbaglio?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Whitelist e buone abitudini">
+<Callout kind="regola">
+Metti in **whitelist** gli indirizzi fidati: la sede, la VPN aziendale, i server di monitoraggio. Ma ricorda che anche un indirizzo fidato può essere usato male se il computer che lo usa viene violato.
+</Callout>
+
+<Callout kind="regola">
+Tempi **prudenti**: parti con blocchi brevi (10-60 minuti). Se un indirizzo si ripresenta, i blocchi possono allungarsi.
+</Callout>
+
+<Callout kind="regola">
+Tieni sempre un **secondo modo di entrare**: per esempio una console fornita dal provider. Se ti blocchi, non sei fuori per sempre.
+</Callout>
+
+<Say who="sensei">Mai un blocco automatico senza uscita di emergenza. Chi costruisce la serratura tiene la chiave di riserva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Log lines={[
+  "Oct 14 10:02:11 srv1 sshd: Failed password for mario from 192.0.2.77",
+  "Oct 14 10:02:25 srv1 sshd: Failed password for mario from 192.0.2.77",
+  "Oct 14 10:02:40 srv1 sshd: Failed password for mario from 192.0.2.77",
+  "Oct 14 10:03:02 srv1 sshd: Failed password for mario from 192.0.2.77",
+  "Oct 14 10:03:20 srv1 sshd: Failed password for mario from 192.0.2.77",
+  "Oct 14 10:03:21 srv1 fail2ban: [sshd] Ban 192.0.2.77",
+]} caption="Alle dieci di mattina, durante l'orario di lavoro." />
+
+<Quiz
+  question="192.0.2.77 è l'indirizzo dell'ufficio e Mario ha davvero dimenticato la password. Che cosa avrebbe evitato il blocco?"
+  options={[
+    "Mettere l'indirizzo dell'ufficio nella whitelist di fail2ban",
+    "Disattivare fail2ban del tutto",
+    "Aumentare il tempo di blocco a 24 ore",
+    "Cambiare il nome del servizio SSH",
+  ]}
+  answer={0}
+  explain="Un indirizzo noto e fidato come quello dell'ufficio va in whitelist: così un errore di Mario non blocca nessuno. Disattivare fail2ban toglie anche la difesa dagli attacchi veri, e allungare il blocco peggiora il problema."
+/>
+
+<Say who="assistente">Il problema non è fail2ban: è l'eccezione che nessuno aveva previsto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari su blocchi automatici. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-fail2ban" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- fail2ban legge i log, riconosce errori ripetuti e blocca l'indirizzo per un tempo stabilito.
+- Il rischio principale è bloccare chi non deve: indirizzi condivisi, utenti distratti, se stessi.
+- Whitelist, blocchi brevi e un secondo accesso di emergenza rendono il blocco automatico sicuro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i tre pezzi di fail2ban?", a: "Filtro, soglia e azione (di solito un blocco al firewall)" },
+    { q: "A che cosa serve la whitelist?", a: "A non bloccare mai gli indirizzi fidati" },
+    { q: "Che cosa vuol dire bantime?", a: "Per quanto tempo un indirizzo resta bloccato" },
+    { q: "fail2ban rende inutili le password robuste?", a: "No: riduce il rumore, ma non sostituisce una buona autenticazione" },
+  ]}
+/>
+
+<Say who="sensei">Abbiamo visto la difesa. Ultima lezione del modulo: conoscere chi attacca e come ragiona.</Say>
+</Scene>

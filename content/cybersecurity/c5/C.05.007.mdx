@@ -1,0 +1,138 @@
+---
+id: C.05.007
+course: cybersecurity
+module: 5
+title: "Configurazioni errate e componenti vulnerabili"
+belt: verde
+duration_min: 8
+prerequisites: [C.05.006]
+objectives:
+  - "Riconoscere configurazioni errate comuni: credenziali di default, pannelli esposti, errori troppo dettagliati"
+  - "Spiegare perché una libreria non aggiornata è un rischio"
+  - "Descrivere il ruolo dell'inventario delle dipendenze e degli aggiornamenti"
+verification:
+  type: generated-numeric
+  generator: c05-config
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un difetto sia sempre nel codice scritto in casa: spesso sta nelle impostazioni o nelle librerie di terzi"
+  - "Lasciare le credenziali di default perché «tanto il pannello non è pubblicizzato»"
+  - "Aggiornare solo l'applicazione e dimenticare le librerie da cui dipende"
+commands: []
+---
+
+<Scene title="Il pannello dimenticato">
+Un'azienda fittizia, «Rossi Servizi», mette online un nuovo sito. Per i test lo sviluppatore ha attivato un pannello di amministrazione all'indirizzo **/admin**, con utente «admin» e password «admin». Poi il progetto va in produzione e nessuno spegne il pannello.
+
+Due mesi dopo, un controllo automatico di sicurezza trova **il pannello aperto** a chiunque.
+
+Nessun difetto nel codice. Solo una impostazione dimenticata.
+
+La domanda del caso: **come si evitano errori che non stanno nel programma, ma intorno al programma?**
+
+<Say who="sensei">Un'ottima serratura sulla porta non serve se la finestra resta aperta. Oggi guardiamo le finestre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Configurazioni errate">
+Una **configurazione errata** è un'impostazione lasciata debole, di default o dimenticata. Esempi comuni:
+
+- **credenziali di default** mai cambiate (admin/admin, la password stampata nel manuale);
+- **pannelli di amministrazione** raggiungibili da Internet;
+- **funzioni di test o debug** rimaste attive in produzione;
+- **messaggi d'errore troppo ricchi**, che mostrano percorsi, versioni o pezzi di codice;
+- **elenco dei file** di una cartella visibile a tutti, o archivi di backup lasciati sul server;
+- servizi o porte aperti che nessuno usa più.
+
+<Callout kind="regola">
+Tutto ciò che non serve va **spento**. Tutto ciò che resta acceso va **configurato** con intenzione, non lasciato com'è all'installazione.
+</Callout>
+
+<Say who="assistente">Ogni funzione in più è una superficie in più. Meno cose esposte, meno cose da difendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Componenti vulnerabili">
+Quasi nessuna applicazione è scritta tutta da zero. Si usano **librerie** e **framework** scritti da altri, e a loro volta dipendono da altre librerie: le **dipendenze**.
+
+Quando in una libreria viene scoperta una falla, viene pubblicata e prende un identificativo **CVE**. Chi non aggiorna resta esposto a una falla che **tutti conoscono**.
+
+<Callout kind="curiosita">
+Spesso le falle più sfruttate non sono nuovissime: sono falle note da mesi, in sistemi che nessuno ha aggiornato. Aggiornare è noioso, ma è una difesa vera.
+</Callout>
+
+<Say who="sensei">Non puoi correggere un difetto che non sai di avere. Prima serve sapere cosa usi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si tiene sotto controllo">
+Una squadra attenta fa quattro cose:
+
+- tiene un **inventario** di librerie e versioni usate, anche indirette (una «lista degli ingredienti» del software);
+- usa **strumenti di scansione delle dipendenze** che avvisano quando una versione ha una falla nota;
+- **aggiorna con regolarità**, provando prima su un ambiente di test;
+- ha un **modello di configurazione sicura** ripetibile, uguale in test e in produzione, e lo rivede con una lista di controllo.
+
+<Callout kind="attenzione">
+Aggiornare in fretta senza provare può rompere il sito. Aggiornare mai lascia la porta aperta. La via giusta è un ritmo regolare, con un ambiente di prova.
+</Callout>
+
+<Say who="assistente">Un inventario aggiornato vale più di mille promesse: quando esce una falla, in cinque minuti sai se ti riguarda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Esce l'annuncio di una falla grave in una libreria molto diffusa. Qual è la prima cosa utile per un'azienda con un inventario delle dipendenze?"
+  options={[
+    "Controllare nell'inventario se e dove usa quella libreria, poi aggiornare",
+    "Aspettare che qualcuno sfrutti la falla per capire se è grave",
+    "Cambiare la password dell'amministratore",
+    "Spegnere il sito e non riaccenderlo più",
+  ]}
+  answer={0}
+  explain="L'inventario risponde subito alla domanda «ci riguarda?». Aspettare un attacco è tardi, cambiare la password non corregge la falla e spegnere tutto è sproporzionato."
+/>
+
+<Say who="sensei">Sapere cosa si ha è già metà della difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su configurazioni e componenti. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-config" pass="5/5" retries={3} />
+
+<Say who="sensei">Cercare pannelli aperti o credenziali di default su sistemi altrui, anche solo «per vedere», può essere accesso abusivo (art. 615-ter c.p.). Si prova solo ciò che è tuo o per cui hai un permesso scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Molti difetti stanno nelle impostazioni: credenziali di default, pannelli esposti, debug attivo, errori troppo ricchi.
+- Le librerie di terzi portano con sé le loro falle: chi non aggiorna resta esposto a falle già pubbliche.
+- Difese: spegnere ciò che non serve, inventario delle dipendenze, scansioni, aggiornamenti regolari provati prima.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Esempio di configurazione errata?", a: "Credenziali di default mai cambiate, o pannello admin esposto" },
+    { q: "Che cos'è una dipendenza?", a: "Una libreria di terzi usata dall'applicazione" },
+    { q: "A cosa serve un inventario delle dipendenze?", a: "A sapere subito se una nuova falla ci riguarda" },
+    { q: "Perché i messaggi d'errore dettagliati sono un rischio?", a: "Rivelano versioni, percorsi e dettagli utili a chi vuole attaccare" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: mettiamo insieme le difese. Validare, codificare, intestazioni, WAF e aggiornamenti.</Say>
+</Scene>

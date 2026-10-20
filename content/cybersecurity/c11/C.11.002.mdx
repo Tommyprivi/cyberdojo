@@ -1,0 +1,136 @@
+---
+id: C.11.002
+course: cybersecurity
+module: 11
+title: "CTF: le gare"
+belt: marrone
+duration_min: 8
+prerequisites: [C.11.001]
+objectives:
+  - "Spiegare che cos'è una CTF e distinguere i formati jeopardy e attacco-difesa"
+  - "Scegliere una prima gara adatta al proprio livello"
+  - "Scrivere un write-up utile"
+verification:
+  type: generated-numeric
+  generator: c11-ctf
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Iscriversi a una gara troppo difficile e scoraggiarsi"
+  - "Giocare da soli senza mai chiedere aiuto al gruppo"
+  - "Non scrivere il write-up e dimenticare quello che si è imparato"
+commands: []
+---
+
+<Scene title="Una gara a squadre">
+Luca (16 anni) ha letto di una gara di cybersecurity online. C'è una classifica, ci sono squadre da tutto il mondo e un cronometro. Ha paura di fare brutta figura.
+
+Si chiama **CTF**, da *Capture The Flag*, «cattura la bandiera». Ma qui la bandiera non è di stoffa: è una **stringa di testo nascosta**, che trovi solo risolvendo una sfida. La domanda del caso: **come ci si prepara a una gara, senza esserne spaventati?**
+
+<Say who="sensei">Una gara è un allenamento con il cronometro. Non si vince la prima volta. Si impara.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due formati">
+Esistono due formati principali.
+
+- **Jeopardy**: una lavagna di sfide divise per argomento (web, crittografia, analisi di file, ecc.), con punti diversi in base alla difficoltà. Ognuno sceglie quali affrontare. È il formato giusto per cominciare.
+- **Attacco-difesa**: ogni squadra ha un proprio sistema con dei difetti. Si deve **difendere il proprio** e, insieme, **attaccare quello degli altri**. Richiede esperienza e un gruppo affiatato.
+
+<Callout kind="curiosita">
+Tutto avviene su sistemi preparati dagli organizzatori, con regole scritte. È per questo che è legale: c'è un permesso, ed è esplicito.
+</Callout>
+
+<Say who="assistente">Per cominciare scegli jeopardy. Le sfide facili ti fanno prendere ritmo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le gare in Italia">
+In Italia c'è un percorso molto conosciuto: **CyberChallenge.IT** (cyberchallenge.it), un programma di formazione e gara per giovani talenti, rivolto, secondo il sito, a ragazze e ragazzi tra i **16 e i 24 anni**. L'edizione 2026 ha avuto iscrizioni tra novembre 2025 e gennaio 2026, un test di ammissione, mesi di lezioni e poi gare locali e una finale nazionale in estate. Le date delle edizioni cambiano ogni anno: controlla sempre il sito (verificato il 20 ottobre 2026).
+
+Per tutti, a ogni età, ci sono anche **CTF online aperte**: **picoCTF** (picoctf.org) è nata per chi comincia. Il sito **CTFtime** (ctftime.org) raccoglie il calendario delle gare nel mondo.
+
+<Callout kind="attenzione">
+Molte gare sono in inglese e a squadre. Cerca un gruppo: a scuola, all'università, in una community locale. Giocare insieme è più divertente e si impara il doppio.
+</Callout>
+
+<Say who="sensei">Non serve essere forti per iscriversi. Serve esserci. La forza arriva dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prepararsi e scrivere i write-up">
+Come ti prepari:
+
+1. Esercitati prima su piattaforme guidate (lezione precedente).
+2. Familiarizza con terminale, web e un po' di scripting.
+3. Prima della gara leggi il regolamento: che cosa è vietato? (di solito attaccare l'infrastruttura degli organizzatori o gli altri partecipanti)
+4. Stabilisci un obiettivo realistico: «risolvere una sfida», non «vincere».
+
+Dopo la gara scrivi un **write-up**: un breve racconto di come hai risolto una sfida, con i passaggi e gli errori.
+
+<Callout kind="trucco">
+Un buon write-up risponde a tre domande: che cosa pensavo? Che cosa ho provato? Che cosa ha funzionato e perché? Anche i tentativi falliti contano.
+</Callout>
+
+<Say who="assistente">Anche le sfide che non risolvi meritano un write-up, quando leggi la soluzione ufficiale. È lì che impari di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Luca deve scegliere la sua prima gara.
+
+<Quiz
+  question="Luca è alla prima esperienza. Quale scelta ha più senso?"
+  options={[
+    "Una CTF online per principianti in formato jeopardy, magari in squadra",
+    "Una gara di attacco-difesa con squadre professioniste, per imparare in fretta",
+    "Nessuna gara, finché non sa risolvere ogni sfida da solo",
+    "Provare a violare il sito degli organizzatori per vedere se è sicuro",
+  ]}
+  answer={0}
+  explain="Il jeopardy permette di scegliere sfide a proprio livello. L'attacco-difesa richiede esperienza. Aspettare di essere perfetti non serve: si impara gareggiando. Attaccare l'infrastruttura degli organizzatori viola il regolamento e può essere reato."
+/>
+
+<Say who="sensei">La prima gara si fa per imparare il formato. Il punteggio, per ora, non conta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque situazioni di gara. Scegli come ti comporteresti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c11-ctf" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi sa scegliere la gara giusta sbaglia meno e impara di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una CTF è una gara legale su sistemi preparati: nel jeopardy scegli le sfide, nell'attacco-difesa difendi e attacchi.
+- Si comincia con CTF online per principianti, meglio in squadra.
+- Il write-up trasforma una sfida in conoscenza: scrivilo anche se non hai vinto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa è la «bandiera» in una CTF?", a: "Una stringa di testo nascosta, che si trova risolvendo la sfida" },
+    { q: "Jeopardy o attacco-difesa per cominciare?", a: "Jeopardy: si scelgono le sfide a proprio livello" },
+    { q: "Perché una CTF è legale?", a: "Perché i sistemi sono preparati dagli organizzatori e le regole sono scritte" },
+    { q: "Che cosa si scrive in un write-up?", a: "Che cosa pensavi, che cosa hai provato, che cosa ha funzionato e perché" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le certificazioni. A cosa servono, e a cosa no.</Say>
+</Scene>

@@ -1,0 +1,144 @@
+---
+id: C.11.001
+course: cybersecurity
+module: 11
+title: "Dove esercitarsi"
+belt: marrone
+duration_min: 8
+prerequisites: [C.10.006]
+objectives:
+  - "Distinguere le piattaforme di pratica per principianti da quelle per livelli avanzati"
+  - "Scegliere dove esercitarsi in modo legale e a costo zero"
+  - "Costruire una routine di pratica sostenibile"
+verification:
+  type: generated-numeric
+  generator: c11-pratica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Saltare da una piattaforma all'altra senza finire nulla"
+  - "Copiare la soluzione senza capire perché funziona"
+  - "Esercitarsi su siti veri invece che su bersagli fatti apposta"
+commands: []
+---
+
+<Scene title="Il corso è finito. E adesso?">
+Marta ha finito il corso. Si sente più sicura, ma la sera dopo apre il computer e non sa che cosa fare. Cerca «hacking» su Internet: trova mille siti, mille consigli, e un tizio che le propone di «provare» sul sito della sua scuola.
+
+Il corso ti ha dato le basi. Le basi però si consolidano solo con la **pratica**. La domanda del caso: **dove ci si esercita, in modo legale e senza spendere?**
+
+<Say who="sensei">Si impara a nuotare in acqua, non sui libri. Ma l'acqua deve essere una piscina, non il porto di un altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Palestre costruite apposta">
+Esistono siti che mettono a disposizione **bersagli fatti apposta per essere attaccati**, in un ambiente controllato. Sono la tua palestra: nessuno si fa male, e tutto è permesso perché è stato creato per questo.
+
+Alcuni nomi ben noti, al 20 ottobre 2026:
+
+- **picoCTF** (picoctf.org): piattaforma gratuita della Carnegie Mellon University, pensata per chi comincia.
+- **OverTheWire** (overthewire.org): giochi a livelli da affrontare dal terminale. Ottimo per prendere confidenza con la riga di comando.
+- **TryHackMe** (tryhackme.com): lezioni guidate nel browser. Ha un livello gratuito; i contenuti e i limiti possono cambiare, controlla sul sito.
+- **Hack The Box** (hackthebox.com): più impegnativo, adatto quando le basi sono solide. Anche qui controlla cosa è gratuito.
+
+<Callout kind="attenzione">
+Piani, prezzi e contenuti gratuiti cambiano spesso. Prima di iscriverti guarda la pagina ufficiale: non fidarti di una lista vecchia, nemmeno di questa.
+</Callout>
+
+<Say who="assistente">Non devi usarle tutte. Ne basta una, scelta bene, portata avanti per qualche settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Principiante o avanzato?">
+Le piattaforme non sono tutte uguali.
+
+- **Per principianti**: ti dicono che cosa fare passo dopo passo, spiegano il perché, hanno indizi. Servono a costruire il metodo.
+- **Per avanzati**: ti danno un bersaglio e nessuna istruzione. Devi decidere tu da dove cominciare. Servono a farti ragionare da solo.
+
+<Callout kind="regola">
+Se per più di un'ora non capisci nemmeno da dove partire, la sfida è troppo difficile per ora. Scendi di livello senza vergogna: è così che si sale davvero.
+</Callout>
+
+<Callout kind="curiosita">
+Esistono anche laboratori guidati: stanze con testo, domande e una macchina virtuale pronta. Sono perfetti dopo un corso, perché ti accompagnano.
+</Callout>
+
+<Say who="sensei">Un livello troppo facile annoia. Uno troppo difficile scoraggia. Cerca quello in cui sbagli un po', ma capisci perché.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Imparare, non copiare">
+Quando ti blocchi, internet è pieno di soluzioni. Copiarle dà un punto, ma non ti insegna niente.
+
+Un metodo che funziona:
+
+1. Prova da solo per un tempo stabilito.
+2. Se sei bloccato, cerca solo un **indizio**, non la soluzione completa.
+3. Quando hai finito, **scrivi con parole tue** che cosa hai imparato.
+
+<Callout kind="trucco">
+Tieni un quaderno o un file di appunti: problema, idea, errore, soluzione. Fra tre mesi sarà il tuo manuale personale.
+</Callout>
+
+<Say who="assistente">Se non sai spiegare una soluzione a voce, probabilmente non l'hai capita. Prova a spiegarla a un amico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Per Marta serve una regola chiara su dove esercitarsi.
+
+<Quiz
+  question="Marta vuole provare quello che ha imparato. Qual è la scelta giusta?"
+  options={[
+    "Una piattaforma di pratica fatta apposta, con bersagli pensati per essere attaccati",
+    "Provare a entrare nel sito della sua scuola, ma senza rompere niente",
+    "Il sito di un negozio online, perché tanto non succede nulla",
+    "Una rete Wi-Fi del vicinato con la password debole",
+  ]}
+  answer={0}
+  explain="Si prova solo ciò che è tuo o per cui hai un permesso scritto. Accedere a un sistema altrui senza autorizzazione è reato (art. 615-ter del codice penale), anche se «non rompi niente». Le piattaforme di pratica esistono proprio per questo."
+/>
+
+<Say who="sensei">«Senza rompere niente» non è un permesso. Il permesso si ha per iscritto, oppure il bersaglio è tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su come scegliere dove e come esercitarsi. Rispondi con il buon senso del corso.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c11-pratica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La pratica ben scelta vale più di cento ore buttate a caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ci si esercita su bersagli fatti apposta, mai su sistemi altrui senza permesso scritto.
+- Si parte da piattaforme guidate e si sale quando si capisce senza aiuto.
+- Conta la costanza: poco ma spesso, con appunti e senza copiare le soluzioni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove è legale esercitarsi?", a: "Su bersagli tuoi o fatti apposta, o con permesso scritto" },
+    { q: "Differenza tra piattaforma per principianti e per avanzati?", a: "La prima ti guida passo passo, la seconda ti lascia ragionare da solo" },
+    { q: "Sei bloccato da un'ora. Che fai?", a: "Cerchi un indizio, non la soluzione, o scendi di livello" },
+    { q: "Perché prendere appunti?", a: "Perché fissano ciò che hai capito e diventano il tuo manuale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le gare. Le CTF sono la palestra con il cronometro.</Say>
+</Scene>

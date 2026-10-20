@@ -1,0 +1,157 @@
+---
+id: C.01.006
+course: cybersecurity
+module: 1
+title: "Etica, legge e hacker etico"
+belt: gialla
+duration_min: 9
+prerequisites: [C.01.005]
+objectives:
+  - "Spiegare perché l'accesso senza permesso è reato in Italia (art. 615-ter del codice penale)"
+  - "Descrivere che cosa serve a un hacker etico: permesso scritto, limiti, divulgazione responsabile"
+verification:
+  type: generated-numeric
+  generator: c01-etica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che entrare «solo per vedere» o «senza rubare nulla» non sia reato"
+  - "Credere che un permesso a voce, o ottenuto per altro scopo, valga come autorizzazione"
+  - "Pubblicare subito una falla trovata invece di avvisare prima il proprietario"
+commands: []
+---
+
+<Scene title="La falla del negozio">
+Davide ha sedici anni e studia sicurezza informatica da qualche mese. Una sera nota che il sito del negozio di biciclette sotto casa mostra un errore strano quando scrive una certa parola nella ricerca.
+
+Gli viene voglia di provare di più, solo per capire fin dove arriva. «Non rubo niente», pensa. «Anzi, li aiuto.»
+
+La domanda del caso: **Davide sta facendo la cosa giusta?**
+
+<Say who="sensei">Sapere come funziona una cosa dà un potere. Il potere senza regole si chiama guaio. Oggi si parla di regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice la legge">
+In Italia, entrare in un sistema informatico protetto senza averne il diritto è un reato. È previsto dall'**articolo 615-ter del codice penale**: **accesso abusivo a un sistema informatico**.
+
+Conta il fatto di entrare **senza permesso**. Non serve rubare, né rompere qualcosa, né avere cattive intenzioni.
+
+<Callout kind="attenzione">
+Errore tipico: «Non ho preso niente, quindi non ho fatto niente di male.» Per la legge l'accesso non autorizzato basta. «Volevo solo vedere» non cancella il reato.
+</Callout>
+
+<Say who="assistente">È come entrare in una casa con la porta socchiusa. Anche se non porti via niente, sei entrato senza invito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il permesso scritto">
+Chi fa prove di sicurezza per mestiere, cioè l'**hacker etico**, usa le stesse tecniche di un criminale. Ciò che lo distingue è **il permesso**.
+
+Il permesso deve essere **scritto**. Dice:
+
+- **chi** autorizza (una persona che ha davvero il diritto di farlo);
+- **cosa** si può testare, e cosa no;
+- **quando** (date e orari);
+- **con quali limiti** (per esempio: non toccare i dati reali dei clienti).
+
+<Callout kind="regola">
+Si prova solo ciò che è tuo, o per cui hai un permesso scritto. Un permesso a voce non basta. Una password che qualcuno ti ha dato per un altro motivo non è un permesso a entrare.
+</Callout>
+
+<Say who="sensei">Il permesso scritto è ciò che separa un lavoro da un reato. Senza foglio, ti fermi. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove ci si allena">
+Come si impara, allora, se non si può provare sui siti degli altri?
+
+In un **laboratorio tuo**: computer virtuali, creati da te, senza collegamento a sistemi reali. Lì puoi provare, sbagliare, rompere e ricominciare. Il laboratorio è tuo e isolato: nessuno si fa male.
+
+Esistono anche percorsi di allenamento pensati per questo scopo, in cui chi li gestisce permette esplicitamente di provare.
+
+<Callout kind="trucco">
+Domanda prima di ogni prova: **«Questo sistema è mio, o ho un permesso scritto per provarlo?»** Se la risposta non è sì, non lo tocchi.
+</Callout>
+
+<Say who="assistente">Il tuo laboratorio è la tua palestra. Gli altri siti sono la strada: lì si cammina, non ci si allena a calci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Privacy e GDPR">
+Quasi ogni sistema contiene **dati personali**: nomi, indirizzi, email, dati di salute. In Europa li regola il **GDPR**, il regolamento sulla protezione dei dati.
+
+In poche righe:
+
+- chi tratta dati personali deve **proteggerli** e usarli solo per scopi chiari;
+- le persone hanno **diritti**: sapere che dati hai, correggerli, chiederne la cancellazione;
+- se i dati vengono sottratti e c'è un rischio per le persone, l'azienda deve **segnalarlo al Garante entro 72 ore**.
+
+<Callout kind="curiosita">
+Nel lavoro di sicurezza si incontrano spesso dati veri. Per questo il permesso scritto dice anche come trattarli: spesso, **non si guardano e non si copiano**.
+</Callout>
+
+<Say who="sensei">Dietro ogni riga di un database c'è una persona. Trattala come vorresti essere trattato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hai trovato una falla">
+Che cosa fa Davide, ora? Esiste una strada giusta, chiamata **divulgazione responsabile**.
+
+<Guided
+  steps={[
+    "Si ferma. Non prova a vedere «fin dove arriva»: ogni prova in più, senza permesso, è già un rischio legale.",
+    "Annota con calma che cosa ha visto: l'indirizzo della pagina, la parola scritta, l'errore apparso. Non copia dati altrui.",
+    "Cerca un contatto per le segnalazioni: una pagina «sicurezza», un indirizzo dedicato, o il proprietario del sito. Gli scrive in modo semplice, senza minacce e senza chiedere soldi.",
+    "Dà al proprietario il tempo di correggere. Solo dopo, e di norma d'accordo con lui, si può parlare pubblicamente del problema.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Errori tipici: pubblicare subito la falla sui social «per avvisare tutti», o sfruttarla «per dimostrare che è grave». Il primo espone il negozio ad attacchi altrui. Il secondo è accesso abusivo.
+</Callout>
+
+<Say who="sensei">Avvisare è un gesto di rispetto. Sfruttare è un reato. La differenza sta in una sola azione: smetti di provare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su legge, permesso ed etica. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-etica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il permesso viene prima di tutto: anche prima della curiosità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- In Italia l'accesso a un sistema senza permesso è reato (art. 615-ter): non serve rubare, basta entrare.
+- L'hacker etico usa le stesse tecniche, ma con un permesso scritto che dice chi, cosa, quando e con quali limiti. Per allenarti usa solo un laboratorio tuo.
+- Se trovi una falla: ti fermi, la segnali al proprietario, gli dai il tempo di correggere (divulgazione responsabile). Dati personali: il GDPR impone di proteggerli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale articolo punisce l'accesso abusivo a un sistema informatico?", a: "L'articolo 615-ter del codice penale" },
+    { q: "Che cosa distingue un hacker etico da un criminale?", a: "Il permesso scritto e i limiti rispettati" },
+    { q: "Dove ci si allena senza rischi?", a: "In un laboratorio tuo e isolato" },
+    { q: "Che cos'è la divulgazione responsabile?", a: "Avvisare prima il proprietario e dargli il tempo di correggere" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo è finito. Hai le basi: che cosa proteggere, come può andare male, come ragionare e dove fermarsi. Il prossimo modulo parla di crittografia, cioè di come si custodisce un segreto.</Say>
+</Scene>

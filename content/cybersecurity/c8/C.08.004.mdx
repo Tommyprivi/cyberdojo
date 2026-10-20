@@ -1,0 +1,172 @@
+---
+id: C.08.004
+course: cybersecurity
+module: 8
+title: "Scansioni e porte"
+belt: blu
+duration_min: 9
+prerequisites: [C.08.003]
+objectives:
+  - "Spiegare che cosa fa uno scanner di porte e che cosa significano aperta, chiusa e filtrata"
+  - "Leggere un risultato di scansione fittizio: porta, servizio, versione"
+  - "Proporre come rilevare e ridurre l'esposizione di un servizio"
+video:
+  provider: youtube
+  id: "znf34ImMYj4"
+  start: 0
+  end: 600
+  channel: "Cyber Caffè"
+  title: "NMAP tutorial in italiano: scansione delle porte da zero (Lezione 1)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c08-scansioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scansionare un indirizzo che non è del proprio laboratorio o della propria organizzazione con permesso scritto"
+  - "Credere che «porta aperta» voglia dire «sistema bucato»: significa solo che un servizio risponde"
+  - "Ignorare la versione del servizio: è spesso l'informazione più utile per capire il rischio"
+commands: []
+---
+
+<Scene title="Le porte della palazzina">
+Immagina una palazzina con 65.535 citofoni. Ogni citofono è una **porta** del computer. Dietro alcuni c'è un servizio che risponde (un sito, la posta, l'accesso remoto). Dietro quasi tutti non c'è nessuno.
+
+Nel tuo laboratorio hai la macchina bersaglio didattica a **192.168.56.20**. Vuoi sapere **quali servizi offre**, come farebbe chi deve metterla in sicurezza.
+
+La domanda del caso: **come si scopre quali porte rispondono, e che cosa se ne ricava?**
+
+<Say who="sensei">Prima di proseguire: tutto quello che segue si fa solo nel tuo laboratorio isolato. Fuori, scansionare sistemi altrui senza permesso scritto può essere accesso abusivo, art. 615-ter c.p.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa fa uno scanner di porte">
+Uno **scanner di porte** prova, una dopo l'altra, a «suonare» le porte di una macchina e annota come reagiscono. Ogni porta può risultare:
+
+- **aperta**: un servizio risponde;
+- **chiusa**: la macchina risponde, ma nessun servizio ascolta;
+- **filtrata**: non arriva risposta, di solito perché un filtro (firewall) blocca o scarta.
+
+Alcuni strumenti provano anche a capire **quale programma e quale versione** sta ascoltando.
+
+<Callout kind="attenzione">
+Una scansione fa rumore: genera molte connessioni e compare nei registri di chi la riceve. Per questo si fa solo con ambito e permesso chiari.
+</Callout>
+
+Vuoi sentire un'altra voce? Guarda il tutorial **solo** per capire come si leggono gli stati delle porte. Se vuoi provare, fallo contro la tua macchina virtuale bersaglio, mai altrove: gli indirizzi usati nei video non sono un permesso per scansionare altro.
+
+<Video />
+
+<Say who="assistente">Una porta aperta non è una colpa. È un servizio acceso. La domanda è: serve davvero?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere un risultato">
+Ecco il risultato (fittizio) di una scansione del bersaglio didattico del laboratorio:
+
+<Log lines={[
+  "bersaglio: 192.168.56.20   (laboratorio, rete solo-host)",
+  "PORTA     STATO     SERVIZIO   VERSIONE",
+  "21/tcp    aperta    ftp        Server FTP 2.3 (molto vecchio)",
+  "22/tcp    aperta    ssh        Server SSH 8.9",
+  "80/tcp    aperta    http       Server web 2.2 (vecchio)",
+  "3306/tcp  filtrata  database   -",
+  "443/tcp   chiusa    -          -",
+]} caption="Esito d'esempio. Nomi e versioni sono inventati." />
+
+Ogni riga risponde a quattro domande: **quale porta**, **in che stato**, **quale servizio**, **quale versione**.
+
+<Say who="sensei">Leggi riga per riga. Non saltare alla conclusione guardando solo i numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa ci dice">
+Da quel risultato si ragiona così:
+
+- **21 FTP aperta**: l'FTP trasferisce file e di solito **in chiaro**, cioè senza cifratura. In più la versione è molto vecchia. Servizio da valutare per primo.
+- **22 SSH aperta**: l'accesso remoto è normale, ma va protetto e limitato a chi serve.
+- **80 HTTP aperta**: sito senza cifratura, con versione vecchia.
+- **3306 filtrata**: la porta del database non è raggiungibile da fuori. Bene: è così che deve essere.
+- **443 chiusa**: nessun sito cifrato su questa macchina.
+
+<Callout kind="trucco">
+Tre domande per ogni porta aperta: **serve?** **È aggiornata?** **Chi deve poterci arrivare?**
+</Callout>
+
+<Say who="assistente">Una versione vecchia è un indizio, non una condanna. Nella prossima lezione vediamo come si misura il rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ridurre l'esposizione">
+Chi difende usa la scansione sulle proprie macchine per **rilevare** l'esposizione e poi la **riduce**:
+
+1. **Spegni** i servizi che non servono (in questo esempio, forse l'FTP).
+2. **Aggiorna** quelli che servono.
+3. **Restringi** chi può raggiungerli, con regole di firewall o rete interna.
+4. **Cifra** dove possibile (sito su HTTPS, trasferimenti cifrati).
+5. **Ripeti** la scansione e controlla che il risultato sia cambiato come previsto.
+
+Per **rilevare** scansioni fatte da altri, nei registri del firewall si vedono molti tentativi su porte diverse in pochi secondi dalla stessa sorgente.
+
+<Say who="sensei">La scansione serve a chiudere porte, non ad aprirle. Chi l'ha capito non la usa mai senza permesso.</Say>
+</Scene>
+
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una scansione del tuo server di laboratorio mostra la porta 3306 (database) «aperta» e raggiungibile da qualsiasi macchina della rete. Che cosa concludi e che cosa fai?"
+  options={[
+    "È un'esposizione inutile: limito l'accesso al database alle sole macchine che ne hanno bisogno e ripeto la scansione",
+    "È normale: i database devono essere aperti a tutti",
+    "Chiudo tutte le porte del server, anche quelle che servono",
+    "Aspetto che qualcuno se ne accorga",
+  ]}
+  answer={0}
+  explain="Un database raggiungibile da chiunque è esposizione inutile. Si restringe l'accesso a chi serve e si verifica con una nuova scansione. Chiudere tutto fermerebbe i servizi veri."
+/>
+
+<Say who="assistente">Indizio: il database dovrebbe parlare solo con chi lo usa, non con tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su porte, stati e lettura dei risultati. A ogni tentativo le domande cambiano.
+
+<Practice generator="c08-scansioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai leggere: ora impara a decidere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Uno scanner di porte mostra per ogni porta se è aperta, chiusa o filtrata, e spesso quale servizio e versione c'è.
+- Per ogni porta aperta: serve? È aggiornata? Chi deve poterci arrivare?
+- Si scansiona solo il proprio laboratorio o sistemi con permesso scritto; lo scopo è ridurre l'esposizione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra porta chiusa e filtrata?", a: "Chiusa: la macchina risponde ma nessun servizio ascolta. Filtrata: non arriva risposta, di solito per un firewall" },
+    { q: "Una porta aperta significa sistema bucato?", a: "No: significa solo che un servizio risponde" },
+    { q: "Perché la versione di un servizio è importante?", a: "Perché le versioni vecchie possono avere problemi noti" },
+    { q: "Dove si può usare uno scanner di porte?", a: "Solo nel proprio laboratorio o su sistemi con permesso scritto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: valutazione delle vulnerabilità. Come si trasforma una versione vecchia in un numero e in una priorità, senza sfruttare niente.</Say>
+</Scene>

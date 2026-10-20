@@ -1,0 +1,156 @@
+---
+id: C.01.003
+course: cybersecurity
+module: 1
+title: "Minacce, vulnerabilità e rischio"
+belt: bianca
+duration_min: 8
+prerequisites: [C.01.002]
+objectives:
+  - "Distinguere minaccia, vulnerabilità e rischio"
+  - "Calcolare in modo semplice il rischio come probabilità per impatto"
+  - "Scegliere quale rischio trattare per primo"
+verification:
+  type: generated-numeric
+  generator: c01-rischio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare minaccia, vulnerabilità e rischio come sinonimi"
+  - "Guardare solo la gravità del danno e dimenticare la probabilità (o il contrario)"
+  - "Credere che il rischio possa arrivare a zero"
+commands: []
+---
+
+<Scene title="Il rapporto di Marco">
+Marco, che si occupa del computer di una piccola cooperativa, scrive questo rapporto:
+
+«C'è un **pericolo** gravissimo: ho trovato un **difetto** nel programma delle paghe. Il **rischio** è altissimo, dobbiamo spendere tutto il budget subito.»
+
+Ha usato tre parole come se fossero la stessa cosa. Non lo sono. E scambiarle porta a spendere male i soldi.
+
+La domanda del caso: **di tre parole, quale è il rischio, davvero?**
+
+<Say who="sensei">Chi confonde queste tre parole decide male. Oggi mettiamo ordine, una per una.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La minaccia">
+La **minaccia** è qualcosa o qualcuno che può causare un danno.
+
+Può essere una persona (un criminale, un dipendente scontento), un evento (un incendio, un guasto) o un programma dannoso (un virus).
+
+Una minaccia non dipende da te: esiste anche se tu non la vedi.
+
+<Callout kind="trucco">
+Domanda guida: **«Chi o che cosa potrebbe farmi del male?»**
+</Callout>
+
+<Say who="assistente">Pensa a un ladro nel quartiere. Esiste, che tu lo sappia o no. È la minaccia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La vulnerabilità">
+La **vulnerabilità** è un punto debole che una minaccia può sfruttare.
+
+Può essere un programma non aggiornato, una password debole, una porta lasciata aperta, un dipendente che non sa riconoscere un inganno.
+
+La vulnerabilità sta **dentro il tuo sistema**. Per questo, a differenza della minaccia, puoi ridurla.
+
+<Callout kind="trucco">
+Domanda guida: **«Dove sono debole?»**
+</Callout>
+
+<Say who="sensei">La minaccia sta fuori e non la controlli. La vulnerabilità sta dentro e la controlli. Lavora su quella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rischio">
+Il **rischio** nasce quando minaccia e vulnerabilità si incontrano. In modo semplice si calcola così:
+
+**rischio = probabilità × impatto**
+
+La **probabilità** è quanto è facile che accada. L'**impatto** è quanto danno fa se accade.
+
+Esempio con numeri da 1 a 5. La finestra aperta in una stanza vuota al piano rialzato in un quartiere tranquillo: probabilità 2, impatto 1, rischio 2. La stessa finestra aperta nella stanza con la cassaforte: probabilità 2, impatto 5, rischio 10.
+
+<Callout kind="attenzione">
+Il rischio non è mai solo «quanto è grave». Una cosa gravissima ma quasi impossibile può valere meno di una cosa media che succede ogni settimana.
+</Callout>
+
+<Say who="sensei">Probabilità per impatto. Se togli uno dei due, non stai misurando il rischio: stai solo avendo paura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un server ha una vulnerabilità grave, ma è spento, scollegato dalla rete, in un armadio chiuso a chiave. Che cosa si può dire del suo rischio?"
+  options={["È basso, perché la probabilità che venga sfruttata è minima", "È altissimo, perché la vulnerabilità è grave", "Non esiste, perché una vulnerabilità non conta mai da sola", "Non si può dire nulla finché non viene riacceso"]}
+  answer={0}
+  explain="Il rischio dipende anche dalla probabilità. Un server spento e irraggiungibile ha una probabilità molto bassa di essere attaccato. Chi risponde «altissimo» guarda solo la gravità e dimentica la probabilità."
+/>
+
+<Say who="assistente">Indizio: quanto è facile, per qualcuno, arrivare fino a quel server?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre cose da fare con il rischio">
+Marco ha tre rischi sul tavolo. Ecco come ragiona.
+
+<Guided
+  steps={[
+    "Rischio A: password debole sul gestionale delle paghe. Probabilità 4, impatto 5, rischio 20.",
+    "Rischio B: stampante senza aggiornamenti. Probabilità 3, impatto 1, rischio 3.",
+    "Rischio C: profilo social con password debole, pochi follower, nessun dato. Probabilità 4, impatto 1, rischio 4.",
+    "Si tratta prima il rischio A. Costa poco (una password lunga, un secondo controllo) e abbassa tantissimo il rischio. Gli altri aspettano.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Il rischio non va mai a zero. Si riduce fino a un livello che l'azienda può accettare. Si può ridurre la probabilità (chiudere la vulnerabilità) o l'impatto (una copia di riserva).
+</Callout>
+
+<Say who="sensei">Non si risolve tutto. Si risolve prima ciò che pesa di più. Il resto si sorveglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su minaccia, vulnerabilità e rischio. Rispondi senza errori.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c01-rischio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di dire «è gravissimo», chiedi: quanto è probabile?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Minaccia: chi o che cosa può farti del danno. Vulnerabilità: un tuo punto debole che può essere sfruttato.
+- Rischio = probabilità × impatto. Servono entrambi.
+- Il rischio non va a zero: si riduce, partendo da quello che pesa di più e costa meno da ridurre.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra minaccia e vulnerabilità?", a: "La minaccia è chi può far danno, la vulnerabilità è il tuo punto debole" },
+    { q: "Come si calcola il rischio in modo semplice?", a: "Probabilità × impatto" },
+    { q: "Una copia di riserva riduce la probabilità o l'impatto?", a: "L'impatto" },
+    { q: "Si può azzerare il rischio?", a: "No: si porta a un livello accettabile" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il modello di minaccia. Ragioneremo su chi può attaccare una piccola azienda, e da dove.</Say>
+</Scene>

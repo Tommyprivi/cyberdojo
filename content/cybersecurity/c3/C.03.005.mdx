@@ -1,0 +1,145 @@
+---
+id: C.03.005
+course: cybersecurity
+module: 3
+title: "Le chiavi di Giorgio"
+belt: arancione
+duration_min: 9
+prerequisites: [C.03.004]
+objectives:
+  - "Spiegare che cosa sono account, ruoli e RBAC"
+  - "Applicare il principio del privilegio minimo a un caso concreto"
+  - "Elencare i passi di offboarding di chi lascia l'azienda"
+verification:
+  type: generated-numeric
+  generator: c03-accessi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare i permessi di amministratore «per comodità» o «per fare prima»"
+  - "Usare un account condiviso da più persone, così non si sa chi ha fatto cosa"
+  - "Dimenticare di disattivare gli account di chi ha lasciato l'azienda"
+commands: []
+---
+
+<Scene title="Le chiavi di Giorgio">
+Giorgio è stato per tre anni il magazziniere della «Legnami Rossi». Oggi lascia l'azienda: ultimo giorno, saluti, scatolone con le sue cose.
+
+Una settimana dopo, qualcuno entra nel gestionale con l'account di Giorgio e **esporta l'elenco clienti**. Giorgio dice di non c'entrare, ma il suo account era ancora attivo. Aveva anche i permessi di amministratore «perché una volta serviva».
+
+La domanda del caso: **quali errori nella gestione degli accessi hanno reso possibile tutto questo?**
+
+<Say who="sensei">La porta non l'ha forzata nessuno. Era aperta. Il lavoro di oggi è imparare a chiudere le porte giuste, al momento giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un account per persona">
+Ogni persona che usa un sistema ha il **proprio account**: un'identità con nome, password e permessi. Gli account **non si condividono**.
+
+Se tre colleghi usano lo stesso account «magazzino», quando succede qualcosa non si sa chi è stato. Non si può nemmeno togliere l'accesso a uno solo di loro.
+
+<Callout kind="regola">
+Un account, una persona. Così ogni azione ha un responsabile e ogni accesso si può togliere da solo.
+</Callout>
+
+<Say who="assistente">L'account condiviso è come la chiave di casa copiata per tutto il condominio: non sai più chi è entrato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ruoli e RBAC">
+Assegnare i permessi uno per uno a ogni persona diventa ingestibile. Si usano i **ruoli**: gruppi di permessi legati a un mestiere, come «magazziniere», «contabile», «amministratore del sistema».
+
+Ogni persona riceve il ruolo che corrisponde al suo lavoro. Questo sistema si chiama **RBAC** (Role-Based Access Control, controllo degli accessi basato sui ruoli).
+
+Se Giorgio cambia mestiere, cambia il ruolo. Se arriva un nuovo magazziniere, riceve lo stesso ruolo di Giorgio: i permessi sono già pronti e uguali.
+
+<Callout kind="trucco">
+Il ruolo descrive **che lavoro fai**, non chi sei. È facile da controllare: basta chiedersi «questo lavoro ha bisogno di questo permesso?».
+</Callout>
+
+<Say who="sensei">Meno eccezioni ci sono, meno cose ci sfuggono. Dai i ruoli, non i favori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Privilegio minimo">
+Il principio più importante: ogni account deve avere **solo i permessi che servono al suo compito, e nient'altro**. Si chiama **privilegio minimo**.
+
+Un magazziniere deve registrare entrate e uscite della merce. Non deve esportare l'elenco clienti, né cambiare le impostazioni del gestionale.
+
+Perché conta: se quell'account viene rubato, o se la persona sbaglia o si arrabbia, il danno resta **piccolo**. Con i permessi da amministratore, il danno è totale.
+
+<Callout kind="attenzione">
+«Gli diamo tutti i permessi così non ci chiama ogni volta» sembra comodo. È il modo più frequente di trasformare un piccolo errore in un grosso incidente.
+</Callout>
+
+<Say who="assistente">Una chiave per ogni porta che ti serve. Non il mazzo completo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Offboarding: quando qualcuno se ne va">
+Quando una persona lascia l'azienda, o cambia compito, i suoi accessi vanno sistemati **subito**. È l'**offboarding**.
+
+<Guided
+  steps={[
+    "Disattiva gli account (posta, gestionale, VPN, strumenti cloud) il giorno stesso, meglio al momento dell'uscita.",
+    "Chiudi le sessioni attive e fai ritirare dispositivi e chiavi fisiche.",
+    "Cambia le password condivise a cui la persona aveva accesso (se proprio ne esistono).",
+    "Passa a un collega i dati e i compiti, invece di tenere aperto l'account «per sicurezza».",
+    "Fai periodicamente una revisione degli accessi: chi ha cosa, e se serve ancora.",
+  ]}
+/>
+
+<Say who="sensei">Un account dimenticato è una porta aperta in una casa vuota. Chi la trova, entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una contabile passa all'ufficio acquisti. Cosa è meglio fare con i suoi permessi?"
+  options={["Togliere il ruolo di contabile e assegnarle quello degli acquisti", "Lasciarle tutti i permessi di prima e aggiungere quelli nuovi, per sicurezza", "Darle i permessi da amministratore così non deve chiedere ogni volta", "Non cambiare nulla finché non succede un problema"]}
+  answer={0}
+  explain="I permessi seguono il lavoro che si fa adesso. Accumulare i permessi di tutti i ruoli passati è un errore classico (si chiama «accumulo di privilegi»): rende l'account sempre più potente e più pericoloso se rubato."
+/>
+
+<Say who="assistente">Indizio: i permessi di ieri non servono a fare il lavoro di oggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su account, ruoli e accessi. Servono tutte giuste. Hai 3 tentativi.
+
+<Practice generator="c03-accessi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ogni permesso dato in più è un rischio in più: ricordalo quando tocca a te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un account per persona, mai condiviso: così ogni azione ha un responsabile.
+- RBAC: i permessi si danno per ruolo (il lavoro che si fa). Privilegio minimo: solo ciò che serve, niente di più.
+- Offboarding: quando qualcuno se ne va o cambia ruolo, si tolgono gli accessi subito e si fa una revisione periodica.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa RBAC?", a: "Controllo degli accessi basato sui ruoli: i permessi dipendono dal lavoro svolto" },
+    { q: "Che cos'è il privilegio minimo?", a: "Dare a ogni account solo i permessi necessari al suo compito" },
+    { q: "Perché non condividere un account?", a: "Non si sa chi ha fatto cosa e non si può togliere l'accesso a una sola persona" },
+    { q: "Quando si disattiva l'account di chi lascia l'azienda?", a: "Subito, il giorno stesso dell'uscita" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: come si ruba un accesso senza forzare nulla, semplicemente chiedendolo con una bella email. Il phishing.</Say>
+</Scene>

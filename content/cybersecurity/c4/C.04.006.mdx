@@ -1,0 +1,174 @@
+---
+id: C.04.006
+course: cybersecurity
+module: 4
+title: "Wi-Fi sicuro, a casa e fuori"
+belt: arancione
+duration_min: 8
+prerequisites: [C.04.005]
+objectives:
+  - "Distinguere WPA2 e WPA3 da reti aperte e dal vecchio WEP"
+  - "Spiegare perché una rete Wi-Fi pubblica è rischiosa e cos'è un evil twin"
+  - "Elencare le impostazioni di un router di casa ben configurato"
+verification:
+  type: generated-numeric
+  generator: c04-wifi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che nascondere il nome della rete (SSID) la renda sicura"
+  - "Lasciare la password di fabbrica del router o quella di amministrazione"
+  - "Collegarsi alla rete con il nome più familiare senza verificare che sia quella vera"
+commands: []
+---
+
+<Scene title="Due reti con lo stesso nome">
+Sara è in aeroporto e cerca il Wi-Fi gratuito. Sul telefono compaiono due reti:
+
+<Log lines={["AeroportoLibero          segnale: ottimo   sicurezza: nessuna", "AeroportoLibero          segnale: medio    sicurezza: nessuna", "Aeroporto_Passeggeri     segnale: buono    sicurezza: WPA2 (con password sul cartello)"]} caption="Due reti hanno lo stesso nome, e sono entrambe aperte. Quale è quella vera?" />
+
+Sara si collega alla prima, quella con il segnale migliore. Poche ore dopo scopre un accesso strano al suo account della posta.
+
+La domanda del caso: **come si fa a sapere se una rete Wi-Fi è quella giusta, e come ci si protegge?**
+
+<Say who="sensei">Il Wi-Fi è radio. Chiunque sia nel raggio sente tutto. La differenza la fanno la cifratura e il sapere con chi ti stai collegando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="WEP, WPA2, WPA3">
+La sicurezza del Wi-Fi sta nel protocollo di cifratura che si sceglie.
+
+- **Rete aperta**: nessuna cifratura. Chi è nel raggio può ascoltare ciò che non è già cifrato a un altro livello (come con HTTPS).
+- **WEP**: vecchio e superato, si rompe in pochi minuti. Non va mai usato.
+- **WPA2**: lo standard diffuso da anni. Con una password lunga e non banale è ancora ritenuto buono.
+- **WPA3**: il più recente. Rende molto più difficile indovinare la password per tentativi e protegge meglio ogni singola connessione. Se il router e i dispositivi lo supportano, è la scelta migliore.
+
+<Callout kind="regola">
+Scegli WPA3 se puoi, WPA2 con password lunga altrimenti. Mai WEP, mai rete aperta a casa.
+</Callout>
+
+La parola d'ordine conta: una password di 8 lettere comune è debole anche con WPA2. Meglio una **frase lunga**, che si ricorda e non si indovina.
+
+<Say who="sensei">Il protocollo è la serratura. La password è la chiave. Una serratura moderna con una chiave banale non protegge nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le reti pubbliche">
+Una rete pubblica (bar, aeroporto, hotel) è una rete che **non controlli** e a cui accedono molte persone.
+
+I rischi:
+
+- chi gestisce la rete, o un altro utente se la rete lo permette, può **ascoltare** il traffico non cifrato (sniffing, vista nella lezione scorsa);
+- può provare a farsi passare per qualcun altro (man-in-the-middle);
+- altri dispositivi nella stessa rete possono vederti.
+
+Le regole di buon senso:
+
+- preferisci i siti con HTTPS e non ignorare gli avvisi di certificato;
+- evita di fare operazioni delicate (banca, pagamenti) su Wi-Fi pubblico: usa la rete dati del telefono;
+- usa una VPN affidabile, ricordando i suoi limiti;
+- disattiva la condivisione di file e la connessione automatica alle reti aperte.
+
+<Callout kind="trucco">
+Se devi inserire una password importante e non sei su una rete tua, passa ai dati mobili del telefono.
+</Callout>
+
+<Say who="assistente">Il Wi-Fi gratis costa qualcosa: la tua attenzione. Quando non ti serve davvero, spegnilo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'evil twin">
+Torniamo ai due «AeroportoLibero». Un **evil twin** (*gemello malvagio*) è un punto di accesso Wi-Fi che **copia il nome** di una rete vera, di solito con segnale più forte, per attirare chi cerca quella rete.
+
+Chi si collega passa dal gemello: l'attaccante vede il traffico e può mostrare pagine false per rubare password.
+
+Perché funziona? Perché il telefono riconosce le reti dal **nome**, e il nome si può copiare. Spesso le reti aperte non hanno nessun modo di verificare chi c'è dall'altra parte.
+
+**Difese.**
+- Chiedi allo staff il nome **esatto** della rete e, se c'è, la password sul cartello. Una rete con password è più difficile da copiare in modo credibile.
+- Non collegarti alla rete con il segnale migliore solo perché è la migliore.
+- Disattiva la connessione automatica alle reti già usate: il telefono potrebbe collegarsi al gemello da solo.
+- Se qualcosa non torna (avvisi di certificato, pagine strane), disconnettiti.
+
+<Callout kind="attenzione">
+Anche questa è una tecnica da descrivere, non da provare: mettere in piedi un falso punto di accesso per ingannare persone vere è reato. Si studia in un laboratorio proprio, con dispositivi propri.
+</Callout>
+
+<Say who="sensei">Il nome di una rete è un'etichetta, non una prova. Chiunque può scrivere «AeroportoLibero» sulla propria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il router di casa">
+A casa il router è il tuo portiere (tornano il firewall e la segmentazione). Una configurazione ben fatta:
+
+<Guided
+  steps={[
+    "Cambia la password di amministrazione del router: quella di fabbrica, spesso scritta sull'etichetta, non va tenuta.",
+    "Scegli WPA3 (o WPA2 se il tuo router non ha WPA3), con una password lunga e unica per il Wi-Fi.",
+    "Aggiorna il firmware del router: le falle note si correggono con gli aggiornamenti.",
+    "Disattiva la gestione del router dall'esterno (accesso remoto) se non ti serve.",
+    "Attiva la rete ospiti, separata, per amici, telecamere e dispositivi smart.",
+    "Non fare affidamento sul nascondere il nome della rete (SSID): non ferma nessuno, e rende più scomodo l'uso.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Una funzione chiamata WPS permette di collegarsi con un tasto o un PIN. Per sicurezza molti esperti consigliano di disattivarla se non serve: il PIN può essere indovinato.
+</Callout>
+
+<Say who="assistente">Sono sei cose, e le fai una volta sola. Un pomeriggio di lavoro, anni di tranquillità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico dice: «Ho nascosto il nome del mio Wi-Fi, così nessuno lo vede e sono al sicuro». Cosa gli rispondi?"
+  options={["Nascondere il nome non protegge: servono WPA2/WPA3 e una password lunga", "Ha ragione, una rete invisibile non può essere attaccata", "Va bene, ma solo se usa WEP", "Basta che la rete sia aperta, tanto nessuno la trova"]}
+  answer={0}
+  explain="Il nome nascosto si scopre con facilità: i dispositivi lo annunciano quando si collegano. La vera protezione è la cifratura (WPA2/WPA3) con una password robusta. Chi si fida del nome nascosto ha una serratura vecchia con la porta chiusa a vista."
+/>
+
+<Say who="sensei">Nascondere non è proteggere. Una porta invisibile resta una porta, e se la chiave è banale, si apre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su Wi-Fi pubblici, gemelli malvagi e router di casa.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-wifi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con il Wi-Fi si sbaglia quasi sempre per fretta. Rallenta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tra i protocolli, WPA3 è il migliore, WPA2 con password lunga è ancora buono; WEP e reti aperte non vanno usati a casa.
+- Su reti pubbliche il traffico può essere ascoltato; un evil twin copia il nome di una rete vera. Verifica il nome, usa HTTPS, i dati mobili o una VPN.
+- Router di casa: cambia la password di amministrazione, usa WPA3/WPA2 con frase lunga, aggiorna il firmware, attiva la rete ospiti. Nascondere il nome non serve.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale protocollo Wi-Fi non va mai usato?", a: "WEP, perché si rompe in fretta" },
+    { q: "Cos'è un evil twin?", a: "Una rete falsa che copia il nome di una rete vera" },
+    { q: "Nascondere il nome della rete la rende sicura?", a: "No: la protezione è la cifratura e la password lunga" },
+    { q: "Cosa fai per un'operazione delicata su un Wi-Fi pubblico?", a: "Usi i dati mobili del telefono, o rimandi" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo sulla sicurezza di rete finisce qui: porte, sorveglianza, zone, tunnel, attacchi e Wi-Fi. Il prossimo parla del web. Preparati.</Say>
+</Scene>

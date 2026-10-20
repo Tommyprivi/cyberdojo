@@ -1,0 +1,145 @@
+---
+id: C.03.004
+course: cybersecurity
+module: 3
+title: "Il braccialetto del parco"
+belt: arancione
+duration_min: 9
+prerequisites: [C.03.003]
+objectives:
+  - "Spiegare che cosa sono una sessione e un cookie di sessione"
+  - "Descrivere a livello di concetto come un furto di sessione aggira password e 2FA"
+  - "Applicare le buone pratiche di logout, scadenza e revoca delle sessioni"
+verification:
+  type: generated-numeric
+  generator: c03-sessioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la 2FA protegga anche dopo il login: se il token di sessione viene rubato, l'attaccante entra già autenticato"
+  - "Chiudere la finestra del browser pensando di essere uscito dall'account"
+  - "Restare collegati su computer condivisi o pubblici"
+commands: []
+---
+
+<Scene title="Il braccialetto del parco">
+Alla biglietteria di un parco divertimenti mostri il biglietto e ricevi un **braccialetto**. Da quel momento, a ogni giostra non devi rimostrare il biglietto: basta il braccialetto.
+
+Su un sito succede lo stesso. Fai login una volta, con password ed eventuale secondo fattore. Poi navighi per ore senza reinserire nulla.
+
+La domanda del caso: **che cosa dimostra al sito, ad ogni clic, che sei ancora tu?** E se qualcuno copiasse il braccialetto?
+
+<Say who="sensei">Il login dura un attimo. Quello che viene dopo dura ore. Ed è lì che spesso si decide la partita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sessione e cookie">
+Il web non ricorda niente: ogni richiesta è per il sito una richiesta nuova. Per ricordarti, dopo il login il sito crea una **sessione** e ti consegna un codice casuale, il **token di sessione**.
+
+Il browser lo conserva in un **cookie** (un piccolo file di dati associato al sito) e lo rimanda a ogni richiesta. Il sito lo confronta con la sua lista di sessioni attive e capisce chi sei.
+
+<Callout kind="regola">
+Dopo il login, **il token di sessione vale quanto la tua password**. Chi lo possiede viene trattato dal sito come te.
+</Callout>
+
+<Say who="assistente">Il sito non ti riconosce in faccia a ogni clic. Riconosce il braccialetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il furto di sessione, come idea">
+Se un attaccante ottiene una copia del token, può presentarsi al sito **al posto tuo**, senza sapere password e senza avere il tuo secondo fattore. Il sito vede un braccialetto valido e lo accetta.
+
+Questo si chiama **furto di sessione** (session hijacking). Il token può essere rubato in modi diversi, per esempio:
+
+- da un programma malevolo sul tuo computer;
+- da una connessione non protetta che lo fa passare in chiaro;
+- da un sito costruito male che lo espone a script altrui;
+- dal computer pubblico dove l'hai lasciato attivo.
+
+<Callout kind="attenzione">
+Qui descriviamo il concetto per capire le difese. Rubare la sessione di un'altra persona è accesso abusivo a sistema informatico (art. 615-ter c.p.): si prova solo su sistemi tuoi o con permesso scritto.
+</Callout>
+
+<Say who="sensei">Ecco perché la 2FA non basta da sola. Protegge la porta del login, non il braccialetto dopo che l'hai ricevuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come difendersi: lato sito">
+Chi costruisce il sito riduce il danno. Tre misure da conoscere come idee:
+
+- Il cookie viaggia solo su connessioni protette (HTTPS) e non è leggibile dagli script della pagina (opzioni dette **Secure** e **HttpOnly**).
+- La sessione **scade**: dopo un periodo di inattività il braccialetto smette di valere.
+- Al **logout** il sito cancella la sessione dalla sua lista: il token copiato diventa inutile anche se qualcuno lo possiede ancora.
+
+<Callout kind="curiosita">
+Per le operazioni più delicate (cambiare la password, fare un bonifico) molti siti chiedono di **riconfermare** la tua identità anche se la sessione è attiva. Così un braccialetto rubato non basta per fare i danni peggiori.
+</Callout>
+
+<Say who="assistente">Una sessione che non scade mai è un braccialetto che nessuno taglia mai. Meglio che si stacchi da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come difendersi: tu">
+<Guided
+  steps={[
+    "Sui computer condivisi o pubblici fai **logout** vero (il pulsante Esci), non basta chiudere la finestra: la sessione resta attiva sul sito.",
+    "Non spuntare «resta collegato» su dispositivi che non sono tuoi.",
+    "Tieni aggiornato il sistema e il browser, e diffida di programmi e estensioni di cui non ti fidi: sono la strada più comune per rubare i token dal tuo computer.",
+    "Controlla l'elenco dei dispositivi collegati al tuo account. Se vedi una sessione che non riconosci, usa «Esci da tutti i dispositivi» e cambia la password.",
+  ]}
+/>
+
+<Say who="sensei">Esci quando hai finito. È un gesto da dieci secondi che chiude una porta intera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un collaboratore usa il computer della biblioteca per leggere la posta di lavoro e poi chiude solo la finestra del browser. Cosa può succedere?"
+  options={["La sessione può restare attiva: la persona che usa il computer dopo di lui potrebbe riaprire la posta senza password", "Niente: chiudere la finestra cancella sempre la sessione sul sito", "Il secondo fattore impedisce comunque l'accesso a chiunque", "Il sito lo disconnette subito perché cambia il computer"]}
+  answer={0}
+  explain="Chiudere la finestra non dice al sito che hai finito: la sessione resta valida finché non scade o non fai logout. La 2FA è stata già superata al momento del login, quindi chi riapre la sessione non viene più controllato."
+/>
+
+<Say who="assistente">Indizio: il braccialetto è ancora al polso del computer, anche se la finestra è chiusa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su sessioni e cookie. Servono tutte giuste. Hai 3 tentativi.
+
+<Practice generator="c03-sessioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa cos'è una sessione sa anche quando uscire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Dopo il login una sessione ti identifica con un token, spesso salvato in un cookie: chi lo copia viene trattato come te, anche senza password e secondo fattore.
+- I siti ben fatti usano cookie protetti (Secure, HttpOnly), fanno scadere le sessioni e le cancellano al logout.
+- Tu: logout vero sui computer non tuoi, nessun «resta collegato» fuori da casa, controllo periodico dei dispositivi collegati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un cookie di sessione?", a: "Un piccolo dato salvato nel browser che contiene il token con cui il sito ti riconosce dopo il login" },
+    { q: "Perché il furto di sessione aggira la 2FA?", a: "Perché il token viene accettato dopo il login, quando i controlli sono già stati superati" },
+    { q: "Basta chiudere la finestra per uscire?", a: "No: serve il logout, altrimenti la sessione resta attiva" },
+    { q: "Che cosa fai se vedi un dispositivo sconosciuto tra le sessioni attive?", a: "Esci da tutti i dispositivi e cambi la password" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chi deve avere un account, e chi deve avere le chiavi di cosa. La gestione degli accessi.</Say>
+</Scene>

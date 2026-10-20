@@ -1,0 +1,160 @@
+---
+id: C.07.003
+course: cybersecurity
+module: 7
+title: "Hardening: meno porte, meno guai"
+belt: verde
+duration_min: 9
+prerequisites: [C.07.002]
+objectives:
+  - "Spiegare che cos'è la superficie d'attacco e come si riduce"
+  - "Elencare le misure base di hardening: servizi, aggiornamenti, configurazioni, account"
+  - "Descrivere a che cosa servono una baseline e un benchmark come quelli CIS"
+verification:
+  type: generated-numeric
+  generator: c07-hardening
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che hardening voglia dire «installare più programmi di sicurezza»: spesso vuol dire togliere"
+  - "Fare l'hardening una volta e non controllare più: le configurazioni si sporcano col tempo"
+  - "Applicare ogni regola di un benchmark senza provarla: si rischia di rompere un servizio che serve"
+commands: []
+---
+
+<Scene title="Il server con troppe porte aperte">
+Alla «Rossi Forniture» un tecnico controlla quali servizi ascoltano sul server di prova, quello montato in fretta due anni fa.
+
+<Log lines={[
+  "PORTA  STATO   SERVIZIO",
+  "22     aperta  ssh (accesso remoto)",
+  "80     aperta  http (sito)",
+  "21     aperta  ftp (trasferimento file, senza cifratura)",
+  "23     aperta  telnet (accesso remoto, senza cifratura)",
+  "3306   aperta  mysql (database, raggiungibile da fuori)",
+]} caption="Elenco di ciò che il server «ascolta»." />
+
+Il sito ne userebbe una sola. Le altre sono porte aperte che nessuno guarda.
+
+La domanda del caso: **quali di queste porte servono davvero?**
+
+<Say who="sensei">Ogni porta aperta è una porta da sorvegliare. Meno ne hai, meno hai da difendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La superficie d'attacco">
+La **superficie d'attacco** è l'insieme di tutti i punti da cui qualcuno potrebbe provare ad entrare: servizi in ascolto, account, programmi installati, impostazioni deboli.
+
+Più è grande, più possibilità ha chi attacca. Ridurla si chiama **hardening**, cioè «indurimento».
+
+<Callout kind="regola">
+Principio guida: **ciò che non c'è, non si può bucare**. Un servizio spento non ha vulnerabilità da sfruttare.
+</Callout>
+
+<Say who="assistente">Una casa con dieci finestre ha dieci posti da chiudere. Se ne servono due, murane otto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cinque mosse base">
+Le prime misure di hardening sono poche, e valgono per quasi ogni sistema.
+
+<Guided
+  steps={[
+    "Spegni i servizi che non servono. Telnet e FTP trasmettono tutto in chiaro: oggi si preferiscono SSH (accesso) e SFTP (file).",
+    "Tieni tutto aggiornato. Molti attacchi usano buchi già corretti da un aggiornamento che nessuno ha installato.",
+    "Configura in modo sicuro: cambia le password predefinite, disattiva l'accesso diretto dell'amministratore, usa l'autenticazione a più fattori dove c'è.",
+    "Pochi privilegi: ogni account ha solo i permessi che gli servono (privilegio minimo).",
+    "Il database non si espone a Internet: lo raggiunge solo il server che lo usa.",
+  ]}
+/>
+
+<Say who="sensei">Cinque mosse. Poco brillanti, molto efficaci. La sicurezza vera è fatta di noia ben fatta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Baseline: lo stato giusto di partenza">
+Una **baseline** è la configurazione di riferimento: «un server dell'azienda deve essere fatto così». Si scrive una volta, e ogni nuovo sistema parte da quella.
+
+Poi si **controlla** che nessuno la cambi di nascosto, e che nessun sistema si allontani dallo standard.
+
+<Callout kind="curiosita">
+Il **CIS** (Center for Internet Security) pubblica i **CIS Benchmark**: elenchi di impostazioni sicure, sistema per sistema (Windows, Linux, browser…). In linea generale ogni voce dice che cosa configurare, perché, e come verificarlo. Sono un ottimo punto di partenza, non una legge.
+</Callout>
+
+<Callout kind="attenzione">
+Non applicare tutto alla cieca. Alcune regole possono bloccare un programma che serve: prova prima su una copia, poi applica.
+</Callout>
+
+<Say who="assistente">Un benchmark è come una lista di controllo del pilota: non pensa per te, ma ti evita di dimenticare qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Log lines={[
+  "22/tcp    aperta   ssh   (serve: gli amministratori entrano da qui)",
+  "443/tcp   aperta   https (serve: è il sito)",
+  "21/tcp    aperta   ftp   (nessuno lo usa da un anno)",
+  "3306/tcp  aperta   mysql (serve al sito, ma solo da questa macchina)",
+]} caption="Nuovo controllo sul server dopo un anno." />
+
+<Quiz
+  question="Quale intervento riduce di più la superficie d'attacco, senza togliere nulla di utile?"
+  options={[
+    "Spegnere FTP e permettere a MySQL di ascoltare solo sulla macchina stessa",
+    "Aggiungere un secondo antivirus sul server",
+    "Cambiare il nome dell'utente amministratore ogni settimana",
+    "Chiudere la porta 443",
+  ]}
+  answer={0}
+  explain="FTP non serve a nessuno: spegnerlo toglie un punto d'ingresso. MySQL, usato solo dal sito sulla stessa macchina, non deve ascoltare dall'esterno. Chiudere 443 spegnerebbe il sito, e un secondo antivirus non toglie nessuna porta."
+/>
+
+<Say who="assistente">Chiediti: che cosa non serve a nessuno? E che cosa serve, ma solo a un vicino stretto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hardening non è un lavoro finito">
+Un sistema ben «indurito» oggi può non esserlo più tra sei mesi: qualcuno apre una porta per una prova e se ne dimentica, esce un aggiornamento importante, arriva un nuovo servizio.
+
+<Callout kind="regola">
+Controlla **a intervalli regolari**: elenco dei servizi attivi, aggiornamenti mancanti, account inutilizzati, differenze dalla baseline.
+</Callout>
+
+Ci sono strumenti che confrontano il sistema con la baseline e segnalano le differenze. Il risultato può finire nel SIEM della lezione precedente.
+
+<Say who="sensei">Si fa hardening come si lavano i denti: un po', ma ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque domande su superficie d'attacco e configurazioni sicure. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-hardening" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- La superficie d'attacco è l'insieme dei punti da cui si può entrare: ridurla è hardening.
+- Misure base: spegnere ciò che non serve, aggiornare, configurare bene, privilegi minimi.
+- Una baseline fissa lo stato giusto; i benchmark CIS aiutano a scriverla, ma si provano prima di applicarli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la superficie d'attacco?", a: "L'insieme dei punti da cui un attaccante può provare ad entrare" },
+    { q: "Che cos'è una baseline?", a: "La configurazione di riferimento che ogni sistema deve rispettare" },
+    { q: "Perché spegnere un servizio inutile?", a: "Ciò che non c'è non si può attaccare" },
+    { q: "Si può applicare un benchmark CIS senza provarlo?", a: "No: va provato, può bloccare servizi utili" },
+  ]}
+/>
+
+<Say who="sensei">Sistema indurito, log raccolti. Ora serve qualcuno che guardi: la prossima lezione parla di monitoraggio e allarmi.</Say>
+</Scene>

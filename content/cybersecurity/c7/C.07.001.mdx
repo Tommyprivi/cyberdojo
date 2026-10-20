@@ -1,0 +1,186 @@
+---
+id: C.07.001
+course: cybersecurity
+module: 7
+title: "I log: la memoria del sistema"
+belt: verde
+duration_min: 9
+prerequisites: [C.06.006]
+objectives:
+  - "Spiegare che cosa registra un log e perché senza log un incidente non si ricostruisce"
+  - "Leggere una riga di auth.log e una riga di log web"
+  - "Distinguere un errore isolato da un andamento sospetto"
+verification:
+  type: generated-numeric
+  generator: c07-log
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare una riga sola invece dell'andamento: conta la sequenza, non il singolo evento"
+  - "Fidarsi dell'orario senza controllare il fuso e che gli orologi dei sistemi siano allineati"
+  - "Pensare che un log pieno di errori sia sempre un attacco: molti errori sono guasti o utenti distratti"
+commands: []
+---
+
+<Scene title="Che cosa è successo ieri notte?">
+Lunedì mattina il titolare di una piccola azienda, la «Rossi Forniture», scopre che un file dei clienti è stato modificato. Nessuno ricorda di averlo toccato.
+
+Come si scopre chi, quando e da dove? Non c'era nessuno a guardare. Ma il sistema **scrive tutto quello che succede** in dei registri: i **log**.
+
+<Log lines={[
+  "Oct 14 02:41:07 srv1 sshd[2210]: Failed password for utente_bianchi from 203.0.113.40 port 51122 ssh2",
+  "Oct 14 02:41:12 srv1 sshd[2210]: Failed password for utente_bianchi from 203.0.113.40 port 51122 ssh2",
+  "Oct 14 02:41:19 srv1 sshd[2210]: Accepted password for utente_bianchi from 203.0.113.40 port 51122 ssh2",
+]} caption="Tre righe. Raccontano una piccola storia." />
+
+La domanda del caso: **che storia raccontano queste tre righe?**
+
+<Say who="sensei">Un sistema senza log è un testimone che non ricorda niente. Impariamo a farlo parlare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa registra un log">
+Un **log** è un diario tenuto dal computer. Ogni riga è un **evento**: qualcosa che è successo, con l'orario.
+
+Di solito dice quattro cose: **quando**, **su quale macchina**, **quale programma** ha scritto la riga, **che cosa** è successo.
+
+Sui sistemi Linux i log stanno spesso in `/var/log`. Due esempi:
+
+- `auth.log`: gli accessi. Chi ha provato a entrare, chi ci è riuscito, chi ha usato privilegi da amministratore.
+- il log del **server web**: ogni richiesta ricevuta da un sito.
+
+<Callout kind="curiosita">
+Su Windows lo stesso ruolo lo ha il **registro eventi** (Event Viewer). Cambia il formato, non l'idea: un diario degli eventi di sicurezza.
+</Callout>
+
+<Say who="assistente">Pensa al registro di un portiere: chi è entrato, a che ora, con quale badge. Il log fa lo stesso per il computer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere una riga di auth.log">
+Riprendiamo la prima riga del caso, un pezzo alla volta.
+
+<Guided
+  steps={[
+    "Oct 14 02:41:07 → quando: 14 ottobre, alle due e quaranta di notte.",
+    "srv1 → su quale macchina è successo: il server chiamato srv1.",
+    "sshd[2210] → quale programma scrive: sshd, il servizio degli accessi remoti. Il numero tra parentesi è il suo codice di processo.",
+    "Failed password for utente_bianchi from 203.0.113.40 → password sbagliata per l'utente «utente_bianchi», proveniente da quell'indirizzo.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si legge sempre così: **quando, dove, chi lo dice, che cosa, chi c'entra, da dove**.
+</Callout>
+
+<Say who="sensei">Sei campi, sempre gli stessi. Quando li hai trovati, la riga smette di essere un codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una riga non basta">
+Una password sbagliata, da sola, non vuol dire niente. Succede a tutti: un tasto sbagliato, una password cambiata e dimenticata.
+
+Quello che conta è la **sequenza**. Nel caso: due fallimenti a cinque secondi l'uno dall'altro, alle 2 di notte, e poi un accesso riuscito dallo stesso indirizzo.
+
+<Callout kind="attenzione">
+Una persona vera non sbaglia la password a ritmo di macchina, di notte, per poi azzeccarla. Potrebbe essere stato indovinato il segreto, o provato un elenco di password. Il log non lo prova: **indica dove guardare**.
+</Callout>
+
+Il log non dà colpevoli. Dà **indizi ordinati nel tempo**.
+
+<Say who="assistente">Un indizio non è una prova. Ma tre indizi nello stesso ordine iniziano a pesare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il log del server web">
+Anche i siti web scrivono un diario. Ogni riga è **una richiesta**: qualcuno ha chiesto una pagina.
+
+<Log lines={[
+  "198.51.100.7 - - [14/Oct/2026:10:02:11 +0200] \"GET /index.html HTTP/1.1\" 200 5120",
+  "198.51.100.7 - - [14/Oct/2026:10:02:13 +0200] \"GET /prodotti HTTP/1.1\" 200 8432",
+  "203.0.113.40 - - [14/Oct/2026:10:03:02 +0200] \"POST /login HTTP/1.1\" 401 312",
+  "203.0.113.40 - - [14/Oct/2026:10:03:03 +0200] \"POST /login HTTP/1.1\" 401 312",
+  "203.0.113.40 - - [14/Oct/2026:10:03:04 +0200] \"POST /login HTTP/1.1\" 401 312",
+]} caption="Indirizzo, orario, richiesta, codice di risposta, dimensione." />
+
+Il numero dopo la richiesta è il **codice di risposta**: **200** vuol dire «ok», **401** «non autorizzato», **404** «pagina non trovata», **500** «errore del server».
+
+<Say who="sensei">Guarda gli ultimi tre. Stesso indirizzo, un secondo di distanza, sempre la pagina di accesso, sempre 401. Cosa ti dice?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Log lines={[
+  "Oct 14 09:15:02 srv1 sshd[3011]: Failed password for utente_verdi from 192.0.2.15 port 40001 ssh2",
+  "Oct 14 09:15:40 srv1 sshd[3015]: Accepted password for utente_verdi from 192.0.2.15 port 40018 ssh2",
+  "Oct 14 09:16:05 srv1 sudo: utente_verdi : TTY=pts/0 ; COMMAND=/usr/bin/apt update",
+]} caption="Nove di mattina, ufficio." />
+
+<Quiz
+  question="Un errore di password, poi un accesso riuscito dopo 38 secondi dallo stesso indirizzo, poi un aggiornamento dei pacchetti. Che cosa è più probabile?"
+  options={[
+    "Un utente che ha sbagliato la password una volta e poi ha fatto il suo lavoro",
+    "Un attacco a forza bruta riuscito",
+    "Un virus che si diffonde sul server",
+    "Un guasto del disco",
+  ]}
+  answer={0}
+  explain="Un solo errore, pause da umano, orario d'ufficio e un comando normale: è un utente distratto. Un attacco a forza bruta mostrerebbe decine di tentativi ravvicinati. Chi risponde «attacco» vede un pericolo in ogni errore: così si finisce nella stanchezza da allarmi."
+/>
+
+<Say who="assistente">Guarda tre cose: quanti errori, a che ritmo, e che cosa succede dopo. Qui tutto è calmo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole d'oro dei log">
+Per fidarsi dei log servono tre abitudini.
+
+<Callout kind="regola">
+**Orologi allineati.** Se due macchine hanno ore diverse, non si ricostruisce la sequenza. Si usa un servizio che sincronizza l'ora (NTP).
+</Callout>
+
+<Callout kind="regola">
+**Conservarli fuori dalla macchina.** Chi entra in un sistema può cancellare i log per cancellare le tracce. Una copia su un altro server li mette al sicuro.
+</Callout>
+
+<Callout kind="regola">
+**Non registrare i segreti.** Mai password o dati sensibili nelle righe: il log lo leggono in molti.
+</Callout>
+
+<Say who="sensei">Un log che l'intruso può cancellare è un diario che il ladro può bruciare. Mettilo altrove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque righe di log da leggere, una per volta. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c07-log" pass="5/5" retries={3} />
+
+<Recap xp={20}>
+- Un log è il diario del sistema: quando, dove, quale programma, che cosa è successo.
+- Una riga sola dice poco: conta la sequenza, il ritmo e che cosa succede dopo.
+- Orologi allineati, copia dei log su un'altra macchina, mai segreti nelle righe.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si trovano di solito i log di sistema su Linux?", a: "In /var/log" },
+    { q: "Che cosa vuol dire il codice 401 in un log web?", a: "Non autorizzato (accesso rifiutato)" },
+    { q: "Perché copiare i log su un altro server?", a: "Perché un intruso non possa cancellare le tracce" },
+    { q: "Che cosa conta più di una singola riga di log?", a: "La sequenza e il ritmo degli eventi" },
+  ]}
+/>
+
+<Say who="sensei">I log sono la materia prima. Ma una macchina ne scrive milioni: la prossima lezione vediamo come metterli insieme e farli parlare tra loro.</Say>
+</Scene>

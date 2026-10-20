@@ -1,0 +1,155 @@
+---
+id: C.04.004
+course: cybersecurity
+module: 4
+title: "Il tunnel cifrato: la VPN"
+belt: arancione
+duration_min: 8
+prerequisites: [C.04.003]
+objectives:
+  - "Spiegare che cosa fa una VPN: un tunnel cifrato tra il tuo dispositivo e un'altra rete"
+  - "Dire cosa una VPN protegge e cosa no"
+  - "Distinguere una VPN aziendale da una VPN commerciale"
+verification:
+  type: generated-numeric
+  generator: c04-vpn
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la VPN renda anonimi o invulnerabili: sposta la fiducia dal Wi-Fi al fornitore della VPN"
+  - "Pensare che la VPN protegga da phishing e malware"
+  - "Credere che una VPN gratuita sia sempre sicura: può guadagnare vendendo i dati di chi la usa"
+commands: []
+---
+
+<Scene title="Il caffè con il Wi-Fi gratis">
+Giulia lavora per la **Neri Ingegneria**. È in trasferta, in un bar con il Wi-Fi gratuito, e deve aprire il gestionale dell'azienda, che sta nella rete interna.
+
+Il gestionale non è raggiungibile da Internet (c'è il firewall, ricordi?). Per questo Giulia deve prima collegarsi alla rete aziendale da lontano. Come fa a farlo in sicurezza, passando da una rete che non conosce?
+
+La domanda del caso: **come si porta la rete aziendale fino al tavolino di un bar, senza che nessuno ascolti il traffico?**
+
+<Say who="sensei">Il Wi-Fi del bar non è tuo. Tutto ciò che ci passa può essere ascoltato da chi lo gestisce, o da chi ci è collegato. Serve un tunnel.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un tunnel cifrato">
+Una **VPN** (*Virtual Private Network*, rete privata virtuale) crea un **tunnel cifrato** tra il tuo dispositivo e un'altra rete o un server VPN.
+
+Come funziona, in breve:
+
+1. Il tuo dispositivo e il server VPN si riconoscono e si accordano su una chiave (ricordi la crittografia del modulo C2).
+2. I pacchetti vengono **cifrati** e messi dentro altri pacchetti (l'incapsulamento, come una busta dentro una busta).
+3. Chi sta in mezzo, per esempio il Wi-Fi del bar, vede solo traffico cifrato diretto al server VPN.
+4. Il server VPN apre la busta e inoltra il traffico verso la sua destinazione.
+
+<Callout kind="trucco">
+È un tubo opaco che attraversa una stanza piena di gente. Chi passa vede il tubo, non cosa ci scorre dentro.
+</Callout>
+
+<Say who="sensei">La VPN non rende sicura la rete in cui passi. Rende illeggibile ciò che ci passa. Non è la stessa cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa protegge">
+Con la VPN attiva, Giulia ottiene due cose.
+
+**Riservatezza sul percorso locale.** Chi controlla il Wi-Fi del bar non può leggere né modificare ciò che passa nel tunnel. Vede solo che si sta collegando a un server VPN.
+
+**Accesso alla rete aziendale.** Il traffico esce dal server VPN dell'azienda, dentro la rete interna. Per il gestionale è come se Giulia fosse in ufficio, con le regole del firewall di quella zona.
+
+<Callout kind="curiosita">
+Molti siti oggi usano già HTTPS, che cifra il traffico tra te e il sito. La VPN aggiunge una seconda cifratura sul tratto fino al server VPN, utile soprattutto per protocolli e applicazioni che non sono cifrati.
+</Callout>
+
+<Say who="assistente">Pensa al percorso in due pezzi: dal tuo pc al server VPN, protetto. Dal server VPN alla destinazione, dipende da dove va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa NON protegge">
+Una VPN non è uno scudo universale. Non protegge da:
+
+- **phishing**: se clicchi su un link falso e inserisci la password, il tunnel porta la password al truffatore;
+- **malware**: un file infetto scaricato dentro il tunnel è sempre infetto;
+- **password deboli e account rubati**: la VPN non cambia chi sei né quanto è forte la tua password;
+- **il fornitore della VPN stesso**: il traffico esce dal suo server, quindi lui può vederlo (se non è cifrato da HTTPS) e può tenerne traccia.
+
+E non ti rende «anonimo»: il sito vede l'indirizzo del server VPN, ma il fornitore sa chi sei. Hai spostato la fiducia, non l'hai eliminata.
+
+<Callout kind="attenzione">
+Una VPN trasferisce la fiducia dal gestore del Wi-Fi al gestore della VPN. Conviene scegliere bene a chi darla.
+</Callout>
+
+<Say who="sensei">Il tunnel protegge il viaggio. Non protegge te dalle tue scelte. Un link falso resta un link falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aziendale o commerciale">
+Esistono due famiglie di VPN, con scopi diversi.
+
+**VPN aziendale (di accesso remoto).** Il server VPN sta nell'azienda. Serve a **entrare nella rete aziendale** da fuori, con credenziali (spesso anche un secondo fattore, vedi il modulo C3). L'azienda controlla chi si collega e cosa può raggiungere.
+
+**VPN commerciale (a pagamento o gratuita).** Un servizio su Internet a cui ti colleghi per far uscire il tuo traffico dal suo server. Serve a **proteggere il tragitto** su una rete non fidata o a cambiare il paese di uscita. Non ti porta in nessuna rete aziendale.
+
+<Callout kind="regola">
+Aziendale: ti porta **dentro** una rete. Commerciale: ti porta **fuori** da un server di un terzo. Scopi diversi, quindi rischi diversi.
+</Callout>
+
+Una VPN gratuita deve pur guadagnare: a volte lo fa con la pubblicità, a volte rivendendo i dati di navigazione. Leggi chi la gestisce e cosa registra.
+
+<Say who="assistente">Per lavoro, usa solo la VPN che ti dà l'azienda. Per uso personale, scegli un servizio con una politica chiara, non uno che promette tutto gratis.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marco naviga con una VPN commerciale e apre un'email di phishing che finge di essere la sua banca, poi inserisce la password nel sito falso. La VPN era attiva. Che cosa è successo?"
+  options={["La VPN ha cifrato il traffico, ma la password è finita comunque al truffatore", "La VPN avrebbe dovuto bloccare il sito falso", "La VPN non era configurata bene, altrimenti la password sarebbe rimasta segreta", "Il truffatore non può usare la password perché il traffico era cifrato"]}
+  answer={0}
+  explain="La VPN cifra il viaggio, ma Marco ha consegnato lui la password al sito del truffatore: il tunnel arriva fino a quel sito. Il phishing inganna la persona, non il Wi-Fi. Chi risponde che la VPN doveva bloccare il sito le attribuisce un compito che non ha."
+/>
+
+<Say who="sensei">La VPN protegge il percorso. Per non cadere nel phishing servono occhi aperti e un secondo fattore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla Neri Ingegneria: Wi-Fi pubblici, accessi da casa e scelte tra VPN aziendale e commerciale.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-vpn" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa cosa NON fa la VPN la usa meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La VPN crea un tunnel cifrato tra il tuo dispositivo e un server VPN: chi sta in mezzo vede solo traffico illeggibile.
+- Non protegge da phishing, malware, password deboli, e sposta la fiducia sul fornitore della VPN.
+- La VPN aziendale ti porta dentro la rete dell'azienda; la VPN commerciale fa uscire il tuo traffico da un server di un terzo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa fa una VPN?", a: "Cifra il traffico in un tunnel tra il dispositivo e un server VPN" },
+    { q: "Una VPN protegge dal phishing?", a: "No: il tunnel porta i dati anche al sito falso" },
+    { q: "Differenza tra VPN aziendale e commerciale?", a: "Aziendale: accesso alla rete dell'azienda. Commerciale: traffico che esce da un server di un terzo" },
+    { q: "A chi dai fiducia usando una VPN commerciale?", a: "Al fornitore della VPN, che vede il tuo traffico in uscita" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: gli attacchi di rete più comuni, e per ognuno la difesa.</Say>
+</Scene>

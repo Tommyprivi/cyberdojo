@@ -1,0 +1,167 @@
+---
+id: C.04.005
+course: cybersecurity
+module: 4
+title: "Attacchi di rete comuni e difese"
+belt: arancione
+duration_min: 9
+prerequisites: [C.04.004]
+objectives:
+  - "Descrivere a livello concettuale sniffing, man-in-the-middle, negazione di servizio e scansione"
+  - "Associare a ogni attacco la difesa più efficace"
+  - "Spiegare perché si prova solo su reti proprie o con permesso scritto"
+verification:
+  type: generated-numeric
+  generator: c04-attacchi-rete
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere sniffing (ascoltare) e man-in-the-middle (ascoltare e anche modificare)"
+  - "Pensare che una scansione sia già un'intrusione: è la fase di esplorazione, ma va comunque rilevata"
+  - "Credere che per fermare un DoS basti un antivirus: serve capacità, filtri e protezione a monte"
+commands: []
+---
+
+<Scene title="Il registro del sabato sera">
+Alla **Gialli Hotel** il tecnico di rete controlla il registro del sabato sera e trova quattro cose strane, in momenti diversi:
+
+<Log lines={["21:10  un solo indirizzo prova in pochi secondi centinaia di porte del server", "22:30  un pc in sala conferenze riceve pacchetti destinati ad altri", "23:15  ogni utente del Wi-Fi comune vede un avviso di certificato non valido", "00:40  il sito di prenotazioni riceve migliaia di richieste al secondo e non risponde più"]} caption="Quattro righe, quattro tipi di attacco di rete." />
+
+La domanda del caso: **come si chiamano, cosa vogliono e come ci si difende?**
+
+Una regola prima di cominciare: qui parliamo di **concetti e difese**. In Italia l'accesso abusivo a un sistema informatico è reato (art. 615-ter del codice penale). Si prova **solo ciò che è tuo o per cui hai un permesso scritto**, in un laboratorio isolato.
+
+<Say who="sensei">Per difenderti devi sapere cosa fa chi attacca. Ma saperlo non ti dà il diritto di provarlo sulla rete degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La scansione">
+Riga delle 21:10. Una **scansione di porte** è l'equivalente di camminare lungo un corridoio, provando tutte le maniglie per vedere quali porte sono aperte e quali servizi rispondono.
+
+Non è ancora un'intrusione: è l'**esplorazione**. Ma dice all'attaccante dove puntare. Anche chi difende fa scansioni, sulla **propria** rete, per scoprire porte aperte per errore.
+
+**Difesa.** Il firewall con default deny lascia poche porte raggiungibili, quindi c'è poco da trovare. Un IDS riconosce una scansione (tante porte provate in pochi secondi) e avvisa, oppure l'IPS blocca l'indirizzo. E si tengono i servizi aggiornati: la porta aperta resta, ma almeno non è vulnerabile.
+
+<Callout kind="trucco">
+Una scansione che trova poche porte aperte e tutte aggiornate è una scansione inutile per chi attacca.
+</Callout>
+
+<Say who="sensei">Chi bussa a tutte le porte non ha ancora fatto niente. Ma una rete ben tenuta se ne accorge subito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo sniffing">
+Riga delle 22:30. Lo **sniffing** (da *to sniff*, annusare) è ascoltare il traffico che passa in una rete e leggere ciò che non è cifrato. È come origliare dietro una porta sottile.
+
+Funziona bene dove i dati viaggiano **in chiaro** e dove il canale è condiviso, come un Wi-Fi aperto. Per un protocollo non cifrato, l'attaccante può leggere nomi utente, password, messaggi.
+
+**Difesa.** Cifrare tutto ciò che passa: **HTTPS** per il web, una **VPN** sulle reti non fidate, Wi-Fi con una buona cifratura (lo vedremo nella prossima lezione). Se i dati sono cifrati, chi ascolta sente solo rumore. Inoltre: reti segmentate, così un pc non vede il traffico degli altri.
+
+<Callout kind="attenzione">
+Lo sniffing è **passivo**: chi ascolta non cambia nulla, quindi è molto difficile accorgersene. Per questo la difesa è cifrare, non «accorgersi».
+</Callout>
+
+<Say who="assistente">Non puoi impedire che qualcuno ascolti. Puoi fare in modo che non capisca niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'uomo in mezzo">
+Riga delle 23:15. Un **man-in-the-middle** (*uomo in mezzo*) è chi si mette nel mezzo della comunicazione tra due parti e fa credere a ciascuna di parlare con l'altra. A differenza dello sniffing, qui l'attaccante può anche **leggere e modificare** ciò che passa.
+
+Come un postino infedele che apre le lettere, le legge, le cambia e le rimette nella busta.
+
+Cosa vede l'utente? Spesso un avviso: *«Il certificato di questo sito non è valido»*. Il certificato (modulo C2) serve proprio a dimostrare chi c'è dall'altra parte. Se non torna, qualcuno potrebbe essersi infilato in mezzo.
+
+**Difesa.** **HTTPS con certificati verificati**: il browser controlla che il sito sia davvero quello. **Non ignorare mai gli avvisi di certificato.** Evitare le reti non fidate o usare una VPN. Rete locale ben protetta, con funzioni di sicurezza sugli switch dove disponibili.
+
+<Callout kind="regola">
+Avviso di certificato = ferma. Non cliccare «procedi comunque», soprattutto su un Wi-Fi che non è tuo.
+</Callout>
+
+<Say who="sensei">Un avviso di certificato è il campanello d'allarme che i sistemi ti danno gratis. Chi lo spegne senza leggerlo, lo spegne per l'attaccante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La negazione di servizio">
+Riga delle 00:40. Una **negazione di servizio** (*Denial of Service*, DoS) non ruba dati. Vuole solo che il servizio **smetta di funzionare**: il sito è sommerso da richieste, e quelle dei clienti veri non passano. Se le richieste arrivano da moltissime macchine insieme, si chiama **DDoS** (distribuito).
+
+È come far squillare mille volte il telefono di un negozio: nessun cliente vero riesce a chiamare.
+
+**Difesa.** Non basta un firewall locale, perché il collo di bottiglia è la **capacità**. Servono: servizi di protezione a monte, offerti da chi gestisce la rete o da società specializzate, che filtrano il traffico prima che arrivi; limiti sul numero di richieste da un singolo indirizzo; capacità extra; un piano per quando succede.
+
+<Callout kind="curiosita">
+Chi lancia un DDoS a volte usa dispositivi altrui già infettati (telecamere, router con password di fabbrica). Cambiare le password predefinite dei propri dispositivi è anche un modo di non diventare complici senza saperlo.
+</Callout>
+
+<Say who="sensei">Un DoS non è un furto. È un blocco della porta. La difesa è avere porte larghe e qualcuno che filtri la folla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel Wi-Fi comune dell'hotel, un cliente vede un avviso di certificato non valido aprendo il sito della sua banca. Qual è la scelta giusta?"
+  options={["Fermarsi, non procedere e collegarsi da un'altra rete o con una VPN", "Cliccare «procedi comunque»: sarà un errore del sito", "Inserire comunque la password, tanto la connessione è cifrata", "Riavviare il pc e riprovare sulla stessa rete"]}
+  answer={0}
+  explain="Un certificato non valido su un sito di banca, in una rete condivisa, può indicare un man-in-the-middle. La scelta giusta è fermarsi e cambiare rete. Chi procede comunque consegna la password a chi sta in mezzo."
+/>
+
+<Say who="sensei">Un avviso di certificato su un sito di banca non è fastidio. È un segnale. Obbedisci al segnale.</Say>
+Rimettiamo in ordine i quattro attacchi del registro, con la difesa che li neutralizza meglio.
+
+<Guided
+  steps={[
+    "Scansione: l'attaccante cerca le porte aperte. Difesa: default deny sul firewall, servizi aggiornati, IDS/IPS che riconosce la scansione.",
+    "Sniffing: l'attaccante ascolta il traffico. Difesa: cifrare tutto (HTTPS, VPN, Wi-Fi sicuro).",
+    "Man-in-the-middle: l'attaccante si mette in mezzo e può modificare. Difesa: certificati verificati e non ignorare gli avvisi.",
+    "Negazione di servizio: l'attaccante sommerge il servizio. Difesa: filtri a monte, limiti sulle richieste, capacità extra.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Ascoltare → cifra. Mettersi in mezzo → verifica chi sei davvero (certificati). Bussare a tutte le porte → chiudi quelle inutili. Sommergere → filtra a monte.
+</Callout>
+
+<Say who="assistente">Se ti ricordi cosa vuole ottenere l'attaccante, la difesa viene da sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla Gialli Hotel: riconosci l'attacco dai sintomi e scegli la difesa giusta.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c04-attacchi-rete" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Riconoscere un attacco dal sintomo è metà della difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Scansione: esplora le porte aperte. Sniffing: ascolta il traffico. Man-in-the-middle: si mette in mezzo e può modificare. DoS: sommerge il servizio.
+- Difese: default deny e IDS contro le scansioni; cifratura contro lo sniffing; certificati verificati contro il man-in-the-middle; filtri a monte contro il DoS.
+- Si prova solo su reti proprie o con permesso scritto: l'accesso abusivo è reato (art. 615-ter).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la difesa principale contro lo sniffing?", a: "Cifrare il traffico: HTTPS, VPN, Wi-Fi sicuro" },
+    { q: "Cosa distingue il man-in-the-middle dallo sniffing?", a: "Può anche modificare ciò che passa, non solo ascoltare" },
+    { q: "Cosa vuole ottenere un DoS?", a: "Che il servizio smetta di rispondere" },
+    { q: "Cosa fare davanti a un avviso di certificato non valido?", a: "Fermarsi e non procedere" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: il Wi-Fi. La rete che usiamo tutti, e che quasi nessuno configura bene.</Say>
+</Scene>

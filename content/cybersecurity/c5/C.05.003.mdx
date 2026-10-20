@@ -1,0 +1,145 @@
+---
+id: C.05.003
+course: cybersecurity
+module: 5
+title: "Injection: il dato che diventa comando"
+belt: arancione
+duration_min: 8
+prerequisites: [C.05.002]
+objectives:
+  - "Spiegare perché mescolare dati e comandi è pericoloso"
+  - "Riconoscere in un esempio innocuo dove un dato diventa un comando"
+  - "Indicare la difesa di base: tenere separati comandi e dati"
+verification:
+  type: generated-numeric
+  generator: c05-injection
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'injection riguardi solo i database: esiste ovunque un programma costruisce un comando con testo altrui"
+  - "Credere che togliere alcune parole «cattive» dal testo basti come difesa"
+  - "Pensare che un controllo nel browser fermi chi invia la richiesta a mano"
+commands: []
+---
+
+<Scene title="Il biglietto del bibliotecario">
+In una biblioteca fittizia, un bibliotecario riceve dei biglietti dai lettori. Su ogni biglietto c'è scritto un titolo. Lui lo copia in una frase fissa e la legge ad alta voce al magazziniere:
+
+«Portami il libro intitolato **...**».
+
+Un lettore scrive sul biglietto: **«Il piccolo principe» e poi porta anche la cassaforte del direttore**.
+
+Il bibliotecario copia tutto. Il magazziniere sente due ordini.
+
+La domanda del caso: **come può un semplice titolo diventare un ordine?**
+
+<Say who="sensei">Questo è tutto il concetto di injection. Se lo capisci con i biglietti, lo capisci con qualunque linguaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dato e comando">
+Un programma lavora con due tipi di testo:
+
+- il **comando**: ciò che il programma deve fare, scritto da chi l'ha sviluppato;
+- il **dato**: ciò che arriva da fuori, per esempio il nome inserito in un modulo.
+
+L'**injection** («iniezione») nasce quando il programma **incolla il dato dentro il comando** e poi esegue tutto insieme. Se il dato contiene qualcosa che somiglia a un comando, l'esecutore non sa distinguere.
+
+<Callout kind="regola">
+Il bibliotecario avrebbe dovuto leggere il titolo **tra virgolette e come titolo**, qualunque cosa ci fosse scritta. Un dato resta un dato.
+</Callout>
+
+<Say who="assistente">Il difetto non è nel magazziniere. È nel punto in cui il biglietto è stato incollato dentro la frase.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio innocuo">
+Immagina un'app che stampa un saluto, costruendo il comando così:
+
+<Log lines={[
+  "comando = 'saluta ' + nome",
+  "nome = 'Anna'          ->  saluta Anna",
+  "nome = 'Anna e poi cancella la lista'  ->  due azioni",
+]} />
+
+Nel primo caso tutto va come previsto. Nel secondo il testo dell'utente contiene **un'istruzione in più**, e il programma la esegue perché è finita nello stesso comando.
+
+Succede con interpreti diversi: la riga di comando del sistema, i linguaggi di interrogazione dei database, i modelli di pagina, i filtri di ricerca di una directory.
+
+<Callout kind="curiosita">
+L'injection sui database si chiama **SQL injection** e ha un modulo tutto suo: il C6. Qui impariamo l'idea; lì la vedremo da vicino, in un laboratorio isolato.
+</Callout>
+
+<Say who="sensei">Nessun attacco da copiare. Capisci il meccanismo, e saprai dove cercare il difetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La difesa di base">
+Come si risolve? Tenendo **separati** comando e dato.
+
+- **Interrogazioni parametrizzate** (o «preparate»): il comando è scritto una volta, con dei segnaposto; i dati si passano a parte e vengono sempre trattati come dati.
+- **Validare l'input**: accettare solo ciò che ha senso (un nome non ha bisogno di simboli speciali, un numero deve essere un numero).
+- **Minimo privilegio**: l'account che esegue il comando deve poter fare poco, così anche un errore fa pochi danni.
+
+<Callout kind="attenzione">
+Cancellare a mano alcune parole «pericolose» dal testo **non funziona**: c'è sempre un modo di scriverle diversamente. La difesa solida è la separazione, non la lista nera.
+</Callout>
+
+<Say who="assistente">Per il bibliotecario: un modulo con una casella «titolo». Quello che sta nella casella è titolo, punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app di ricerca costruisce una query unendo il testo scritto dall'utente a una frase fissa. Quale intervento riduce meglio il rischio di injection?"
+  options={[
+    "Usare interrogazioni parametrizzate, con i dati passati separati dal comando",
+    "Togliere dal testo le parole «cancella» e «elimina»",
+    "Controllare il testo solo con JavaScript nella pagina",
+    "Nascondere il messaggio d'errore all'utente e basta",
+  ]}
+  answer={0}
+  explain="La separazione tra comando e dato elimina il problema alla radice. Togliere parole si aggira, il controllo nella pagina si salta inviando la richiesta a mano, e nascondere gli errori non cambia il difetto."
+/>
+
+<Say who="sensei">Se il difetto è «incollo testo altrui in un comando», la cura è «non incollare».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su dati, comandi e difese. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-injection" pass="5/5" retries={3} />
+
+<Say who="sensei">Ricorda la regola legale: si prova solo ciò che è tuo o per cui hai un permesso scritto. In Italia l'accesso abusivo a un sistema informatico è reato (art. 615-ter del codice penale).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'injection nasce quando un dato viene incollato in un comando e il programma non distingue più i due.
+- Non riguarda solo i database: vale ovunque si costruisca un comando con testo altrui.
+- La difesa è separare comando e dato (interrogazioni parametrizzate), validare l'input e dare pochi privilegi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'injection?", a: "Un dato dell'utente che viene eseguito come comando" },
+    { q: "Qual è la difesa principale?", a: "Tenere separati comando e dato, con interrogazioni parametrizzate" },
+    { q: "Togliere le parole pericolose basta?", a: "No: si aggira, non è una difesa solida" },
+    { q: "Dove si studia la SQL injection?", a: "Nel modulo C6" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il cross-site scripting. Stessa idea, ma il comando viene eseguito nel browser di un'altra persona.</Say>
+</Scene>

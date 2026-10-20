@@ -1,0 +1,143 @@
+---
+id: C.05.006
+course: cybersecurity
+module: 5
+title: "Controllo degli accessi rotto"
+belt: verde
+duration_min: 8
+prerequisites: [C.05.005]
+objectives:
+  - "Spiegare che cos'è un IDOR e perché nasce"
+  - "Distinguere autenticazione (chi sei) da autorizzazione (cosa puoi fare)"
+  - "Indicare la difesa: verificare i permessi lato server su ogni richiesta"
+verification:
+  type: generated-numeric
+  generator: c05-access
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere autenticazione e autorizzazione: essere entrati non vuol dire poter vedere tutto"
+  - "Credere che un identificativo difficile da indovinare sostituisca il controllo dei permessi"
+  - "Nascondere un pulsante nella pagina e ritenere così protetta la funzione"
+commands: []
+---
+
+<Scene title="Il numero nell'indirizzo">
+Marta usa il sito di una clinica fittizia. Dopo il login vede il suo referto all'indirizzo:
+
+**clinica.example/referti/5821**
+
+Per curiosità cambia il numero in **5822**. Compare il referto di un'altra persona.
+
+Nessuna password rubata, nessun trucco. Il sito sapeva **chi** era Marta, ma non ha chiesto **di chi** fosse quel referto.
+
+La domanda del caso: **come si impedisce che un utente apra ciò che appartiene a un altro?**
+
+<Say who="sensei">Questo errore è più comune di quanto pensi, ed è in cima alla mappa OWASP. Non serve nessuna abilità per commetterlo, solo distrazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi sei e cosa puoi fare">
+Due domande diverse:
+
+- **Autenticazione**: chi sei? (il login)
+- **Autorizzazione**: che cosa **puoi fare o vedere**?
+
+Il **controllo degli accessi** è l'insieme delle regole di autorizzazione. È «rotto» quando il sito risponde alla prima domanda e **si dimentica della seconda**.
+
+<Callout kind="regola">
+Essere entrati non significa poter vedere tutto. Ogni richiesta va controllata: questo utente ha il diritto di fare **questa** cosa su **questo** oggetto?
+</Callout>
+
+<Say who="assistente">Il portiere ti ha lasciato entrare nel palazzo. Non vuol dire che hai le chiavi di tutti gli appartamenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IDOR: riferimento diretto">
+L'errore del caso si chiama **IDOR** (Insecure Direct Object Reference, «riferimento diretto insicuro a un oggetto»).
+
+Funziona così: l'applicazione identifica un oggetto con un valore che l'utente può vedere e modificare (il numero 5821 nell'URL, un parametro, un campo del modulo) e **non controlla** che l'oggetto appartenga a chi lo chiede.
+
+<Log lines={[
+  "GET /referti/5821   (utente: Marta)   ->  200, referto di Marta",
+  "GET /referti/5822   (utente: Marta)   ->  200, referto di un altro   <-- difetto",
+  "GET /referti/5822   (utente: Marta)   ->  403, accesso negato        <-- corretto",
+]} />
+
+<Callout kind="attenzione">
+Usare identificativi lunghi e casuali al posto dei numeri progressivi rende più difficile **indovinarli**, ma non sostituisce il controllo. Se qualcuno scopre un identificativo, il sito deve comunque rifiutare.
+</Callout>
+
+<Say who="sensei">Un numero difficile da indovinare è una porta nascosta. Il controllo è la serratura. Servono i due, ma conta la serratura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La verifica sta nel server">
+La difesa è una sola idea: **ogni richiesta viene controllata lato server**, con l'identità presa dalla **sessione**, non da ciò che dice il browser.
+
+- «L'utente collegato è il proprietario di questo oggetto?»
+- «Il suo ruolo (cliente, operatore, amministratore) permette questa azione?»
+- Per impostazione predefinita, **nega**: si apre solo ciò che è esplicitamente permesso.
+
+<Callout kind="trucco">
+Non basta nascondere il pulsante «Elimina» agli utenti normali. Se la funzione esiste sul server senza controllo, qualcuno può richiederla direttamente.
+</Callout>
+
+<Say who="assistente">Quando sviluppi o testi, cambia mentalmente il numero nell'URL e chiediti: il server dice di no?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app mostra le fatture all'indirizzo /fatture/310. Lo sviluppatore propone di sostituire i numeri progressivi con codici casuali lunghi e di non fare altro. Basta?"
+  options={[
+    "No: i codici aiutano, ma il server deve comunque verificare che la fattura sia dell'utente collegato",
+    "Sì: un codice casuale rende impossibile accedere alle fatture altrui",
+    "Sì, purché il codice sia nascosto nella pagina",
+    "No: bisogna tornare ai numeri progressivi perché si controllano meglio",
+  ]}
+  answer={0}
+  explain="Un codice casuale rende più difficile indovinare, ma può essere scoperto o condiviso per errore. La difesa vera è il controllo di proprietà fatto dal server a ogni richiesta."
+/>
+
+<Say who="sensei">Prima il controllo. Poi, se vuoi, anche l'identificativo difficile da indovinare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su autorizzazione e IDOR. Hai 3 tentativi, e a ogni tentativo gli scenari cambiano.
+
+<Practice generator="c05-access" pass="5/5" retries={3} />
+
+<Say who="sensei">Cambiare un numero in un indirizzo e guardare dati altrui è accesso abusivo (art. 615-ter c.p.), anche «per curiosità». Si prova solo ciò che è tuo, o con permesso scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Autenticazione dice chi sei; autorizzazione dice cosa puoi fare. Il controllo degli accessi è rotto quando si dimentica la seconda.
+- IDOR: l'app usa un riferimento modificabile dall'utente e non verifica a chi appartiene l'oggetto.
+- Difesa: controllare i permessi sul server a ogni richiesta, negando per impostazione predefinita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un IDOR?", a: "Accesso a un oggetto altrui cambiando un riferimento (per esempio un numero) senza che il server controlli" },
+    { q: "Autenticazione o autorizzazione: «cosa puoi vedere»?", a: "Autorizzazione" },
+    { q: "Un ID casuale lungo risolve tutto?", a: "No: aiuta, ma serve sempre il controllo lato server" },
+    { q: "Nascondere un pulsante protegge la funzione?", a: "No: il server deve comunque rifiutare la richiesta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i difetti che non stanno nel codice, ma nelle impostazioni e negli aggiornamenti.</Say>
+</Scene>

@@ -1,0 +1,180 @@
+---
+id: C.10.006
+course: cybersecurity
+module: 10
+title: "Progetto: il piano di «Rossi & Figli»"
+belt: marrone
+duration_min: 10
+prerequisites: [C.10.005]
+objectives:
+  - "Costruire un piano di sicurezza: inventario, rischi, controlli, accessi, backup"
+  - "Scrivere una procedura essenziale di risposta a un incidente"
+  - "Applicare insieme i concetti dei moduli da C1 a C9 in scenari concreti"
+verification:
+  type: generated-numeric
+  generator: c10-progetto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Comprare strumenti prima di aver capito cosa si deve proteggere"
+  - "Fare i backup ma non provare mai il ripristino"
+  - "Scrivere un piano che nessuno conosce: senza ruoli e numeri di telefono non si usa nell'emergenza"
+commands: []
+---
+
+<Scene title="Il caso: Rossi & Figli">
+**Rossi & Figli** è un'azienda fittizia: un negozio di arredamento con 12 dipendenti. Ha un sito con il catalogo e un modulo per i preventivi, un gestionale con l'elenco dei clienti, un NAS (un disco di rete) con fatture e progetti, tre portatili, un router e il Wi-Fi.
+
+Il titolare, Carlo, ti chiama: «Ho letto di un negozio come il mio che ha perso tutto per colpa di un virus. Voglio un piano. Dimmi da dove cominciare».
+
+Il progetto finale è questo: **costruire il piano di sicurezza di Rossi & Figli**, usando quello che hai imparato in tutto il corso.
+
+<Say who="sensei">Nessuna formula nuova. Qui metti insieme i pezzi: principi, accessi, rete, web, dati, log, risposta agli incidenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passo 1: l'inventario">
+Non si protegge ciò che non si conosce. Il primo passo è l'**inventario**: che cosa abbiamo, dove sta, quanto vale.
+
+<Guided
+  steps={[
+    "Dispositivi: portatili, NAS, router, telefoni di lavoro. Chi li usa? Sono aggiornati?",
+    "Dati: elenco clienti, fatture, progetti, dati dei dipendenti. Quali sono personali (GDPR)? Dove sono salvati?",
+    "Servizi: sito, gestionale, posta elettronica, cloud. Chi ha un account? Chi lo amministra?",
+    "Persone: chi ha accesso a cosa. Chi può cambiare i permessi?",
+  ]}
+/>
+
+<Callout kind="trucco">
+L'inventario è un foglio con quattro colonne: cosa, dove, chi lo usa, quanto è importante. Anche a mano va bene, purché si aggiorni.
+</Callout>
+
+<Say who="assistente">Parti dal dato più importante: l'elenco dei clienti. Se andasse perso o rubato, che cosa accadrebbe?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passo 2: rischi e controlli">
+Per ogni elemento, due domande: **quanto è probabile** che accada qualcosa di brutto? **Quanto danno** farebbe?
+
+Esempi per Rossi & Figli:
+
+- Ransomware sul NAS: probabilità media, impatto **alto** (fermo di giorni).
+- Phishing a un dipendente che dà le credenziali della posta: probabilità **alta**, impatto medio-alto.
+- Furto di un portatile non cifrato: probabilità media, impatto alto (dati dei clienti).
+- Vulnerabilità nel modulo preventivi del sito (per esempio SQL injection): probabilità media, impatto alto.
+
+Si parte dai rischi **alti per probabilità e impatto**: l'ordine conta. Poi, a ogni rischio, un **controllo** che lo riduce:
+
+- **Ransomware**: backup offline, aggiornamenti, antivirus aggiornato, nessun permesso di amministratore per l'uso quotidiano.
+- **Phishing**: formazione breve ogni tanto, filtro della posta, verifica in due passaggi sugli account.
+- **Portatile rubato**: disco cifrato, password del dispositivo, possibilità di cancellarlo da remoto.
+- **Sito vulnerabile**: query parametrizzate, validazione dei dati in ingresso, aggiornamento del software, test su una copia locale.
+- **Rete**: firewall, Wi-Fi con password forte, rete ospiti separata da quella dei dipendenti.
+
+<Callout kind="curiosita">
+La segmentazione conta: se il Wi-Fi dei clienti è la stessa rete del NAS, un ospite curioso o un telefono infetto può vedere i dati dell'azienda.
+</Callout>
+
+<Say who="assistente">Ogni controllo deve rispondere a un rischio dell'elenco. Se non sai quale, non serve ancora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passo 3: gli accessi">
+Chi può fare cosa? Tre regole per Rossi & Figli:
+
+- **Account personali**: niente password condivisa. Ognuno ha il suo, così si sa chi ha fatto cosa.
+- **Privilegio minimo**: chi fa le fatture non ha accesso ai progetti; l'amministratore usa un account normale per il lavoro di tutti i giorni.
+- **Verifica in due passaggi** per posta, gestionale e cloud. Un gestore di password per tutti.
+
+E quando un dipendente se ne va? L'account si disattiva **lo stesso giorno**.
+
+<Quiz
+  question="Tutti i dipendenti di Rossi & Figli usano la stessa password per il gestionale, scritta su un foglietto. Quale intervento migliora di più la situazione?"
+  options={["Account personali con permessi minimi e verifica in due passaggi", "Cambiare la password condivisa ogni anno", "Mettere il foglietto in un cassetto chiuso", "Allungare la password condivisa di due caratteri"]}
+  answer={0}
+  explain="Con una password condivisa non sai chi ha fatto cosa e non puoi togliere l'accesso a uno solo. Cambiarla ogni anno o allungarla non risolve il problema di fondo: gli account devono essere personali."
+/>
+
+<Say who="sensei">Se non sai chi è entrato, non puoi dire chi ha sbagliato. E non puoi neppure indagare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passo 4: backup e privacy">
+**Backup**: la regola 3-2-1. Tre copie, su due supporti diversi, una fuori sede o offline. Il passo che si dimentica: **provare il ripristino**, almeno due volte l'anno. Un backup mai provato è una speranza.
+
+**Privacy (GDPR)**: l'azienda tiene dati dei clienti. Quindi:
+
+- raccoglie solo i dati che servono (minimizzazione) e li cancella quando non servono più;
+- sa dove sono e chi li può vedere;
+- se subisce un data breach, valuta il rischio e, se serve, avvisa il Garante entro 72 ore e le persone coinvolte.
+
+<Callout kind="attenzione">
+Il backup sempre collegato al NAS non salva dal ransomware: cifra anche quello. Serve una copia scollegata, o una copia con cronologia che il ransomware non possa toccare.
+</Callout>
+
+<Say who="assistente">Collega questo passo al primo: l'inventario dice dove stanno i dati, e quindi cosa va copiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Passo 5: se succede davvero">
+Un piano deve dire **che cosa fare quando le cose vanno male**, con ruoli e numeri di telefono scritti prima. Uno schema semplice per Rossi & Figli:
+
+<Guided
+  steps={[
+    "Rilevare: chi nota qualcosa di strano (file che non si aprono, richiesta di riscatto) avvisa subito la persona responsabile della sicurezza.",
+    "Contenere: scollegare dalla rete il computer coinvolto, senza spegnerlo di colpo, e cambiare le password degli account toccati.",
+    "Conservare le prove: foto della schermata, log, non cancellare nulla. Servono per capire cosa è successo.",
+    "Eliminare e ripristinare: pulire o reinstallare, ripristinare dai backup, controllare che l'attacco non si ripeta.",
+    "Comunicare: valutare se avvisare il Garante (entro 72 ore) e i clienti; informare con chiarezza, senza minimizzare.",
+    "Imparare: scrivere cosa è successo e quale controllo avrebbe evitato il danno. Aggiornare il piano.",
+  ]}
+/>
+
+<Callout kind="regola">
+Ogni test si fa solo su ciò che è proprio o con un permesso scritto: verificare il sito dell'azienda va concordato con chi ne è responsabile. In Italia l'accesso abusivo è un reato (art. 615-ter c.p.).
+</Callout>
+
+<Say who="sensei">Nell'emergenza non si inventa. Si segue un foglio scritto quando c'era calma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica finale">
+Ultima prova del corso. Cinque scenari estratti da una banca più ampia, che coprono i moduli da C1 a C9: principi, accessi, rete, web, dati, log, risposta agli incidenti e privacy.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c10-progetto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Qui non si ricordano sigle: si ragiona come chi protegge un'azienda vera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={40}>
+- Un piano di sicurezza parte dall'inventario, poi valuta i rischi (probabilità e impatto), sceglie i controlli e li mette in ordine di priorità.
+- Accessi personali, privilegio minimo, verifica in due passaggi, backup 3-2-1 con ripristino provato e privacy (minimizzazione, avviso entro 72 ore).
+- La risposta a un incidente si scrive prima: rilevare, contenere, conservare le prove, ripristinare, comunicare, imparare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove parte un piano di sicurezza?", a: "Dall'inventario di dispositivi, dati, servizi e persone" },
+    { q: "Come si ordinano le priorità?", a: "Per probabilità e impatto del rischio" },
+    { q: "Che cos'è la regola dei backup 3-2-1?", a: "Tre copie, due supporti, una offline o fuori sede; e il ripristino va provato" },
+    { q: "Qual è la prima azione dopo aver notato un ransomware?", a: "Isolare il computer dalla rete e avvisare il responsabile, conservando le prove" },
+  ]}
+/>
+
+<Say who="sensei">Hai finito il corso. Sai ragionare, e questo vale più di qualsiasi strumento. Ora ti aspettano i prossimi passi: risorse, certificazioni e un laboratorio tuo.</Say>
+</Scene>
