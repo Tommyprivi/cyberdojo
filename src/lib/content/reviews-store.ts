@@ -25,6 +25,11 @@ export function readReviews(dir?: string): Reviews {
   }
 }
 
+/** Per le scritture: se il file c'è ma è illeggibile si rifiuta, invece di sovrascriverlo e perdere le note. */
+function readStrict(file: string): unknown {
+  return existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
+}
+
 // Le azioni arrivano una alla volta: si accodano per non perdere modifiche (leggi, cambia, scrivi).
 let queue: Promise<unknown> = Promise.resolve();
 
@@ -34,7 +39,7 @@ export function updateReview(
   dir?: string,
 ): Promise<ReviewEntry> {
   const run = queue.then(() => {
-    const all = readReviews(dir);
+    const all = parseReviews(readStrict(reviewsFile(dir)));
     const entry = applyPatch(all[key], patch, new Date());
     const sorted = Object.fromEntries(Object.entries({ ...all, [key]: entry }).sort(([a], [b]) => a.localeCompare(b)));
     const file = reviewsFile(dir);
@@ -70,7 +75,7 @@ export function updateQuestionReview(
   dir?: string,
 ): Promise<QuestionEntry> {
   const run = qQueue.then(() => {
-    const all = readQuestionReviews(dir);
+    const all = parseQuestionReviews(readStrict(questionReviewsFile(dir)));
     const entry = applyQuestionPatch(all[id], patch, new Date());
     const file = questionReviewsFile(dir);
     mkdirSync(path.dirname(file), { recursive: true });

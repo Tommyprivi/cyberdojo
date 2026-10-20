@@ -3,6 +3,7 @@ import {
   applyPatch,
   emailReviewInput,
   exportNotes,
+  gfxReviewInput,
   isReadyToPublish,
   lessonReviewInput,
   mergeReviewIntoData,
@@ -122,4 +123,17 @@ describe("exportNotes", () => {
     expect(t).toContain("Titoli piccoli");
   });
   it("senza note lo dice", () => expect(exportNotes([], {})).toMatch(/Nessuna nota/));
+});
+
+describe("sicurezza delle chiavi", () => {
+  it("accetta gli id grafici del catalogo e rifiuta caratteri strani", () => {
+    expect(gfxReviewInput.safeParse({ id: "colore:primary-fg" }).success).toBe(true);
+    expect(gfxReviewInput.safeParse({ id: "immagine:/img/home.jpg" }).success).toBe(true);
+    expect(gfxReviewInput.safeParse({ id: "x\n<script>" }).success).toBe(false);
+  });
+  it("parseReviews ignora __proto__ nel file", () => {
+    const out = parseReviews(JSON.parse('{"__proto__":{"approved":true},"F.01.001":{"approved":true}}'));
+    expect(Object.getPrototypeOf(out)).toBe(Object.prototype);
+    expect(Object.keys(out)).toEqual(["F.01.001"]);
+  });
 });

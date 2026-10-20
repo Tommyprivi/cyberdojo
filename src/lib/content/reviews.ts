@@ -69,6 +69,7 @@ export function parseReviews(raw: unknown): Reviews {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
   const out: Reviews = {};
   for (const [k, v] of Object.entries(raw)) {
+    if (k === "__proto__" || k === "constructor" || k === "prototype") continue;
     const p = reviewEntry.safeParse(v);
     if (p.success) out[k] = p.data;
   }
@@ -114,7 +115,7 @@ export const sceneReviewInput = z
   .strict();
 
 /** Elemento grafico (colore, font, componente, immagine). L'esistenza dell'id si controlla nell'azione. */
-export const GFX_ID = /^[w:./ -]{1,120}$/;
+export const GFX_ID = /^[\w:./ -]{1,120}$/;
 export const gfxReviewInput = z
   .object({
     id: z.string().regex(GFX_ID, "Elemento sconosciuto"),
