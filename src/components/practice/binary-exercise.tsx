@@ -30,7 +30,7 @@ export function BinaryExercise() {
     () => true,
     () => false,
   );
-  return isClient ? <Exercise /> : <p className="mt-6">Preparo gli esercizi…</p>;
+  return isClient ? <Exercise /> : <p className="p-5">Preparo gli esercizi…</p>;
 }
 
 function Exercise() {
@@ -80,9 +80,9 @@ function Exercise() {
   );
 
   return (
-    <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
-      {/* Pannello: sopra su telefono, fisso a destra su PC */}
-      <aside className="grid gap-4 lg:rounded-3xl lg:border lg:border-border lg:bg-surface lg:shadow-[var(--shadow)] lg:sticky lg:top-4 lg:order-2 lg:p-5">
+    <div className="grid h-full min-h-0 md:grid-cols-[minmax(0,1fr)_22rem]">
+      {/* Pannello di controllo: colonna fissa a destra, con scorrimento proprio */}
+      <aside className="grid content-start gap-4 overflow-y-auto border-l border-border bg-surface p-5 md:order-2">
       <div role="radiogroup" aria-label="Difficoltà" className="grid grid-cols-3 gap-2">
         {LEVELS.map((l) => (
           <button
@@ -91,7 +91,7 @@ function Exercise() {
             role="radio"
             aria-checked={level === l.id}
             onClick={() => fresh(l.id)}
-            className={`min-h-12 rounded-2xl border-2 px-3 py-2 font-bold ${
+            className={`min-h-12 rounded-lg border-2 px-3 py-2 font-bold ${
               level === l.id ? "border-primary bg-primary text-primary-fg" : "border-border bg-surface"
             }`}
           >
@@ -105,19 +105,22 @@ function Exercise() {
         {xpSpent > 0 && ` · XP spesi in aiuti: ${xpSpent}`}
       </p>
       {level !== "severo" && (
-        <div className="rounded-2xl bg-surface-muted p-3">
+        <div className="rounded-lg bg-surface-muted p-3">
           <p className="text-sm font-bold">Trucco: parti da 1 a destra e raddoppia</p>
           <p className="mt-1 font-mono text-sm">
             {level === "facile" ? "8 · 4 · 2 · 1" : "128 · 64 · 32 · 16 · 8 · 4 · 2 · 1"}
           </p>
         </div>
       )}
-      <div className="hidden flex-wrap gap-3 lg:flex">{actions}</div>
-      <div className="hidden lg:block">{verdict}</div>
+      <div className="flex flex-wrap gap-3">{actions}</div>
+      <div>{verdict}</div>
+      <p className="text-sm text-muted">
+        Stato e XP non vengono ancora salvati: arriveranno con l&apos;account.
+      </p>
       </aside>
 
-      <div className="grid gap-5 lg:order-1">
-      <ol className="grid gap-4 xl:grid-cols-2">
+      <div className="min-h-0 overflow-y-auto p-5 md:order-1">
+      <ol className="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
         {questions.map((q, i) => {
           const diag = live ? diagnoseBinaryToDecimal(q.data, answers[i] ?? "") : null;
           const shown = stepsShown[i] ?? 0;
@@ -143,7 +146,7 @@ function Exercise() {
               {level !== "severo" && (
                 <div className="mt-2 grid gap-1">
                   {steps.slice(0, shown).map((s, k) => (
-                    <p key={k} className="pop rounded-xl bg-surface-muted px-3 py-2 text-sm">{k + 1}. {s}</p>
+                    <p key={k} className="pop rounded-lg bg-surface-muted px-3 py-2 text-sm">{k + 1}. {s}</p>
                   ))}
                   {shown < steps.length && (
                     <button
@@ -163,12 +166,6 @@ function Exercise() {
           );
         })}
       </ol>
-
-      <div className="flex flex-wrap gap-3 lg:hidden">{actions}</div>
-      <div className="lg:hidden">{verdict}</div>
-      <p className="text-sm text-muted">
-        Stato e XP non vengono ancora salvati: arriveranno con l&apos;account.
-      </p>
       </div>
     </div>
   );

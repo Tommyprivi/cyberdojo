@@ -101,7 +101,7 @@ export function Calculator({ state, onChange }: { state: CalcState; onChange: (s
             </p>
             <div className="grid gap-2 font-mono sm:grid-cols-4" aria-hidden>
               {info.bits.map((octet, o) => (
-                <div key={o} className="flex justify-center gap-0.5 rounded-xl bg-surface-muted p-1.5">
+                <div key={o} className="flex justify-center gap-0.5 rounded-md bg-surface-muted p-1.5">
                   {[...octet].map((bit, i) => {
                     const isNetwork = o * 8 + i < info.prefix;
                     return (
@@ -124,10 +124,10 @@ export function Calculator({ state, onChange }: { state: CalcState; onChange: (s
             </p>
           </div>
 
-          <div className="rounded-2xl border-2 border-border p-3">
+          <div className="rounded-lg border-2 border-border p-3">
             <p className="flex flex-wrap items-center gap-2">
               <span className="font-semibold">Tipo</span>
-              <span className={`rounded-full px-3 py-0.5 text-sm font-bold ${SCOPE_STYLE[kind.scope]}`}>{kind.label}</span>
+              <span className={`rounded-md px-3 py-0.5 text-sm font-bold ${SCOPE_STYLE[kind.scope]}`}>{kind.label}</span>
             </p>
             <p className="mt-1.5 text-muted">{kind.explanation}</p>
           </div>

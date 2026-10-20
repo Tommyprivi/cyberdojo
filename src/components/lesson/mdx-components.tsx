@@ -24,8 +24,8 @@ export const lessonComponents = {
   Log,
   Flashcards,
   Video,
-  p: (p: P<"p">) => <p {...p} className="leading-relaxed" />,
-  ul: (p: P<"ul">) => <ul {...p} className="grid list-disc gap-1 pl-6" />,
+  p: (p: P<"p">) => <p {...p} className="max-w-[70ch] leading-relaxed" />,
+  ul: (p: P<"ul">) => <ul {...p} className="grid max-w-[70ch] list-disc gap-1 pl-6" />,
   strong: (p: P<"strong">) => <strong {...p} className="font-extrabold" />,
   table: (p: P<"table">) => (
     <div className="overflow-x-auto">

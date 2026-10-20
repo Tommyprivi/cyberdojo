@@ -1,11 +1,15 @@
 import { BookIcon, DumbbellIcon, MapIcon } from "./icons";
+import { UserIcon } from "./nav-icons";
 
-/** Voci di navigazione condivise tra barra in basso (telefono) e barra laterale (PC). */
+/** Voci di navigazione del sito pubblico (intestazione). */
 export const NAV_ITEMS = [
   { href: "/percorso", label: "Percorso", Icon: MapIcon },
   { href: "/pratica", label: "Laboratorio", Icon: DumbbellIcon },
   { href: "/corsi", label: "Corsi", Icon: BookIcon },
 ] as const;
+
+/** Voci dell'area riservata: barra in basso (telefono) e barra laterale (PC). Con il Profilo. */
+export const APP_NAV = [...NAV_ITEMS, { href: "/profilo", label: "Profilo", Icon: UserIcon }] as const;
 
 export function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);

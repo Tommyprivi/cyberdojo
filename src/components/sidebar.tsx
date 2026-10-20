@@ -3,45 +3,50 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/config";
-import { isActive, NAV_ITEMS } from "./nav-items";
+import { APP_NAV, isActive } from "./nav-items";
 import { Seal } from "./seal";
 import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 
 /**
  * Barra laterale: l'impianto del sito su PC. Fissa a sinistra, sempre a vista.
- * Su telefono non c'è (si usano l'intestazione e la barra in basso).
+ * Su telefono e tablet non c'è (si usano l'intestazione compatta e la barra in basso).
  */
 export function Sidebar() {
   const pathname = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-dvh flex-col gap-6 border-r border-border bg-surface px-4 py-6 lg:flex">
-      <Link href="/" className="flex items-center gap-3 px-2 font-display text-2xl font-bold">
+    <aside className="sticky top-0 hidden h-dvh flex-col gap-8 border-r border-border bg-surface px-5 py-7 lg:flex">
+      <Link href="/" className="flex items-center gap-3 px-1">
         <Seal size={40} />
-        {SITE.name}
+        <span className="grid leading-tight">
+          <span className="font-display text-2xl font-bold">{SITE.name}</span>
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-muted">Scuola di cybersecurity</span>
+        </span>
       </Link>
 
       <nav aria-label="Navigazione principale" className="grid gap-1">
-        {NAV_ITEMS.map(({ href, label, Icon }) => {
+        <p className="mb-1 px-3 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-muted">Studio</p>
+        {APP_NAV.map(({ href, label, Icon }) => {
           const active = isActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-11 items-center gap-3 rounded-lg border-l-4 px-3 font-semibold ${
-                active ? "border-accent bg-surface-muted" : "border-transparent text-muted hover:bg-surface-muted hover:text-foreground"
+              className={`relative flex min-h-11 items-center gap-3 rounded-md px-3 font-semibold transition-colors ${
+                active ? "bg-surface-muted text-foreground" : "text-muted hover:bg-surface-muted hover:text-foreground"
               }`}
             >
-              <Icon width={20} height={20} />
+              {active && <span aria-hidden className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-accent" />}
+              <Icon width={20} height={20} className={active ? "text-primary" : ""} />
               {label}
             </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto grid gap-3 border-t border-border pt-4">
-        <UserMenu />
+      <div className="mt-auto grid gap-3 border-t border-border pt-5">
+        <UserMenu variant="card" />
         <ThemeToggle />
       </div>
     </aside>

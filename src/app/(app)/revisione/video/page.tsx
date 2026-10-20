@@ -46,6 +46,7 @@ export default function VideoReview() {
       <header className="dossier grid gap-3 p-6">
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Strumento interno · non indicizzato</p>
         <h1 className="font-display text-3xl font-semibold">Revisione dei video</h1>
+        <p><a href="/revisione" className="font-semibold text-primary underline">← Torna al centro di revisione</a></p>
         <p className="max-w-3xl text-muted">
           Due candidati per modulo, scelti tra canali didattici italiani (in alternativa inglesi, marcati EN). Ogni video
           è stato verificato con YouTube: esiste, l&apos;incorporamento è attivo e il canale coincide. Resta da fare una

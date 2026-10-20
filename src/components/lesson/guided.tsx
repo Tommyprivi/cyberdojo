@@ -14,9 +14,9 @@ export function Guided({ steps }: { steps: Step[] }) {
         {steps.slice(0, shown).map((raw, i) => {
           const s = typeof raw === "string" ? { text: raw } : raw;
           return (
-            <li key={i} className="pop grid gap-2 rounded-2xl border-2 border-border bg-surface-muted p-3">
+            <li key={i} className="pop grid gap-2 rounded-lg border border-border bg-surface-muted p-3">
               <div className="flex gap-3">
-                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary font-bold text-primary-fg">
+                <span className="grid size-8 shrink-0 place-items-center rounded-md font-mono bg-primary font-bold text-primary-fg">
                   {i + 1}
                 </span>
                 <span className="pt-0.5">{s.text}</span>

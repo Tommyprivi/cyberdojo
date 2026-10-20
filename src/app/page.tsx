@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Seal } from "@/components/seal";
 import { SiteFooter } from "@/components/site-footer";
@@ -61,8 +61,8 @@ export default function Home() {
       <SiteHeader wide />
       <main className="flex-1">
         {/* Apertura */}
-        <section className="mx-auto grid w-full max-w-6xl gap-10 px-4 pb-16 pt-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14 lg:px-8 lg:pb-24 lg:pt-16">
-          <div className="grid gap-6">
+        <section className="grid lg:min-h-[calc(100dvh-4.5rem)] lg:grid-cols-2">
+          <div className="grid content-center gap-6 px-4 pb-12 pt-10 lg:px-14 lg:py-16 xl:px-24">
             <p className="font-mono text-sm font-bold uppercase tracking-widest text-accent">Scuola di cybersecurity · gratis · in italiano</p>
             <h1 className="font-display text-5xl font-bold leading-[1.04] lg:text-6xl">
               Impara la sicurezza informatica <span className="text-primary">risolvendo casi veri.</span>
@@ -80,11 +80,9 @@ export default function Home() {
               <li>✓ Dati esportabili e cancellabili</li>
             </ul>
           </div>
-          <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-surface-muted">
-              <Image src="/img/corsi/prossimi-passi.jpg" alt="" fill priority sizes="(min-width: 1024px) 560px, 100vw" className="object-cover" />
-            </div>
-            <div className="dossier absolute -bottom-6 left-4 right-4 grid gap-1 p-4 sm:left-auto sm:right-[-1.5rem] sm:w-72">
+          <div className="relative min-h-[320px] lg:min-h-0">
+            <Image src="/img/corsi/prossimi-passi.jpg" alt="" fill priority quality={95} sizes="50vw" className="object-cover" />
+            <div className="dossier absolute bottom-6 left-4 right-4 grid gap-1 p-4 sm:left-auto sm:right-8 sm:w-72 lg:bottom-10 lg:right-14">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Caso F.05.003</p>
@@ -99,7 +97,7 @@ export default function Home() {
 
         {/* Numeri */}
         <section aria-label="In numeri" className="border-y border-border bg-surface-muted">
-          <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 lg:grid-cols-4 lg:px-8">
+          <dl className="mx-auto grid max-w-[1680px] grid-cols-2 gap-6 px-4 py-8 lg:grid-cols-4 lg:px-14">
             {[
               [String(COURSES.length), "corsi in ordine"],
               [String(modules), "moduli"],
@@ -115,7 +113,7 @@ export default function Home() {
         </section>
 
         {/* Specialità */}
-        <section aria-labelledby="specialita" className="mx-auto w-full max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+        <section aria-labelledby="specialita" className="mx-auto w-full max-w-[1680px] px-4 py-16 lg:px-14 lg:py-24">
           <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Il nostro metodo</p>
           <h2 id="specialita" className="mt-1 max-w-2xl font-display text-3xl font-bold lg:text-4xl">Cosa ci rende diversi da un corso di video</h2>
           <ul className="mt-10 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
@@ -130,7 +128,7 @@ export default function Home() {
 
         {/* Corsi */}
         <section aria-labelledby="corsi" className="border-t border-border bg-surface-muted">
-          <div className="mx-auto w-full max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+          <div className="mx-auto w-full max-w-[1680px] px-4 py-16 lg:px-14 lg:py-24">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Cosa si studia</p>
             <h2 id="corsi" className="mt-1 font-display text-3xl font-bold lg:text-4xl">Due corsi, un solo percorso</h2>
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -157,7 +155,7 @@ export default function Home() {
         </section>
 
         {/* Come funziona una lezione */}
-        <section aria-labelledby="lezione" className="mx-auto w-full max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+        <section aria-labelledby="lezione" className="mx-auto w-full max-w-[1680px] px-4 py-16 lg:px-14 lg:py-24">
           <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Come funziona</p>
           <h2 id="lezione" className="mt-1 font-display text-3xl font-bold lg:text-4xl">Una lezione, in quattro passi</h2>
           <ol className="mt-10 grid gap-8 md:grid-cols-4">
@@ -173,7 +171,7 @@ export default function Home() {
 
         {/* Cosa è incluso + progetti */}
         <section aria-labelledby="incluso" className="border-t border-border">
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 py-16 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+          <div className="mx-auto grid w-full max-w-[1680px] gap-12 px-4 py-16 lg:grid-cols-2 lg:gap-16 lg:px-14 lg:py-24">
             <div>
               <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Tutto compreso</p>
               <h2 id="incluso" className="mt-1 font-display text-3xl font-bold lg:text-4xl">Cosa trovi nei corsi</h2>
@@ -204,7 +202,7 @@ export default function Home() {
 
         {/* Cinture */}
         <section aria-labelledby="cinture" className="border-t border-border bg-surface-muted">
-          <div className="mx-auto w-full max-w-6xl px-4 py-16 lg:px-8">
+          <div className="mx-auto w-full max-w-[1680px] px-4 py-16 lg:px-14">
             <h2 id="cinture" className="font-display text-3xl font-bold lg:text-4xl">Sette cinture. Nessuna regalata.</h2>
             <p className="mt-2 max-w-2xl text-muted">Si sale solo superando la prova pratica. Il Sensei è severo, ma ti dice sempre cosa migliorare.</p>
             <ol className="mt-8 grid grid-cols-7 overflow-hidden rounded-md border border-belt-outline">
@@ -240,7 +238,7 @@ export default function Home() {
 
         {/* Chiusura */}
         <section className="bg-deep text-deep-fg">
-          <div className="mx-auto grid max-w-6xl gap-6 px-4 py-16 text-center lg:px-8">
+          <div className="mx-auto grid max-w-[1680px] gap-6 px-4 py-16 text-center lg:px-14">
             <h2 className="font-display text-3xl font-bold lg:text-4xl">Il primo caso ti aspetta.</h2>
             <p className="mx-auto max-w-xl opacity-80">Registrarti richiede un minuto. La prima lezione ne richiede otto.</p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -254,3 +252,5 @@ export default function Home() {
     </>
   );
 }
+
+

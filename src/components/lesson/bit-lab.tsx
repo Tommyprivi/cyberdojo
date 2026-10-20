@@ -13,7 +13,7 @@ export function BitLab({ target }: { target?: number }) {
   const hit = target !== undefined && total === target;
 
   return (
-    <div className="my-2 grid gap-4 rounded-3xl border-2 border-border bg-surface-muted p-4">
+    <div className="my-2 grid gap-4 rounded-lg border border-border bg-surface-muted p-4">
       {target !== undefined && (
         <p className="text-lg">
           Sfida: accendi i bit giusti per ottenere <strong className="font-mono text-primary">{target}</strong>.
@@ -27,10 +27,10 @@ export function BitLab({ target }: { target?: number }) {
               aria-pressed={bits[i] === 1}
               aria-label={`Bit di peso ${w}: ${bits[i] ? "acceso" : "spento"}`}
               onClick={() => setBits((b) => b.map((v, j) => (j === i ? 1 - v : v)))}
-              className={`aspect-square rounded-2xl font-mono text-2xl font-bold transition-colors sm:text-3xl ${
+              className={`aspect-square rounded-lg font-mono text-2xl font-bold transition-colors sm:text-3xl ${
                 bits[i]
-                  ? "bg-primary text-primary-fg shadow-[0_4px_0_var(--primary-edge)]"
-                  : "border-2 border-border bg-surface text-muted shadow-[0_4px_0_var(--border)]"
+                  ? "bg-primary text-primary-fg"
+                  : "border border-border bg-surface text-muted"
               }`}
             >
               {bits[i]}

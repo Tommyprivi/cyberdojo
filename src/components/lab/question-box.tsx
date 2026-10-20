@@ -32,7 +32,7 @@ export function QuestionBox({
               type="button"
               onClick={() => onSubmit(o)}
               aria-pressed={selected === undefined ? undefined : selected === o}
-              className={`min-h-11 rounded-xl border-2 px-3 py-2 text-left font-semibold hover:bg-surface-muted ${
+              className={`min-h-11 rounded-md border-2 px-3 py-2 text-left font-semibold hover:bg-surface-muted ${
                 selected === o ? "border-primary bg-surface-muted" : "border-border bg-surface"
               }`}
             >

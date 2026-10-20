@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import { AccountActions } from "@/components/account-actions";
+import { BoltIcon, FlameIcon } from "@/components/icons";
+import { Mascot } from "@/components/mascot";
+import { BeltArt, MedalArt, StreakCalendar } from "@/components/profilo/graphics";
+import { ProfileTabs } from "@/components/profilo/profile-tabs";
 import { ReminderSettings } from "@/components/reminder-settings";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { SignOutButton } from "@/components/user-menu";
+import { loadCatalog } from "@/lib/content/catalog";
 import { displayName } from "@/lib/display-name";
 import { GOALS } from "@/lib/profile-options";
+import { levelOf, medalsFor } from "@/lib/progress/profile-stats";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 
@@ -11,23 +19,51 @@ export const metadata: Metadata = { title: "Profilo", robots: { index: false } }
 
 export default function ProfiloPage() {
   return (
-    <div className="mx-auto grid max-w-2xl gap-6">
-      <h1 className="font-display text-3xl font-semibold">Il tuo profilo</h1>
-      <Suspense fallback={<div className="h-64 rounded-3xl bg-surface-muted" aria-busy="true" />}>
-        <ProfiloContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div className="h-96 rounded-lg bg-surface-muted" aria-busy="true" aria-label="Carico il profilo" />}>
+      <ProfiloContent />
+    </Suspense>
   );
 }
 
+const Eyebrow = ({ children, className = "text-muted" }: { children: ReactNode; className?: string }) => (
+  <h2 className={`font-mono text-xs font-bold uppercase tracking-[0.2em] ${className}`}>{children}</h2>
+);
+
+const Panel = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
+  <section className={`rounded-lg border border-border bg-surface ${className}`}>{children}</section>
+);
+
+/** Il Sensei commenta i tuoi numeri: severo ma caldo. */
+function senseiSays(lessons: number, streak: number) {
+  if (lessons === 0) return "Non hai ancora aperto nessun caso. Comincia: ti aspetto.";
+  if (streak >= 7) return "Sette giorni di fila. Il dojo ti riconosce.";
+  if (streak >= 3) return "Tre giorni e oltre. L'abitudine sta mettendo radici.";
+  if (streak >= 1) return "La serie è accesa. Domani non saltare.";
+  return "La serie si è spenta. Si riaccende con una lezione.";
+}
+
 async function ProfiloContent() {
-  const { user, profile, completed, xp, streak } = await requireMember("/profilo");
-  const today = localDay(new Date(), profile.timezone);
+  const { user, profile, completed, completedAt, xp, streak } = await requireMember("/profilo");
+  const tz = profile.timezone;
+  const today = localDay(new Date(), tz);
   const goal = GOALS.find((g) => g.id === profile.goal)?.label ?? "—";
+  const name = displayName(user);
+  const streakNow = effectiveStreak(streak, today);
+  const lvl = levelOf(xp);
+
+  // Cintura gialla = completare il primo modulo di Fondamenta (se non ha lezioni ancora, tutte quelle di Fondamenta).
+  const lessons = loadCatalog().filter((l) => l.course === "fondamenta");
+  const first = lessons.filter((l) => l.module === 1);
+  const pool = first.length ? first : lessons;
+  const beltDoneCount = pool.filter((l) => completed.has(l.id)).length;
+  const beltDone = pool.length > 0 && beltDoneCount === pool.length;
+  const beltPct = pool.length ? Math.round((beltDoneCount / pool.length) * 100) : 0;
+
+  const doneDays = new Set([...completedAt.values()].map((d) => localDay(d, tz)));
+  const medals = medalsFor({ xp, lessons: completed.size, bestStreak: streak.best, beltDone });
+  const unlocked = medals.filter((m) => m.unlocked).length;
 
   const rows: [string, string][] = [
-    ["Nome", displayName(user)],
-    ["Email", user.email],
     ["Fascia d'età", profile.ageBand === "41+" ? "41 anni o più" : `${profile.ageBand ?? "—"} anni`],
     ["Obiettivo", goal],
     ["Tempo al giorno", `${profile.dailyMinutes ?? "—"} minuti`],
@@ -35,54 +71,175 @@ async function ProfiloContent() {
     ["Fuso orario", profile.timezone],
   ];
 
-  return (
-    <>
-      <section className="card grid gap-4 p-5" aria-label="I tuoi numeri">
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            ["XP", String(xp)],
-            ["Lezioni completate", String(completed.size)],
-            ["Serie", String(effectiveStreak(streak, today))],
-            ["Record", String(streak.best)],
-          ].map(([k, v]) => (
-            <div key={k} className="rounded-2xl bg-surface-muted p-3 text-center">
-              <dt className="text-sm text-muted">{k}</dt>
-              <dd className="text-2xl font-extrabold">{v}</dd>
+  const tabs = [
+    {
+      id: "dati",
+      label: "Dati",
+      content: (
+        <div className="grid gap-4">
+          <dl className="grid grid-cols-2 gap-2">
+            <div className="col-span-2 rounded-md border border-border bg-background p-3">
+              <dt className="font-mono text-[0.6875rem] uppercase tracking-widest text-muted">Email</dt>
+              <dd className="break-all font-semibold">{user.email}</dd>
             </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="card p-5" aria-labelledby="dati">
-        <h2 id="dati" className="mb-3 font-display text-xl font-semibold">I tuoi dati</h2>
-        <dl className="grid gap-2">
-          {rows.map(([k, v]) => (
-            <div key={k} className="flex flex-wrap justify-between gap-2 border-b border-border pb-2 last:border-0">
-              <dt className="text-muted">{k}</dt>
-              <dd className="font-semibold">{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="card grid gap-3 p-5" aria-labelledby="promemoria">
-        <h2 id="promemoria" className="font-display text-xl font-semibold">Promemoria di studio</h2>
+            {rows.map(([k, v]) => (
+              <div key={k} className="rounded-md border border-border bg-background p-3">
+                <dt className="font-mono text-[0.6875rem] uppercase tracking-widest text-muted">{k}</dt>
+                <dd className="break-words font-semibold">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-background p-3">
+            <p>
+              <span className="block font-semibold">Tema</span>
+              <span className="block text-sm text-muted">Chiaro, scuro o del dispositivo.</span>
+            </p>
+            <ThemeToggle />
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "promemoria",
+      label: "Promemoria",
+      content: (
         <ReminderSettings
           initialEnabled={profile.reminderEmail}
           initialHour={profile.reminderHour}
           emailVerified={user.emailVerified}
           email={user.email}
         />
-      </section>
+      ),
+    },
+    {
+      id: "diritti",
+      label: "Diritti",
+      content: (
+        <div className="grid gap-3">
+          <p className="text-muted">
+            Puoi scaricare tutto ciò che sappiamo di te, o cancellare l&apos;account. Non conserviamo la tua data di nascita: solo la fascia d&apos;età.
+          </p>
+          <AccountActions email={user.email} />
+        </div>
+      ),
+    },
+  ];
 
-      <section className="card grid gap-3 p-5" aria-labelledby="diritti">
-        <h2 id="diritti" className="font-display text-xl font-semibold">I tuoi diritti sui dati</h2>
-        <p className="text-muted">
-          Puoi scaricare tutto ciò che sappiamo di te, o cancellare l&apos;account. Non conserviamo la tua data di
-          nascita: solo la fascia d&apos;età.
-        </p>
-        <AccountActions email={user.email} />
-      </section>
-    </>
+  return (
+    <div className="grid content-start gap-4 lg:h-full lg:grid-cols-2 lg:gap-5 xl:grid-cols-[20rem_minmax(0,1fr)_22rem] xl:grid-rows-1">
+      {/* Colonna 1: tu, il livello, la cintura */}
+      <div className="grid content-start gap-4 lg:gap-5 xl:min-h-0 xl:grid-rows-[auto_minmax(0,1fr)]">
+        <Panel className="grid gap-4 p-5">
+          <div className="flex items-center gap-4">
+            <Mascot size={104} mood={streakNow > 0 ? "happy" : "stern"} animate className="shrink-0" />
+            <div className="min-w-0">
+              <Eyebrow className="text-accent">Profilo</Eyebrow>
+              <p className="truncate font-display text-3xl font-bold leading-tight">{name}</p>
+              <p className="mt-1 inline-flex items-center gap-1.5 rounded-md bg-deep px-2 py-1 font-mono text-xs font-bold text-deep-fg">
+                <BoltIcon width={14} height={14} /> Livello {lvl.level} · {lvl.name}
+              </p>
+            </div>
+          </div>
+          <p className="relative rounded-md border border-border bg-background px-3 py-2.5 text-sm before:absolute before:-top-1.5 before:left-8 before:size-3 before:rotate-45 before:border-l before:border-t before:border-border before:bg-background">
+            <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-widest text-muted">Sensei</span>
+            <br />
+            {senseiSays(completed.size, streakNow)}
+          </p>
+          <div className="grid gap-1.5">
+            <div className="flex items-baseline justify-between font-mono text-xs">
+              <span className="font-bold">{xp} XP</span>
+              <span className="text-muted">
+                prossimo livello a {lvl.to}
+              </span>
+            </div>
+            <div
+              role="progressbar"
+              aria-label="Esperienza verso il prossimo livello"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={lvl.pct}
+              className="relative h-3 overflow-hidden rounded-full bg-surface-muted"
+            >
+              <div className="shimmer relative h-full overflow-hidden rounded-full bg-primary transition-[width]" style={{ width: `${Math.max(lvl.pct, 3)}%` }} />
+            </div>
+          </div>
+        </Panel>
+
+        <Panel className="grid content-center gap-3 p-5">
+          <Eyebrow>La tua cintura</Eyebrow>
+          <BeltArt color="white" className="h-auto w-full max-w-64 justify-self-center" />
+          <p className="text-center font-display text-xl font-bold">Cintura bianca</p>
+          <div className="grid gap-1.5">
+            <div className="flex justify-between font-mono text-xs text-muted">
+              <span>Verso la gialla: modulo F1</span>
+              <span>
+                {beltDoneCount}/{pool.length}
+              </span>
+            </div>
+            <div
+              role="progressbar"
+              aria-label="Avanzamento verso la cintura gialla"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={beltPct}
+              className="h-2 overflow-hidden rounded-full bg-surface-muted"
+            >
+              <div className="h-full rounded-full bg-belt-yellow" style={{ width: `${beltPct}%` }} />
+            </div>
+          </div>
+        </Panel>
+      </div>
+
+      {/* Colonna 2: serie e medaglie */}
+      <div className="grid content-start gap-4 lg:gap-5 xl:min-h-0 xl:grid-rows-[auto_minmax(0,1fr)]">
+        <Panel className="grid gap-4 p-5">
+          <div className="flex items-center gap-4">
+            <span className={`grid size-20 shrink-0 place-items-center rounded-lg ${streakNow > 0 ? "bg-accent/15 text-accent" : "bg-surface-muted text-muted"}`}>
+              <FlameIcon width={48} height={48} className={streakNow > 0 ? "flicker" : ""} />
+            </span>
+            <div>
+              <Eyebrow>Serie</Eyebrow>
+              <p className="font-mono text-4xl font-bold leading-none">
+                {streakNow} <span className="font-sans text-base font-semibold text-muted">{streakNow === 1 ? "giorno" : "giorni"}</span>
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Record {streak.best}
+                {streak.freezes > 0 && ` · ${streak.freezes} ${streak.freezes === 1 ? "congelamento" : "congelamenti"} di scorta`}
+              </p>
+            </div>
+          </div>
+          <StreakCalendar today={today} doneDays={doneDays} />
+        </Panel>
+
+        <Panel className="flex min-h-0 flex-col gap-4 p-5">
+          <div className="flex items-baseline justify-between">
+            <Eyebrow>Medaglie</Eyebrow>
+            <p className="font-mono text-xs text-muted">
+              {unlocked}/{medals.length} sbloccate
+            </p>
+          </div>
+          <ul className="grid min-h-0 grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-4 xl:overflow-y-auto">
+            {medals.map((m) => (
+              <li key={m.id} className="grid justify-items-center gap-1 text-center">
+                <MedalArt icon={m.icon} unlocked={m.unlocked} size={56} />
+                <p className="text-sm font-semibold leading-tight">{m.label}</p>
+                <p className="text-xs text-muted">{m.unlocked ? "Sbloccata" : m.hint}</p>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+
+      {/* Colonna 3: impostazioni a schede */}
+      <Panel className="flex flex-col overflow-hidden lg:col-span-2 xl:col-span-1 xl:min-h-0">
+        <div className="border-b border-border px-4 py-3">
+          <Eyebrow>Impostazioni</Eyebrow>
+        </div>
+        <ProfileTabs tabs={tabs} />
+        <div className="border-t border-border p-4 lg:hidden">
+          <SignOutButton />
+        </div>
+      </Panel>
+    </div>
   );
 }

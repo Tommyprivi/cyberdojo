@@ -2,6 +2,8 @@ import { readdirSync, readFileSync, existsSync } from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { COURSES } from "./courses";
+import { lessonKey, mergeReviewIntoData } from "./reviews";
+import { readReviews } from "./reviews-store";
 
 // La cartella content/ si legge di proposito a runtime di build: niente tracing dell'intero progetto.
 export const CONTENT_DIR = path.join(/*turbopackIgnore: true*/ process.cwd(), "content");
@@ -29,6 +31,8 @@ export function splitScreens(body: string): string[] {
 
 export function readRawLessons(dir = CONTENT_DIR): RawLesson[] {
   if (!existsSync(dir)) return [];
+  // Le revisioni del titolare (content/revisioni.json) sono la fonte di verità per approved, video.reviewed, human_reviewed.
+  const reviews = readReviews(dir);
   const out: RawLesson[] = [];
   for (const course of COURSES) {
     const courseDir = path.join(/*turbopackIgnore: true*/ dir, course.folder);
@@ -41,7 +45,7 @@ export function readRawLessons(dir = CONTENT_DIR): RawLesson[] {
         const parsed = matter(readFileSync(full, "utf8"));
         out.push({
           file: [course.folder, mod.name, f].join("/"),
-          data: parsed.data,
+          data: mergeReviewIntoData(parsed.data, reviews[lessonKey(String(parsed.data.id))]),
           body: parsed.content,
         });
       }

@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { SITE } from "@/lib/config";
 import { Seal } from "./seal";
 
@@ -10,7 +10,7 @@ const COLS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-surface-muted">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-[1680px] gap-10 px-4 py-12 lg:grid-cols-[1.4fr_1fr_1fr] lg:px-14">
         <div className="grid content-start gap-3">
           <p className="flex items-center gap-2 font-display text-2xl font-semibold">
             <Seal size={36} />
@@ -33,3 +33,4 @@ export function SiteFooter() {
     </footer>
   );
 }
+

@@ -27,7 +27,7 @@ export function Quiz({
         return (
           <label
             key={o}
-            className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border-2 px-4 py-2 ${
+            className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-lg border px-4 py-2 ${
               isRight ? "border-primary bg-surface-muted" : isWrong ? "border-accent bg-surface-muted" : "border-border bg-surface"
             }`}
           >

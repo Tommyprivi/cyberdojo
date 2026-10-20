@@ -1,16 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode, type TouchEvent } from "react";
 import { CheckIcon, LockIcon } from "../icons";
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
 import { PlayerContext, type LessonVideo } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 /**
  * Player della lezione, con due impianti:
- * - telefono: intestazione con uscita e barra di avanzamento, una colonna;
- * - PC: indice laterale con tutte le schermate (dove sei, cosa hai visto) e testo largo al centro.
+ * - telefono/tablet: «carte» una per schermata, intestazione con uscita e segmenti di avanzamento,
+ *   pulsante Continua fisso in basso (grande, con area sicura), scorrimento col dito;
+ * - PC: a schermo intero, indice laterale con tutte le schermate, area di lettura larga, barra sobria.
  */
 export function LessonPlayer({
   lessonId,
@@ -31,6 +35,7 @@ export function LessonPlayer({
   const screen = screens[index];
   const last = index === screens.length - 1;
   const blocked = screen.gated && !verified;
+  const pct = Math.round(((index + 1) / screens.length) * 100);
 
   const go = (i: number) => {
     setIndex(i);
@@ -52,7 +57,27 @@ export function LessonPlayer({
   // Cambiando schermata si riparte dall'alto.
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    mainRef.current?.scrollTo({ top: 0 });
   }, [index]);
+
+  // Telefono: scorrimento orizzontale col dito (non su campi, tabelle scorrevoli, video).
+  const mainRef = useRef<HTMLElement>(null);
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: TouchEvent) => {
+    const t = e.target;
+    const skip = t instanceof Element && t.closest("input, textarea, select, iframe, .overflow-x-auto");
+    touch.current = skip ? null : { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: TouchEvent) => {
+    const s = touch.current;
+    touch.current = null;
+    if (!s) return;
+    const dx = e.changedTouches[0].clientX - s.x;
+    const dy = e.changedTouches[0].clientY - s.y;
+    if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if (dx < 0 && !last && !blocked) go(index + 1);
+    if (dx > 0 && index > 0) go(index - 1);
+  };
 
   // Una schermata dopo la verifica si apre solo a verifica superata.
   const gateIndex = screens.findIndex((s) => s.gated);
@@ -60,18 +85,18 @@ export function LessonPlayer({
 
   return (
     <PlayerContext.Provider value={ctx}>
-      <div className="lg:grid lg:min-h-dvh lg:grid-cols-[17rem_minmax(0,1fr)]">
-        {/* PC: indice della lezione */}
-        <aside className="sticky top-0 hidden h-dvh flex-col gap-5 overflow-y-auto border-r border-border bg-surface px-5 py-6 lg:flex">
-          <Link href="/percorso" className="flex min-h-10 items-center gap-2 font-semibold text-muted hover:text-foreground">
-            <span aria-hidden>←</span> Percorso
+      <div className="lg:grid lg:h-dvh lg:grid-cols-[19rem_minmax(0,1fr)]">
+        {/* PC: indice della lezione, a tutta altezza */}
+        <aside className="hidden h-dvh flex-col gap-6 overflow-y-auto border-r border-border bg-surface px-6 py-7 lg:flex">
+          <Link href="/percorso" className="flex min-h-10 w-fit items-center gap-2 text-sm font-semibold text-muted hover:text-foreground">
+            <ChevronLeftIcon width={18} height={18} /> Torna al percorso
           </Link>
-          <div>
-            <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">{lessonId}</p>
-            <h2 className="mt-1 font-display text-2xl font-bold leading-tight">{title}</h2>
+          <div className="grid gap-1.5 border-b border-border pb-6">
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{lessonId}</p>
+            <h2 className="font-display text-2xl font-bold leading-tight">{title}</h2>
           </div>
           <nav aria-label="Schermate della lezione">
-            <ol className="grid gap-0.5">
+            <ol className="grid">
               {screens.map((s, i) => {
                 const current = i === index;
                 const seen = i < reached || (i <= reached && !current);
@@ -83,12 +108,17 @@ export function LessonPlayer({
                       disabled={!ok}
                       onClick={() => go(i)}
                       aria-current={current ? "step" : undefined}
-                      className={`flex w-full items-center gap-3 rounded-md border-l-4 px-3 py-2 text-left text-sm ${
-                        current ? "border-accent bg-surface-muted font-semibold" : "border-transparent hover:bg-surface-muted disabled:hover:bg-transparent"
+                      className={`relative flex min-h-11 w-full items-center gap-3 rounded-md px-2 text-left text-sm ${
+                        current ? "bg-surface-muted font-semibold" : "hover:bg-surface-muted disabled:hover:bg-transparent"
                       } ${ok ? "" : "text-muted opacity-70"}`}
                     >
-                      <span className="grid size-5 shrink-0 place-items-center font-mono text-xs">
-                        {seen && !current ? <CheckIcon width={14} height={14} className="text-success" /> : ok ? String(i + 1).padStart(2, "0") : <LockIcon width={12} height={12} />}
+                      {current && <span aria-hidden className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-accent" />}
+                      <span
+                        className={`grid size-6 shrink-0 place-items-center rounded font-mono text-xs ${
+                          seen && !current ? "bg-success text-success-fg" : current ? "bg-primary text-primary-fg" : "border border-border"
+                        }`}
+                      >
+                        {seen && !current ? <CheckIcon width={13} height={13} /> : ok ? pad(i + 1) : <LockIcon width={11} height={11} />}
                       </span>
                       <span className="min-w-0 truncate">{s.title}</span>
                     </button>
@@ -97,19 +127,15 @@ export function LessonPlayer({
               })}
             </ol>
           </nav>
-          <p className="mt-auto text-xs text-muted">Usa le frecce ← → della tastiera per muoverti.</p>
+          <p className="mt-auto text-xs text-muted">Frecce ← → della tastiera per muoverti tra le schermate.</p>
         </aside>
 
-        <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 pb-4 pt-3 lg:max-w-none lg:px-0 lg:pb-0 lg:pt-0">
-          {/* Telefono: uscita e avanzamento */}
-          <header className="grid gap-3 lg:hidden">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/percorso"
-                aria-label="Esci dalla lezione"
-                className="grid size-11 shrink-0 place-items-center rounded-lg border border-border bg-surface text-xl font-bold"
-              >
-                ×
+        <div className="flex min-h-dvh min-w-0 flex-col lg:h-dvh lg:min-h-0">
+          {/* Telefono: uscita e avanzamento a segmenti */}
+          <header className="sticky top-0 z-20 grid gap-2 border-b border-border bg-background/95 px-4 pb-3 pt-[calc(0.5rem+env(safe-area-inset-top))] backdrop-blur lg:hidden">
+            <div className="flex items-center gap-2">
+              <Link href="/percorso" aria-label="Esci dalla lezione" className="-ml-2 grid size-11 shrink-0 place-items-center rounded-md">
+                <CloseIcon width={24} height={24} />
               </Link>
               <div
                 role="progressbar"
@@ -117,23 +143,25 @@ export function LessonPlayer({
                 aria-valuemin={1}
                 aria-valuemax={screens.length}
                 aria-valuenow={index + 1}
-                className="h-2 flex-1 overflow-hidden rounded-full bg-surface-muted"
+                className="flex flex-1 gap-1"
               >
-                <div className="h-full rounded-full bg-primary transition-[width] duration-300" style={{ width: `${((index + 1) / screens.length) * 100}%` }} />
+                {screens.map((_, i) => (
+                  <span key={i} className={`h-1.5 flex-1 rounded-full ${i <= index ? "bg-primary" : i <= reached ? "bg-primary/40" : "bg-surface-muted"}`} />
+                ))}
               </div>
-              <button type="button" disabled title="L'audio arriva con la pipeline TTS (E6)" className="chip shrink-0 text-sm opacity-60">
-                Audio: presto
-              </button>
+              <p className="w-12 shrink-0 text-right font-mono text-xs text-muted">
+                {index + 1}/{screens.length}
+              </p>
             </div>
-            <p className="text-sm text-muted">
-              {lessonId} · {title} · schermata {index + 1} di {screens.length}
+            <p className="truncate font-mono text-xs uppercase tracking-widest text-muted">
+              {lessonId} · {title}
             </p>
           </header>
 
-          {/* PC: barra con l'avanzamento */}
-          <div className="hidden items-center gap-4 border-b border-border px-12 py-4 lg:flex">
-            <p className="font-mono text-sm text-muted">
-              {String(index + 1).padStart(2, "0")} / {String(screens.length).padStart(2, "0")}
+          {/* PC: barra sobria con percorso e avanzamento */}
+          <div className="hidden items-center gap-6 border-b border-border px-14 py-4 lg:flex">
+            <p className="whitespace-nowrap font-mono text-xs uppercase tracking-widest text-muted">
+              {lessonId} · schermata {pad(index + 1)} di {pad(screens.length)}
             </p>
             <div
               role="progressbar"
@@ -141,36 +169,75 @@ export function LessonPlayer({
               aria-valuemin={1}
               aria-valuemax={screens.length}
               aria-valuenow={index + 1}
-              className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-muted"
+              className="h-1 flex-1 overflow-hidden rounded-full bg-surface-muted"
             >
-              <div className="h-full bg-primary transition-[width] duration-300" style={{ width: `${((index + 1) / screens.length) * 100}%` }} />
+              <div className="h-full bg-primary transition-[width] duration-300" style={{ width: `${pct}%` }} />
             </div>
-            <button type="button" disabled title="L'audio arriva con la pipeline TTS (E6)" className="chip text-sm opacity-60">
+            <p className="font-mono text-xs text-muted">{pct}%</p>
+            <button type="button" disabled title="L'audio arriva con la pipeline TTS (E6)" className="chip min-h-9 text-sm opacity-60">
               Audio: presto
             </button>
           </div>
 
-          <main className="card mt-4 flex-1 p-5 sm:p-8 lg:mx-auto lg:mt-0 lg:w-full lg:max-w-[52rem] lg:rounded-none lg:border-0 lg:bg-transparent lg:px-12 lg:py-12 lg:text-[1.0625rem]">
-            <h1 className="mb-6 font-display text-3xl font-bold lg:text-5xl">{screen.title}</h1>
-            {/* Tutte le schermate restano montate: la verifica non perde lo stato se si torna indietro. */}
-            {screens.map((s, i) => (
-              <section key={i} hidden={i !== index} aria-hidden={i !== index}>
-                {s.node}
-              </section>
-            ))}
+          <main
+            ref={mainRef}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            className="flex-1 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4 lg:overflow-y-auto lg:px-14 lg:pb-12 lg:pt-10 2xl:px-20"
+          >
+            <article className="mx-auto w-full max-w-2xl rounded-lg border border-border bg-surface p-5 sm:p-8 lg:mx-0 lg:max-w-[84rem] lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:text-[1.0625rem]">
+              <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent lg:mb-3">Schermata {pad(index + 1)}</p>
+              <h1 className="mb-6 font-display text-3xl font-bold lg:mb-8 lg:max-w-4xl lg:text-5xl">{screen.title}</h1>
+              {/* Tutte le schermate restano montate: la verifica non perde lo stato se si torna indietro. */}
+              {screens.map((s, i) => (
+                <section key={i} hidden={i !== index} aria-hidden={i !== index} className={i === index ? "rise" : ""} style={{ "--d": "0s" } as React.CSSProperties}>
+                  {s.node}
+                </section>
+              ))}
+            </article>
           </main>
 
-          <nav className="sticky bottom-0 -mx-4 mt-4 flex items-center justify-between gap-3 border-t border-border bg-background/95 px-4 py-3 backdrop-blur lg:mx-0 lg:mt-0 lg:px-12">
-            <button type="button" onClick={() => go(index - 1)} disabled={index === 0} className="btn btn-ghost">
-              Indietro
+          {/* Telefono: Continua fisso in basso */}
+          <nav
+            aria-label="Muoviti nella lezione"
+            className="fixed inset-x-0 bottom-0 z-30 flex gap-3 border-t border-border bg-background/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden"
+          >
+            <button
+              type="button"
+              onClick={() => go(index - 1)}
+              disabled={index === 0}
+              aria-label="Schermata precedente"
+              className="btn btn-ghost size-14 shrink-0 !p-0"
+            >
+              <ChevronLeftIcon width={24} height={24} />
             </button>
             {last ? (
-              <Link href="/percorso" className="btn btn-primary">
+              <Link href="/percorso" className="btn btn-primary min-h-14 flex-1 text-base">
                 Completa la lezione
               </Link>
             ) : (
-              <button type="button" onClick={() => go(index + 1)} disabled={blocked} className="btn btn-primary">
-                {blocked ? "Prima la verifica" : "Avanti"}
+              <button type="button" onClick={() => go(index + 1)} disabled={blocked} className="btn btn-primary min-h-14 flex-1 text-base">
+                {blocked ? "Prima la verifica" : "Continua"}
+              </button>
+            )}
+          </nav>
+
+          {/* PC: barra in basso */}
+          <nav aria-label="Muoviti nella lezione" className="hidden items-center justify-between gap-3 border-t border-border bg-surface px-14 py-4 lg:flex">
+            <button type="button" onClick={() => go(index - 1)} disabled={index === 0} className="btn btn-ghost gap-2">
+              <span className="inline-flex items-center gap-2">
+                <ChevronLeftIcon width={18} height={18} /> Indietro
+              </span>
+            </button>
+            {last ? (
+              <Link href="/percorso" className="btn btn-primary min-w-48">
+                Completa la lezione
+              </Link>
+            ) : (
+              <button type="button" onClick={() => go(index + 1)} disabled={blocked} className="btn btn-primary min-w-48">
+                <span className="inline-flex items-center gap-2">
+                  {blocked ? "Prima la verifica" : "Avanti"} {!blocked && <ChevronRightIcon width={18} height={18} />}
+                </span>
               </button>
             )}
           </nav>

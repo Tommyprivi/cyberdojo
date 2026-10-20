@@ -28,8 +28,8 @@ export function Video() {
   const minutes = Math.max(1, Math.round((video.end - video.start) / 60));
 
   return (
-    <figure className="my-2 grid gap-2">
-      <div className="relative aspect-video overflow-hidden rounded-3xl border-2 border-border bg-deep">
+    <figure className="my-2 grid max-w-4xl gap-2">
+      <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-deep">
         {loaded ? (
           <iframe
             src={src}
@@ -45,7 +45,7 @@ export function Video() {
             onClick={() => setLoaded(true)}
             className="absolute inset-0 grid place-items-center gap-2 p-4 text-center text-deep-fg"
           >
-            <span className="grid size-20 place-items-center rounded-full bg-primary text-primary-fg shadow-[0_6px_0_var(--primary-edge)]">
+            <span className="grid size-20 place-items-center rounded-full bg-primary text-primary-fg">
               <PlayIcon width={34} height={34} />
             </span>
             <span className="text-lg font-bold">{video.title ?? "Guarda il video"}</span>

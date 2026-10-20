@@ -22,7 +22,7 @@ export function Flashcards({ cards }: { cards: { q: string; a: string }[] }) {
               type="button"
               aria-expanded={open[i]}
               onClick={() => setOpen((o) => o.map((v, j) => (j === i ? !v : v)))}
-              className={`grid min-h-28 w-full content-center gap-1 rounded-3xl border-2 p-4 text-left shadow-[0_4px_0_var(--border)] ${
+              className={`grid min-h-28 w-full content-center gap-1 rounded-lg border p-4 text-left ${
                 open[i] ? "border-primary bg-surface" : "border-border bg-surface-muted"
               }`}
             >

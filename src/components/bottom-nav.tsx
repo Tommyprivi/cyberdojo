@@ -2,37 +2,47 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { isActive, NAV_ITEMS } from "./nav-items";
+import { APP_NAV, isActive, NAV_ITEMS } from "./nav-items";
 
-/** Barra fluttuante in basso, solo su schermi piccoli. Strumenti e Profilo arrivano con l'account. */
+/**
+ * Barra in basso, come in un'app: attaccata al bordo, quattro voci con icone grandi, area sicura
+ * del telefono rispettata (serve viewport-fit=cover, impostato nel layout). Visibile sotto i 1024px.
+ */
 export function BottomNav() {
   const pathname = usePathname();
   return (
     <nav
       aria-label="Navigazione principale"
-      className="fixed inset-x-0 bottom-3 z-20 mx-auto flex w-[min(92vw,26rem)] justify-around rounded-xl border border-border bg-surface/95 p-1.5 shadow-[var(--shadow)] backdrop-blur lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      {NAV_ITEMS.map(({ href, label, Icon }) => {
-        const active = isActive(pathname, href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            aria-current={active ? "page" : undefined}
-            className={`grid min-h-14 flex-1 place-items-center rounded-lg px-3 text-xs font-bold ${
-              active ? "bg-primary text-primary-fg" : "text-muted"
-            }`}
-          >
-            <Icon width={22} height={22} />
-            {label}
-          </Link>
-        );
-      })}
+      <ul className="mx-auto grid max-w-xl grid-cols-4">
+        {APP_NAV.map(({ href, label, Icon }) => {
+          const active = isActive(pathname, href);
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={`flex min-h-[3.75rem] flex-col items-center justify-center gap-0.5 text-xs font-semibold ${
+                  active ? "text-primary" : "text-muted"
+                }`}
+              >
+                <span
+                  className={`grid h-8 w-14 place-items-center rounded-full transition-colors ${active ? "bg-primary/15" : ""}`}
+                >
+                  <Icon width={26} height={26} strokeWidth={active ? 2.4 : 1.9} />
+                </span>
+                {label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
 
-/** Stesse voci, in orizzontale nell'intestazione, solo su PC. */
+/** Stesse voci del sito pubblico, in orizzontale nell'intestazione, solo su PC. */
 export function TopNav() {
   const pathname = usePathname();
   return (

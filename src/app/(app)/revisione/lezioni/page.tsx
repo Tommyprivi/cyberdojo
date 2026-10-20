@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { COURSES } from "@/lib/content/courses";
 import { readRawLessons, splitScreens } from "@/lib/content/load";
 import { lessonFrontmatter } from "@/lib/content/schema";
@@ -10,7 +12,16 @@ import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
 export const metadata: Metadata = { title: "Stato delle lezioni", robots: { index: false, follow: false } };
 
 /** Strumento interno: tutte le lezioni, con ciò che manca prima di poterle approvare. */
-export default function LessonStatus() {
+export default function LessonStatusPage() {
+  return (
+    <Suspense fallback={<p className="p-6">Carico le lezioni…</p>}>
+      <LessonStatus />
+    </Suspense>
+  );
+}
+
+async function LessonStatus() {
+  await connection();
   if (!internalToolsEnabled()) notFound();
 
   const rows = readRawLessons().flatMap((l) => {
@@ -44,7 +55,7 @@ export default function LessonStatus() {
           ))}
         </dl>
         <p className="text-muted">
-          Ogni riga ha: schermate (servono 6-8), video, domande della verifica, stato. «Apri» porta alla lezione vera (serve l&apos;accesso).
+          Ogni riga ha: schermate (servono 6-8), video, domande della verifica, stato. «Leggi e approva» mostra tutta la lezione in una pagina; «Apri come studente» porta alla lezione vera (serve l&apos;accesso). I valori includono le tue approvazioni.
           Il video è «da guardare» finché non lo approvi.
         </p>
       </header>
@@ -97,7 +108,9 @@ export default function LessonStatus() {
                         {d.module === 8 && c.id === "C" ? (d.human_reviewed ? " · rivista" : " · da rivedere") : ""}
                       </td>
                       <td className="px-3 py-2">
-                        <Link href={`/lezione/${d.id}`} className="font-bold text-primary underline">Apri</Link>
+                        <Link href={`/revisione/lezioni/${d.id}`} className="font-bold text-primary underline">Leggi e approva</Link>
+                        <br />
+                        <Link href={`/lezione/${d.id}`} className="text-sm text-muted underline">Apri come studente</Link>
                       </td>
                     </tr>
                   ))}

@@ -15,7 +15,7 @@ export function BitGrid({ bits, showSum = true, caption }: { bits: string; showS
               {[...bits].map((b, i) => (
                 <td
                   key={i}
-                  className={`rounded-xl py-2 text-xl font-bold ${
+                  className={`rounded-md py-2 text-xl font-bold ${
                     b === "1" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted"
                   }`}
                 >
@@ -51,7 +51,7 @@ export function BitGrid({ bits, showSum = true, caption }: { bits: string; showS
 export function Log({ lines, caption }: { lines: string[]; caption?: string }) {
   return (
     <figure className="my-2 grid gap-2">
-      <div className="overflow-x-auto rounded-2xl bg-deep p-4 font-mono text-sm leading-relaxed text-deep-fg sm:text-base">
+      <div className="overflow-x-auto rounded-lg bg-deep p-4 font-mono text-sm leading-relaxed text-deep-fg sm:text-base">
         {lines.map((line, i) => (
           <p key={i} className="mb-3 last:mb-0">
             {line.split(/ {2,}/).map((token, k) => {
@@ -81,19 +81,19 @@ export function Log({ lines, caption }: { lines: string[]; caption?: string }) {
 export function Envelope() {
   return (
     <figure className="my-2" aria-label="Un pacchetto: busta Ethernet, dentro busta IP, dentro busta TCP, dentro i dati">
-      <div className="rounded-3xl border-4 border-belt-blue bg-surface-muted p-3">
+      <div className="rounded-lg border-2 border-belt-blue bg-surface-muted p-3">
         <p className="text-sm font-extrabold">
           Busta Ethernet <span className="font-normal text-muted">· indirizzi MAC · livello 2</span>
         </p>
-        <div className="mt-2 rounded-2xl border-4 border-belt-orange bg-surface p-3">
+        <div className="mt-2 rounded-lg border-2 border-belt-orange bg-surface p-3">
           <p className="text-sm font-extrabold">
             Busta IP <span className="font-normal text-muted">· indirizzi IP · livello 3</span>
           </p>
-          <div className="mt-2 rounded-xl border-4 border-primary bg-surface-muted p-3">
+          <div className="mt-2 rounded-md border-2 border-primary bg-surface-muted p-3">
             <p className="text-sm font-extrabold">
               Busta TCP <span className="font-normal text-muted">· porte · livello 4</span>
             </p>
-            <div className="mt-2 rounded-lg border-2 border-dashed border-border bg-surface p-3">
+            <div className="mt-2 rounded-lg border border-dashed border-border bg-surface p-3">
               <p className="text-sm font-extrabold">
                 Dati <span className="font-normal text-muted">· ciò che vuole l&apos;applicazione</span>
               </p>
@@ -120,8 +120,8 @@ const KINDS = {
 export function Callout({ kind, children }: { kind: keyof typeof KINDS; children: React.ReactNode }) {
   const k = KINDS[kind];
   return (
-    <div className={`my-1 rounded-2xl border-l-[6px] ${k.cls} bg-surface-muted px-4 py-3`}>
-      <p className="text-sm font-extrabold uppercase tracking-wide">{k.label}</p>
+    <div className={`my-1 max-w-[70ch] rounded-md border-l-4 ${k.cls} bg-surface-muted px-4 py-3`}>
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.18em]">{k.label}</p>
       <div className="mt-1">{children}</div>
     </div>
   );

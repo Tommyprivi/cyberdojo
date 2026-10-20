@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { loadLabNotes, recordLabResult, saveLabNotes } from "@/app/actions/lab";
 import { CheckIcon } from "@/components/icons";
+import { Workspace } from "./workspace";
 import { Mascot } from "@/components/mascot";
 import {
   checkAnswer,
@@ -66,7 +67,7 @@ function StepCard({
   const p = stepProgress(step, calc, answer);
   const showHint = hinted || wrongCount >= 2;
   return (
-    <article className={`grid gap-3 rounded-2xl border-2 p-4 ${isDone ? "border-primary bg-surface" : "border-border bg-surface-muted"}`}>
+    <article className={`grid gap-3 rounded-lg border-2 p-4 ${isDone ? "border-primary bg-surface" : "border-border bg-surface-muted"}`}>
       <header className="flex items-start gap-3">
         <span className={`grid size-8 shrink-0 place-items-center rounded-full font-bold ${isDone ? "bg-primary text-primary-fg" : "bg-surface text-foreground"}`}>
           {isDone ? <CheckIcon width={18} height={18} /> : index + 1}
@@ -78,7 +79,7 @@ function StepCard({
       </header>
 
       {(expanded || showHint) && !isDone && (
-        <p className="rounded-xl bg-surface p-3 text-sm">
+        <p className="rounded-md bg-surface p-3 text-sm">
           <strong>A cosa serve: </strong>
           {step.why}
         </p>
@@ -94,7 +95,7 @@ function StepCard({
         </div>
       )}
       {!isDone && showHint && (
-        <p className="rounded-xl border border-border bg-surface p-3 text-sm">
+        <p className="rounded-md border border-border bg-surface p-3 text-sm">
           <strong>Aiuto: </strong>
           {step.hint}
           {mode === "aiutami" && (
@@ -108,7 +109,7 @@ function StepCard({
       )}
 
       {!isDone && p.askNow && step.question && (
-        <div className="grid gap-2 rounded-xl bg-surface p-3">
+        <div className="grid gap-2 rounded-md bg-surface p-3">
           <QuestionBox question={step.question} onSubmit={onSubmit} />
           {wrongCount > 0 && (
             <p role="status" className="font-semibold text-accent">
@@ -122,7 +123,7 @@ function StepCard({
       )}
 
       {isDone && (
-        <p className="rounded-xl bg-surface-muted p-3 text-sm" role="status">
+        <p className="rounded-md bg-surface-muted p-3 text-sm" role="status">
           <strong>Ricordati: </strong>
           {step.remember}
         </p>
@@ -150,7 +151,6 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
   const [reportResult, setReportResult] = useState<{ correct: number; total: number; passed: boolean } | null>(null);
   const [saved, setSaved] = useState<string[]>([]);
   const [saveState, setSaveState] = useState<"idle" | "ok" | "login">("idle");
-  const [open, setOpen] = useState(false); // pannello del tutor su telefono
   const recorded = useRef(false);
 
   // Taccuino già salvato da questo utente (vuoto se non è collegato).
@@ -210,44 +210,15 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
   const pendingStep = pending ? steps.find((s) => s.id === pending) : undefined;
   const currentIdx = steps.findIndex((s) => !done.includes(s.id));
 
-  const summary = finished
-    ? "Missione compiuta"
-    : mode === "guidato"
-      ? currentIdx >= 0 ? `Passo ${done.length + 1} di ${steps.length}: ${steps[currentIdx].title}` : ""
-      : mode === "aiutami"
-        ? `${done.length} di ${steps.length} passi fatti`
-        : "Da solo: consegna il rapporto";
-
-  /* Postazione a tutto schermo: barra sottile, strumento che occupa lo spazio, tutor in colonna a destra.
-     Su telefono il tutor è un pannello che sale dal basso. */
+  /* Postazione a tutto schermo: strumento a sinistra su tutta l'altezza, tutor in colonna a destra, ognuno con il suo scorrimento. */
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-background">
-      <header className="flex items-center gap-4 border-b border-border bg-surface px-4 py-2.5">
-        <Link href="/pratica" aria-label="Torna al laboratorio" className="flex min-h-10 items-center gap-1.5 font-semibold text-muted hover:text-foreground">
-          <span aria-hidden>←</span>
-          <span className="hidden sm:inline">Laboratorio</span>
-        </Link>
-        <div className="min-w-0">
-          <p className="font-mono text-[0.7rem] font-bold uppercase tracking-widest text-muted">Calcolatore di rete</p>
-          <h1 className="truncate font-display text-lg font-bold leading-tight">{scenario.title}</h1>
-        </div>
-        <span className="chip ml-auto text-sm">{MODES.find((m) => m.id === mode)!.label}</span>
-      </header>
-
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,1fr)_27rem]">
-        <main className="min-h-0 overflow-y-auto p-4 pb-24 lg:p-8 lg:pb-8">
-          <div className="mx-auto max-w-4xl">
-            <Calculator state={calc} onChange={setCalc} />
-          </div>
+    <Workspace tool="Calcolatore di rete" title={scenario.title} right={<span className="chip min-h-8 text-sm">{MODES.find((m) => m.id === mode)!.label}</span>}>
+      <div className="grid h-full min-h-0 md:grid-cols-[minmax(0,1fr)_clamp(22rem,30vw,32rem)]">
+        <main className="min-h-0 overflow-y-auto p-6 lg:p-10">
+          <Calculator state={calc} onChange={setCalc} />
         </main>
 
-        <aside
-          aria-label="Il tutor"
-          className={`${open ? "flex" : "hidden"} fixed inset-x-0 bottom-0 z-30 max-h-[82dvh] flex-col gap-4 overflow-y-auto border-t-4 border-foreground bg-surface p-5 lg:static lg:flex lg:max-h-none lg:border-l lg:border-t-0 lg:border-border`}
-        >
-          <button type="button" onClick={() => setOpen(false)} className="chip ml-auto min-h-9 text-sm lg:hidden">
-            Chiudi
-          </button>
+        <aside aria-label="Il tutor" className="flex min-h-0 flex-col gap-4 overflow-y-auto border-l border-border bg-surface p-5">
         <header className="flex items-center gap-3">
           <Mascot size={56} mood="stern" animate />
           <div>
@@ -264,7 +235,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
               type="button"
               aria-selected={mode === m.id}
               onClick={() => writeMode(m.id)}
-              className={`min-h-10 rounded-xl border-2 text-sm font-bold ${mode === m.id ? "border-primary bg-primary text-primary-fg" : "border-border bg-surface"}`}
+              className={`min-h-10 rounded-md border-2 text-sm font-bold ${mode === m.id ? "border-primary bg-primary text-primary-fg" : "border-border bg-surface"}`}
             >
               {m.label}
             </button>
@@ -272,7 +243,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
         </div>
         <p className="-mt-2 text-sm text-muted">{MODES.find((m) => m.id === mode)!.help}</p>
 
-        {!finished && <p className="rounded-xl bg-surface-muted p-3">{mode === "solo" ? scenario.goal : scenario.intro}</p>}
+        {!finished && <p className="rounded-md bg-surface-muted p-3">{mode === "solo" ? scenario.goal : scenario.intro}</p>}
 
         {/* GUIDATO: un passo alla volta */}
         {mode === "guidato" && !finished && (
@@ -290,7 +261,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
             <p className="text-sm text-muted">Passo {Math.min(done.length + 1, steps.length)} di {steps.length}</p>
 
             {pendingStep ? (
-              <div className="pop grid gap-3 rounded-2xl border-2 border-primary bg-surface p-4" role="status">
+              <div className="pop grid gap-3 rounded-lg border-2 border-primary bg-surface p-4" role="status">
                 <p className="text-lg font-extrabold">Giusto!</p>
                 <p><strong>Ricordati: </strong>{pendingStep.remember}</p>
                 <button type="button" className="btn btn-primary w-fit" onClick={() => setPending(null)}>
@@ -379,7 +350,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
 
         {/* FINE */}
         {finished && (
-          <div className="pop grid gap-3 rounded-2xl border-2 border-primary bg-surface p-4" role="status">
+          <div className="pop grid gap-3 rounded-lg border-2 border-primary bg-surface p-4" role="status">
             <p className="text-xl font-extrabold">Missione compiuta.</p>
             <p>{scenario.closing}</p>
             <p className="text-sm text-muted">
@@ -405,7 +376,7 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
         )}
 
         {/* TACCUINO */}
-        <section aria-labelledby="taccuino" className="grid gap-2 rounded-2xl border-2 border-dashed border-border p-4">
+        <section aria-labelledby="taccuino" className="grid gap-2 rounded-lg border-2 border-dashed border-border p-4">
           <h3 id="taccuino" className="font-display text-lg font-semibold">Da ricordare</h3>
           {notebook.length === 0 ? (
             <p className="text-sm text-muted">
@@ -423,15 +394,6 @@ function LabInner({ scenarioId, scenario }: { scenarioId: string; scenario: Scen
         )}
         </aside>
       </div>
-
-      {/* Telefono: barra con il passo corrente, per aprire il tutor */}
-      <div className="fixed inset-x-0 bottom-0 z-20 flex items-center gap-3 border-t border-border bg-surface px-4 py-3 lg:hidden">
-        <Mascot size={36} mood="stern" />
-        <p className="min-w-0 flex-1 truncate text-sm font-semibold">{summary}</p>
-        <button type="button" onClick={() => setOpen(true)} className="btn btn-primary min-h-10 px-4 text-sm">
-          Tutor
-        </button>
-      </div>
-    </div>
+    </Workspace>
   );
 }

@@ -79,7 +79,7 @@ export function Practice() {
     const { minutes } = blocked;
     const when = new Date(blocked.until).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
     return (
-      <div role="status" className="my-2 grid gap-3 rounded-2xl border-2 border-border bg-surface-muted p-4">
+      <div role="status" className="my-2 grid gap-3 rounded-lg border border-border bg-surface-muted p-4">
         <p className="text-lg font-extrabold">Tentativi finiti per ora.</p>
         <p>
           Ripassa la spiegazione e riprova tra circa <strong>{minutes} {minutes === 1 ? "minuto" : "minuti"}</strong> (alle{" "}
@@ -144,11 +144,11 @@ export function Practice() {
                 {q.data && <span className="mr-2 rounded-lg bg-surface px-2 py-0.5 font-mono text-lg font-medium tracking-wider">{q.data}</span>}
                 {q.prompt}
               </legend>
-              <div className="grid gap-2 rounded-2xl border-2 border-border bg-surface-muted p-3 sm:grid-cols-2">
+              <div className="grid gap-2 rounded-lg border border-border bg-surface-muted p-3 sm:grid-cols-2">
                 {q.choices.map((c, k) => (
                   <label
                     key={c}
-                    className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border-2 px-3 py-2 ${
+                    className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-md border px-3 py-2 ${
                       answers[i] === String(k) ? "border-primary bg-surface" : "border-border bg-surface"
                     }`}
                   >
@@ -168,7 +168,7 @@ export function Practice() {
               {result && <p className="mt-1 px-1">{verdict(i)}</p>}
             </fieldset>
           ) : (
-            <label key={i} className="grid gap-1.5 rounded-2xl border-2 border-border bg-surface-muted p-3">
+            <label key={i} className="grid gap-1.5 rounded-lg border border-border bg-surface-muted p-3">
               <span>
                 <span className="font-bold">{i + 1}.</span>{" "}
                 <span className="mr-2 font-mono text-xl font-medium tracking-wider">{q.data}</span>
@@ -205,7 +205,7 @@ export function Practice() {
       )}
 
       {result && (
-        <div role="status" className="pop grid gap-3 rounded-2xl border-2 border-border bg-surface-muted p-4">
+        <div role="status" className="pop grid gap-3 rounded-lg border border-border bg-surface-muted p-4">
           <p className="text-lg font-extrabold">
             {passed
               ? `Superata: ${result.correct} su ${result.total}!`

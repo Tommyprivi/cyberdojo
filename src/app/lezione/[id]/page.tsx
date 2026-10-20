@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -8,6 +8,8 @@ import { lessonComponents } from "@/components/lesson/mdx-components";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
 import { requireMember } from "@/lib/session";
+
+export const viewport: Viewport = { viewportFit: "cover" };
 
 async function load(id: string) {
   if (!LESSON_ID.test(id)) return null;
@@ -28,7 +30,7 @@ export async function generateMetadata({ params }: PageProps<"/lezione/[id]">): 
 
 export default function LessonPage({ params }: PageProps<"/lezione/[id]">) {
   return (
-    <Suspense fallback={<p className="p-6">Carico la lezione…</p>}>
+    <Suspense fallback={<p className="p-6 font-mono text-sm text-muted">Carico la lezione…</p>}>
       <Lesson params={params} />
     </Suspense>
   );

@@ -12,7 +12,7 @@ export function IntruderExercise() {
     () => true,
     () => false,
   );
-  return isClient ? <Round /> : <p className="mt-6">Apro il registro…</p>;
+  return isClient ? <Round /> : <p className="p-6">Apro il registro…</p>;
 }
 
 function Round() {
@@ -32,16 +32,36 @@ function Round() {
   const done = verdicts.every((v) => v !== null);
 
   return (
-    <div className="mt-5 grid gap-5">
-      <div className="dossier p-5">
-        <p className="font-mono text-xs text-muted">REGISTRO FIREWALL · 03:12 · connessioni in uscita verso il server dei dati</p>
-        <p className="mt-2">
-          Tre connessioni sospette. Il registro mostra l&apos;indirizzo sorgente in bit grezzi. Decodificalo e decidi:
-          arriva <strong>da dentro</strong> l&apos;azienda o <strong>da Internet</strong>?
+    <div className="grid h-full min-h-0 md:grid-cols-[minmax(0,1fr)_24rem]">
+      <aside className="grid content-start gap-4 overflow-y-auto border-l border-border bg-surface p-6 md:order-2">
+        <div>
+          <p className="font-mono text-xs text-muted">REGISTRO FIREWALL · 03:12 · connessioni in uscita verso il server dei dati</p>
+          <p className="mt-2">
+            Tre connessioni sospette. Il registro mostra l&apos;indirizzo sorgente in bit grezzi. Decodificalo e decidi:
+            arriva <strong>da dentro</strong> l&apos;azienda o <strong>da Internet</strong>?
+          </p>
+        </div>
+        <div className="rounded-lg bg-surface-muted p-3">
+          <p className="text-sm font-bold">Da ricordare</p>
+          <p className="mt-1 font-mono text-sm">10.x · 172.16-31.x · 192.168.x</p>
+          <p className="mt-1 text-sm text-muted">Sono le tre reti private: tutto il resto arriva da Internet.</p>
+        </div>
+        <p className="font-mono text-sm" aria-live="polite">
+          Verdetti dati: {verdicts.filter((v) => v !== null).length} di {COUNT}
         </p>
-      </div>
+        {done && (
+          <div role="status" className="pop dossier grid gap-3 p-4">
+            <p className="text-lg font-extrabold">
+              {caught === COUNT ? "Caso chiuso. Nessun intruso ti è sfuggito." : `${caught} su ${COUNT}. Rileggi le tre reti private e riprova.`}
+            </p>
+            <button type="button" onClick={restart} className="btn btn-primary w-fit">
+              Nuovo registro
+            </button>
+          </div>
+        )}
+      </aside>
 
-      <ol className="grid gap-4">
+      <ol className="grid min-h-0 content-start gap-4 overflow-y-auto p-6 md:order-1 xl:grid-cols-2 2xl:grid-cols-3">
         {questions.map((q, i) => {
           const octetOk = q.bits.map((b, k) => diagnoseBinaryToDecimal(b, answers[i][k]).ok);
           const decoded = octetOk.every(Boolean);
@@ -87,7 +107,7 @@ function Round() {
                 </div>
               )}
               {verdict !== null && (
-                <p role="status" className={`pop rounded-2xl bg-surface-muted p-3 ${verdict === q.private ? "" : "border-l-[6px] border-accent"}`}>
+                <p role="status" className={`pop rounded-lg bg-surface-muted p-3 ${verdict === q.private ? "" : "border-l-[6px] border-accent"}`}>
                   <strong>{verdict === q.private ? "Giusto. " : "No. "}</strong>
                   {explainIp(q.octets)}
                 </p>
@@ -96,18 +116,6 @@ function Round() {
           );
         })}
       </ol>
-
-      {done && (
-        <div role="status" className="pop dossier grid gap-3 p-5">
-          <p className="text-xl font-extrabold">
-            {caught === COUNT ? "Caso chiuso. Nessun intruso ti è sfuggito." : `${caught} su ${COUNT}. Rileggi le tre reti private e riprova.`}
-          </p>
-          <p className="text-sm text-muted">Reti private da ricordare: 10.x · 172.16-31.x · 192.168.x</p>
-          <button type="button" onClick={restart} className="btn btn-primary w-fit">
-            Nuovo registro
-          </button>
-        </div>
-      )}
     </div>
   );
 }

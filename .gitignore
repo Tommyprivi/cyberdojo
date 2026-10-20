@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Copie delle email in sviluppo
 /.outbox
+
+# Schermate di prova
+/anteprima-schermate

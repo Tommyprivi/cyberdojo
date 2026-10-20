@@ -12,18 +12,18 @@ export function Scene({ children }: { title?: string; children: ReactNode }) {
 export function Say({ who, children }: { who: "sensei" | "assistente"; children: ReactNode }) {
   const sensei = who === "sensei";
   return (
-    <aside className="my-2 flex items-end gap-3" aria-label={`Parla ${sensei ? "il Sensei" : "l'Assistente"}`}>
+    <aside className="my-2 flex max-w-[70ch] items-end gap-3" aria-label={`Parla ${sensei ? "il Sensei" : "l'Assistente"}`}>
       <div className="shrink-0">
         {sensei ? (
           <Mascot size={64} mood="stern" />
         ) : (
-          <span className="grid size-14 place-items-center rounded-full bg-accent text-accent-fg" aria-hidden>
+          <span className="grid size-14 place-items-center rounded-lg bg-accent text-accent-fg" aria-hidden>
             <BulbIcon />
           </span>
         )}
       </div>
-      <div className="relative rounded-3xl rounded-bl-md border-2 border-border bg-surface-muted px-4 py-3">
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">{sensei ? "Sensei" : "Assistente"}</p>
+      <div className="relative rounded-lg border border-border bg-surface-muted px-4 py-3">
+        <p className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-muted">{sensei ? "Sensei" : "Assistente"}</p>
         <p className="mt-0.5 leading-relaxed">{children}</p>
       </div>
     </aside>
@@ -38,7 +38,7 @@ export function Recap({ children }: { xp?: number; children: ReactNode }) {
   const base = XP.lesson + XP.verification;
   return (
     <section className="my-2 grid gap-4">
-      <div className="rounded-3xl bg-deep p-5 text-deep-fg">
+      <div className="rounded-lg bg-deep p-5 text-deep-fg">
         <h3 className="text-xl font-extrabold">Caso chiuso. Ecco cosa sai adesso</h3>
         <div className="mt-2 [&_li]:marker:text-primary">{children}</div>
       </div>
