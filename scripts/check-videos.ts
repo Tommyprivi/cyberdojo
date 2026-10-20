@@ -3,7 +3,8 @@
  *  - 200: esiste ed è incorporabile; si verifica anche che il canale coincida con `channel`;
  *  - 401: l'autore ha disattivato l'incorporamento → il video va sostituito;
  *  - 404 / 400: video rimosso, privato o ID sbagliato.
- * Uso: pnpm check:videos   (richiede connessione a Internet; da eseguire anche periodicamente, epic E9)
+ * Uso: pnpm check:videos [prefisso]   (richiede connessione a Internet; da eseguire anche periodicamente, epic E9)
+ * Con un prefisso (es. C.05 o F.02) controlla solo le lezioni il cui ID comincia così.
  */
 import { readRawLessons } from "../src/lib/content/load";
 import { lessonFrontmatter } from "../src/lib/content/schema";
@@ -31,8 +32,11 @@ async function check(lesson: string, id: string, channel: string): Promise<Resul
   }
 }
 
+const prefix = process.argv[2] ?? "";
+
 const jobs = readRawLessons().flatMap((l) => {
   const fm = lessonFrontmatter.safeParse(l.data);
+  if (fm.success && !fm.data.id.startsWith(prefix)) return [];
   return fm.success && fm.data.video ? [check(fm.data.id, fm.data.video.id, fm.data.video.channel)] : [];
 });
 

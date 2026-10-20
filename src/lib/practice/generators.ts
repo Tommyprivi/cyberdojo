@@ -1,9 +1,11 @@
-﻿/**
+/**
  * Generatori di esercizi. Puri e deterministici: stesso seme, stesse domande.
  * I mattoni comuni (tipi, numeri casuali) stanno in core.ts; le domande a scelta in banks.ts.
  */
 import { BANKS, hexByteToDecimal, ipPrivatePublic, ipValid } from "./banks";
 import { CYBER_BANKS } from "./banks-cyber";
+import { DATI_BANKS } from "./banks-dati";
+import { FOND_BANKS } from "./banks-fond";
 import { parseChoiceAnswer, rng, type Question } from "./core";
 
 export { rng, shuffle, parseChoiceAnswer } from "./core";
@@ -72,8 +74,18 @@ const CYBER_GENERATORS = Object.fromEntries(
   Object.entries(CYBER_BANKS).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
 ) as Record<string, { generate: (seed: string, count?: number) => Question[]; parse: typeof parseChoiceAnswer }>;
 
+const FOND_GENERATORS = Object.fromEntries(
+  Object.entries(FOND_BANKS).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
+) as typeof CYBER_GENERATORS;
+
+const DATI_GENERATORS = Object.fromEntries(
+  Object.entries(DATI_BANKS).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
+) as typeof CYBER_GENERATORS;
+
 export const GENERATORS = {
+  ...DATI_GENERATORS,
   ...CYBER_GENERATORS,
+  ...FOND_GENERATORS,
   "binary-to-decimal": { generate: binaryToDecimal, parse: parseIntegerAnswer },
   "decimal-to-binary": { generate: decimalToBinary, parse: parseOctetAnswer },
   "hex-byte-to-decimal": { generate: hexByteToDecimal, parse: parseIntegerAnswer },

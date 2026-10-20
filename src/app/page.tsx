@@ -130,8 +130,8 @@ export default function Home() {
         <section aria-labelledby="corsi" className="border-t border-border bg-surface-muted">
           <div className="mx-auto w-full max-w-[1680px] px-4 py-16 lg:px-14 lg:py-24">
             <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Cosa si studia</p>
-            <h2 id="corsi" className="mt-1 font-display text-3xl font-bold lg:text-4xl">Due corsi, un solo percorso</h2>
-            <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            <h2 id="corsi" className="mt-1 font-display text-3xl font-bold lg:text-4xl">{COURSES.length} corsi, un solo percorso</h2>
+            <div className="mt-10 grid gap-6 lg:grid-cols-3">
               {COURSES.map((c) => (
                 <article key={c.id} className="overflow-hidden rounded-xl border border-border bg-surface">
                   <div className="relative aspect-[16/9]">

@@ -7,7 +7,7 @@ import { COURSES } from "@/lib/content/courses";
 import { readRawLessons, splitScreens } from "@/lib/content/load";
 import { lessonFrontmatter } from "@/lib/content/schema";
 import { internalToolsEnabled } from "@/lib/internal";
-import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
+import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
 
 export const metadata: Metadata = { title: "Stato delle lezioni", robots: { index: false, follow: false } };
 
@@ -30,7 +30,7 @@ async function LessonStatus() {
     const d = fm.data;
     const gen = d.verification.generator;
     // Le banche hanno un numero fisso di domande; gli altri esercizi le generano a ogni tentativo.
-    const questions = gen ? (CYBER_BANK_ITEMS[gen]?.length ?? 0) : 0;
+    const questions = gen ? (ALL_BANK_ITEMS[gen]?.length ?? 0) : 0;
     return [{ d, screens: splitScreens(l.body).length, questions, course: l.file.split("/")[0] }];
   });
 

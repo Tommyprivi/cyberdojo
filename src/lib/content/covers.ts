@@ -1,8 +1,11 @@
+import type { CourseId } from "./courses";
+
 /** Illustrazioni dei corsi e dei moduli (public/img/corsi). I moduli senza copertina propria usano quella del corso. */
 
-export const COURSE_COVER: Record<"F" | "C", string> = {
+export const COURSE_COVER: Record<CourseId, string> = {
   F: "/img/corsi/fondamenta.jpg",
   C: "/img/corsi/cybersecurity.jpg",
+  D: "/img/corsi/dati.jpg", // provvisoria: da sostituire con la copertina vera
 };
 
 const MODULE_COVER: Record<string, string> = {
@@ -17,7 +20,7 @@ const MODULE_COVER: Record<string, string> = {
   C11: "/img/corsi/prossimi-passi.jpg",
 };
 
-export function moduleCover(course: "F" | "C", n: number): { src: string; own: boolean } {
+export function moduleCover(course: CourseId, n: number): { src: string; own: boolean } {
   const own = MODULE_COVER[`${course}${n}`];
   return own ? { src: own, own: true } : { src: COURSE_COVER[course], own: false };
 }

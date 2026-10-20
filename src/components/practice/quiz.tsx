@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { COURSES } from "@/lib/content/courses";
 import { ARP_BANK, ENCAPSULATION_BANK, makeBank, OSI_BANK, PACKET_BASICS, type BankItem } from "@/lib/practice/banks";
-import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
+import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
 import type { Question } from "@/lib/practice/core";
 
 /**
@@ -24,13 +24,16 @@ function buildThemes(): Theme[] {
       items: [...PACKET_BASICS, ...ARP_BANK, ...OSI_BANK, ...ENCAPSULATION_BANK],
     },
   ];
-  const cyber = COURSES.find((c) => c.id === "C");
-  for (const m of cyber?.modules ?? []) {
-    const prefix = `c${String(m.n).padStart(2, "0")}-`;
-    const items = Object.entries(CYBER_BANK_ITEMS)
-      .filter(([key]) => key.startsWith(prefix))
-      .flatMap(([, v]) => v);
-    if (items.length >= COUNT) themes.push({ id: `c${m.n}`, code: `C${m.n}`, title: m.title, items });
+  for (const course of COURSES) {
+    const letter = course.id.toLowerCase();
+    for (const m of course.modules) {
+      if (course.id === "F" && m.n === 5) continue; // le banche di Reti 1 stanno già nel tema F5
+      const prefix = `${letter}${String(m.n).padStart(2, "0")}-`;
+      const items = Object.entries(ALL_BANK_ITEMS)
+        .filter(([key]) => key.startsWith(prefix))
+        .flatMap(([, v]) => v);
+      if (items.length >= COUNT) themes.push({ id: `${letter}${m.n}`, code: `${course.id}${m.n}`, title: m.title, items });
+    }
   }
   return themes;
 }

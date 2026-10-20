@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { COURSES } from "@/lib/content/courses";
+import { COURSES, type CourseId } from "@/lib/content/courses";
 import { COURSE_COVER, moduleCover } from "@/lib/content/covers";
 import { readRawLessons } from "@/lib/content/load";
 
@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description: "I due corsi di CyberDojo: Fondamenta IT, Linux e Reti, e Cybersecurity. Moduli, argomenti e obiettivi.",
 };
 
-const BLURB: Record<"F" | "C", { lead: string; for: string }> = {
+const BLURB: Record<CourseId, { lead: string; for: string }> = {
+  D: {
+    lead: "Dai fogli di calcolo a SQL e Python, dalla statistica alla visualizzazione e al machine learning: come si trasformano i dati in decisioni, con tutte le strade del mestiere (analista, data engineer, data scientist).",
+    for: "Per chi vuole lavorare con i dati, anche partendo da zero.",
+  },
   F: {
     lead: "Parti da zero: come funziona un computer, Linux da terminale, le reti dal primo bit al routing. È la base senza cui la sicurezza non ha senso.",
     for: "Per chi non ha mai aperto un terminale.",
@@ -46,7 +50,7 @@ export default function Corsi() {
                 <Image src={COURSE_COVER[c.id]} alt="" fill sizes="(min-width: 1024px) 600px, 100vw" className="object-cover" priority={c.id === "F"} />
               </div>
               <div className="grid content-center gap-3 p-6 lg:p-8">
-                <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Corso {c.id === "F" ? "1" : "2"}</p>
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Corso {COURSES.indexOf(c) + 1}</p>
                 <h2 id={`c-${c.id}`} className="font-display text-3xl font-bold">{c.title}</h2>
                 <p className="text-muted">{BLURB[c.id].lead}</p>
                 <p className="font-semibold">{BLURB[c.id].for}</p>

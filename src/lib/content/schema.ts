@@ -5,7 +5,7 @@ export const BELT_IDS = ["bianca", "gialla", "arancione", "verde", "blu", "marro
 /** Stati editoriali. `published` richiede approvazione esplicita del titolare (vedi lint). */
 export const STATUSES = ["draft", "ai-reviewed", "tested", "published"] as const;
 
-export const LESSON_ID = /^([FC])\.(\d{2})\.(\d{3})$/;
+export const LESSON_ID = /^([FCD])\.(\d{2})\.(\d{3})$/;
 
 const verification = z.object({
   type: z.enum(["generated-numeric", "sql", "python", "sim-terminal", "flag-lab", "report"]),
@@ -34,7 +34,7 @@ export const lessonFrontmatter = z
   .object({
     id: z.string().regex(LESSON_ID, "formato F.05.017"),
     course: z.string(),
-    module: z.number().int().min(1).max(11),
+    module: z.number().int().min(1).max(30),
     title: z.string().min(3),
     belt: z.enum(BELT_IDS),
     duration_min: z.number().int().min(3).max(15),

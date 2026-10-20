@@ -255,7 +255,7 @@ async function PercorsoContent() {
             <section key={course.id} aria-labelledby={`p-${course.id}`} className="grid gap-4">
               <div className="flex items-end justify-between gap-4 border-b-2 border-foreground pb-3">
                 <div>
-                  <Eyebrow className="text-muted">Corso {course.id === "F" ? "1" : "2"}</Eyebrow>
+                  <Eyebrow className="text-muted">Corso {COURSES.indexOf(course) + 1}</Eyebrow>
                   <h2 id={`p-${course.id}`} className="font-display text-2xl font-bold lg:text-3xl">
                     {course.title}
                   </h2>

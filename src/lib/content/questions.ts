@@ -1,5 +1,5 @@
 import { ARP_BANK, ENCAPSULATION_BANK, OSI_BANK, PACKET_BASICS } from "@/lib/practice/banks";
-import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
+import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
 import { readRawLessons } from "./load";
 
 /** Una domanda di una banca, con tutto ciò che serve per rivederla. */
@@ -28,7 +28,7 @@ export function loadQuestions(): QuestionRow[] {
     "arp-concepts": ARP_BANK,
     "osi-layers": OSI_BANK,
     encapsulation: ENCAPSULATION_BANK,
-    ...CYBER_BANK_ITEMS,
+    ...ALL_BANK_ITEMS,
   };
   const moduleOf = (bank: string) => {
     const m = /^c(\d{2})-/.exec(bank);

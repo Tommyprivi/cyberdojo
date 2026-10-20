@@ -4,7 +4,7 @@ import { BitGrid, Callout, Envelope, Log } from "@/components/lesson/bits";
 import { Recap, Say, Scene } from "@/components/lesson/blocks";
 import { lessonComponents } from "@/components/lesson/mdx-components";
 import { Video } from "@/components/lesson/video";
-import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
+import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
 import { GENERATORS, isGeneratorId } from "@/lib/practice/generators";
 import { ARP_BANK, ENCAPSULATION_BANK, OSI_BANK, PACKET_BASICS, type BankItem } from "@/lib/practice/banks";
 
@@ -18,7 +18,7 @@ const BANK_ITEMS: Record<string, readonly BankItem[]> = {
   "arp-concepts": ARP_BANK,
   "osi-layers": OSI_BANK,
   encapsulation: ENCAPSULATION_BANK,
-  ...CYBER_BANK_ITEMS,
+  ...ALL_BANK_ITEMS,
 };
 
 function ReviewQuiz({ question, options, answer, explain }: { question: string; options: string[]; answer: number; explain: string }) {

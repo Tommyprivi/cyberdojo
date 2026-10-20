@@ -1,5 +1,5 @@
 import type { TableRow } from "@/components/review/lesson-table";
-import { CYBER_BANK_ITEMS } from "@/lib/practice/banks-cyber";
+import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
 import { COURSES } from "./courses";
 import { readRawLessons, splitScreens } from "./load";
 import { lessonFrontmatter } from "./schema";
@@ -26,7 +26,7 @@ export function loadLessonRows(reviews: Reviews): TableRow[] {
         isAttack: d.id[0] === "C" && d.module === 8,
         humanReviewed: d.human_reviewed,
         screens: splitScreens(l.body).length,
-        questions: gen ? (CYBER_BANK_ITEMS[gen]?.length ?? 0) : 0,
+        questions: gen ? (ALL_BANK_ITEMS[gen]?.length ?? 0) : 0,
         status: d.status,
         hasNote: !!reviews[d.id]?.note,
         note: reviews[d.id]?.note,
