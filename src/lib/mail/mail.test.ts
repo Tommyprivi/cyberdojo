@@ -68,7 +68,10 @@ describe("modelli di email", () => {
       expect(m.html).toContain('lang="it"');
       expect(m.html.match(/<table/g)?.length).toBe(m.html.match(/<\/table>/g)?.length);
       expect(m.text.trim().length).toBeGreaterThan(50);
-      expect(m.html).not.toMatch(/<img/); // nessuna immagine da caricare
+      // Solo la testata illustrata, dal sito stesso, con alt vuoto: se è bloccata l'email resta leggibile.
+      const imgs = m.html.match(/<img[^>]*>/g) ?? [];
+      expect(imgs.length).toBeLessThanOrEqual(1);
+      for (const img of imgs) expect(img).toMatch(/src="https?:\/\/[^"]+\/email\/[a-z]+\.jpg"[^>]*alt=""/);
     }
   });
 });

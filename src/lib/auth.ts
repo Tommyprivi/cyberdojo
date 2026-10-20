@@ -4,7 +4,7 @@ import { nextCookies } from "better-auth/next-js";
 import { magicLink } from "better-auth/plugins";
 import { getDb, schema } from "./db";
 import { sendMail } from "./email";
-import { magicLinkEmail, verificationEmail } from "./mail/templates";
+import { magicLinkEmail, passwordResetEmail, verificationEmail } from "./mail/templates";
 
 let instance: ReturnType<typeof create> | undefined;
 
@@ -21,7 +21,14 @@ function create() {
 
   return betterAuth({
     database: drizzleAdapter(getDb(), { provider: "pg", schema }),
-    emailAndPassword: { enabled: true, minPasswordLength: 10 },
+    emailAndPassword: {
+      enabled: true,
+      minPasswordLength: 10,
+      resetPasswordTokenExpiresIn: 3600,
+      sendResetPassword: async ({ user, url }) => {
+        await sendMail({ to: user.email, mail: passwordResetEmail({ name: user.name, email: user.email, url }) });
+      },
+    },
     // La conferma dell'email parte alla registrazione ma NON blocca l'accesso: serve ad attivare
     // i promemoria di studio, così nessuno riceve messaggi per un indirizzo scritto male.
     emailVerification: {

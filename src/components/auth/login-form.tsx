@@ -98,6 +98,11 @@ export function LoginForm() {
         <button type="submit" disabled={busy} className="btn btn-primary">
           {mode === "password" ? "Accedi" : "Mandami il link"}
         </button>
+        {mode === "password" && (
+          <Link href="/password-dimenticata" className="text-center text-sm font-semibold text-primary underline">
+            Hai dimenticato la password?
+          </Link>
+        )}
       </form>
 
       <p className="text-center">

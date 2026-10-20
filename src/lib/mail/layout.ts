@@ -17,7 +17,15 @@ export type Block =
   | { type: "note"; text: string };
 
 export type FooterLine = { text: string; link?: { label: string; url: string } };
-export type EmailContent = { subject: string; preheader: string; title: string; blocks: Block[]; footer: FooterLine[] };
+export type EmailContent = {
+  subject: string;
+  preheader: string;
+  title: string;
+  blocks: Block[];
+  footer: FooterLine[];
+  /** Immagine di testata (indirizzo assoluto). Facoltativa: se le immagini sono bloccate, l'email resta leggibile. */
+  banner?: string;
+};
 
 const FONT_TEXT = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const FONT_SERIF = "Georgia,'Times New Roman',serif";
@@ -48,7 +56,11 @@ export function renderHtml(c: EmailContent): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.paper}"><tr><td align="center" style="padding:24px 12px">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${C.surface};border:1px solid ${C.line};border-top:3px solid ${C.ink}">
 <tr><td style="padding:24px 32px 0;font-family:${FONT_SERIF};font-size:22px;font-weight:bold;color:${C.ink}"><span style="display:inline-block;padding:2px 6px;background:${C.seal};color:#ffffff;font-size:14px;border-radius:3px;margin-right:8px">道場</span>CyberDojo</td></tr>
-<tr><td style="padding:20px 32px 0"><h1 style="margin:0;font-family:${FONT_SERIF};font-size:28px;line-height:1.2;color:${C.ink}">${esc(c.title)}</h1></td></tr>
+${
+    c.banner
+      ? `<tr><td style="padding:0;line-height:0"><img src="${esc(c.banner)}" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>\n`
+      : ""
+  }<tr><td style="padding:20px 32px 0"><h1 style="margin:0;font-family:${FONT_SERIF};font-size:28px;line-height:1.2;color:${C.ink}">${esc(c.title)}</h1></td></tr>
 <tr><td style="padding:16px 32px 8px">${body}</td></tr>
 <tr><td style="padding:16px 32px 28px;border-top:1px solid ${C.line}">${footer}</td></tr>
 </table></td></tr></table></body></html>`;

@@ -1,10 +1,13 @@
-import { firstName } from "../display-name";
+﻿import { firstName } from "../display-name";
 import { siteUrl } from "../site-url";
 import { renderHtml, renderText, type EmailContent } from "./layout";
 
 export type Mail = { subject: string; html: string; text: string };
 
 const build = (c: EmailContent): Mail => ({ subject: c.subject, html: renderHtml(c), text: renderText(c) });
+
+/** Le illustrazioni stanno in public/email e si caricano dall'indirizzo pubblico del sito. */
+const banner = (name: "intestazione" | "accesso" | "conferma" | "benvenuto" | "promemoria") => `${siteUrl()}/email/${name}.jpg`;
 
 const SERVICE_FOOTER = [{ text: "Questa è un'email di servizio di CyberDojo, la scuola gratuita di cybersecurity in italiano." }];
 
@@ -13,6 +16,7 @@ export function magicLinkEmail({ url }: { url: string }): Mail {
   return build({
     subject: "Il tuo link di accesso a CyberDojo",
     preheader: "Apri il link per entrare. Vale pochi minuti e una volta sola.",
+    banner: banner("accesso"),
     title: "Entra nel dojo",
     blocks: [
       { type: "p", text: "Hai chiesto di accedere a CyberDojo. Usa il pulsante qui sotto: il link vale pochi minuti e una volta sola." },
@@ -30,6 +34,7 @@ export function welcomeEmail({ name, email }: { name: string | null; email: stri
   return build({
     subject: `Benvenuto nel dojo, ${first}`,
     preheader: "Il tuo account è pronto. Il primo caso ti aspetta: sono sette minuti.",
+    banner: banner("benvenuto"),
     title: `Benvenuto, ${first}.`,
     blocks: [
       { type: "p", text: "Il tuo account è pronto. Qui si impara la cybersecurity risolvendo casi veri, otto minuti alla volta, e ogni lezione finisce con una prova pratica." },
@@ -74,6 +79,7 @@ export function reminderEmail({
   return build({
     subject,
     preheader: atRisk ? "Una verifica superata oggi e la serie continua." : "Otto minuti bastano per ricominciare.",
+    banner: banner("promemoria"),
     title: atRisk ? "La tua serie è in gioco." : "Un caso oggi?",
     blocks,
     footer: [
@@ -89,11 +95,29 @@ export function verificationEmail({ name, email, url }: { name: string | null; e
   return build({
     subject: "Conferma il tuo indirizzo email",
     preheader: "Un clic per confermare che questa email è tua.",
+    banner: banner("conferma"),
     title: "Conferma la tua email",
     blocks: [
       { type: "p", text: `Ciao ${first}, conferma che questo indirizzo è tuo. Serve per poterti mandare i promemoria di studio, se vorrai attivarli.` },
       { type: "button", label: "Conferma l'email", url },
       { type: "note", text: "Non hai creato tu un account su CyberDojo? Ignora questa email: senza il link non succede nulla." },
+    ],
+    footer: SERVICE_FOOTER,
+  });
+}
+
+/** Recupero password: il link vale un'ora e una volta sola. */
+export function passwordResetEmail({ name, email, url }: { name: string | null; email: string; url: string }): Mail {
+  const first = firstName({ name, email });
+  return build({
+    subject: "Reimposta la tua password di CyberDojo",
+    preheader: "Il link vale un'ora e una volta sola.",
+    banner: banner("intestazione"),
+    title: "Scegli una nuova password",
+    blocks: [
+      { type: "p", text: `Ciao ${first}, hai chiesto di reimpostare la password. Usa il pulsante qui sotto: il link vale un'ora e una volta sola.` },
+      { type: "button", label: "Scegli la nuova password", url },
+      { type: "note", text: "Non l'hai chiesto tu? Ignora questa email: la tua password non cambia finché non apri il link." },
     ],
     footer: SERVICE_FOOTER,
   });
