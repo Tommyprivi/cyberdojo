@@ -165,6 +165,7 @@ async function Graphics() {
             <div className="flex flex-wrap items-end gap-4">
               <Mascot size={96} mood="happy" />
               <Mascot size={96} mood="stern" />
+              <Mascot size={96} mood="attento" />
               <Mascot size={96} animate />
             </div>
           </Block>

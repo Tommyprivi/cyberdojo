@@ -29,3 +29,27 @@ Log cronologico delle azioni svolte nel progetto. Una riga per azione completata
 - [21/10 22:11] AZIONE: Eseguita la verifica completa del progetto
 - FILE: nessuno (solo lettura)
 - NOTE: vitest 2132/2132 OK, ESLint pulito, typecheck pulito, build di produzione OK. lint:content passa da 40 a 33 problemi: restano solo "verification.generator sconosciuto" (33 banche di domande da scrivere: 23 Cybersecurity C12-C21, 10 Hedge H5 e H12).
+
+- [21/10 21:55] AZIONE: Salvataggio del lavoro in corso non committato
+- FILE: .gitattributes, .gitignore, SESSION_LOG.md e 630 file
+- NOTE: Commit `ead149e` su `main` (repo locale, nessun remote). Configurata identità git solo per questo repository con quella delle commit precedenti. Aggiunto `.gitattributes` (`* text=auto eol=lf`) per fermare il passaggio a CRLF che sporcava ogni diff. Esclusi `.agents/` e `.claude/` (skill di terze parti, 7,6 MB).
+
+- [21/10 21:58] AZIONE: Configurate le chiavi ElevenLabs, Resend e Groq
+- FILE: .env.local, .env.example
+- NOTE: La prima chiave ElevenLabs ricevuta era l'ID della chiave, non la chiave (l'API risponde `api_key_id_used_as_api_key`): serviva una chiave che inizi con `sk_`, ora verificata. La chiave `gsk_` è di Groq, non di Google: aggiunto `GROQ_API_KEY`/`GROQ_MODEL` come provider alternativo per l'AI Dojo. La chiave Resend funziona ma l'account non ha domini: si usa `onboarding@resend.dev` (invio solo all'indirizzo del titolare), per gli utenti reali serve un dominio.
+
+- [21/10 22:01] AZIONE: Scritte le 33 banche di domande mancanti
+- FILE: src/lib/practice/banks-cyber/c12.ts, c13.ts, c15.ts, c16.ts, c18.ts, c19.ts, c20.ts, c21.ts, src/lib/practice/banks-hedge/h05.ts, h12.ts
+- NOTE: 442 domande in 33 banche (12-14 per banca), scritte a partire dalle lezioni: 23 banche Cybersecurity (C12, C13, C15, C16, C18, C19, C20, C21) e 10 Hedge fund (H5, H12). Con queste il lint dei contenuti passa: 443 lezioni controllate, 0 problemi. Le 33 lezioni che erano bloccate si sbloccano.
+
+- [21/10 22:03] AZIONE: Resend non blocca più lo sviluppo quando il dominio manca
+- FILE: src/lib/email.ts
+- NOTE: Se Resend risponde con errore, in sviluppo il messaggio resta stampato a terminale e salvato in `.outbox/` invece di far fallire la richiesta. In produzione l'errore viene ancora propagato. Email di prova inviata con successo all'indirizzo del titolare.
+
+- [21/10 22:05] AZIONE: Completata la mascotte "Onigiri Sensei" e aggiunta la pagina 404
+- FILE: src/components/mascot.tsx, src/app/not-found.tsx, src/app/(app)/revisione/grafica/page.tsx, public/img/mascotte/sensei.svg
+- NOTE: La mascotte esisteva solo come bozza (file con scritto "PLACEHOLDER GENERATO") ed era già usata in 11 punti del sito. Scelto di tenerla: il riso onigiri richiama il sigillo giapponese del marchio. Ora usa i colori del sito (indaco, carta, rosso del sigillo) invece del verde provvisorio, e la bocca in modalità "serio" non è più bianca su bianco (era invisibile). Aggiunta la terza posizione "attento" e una pagina 404 con la mascotte, che non esisteva.
+
+- [21/10 22:08] AZIONE: Eseguita la verifica completa del progetto
+- FILE: nessuno (solo lettura)
+- NOTE: vitest 2264/2264 OK (21 file), ESLint pulito su tutto il progetto, typecheck pulito, build di produzione OK, lint:content 443 lezioni con 0 problemi.

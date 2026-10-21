@@ -23,14 +23,7 @@ export async function sendMail({ to, mail, headers }: Outgoing): Promise<{ deliv
       throw new Error("Invio email non configurato (RESEND_API_KEY, EMAIL_FROM).");
     }
     console.log(`\n[email di sviluppo] a: ${to}\noggetto: ${mail.subject}\n${mail.text}\n`);
-    try {
-      const dir = path.join(process.cwd(), ".outbox");
-      mkdirSync(dir, { recursive: true });
-      const safe = to.replace(/[^a-z0-9@._-]/gi, "_");
-      writeFileSync(path.join(dir, `${Date.now()}-${safe}.html`), mail.html);
-    } catch {
-      /* la copia su disco è solo una comodità */
-    }
+    saveToOutbox(to, mail);
     return { delivered: false };
   }
 
@@ -40,6 +33,26 @@ export async function sendMail({ to, mail, headers }: Outgoing): Promise<{ deliv
     body: JSON.stringify({ from, to, subject: mail.subject, html: mail.html, text: mail.text, ...(headers ? { headers } : {}) }),
     signal: AbortSignal.timeout(15_000),
   });
-  if (!res.ok) throw new Error(`Resend ha risposto ${res.status}`);
+  if (!res.ok) {
+    // In sviluppo un errore di Resend (dominio non configurato, quota esaurita) non deve bloccare
+    // il flusso: il messaggio resta leggibile in .outbox/. In produzione l'errore viene propagato.
+    if (process.env.NODE_ENV === "production") throw new Error(`Resend ha risposto ${res.status}`);
+    console.warn(`[email] Resend ha risposto ${res.status}: il messaggio resta solo in .outbox/`);
+    console.log(`\n[email di sviluppo] a: ${to}\noggetto: ${mail.subject}\n${mail.text}\n`);
+    saveToOutbox(to, mail);
+    return { delivered: false };
+  }
   return { delivered: true };
+}
+
+/** Copia locale del messaggio, per controllarlo nel browser durante lo sviluppo. */
+function saveToOutbox(to: string, mail: Mail): void {
+  try {
+    const dir = path.join(process.cwd(), ".outbox");
+    mkdirSync(dir, { recursive: true });
+    const safe = to.replace(/[^a-z0-9@._-]/gi, "_");
+    writeFileSync(path.join(dir, `${Date.now()}-${safe}.html`), mail.html);
+  } catch {
+    /* la copia su disco è solo una comodità */
+  }
 }
