@@ -1,0 +1,168 @@
+---
+id: H.09.003
+course: hedge
+module: 9
+title: "Antiriciclaggio: conosci il cliente"
+belt: blu
+duration_min: 8
+prerequisites: [H.09.002]
+objectives:
+  - "Spiegare che cosa vuol dire riciclaggio e a che cosa serve il KYC"
+  - "Spiegare chi è il titolare effettivo"
+  - "Sapere che cosa fare davanti a un'operazione sospetta, in sintesi"
+video:
+  provider: youtube
+  id: "hcCThGbs1K8"
+  start: 0
+  end: 600
+  channel: "Veda Antiriciclaggio"
+  title: "Antiriciclaggio adeguata verifica in quattro passaggi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-kyc
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fermarsi alla prima società e non risalire alla persona che controlla davvero"
+  - "Avvisare il cliente di una segnalazione sospetta: la segnalazione è riservata"
+  - "Pensare che i controlli finiscano dopo l'apertura del rapporto"
+commands: []
+---
+
+<Scene title="Il versamento strano">
+Un gestore fittizio, Nova Capital, riceve una richiesta: una società estera, Beta Holding, vuole investire **2 milioni** nel fondo. Dietro Beta Holding c'è un'altra società, e dietro ancora un'altra. Nessuno sa dire chi ne sia il proprietario. Il cliente ha fretta: «Se mi chiedete troppi documenti, vado da un altro.»
+
+La domanda del caso: **che cosa deve fare il gestore?**
+
+Ricorda: il corso è educazione, non consulenza legale. Si può perdere denaro, anche tutto. Fatti normativi in sintesi, ottobre 2026: controlla le fonti ufficiali.
+
+<Say who="sensei">Il denaro non ha odore, ma ha una storia. Il tuo lavoro è conoscerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il riciclaggio">
+**Riciclaggio** vuol dire far sembrare «pulito» denaro che viene da attività illecite (truffe, droga, corruzione), facendolo passare per banche, fondi, società.
+
+L'**antiriciclaggio** è l'insieme di regole per **impedirlo**. In Italia la legge base è il decreto legislativo **231/2007**, che segue le direttive europee. L'Europa sta rafforzando il quadro con un pacchetto di regole nuove, con una nuova autorità europea (AMLA) e regole che si applicano dal 2027: in sintesi, controlla i testi aggiornati.
+
+Chi deve rispettare queste regole? Banche, SGR, intermediari, e altri soggetti: gli **obbligati**. Anche i gestori di hedge fund.
+
+<Callout kind="regola">
+Le regole antiriciclaggio proteggono il sistema finanziario. Chi le ignora può rischiare sanzioni gravi, anche penali.
+</Callout>
+
+<Say who="assistente">Non serve essere poliziotti. Serve fare bene i controlli previsti e dare l'allarme quando qualcosa non torna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Conosci il cliente (KYC)">
+**KYC** significa «know your customer», conosci il cliente. In italiano si parla di **adeguata verifica**. In sintesi:
+
+1. **Identificare** il cliente con documenti validi.
+2. **Individuare il titolare effettivo**: la persona fisica che in ultima analisi possiede o controlla la società (di solito, chi ha una quota oltre il 25%, o controlla in altro modo).
+3. **Capire lo scopo** del rapporto e **da dove vengono i fondi**.
+4. **Monitorare** nel tempo le operazioni e aggiornare i dati.
+
+Un video in italiano, per sentire i passaggi da un'altra voce:
+
+<Video />
+
+<Callout kind="attenzione">
+Se il cliente è una catena di società, non basta il nome della prima. Si risale fino alle **persone**. Se non si riesce, il rapporto non si apre.
+</Callout>
+
+<Say who="sensei">Se non sai chi c'è in cima alla catena, non hai finito il lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più rischio, più controlli">
+Non tutti i clienti sono uguali. Le regole chiedono di **valutare il rischio**:
+
+- cliente a rischio basso: controlli **semplificati**;
+- cliente normale: controlli **ordinari**;
+- cliente a rischio alto (per esempio **persone politicamente esposte**, Paesi ad alto rischio, strutture opache): **adeguata verifica rafforzata**.
+
+Una **persona politicamente esposta** è chi ricopre o ha ricoperto cariche pubbliche importanti. Non è colpevole di niente: richiede solo più attenzione.
+
+<Callout kind="trucco">
+Alcuni segnali: fretta senza motivo, rifiuto di dare documenti, strutture complicate senza ragione economica, pagamenti da terzi non collegati al cliente.
+</Callout>
+
+<Say who="assistente">Un segnale non è una prova. È un motivo per guardare meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se qualcosa non torna">
+Che cosa si fa davanti a un'**operazione sospetta**? In sintesi:
+
+- si approfondiscono i controlli;
+- se il sospetto resta, si fa una **segnalazione di operazione sospetta**, in Italia alla **UIF** (Unità di informazione finanziaria per l'Italia, presso la Banca d'Italia);
+- **non si avvisa il cliente**: la segnalazione è riservata.
+
+<Callout kind="attenzione">
+Avvisare il cliente («guarda che ti segnalo») è vietato e può danneggiare le indagini. Chi sospetta segnala, non fa giustizia da solo.
+</Callout>
+
+<Say who="sensei">Il silenzio sulla segnalazione fa parte del lavoro, come il segreto del medico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Beta Holding vuole investire 2 milioni, ma nessuno sa chi la controlla, e il cliente dice: «Se salti i controlli ti pago una commissione più alta». Che cosa è corretto?"
+  options={[
+    "Rifiutare di saltare i controlli: la richiesta stessa è un segnale di rischio, e senza titolare effettivo non si apre il rapporto",
+    "Accettare, se la commissione è davvero alta",
+    "Accettare e fare i controlli tra un mese",
+    "Avvisare il cliente che verrà segnalato alla UIF",
+  ]}
+  answer={0}
+  explain="I controlli non si saltano mai: sono un obbligo. La proposta di pagare di più per evitarli è già un campanello d'allarme. E se si segnala, il cliente non va avvisato."
+/>
+
+<Say who="sensei">Un cliente che paga per non essere guardato ti sta dicendo qualcosa. Ascoltalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su KYC e antiriciclaggio: scegli che cosa è corretto fare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-kyc" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un controllo fatto bene oggi evita un guaio grosso domani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Antiriciclaggio: regole per impedire che denaro illecito sembri pulito; il KYC (adeguata verifica) è il cuore dei controlli.
+- Si identifica il cliente, si risale al titolare effettivo, si capisce lo scopo e si monitora nel tempo.
+- Davanti a un sospetto si segnala alla UIF e non si avvisa il cliente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il titolare effettivo?", a: "La persona fisica che in ultima analisi possiede o controlla la società" },
+    { q: "Che cosa vuol dire KYC?", a: "Know your customer: conosci il cliente, adeguata verifica" },
+    { q: "A chi si segnala un'operazione sospetta in Italia?", a: "Alla UIF, presso la Banca d'Italia" },
+    { q: "Si può avvisare il cliente della segnalazione?", a: "No: è riservata" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i conflitti di interesse. Quando chi gestisce i tuoi soldi ha anche un interesse suo.</Say>
+</Scene>

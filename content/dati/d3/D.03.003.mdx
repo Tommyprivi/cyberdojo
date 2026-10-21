@@ -1,0 +1,270 @@
+---
+id: D.03.003
+course: dati
+module: 3
+title: "Ordinare e limitare"
+belt: bianca
+duration_min: 8
+prerequisites: [D.03.002]
+objectives:
+  - "Ordinare i risultati con ORDER BY, in modo crescente e decrescente"
+  - "Prendere solo le prime righe con LIMIT e togliere i doppioni con DISTINCT"
+  - "Dare nomi chiari alle colonne con gli alias (AS)"
+video:
+  provider: youtube
+  id: "7fAZtZ_fMLM"
+  start: 0
+  end: 399
+  channel: "Edoardo Midali"
+  title: "SQL Tutorial Italiano 11 - Ordinare la tabella con ORDER BY"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-ordinare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare LIMIT senza ORDER BY: quali righe escono non è garantito"
+  - "Dimenticare che ORDER BY ordina in modo crescente se non scrivi DESC"
+  - "Usare DISTINCT per «sistemare» un risultato con righe doppie causate da un errore nella query"
+commands: []
+---
+
+<Scene title="La vetrina">
+Marta vuole rifare la vetrina del negozio e ti chiede tre cose:
+
+1. i **tre prodotti più cari**, dal più caro in giù;
+2. l'**elenco delle categorie**, senza ripetizioni;
+3. un elenco con colonne dai **nomi leggibili**, da stampare.
+
+Sono tre richieste diverse, ma hanno una cosa in comune: non cambiano **quali dati** servono, cambiano **come vengono presentati**.
+
+La domanda del caso: **come si ordina, si taglia e si ripulisce un risultato?**
+
+<Say who="sensei">Un risultato in disordine è un risultato difficile da leggere. Un analista presenta i dati, non li butta sul tavolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ORDER BY: mettere in ordine">
+`ORDER BY` ordina le righe del risultato. Va **alla fine** della query. Senza altre indicazioni l'ordine è **crescente** (dal più piccolo al più grande, o dalla A alla Z).
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "ORDER BY prezzo;",
+  "",
+  "nome             | prezzo",
+  "sapone lavanda   | 6.00",
+  "sapone argilla   | 7.50",
+  "candela vaniglia | 12.50",
+  "candela cedro    | 18.00",
+  "candela mirra    | 19.00",
+  "profumatore      | 24.00",
+]} caption="Dal prezzo più basso al più alto." />
+
+Con `DESC` l'ordine si **inverte** (decrescente). `ASC` è il crescente, ma si può omettere.
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "ORDER BY prezzo DESC;",
+  "",
+  "nome             | prezzo",
+  "profumatore      | 24.00",
+  "candela mirra    | 19.00",
+  "candela cedro    | 18.00",
+  "candela vaniglia | 12.50",
+  "sapone argilla   | 7.50",
+  "sapone lavanda   | 6.00",
+]} caption="Dal più caro al più economico." />
+
+Si possono mettere **più colonne**: la seconda decide solo quando la prima è uguale.
+
+<Log lines={[
+  "SELECT categoria, nome, prezzo",
+  "FROM prodotti",
+  "ORDER BY categoria, prezzo DESC;",
+  "",
+  "categoria | nome             | prezzo",
+  "candele   | candela mirra    | 19.00",
+  "candele   | candela cedro    | 18.00",
+  "candele   | candela vaniglia | 12.50",
+  "profumi   | profumatore      | 24.00",
+  "saponi    | sapone argilla   | 7.50",
+  "saponi    | sapone lavanda   | 6.00",
+]} caption="Prima per categoria (A-Z), dentro ogni categoria dal più caro." />
+
+<Callout kind="attenzione">
+Se due righe hanno lo stesso valore nella colonna di ordinamento, il database può metterle in un ordine qualsiasi. Per un risultato sempre uguale, aggiungi come ultima colonna una chiave unica (per esempio `id`).
+</Callout>
+
+<Say who="assistente">Una colonna dopo l'altra, da sinistra a destra. DESC si scrive dopo la colonna a cui si riferisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="LIMIT: solo le prime righe">
+`LIMIT` taglia il risultato: si tengono solo le prime N righe. Insieme a `ORDER BY` risponde alle domande «i primi tre», «il più caro», «gli ultimi cinque ordini».
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "ORDER BY prezzo DESC",
+  "LIMIT 3;",
+  "",
+  "nome          | prezzo",
+  "profumatore   | 24.00",
+  "candela mirra | 19.00",
+  "candela cedro | 18.00",
+]} caption="I tre prodotti più cari." />
+
+`OFFSET` salta un certo numero di righe: serve per la «pagina successiva».
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "ORDER BY prezzo DESC",
+  "LIMIT 3 OFFSET 3;",
+  "",
+  "nome             | prezzo",
+  "candela vaniglia | 12.50",
+  "sapone argilla   | 7.50",
+  "sapone lavanda   | 6.00",
+]} caption="Salto i primi tre, prendo i tre seguenti." />
+
+<Callout kind="attenzione">
+`LIMIT` senza `ORDER BY` dà «tre righe qualsiasi»: quali, non è garantito. Per «i più cari» l'ordine è parte della domanda.
+</Callout>
+
+<Callout kind="curiosita">
+Differenza tra database: `LIMIT` esiste in PostgreSQL, MySQL e SQLite. Lo standard SQL usa `FETCH FIRST 3 ROWS ONLY`, e SQL Server usa `SELECT TOP 3`. L'idea è la stessa.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video su ORDER BY in italiano:
+
+<Video />
+
+<Say who="sensei">Primo ordina, poi taglia. Se tagli senza ordinare, hai preso righe a caso e le hai chiamate «le migliori».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="DISTINCT: niente doppioni">
+Nella tabella `prodotti` ci sono tre candele, ma le categorie sono tre soltanto. Con `DISTINCT` ogni valore compare **una volta sola**.
+
+<Log lines={[
+  "SELECT DISTINCT categoria",
+  "FROM prodotti",
+  "ORDER BY categoria;",
+  "",
+  "categoria",
+  "candele",
+  "profumi",
+  "saponi",
+]} caption="Le categorie, senza ripetizioni." />
+
+<Log lines={[
+  "SELECT DISTINCT cliente_id",
+  "FROM ordini",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id",
+  "1",
+  "2",
+  "3",
+  "4",
+]} caption="Gli id dei clienti che hanno fatto almeno un ordine." />
+
+Nella seconda query, nella tabella `ordini` il cliente 1 compare tre volte; con `DISTINCT` una sola.
+
+<Callout kind="attenzione">
+`DISTINCT` toglie le righe **identiche in tutte le colonne scelte**. Se aggiungi una colonna, i doppioni cambiano. E non usarlo per nascondere un errore: se una query dà righe doppie senza motivo, il problema è quasi sempre altrove (lo vedrai con i JOIN).
+</Callout>
+
+<Say who="assistente">DISTINCT guarda la riga intera, non una colonna sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Alias: nomi leggibili">
+Un **alias** è un nuovo nome dato a una colonna (o a una tabella) con `AS`. Serve a rendere il risultato leggibile, soprattutto quando c'è un calcolo.
+
+Supponiamo che i prezzi siano senza IVA e che l'IVA sia il 22%:
+
+<Log lines={[
+  "SELECT nome AS prodotto, prezzo * 1.22 AS prezzo_con_iva",
+  "FROM prodotti",
+  "ORDER BY prezzo_con_iva DESC",
+  "LIMIT 3;",
+  "",
+  "prodotto      | prezzo_con_iva",
+  "profumatore   | 29.28",
+  "candela mirra | 23.18",
+  "candela cedro | 21.96",
+]} caption="Il prezzo con IVA ha un nome chiaro grazie all'alias." />
+
+Nota che `ORDER BY` può usare l'alias, perché lavora **dopo** il `SELECT`. Il `WHERE`, invece, no (lavora prima).
+
+<Callout kind="trucco">
+Un alias con spazi o maiuscole va tra virgolette doppie: `AS "Prezzo con IVA"`. Per le tue query, nomi senza spazi e in minuscolo (`prezzo_con_iva`) evitano guai.
+</Callout>
+
+<Say who="sensei">Un calcolo senza alias ha un nome strano e illeggibile. Un buon alias è metà del report.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo alla vetrina di Marta: i tre prodotti più cari, con il prezzo.
+
+<Quiz
+  question="Quale query dà i tre prodotti più cari, dal più caro in giù?"
+  options={[
+    "SELECT nome, prezzo FROM prodotti ORDER BY prezzo DESC LIMIT 3;",
+    "SELECT nome, prezzo FROM prodotti ORDER BY prezzo LIMIT 3;",
+    "SELECT nome, prezzo FROM prodotti LIMIT 3 ORDER BY prezzo DESC;",
+    "SELECT DISTINCT nome, prezzo FROM prodotti LIMIT 3;",
+  ]}
+  answer={0}
+  explain="Si ordina dal più caro (DESC) e poi si tengono 3 righe. Senza DESC escono i tre più economici. LIMIT prima di ORDER BY è un errore di sintassi: LIMIT va in fondo. E DISTINCT con LIMIT ma senza ordine dà tre righe qualsiasi."
+/>
+
+<Say who="sensei">Risultato: profumatore, candela mirra, candela cedro. Ordine, poi taglio. Sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ordinamento, LIMIT, DISTINCT e alias. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-ordinare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa ordinare e tagliare sa già rispondere a metà delle domande di un capo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- ORDER BY ordina (crescente di default, DESC per decrescente) e va in fondo alla query.
+- LIMIT tiene le prime righe: ha senso solo con ORDER BY. DISTINCT toglie le righe identiche.
+- AS dà un nome leggibile a colonne e calcoli; ORDER BY può usare l'alias, WHERE no.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si ordina dal più grande al più piccolo?", a: "ORDER BY colonna DESC" },
+    { q: "Perché LIMIT senza ORDER BY è rischioso?", a: "Perché non è garantito quali righe escano" },
+    { q: "Cosa fa DISTINCT?", a: "Toglie le righe identiche in tutte le colonne scelte" },
+    { q: "A cosa serve AS?", a: "A dare un nuovo nome (alias) a una colonna o a un calcolo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: contare, sommare, fare medie. Il cuore dell'analisi.</Say>
+</Scene>

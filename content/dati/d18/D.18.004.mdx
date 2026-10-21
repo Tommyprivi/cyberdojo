@@ -1,0 +1,242 @@
+---
+id: D.18.004
+course: dati
+module: 18
+title: "Viste e CTE ricorsive"
+belt: blu
+duration_min: 10
+prerequisites: [D.18.003]
+objectives:
+  - "Creare una vista e spiegare la differenza con una vista materializzata"
+  - "Scrivere una CTE ricorsiva per percorrere una gerarchia"
+  - "Prevedere il risultato di una query su una vista o su un albero di categorie"
+video:
+  provider: youtube
+  id: "HUy-DLsavhY"
+  start: 0
+  end: 600
+  channel: "Vlad Mihalcea"
+  title: "How do SQL Recursive CTE queries work"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-viste-cte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una vista normale contenga una copia dei dati: contiene solo la query e la riesegue a ogni uso"
+  - "Dimenticare REFRESH MATERIALIZED VIEW: la vista materializzata resta ferma ai dati dell'ultimo aggiornamento"
+  - "Scrivere una CTE ricorsiva senza condizione di arresto, o con dati che formano un ciclo"
+commands: []
+---
+
+<Scene title="La query lunga che tutti copiano">
+Nel negozio di Marta, tre colleghi usano ogni giorno la stessa query: ordini, nome del cliente e nome del prodotto, con due JOIN. Ognuno l'ha copiata nel proprio file. Un giorno il nome di una colonna cambia, e due colleghi su tre continuano a usare la versione vecchia.
+
+Poi arriva un'altra richiesta: le categorie dei prodotti sono annidate (candele, e dentro candele le candele profumate), e Marta vuole elencare **tutto ciò che sta sotto «Candele»**, qualunque sia la profondità.
+
+La domanda del caso: **come si dà un nome a una query lunga, e come si percorre un albero?**
+
+<Say who="sensei">Due strumenti per due problemi: la vista per non ripetersi, la CTE ricorsiva per scendere lungo un albero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La vista: una query con un nome">
+Una **vista** (*view*) è una query salvata nel database con un nome. Si usa come se fosse una tabella.
+
+<Log lines={[
+  "CREATE VIEW ordini_dettaglio AS",
+  "SELECT o.id, c.nome AS cliente, p.nome AS prodotto, o.totale",
+  "FROM ordini o",
+  "JOIN clienti c ON c.id = o.cliente_id",
+  "JOIN prodotti p ON p.id = o.prodotto_id;",
+]} caption="La vista ordini_dettaglio." />
+
+Ora chi vuole gli ordini da 24 euro in su scrive una riga:
+
+<Log lines={[
+  "SELECT * FROM ordini_dettaglio WHERE totale >= 24 ORDER BY id;",
+]} caption="Query sulla vista." />
+
+<Log lines={[
+  "id | cliente      | prodotto         | totale",
+  "1  | Giulia Ferri | candela vaniglia | 25.00",
+  "5  | Marco Bassi  | profumatore      | 24.00",
+  "6  | Luca Riva    | sapone lavanda   | 30.00",
+]} caption="Risultato: gli ordini 1, 5 e 6 (gli altri valgono 18, 18, 12.50, 15 e 12)." />
+
+Una vista **non contiene dati propri**: a ogni uso il database riesegue la query e legge le tabelle aggiornate. Serve a **riutilizzare** query lunghe, a **nascondere** colonne riservate (si dà accesso alla vista e non alla tabella) e a dare **nomi chiari**.
+
+<Say who="assistente">La vista è una scorciatoia con un nome. Se cambia la tabella, la vista mostra subito i dati nuovi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La vista materializzata">
+E se la query è pesante, per esempio una somma su milioni di righe? Rieseguirla a ogni uso è lento. La **vista materializzata** (*materialized view*) salva **anche il risultato**.
+
+<Log lines={[
+  "CREATE MATERIALIZED VIEW speso_per_cliente AS",
+  "SELECT cliente_id, SUM(totale) AS speso",
+  "FROM ordini",
+  "GROUP BY cliente_id;",
+]} caption="Vista materializzata (PostgreSQL, Oracle; MySQL non la prevede)." />
+
+<Log lines={[
+  "SELECT * FROM speso_per_cliente ORDER BY cliente_id;",
+]} caption="Lettura immediata, senza rifare la somma." />
+
+<Log lines={[
+  "cliente_id | speso",
+  "1          | 58.00",
+  "2          | 42.00",
+  "3          | 24.50",
+  "4          | 30.00",
+]} caption="Cliente 1: 25 + 18 + 15 = 58. Cliente 2: 18 + 24 = 42. Cliente 3: 12.50 + 12 = 24.50. Cliente 4: 30." />
+
+Arriva un nuovo ordine da 10 euro del cliente 4. La vista materializzata mostra ancora **30.00**, finché non scrivi:
+
+<Log lines={[
+  "REFRESH MATERIALIZED VIEW speso_per_cliente;",
+]} caption="Dopo l'aggiornamento il cliente 4 risulta a 40.00." />
+
+<Callout kind="regola">
+Vista normale: dati sempre freschi, ma la query si riesegue ogni volta. Vista materializzata: lettura rapida, ma i dati sono vecchi fino al REFRESH.
+</Callout>
+
+<Say who="sensei">Fresca o veloce: devi scegliere. Per un report mattutino va benissimo una materializzata aggiornata di notte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gerarchie: l'albero delle categorie">
+Le categorie del negozio sono in una tabella con un **auto-riferimento**: la colonna `padre_id` punta a un'altra riga della stessa tabella.
+
+<Log lines={[
+  "id | nome               | padre_id",
+  "1  | Tutto              | NULL",
+  "2  | Candele            | 1",
+  "3  | Saponi             | 1",
+  "4  | Candele profumate  | 2",
+  "5  | Candele decorative | 2",
+  "6  | Saponi liquidi     | 3",
+]} caption="La tabella categorie. «Tutto» è la radice: non ha padre." />
+
+Un JOIN normale scende di **un solo livello**. Per scendere fino in fondo senza sapere quanti livelli ci sono, serve una **CTE ricorsiva**: una query che richiama sé stessa finché trova nuove righe.
+
+<Log lines={[
+  "WITH RECURSIVE sotto AS (",
+  "  SELECT id, nome, padre_id, 1 AS livello",
+  "  FROM categorie WHERE id = 2",
+  "  UNION ALL",
+  "  SELECT c.id, c.nome, c.padre_id, s.livello + 1",
+  "  FROM categorie c JOIN sotto s ON c.padre_id = s.id",
+  ")",
+  "SELECT id, nome, livello FROM sotto ORDER BY id;",
+]} caption="Tutto ciò che sta sotto «Candele» (id 2), compresa «Candele»." />
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sulle CTE ricorsive:
+
+<Video />
+
+<Say who="assistente">La parte sopra UNION ALL è il punto di partenza. Quella sotto è il passo che si ripete.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come gira la ricorsione">
+Seguiamo la query passo per passo.
+
+<Guided
+  steps={[
+    "Partenza: la riga con id 2, «Candele», livello 1.",
+    "Giro 1: cerca le categorie con padre_id = 2. Trova la 4 «Candele profumate» e la 5 «Candele decorative», livello 2.",
+    "Giro 2: cerca le categorie con padre_id = 4 oppure 5. Non ne trova: nessuna riga nuova, la ricorsione si ferma.",
+    "Risultato finale, ordinato per id: 2 Candele (livello 1), 4 Candele profumate (livello 2), 5 Candele decorative (livello 2).",
+  ]}
+/>
+
+Partendo invece dalla radice (`WHERE id = 1`), la stessa query restituisce tutte e sei le righe: «Tutto» a livello 1, «Candele» e «Saponi» a livello 2, e le tre foglie (4, 5, 6) a livello 3.
+
+<Callout kind="attenzione">
+Se i dati contengono un **ciclo** (A è figlio di B e B è figlio di A), la ricorsione non finisce mai. Serve una condizione di arresto (per esempio `WHERE livello < 10`) o dati puliti.
+</Callout>
+
+<Callout kind="curiosita">
+In SQL Server si scrive `WITH` senza la parola `RECURSIVE`. MySQL 8 e SQLite usano `WITH RECURSIVE` come PostgreSQL.
+</Callout>
+
+<Say who="sensei">Partenza, passo, arresto. Ogni ricorsione ha le tre parti: se ne manca una, sbaglia o non finisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Una CTE ricorsiva può anche generare numeri, senza nessuna tabella. Prevedi il risultato, poi provalo.
+
+<Log lines={[
+  "WITH RECURSIVE n(i) AS (",
+  "  SELECT 1",
+  "  UNION ALL",
+  "  SELECT i + 1 FROM n WHERE i < 5",
+  ")",
+  "SELECT i, i * i AS quadrato FROM n;",
+]} caption="Genera i numeri da 1 a 5 e i loro quadrati." />
+
+<Log lines={[
+  "i | quadrato",
+  "1 | 1",
+  "2 | 4",
+  "3 | 9",
+  "4 | 16",
+  "5 | 25",
+]} caption="Risultato: la ricorsione si ferma quando i arriva a 5, perché la condizione i < 5 non è più vera." />
+
+<SqlPlayground db="negozio" query="WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n WHERE i < 5) SELECT i, i * i AS quadrato FROM n;" height={420} />
+
+<Quiz
+  question="Nella query dei numeri, che cosa succederebbe se togliessi WHERE i < 5?"
+  options={["La ricorsione non si fermerebbe mai: il database continua a generare righe", "Restituirebbe solo la riga 1", "Darebbe un errore di sintassi", "Restituirebbe i numeri da 1 a 5 lo stesso"]}
+  answer={0}
+  explain="Senza la condizione di arresto, ogni giro produce una riga nuova e la ricorsione non finisce, finché il database si ferma per memoria o tempo. La condizione WHERE nella parte ricorsiva è il freno."
+/>
+
+<Say who="sensei">Il freno si scrive prima di avviare il motore. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su viste, viste materializzate e CTE ricorsive. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-viste-cte" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai in mano gli strumenti per riordinare una query e per percorrere un albero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Una vista è una query con un nome: non contiene dati propri e mostra sempre i dati aggiornati.
+- Una vista materializzata salva il risultato: è veloce da leggere, ma va aggiornata con REFRESH MATERIALIZED VIEW.
+- Una CTE ricorsiva ha un punto di partenza, un passo che si ripete e una condizione di arresto: serve per le gerarchie.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Una vista contiene una copia dei dati?", a: "No: salva solo la query e la riesegue a ogni uso" },
+    { q: "Che cosa fa REFRESH MATERIALIZED VIEW?", a: "Ricalcola e salva di nuovo il risultato della vista" },
+    { q: "Le tre parti di una CTE ricorsiva?", a: "Punto di partenza, passo ricorsivo (dopo UNION ALL), arresto" },
+    { q: "Che cosa succede se i dati hanno un ciclo?", a: "La ricorsione non finisce: serve una condizione di arresto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: funzioni, procedure e trigger, la logica che vive dentro il database.</Say>
+</Scene>

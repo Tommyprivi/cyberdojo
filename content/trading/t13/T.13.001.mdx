@@ -1,0 +1,151 @@
+---
+id: T.13.001
+course: trading
+module: 13
+title: "Chi vigila sui mercati"
+belt: blu
+duration_min: 8
+prerequisites: [T.12.005]
+objectives:
+  - "Distinguere i compiti di CONSOB e Banca d'Italia in sintesi"
+  - "Spiegare a che cosa serve MiFID II per chi investe"
+  - "Capire perché ogni intermediario deve essere autorizzato"
+video:
+  provider: youtube
+  id: "YUhOhHawq8k"
+  start: 0
+  end: 600
+  channel: "Comitato Edufin"
+  title: "Le voci dell'educazione finanziaria | Le istituzioni Edufin | CONSOB"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-regolatori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «autorizzato» voglia dire «garantito»: l'autorità vigila sulle regole, non assicura il guadagno"
+  - "Confondere CONSOB (trasparenza e correttezza) con Banca d'Italia (stabilità e sana gestione)"
+  - "Credere che le regole proteggano da ogni perdita: si può perdere denaro anche con un intermediario autorizzato"
+commands: []
+---
+
+<Scene title="Il messaggio di Marta">
+Marta ha 24 anni e ha scritto un piccolo programma che testa strategie su dati storici. Una sera le arriva un messaggio: **«Alfa Invest gestisce il tuo denaro. Rendimento 2% a settimana. Apri il conto oggi.»**
+
+Lei sa di non essere un'esperta di leggi. Si chiede: **chi controlla le società che lavorano coi soldi degli altri? E come faccio a sapere se questa è una di quelle ammesse?**
+
+<Callout kind="attenzione">
+Prima di cominciare, una frase che vale per tutto il corso: **in finanza si può perdere denaro, anche tutto**. Questo corso è educazione, non consulenza finanziaria. Gli esercizi usano dati storici o fittizi, mai soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Chi promette un guadagno fisso ogni settimana ti sta vendendo una storia. Oggi impariamo chi controlla le storie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due arbitri, due compiti">
+In Italia i mercati finanziari hanno due autorità principali. Immagina una partita con **due arbitri**: uno guarda i comportamenti in campo, l'altro controlla che le squadre siano in regola con i conti.
+
+- **CONSOB** (Commissione Nazionale per le Società e la Borsa): vigila sulla **trasparenza e la correttezza** dei comportamenti. Controlla che le informazioni date a chi investe siano vere e complete, e combatte gli abusi di mercato.
+- **Banca d'Italia**: vigila sulla **stabilità e la sana e prudente gestione** di banche e altri intermediari. Vuole che non falliscano a causa di conti fatti male.
+
+<Callout kind="regola">
+CONSOB = **come ti trattano** (informazioni, correttezza). Banca d'Italia = **se l'intermediario regge** (solidità, conti in ordine).
+</Callout>
+
+<Say who="assistente">Un indizio per ricordare: CONSOB guarda i comportamenti, Banca d'Italia guarda la solidità. Le due cose insieme proteggono chi investe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="E l'Europa?">
+Molte regole nascono a livello europeo e poi diventano legge italiana. Per i mercati c'è **ESMA**, l'autorità europea che coordina le autorità nazionali, e c'è una direttiva chiamata **MiFID II**.
+
+Che cos'è? Una direttiva è un insieme di regole che ogni Paese europeo recepisce nella propria legge. MiFID II riguarda **i servizi di investimento**: chi ti vende, consiglia o esegue ordini per te.
+
+<Callout kind="curiosita">
+Il nome sta per «Markets in Financial Instruments Directive»: direttiva sui mercati degli strumenti finanziari. La «II» perché è la seconda versione, applicata in Europa dal 2018.
+</Callout>
+
+In sintesi, e solo a titolo educativo (ottobre 2026: le norme cambiano, controlla le fonti ufficiali), MiFID II chiede agli intermediari di:
+
+- dirti **quanto costa** il servizio, in modo chiaro;
+- capire **chi sei** (esperienza, obiettivi, quanto rischio puoi sopportare) prima di proporti certi prodotti;
+- **gestire i conflitti di interesse**, cioè i casi in cui guadagnano più loro che tu;
+- eseguire gli ordini alle **migliori condizioni** ragionevolmente possibili.
+
+<Say who="sensei">Quattro promesse scritte nella legge: costi chiari, ti conosco, niente conflitti nascosti, esecuzione corretta. Se un intermediario le ignora, è un campanello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Autorizzato non vuol dire garantito">
+Questo è l'errore più comune. **Autorizzato** significa: ha chiesto il permesso a un'autorità, rispetta regole su capitale, controlli e trasparenza, ed è sorvegliato.
+
+**Non** significa che tu guadagnerai. Un intermediario autorizzato può offrirti un investimento che perde valore: l'obbligo è dirti i rischi, non eliminarli.
+
+<Callout kind="attenzione">
+L'autorizzazione non garantisce il rendimento. Garantisce che esista qualcuno a cui chiedere conto e regole che l'intermediario deve rispettare.
+</Callout>
+
+Vuoi sentire le istituzioni raccontare il loro lavoro? Un video in italiano, con la voce di chi lavora nell'educazione finanziaria:
+
+<Video />
+
+<Say who="assistente">Il video presenta CONSOB e le altre istituzioni dell'educazione finanziaria. Ascolta soprattutto come descrivono il loro ruolo con i risparmiatori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta riceve il messaggio di Alfa Invest con «2% a settimana». Qual è il primo passo più prudente?"
+  options={[
+    "Controllare se la società è nell'elenco degli intermediari autorizzati e se ci sono avvisi delle autorità",
+    "Versare una piccola somma per provare: se non funziona, la perdita è limitata",
+    "Chiedere agli amici del gruppo social se qualcuno ci ha già guadagnato",
+    "Aspettare che il rendimento sia confermato per un mese e poi versare tutto",
+  ]}
+  answer={0}
+  explain="Il primo passo è verificare chi è la società, prima di dare un euro. Una piccola somma «di prova» è proprio come i truffatori costruiscono la fiducia. I racconti degli amici sui social non sostituiscono l'elenco ufficiale."
+/>
+
+<Say who="sensei">Si controlla prima di pagare, non dopo. Dopo è un'indagine, e di solito il denaro non torna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui ruoli delle autorità e sull'idea di intermediario autorizzato. Scegli la risposta più giusta e prudente.
+
+<Practice generator="t13-regolatori" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere chi controlla chi è la prima difesa di chi investe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- CONSOB vigila sulla trasparenza e correttezza; Banca d'Italia sulla solidità degli intermediari.
+- MiFID II chiede costi chiari, conoscenza del cliente, gestione dei conflitti ed esecuzione corretta.
+- Autorizzato non vuol dire garantito: si può perdere denaro anche con un intermediario in regola.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Di che cosa si occupa CONSOB?", a: "Trasparenza e correttezza dei comportamenti sui mercati" },
+    { q: "Di che cosa si occupa la Banca d'Italia, in sintesi?", a: "Stabilità e sana gestione di banche e altri intermediari" },
+    { q: "Che cos'è MiFID II?", a: "La direttiva europea sui servizi di investimento e sulla protezione dell'investitore" },
+    { q: "Autorizzato vuol dire che guadagno?", a: "No: vuol dire che è controllato, non che il rendimento è garantito" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le truffe più comuni. Segnali a pagamento, falsi broker e schemi Ponzi. Impari a riconoscerli, non a praticarli.</Say>
+</Scene>

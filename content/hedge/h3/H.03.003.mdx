@@ -1,0 +1,172 @@
+---
+id: H.03.003
+course: hedge
+module: 3
+title: "La frontiera efficiente di Markowitz"
+belt: arancione
+duration_min: 9
+prerequisites: [H.03.002]
+objectives:
+  - "Spiegare che cos'è la frontiera efficiente e perché un portafoglio può essere «dominato»"
+  - "Calcolare rendimento atteso e volatilità di un portafoglio di due titoli"
+  - "Dire perché i portafogli «ottimi» dipendono da stime fragili"
+video:
+  provider: youtube
+  id: "gkpDEXtg3J8"
+  start: 0
+  end: 600
+  channel: "Study Practically"
+  title: "What is Efficient Frontier ? Explained in Detail"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-markowitz
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il portafoglio sulla frontiera sia «sicuro» o «garantito»"
+  - "Dimenticare che rendimenti e correlazioni in ingresso sono stime"
+  - "Pensare che esista un solo punto «giusto» uguale per tutti"
+commands: []
+---
+
+<Scene title="Il portafoglio dominato">
+Marta, la gestrice di Rondine Capital, mostra a Luca due portafogli fittizi:
+
+| Portafoglio | Rendimento atteso | Volatilità |
+|-------------|-------------------|------------|
+| X | 6% | 5% |
+| Y | 5% | 7% |
+
+Y rende meno **e** rischia di più. Nessuno sceglierebbe Y: è **dominato** da X.
+
+La domanda del caso: **esiste un modo per trovare, tra tutte le miscele possibili, solo quelle che non sono dominate?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. I numeri qui sono inventati e i mercati non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Harry Markowitz">
+Nel 1952 l'economista **Harry Markowitz** propose un'idea semplice: un investimento si giudica per due numeri, **rendimento atteso** e **rischio**, e si guarda al portafoglio nel suo insieme, non ai singoli titoli.
+
+Per ogni miscela di titoli si calcolano i due numeri. Mettendo tutte le miscele su un grafico (rischio in orizzontale, rendimento in verticale), il bordo in alto a sinistra è la **frontiera efficiente**: per ogni livello di rischio, il massimo rendimento atteso.
+
+Vuoi vederla disegnare? Questo video la spiega in inglese, con i sottotitoli:
+
+<Video />
+
+<Callout kind="regola">
+Sulla frontiera ci sono i portafogli efficienti. Tutto ciò che sta sotto è dominato da qualche portafoglio della frontiera.
+</Callout>
+
+<Say who="assistente">Un indizio: la frontiera non dice quale scegliere. Dice quali non vale nemmeno la pena guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due titoli, una miscela">
+Numeri fittizi. Titolo A: rendimento atteso 4%, volatilità 6%. Titolo B: 8%, volatilità 8%. Correlazione zero.
+
+<Guided
+  steps={[
+    "Pesi 50/50. Rendimento atteso: 0,5 x 4% + 0,5 x 8% = 6%.",
+    "Volatilità: radice di (0,25 x 36 + 0,25 x 64) = radice di 25 = 5%.",
+    "Il portafoglio ha rendimento intermedio (6%) e rischio più basso di entrambi (5% contro 6% e 8%): è l'effetto della diversificazione.",
+    "Con correlazione +1 il rischio sarebbe stato 7%: la media dei due.",
+  ]}
+/>
+
+<Say who="sensei">Rischio più basso di entrambi i titoli. Non è magia: è correlazione inferiore a uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il portafoglio a rischio minimo">
+Con A e B (correlazione zero), qual è la miscela meno rischiosa? Il rischio minimo si ottiene con il **64% in A e il 36% in B**.
+
+<Log lines={[
+  "varianza = 0,64^2 x 36 + 0,36^2 x 64",
+  "         = 14,7456 + 8,2944 = 23,04",
+  "volatilità = radice di 23,04 = 4,8%",
+  "rendimento atteso = 0,64 x 4% + 0,36 x 8% = 5,44%",
+]} />
+
+<Callout kind="curiosita">
+Il rendimento sale, passando da A verso B, ma il rischio prima scende (fino a 4,8%) e poi risale. Il tratto che parte dal rischio minimo e sale è la parte efficiente.
+</Callout>
+
+<Say who="sensei">Ricontrolla i conti due volte. In questo mestiere un numero sbagliato costa caro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai due portafogli con lo stesso rendimento atteso. Quale preferisce chi segue Markowitz?"
+  options={[
+    "Quello con la volatilità più bassa",
+    "Quello con la volatilità più alta",
+    "Quello con più titoli, qualunque sia il rischio",
+    "Nessuno dei due: serve un terzo portafoglio",
+  ]}
+  answer={0}
+  explain="A parità di rendimento atteso si preferisce meno rischio. Un portafoglio con più rischio e lo stesso rendimento è dominato."
+/>
+
+<Callout kind="attenzione">
+Quale punto della frontiera scegliere dipende da chi sei: dal rischio che sai sopportare. Non esiste un punto «giusto» per tutti.
+</Callout>
+
+<Say who="assistente">Anche sulla frontiera si può perdere denaro. Efficiente non vuol dire sicuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il limite nascosto">
+Per costruire la frontiera servono rendimenti attesi, volatilità e correlazioni. Ma questi numeri sono **stime** fatte sul passato o con ipotesi.
+
+Il problema: piccoli errori nelle stime possono cambiare molto i pesi «ottimi». Chi ottimizza troppo finisce per fidarsi di errori.
+
+<Callout kind="regola">
+Il modello è una mappa, non il territorio. Usalo per ragionare e confronta sempre i risultati con il buon senso.
+</Callout>
+
+<Say who="sensei">Un portafoglio ottimale sulla carta può essere fragile nella realtà. Diffida di chi ti mostra solo la carta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli su due titoli e domande sulla frontiera. Tutti numeri fittizi.
+
+<Practice generator="h03-markowitz" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai usato lo strumento centrale della teoria del portafoglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La frontiera efficiente raccoglie, per ogni rischio, il portafoglio con il massimo rendimento atteso; sotto la frontiera i portafogli sono dominati.
+- Con titoli poco correlati un portafoglio può avere rischio più basso di ciascun titolo.
+- I risultati dipendono da stime fragili e non garantiscono nulla: il punto da scegliere dipende dalla tolleranza al rischio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A (4%, 6%) e B (8%, 8%), ρ = 0, 50/50: rendimento e volatilità?", a: "6% e 5%" },
+    { q: "Che cos'è un portafoglio dominato?", a: "Uno con meno rendimento e più rischio di un altro disponibile" },
+    { q: "Dove si sceglie sulla frontiera?", a: "Dipende dalla tolleranza al rischio" },
+    { q: "Perché i pesi ottimi sono fragili?", a: "Perché si basano su stime con margine di errore" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il CAPM, che si chiede quanto rendimento è giusto chiedere a un titolo.</Say>
+</Scene>

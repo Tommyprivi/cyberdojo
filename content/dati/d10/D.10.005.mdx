@@ -1,0 +1,150 @@
+---
+id: D.10.005
+course: dati
+module: 10
+title: "Gli esperimenti A/B"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.004]
+objectives:
+  - "Scrivere un'ipotesi e scegliere la metrica prima di cominciare"
+  - "Spiegare perché i gruppi si formano a caso e quanto deve durare un test"
+  - "Riconoscere gli errori di progetto più comuni"
+video:
+  provider: youtube
+  id: "KJYEdcVZCDQ"
+  start: 0
+  end: 577
+  channel: "Product Heroes"
+  title: "A cosa serve un AB Test?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-ab-progetto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cambiare due cose insieme e poi non sapere quale ha funzionato"
+  - "Formare i gruppi a mano o in giorni diversi invece che a caso"
+  - "Scegliere la metrica dopo aver visto i risultati"
+commands: []
+---
+
+<Scene title="Il bottone verde">
+Il designer di **Tavola Bella** è sicuro: «Se il bottone "Compra ora" è verde invece che grigio, si vende di più». Il capo risponde: «Ne sei sicuro, o ti piace il verde?»
+
+La coorte di marzo ha dimostrato che i sospetti non bastano. La domanda del caso: **come si fa a sapere se una modifica funziona davvero?**
+
+<Say who="sensei">Un'opinione è un'ipotesi. Un'ipotesi si mette alla prova. Si chiama esperimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un test A/B">
+Un **test A/B** confronta due versioni nello stesso periodo:
+
+- **A**, il gruppo di **controllo**: vede il bottone grigio com'è oggi.
+- **B**, il gruppo **di prova**: vede il bottone verde.
+
+I visitatori vengono divisi **a caso** tra i due gruppi. Poi si guarda quale versione ottiene più acquisti.
+
+Vuoi sentirlo spiegare da un'altra voce? In italiano, quasi dieci minuti: guarda i primi:
+
+<Video />
+
+<Say who="assistente">Come due medicine messe a confronto: una per un gruppo, una per l'altro, e poi si guarda chi sta meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ipotesi e metrica">
+Prima di cominciare si scrivono **tre cose**, su un foglio:
+
+1. **L'ipotesi**: «Se il bottone diventa verde, più visitatori compreranno».
+2. **La metrica principale**: la conversione, cioè acquisti ÷ visitatori.
+3. **La regola per decidere**: «Adottiamo B se la conversione cresce in modo chiaro».
+
+<Callout kind="attenzione">
+Si sceglie la metrica **prima**. Se la scegli dopo, ti viene la tentazione di prendere quella che ha dato un buon risultato per caso.
+</Callout>
+
+<Say who="sensei">Prima la regola, poi il test. Cambiare regola a partita iniziata si chiama barare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gruppi e durata">
+**Gruppi a caso.** Se A vede il sito al mattino e B alla sera, differiscono le persone, non il bottone. A caso significa: a ogni visitatore si tira una moneta.
+
+**Dimensione.** Tira una moneta 10 volte: 6 teste non dicono niente di speciale. Tirala 1.000 volte e ottieni 600 teste: lì c'è qualcosa. **Più persone, più i risultati sono affidabili.**
+
+**Durata.** Meglio **settimane intere**, perché si compra in modo diverso lunedì e sabato. Si decide la durata prima e non si cambia.
+
+<Callout kind="trucco">
+Un esperimento serio cambia **una cosa sola**: se cambi bottone e prezzo insieme, non saprai mai chi ha vinto.
+</Callout>
+
+<Say who="assistente">Più persone vuol dire meno fortuna nel risultato. Con pochi visitatori il caso può fare da padrone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori di progetto">
+<Quiz
+  question="Un test dura 3 giorni, a metà settimana, con i primi 200 visitatori. B sembra vincere. Qual è il problema principale?"
+  options={["Il campione è piccolo e la durata non copre una settimana intera", "Il test ha troppi visitatori", "I gruppi sono troppo uguali tra loro", "Il bottone verde non si può testare"]}
+  answer={0}
+  explain="Con 200 persone e 3 giorni il caso pesa molto, e si perde la differenza tra giorni feriali e fine settimana. Il test va allargato e lasciato correre fino alla durata decisa all'inizio."
+/>
+
+<Callout kind="regola">
+Gli errori più frequenti: **due modifiche insieme**, **gruppi non casuali**, **pochi dati**, **fermarsi quando i numeri piacciono**, **cambiare metrica a metà**.
+</Callout>
+
+<Say who="sensei">Un esperimento mal progettato dà risposte sicure e sbagliate. Sono le peggiori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ricostruisci i passi di un buon test e riconosci quelli cattivi.
+
+<Guided
+  steps={[
+    "Ipotesi: il bottone verde aumenta la conversione. Metrica: acquisti ÷ visitatori.",
+    "Gruppi: 5.000 visitatori in A, 5.000 in B, assegnati a caso.",
+    "Durata: due settimane intere, decise prima. Non si guarda il risultato per decidere quando fermarsi.",
+    "Una sola differenza tra A e B: il colore del bottone.",
+  ]}
+/>
+
+<Practice generator="d10-ab-progetto" pass="5/5" retries={3} />
+
+<Say who="sensei">Un buon test si decide prima. Il risultato viene dopo, e non si tratta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Test A/B: due versioni in contemporanea, gruppi formati a caso, una sola differenza.
+- Prima si scrivono ipotesi, metrica principale e durata; poi si parte.
+- Pochi dati, gruppi non casuali e stop anticipato sono gli errori che rovinano il test.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il gruppo di controllo?", a: "Chi vede la versione attuale, senza modifica" },
+    { q: "Perché i gruppi si formano a caso?", a: "Perché differisca solo la modifica, non le persone" },
+    { q: "Si può cambiare la metrica a test iniziato?", a: "No: va scelta prima" },
+    { q: "Perché durare settimane intere?", a: "Perché i giorni della settimana si comportano in modo diverso" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il test è finito. Come si legge il risultato senza farsi ingannare.</Say>
+</Scene>

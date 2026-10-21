@@ -1,0 +1,164 @@
+---
+id: H.05.001
+course: hedge
+module: 5
+title: "I futures: fissare il prezzo di domani"
+belt: arancione
+duration_min: 9
+prerequisites: [H.03.007]
+objectives:
+  - "Spiegare che cos'è un contratto future e che cosa sono sottostante, scadenza e margine"
+  - "Calcolare guadagno o perdita di una posizione long o short su un future con numeri semplici"
+  - "Spiegare perché con i futures si può perdere più del margine versato"
+video:
+  provider: youtube
+  id: "JFj29zNLuVg"
+  start: 0
+  end: 233
+  channel: "Pictet AM Italia"
+  title: "Derivati: cosa sono e come funzionano | Investire oggi | Focus Pictet"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-futures
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il margine sia la perdita massima: sui futures si può perdere di più"
+  - "Confondere il future (obbligo) con l'opzione (diritto)"
+  - "Dimenticare che ogni guadagno di una parte è una perdita dell'altra"
+commands: []
+---
+
+<Scene title="Il prezzo del grano di marzo">
+Il **Forno Lucente** è un panificio fittizio. A ottobre il titolare, Elio, sa che a marzo gli serviranno 10 tonnellate di grano. Oggi il grano costa 200 euro la tonnellata. Ma se a marzo costasse 240, il suo bilancio salterebbe.
+
+Elio telefona a Sara, che lavora in un fondo: «Posso bloccare oggi il prezzo di marzo?». Sara risponde: «Sì. Si chiama **future**».
+
+La domanda del caso: **come si fissa oggi un prezzo per domani, e che cosa rischia chi ci sta dall'altra parte?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. I derivati si studiano con i loro rischi accanto, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un future">
+Un **derivato** è un contratto il cui valore **deriva** dal prezzo di qualcos'altro, detto **sottostante** (grano, petrolio, un indice di borsa).
+
+Un **future** è un accordo **standardizzato**, negoziato in borsa, per comprare o vendere il sottostante a un **prezzo fissato oggi** e a una **data futura** (la **scadenza**).
+
+- Chi compra il future è **long**: si impegna a comprare.
+- Chi vende il future è **short**: si impegna a vendere.
+
+<Callout kind="regola">
+Il future è un **obbligo**, non un diritto. A scadenza entrambe le parti devono rispettare il contratto (o chiudere la posizione prima).
+</Callout>
+
+<Say who="assistente">Pensa a un biglietto di prenotazione senza via d'uscita: il prezzo è bloccato per tutti e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Guadagno e perdita">
+Contratto fittizio: **10 tonnellate** di grano, prezzo del future **200 euro** la tonnellata.
+
+A scadenza il grano vale **220**. Chi è long ha il diritto-obbligo di comprare a 200 una cosa che vale 220:
+
+<Guided
+  steps={[
+    "Long: (220 - 200) × 10 = +200 euro.",
+    "Short: (200 - 220) × 10 = -200 euro.",
+    "Se il grano vale 185: long (185 - 200) × 10 = -150 euro; short +150 euro.",
+    "Somma tra le due parti: sempre zero. Quello che guadagna uno lo perde l'altro.",
+  ]}
+/>
+
+Un'altra voce, in italiano, spiega che cosa sono i derivati in generale:
+
+<Video />
+
+<Say who="sensei">Un derivato non crea ricchezza. La sposta da una tasca all'altra. E l'altra tasca può essere la tua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il margine e la leva">
+Per un future non si paga il valore intero. Si versa un **margine iniziale**, una garanzia. Ogni giorno il conto viene aggiornato con guadagni e perdite: si chiama **adeguamento giornaliero**.
+
+Numeri fittizi: valore del contratto 10 × 200 = **2.000 euro**; margine iniziale 10%, cioè **200 euro**. Con 200 euro si controlla un valore di 2.000: è la **leva**, 10 volte.
+
+<Callout kind="attenzione">
+Se il grano scende a 170 euro, il long perde (170 - 200) × 10 = **300 euro**. Il margine era 200: la perdita è **superiore al capitale versato**. Il broker chiede di versare altro denaro (**richiamo di margine**), oppure chiude la posizione.
+</Callout>
+
+<Say who="sensei">La leva ingrandisce tutto, anche gli errori. Il margine non è la tua perdita massima: è solo la tua caparra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Per che cosa si usano">
+I futures hanno due usi:
+
+- **Copertura**: Elio compra un future long sul grano. Se il prezzo sale, perde di più al forno ma guadagna sul future; il prezzo effettivo resta intorno ai 200.
+- **Speculazione**: chi non ha grano da comprare scommette solo sulla direzione del prezzo, con la leva. Può guadagnare, o perdere molto.
+
+<Callout kind="curiosita">
+Un **forward** è simile al future ma fatto «su misura» tra due parti, fuori borsa. Ha più flessibilità ma anche il rischio che l'altra parte non paghi (rischio di controparte).
+</Callout>
+
+<Say who="assistente">Stesso strumento, due scopi. Ricorda: chi copre rinuncia anche ai guadagni extra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un future su 10 tonnellate è stato comprato a 200 euro la tonnellata. A scadenza il prezzo è 190. Che cosa succede al long?"
+  options={[
+    "Perde 100 euro: (190 - 200) × 10",
+    "Guadagna 100 euro: il prezzo è più basso",
+    "Perde solo il margine, qualunque sia il prezzo",
+    "Non succede nulla, perché non ha comprato il grano"
+  ]}
+  answer={0}
+  explain="Il long si è impegnato a comprare a 200 una cosa che ora vale 190: perde 10 euro per tonnellata, quindi 100 su 10 tonnellate. Chi risponde che perde al massimo il margine dimentica che la perdita può superarlo."
+/>
+
+<Say who="sensei">Prima il segno, poi il numero. Chi è long vuole che il prezzo salga, chi è short vuole che scenda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su futures, margine, long e short. Numeri fittizi, senza commissioni.
+
+<Practice generator="h05-futures" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: chi sta dall'altra parte ha le tue stesse armi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il future è un obbligo standardizzato di comprare (long) o vendere (short) un sottostante a prezzo e data fissati.
+- Guadagno del long: (prezzo finale - prezzo del contratto) × quantità; lo short ha l'opposto. La somma tra le parti è zero.
+- Il margine è una garanzia, non la perdita massima: con la leva si può perdere più del capitale versato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un derivato?", a: "Un contratto il cui valore deriva dal prezzo di un sottostante" },
+    { q: "Long a 200, prezzo finale 215, quantità 10: risultato?", a: "+150 euro" },
+    { q: "Che cos'è il margine?", a: "Una garanzia versata per aprire la posizione, aggiornata ogni giorno" },
+    { q: "Future e opzione: qual è la differenza di fondo?", a: "Il future è un obbligo, l'opzione è un diritto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le opzioni, dove una parte ha un diritto e l'altra un obbligo. Cambia tutto.</Say>
+</Scene>

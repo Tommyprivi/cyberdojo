@@ -1,0 +1,150 @@
+---
+id: H.10.001
+course: hedge
+module: 10
+title: "Controllare prima di fidarsi"
+belt: blu
+duration_min: 9
+prerequisites: [H.09.003]
+objectives:
+  - "Spiegare che cos'è la due diligence di un investitore"
+  - "Distinguere i controlli sull'investimento da quelli sull'organizzazione"
+  - "Riconoscere i segnali d'allarme in un fondo"
+video:
+  provider: youtube
+  id: "RGveBkJvV6Y"
+  start: 0
+  end: 600
+  channel: "HedgeFundGroup"
+  title: "Hedge Fund Due Diligence Questionaire"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h10-due-diligence
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi del passaparola di un amico invece di controllare i documenti"
+  - "Guardare solo il rendimento e ignorare chi custodisce i soldi e chi controlla i numeri"
+  - "Cedere alla fretta di chi dice «decidi entro stasera»"
+commands: []
+---
+
+<Scene title="Un fondo che sembra perfetto">
+Il fondo fittizio **Faro Capital** manda una presentazione bellissima alla signora Rinaldi, che ha dei risparmi da parte. Rendimenti alti, quasi mai un mese in rosso. Il consulente scrive: «Decidi entro stasera, i posti sono pochi».
+
+La signora Rinaldi si chiede: **come faccio a sapere se questo fondo è serio?**
+
+Ricorda: questo corso è educazione, non consulenza finanziaria. Con i fondi si può perdere denaro, anche tutto. I mercati non regalano niente.
+
+<Say who="sensei">Un bel foglio non è una prova. Prima di dare i soldi a qualcuno, si controlla chi è e come lavora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la due diligence">
+Il controllo che fa l'investitore prima di entrare in un fondo si chiama **due diligence**, cioè «diligenza dovuta»: la cura che si deve mettere prima di decidere.
+
+Si divide in due parti:
+
+- **Sull'investimento**: che strategia usa il fondo? Chi è il gestore? Quali rischi corre?
+- **Operativa**: chi custodisce i soldi? Chi calcola il valore delle quote? Chi controlla i conti?
+
+<Callout kind="regola">
+Un buon gestore non basta. Serve anche **un'organizzazione che non dipende da una sola persona**.
+</Callout>
+
+<Say who="assistente">Pensa a un ristorante: non basta che il cuoco sia bravo. Contano anche pulizia, cucina in regola e controlli sul cibo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi controlla chi">
+Nei fondi seri i ruoli sono **separati**:
+
+- il **gestore** decide cosa comprare;
+- il **custode** o il **prime broker** (lo abbiamo visto nel modulo H8) tiene i titoli e il denaro;
+- l'**amministratore** indipendente calcola il valore delle quote;
+- il **revisore** (auditor) controlla i bilanci ogni anno.
+
+Così il gestore **non può prendere i soldi da solo** né scrivere da solo i propri numeri.
+
+Vuoi sentire un'altra voce su che cosa si domanda a un fondo? Un video in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Se il gestore fa tutto da solo, nessuno lo controlla. È comodo per lui, pericoloso per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I segnali d'allarme">
+Alcuni segnali meritano molte domande, prima di qualunque firma:
+
+- **nessun amministratore o revisore indipendente**, o sconosciuti;
+- **strategia «segreta»**: «non posso spiegarti, fidati»;
+- **rendimenti troppo regolari**, quasi senza mai un mese negativo, senza una spiegazione chiara;
+- **fretta**: «decidi oggi», «ultimi posti»;
+- **documenti vaghi** su rischi, commissioni e rimborsi;
+- **soggetto non autorizzato**: si controlla nei registri ufficiali delle autorità (Consob, Banca d'Italia), non sul sito del fondo.
+
+<Callout kind="attenzione">
+Il caso Madoff, che vedremo nel modulo H11, aveva proprio questi segnali: rendimenti troppo regolari e controlli deboli. Un solo segnale non prova una frode, ma più segnali insieme richiedono prudenza.
+</Callout>
+
+<Say who="sensei">Un dubbio senza risposta è già una risposta. Se non capisci, non investi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico ti dice: «Mio cugino ha investito in questo fondo e ci ha guadagnato, quindi è sicuro». Qual è la reazione più prudente?"
+  options={[
+    "Controllo io stesso documenti, ruoli e autorizzazioni: il guadagno di una persona non prova niente",
+    "Investo la stessa cifra del cugino",
+    "Mi fido, perché un parente non mente mai",
+    "Aspetto che anche altri amici investano",
+  ]}
+  answer={0}
+  explain="Anche le truffe pagano qualcuno all'inizio. Il risultato di una persona non dice se il fondo è serio: lo dicono i controlli su ruoli, documenti e autorizzazioni."
+/>
+
+<Say who="assistente">Il passaparola è un indizio, non una verifica. La verifica si fa sui documenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di due diligence: riconosci i controlli utili e i segnali d'allarme.
+
+<Practice generator="h10-due-diligence" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ma ricorda: i controlli riducono i rischi, non li eliminano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La due diligence è il controllo fatto dall'investitore prima di entrare: sull'investimento e sull'organizzazione.
+- Nei fondi seri i ruoli sono separati: gestore, custode, amministratore e revisore.
+- Segreto, fretta, rendimenti troppo regolari e ruoli non indipendenti sono segnali d'allarme.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la due diligence?", a: "Il controllo che l'investitore fa prima di decidere" },
+    { q: "Perché serve un amministratore indipendente?", a: "Perché qualcuno di esterno calcola e controlla i numeri" },
+    { q: "Dove si verifica se un soggetto è autorizzato?", a: "Nei registri ufficiali delle autorità, come Consob e Banca d'Italia" },
+    { q: "La due diligence garantisce di non perdere?", a: "No, riduce i rischi ma non li elimina" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il track record. Come si legge davvero la storia dei risultati di un fondo.</Say>
+</Scene>

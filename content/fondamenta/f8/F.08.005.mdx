@@ -1,0 +1,184 @@
+---
+id: F.08.005
+course: fondamenta
+module: 8
+title: "Le ACL: regole sul router"
+belt: arancione
+duration_min: 9
+prerequisites: [F.08.004]
+objectives:
+  - "Leggere una ACL e prevedere che cosa lascia passare"
+  - "Spiegare l'importanza dell'ordine delle regole e del deny implicito"
+video:
+  provider: youtube
+  id: "KjOUQBzl2Ug"
+  start: 0
+  end: 215
+  channel: "schOOl's in!"
+  title: "Access List - Introduzione"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-acl
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere una regola generica (permit ip any any) prima di quelle specifiche: le altre non vengono mai lette"
+  - "Dimenticare il deny implicito in fondo: una ACL con soli deny blocca tutto"
+  - "Scrivere una ACL e non applicarla a un'interfaccia, o applicarla nella direzione sbagliata"
+commands: []
+---
+
+<Scene title="La stampante dei guai">
+Una telecamera nella VLAN 30 comincia a mandare pacchetti strani verso il server dei dati, nella rete interna. Il capo del SOC dice: «Le VLAN le abbiamo. Ma il router le collega senza controlli: la telecamera arriva dove vuole.»
+
+Adesso servono le **regole**. Su un router si scrivono con le **ACL**.
+
+<Say who="sensei">Un muro con la porta aperta non è un muro. Le ACL sono il portiere di quella porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una ACL">
+**ACL** significa **lista di controllo degli accessi** (Access Control List). È un elenco di regole che il router applica a ogni pacchetto che attraversa un'interfaccia. Ogni regola dice:
+
+- **permit** (lascia passare) oppure **deny** (scarta);
+- **a chi** si applica: indirizzo sorgente, e nelle ACL estese anche destinazione, protocollo e porta.
+
+Esistono due famiglie:
+
+- **Standard**: guardano solo l'**indirizzo sorgente**.
+- **Estese**: guardano sorgente, destinazione, protocollo (TCP, UDP, ICMP) e **porte**.
+
+<Callout kind="curiosita">
+Una ACL è come l'elenco dei nomi all'ingresso di una festa: il portiere scorre la lista, e se non trova il tuo nome (e nessuna riga ti ammette) non entri.
+</Callout>
+
+<Say who="assistente">Standard: guardo solo da dove vieni. Estese: guardo da dove vieni, dove vai e con quale servizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le due regole d'oro">
+Il router legge la ACL **dall'alto verso il basso** e si ferma alla **prima regola che corrisponde**. Le regole sotto non vengono nemmeno guardate. Inoltre, in fondo a ogni ACL c'è una regola invisibile: **deny implicito**, «tutto ciò che non ho permesso, lo scarto».
+
+<Callout kind="regola">
+1. **Ordine**: la prima regola che corrisponde vince. Le specifiche stanno sopra, le generiche sotto.
+2. **Deny implicito**: se nessuna regola ammette il pacchetto, viene scartato.
+</Callout>
+
+<Log
+  lines={[
+    "10  deny   ip host 10.30.0.20 host 10.0.0.5   (la telecamera non parla con il server)",
+    "20  permit ip any any                          (tutto il resto passa)",
+  ]}
+  caption="Una ACL di due righe. Regola 10: la telecamera 10.30.0.20 è bloccata verso il server. Regola 20: tutti gli altri passano."
+/>
+
+Prova a invertire le righe: con `permit ip any any` in cima, la regola 10 non viene **mai** letta, e la telecamera passa. Stesse regole, ordine diverso, risultato opposto.
+
+<Say who="sensei">L'ordine è metà della sicurezza. Una regola giusta nel posto sbagliato non serve a niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere una ACL estesa">
+Ecco una ACL più ricca. Leggila una riga alla volta.
+
+<Log
+  lines={[
+    "10  permit tcp 10.10.0.0 0.0.0.255 host 10.0.0.5 eq 443",
+    "20  permit udp any host 10.0.0.2 eq 53",
+    "30  deny   ip any host 10.0.0.5",
+  ]}
+  caption="ACL su un router. La rete 10.10.0.0/24 è la contabilità, 10.0.0.5 è il server dei dati, 10.0.0.2 è il DNS."
+/>
+
+<Guided
+  steps={[
+    "Riga 10: la rete 10.10.0.0/24 (la maschera wildcard 0.0.0.255 significa «da .0 a .255») può usare TCP verso il server 10.0.0.5, sulla porta 443 (HTTPS).",
+    "Riga 20: chiunque può mandare richieste DNS (UDP, porta 53) al server DNS 10.0.0.2.",
+    "Riga 30: tutto il resto del traffico verso il server 10.0.0.5 viene scartato.",
+    "In fondo, il deny implicito: anche tutto ciò che non è nominato scompare.",
+    "Risultato: la contabilità raggiunge il server dei dati solo in HTTPS. La telecamera, che non è in nessuna riga di permit, non lo raggiunge.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+La **wildcard** è una maschera alla rovescia: gli zeri sono i pezzi che devono combaciare, i 255 quelli che non contano. Con 0.0.0.255 contano i primi tre numeri.
+</Callout>
+
+<Say who="assistente">Leggi sempre così: chi, verso chi, con quale servizio, e che cosa succede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Applicare e posizionare">
+Una ACL scritta ma non applicata **non fa nulla**. Va collegata a un'interfaccia del router e a una **direzione**:
+
+- **in**: filtra i pacchetti che **entrano** nel router da quell'interfaccia;
+- **out**: filtra i pacchetti che **escono**.
+
+<Callout kind="trucco">
+Regola classica: una ACL **estesa** si mette **vicino alla sorgente** del traffico da bloccare (così il traffico indesiderato non viaggia per niente). Una ACL **standard**, che guarda solo la sorgente, si mette **vicino alla destinazione**, per non bloccare per sbaglio altro traffico di quella sorgente.
+</Callout>
+
+<Callout kind="attenzione">
+Provale **solo** in Packet Tracer o su apparati tuoi. Sbagliare una ACL su un router vero può tagliarti fuori dal router stesso. Prima si prova in laboratorio, poi si applica con un piano di rientro.
+</Callout>
+
+Un video breve in italiano, con una rete in Packet Tracer:
+
+<Video />
+
+<Say who="sensei">Scrivi, applica, prova. E tieni pronta la strada per tornare indietro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una ACL ha una sola riga: «deny ip host 192.168.1.66 any». Sul router è applicata in entrata sull'interfaccia della rete interna. Che cosa succede agli altri computer della rete?"
+  options={["Sono bloccati anche loro, per il deny implicito in fondo", "Passano tutti, solo la .66 è bloccata", "Passano solo quelli con indirizzo più basso", "Passano solo quelli diretti verso Internet"]}
+  answer={0}
+  explain="Dopo l'ultima riga c'è il deny implicito: ciò che non è espressamente permesso viene scartato. Per far passare gli altri serve una riga finale permit ip any any."
+/>
+
+<Say who="sensei">Chi blocca un solo computer e blocca l'azienda ha dimenticato il deny implicito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle ACL. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f08-acl" pass="5/5" retries={3} />
+
+<Say who="sensei">Ordine, deny implicito, interfaccia e direzione. Quattro cose da ricordare ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una ACL è un elenco di permit/deny letto dall'alto: vince la prima regola che corrisponde.
+- In fondo c'è il deny implicito: ciò che non è permesso, è scartato.
+- Va applicata a un'interfaccia e a una direzione (in/out), e prima si prova in laboratorio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa guardano le ACL standard?", a: "Solo l'indirizzo sorgente" },
+    { q: "Che cos'è il deny implicito?", a: "La regola invisibile in fondo: ciò che non è permesso viene scartato" },
+    { q: "Che cosa significa wildcard 0.0.0.255?", a: "Contano i primi tre numeri, l'ultimo è libero (da .0 a .255)" },
+    { q: "Una ACL non applicata a un'interfaccia che effetto ha?", a: "Nessuno" },
+  ]}
+/>
+
+<Say who="sensei">Portiere in posizione. Prossima lezione: il tunnel per chi sta fuori dalle mura, le VPN.</Say>
+</Scene>

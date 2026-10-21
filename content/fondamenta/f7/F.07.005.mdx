@@ -1,0 +1,167 @@
+---
+id: F.07.005
+course: fondamenta
+module: 7
+title: "HTTP: richieste e risposte"
+belt: arancione
+duration_min: 9
+prerequisites: [F.07.004]
+objectives:
+  - "Leggere una richiesta e una risposta HTTP"
+  - "Distinguere i metodi GET e POST e le famiglie di codici di stato (2xx, 3xx, 4xx, 5xx)"
+  - "Spiegare a che cosa servono le intestazioni e i cookie"
+video:
+  provider: youtube
+  id: "eY4XaQYsrf0"
+  start: 0
+  end: 600
+  channel: "Get the Cookie"
+  title: "Protocollo HTTP: Request e Response, Metodi e Stato"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-http
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "404 è un errore del client (pagina non trovata), 500 è un errore del server: non vanno scambiati"
+  - "HTTP in chiaro (porta 80) si può leggere da chi sta nel mezzo: i dati non sono nascosti"
+  - "Il cookie è un piccolo testo che il browser conserva, non un programma"
+commands: []
+---
+
+<Scene title="Una riga nel log del sito">
+Il responsabile del sito aziendale ti manda due righe dal registro del server web:
+
+<Log lines={[
+  "GET /prezzi.html HTTP/1.1  ->  200",
+  "GET /vecchia-pagina.html HTTP/1.1  ->  404"
+]} caption="Righe fittizie: la richiesta e il codice di risposta." />
+
+«Cosa significano quei due numeri?» chiede. «E perché ce ne sono di diversi?»
+
+<Say who="sensei">Il web è una conversazione. Una domanda, una risposta. Leggila e sai già metà di ciò che succede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una domanda, una risposta">
+**HTTP** (HyperText Transfer Protocol) è il linguaggio tra browser e sito. Funziona sempre uguale:
+
+1. Il browser (il **client**) invia una **richiesta**: «dammi questa pagina».
+2. Il sito (il **server**) invia una **risposta**: la pagina, oppure un messaggio d'errore.
+
+La richiesta contiene un **metodo** (che cosa vuoi fare), il **percorso** (che cosa) e delle **intestazioni** (informazioni in più). HTTP viaggia su TCP, sulla porta **80**.
+
+<Callout kind="regola">
+Richiesta = metodo + percorso + intestazioni. Risposta = codice di stato + intestazioni + contenuto.
+</Callout>
+
+<Say who="assistente">Come al ristorante: ordini (richiesta), arriva il piatto oppure «finito» (risposta).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I metodi">
+Due metodi coprono quasi tutto:
+
+- **GET**: «dammi» una risorsa. È una lettura: aprire una pagina.
+- **POST**: «ricevi» dei dati che ti invio. Per esempio i campi di un modulo.
+
+Ce ne sono altri (PUT, DELETE e così via), usati soprattutto dai programmi.
+
+<Callout kind="attenzione">
+Con GET i dati finiscono nell'indirizzo, e restano nei log e nella cronologia. Una password non si manda mai così.
+</Callout>
+
+Un'altra voce, per i metodi e gli stati:
+
+<Video />
+
+<Say who="sensei">Leggere è GET. Inviare è POST. Il resto sono varianti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I codici di stato">
+La risposta comincia con un numero a tre cifre. La **prima cifra** dice la famiglia:
+
+- **2xx** – tutto bene (200 OK)
+- **3xx** – vai altrove: reindirizzamento (301 spostata per sempre, 302 spostata per ora)
+- **4xx** – errore di chi chiede (404 non trovata, 403 vietata, 401 serve accedere)
+- **5xx** – errore del server (500 errore interno, 503 servizio non disponibile)
+
+<Callout kind="trucco">
+Se parte da **4**, colpa di chi ha chiesto. Se parte da **5**, colpa del server. Se parte da **2**, tutto bene.
+</Callout>
+
+<Say who="assistente">Nel caso iniziale: 200 è una pagina servita, 404 è un link vecchio. Non un guasto del server.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Intestazioni e cookie">
+Le **intestazioni** sono righe di informazioni che accompagnano richiesta e risposta. Per esempio `Host: esempio.it` (quale sito si vuole) o `Content-Type: text/html` (che tipo di contenuto arriva).
+
+Poiché HTTP **non ricorda** chi sei da una richiesta all'altra, il server può dire al browser: «tieni questo biglietto». È un **cookie**, un piccolo testo che il browser conserva e rimanda a ogni richiesta successiva. Così il sito sa che sei ancora tu, dopo l'accesso.
+
+<Callout kind="curiosita">
+Per questo un cookie di sessione è prezioso: chi lo ruba può spacciarsi per te. Ne riparleremo con HTTPS, che aiuta a proteggerlo durante il viaggio.
+</Callout>
+
+<Say who="sensei">Un cookie non è un virus. È un biglietto del guardaroba. Ma il biglietto di un altro apre il tuo cappotto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel log compaiono molte righe con codice 503 per la pagina principale. Che cosa suggeriscono?"
+  options={[
+    "Un problema lato server: il servizio non riesce a rispondere, per esempio perché è sovraccarico",
+    "Gli utenti hanno scritto male l'indirizzo della pagina",
+    "Le pagine sono state spostate in modo permanente",
+    "Tutto funziona: i codici che iniziano con 5 sono di successo"
+  ]}
+  answer={0}
+  explain="La famiglia 5xx indica un errore del server. Un indirizzo scritto male darebbe 404 (famiglia 4xx). Uno spostamento permanente è 301 (3xx). Il successo è 2xx."
+/>
+
+<Say who="assistente">Guarda la prima cifra. Poi decidi se cercare il problema da una parte o dall'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Metodi, codici e righe di log. Hai 3 tentativi.
+
+<Practice generator="f07-http" pass="5/5" retries={3} />
+
+<Say who="sensei">Il codice è già una diagnosi. Basta saperlo leggere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- HTTP è una conversazione: richiesta (metodo, percorso, intestazioni) e risposta (codice, intestazioni, contenuto).
+- GET legge, POST invia dati. I codici: 2xx bene, 3xx vai altrove, 4xx errore di chi chiede, 5xx errore del server.
+- Il cookie è un biglietto che il browser conserva e rimanda: chi lo ruba può spacciarsi per l'utente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa 404?", a: "Pagina non trovata (errore di chi chiede)" },
+    { q: "Che famiglia di codici indica un errore del server?", a: "La 5xx" },
+    { q: "Metodo per aprire una pagina?", a: "GET" },
+    { q: "A che cosa serve un cookie?", a: "A far riconoscere al sito che sei ancora tu tra una richiesta e l'altra" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: HTTPS. Stessa conversazione, ma dentro una busta chiusa.</Say>
+</Scene>

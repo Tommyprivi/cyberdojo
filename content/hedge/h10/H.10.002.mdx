@@ -1,0 +1,167 @@
+---
+id: H.10.002
+course: hedge
+module: 10
+title: "Leggere il track record"
+belt: blu
+duration_min: 10
+prerequisites: [H.10.001]
+objectives:
+  - "Comporre i rendimenti di più anni senza sommarli"
+  - "Calcolare drawdown e rendimento necessario per recuperare"
+  - "Riconoscere i limiti di un track record: breve, lordo, parziale"
+video:
+  provider: youtube
+  id: "-EXhiCCq2n4"
+  start: 0
+  end: 600
+  channel: "Brainy Finance"
+  title: "How to ANALYSE Hedge Funds' Performance | Sharpe, Sortino, Treynor Ratios Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h10-track-record
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Sommare o mediare i rendimenti annui invece di comporli"
+  - "Dimenticare che dopo una perdita serve un guadagno percentuale più grande per recuperare"
+  - "Fidarsi di un track record di un solo anno o al lordo delle commissioni"
+commands: []
+---
+
+<Scene title="Tre anni da leggere">
+Il fondo fittizio **Faro Capital** mostra questi rendimenti annui:
+
+| Anno | Rendimento |
+|------|-----------|
+| 1 | +20% |
+| 2 | -10% |
+| 3 | +5% |
+
+Il consulente dice: «Una media del 5% l'anno, niente male». Il signor Conti si chiede: **cosa è successo davvero ai suoi soldi?**
+
+Tutti i numeri del corso sono fittizi e non sono previsioni. Si può perdere denaro, anche tutto: questo non è consulenza finanziaria.
+
+<Say who="sensei">La media è comoda. I soldi, però, vivono la storia anno dopo anno. Rifacciamo i conti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Comporre, non sommare">
+Il **track record** è la storia dei risultati di un fondo. Per leggerlo, i rendimenti si **compongono**: ogni anno parte da ciò che c'era alla fine dell'anno prima.
+
+<Guided
+  steps={[
+    "Anno 1: 100 euro con +20% diventano 120.",
+    "Anno 2: 120 euro con -10% perdono 12 e diventano 108.",
+    "Anno 3: 108 euro con +5% guadagnano 5,4 e diventano 113,4.",
+    "Rendimento totale: +13,4%. Non +15% (somma) e non +5% per tre anni (media).",
+  ]}
+/>
+
+<Callout kind="regola">
+I rendimenti di anni diversi **non si sommano**: si moltiplicano i fattori (1,20 × 0,90 × 1,05 = 1,134).
+</Callout>
+
+<Say who="assistente">+10% e poi -10% non fa zero: fa -1%. Da 100 a 110, poi a 99.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Drawdown: il tuffo peggiore">
+Il **drawdown** è la discesa dal punto più alto al punto più basso successivo, in percentuale. Dice quanto si può soffrire.
+
+Esempio: il fondo sale da 100 a **130**, poi scende a **104**.
+
+<Log lines={[
+  "massimo: 130",
+  "minimo successivo: 104",
+  "drawdown = (104 - 130) / 130 = -26 / 130 = -20%",
+]} />
+
+E per **tornare al massimo**? Servono di più della percentuale persa:
+
+<Log lines={[
+  "perdita -20%: da 100 a 80  ->  per tornare a 100 serve +25%",
+  "perdita -50%: da 100 a 50  ->  per tornare a 100 serve +100%",
+]} />
+
+Vuoi sentire un'altra voce su come si misura la performance di un fondo? In inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Perdere è facile da dire e difficile da recuperare. Il 50% perso non si rimette con il 50% guadagnato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le trappole del track record">
+Prima di fidarsi di una storia di risultati, controlla:
+
+- **Lunghezza**: un anno solo in un mercato che sale dice poco. Servono anni diversi, anche brutti.
+- **Netto o lordo**: conta quello che resta **dopo** le commissioni. Esempio con la convenzione della lezione H.01.003: lordo 12% su 100 euro, 2 di gestione e 20% di 12 = 2,4 di performance. Netto: 12 - 2 - 2,4 = **7,6%**.
+- **Sopravvivenza**: se nelle statistiche restano solo i fondi sopravvissuti, i risultati sembrano più belli, perché i fondi chiusi sono spariti.
+- **Rischio**: l'indice di Sharpe misura quanto si guadagna per ogni unità di rischio. Con rendimento 8%, tasso privo di rischio 2%, volatilità 10%: (8 - 2) / 10 = **0,6**.
+- **Controllo**: un track record certificato da revisore e amministratore indipendenti vale più di uno solo dichiarato.
+
+<Callout kind="attenzione">
+I risultati passati non garantiscono quelli futuri. Un bel track record può essere fortuna.
+</Callout>
+
+<Say who="sensei">Un buon track record non è una promessa. È una storia da leggere con spirito critico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo fa +50% in un anno e -50% l'anno dopo. Dopo i due anni, rispetto all'inizio, com'è andato?"
+  options={[
+    "-25%: da 100 a 150 e poi a 75",
+    "0%: la media dei due anni è zero",
+    "+25%: guadagno e perdita si compensano a metà",
+    "-50%",
+  ]}
+  answer={0}
+  explain="Dopo +50% si ha 150; il -50% si applica a 150 e fa 75. Chi risponde 0% ha fatto la media, ma i rendimenti si compongono."
+/>
+
+<Say who="assistente">Ogni percentuale si applica al valore di quel momento, non al valore iniziale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli e letture di track record fittizi: rendimenti composti, drawdown, commissioni e Sharpe.
+
+<Practice generator="h10-track-record" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il conto lo fai tu, non lo fa il venditore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I rendimenti si compongono (si moltiplicano), non si sommano e non si fa la media: +20%, -10%, +5% fanno +13,4%.
+- Il drawdown misura la discesa dal massimo: dopo -20% serve +25%, dopo -50% serve +100%.
+- Un track record va letto netto, su più anni, con il rischio (Sharpe) e senza dimenticare la sopravvivenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "+10% e poi -10%: com'è andata?", a: "-1% (da 100 a 110, poi a 99)" },
+    { q: "Dopo -20% quanto serve per recuperare?", a: "+25%" },
+    { q: "Che cos'è il drawdown?", a: "La discesa percentuale dal massimo al minimo successivo" },
+    { q: "Perché guardare il rendimento netto?", a: "Perché le commissioni riducono ciò che resta all'investitore" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come il fondo racconta i propri risultati agli investitori. E quando il racconto non è onesto.</Say>
+</Scene>

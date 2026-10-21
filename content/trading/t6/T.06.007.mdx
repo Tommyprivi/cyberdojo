@@ -1,0 +1,179 @@
+---
+id: T.06.007
+course: trading
+module: 6
+title: "Leva e margine: l'amplificatore"
+belt: arancione
+duration_min: 9
+prerequisites: [T.06.006]
+objectives:
+  - "Calcolare l'effetto della leva su guadagni e perdite in percentuale del capitale"
+  - "Spiegare che cosa sono il margine e la richiesta di integrazione (margin call)"
+  - "Capire perché con leve alte un piccolo movimento del prezzo può azzerare il capitale"
+video:
+  provider: youtube
+  id: "_pc4QsM9pg4"
+  start: 0
+  end: 600
+  channel: "Vez Economy"
+  title: "Cos'è una MARGIN CALL? La RICHIESTA DI INTEGRAZIONE - Pillole di Economia s02x14"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-leva-margine
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la leva aumenti solo i guadagni e non le perdite"
+  - "Confondere il margine (la garanzia versata) con la perdita massima possibile"
+  - "Credere che con la leva si possa perdere al massimo il capitale versato: in alcuni casi si può perdere di più"
+commands: []
+---
+
+<Scene title="Il +10% che diventa +50%">
+Un conto demo fittizio ha **1.000 €**. Con una **leva 5** il conto controlla una posizione da **5.000 €**. Il prezzo sale del 10%: la posizione guadagna **500 €**, cioè il **50%** del capitale. Fantastico.
+
+Il giorno dopo il prezzo scende del 20%. La posizione perde **1.000 €**: l'**intero capitale**.
+
+La domanda del caso: **come può una discesa del 20% cancellare tutto?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Questo corso non spiega come usare conti con soldi veri: i numeri sono inventati e gli esercizi usano dati fittizi o ambienti demo.
+</Callout>
+
+<Say who="sensei">La leva è un amplificatore. Amplifica ciò che gli dai in ingresso, anche gli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la leva">
+La **leva** è il rapporto tra l'**esposizione** (il valore della posizione) e il **capitale proprio**.
+
+leva = esposizione / capitale
+
+Con 1.000 € di capitale e 5.000 € di posizione, la leva è **5**. Il resto della posizione è, di fatto, preso in prestito o garantito dal broker.
+
+Effetto sul capitale (leva 5):
+
+| Variazione del prezzo | Variazione della posizione | Variazione del capitale |
+|---|---|---|
+| +10% | +500 € | +50% |
+| −10% | −500 € | −50% |
+| −20% | −1.000 € | −100% |
+
+<Callout kind="regola">
+Variazione del capitale = variazione del prezzo × leva. Vale in entrambe le direzioni.
+</Callout>
+
+<Say who="assistente">Con leva 5, un movimento del prezzo vale cinque volte di più sul tuo capitale. Il segno non cambia la regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il margine">
+Per aprire una posizione con leva, il broker chiede una garanzia: il **margine**. È una parte del capitale che resta «bloccata» finché la posizione è aperta.
+
+- Posizione 5.000 € con leva 5: margine di 1.000 €, cioè il 20% della posizione.
+- Posizione 10.000 € con leva 10: margine di 1.000 €, cioè il 10%.
+
+Con leva 10 basta un calo del **10%** per azzerare il capitale. Più la leva è alta, più è vicino il punto in cui tutto finisce.
+
+<Callout kind="attenzione">
+Il margine non è la perdita massima: è la garanzia versata. Con strumenti a leva e salti di prezzo (gap) le perdite possono superare la garanzia. Le regole di protezione dei clienti al dettaglio in Europa cambiano nel tempo: in sintesi, ottobre 2026, verifica le fonti ufficiali (CONSOB, ESMA).
+</Callout>
+
+<Say who="sensei">Il margine è la tua garanzia, non il tuo limite di perdita. Non è la stessa cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La richiesta di integrazione">
+Il broker controlla ogni momento che il conto abbia abbastanza capitale per sostenere la posizione. Se il capitale scende sotto un **margine di mantenimento**, arriva una **richiesta di integrazione** (*margin call*): devi **versare altro denaro** oppure **ridurre** la posizione. Se non lo fai, il broker può **chiudere** le posizioni da solo, di solito nel momento peggiore.
+
+Esempio fittizio: posizione 5.000 €, capitale 1.000 €, margine di mantenimento il 10% del valore della posizione. Il prezzo scende del 12%:
+
+- Posizione: 4.400 €. Perdita: 600 €. Capitale residuo: 400 €.
+- Mantenimento richiesto: 10% di 4.400 € = 440 €.
+- 400 € è meno di 440 €: **richiesta di integrazione**.
+
+Le regole esatte cambiano da broker a broker: qui interessa il meccanismo.
+
+Vuoi sentirlo spiegare da un'altra voce? Un breve video in italiano sulla richiesta di integrazione: è materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">La chiamata arriva quando sei già in difficoltà. Per questo la leva alta lascia poco tempo per reagire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leva e tutto il modulo">
+Rimetti insieme le lezioni del modulo.
+
+- Con leva alta, uno **stop** può essere superato da un gap (lezione 3).
+- La **dimensione della posizione** (lezione 2) va calcolata sul rischio, non sull'esposizione massima consentita.
+- Il **drawdown** si amplifica: −20% sul prezzo con leva 5 è −100% sul capitale (lezione 4).
+- Il **rischio di rovina** cresce con la frazione di capitale rischiata (lezione 5).
+- La leva costa: gli interessi sulla parte presa in prestito e le commissioni erodono il risultato.
+
+<Callout kind="trucco">
+Se non sai calcolare in anticipo quanto perdi in un giorno pessimo, non sei pronto a usare la leva. In un corso di base, la risposta giusta è usarla poco o non usarla.
+</Callout>
+
+<Say who="sensei">La leva non crea vantaggio. Moltiplica quello che c'è già, e se non c'è niente moltiplica il caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Capitale 2.000 €, posizione di 8.000 € (leva 4). Il prezzo scende del 5%. Qual è la variazione del capitale?"
+  options={["−20% (−400 €)", "−5% (−100 €)", "−10% (−200 €)", "−4% (−80 €)"]}
+  answer={0}
+  explain="La posizione perde 5% di 8.000 € = 400 €, cioè 400 / 2.000 = 20% del capitale. È la regola: variazione del capitale = variazione del prezzo × leva = 5% × 4 = 20%. Chi risponde −5% dimentica la leva."
+/>
+
+<Say who="sensei">Cinque per quattro, venti. Se hai risposto cinque, hai dimenticato di cosa stiamo parlando.</Say>
+
+Calcola l'effetto della leva 5 su un capitale di 1.000 €. Cambia la leva e le variazioni e riesegui.
+
+<PythonTerminal code={"capitale = 1000\nleva = 5\nesposizione = capitale * leva\nfor var in (10, -10, -20):\n    pnl = esposizione * var // 100\n    print(var, pnl, pnl * 100 // capitale)"} />
+
+<Say who="assistente">Dovrebbe uscire 10 500 50, poi -10 -500 -50, poi -20 -1000 -100. Con leva 10, quale variazione azzera il conto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su leva, margine e richiesta di integrazione, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-leva-margine" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con questo si chiude il modulo sul rischio: sei pronto per misurare le prestazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La leva è esposizione diviso capitale: moltiplica guadagni e perdite, e con leva alta pochi punti di prezzo azzerano il conto.
+- Il margine è la garanzia versata, non la perdita massima; sotto il margine di mantenimento arriva la richiesta di integrazione.
+- Con la leva stop, drawdown e rischio di rovina peggiorano: va usata con estrema prudenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Capitale 1.000 €, posizione 5.000 €: quanto vale la leva?", a: "5" },
+    { q: "Con leva 5, il prezzo scende del 10%: variazione del capitale?", a: "−50%" },
+    { q: "Con leva 10, quale calo del prezzo azzera il capitale?", a: "−10%" },
+    { q: "Che cos'è una richiesta di integrazione?", a: "La richiesta del broker di versare altro denaro o ridurre la posizione quando il capitale scende sotto il mantenimento" },
+  ]}
+/>
+
+<Say who="sensei">Fine del modulo sul rischio. Prossima lezione, nel modulo sulle metriche: come si misura una strategia con i numeri, senza farsi ingannare.</Say>
+</Scene>

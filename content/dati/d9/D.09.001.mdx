@@ -1,0 +1,170 @@
+---
+id: D.09.001
+course: dati
+module: 9
+title: "Dove vivono i dati"
+belt: arancione
+duration_min: 8
+prerequisites: [D.08.007]
+objectives:
+  - "Distinguere un database operazionale (OLTP) da uno analitico (OLAP)"
+  - "Dire perché non si fanno analisi pesanti sul database del sito"
+  - "Riconoscere le quattro sorgenti tipiche: database, file, API, strumenti esterni"
+video:
+  provider: youtube
+  id: "P7hf_emjsRI"
+  start: 0
+  end: 600
+  channel: "SkillCurb"
+  title: "OLAP VS OLTP a simple explanation in 4 mins"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-dove-vivono
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «il database» sia uno solo e vada bene per tutto"
+  - "Lanciare analisi pesanti sul database che serve il sito o l'app"
+  - "Credere che un file CSV sia un database: non ha regole né controlli"
+commands: []
+---
+
+<Scene title="Il sito che rallenta">
+**Tavola Bella** è un negozio online di prodotti da cucina. Ogni giorno arrivano centinaia di ordini.
+
+Giulia, l'analista, lancia una domanda grossa sul database del sito: «quanto abbiamo venduto per città negli ultimi tre anni?». Dopo pochi secondi il supporto clienti scrive: **«Il sito è lentissimo, i clienti non riescono a pagare!»**
+
+La domanda del caso: **perché una semplice analisi ha rallentato il negozio?**
+
+<Say who="sensei">Un database non è una scatola magica. È un lavoratore con due mani. Se le occupi tutte per te, il cliente aspetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il registratore di cassa">
+Il database che fa funzionare il sito si chiama **operazionale**. Fa tanti lavori piccolissimi: salva un ordine, cambia un indirizzo, controlla se un prodotto c'è.
+
+Pensa al **registratore di cassa** di un negozio: tante operazioni brevi, una dopo l'altra, sempre veloci. Si chiama **OLTP**, che in inglese vuol dire «elaborazione di transazioni in tempo reale».
+
+Una domanda tipica di un OLTP tocca **una riga sola**:
+
+<Log lines={[
+  "SELECT stato FROM ordini WHERE id = 1042;",
+  "stato",
+  "-------",
+  "spedito",
+]} />
+
+<Callout kind="regola">
+OLTP = tante operazioni **piccole**, su **poche righe**, che devono essere **velocissime e sicure**.
+</Callout>
+
+<Say who="assistente">Il registratore di cassa non deve mai fermarsi. Per questo il sito usa un database fatto per lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'archivio del contabile">
+Giulia invece vuole **leggere tantissime righe** e riassumerle. È un lavoro diverso: più simile al **contabile che a fine anno sfoglia tutto l'archivio**.
+
+Per questo esistono i database **analitici**, detti **OLAP** («analisi in linea»). Sono costruiti per leggere molte righe in fretta, di solito senza modificarle.
+
+Esempio con cinque ordini fittizi:
+
+| id | citta | totale |
+|----|--------|--------|
+| 1 | Roma | 20 |
+| 2 | Milano | 35 |
+| 3 | Roma | 15 |
+| 4 | Torino | 40 |
+| 5 | Milano | 25 |
+
+<Log lines={[
+  "SELECT citta, SUM(totale) FROM ordini GROUP BY citta ORDER BY citta;",
+  "citta   SUM(totale)",
+  "------  -----------",
+  "Milano  60",
+  "Roma    35",
+  "Torino  40",
+]} />
+
+Vuoi sentire la stessa differenza da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Con cinque righe è un gioco. Con cinquanta milioni occupa il database per minuti. Ecco chi ha rallentato il sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove arrivano i dati">
+I dati non vivono solo nei database. Un data engineer li raccoglie da **quattro tipi di sorgenti**:
+
+- **Database operazionali**: il cuore dell'app (ordini, clienti).
+- **File**: un CSV mandato dal magazzino, un foglio di calcolo.
+- **API**: una «porta di servizio» con cui un altro programma ti dà i dati su richiesta, come un cameriere che porta quello che ordini.
+- **Strumenti esterni**: il sistema di email marketing, il gestionale della contabilità.
+
+<Callout kind="attenzione">
+Un file CSV non è un database: non controlla che una data sia davvero una data, né che un numero sia un numero. Chi lo riceve deve verificare.
+</Callout>
+
+La soluzione al caso: **copiare** i dati dal database operazionale in un posto separato, pensato per le analisi. Come si fa lo vedremo nelle prossime lezioni.
+
+<Say who="sensei">Mai fare l'analista sul registratore di cassa. Si lavora su una copia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app di prenotazioni rallenta ogni mattina alle 9, quando parte un report che legge tutte le prenotazioni dell'anno. Qual è la soluzione migliore?"
+  options={[
+    "Copiare i dati in un database analitico e fare il report lì",
+    "Comprare un telefono più potente per i clienti",
+    "Far partire il report due volte, così finisce prima",
+    "Cancellare le prenotazioni vecchie dal database dell'app",
+  ]}
+  answer={0}
+  explain="Il report è un lavoro di tipo analitico: tante righe lette. Va fatto su una copia dei dati, non sul database che serve i clienti. Cancellare i dati vecchi fa perdere la storia che serve proprio alle analisi."
+/>
+
+<Say who="assistente">Chiediti sempre: questo lavoro legge una riga o milioni di righe? La risposta ti dice dove deve girare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui luoghi dei dati: scegli la sorgente o il tipo di database giusto.
+
+<Practice generator="d09-dove-vivono" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere dove stanno i dati è il primo passo di ogni pipeline.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il database operazionale (OLTP) serve l'app: tante operazioni piccole e veloci.
+- Il database analitico (OLAP) serve le analisi: tante righe lette in una volta.
+- I dati arrivano da database, file, API e strumenti esterni: le analisi si fanno su una copia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire OLTP?", a: "Database per le operazioni di tutti i giorni: tante piccole transazioni veloci" },
+    { q: "Che cosa vuol dire OLAP?", a: "Database per le analisi: legge molte righe e le riassume" },
+    { q: "Perché un'analisi pesante rallenta il sito?", a: "Occupa il database che serve anche i clienti" },
+    { q: "Che cos'è un'API?", a: "Una porta di servizio con cui un programma dà dati a un altro su richiesta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si spostano i dati da un posto all'altro. ETL ed ELT.</Say>
+</Scene>

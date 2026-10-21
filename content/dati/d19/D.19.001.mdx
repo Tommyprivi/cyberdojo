@@ -1,0 +1,185 @@
+---
+id: D.19.001
+course: dati
+module: 19
+title: "Perché R e come si installa"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.006]
+objectives:
+  - "Spiegare che cosa sono R e RStudio e quando conviene R invece di Python"
+  - "Usare la console e uno script e leggere un messaggio di errore semplice"
+  - "Installare un pacchetto una volta sola e caricarlo a ogni sessione"
+video:
+  provider: youtube
+  id: "5PoyCyje6IQ"
+  start: 0
+  end: 600
+  channel: "Federica Web Learning"
+  title: "Come installare R e RStudio - Unit 1 - Lezione 1"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-installare-r
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere R (il linguaggio) con RStudio (il programma in cui lo si scrive)"
+  - "Rifare install.packages() a ogni sessione: si installa una volta, si carica con library() ogni volta"
+  - "Scrivere nello script un percorso del proprio computer con setwd(): sul computer di un collega non funziona"
+commands: []
+---
+
+<Scene title="Un collega dice: usa R">
+Giulia gestisce un piccolo negozio online e ormai sai analizzare i suoi ordini con Python e con SQL. Un giorno la contatta Marco, un ricercatore dell'università che studia i consumi: «I miei colleghi lavorano tutti in **R**. Se vuoi condividere le analisi con noi, usa R».
+
+Giulia ti chiede: «Ma R non è un'altra cosa da imparare da zero? E poi, devo buttare Python?»
+
+La domanda del caso: **che cos'è R, quando conviene e come si comincia senza perdersi?**
+
+<Say who="sensei">Un buon analista non tifa per un linguaggio. Sceglie lo strumento adatto al lavoro. Oggi capiamo quando R è quello giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="R e RStudio: due cose diverse">
+**R** è un linguaggio di programmazione nato per la statistica e per l'analisi dei dati. È gratuito e libero. Lo trovi da decenni nelle università, negli istituti di ricerca e negli enti di statistica.
+
+**RStudio** è un programma che ti aiuta a scrivere in R: ha l'editor, la finestra dei grafici, l'elenco delle variabili. L'azienda che lo produce oggi si chiama **Posit**, e RStudio Desktop è gratuito.
+
+Come la differenza tra l'italiano e un programma di videoscrittura: R è la lingua, RStudio è il quaderno in cui la scrivi.
+
+<Callout kind="regola">
+Si installa **prima R**, poi **RStudio**. Se fai il contrario, RStudio non trova il linguaggio e si lamenta.
+</Callout>
+
+Vuoi vedere l'installazione fatta da un'altra voce? Un docente universitario la mostra passo per passo:
+
+<Video />
+
+<Say who="assistente">Il video mostra il percorso completo. I siti ufficiali sono quelli di CRAN, per R, e di Posit, per RStudio: scarica sempre da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La console e lo script">
+In RStudio ci sono due posti dove scrivere. La **console** è la finestra con il simbolo `>`: scrivi una riga, premi Invio e R risponde subito. È come una calcolatrice.
+
+```r
+2 + 3
+```
+
+<Log lines={["> 2 + 3", "[1] 5"]} caption="Il [1] significa: questo è il primo elemento del risultato." />
+
+Lo **script** è un file di testo con estensione `.R`: una lista di istruzioni che puoi salvare e rifare identiche. Per eseguire la riga dove si trova il cursore si preme Ctrl+Invio (Cmd+Invio sul Mac).
+
+La regola d'oro: **la console per provare, lo script per ciò che vuoi conservare**. Quello che scrivi solo in console si perde.
+
+Per dare un nome a un valore si usa la freccia `<-`, che si legge «diventa»:
+
+```r
+importi <- c(40, 20, 40)
+sum(importi)
+mean(importi)
+```
+
+<Log lines={["> importi <- c(40, 20, 40)", "> sum(importi)", "[1] 100", "> mean(importi)", "[1] 33.33333"]} caption="c() combina i valori in un vettore. R mostra 7 cifre significative." />
+
+<Say who="sensei">La prima riga non stampa niente: ha solo dato un nome. Le altre due fanno un calcolo e lo mostrano. Distinguile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I pacchetti: si installano una volta">
+R da solo sa fare molte cose, ma la forza sta nei **pacchetti**: raccolte di funzioni scritte da altri, gratuite, che trovi su un archivio ufficiale chiamato **CRAN**. Il più famoso per i dati è **tidyverse**.
+
+Servono due passi, e sono diversi:
+
+```r
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+Pensa a una biblioteca: `install.packages()` è **portare il libro a casa** (si fa una volta, richiede internet e qualche minuto). `library()` è **aprire il libro sulla scrivania** (si fa a ogni sessione, all'inizio dello script).
+
+<Callout kind="attenzione">
+Se scrivi `library(tidyverse)` senza averlo installato, R risponde così:
+</Callout>
+
+<Log lines={["> library(tidyverse)", "Error in library(tidyverse) : there is no package called ‘tidyverse’"]} caption="Il messaggio dice la causa: il pacchetto non è installato. Soluzione: install.packages()." />
+
+Nota che dentro `install.packages()` il nome è tra virgolette, dentro `library()` di solito no.
+
+<Say who="assistente">Quando un errore dice «there is no package called», non hai sbagliato il codice: ti manca solo il pacchetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I progetti e quando scegliere R">
+Uno script che legge `C:/Users/giulia/ordini.csv` funziona solo sul computer di Giulia. La soluzione è il **progetto** di RStudio: File, New Project. Si crea una cartella con un file `.Rproj` e, aprendolo, R lavora **dentro quella cartella**.
+
+Una struttura ordinata:
+
+- `dati/` per i file di partenza (mai modificati a mano);
+- `script/` per il codice;
+- `output/` per grafici e tabelle prodotti.
+
+Nello script scrivi percorsi **relativi**, come `"dati/ordini.csv"`. Evita `setwd()` con il percorso del tuo computer.
+
+**R o Python?** Non c'è un vincitore. R è forte nella statistica, nei grafici con ggplot2 e nei report; si trova molto in ricerca, sanità e statistica pubblica. Python è un linguaggio per tutti gli usi: automazione, siti web, apprendimento automatico. Sono complementari, e chi sa leggere entrambi lavora con più colleghi.
+
+<Callout kind="trucco">
+Regola pratica: la squadra usa R? Usa R. Il lavoro finisce dentro un'applicazione o un sistema automatico? Probabilmente Python. In dubbio: quello che già conosce chi riceve il tuo lavoro.
+</Callout>
+
+<Say who="sensei">Il percorso del tuo computer in uno script è come lasciare il tuo indirizzo di casa su una mappa che devi dare a tutti. Usa percorsi relativi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giulia apre uno script nuovo e scrive la riga mean(importo), ma non ha mai creato la variabile importo. Che cosa risponde R?"
+  options={["Error: object 'importo' not found", "[1] 0", "Error in library(tidyverse): no package", "[1] NA"]}
+  answer={0}
+  explain="R cerca una variabile chiamata importo e non la trova, perché non è mai stata creata con <-. Non restituisce 0 o NA: si ferma con un errore che dice quale oggetto manca. Controlla sempre l'ortografia dei nomi."
+/>
+
+<Say who="assistente">Gli errori di R sono onesti: leggi il nome tra apici, è quasi sempre il colpevole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su R, RStudio, console, pacchetti e progetti. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-installare-r" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi sa installare e organizzare bene il lavoro risparmia ore. Qui si costruisce la base.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- R è il linguaggio, RStudio è il programma per scriverlo: si installa prima R, poi RStudio.
+- Console per provare, script per conservare. I pacchetti si installano una volta (`install.packages`) e si caricano a ogni sessione (`library`).
+- Un progetto RStudio e i percorsi relativi rendono il lavoro riproducibile su altri computer.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra R e RStudio?", a: "R è il linguaggio, RStudio è l'ambiente per scriverlo" },
+    { q: "Quante volte si fa install.packages(\"tidyverse\")?", a: "Una volta sola per computer" },
+    { q: "Che cosa fa library(tidyverse)?", a: "Carica il pacchetto nella sessione di lavoro" },
+    { q: "Perché evitare setwd() con il percorso del proprio computer?", a: "Sul computer di un altro lo script non funziona" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i mattoni di R. Vettori, liste, data frame. Con quelli costruisci ogni analisi.</Say>
+</Scene>

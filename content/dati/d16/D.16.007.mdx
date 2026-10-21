@@ -1,0 +1,145 @@
+---
+id: D.16.007
+course: dati
+module: 16
+title: "Dal notebook alla produzione"
+belt: marrone
+duration_min: 9
+prerequisites: [D.16.006]
+objectives:
+  - "Spiegare perché si versionano codice, dati e modelli"
+  - "Riconoscere la deriva dei dati e il calo di prestazioni nel tempo"
+  - "Descrivere in poche righe che cos'è l'MLOps"
+video:
+  provider: youtube
+  id: "b_4903BNpwA"
+  start: 0
+  end: 600
+  channel: "Coursera"
+  title: "What Is MLOps? From Model to Production"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-produzione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il lavoro finisca quando il modello funziona nel notebook"
+  - "Non salvare la versione dei dati: tra sei mesi nessuno sa riprodurre il risultato"
+  - "Credere che un modello in produzione resti buono per sempre"
+commands: []
+---
+
+<Scene title="Funzionava sul mio computer">
+Ivo ha un modello che prevede i rinnovi della palestra con il 90 per cento di successo. Funziona nel suo notebook. Tre mesi dopo un collega prova a riprodurlo: ottiene un risultato diverso. E il modello in uso sbaglia sempre di più.
+
+Nessuno sa con quali dati, con quale codice e con quali librerie sia stato addestrato.
+
+<Say who="sensei">Un modello nel notebook è una bozza. Per renderlo un servizio servono ordine e controllo. Si chiama MLOps.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Versionare codice, dati e modelli">
+**Versionare** vuol dire dare un nome e una cronologia a ogni cambiamento, per poter tornare indietro.
+
+- **Codice**: con Git, come nei progetti software.
+- **Dati**: si conserva un'istantanea (o il suo codice di controllo, detto hash) di ciò che si è usato; strumenti come DVC aiutano.
+- **Modello**: si salva con un nome e una versione, per esempio `modello_v3.joblib`, insieme alle sue misure di qualità.
+
+Vuoi sentirlo spiegare da un'altra voce? Che cos'è l'MLOps, dal modello alla produzione, in inglese (con sottotitoli):
+
+<Video />
+
+<Callout kind="regola">
+Un risultato è **riproducibile** se, con lo stesso codice, gli stessi dati e le stesse versioni delle librerie, si ottiene lo stesso numero. Si fissano anche i semi casuali (`random_state`) e le versioni (`requirements.txt`).
+</Callout>
+
+<Say who="assistente">Come una ricetta: ingredienti, dosi e forno scritti. Altrimenti la torta di oggi non è quella di ieri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Salvare e caricare un modello">
+Un modello addestrato si salva in un file e si ricarica dove serve.
+
+<Log lines={[
+  "import joblib",
+  "joblib.dump(modello, \"modello_v3.joblib\")",
+  "modello = joblib.load(\"modello_v3.joblib\")"
+]} caption="Salvare e ricaricare un modello di scikit-learn." />
+
+<Callout kind="attenzione">
+Questi file possono eseguire codice quando si caricano: carica solo modelli che hai creato tu o che arrivano da una fonte fidata.
+</Callout>
+
+<Say who="sensei">Un file di modello è codice travestito. Si carica solo ciò di cui ci si fida.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Monitoraggio e deriva">
+Il mondo cambia, il modello no. Due fenomeni:
+
+- **Deriva dei dati** (data drift): i dati in ingresso cambiano. Nell'addestramento l'età media dei clienti era 35 anni; il mese scorso è 52. Il modello non ha mai visto clienti così.
+- **Deriva del concetto**: cambia il legame tra dati e risultato. Per esempio, dopo una nuova offerta, chi rinnovava prima ora non rinnova più.
+
+Si **monitora** il modello come un impianto: si confrontano i dati nuovi con quelli del train e si controlla la qualità appena si conosce il risultato vero.
+
+Esempio: all'avvio 90 per cento. Dopo tre mesi, su 200 casi con risposta nota, 156 previsioni giuste: 156 / 200 = **0,78**. La soglia di allarme è 0,85: scatta l'allarme e si **riaddestra**.
+
+<Say who="assistente">Come la spia dell'olio: non spegne la macchina, ti avvisa prima che si fermi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="MLOps in poche righe e tocca a te">
+**MLOps** unisce l'apprendimento automatico con le buone pratiche del lavoro software: versioni, test automatici, rilascio controllato, monitoraggio, riaddestramento. Un ciclo, non un traguardo:
+
+dati → addestramento → test → rilascio → monitoraggio → (di nuovo) dati
+
+<Quiz
+  question="L'età media dei clienti nei dati di addestramento era 35 anni, oggi è 52, e la qualità del modello cala. Che cosa si sospetta e che cosa si fa?"
+  options={["Deriva dei dati: si verifica e si riaddestra con dati recenti", "Un errore di battitura nel codice: si cambia la libreria", "Il modello è troppo preciso: si toglie un albero", "Niente, i modelli non cambiano mai"]}
+  answer={0}
+  explain="I dati in ingresso sono cambiati rispetto all'addestramento: è deriva dei dati. Si conferma confrontando le distribuzioni, poi si riaddestra con dati recenti e si rilascia una nuova versione, tenendo traccia della precedente."
+/>
+
+<Say who="sensei">Un modello in produzione è un impegno nel tempo. Chi lo rilascia, lo sorveglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Versioni, riproducibilità, deriva dei dati e monitoraggio. Cinque domande, senza errori.
+
+<Practice generator="d16-produzione" pass="5/5" retries={3} />
+
+<Say who="sensei">Dal notebook al servizio: la distanza è fatta di disciplina, non di genio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Codice, dati e modelli si versionano; con versioni e semi fissi un risultato si può riprodurre.
+- La deriva dei dati e del concetto fanno peggiorare un modello: si monitora e si riaddestra.
+- L'MLOps è un ciclo: dati, addestramento, test, rilascio, monitoraggio, e di nuovo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa serve per riprodurre un risultato?", a: "Stesso codice, stessi dati, stesse versioni delle librerie e semi casuali fissati" },
+    { q: "Che cos'è la deriva dei dati?", a: "I dati in ingresso cambiano rispetto a quelli dell'addestramento" },
+    { q: "156 giuste su 200: quale accuratezza?", a: "0,78" },
+    { q: "Perché caricare solo modelli di cui ci si fida?", a: "I file di modello possono eseguire codice quando vengono caricati" },
+  ]}
+/>
+
+<Say who="sensei">Ramo concluso. Hai portato un modello dal dato alla produzione: ora sai anche come tenerlo in piedi.</Say>
+</Scene>

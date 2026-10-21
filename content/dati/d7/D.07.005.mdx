@@ -1,0 +1,148 @@
+---
+id: D.07.005
+course: dati
+module: 7
+title: "Raccontare con i dati"
+belt: arancione
+duration_min: 8
+prerequisites: [D.07.004]
+objectives:
+  - "Scrivere un titolo che dice la conclusione"
+  - "Guidare l'occhio con annotazioni ed enfasi"
+  - "Costruire una storia in tre mosse: contesto, scoperta, azione"
+video:
+  provider: youtube
+  id: "IJ9zNYhqcS8"
+  start: 0
+  end: 384
+  channel: "Central Marketing Intelligence"
+  title: "Data visualization storytelling: 3 step pratici per trasformare i dati in storie utili"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-storia
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Titolo descrittivo («Vendite 2024») invece del messaggio"
+  - "Troppe annotazioni: nessuna si nota più"
+  - "Finire con «come si vede» senza dire cosa fare"
+commands: []
+---
+
+<Scene title="Tutto giusto, nessuno capisce">
+Marta ha preparato per il titolare un grafico corretto: barre da zero, colori sobri, fonte indicata. Titolo: «Vendite per canale, 2023-2024».
+
+Il titolare lo guarda trenta secondi e dice: «Bello. E quindi?».
+
+Il grafico è giusto ma non dice niente. La domanda della lezione: **come si trasforma un grafico corretto in un messaggio che porta a una decisione?**
+
+<Say who="sensei">Un grafico corretto risponde a una domanda. Una storia con i dati risponde alla domanda «e quindi?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il titolo dice la conclusione">
+Confronta due titoli per lo stesso grafico:
+
+| Titolo descrittivo | Titolo con la conclusione |
+| --- | --- |
+| Vendite per canale, 2023-2024 | Le vendite online sono raddoppiate in un anno, quelle dei negozi no |
+
+Il primo dice **cosa** si guarda. Il secondo dice **cosa notare**. Chi legge sa subito dove guardare.
+
+<Callout kind="regola">
+Il titolo è una frase con un verbo e un numero, non un'etichetta. Ma deve dire solo ciò che i dati dimostrano: una relazione non è una causa.
+</Callout>
+
+<Say who="assistente">Prova il test dei dieci secondi: se mostri il grafico e chi guarda riesce a ripetere il messaggio, il titolo funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Annotazioni ed enfasi">
+Dopo il titolo, guida l'occhio.
+
+- **Enfasi:** grigio per il contesto, un colore per la serie che conta (lezione sui colori).
+- **Annotazione:** un breve testo o una freccia sul punto chiave, per esempio «Campagna social lanciata a marzo» vicino al punto in cui le vendite online salgono.
+- **Pulizia:** togli griglie pesanti, bordi, legende ripetute che non aiutano a leggere.
+
+<Callout kind="attenzione">
+Una o due annotazioni al massimo. Con otto, nessuna si nota più e il grafico sembra un volantino.
+</Callout>
+
+Vuoi sentire tre passi pratici da un'altra voce? Poco più di sei minuti:
+
+<Video />
+
+<Say who="sensei">Togliere è più difficile che aggiungere. Ma è lì che nasce la chiarezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre mosse: contesto, scoperta, azione">
+Una buona storia con i dati ha sempre tre mosse.
+
+1. **Contesto.** Da dove partiamo: la situazione, l'obiettivo, perché interessa a chi ascolta. Esempio: «Vogliamo crescere del 20% quest'anno, e il budget pubblicità è fermo».
+2. **Scoperta.** Il dato che sorprende o spiega. Esempio: «Le vendite online sono raddoppiate in un anno (da 120 a 240 ordini al mese), quelle dei negozi sono ferme».
+3. **Azione.** Cosa proponi di fare, con un numero e una scadenza. Esempio: «Proponiamo di spostare il 20% del budget sui canali online entro marzo».
+
+Chi ascolta ha un ordine, una sorpresa e una decisione da prendere.
+
+<Callout kind="regola">
+Raccontare non vuol dire nascondere. Si sceglie cosa mettere in evidenza, ma non si tolgono i dati scomodi né si distorce una scala.
+</Callout>
+
+<Say who="assistente">Una frase che comincia con «Proponiamo di» è quasi sempre un'azione. Una che comincia con «Come si vede» di solito non lo è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale frase chiude meglio una storia con i dati?"
+  options={["Proponiamo di spostare il 20% del budget sui canali online entro marzo", "Come si vede, i dati sono interessanti", "Ulteriori analisi saranno necessarie in futuro", "Il grafico mostra molte cose"]}
+  answer={0}
+  explain="Un'azione chiara dice cosa fare, di quanto e entro quando. Le altre frasi sono vaghe: non permettono di decidere niente."
+/>
+
+<Say who="sensei">Se il pubblico esce dalla sala senza una decisione da prendere, la storia non è finita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Titoli, annotazioni, storie in tre mosse: cinque scenari. Cinque risposte giuste su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-storia" pass="5/5" retries={3} />
+
+<Say who="sensei">Se non sei sicuro, chiediti: dopo averlo visto, cosa deve fare chi guarda?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il titolo dice la conclusione, con un verbo e un numero, senza affermare più di quanto i dati dimostrano.
+- Enfasi con un colore, una o due annotazioni, pulizia degli elementi inutili.
+- Storia in tre mosse: contesto, scoperta, azione. Senza nascondere i dati scomodi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le tre mosse di una storia con i dati?", a: "Contesto, scoperta, azione" },
+    { q: "Titolo descrittivo o con la conclusione?", a: "Con la conclusione: dice cosa notare" },
+    { q: "Quante annotazioni conviene mettere?", a: "Una o due" },
+    { q: "Cosa deve avere l'azione finale?", a: "Cosa fare, di quanto e entro quando" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: le dashboard, per chi deve decidere ogni giorno.</Say>
+</Scene>

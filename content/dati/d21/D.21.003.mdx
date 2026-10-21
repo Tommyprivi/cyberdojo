@@ -1,0 +1,268 @@
+---
+id: D.21.003
+course: dati
+module: 21
+title: "Livelli staging, intermediate e marts"
+belt: blu
+duration_min: 10
+prerequisites: [D.21.002]
+objectives:
+  - "Dire quale responsabilità ha ciascun livello: staging, intermediate, marts"
+  - "Riconoscere le convenzioni di nome stg_, int_, fct_ e dim_"
+  - "Collocare un modello nel livello giusto, con l'esempio di ordini e clienti"
+video:
+  provider: youtube
+  id: "7jLToRmGu8k"
+  start: 0
+  end: 600
+  channel: "Time Variant"
+  title: "dbt Full Course Part 4 | Staging Models View vs Table Materialization Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-livelli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere join e regole di business nello staging: lo staging pulisce soltanto, un modello per ogni tabella grezza"
+  - "Far leggere la tabella grezza direttamente a un mart: senza staging la pulizia si ripete in ogni modello"
+  - "Dare al mart il formato di una sola dashboard: un mart descrive un concetto di business, non un grafico"
+commands: []
+---
+
+<Scene title="La stessa pulizia in sette posti">
+Nel progetto di Marta i modelli sono cresciuti: ora sono trenta. Quattro di loro cominciano così:
+
+<Log lines={[
+  "select",
+  "    id as id_ordine,",
+  "    lower(stato) as stato,",
+  "    cast(importo as numeric(10, 2)) as importo",
+  "from {{ source('negozio', 'ordini') }}",
+]} caption="Stessa pulizia copiata in quattro modelli diversi." />
+
+Un giorno la tabella grezza cambia il nome della colonna `stato` in `stato_ordine`. Quattro modelli si rompono. Un altro, dimenticato, continua a funzionare con dati vecchi.
+
+La domanda del caso: **dove si fa la pulizia, perché si faccia una volta sola?**
+
+<Say who="sensei">Ogni cosa al suo posto, e un posto solo per ogni cosa. Questa lezione disegna i posti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre livelli, tre responsabilità">
+I progetti dbt in ordine si organizzano in tre livelli, che corrispondono a tre cartelle in `models/`:
+
+| Livello | Che cosa fa | Che cosa NON fa |
+|---|---|---|
+| **staging** | un modello per ogni tabella grezza: rinomina colonne, converte i tipi, standardizza | niente join, niente regole di business |
+| **intermediate** | combina e rimodella: join, filtri, passaggi di calcolo riusabili | non è pensato per chi fa i grafici |
+| **marts** | tabelle finali, una per concetto di business (ordini, clienti), pronte da leggere | non rifà la pulizia, non legge le tabelle grezze |
+
+<Callout kind="regola">
+Le frecce vanno in un verso solo: **grezzo → staging → intermediate → marts**. Un mart non legge mai una tabella grezza. Lo staging non legge mai un altro livello.
+</Callout>
+
+<Say who="assistente">Pensa a una cucina: lavare e tagliare (staging), preparare le basi (intermediate), servire i piatti (marts).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Convenzioni di nome">
+Il nome del file dice il livello. Convenzione diffusa tra i progetti dbt:
+
+| Prefisso | Livello | Esempio |
+|---|---|---|
+| `stg_<sorgente>__<tabella>` | staging | `stg_negozio__ordini` |
+| `int_<contenuto>` | intermediate | `int_ordini_pagati` |
+| `fct_<cosa è successo>` | marts, **fatti** | `fct_ordini` |
+| `dim_<cosa è>` | marts, **dimensioni** | `dim_clienti` |
+
+Un **fatto** è un evento che accade (un ordine); una **dimensione** descrive una cosa che esiste (un cliente). Il doppio trattino basso in `stg_` separa sorgente e tabella. Nei progetti piccoli con una sola sorgente si può accorciare in `stg_ordini`, come nella lezione scorsa: l'importante è scegliere **una regola** e rispettarla.
+
+<Callout kind="trucco">
+Anche le cartelle seguono i livelli: `models/staging/`, `models/intermediate/`, `models/marts/`. Nel `dbt_project.yml` si imposta la materializzazione per cartella: view per staging, table per marts.
+</Callout>
+
+<Log lines={[
+  "models:",
+  "  cesto_dbt:",
+  "    staging:",
+  "      +materialized: view",
+  "    intermediate:",
+  "      +materialized: view",
+  "    marts:",
+  "      +materialized: table",
+]} caption="Un blocco per cartella: il prefisso + davanti a materialized è obbligatorio per le impostazioni." />
+
+<Say who="sensei">Se il nome non dice il livello, chi arriva dopo di te perde mezz'ora a capirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio: ordini e clienti">
+Dati grezzi di partenza, in due tabelle:
+
+| clienti.id | nome | citta |
+|---|---|---|
+| 1 | Giulia Ferri | Torino |
+| 2 | Paolo Neri | Bari |
+| 3 | Sara Villa | Torino |
+| 4 | Luca Conti | Pisa |
+
+| ordini.id | cliente_id | data | importo | stato |
+|---|---|---|---|---|
+| 101 | 1 | 2025-03-02 | 12.50 | PAGATO |
+| 102 | 1 | 2025-03-15 | 18.00 | PAGATO |
+| 103 | 2 | 2025-03-16 | 7.50 | ANNULLATO |
+| 104 | 3 | 2025-03-20 | 30.00 | PAGATO |
+| 105 | 2 | 2025-03-28 | 22.00 | PAGATO |
+
+**Staging**: due modelli, uno per tabella, solo pulizia.
+
+<Log lines={[
+  "-- models/staging/stg_negozio__ordini.sql",
+  "select",
+  "    id as id_ordine,",
+  "    cliente_id as id_cliente,",
+  "    cast(data as date) as data_ordine,",
+  "    cast(importo as numeric(10, 2)) as importo,",
+  "    lower(stato) as stato",
+  "from {{ source('negozio', 'ordini') }}",
+  "",
+  "-- models/staging/stg_negozio__clienti.sql",
+  "select",
+  "    id as id_cliente,",
+  "    nome,",
+  "    citta",
+  "from {{ source('negozio', 'clienti') }}",
+]} />
+
+**Intermediate**: un passaggio riusabile, gli ordini pagati.
+
+<Log lines={[
+  "-- models/intermediate/int_ordini_pagati.sql",
+  "select id_ordine, id_cliente, data_ordine, importo",
+  "from {{ ref('stg_negozio__ordini') }}",
+  "where stato = 'pagato'",
+]} caption="4 righe: 101, 102, 104, 105. L'ordine 103 è annullato e sparisce." />
+
+<Say who="assistente">Fino a qui nessun numero è «di business»: solo dati puliti e un filtro riusabile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I marts">
+Ora i due marts: un fatto e una dimensione.
+
+<Log lines={[
+  "-- models/marts/fct_ordini.sql",
+  "select",
+  "    o.id_ordine,",
+  "    o.data_ordine,",
+  "    o.importo,",
+  "    c.id_cliente,",
+  "    c.citta",
+  "from {{ ref('int_ordini_pagati') }} as o",
+  "join {{ ref('stg_negozio__clienti') }} as c",
+  "    on c.id_cliente = o.id_cliente",
+]} />
+
+Risultato di `fct_ordini`, una riga per ordine pagato:
+
+| id_ordine | data_ordine | importo | id_cliente | citta |
+|---|---|---|---|---|
+| 101 | 2025-03-02 | 12.50 | 1 | Torino |
+| 102 | 2025-03-15 | 18.00 | 1 | Torino |
+| 104 | 2025-03-20 | 30.00 | 3 | Torino |
+| 105 | 2025-03-28 | 22.00 | 2 | Bari |
+
+<Log lines={[
+  "-- models/marts/dim_clienti.sql",
+  "select",
+  "    c.id_cliente,",
+  "    c.nome,",
+  "    c.citta,",
+  "    count(o.id_ordine) as n_ordini,",
+  "    coalesce(sum(o.importo), 0) as speso_totale",
+  "from {{ ref('stg_negozio__clienti') }} as c",
+  "left join {{ ref('int_ordini_pagati') }} as o",
+  "    on o.id_cliente = c.id_cliente",
+  "group by c.id_cliente, c.nome, c.citta",
+]} />
+
+Risultato di `dim_clienti`, una riga per cliente:
+
+| id_cliente | nome | citta | n_ordini | speso_totale |
+|---|---|---|---|---|
+| 1 | Giulia Ferri | Torino | 2 | 30.50 |
+| 2 | Paolo Neri | Bari | 1 | 22.00 |
+| 3 | Sara Villa | Torino | 1 | 30.00 |
+| 4 | Luca Conti | Pisa | 0 | 0.00 |
+
+Controllo: 30,50 + 22,00 + 30,00 + 0 = 82,50, lo stesso totale dei ricavi di marzo. Luca non ha ordini ma compare, perché la `left join` parte dai clienti.
+
+<Callout kind="attenzione">
+La join non poteva stare nello staging: se la tabella grezza cambia una colonna, deve rompersi (e aggiustarsi) un solo file di pulizia, non un modello di business. Ai marts interessano le regole, non i nomi delle tabelle grezze.
+</Callout>
+
+<Say who="sensei">Se la tabella grezza cambia, si tocca un file di staging. I marts non se ne accorgono. Questo è il guadagno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo al caso: la colonna `stato` diventa `stato_ordine` nella tabella grezza.
+
+<Quiz
+  question="Il progetto segue i tre livelli. Quale file va modificato quando la tabella grezza cambia il nome di una colonna?"
+  options={[
+    "Solo stg_negozio__ordini, il modello di staging di quella tabella",
+    "Tutti i marts che usano quella colonna",
+    "Solo il file sources.yml",
+    "Il dbt_project.yml",
+  ]}
+  answer={0}
+  explain="Lo staging è l'unico livello che legge la tabella grezza: lì si rinomina la colonna, ad esempio stato_ordine as stato. I modelli a valle continuano a vedere il nome vecchio e non si rompono. Modificare i marts vorrebbe dire che leggevano il grezzo, contro la regola."
+/>
+
+<Video />
+
+<Say who="assistente">Vuoi vedere uno staging costruito in un progetto reale? Il video lo fa, in inglese, e confronta view e table.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Modelli da collocare nel livello giusto, nomi da riconoscere, responsabilità da assegnare.
+
+<Practice generator="d21-livelli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un modello al posto giusto si trova, si testa e si cambia senza paura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Staging: un modello per tabella grezza, solo pulizia. Intermediate: passaggi riusabili. Marts: tabelle finali per concetto di business.
+- Nomi: stg_ per lo staging, int_ per l'intermediate, fct_ per i fatti e dim_ per le dimensioni. Una regola sola, rispettata da tutti.
+- Le frecce vanno in un verso: grezzo, staging, intermediate, marts. Solo lo staging legge il grezzo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale livello può leggere le tabelle grezze con source?", a: "Solo lo staging" },
+    { q: "Che differenza c'è tra fct_ e dim_?", a: "fct_ è un evento (un ordine), dim_ descrive una cosa (un cliente)" },
+    { q: "Dove va una join tra ordini e clienti con regole di business?", a: "In intermediate o in un mart, mai nello staging" },
+    { q: "Perché lo staging si scrive una volta sola per tabella?", a: "Così un cambiamento della sorgente si corregge in un solo file" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i test. Un modello senza controlli è una promessa senza garanzia.</Say>
+</Scene>

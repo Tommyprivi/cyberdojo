@@ -1,0 +1,152 @@
+---
+id: T.12.001
+course: trading
+module: 12
+title: "Il cervello contro il piano"
+belt: blu
+duration_min: 8
+prerequisites: [T.11.006]
+objectives:
+  - "Spiegare l'avversione alla perdita e l'effetto disposizione"
+  - "Riconoscere l'eccesso di fiducia e il bias di conferma in una situazione concreta"
+  - "Dire perché servono regole scritte prima di operare"
+video:
+  provider: youtube
+  id: "MsRZGOntvmY"
+  start: 0
+  end: 600
+  channel: "Team Casanova Valente"
+  title: "Il tuo cervello ed i Bias Comportamentali - Puntata 1"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t12-bias
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che conoscere i bias basti a non cascarci: agiscono anche quando li conosci"
+  - "Tenere in portafoglio una posizione in perdita solo per «non realizzare» la perdita"
+  - "Scambiare poche vittorie di fila per abilità, e aumentare il rischio"
+commands: []
+---
+
+<Scene title="La regola che nessuno rispetta">
+Marta ha costruito una strategia su dati storici e la prova in un conto **demo**, con denaro fittizio. La sua regola è chiara, scritta sul quaderno: **«Se la perdita arriva a 50 euro, esco.»**
+
+Oggi la posizione è a -50. Marta guarda lo schermo e pensa: «Se aspetto un po' torna su.» Non esce. Domani è a -80.
+
+La domanda del caso: **perché una persona che ha scritto la regola non la segue?**
+
+<Say who="sensei">Il codice fa quello che gli dici. Tu no. Prima di parlare di strategie, parliamo di chi le usa: tu.</Say>
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. I mercati non regalano niente. Qui si lavora solo con dati storici e conti demo.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perdere pesa più di vincere">
+Gli studi di psicologia mostrano che, in media, una **perdita** di una certa cifra pesa più di un **guadagno** della stessa cifra: spesso si dice «circa il doppio», ma varia da persona a persona. Si chiama **avversione alla perdita**.
+
+Pensa a una moneta: testa vinci 100, croce perdi 100. Molti rifiutano, anche se in media è un gioco pari. La perdita fa più male di quanto la vincita faccia piacere.
+
+<Callout kind="regola">
+Avversione alla perdita: la stessa cifra, se la perdi, pesa di più che se la guadagni.
+</Callout>
+
+Da qui nasce l'**effetto disposizione**: si vendono presto i titoli in guadagno («intanto incasso») e si tengono troppo a lungo quelli in perdita («finché non la chiudo, non è reale»).
+
+<Say who="assistente">Chiudere una perdita la rende certa. Lasciarla aperta la fa sembrare ancora «possibile» da recuperare. È una scusa che la mente si racconta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il prezzo di acquisto non conta">
+C'è un trucco in più: l'**ancoraggio**. Si resta legati a un numero, di solito il prezzo a cui si è comprato.
+
+«Aspetto che torni al mio prezzo, poi esco.» Il mercato però **non sa** a che prezzo hai comprato. Quel numero conta solo per te.
+
+<Log lines={[
+  "Acquisto (demo): 100",
+  "Prezzo oggi:      80",
+  "Domanda sbagliata: «come torno a 100?»",
+  "Domanda giusta:   «se avessi in mano contanti, oggi comprerei a 80?»",
+]} />
+
+Se la risposta è no, tenere la posizione è una scelta: stai comprando di nuovo a 80, per inerzia.
+
+<Say who="sensei">Il passato è passato. Si decide in base a quello che sai oggi e alle regole che hai scritto, non al prezzo scritto sul tuo scontrino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fiducia e conferme">
+Il secondo guaio è l'**eccesso di fiducia**: pensare di sapere più di quello che si sa. Luca vince tre operazioni di fila e raddoppia le dimensioni: «ormai ho capito il mercato.» Tre esiti sono pochissimi: potrebbe essere solo fortuna.
+
+Il terzo è il **bias di conferma**: si cercano solo le informazioni che danno ragione a quello che già pensiamo, e si ignorano gli avvertimenti.
+
+<Callout kind="trucco">
+Domanda da farsi: «Che cosa dovrei vedere per ammettere che mi sbaglio?» Se la risposta è «niente», sei in zona bias.
+</Callout>
+
+Vuoi sentire un'altra voce parlare di questi errori? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Ricorda: chi ha un bias non se ne accorge. Per questo le regole vanno scritte prima, a mente fredda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giulia ha una regola: «Uscire se la perdita arriva al 5%». La posizione tocca -5%, ma lei pensa: «Ormai ho perso, aspetto che risalga». Qual è la scelta più prudente?"
+  options={[
+    "Uscire come dice la regola e annotarlo nel diario",
+    "Aspettare un altro giorno, per non realizzare la perdita",
+    "Comprare altre quote per abbassare il prezzo medio",
+    "Cancellare la regola, visto che non le piace",
+  ]}
+  answer={0}
+  explain="La regola è stata scritta a mente fredda proprio per questo momento. Aspettare è avversione alla perdita; comprare altre quote aumenta il rischio sulla stessa idea; cancellare la regola la rende inutile."
+/>
+
+<Say who="sensei">La regola non si negozia quando fa male. È proprio allora che serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su avversione alla perdita, eccesso di fiducia e bias di conferma: scegli ciò che è più prudente.
+
+<Practice generator="t12-bias" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi riconosce il bias in un esempio lo riconosce più facilmente in sé stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La perdita pesa più del guadagno della stessa cifra: porta a tenere le perdite e a vendere presto i guadagni.
+- L'eccesso di fiducia e il bias di conferma ci fanno rischiare troppo e ignorare gli avvertimenti.
+- Conoscere i bias non basta: servono regole scritte prima, a mente fredda.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'avversione alla perdita?", a: "La perdita pesa più di un guadagno della stessa cifra" },
+    { q: "Che cos'è l'effetto disposizione?", a: "Vendere presto i guadagni e tenere troppo a lungo le perdite" },
+    { q: "Che cos'è il bias di conferma?", a: "Cercare solo le informazioni che danno ragione a ciò che già pensiamo" },
+    { q: "Perché serve il prezzo di acquisto per decidere?", a: "Non serve: il mercato non lo conosce, contano i dati di oggi e le regole" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la FOMO, la paura di restare fuori. Quella che fa comprare quando tutti ne parlano.</Say>
+</Scene>

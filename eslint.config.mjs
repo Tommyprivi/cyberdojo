@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // File statici copiati o scritti a mano (worker, PGlite): non si controllano con eslint.
+    "public/**",
+    // Materiali di terze parti vendutati (skill, agenti): non sono codice del progetto.
+    ".agents/**",
+    ".claude/**",
   ]),
 ]);
 

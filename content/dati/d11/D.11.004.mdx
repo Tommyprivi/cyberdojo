@@ -1,0 +1,142 @@
+---
+id: D.11.004
+course: dati
+module: 11
+title: "Il clustering"
+belt: verde
+duration_min: 8
+prerequisites: [D.11.003]
+objectives:
+  - "Spiegare che cosa fa il clustering e perché non servono etichette"
+  - "Eseguire a mano due giri di k-means su sei punti"
+  - "Ricordare che il significato dei gruppi lo dà una persona"
+video:
+  provider: youtube
+  id: "d2FpK1qiDgs"
+  start: 0
+  end: 386
+  channel: "BRAINLINK"
+  title: "MACHINE LEARNING: CLUSTERING - K-MEANS (spiegato facile)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-clustering
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il computer dia da solo un nome e un significato ai gruppi"
+  - "Mischiare grandezze con scale diverse (euro e metri) senza adattarle"
+  - "Confondere il centro del gruppo (la media) con un punto del gruppo"
+commands: []
+---
+
+<Scene title="Chi sono i clienti?">
+Un negozio di videogiochi ha i dati di sei clienti: quante **ore a settimana** giocano. Nessuno ha mai scritto «giocatore occasionale» o «appassionato».
+
+Ore a settimana: **1, 2, 3, 10, 11, 12**.
+
+Guardandoli, si vedono due gruppi. Ma con 10.000 clienti e dieci colonne non basterà guardare. La domanda del caso: **come si fanno trovare i gruppi al computer, senza dirgli quali sono?**
+
+<Say who="sensei">Nessuna etichetta, nessuna risposta già pronta. Solo punti, e il compito di raggrupparli. Si chiama clustering.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Raggruppare per somiglianza">
+Il **clustering** raggruppa i punti **per somiglianza**: punti vicini nello stesso gruppo, punti lontani in gruppi diversi. È apprendimento **non supervisionato**: non ci sono etichette.
+
+L'algoritmo più famoso si chiama **k-means**. Tu scegli **k**, cioè quanti gruppi vuoi. Qui k = 2.
+
+Ogni gruppo ha un **centro**: la **media** dei suoi punti.
+
+<Callout kind="trucco">
+k-means in due mosse da ripetere: 1) ogni punto va al gruppo con il centro più vicino; 2) si ricalcola il centro di ogni gruppo come media.
+</Callout>
+
+<Say who="assistente">Come disporre dei segnaposto in una stanza e far camminare ognuno verso il centro del gruppo che si forma attorno a lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Primo giro">
+Si parte con due centri messi a caso, e **scelti male**: 1 e 2.
+
+<Log lines={["Centri: A = 1, B = 2", "punto 1  -> A (distanza 0 contro 1)", "punto 2  -> B (distanza 1 contro 0)", "punto 3  -> B (distanza 2 contro 1)", "punti 10, 11, 12 -> B", "Gruppi: A = {1}  B = {2, 3, 10, 11, 12}", "Nuovi centri: A = 1  B = (2+3+10+11+12)/5 = 38/5 = 7,6"]} caption="Primo giro: i gruppi sono ancora sbagliati." />
+
+<Say who="sensei">Il primo tentativo è brutto. Non è un problema: il k-means ripete finché i gruppi non si muovono più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Secondo e terzo giro">
+Nuovi centri: A = 1 e B = 7,6.
+
+<Log lines={["punto 1  -> A (0 contro 6,6)", "punto 2  -> A (1 contro 5,6)", "punto 3  -> A (2 contro 4,6)", "punto 10 -> B (9 contro 2,4)", "punti 11, 12 -> B", "Gruppi: A = {1, 2, 3}  B = {10, 11, 12}", "Nuovi centri: A = 2  B = 11", "Terzo giro: nessun punto cambia gruppo -> si ferma."]} caption="Due gruppi chiari, con centri 2 e 11." />
+
+Quando i gruppi non cambiano più, l'algoritmo **si ferma**. Il risultato: i clienti da 1-3 ore e quelli da 10-12.
+
+Vuoi vederlo animato da un'altra voce? Meno di sette minuti:
+
+<Video />
+
+<Say who="assistente">Tre giri e finito. In un caso vero i punti sono migliaia, ma i passi sono sempre questi due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa ci faccio">
+Il computer ha trovato due gruppi. **Non sa che cosa significano.** Sono le persone a guardarli e a chiamarli «occasionali» e «appassionati». Poi si decide: offerte diverse per ognuno.
+
+<Callout kind="attenzione">
+Il clustering propone gruppi, non verità. Con k diverso ottieni gruppi diversi. E se mescoli grandezze con scale diverse (euro e metri), quella con i numeri grandi pesa di più nelle distanze: prima si portano i dati sulla stessa scala.
+</Callout>
+
+Il k-means in scikit-learn (Python 3.11+, scikit-learn 1.4+):
+
+<Log lines={["from sklearn.cluster import KMeans", "X = [[1], [2], [3], [10], [11], [12]]", "km = KMeans(n_clusters=2, n_init=10, random_state=0).fit(X)", "print(sorted(km.cluster_centers_.ravel().tolist()))", "# [2.0, 11.0]"]} caption="I centri sono quelli trovati a mano." />
+
+<Quiz
+  question="I centri sono 2 e 11. A quale gruppo va il punto 9?"
+  options={["Al gruppo con centro 11 (distanza 2, contro 7)", "Al gruppo con centro 2", "A nessuno", "A entrambi, metà e metà"]}
+  answer={0}
+  explain="Distanza da 2: 9 - 2 = 7. Distanza da 11: 11 - 9 = 2. Il centro più vicino è 11. Chi sceglie il centro 2 ha guardato il numero più basso e non la distanza."
+/>
+
+<Say who="sensei">Il computer trova i gruppi. Il significato lo dai tu. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su gruppi, centri e distanze. Hai 3 tentativi.
+
+<Practice generator="d11-clustering" pass="5/5" retries={3} />
+
+<Say who="sensei">Media e distanza. Con quelle due cose fai k-means a mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il clustering raggruppa per somiglianza, senza etichette (non supervisionato).
+- k-means: scegli k; ripeti «ogni punto al centro più vicino» e «centro = media» finché i gruppi non cambiano.
+- I gruppi li trova il computer, il significato lo dà una persona; i dati vanno portati sulla stessa scala.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il centro di un gruppo in k-means?", a: "La media dei suoi punti" },
+    { q: "Il centro dei punti 10, 11, 12?", a: "11" },
+    { q: "Quando si ferma k-means?", a: "Quando i gruppi non cambiano più" },
+    { q: "Chi dà il nome ai gruppi?", a: "Una persona, guardando i dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: addestramento e test. Come si sa se un modello funziona davvero.</Say>
+</Scene>

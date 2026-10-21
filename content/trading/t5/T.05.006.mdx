@@ -1,0 +1,162 @@
+---
+id: T.05.006
+course: trading
+module: 5
+title: "Overfitting e dati fuori campione"
+belt: arancione
+duration_min: 9
+prerequisites: [T.05.005]
+objectives:
+  - "Spiegare che cos'è l'overfitting (sovra-ottimizzazione) in una strategia"
+  - "Dividere i dati in campione di costruzione (in-sample) e di prova (out-of-sample)"
+  - "Capire perché provare molte varianti trova per caso risultati belli"
+video:
+  provider: youtube
+  id: "SaGcL1gHRXM"
+  start: 0
+  end: 379
+  channel: "Unger Academy Italia"
+  title: "Overfitting nei Trading System: Come capire se un sistema è sovraottimizzato (con esempio pratico!)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-overfitting
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ottimizzare i parametri sull'intero periodo e poi giudicare la strategia sullo stesso periodo"
+  - "Provare tante varianti e tenere solo la migliore senza dirlo"
+  - "Guardare i dati di prova, correggere la regola e riguardare: così non sono più dati di prova"
+commands: []
+---
+
+<Scene title="La regola perfetta">
+Sara prova la sua regola con tante medie diverse: 2 giorni, 3 giorni, 4 giorni… fino a 100. Sceglie la migliore: **+18% nel periodo**, un risultato splendido. Poi la prova su tre anni di dati che non aveva mai guardato: **−2%**.
+
+Il prof. Neri sorride: **«Complimenti. Hai imparato a memoria il passato.»**
+
+La domanda del caso: **perché una regola così bella sul passato crolla sui dati nuovi?**
+
+<Say who="sensei">Una regola che spiega tutto il passato, spesso non spiega niente. Ha imparato il rumore, non il segnale.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Numeri fittizi, nessun denaro reale.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rumore a memoria">
+Nei prezzi c'è del **segnale** (qualcosa che si ripete davvero) e del **rumore** (oscillazioni casuali che non si ripeteranno mai uguali). **Overfitting** vuol dire adattare la regola così tanto ai dati passati da catturare anche il rumore.
+
+Pensa a uno studente che impara a memoria le risposte del compito dell'anno scorso: nel compito identico prende 10, in uno nuovo va male. Non ha capito, ha ricordato.
+
+<Callout kind="regola">
+Più parametri e più prove fai, più è facile adattarti al rumore. Una regola semplice con pochi parametri ha meno margine per «imparare a memoria».
+</Callout>
+
+<Say who="assistente">Ogni parametro che aggiungi è un manico in più per far combaciare la regola con il passato. Troppi manici, e combacia con tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dentro e fuori campione">
+Il rimedio è separare i dati in due parti:
+
+- **In-sample** (nel campione): dati usati per costruire e scegliere i parametri.
+- **Out-of-sample** (fuori campione): dati **messi da parte** e usati una volta sola, alla fine, per vedere come va una regola che non li ha mai visti.
+
+Esempio: dieci anni di dati fittizi. I primi **7 anni** (70%) per costruire, gli ultimi **3 anni** (30%) per provare. Si divide **in ordine di tempo**, non mescolando i giorni.
+
+<Callout kind="attenzione">
+I dati di prova valgono una volta. Se li guardi, correggi la regola e li riguardi, sono diventati dati di costruzione. Hai solo spostato il problema.
+</Callout>
+
+<Say who="sensei">I dati di prova sono come l'esame finale. Se ti fai dare le domande prima, non è più un esame.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Semplice contro complicata">
+Due regole, con risultati fittizi in percentuale sul periodo. Premi Esegui per vedere il calo tra «dentro» e «fuori» campione:
+
+<PythonTerminal code={"risultati = {\"semplice\": (6, 4), \"complessa\": (25, -6)}\nfor nome, (dentro, fuori) in risultati.items():\n    print(nome, \"calo:\", dentro - fuori)"} />
+
+La regola semplice passa da +6 a +4 (calo di 2 punti). La regola con dodici parametri passa da +25 a −6: calo di **31 punti**. La seconda sembrava molto migliore.
+
+Un indizio utile: un grande calo tra dentro e fuori campione è un campanello d'allarme.
+
+<Say who="assistente">Sembra strano ma è normale: la regola che «vince» di più sul passato è spesso quella che ha più rumore dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Troppe prove, qualche fortuna">
+C'è un secondo motivo, statistico. Se provi **20 regole inutili** (che in realtà non valgono nulla) e ognuna ha il **5%** di probabilità di sembrare buona per puro caso, ti aspetti circa 20 × 0,05 = **1** regola «buona» per fortuna.
+
+<Callout kind="curiosita">
+Con 100 varianti ti aspetti circa 100 × 0,05 = **5** regole che sembrano buone senza esserlo. Più provi, più ne trovi, e meno ti puoi fidare della migliore.
+</Callout>
+
+Per questo, quando si presenta una strategia, si dichiara **quante varianti sono state provate**. La «migliore di 100» ha un valore molto diverso dalla «prima e unica».
+
+Vuoi sentirlo spiegare da un'altra voce, in italiano? Pochi minuti:
+
+<Video />
+
+<Say who="sensei">Chi non dice quante prove ha fatto, o non lo sa, o non vuole dirlo. In entrambi i casi non fidarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una regola ha 8 parametri ottimizzati e ha fatto solo 40 operazioni nel periodo di costruzione. Sui dati di prova va male. Qual è la spiegazione più probabile?"
+  options={[
+    "Troppi parametri per poche operazioni: ha adattato il rumore (overfitting)",
+    "I dati di prova sono sempre peggiori",
+    "Il mercato ha deciso di punirla",
+    "Ci vuole un parametro in più"
+  ]}
+  answer={0}
+  explain="Con pochi dati e tanti parametri è facile far combaciare la regola col passato per caso. Aggiungere un parametro peggiora il problema. I dati di prova non sono «sempre peggiori»: lo sono quando la regola ha imparato rumore."
+/>
+
+<Say who="assistente">Una regola pratica (non una legge): molti più dati e operazioni che parametri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su overfitting, divisione dei dati e numeri di prova. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-overfitting" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi diffida delle proprie belle curve è già avanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Overfitting: la regola impara il rumore del passato e crolla sui dati nuovi.
+- Si divide in ordine di tempo: in-sample per costruire, out-of-sample per provare una sola volta.
+- Più varianti si provano, più risultati belli nascono per caso: va dichiarato quante.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'overfitting?", a: "Adattare la regola così tanto al passato da catturare anche il rumore" },
+    { q: "Che differenza c'è tra in-sample e out-of-sample?", a: "In-sample serve a costruire la regola, out-of-sample a provarla su dati mai visti" },
+    { q: "Come si dividono i dati in una serie storica?", a: "In ordine di tempo: prima il periodo di costruzione, poi quello di prova" },
+    { q: "Con 20 regole inutili e il 5% di fortuna ciascuna, quante «buone» ti aspetti?", a: "Circa una (20 × 0,05)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il walk-forward. Rifare la prova fuori campione più volte, avanzando nel tempo.</Say>
+</Scene>

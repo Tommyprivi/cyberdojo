@@ -1,0 +1,160 @@
+---
+id: F.06.007
+course: fondamenta
+module: 6
+title: "La tabella di routing"
+belt: arancione
+duration_min: 9
+prerequisites: [F.06.006]
+objectives:
+  - "Leggere una tabella di routing"
+  - "Applicare la regola del prefisso più lungo e la route di default"
+video:
+  provider: youtube
+  id: "mydJgo2K3Ok"
+  start: 0
+  end: 600
+  channel: "Sistemi e reti / TPSI - Prof. Francesco Urbano"
+  title: "Tabelle di Routing: le basi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-routing
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Vince la route più specifica, non la prima della tabella"
+  - "La route di default 0.0.0.0/0 corrisponde a tutto, ma perde contro qualsiasi route più specifica"
+  - "Senza route e senza default il pacchetto viene scartato"
+commands: []
+---
+
+<Scene title="Il router riceve un pacchetto">
+Il pacchetto delle 03:12 è arrivato al router dell'azienda. Ha **due interfacce interne** (uffici e server) e una verso Internet. Ora il router deve decidere **da quale uscire**.
+
+Poco dopo, un altro pacchetto: quello delle 04:40, con destinazione il server, ma arrivato da Internet. E uno diretto fuori, verso 172.40.12.9.
+
+<Say who="sensei">Il router non conosce Internet. Conosce una tabella. Chi la legge bene prevede ogni sua mossa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una riga, una strada">
+La **tabella di routing** è un elenco. Ogni riga dice: «per le destinazioni di questa **rete**, manda i pacchetti **qui**».
+
+| Destinazione | Prossimo salto | Interfaccia |
+|---|---|---|
+| 192.168.1.0/24 | diretta | uffici |
+| 10.0.0.0/24 | diretta | server |
+| 0.0.0.0/0 | 203.0.113.1 | Internet |
+
+- **Diretta**: la rete è collegata al router, il router consegna da solo.
+- **Prossimo salto** (next hop): l'indirizzo del router successivo, quando la destinazione è più lontana.
+
+Il pacchetto per 10.0.0.5 trova la riga 10.0.0.0/24 (stessa operazione di maschera e confronto che hai visto ieri) e esce dall'interfaccia dei server.
+
+<Say who="assistente">Maschera e confronto, riga dopo riga. È lo stesso test del PC, ma il router lo fa su una tabella intera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più righe corrispondono">
+E se **più righe** corrispondono allo stesso indirizzo? Prendi questa tabella:
+
+| Destinazione | Prossimo salto |
+|---|---|
+| 10.0.0.0/8 | R1 |
+| 10.1.0.0/16 | R2 |
+| 10.1.5.0/24 | R3 |
+| 0.0.0.0/0 | ISP |
+
+<Callout kind="regola">
+**Prefisso più lungo**: tra le righe che corrispondono, vince quella con **più bit di rete**, cioè la più specifica. L'ordine nella tabella non conta.
+</Callout>
+
+<Guided
+  steps={[
+    "Pacchetto per 10.1.5.9: corrispondono /8, /16 e /24. Vince la /24, quindi R3.",
+    "Pacchetto per 10.1.9.9: corrispondono /8 e /16. Vince la /16, quindi R2.",
+    "Pacchetto per 10.9.9.9: corrisponde solo la /8, quindi R1.",
+  ]}
+/>
+
+<Say who="sensei">Chi indica una via precisa batte chi indica un quartiere. Il più preciso comanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La route di default">
+Resta il pacchetto per **172.40.12.9**. Nessuna riga 10.x corrisponde. Ma c'è **0.0.0.0/0**: prefisso zero, nessun bit di rete, quindi **corrisponde a ogni indirizzo**.
+
+È la **route di default**: «se non so dove mandarlo, lo mando all'ISP» (il fornitore di Internet). Perde sempre contro qualunque riga più specifica, perché ha il prefisso più corto.
+
+<Callout kind="attenzione">
+Senza default e senza una riga che corrisponda, il router **scarta** il pacchetto (e può avvisare chi lo ha inviato). È uno dei motivi per cui qualcosa «non risponde» senza errori evidenti.
+</Callout>
+
+Vuoi vedere le tabelle spiegate da un'altra voce, con esempi disegnati?
+
+<Video />
+
+<Say who="assistente">Default significa «tutto il resto». Sta in fondo non per l'ordine della tabella, ma per il suo prefisso: lo zero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un router ha: 192.168.1.0/24 diretta su eth0; 192.168.1.128/25 via R2; 0.0.0.0/0 via ISP. Dove va un pacchetto per 192.168.1.200?"
+  options={[
+    "A R2",
+    "Direttamente su eth0, perché la /24 è la prima riga",
+    "All'ISP",
+    "Viene scartato",
+  ]}
+  answer={0}
+  explain="192.168.1.200 cade sia nella /24 sia nella /25 (da .128 a .255). Vince la /25, il prefisso più lungo, quindi R2. Chi sceglie eth0 guarda l'ordine delle righe: l'ordine non conta."
+/>
+
+<Callout kind="curiosita">
+Puoi vedere la tabella di un computer: su Linux con `ip route`, su Windows con `route print`. Sono comandi di sola lettura: non cambiano niente.
+</Callout>
+
+<Say who="assistente">Controlla quali righe corrispondono. Poi scegli quella con il prefisso più alto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul routing. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-routing" pass="5/5" retries={3} />
+
+<Say who="sensei">Elenca le righe che corrispondono. Scegli la più specifica. Se non ce n'è, il default. Se non c'è nemmeno quello, scarto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La tabella di routing associa a ogni rete di destinazione un prossimo salto e un'interfaccia.
+- Se più righe corrispondono vince il prefisso più lungo, quello più specifico; l'ordine non conta.
+- La route di default 0.0.0.0/0 corrisponde a tutto ma si usa solo se nessuna riga più specifica corrisponde; senza nessuna riga il pacchetto è scartato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il prossimo salto?", a: "L'indirizzo del prossimo router a cui inoltrare il pacchetto" },
+    { q: "Che regola sceglie tra più righe?", a: "Il prefisso più lungo (la più specifica)" },
+    { q: "Che cos'è 0.0.0.0/0?", a: "La route di default: corrisponde a tutto e vale solo se nulla di più specifico corrisponde" },
+    { q: "Nessuna riga corrisponde e non c'è default: cosa succede?", a: "Il pacchetto viene scartato" },
+  ]}
+/>
+
+<Say who="sensei">Chi scrive la tabella? A mano, o i router da soli? È l'ultima lezione del modulo.</Say>
+</Scene>

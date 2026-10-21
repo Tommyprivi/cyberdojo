@@ -1,0 +1,212 @@
+---
+id: D.18.007
+course: dati
+module: 18
+title: "Backup e ripristino"
+belt: marrone
+duration_min: 10
+prerequisites: [D.18.006]
+objectives:
+  - "Fare una copia logica con pg_dump e ripristinarla"
+  - "Distinguere copie logiche e fisiche e applicare la regola 3-2-1"
+  - "Calcolare RPO e RTO in un caso semplice e spiegare perché il ripristino va provato"
+video:
+  provider: youtube
+  id: "WB6WzuFHcP8"
+  start: 0
+  end: 600
+  channel: "WittCode"
+  title: "Backing Up a Postgres Database with pg_dump and pg_restore"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-backup
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere di avere un backup solo perché il file esiste: finché non l'hai ripristinato non sai se funziona"
+  - "Tenere tutte le copie sullo stesso disco o nella stessa stanza del database"
+  - "Confondere RPO (quanti dati puoi perdere) con RTO (quanto tempo puoi restare fermo)"
+commands: []
+---
+
+<Scene title="Il disco che muore di martedì">
+Il negozio di Marta ha un backup automatico ogni notte alle 02:00, salvato **sullo stesso computer** del database. Martedì alle 17:00 il disco si rompe.
+
+Marta va a cercare il backup: era nel disco rotto. Anche se fosse sopravvissuto, nessuno ha mai provato a ripristinarlo, e nessuno sa quanto tempo ci vorrebbe.
+
+La domanda del caso: **che cosa serve per un backup che funziona davvero quando serve?**
+
+<Say who="sensei">Un backup non è un file: è la prova di saper tornare indietro. Finché non l'hai provato, è solo una speranza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La copia logica con pg_dump">
+**pg_dump** esporta un database come **copia logica**: un file con le istruzioni (o i dati) per ricostruirlo. È un programma da riga di comando che arriva con PostgreSQL.
+
+<Log lines={[
+  "pg_dump -U postgres -d negozio -Fc -f negozio.dump",
+]} caption="Copia nel formato «custom» (-Fc), compresso. Ti chiede la password dell'utente." />
+
+<Log lines={[
+  "createdb -U postgres negozio_prova",
+  "pg_restore -U postgres -d negozio_prova negozio.dump",
+]} caption="Ripristino in un database nuovo, di prova." />
+
+Con `-Fp` (formato plain) si ottiene invece un file di testo SQL, che si ripristina con `psql -d negozio_prova -f negozio.sql`. Il formato custom permette di ripristinare anche **solo alcune tabelle** con `pg_restore`.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video, in inglese, mostra pg_dump e pg_restore dal terminale:
+
+<Video />
+
+<Callout kind="attenzione">
+`pg_dump` salva un solo database. Ruoli e permessi sono comuni a tutto il server e si salvano con `pg_dumpall --globals-only`. Non scrivere la password nei comandi o negli script: usa il file `.pgpass` o chiedila al momento.
+</Callout>
+
+<Say who="assistente">pg_dump lavora mentre il database è in uso e dà una fotografia coerente dell'istante in cui parte. Non serve fermare tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Copie logiche e fisiche">
+Esistono due famiglie di backup.
+
+<Log lines={[
+  "LOGICA (pg_dump)",
+  "  Contenuto: istruzioni e dati del database",
+  "  Pro: piccola, portabile tra versioni, ripristino parziale",
+  "  Contro: ripristino lento su database grandi; fotografia di un solo istante",
+  "",
+  "FISICA (pg_basebackup + archivio dei log WAL)",
+  "  Contenuto: copia dei file veri del server",
+  "  Pro: veloce da ripristinare; permette il ritorno a un istante preciso (PITR)",
+  "  Contro: stessa versione di PostgreSQL; copia l'intero server",
+]} caption="Confronto." />
+
+Il **PITR** (*point-in-time recovery*) permette di tornare, per esempio, alle 16:59:30, un attimo prima di un errore. Funziona perché PostgreSQL scrive ogni modifica in un registro (i **WAL**), e se lo conservi puoi «riavvolgere» fino al momento che vuoi.
+
+<Callout kind="regola">
+Per un database piccolo basta un `pg_dump` pianificato. Per un database che non può perdere nemmeno pochi minuti di dati serve la copia fisica con archivio dei WAL.
+</Callout>
+
+<Say who="sensei">La copia logica è un libro scritto a mano: leggibile ovunque. La fisica è la fotocopia del libro intero: rapida, ma uguale all'originale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola 3-2-1">
+La regola dei professionisti si ricorda con tre numeri.
+
+- **3** copie dei dati (l'originale più due backup).
+- **2** supporti diversi (per esempio disco del server e disco esterno o archivio cloud).
+- **1** copia **fuori sede**, lontana dal luogo dell'originale (un altro edificio, un servizio online).
+
+Nel caso di Marta c'era **una** copia, sullo stesso disco: un solo guasto ha portato via tutto.
+
+<Callout kind="curiosita">
+Oggi si aggiunge spesso uno «0»: **0 errori** nel ripristino di prova. E una copia **immutabile** o scollegata protegge dai ransomware, che cifrano anche i backup raggiungibili dalla rete.
+</Callout>
+
+<Callout kind="attenzione">
+I backup contengono dati personali: vanno **cifrati** e protetti come il database. Ricorda il GDPR: se cancelli un cliente su richiesta, la sua copia nei backup deve scadere entro tempi dichiarati.
+</Callout>
+
+<Say who="assistente">Tre copie, due supporti, una lontana. Se le tieni tutte nello stesso cassetto, hai una copia sola con tre nomi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="RPO e RTO">
+Due sigle misurano quanto fa male un guasto.
+
+- **RPO** (*Recovery Point Objective*): **quanti dati** puoi permetterti di perdere, misurati in tempo.
+- **RTO** (*Recovery Time Objective*): **quanto tempo** puoi restare fermo.
+
+Facciamo i conti sul caso. Backup alle 02:00, guasto alle 17:00.
+
+<Guided
+  steps={[
+    "Ultima copia utile: quella delle 02:00. Il guasto è alle 17:00.",
+    "Dati persi: da 02:00 a 17:00, cioè 15 ore di ordini.",
+    "Con un backup ogni notte, il caso peggiore è perdere quasi 24 ore: l'RPO reale è circa 24 ore.",
+    "Se il negozio può perdere al massimo 1 ora di ordini, serve una copia ogni ora, oppure l'archivio dei WAL (RPO di pochi secondi).",
+    "RTO: se ripristinare il file richiede 2 ore e i controlli 1 ora, l'RTO reale è 3 ore. Se il negozio può stare fermo 1 ora, il piano non basta.",
+  ]}
+/>
+
+<Callout kind="regola">
+RPO e RTO si decidono con l'azienda, non con il tecnico: sono scelte di business che hanno un costo. Meno si vuole perdere e meno si vuole aspettare, più il sistema costa.
+</Callout>
+
+<Say who="sensei">Se non sai l'RPO e l'RTO, non sai nemmeno se il tuo backup basta. Calcolali prima del guasto, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare il ripristino">
+Un backup non provato è un'ipotesi. La prova si fa **in un database separato**, mai sopra quello vero.
+
+<Log lines={[
+  "pg_restore -U postgres -d negozio_prova negozio.dump",
+  "psql -U postgres -d negozio_prova -c \"SELECT count(*) FROM ordini;\"",
+]} caption="Ripristino di prova e controllo: dopo il ripristino, i conti tornano?" />
+
+<Log lines={[
+  "count",
+  "-----",
+  "    8",
+]} caption="Risultato atteso con la nostra tabella ordini di otto righe: lo stesso numero dell'originale." />
+
+Che cosa si controlla in una prova seria:
+
+- il ripristino finisce **senza errori**;
+- il numero di righe delle tabelle principali **coincide** con l'originale;
+- si **cronometra** il tempo: è l'RTO vero;
+- l'applicazione riesce a collegarsi alla copia.
+
+<Quiz
+  question="Un negozio fa un backup ogni notte alle 03:00 e il database si guasta alle 11:00 dello stesso giorno. Quante ore di dati si perdono, nel caso migliore del ripristino dall'ultima copia?"
+  options={["8 ore, da 03:00 a 11:00", "24 ore", "3 ore", "Nessuna: il backup salva tutto in tempo reale"]}
+  answer={0}
+  explain="Si torna alla fotografia delle 03:00: tutto quello che è successo fino alle 11:00 (otto ore) è perso. Le 24 ore sarebbero il caso peggiore, con guasto appena prima del backup successivo. Un backup notturno non è in tempo reale: per perdere meno servono copie più frequenti o i WAL."
+/>
+
+<Say who="sensei">Prova il ripristino a calendario, ogni mese. Il giorno del guasto non è il momento di imparare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su backup, regola 3-2-1, RPO e RTO. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-backup" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai che cosa fa la differenza tra «ho un backup» e «posso ripartire».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- pg_dump fa una copia logica (piccola e portabile); la copia fisica con archivio dei WAL permette il ritorno a un istante preciso.
+- Regola 3-2-1: tre copie, due supporti diversi, una fuori sede; i backup si cifrano e proteggono come i dati.
+- RPO è quanti dati puoi perdere, RTO è quanto tempo puoi restare fermo. Il ripristino si prova, cronometrando.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Comando per una copia logica compressa di un database?", a: "pg_dump -Fc -f file.dump nome_database" },
+    { q: "Che cosa vuol dire 3-2-1?", a: "3 copie, 2 supporti diversi, 1 copia fuori sede" },
+    { q: "Differenza tra RPO e RTO?", a: "RPO: quanti dati si possono perdere; RTO: quanto tempo si può restare fermi" },
+    { q: "Dove si prova un ripristino?", a: "In un database separato, mai sopra quello vero" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del ramo: prestazioni e sicurezza, per un database veloce e difeso.</Say>
+</Scene>

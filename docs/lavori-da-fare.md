@@ -42,6 +42,13 @@ Stato al 20 ottobre 2026. Legenda: **[fatto]**, **[in corso]**, **[da fare]**, *
 - [da fare] Pagine legali: privacy, termini, cookie
 - [tuo] Voci di Sensei e Assistente (ElevenLabs: scelta delle voci)
 
+## Aggiornamenti futuri (corsi in coda, piani in docs/brief-approfondimenti.md)
+- [da fare] Cybersecurity C22–C30: IoT e OT, governance e conformità, DevSecOps, sicurezza e IA, social engineering, privacy engineering, sicurezza fisica, sicurezza mobile, progetto avanzato
+- [da fare] Hedge fund H13–H24: reddito fisso, opzioni, fattori, credito, macro, event driven, materie prime, cripto, contabilità, tecnologia, casi di studio, professione
+- [da fare] Trading T15–T18: opzioni e volatilità, portafogli di strategie, dati alternativi, microstruttura
+- [da fare] Altri corsi: programmazione web, Excel professionale, IA e prompt, cloud e DevOps, contabilità, marketing digitale, project management, cripto
+- [da fare] Pulsante «Segnala un errore» in ogni lezione; esecuzione automatica del codice delle lezioni per controllare gli output
+
 ## Crescita
 - [da fare] Struttura multi-corso (oggi solo F e C): serve per il secondo corso sull'analisi dei dati
 - [da fare] Piano di contenuto fino a 1.000 lezioni per corso e poi 10.000 per Cybersecurity (rami, moduli, pipeline di scrittura e revisione)

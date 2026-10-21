@@ -1,0 +1,153 @@
+---
+id: T.12.002
+course: trading
+module: 12
+title: "FOMO e trading emotivo"
+belt: blu
+duration_min: 8
+prerequisites: [T.12.001]
+objectives:
+  - "Riconoscere la FOMO e il revenge trading"
+  - "Spiegare perché entrare in fretta dopo un forte rialzo è rischioso"
+  - "Applicare contromisure semplici come l'attesa e la dimensione fissa"
+video:
+  provider: youtube
+  id: "JYuGswoeo4A"
+  start: 0
+  end: 600
+  channel: "Roberto Pesce"
+  title: "Come superare la FOMO quando investi?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t12-fomo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «tutti ne parlano» voglia dire «è una buona occasione»"
+  - "Raddoppiare le dimensioni dopo una perdita per «rifarsi»"
+  - "Prendere decisioni in pochi secondi, con l'adrenalina alta"
+commands: []
+---
+
+<Scene title="Tutti ne parlano">
+Andrea guarda un titolo che in una settimana è salito del **30%**. Nella chat della classe tutti mostrano screenshot di guadagni. Qualcuno scrive: «Entra adesso, o resti indietro!»
+
+Andrea ha una strategia scritta, ma questo titolo non rientra. Il cuore batte forte. Pensa: «Se non compro ora, perdo l'occasione.»
+
+La domanda del caso: **che cosa sta guidando Andrea, la strategia o la paura?**
+
+<Say who="sensei">Quando senti fretta, fermati. La fretta è il segnale che sta decidendo l'emozione.</Say>
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. Si lavora solo con dati storici e conti demo.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la FOMO">
+**FOMO** sta per «fear of missing out»: la **paura di restare fuori** da qualcosa di cui parlano tutti.
+
+Nei mercati spinge a comprare dopo che il prezzo è già salito molto. Il problema: quando tutti ne parlano, molti hanno **già comprato** e il prezzo riflette un grande entusiasmo. Non c'è nessuna garanzia che continui a salire.
+
+<Callout kind="regola">
+La popolarità non è un segnale di valore. Se non c'è un segnale della tua strategia, non c'è un'operazione.
+</Callout>
+
+<Say who="assistente">Restare fuori da un'operazione non costa niente di reale. Entrare di fretta, sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rifarsi subito">
+C'è un'emozione gemella: la rabbia dopo una perdita. Porta al **revenge trading**: operare d'impulso, spesso con più rischio, per «rifarsi» subito.
+
+Ecco una giornata (cifre fittizie, conto demo):
+
+<Log lines={[
+  "Operazione 1: -30   (regola: rischio 30)",
+  "Operazione 2: -60   (dimensione raddoppiata «per rifarsi»)",
+  "Operazione 3: -120  (raddoppiata ancora)",
+  "Totale giornata: -210",
+]} />
+
+Ogni volta si rischia di più perché si è già perso: è il contrario di ciò che la strategia prevede. Una giornata storta diventa una giornata disastrosa.
+
+<Say who="sensei">Dopo una perdita si chiude il computer. Si torna con la mente fresca e con la stessa dimensione di prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contromisure semplici">
+Contro le emozioni non serve la forza di volontà. Servono **regole scritte** prima:
+
+- **Attesa**: nessuna operazione non prevista; se ne hai voglia, aspetta 24 ore.
+- **Dimensione fissa**: sempre la stessa, vinci o perda.
+- **Limite di perdita giornaliera**: raggiunto quello, si smette.
+- **Stato d'animo**: se sei nervoso, arrabbiato o stanco, non si opera.
+
+<Callout kind="trucco">
+Prova il «test dei secondi»: se stai decidendo in pochi secondi senza guardare le regole, quasi certamente non stai decidendo tu.
+</Callout>
+
+Vuoi sentire un'altra voce parlare di FOMO? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Segnati lo stato d'animo prima di ogni decisione. Ti aiuta a vedere quando l'emozione prende il comando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un titolo è salito del 40% in due settimane, un profilo social mostra solo vittorie e scrive «entra subito». Non rientra nella tua strategia. Che cosa è più prudente?"
+  options={[
+    "Non entrare: senza segnale della strategia non si opera, e la pressione è già un campanello d'allarme",
+    "Entrare con metà dimensione, tanto è una prova",
+    "Entrare subito, prima che salga ancora",
+    "Chiedere un prestito per comprarne di più",
+  ]}
+  answer={0}
+  explain="Un profilo che mostra solo successi e mette fretta è un segnale di allarme. Entrare «per prova» è comunque seguire l'emozione; indebitarsi aumenta il danno possibile."
+/>
+
+<Say who="sensei">Chi ti mette fretta non lavora per te. Fermati, e rileggi le regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su FOMO, rabbia dopo una perdita e prudenza: scegli ciò che è più prudente fare.
+
+<Practice generator="t12-fomo" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Saper aspettare è una competenza, non una debolezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La FOMO è paura di restare fuori: spinge a entrare di fretta, dopo che il prezzo è già salito.
+- Il revenge trading è operare d'impulso per rifarsi: aumenta il rischio proprio dopo una perdita.
+- Contromisure: attesa, dimensione fissa, limite di perdita giornaliera, niente operazioni se si è agitati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la FOMO?", a: "La paura di restare fuori da ciò di cui parlano tutti" },
+    { q: "Che cos'è il revenge trading?", a: "Operare d'impulso per rifarsi subito di una perdita" },
+    { q: "La popolarità di un titolo è un segnale di valore?", a: "No" },
+    { q: "Che cosa fare dopo una perdita?", a: "Fermarsi e tornare con la stessa dimensione prevista" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il diario di trading, per vedere i tuoi errori nero su bianco.</Say>
+</Scene>

@@ -1,0 +1,249 @@
+---
+id: D.03.007
+course: dati
+module: 3
+title: "Le funzioni finestra"
+belt: gialla
+duration_min: 10
+prerequisites: [D.03.006]
+objectives:
+  - "Spiegare la differenza tra GROUP BY e una funzione finestra (OVER)"
+  - "Usare ROW_NUMBER, RANK e SUM OVER con PARTITION BY e ORDER BY"
+  - "Confrontare una riga con la precedente o la successiva con LAG e LEAD"
+video:
+  provider: youtube
+  id: "Nv9HgnY_dAw"
+  start: 0
+  end: 600
+  channel: "Mirco Miglietta"
+  title: "Domina le Funzioni Finestra in SQL e Potenzia le Tue Analisi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-finestra
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che OVER raggruppi le righe come GROUP BY: le righe restano tutte"
+  - "Usare ROW_NUMBER quando ci sono pari merito e servirebbe RANK"
+  - "Filtrare una funzione finestra nel WHERE: bisogna prima metterla in una CTE o sottoquery"
+commands: []
+---
+
+<Scene title="Il podio degli ordini">
+Marta vuole tre cose, e tutte tengono **le righe degli ordini visibili**:
+
+1. una **classifica** degli ordini per importo;
+2. accanto a ogni ordine, quanto ha speso **in tutto** quel cliente;
+3. il **totale progressivo** degli incassi, giorno dopo giorno.
+
+Con `GROUP BY` non si può: i gruppi **collassano** le righe in una sola. Qui servono calcoli che guardano più righe **senza farle sparire**. Sono le **funzioni finestra**.
+
+La domanda del caso: **come si calcola su un gruppo di righe senza perdere le righe?**
+
+<Say who="sensei">Argomento impegnativo. Andiamo piano: ogni risultato lo controlliamo riga per riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="OVER e PARTITION BY">
+Una funzione finestra si riconosce da `OVER (...)`. Dentro le parentesi si dice **su quali righe** guardare: la «finestra». `PARTITION BY` divide le righe in gruppi (partizioni), ma **non le raggruppa**: ogni riga resta.
+
+<Log lines={[
+  "SELECT id, cliente_id, totale,",
+  "       SUM(totale) OVER (PARTITION BY cliente_id) AS spesa_cliente",
+  "FROM ordini",
+  "ORDER BY cliente_id, id;",
+  "",
+  "id | cliente_id | totale | spesa_cliente",
+  "1  | 1          | 25.00  | 58.00",
+  "3  | 1          | 18.00  | 58.00",
+  "7  | 1          | 15.00  | 58.00",
+  "2  | 2          | 18.00  | 42.00",
+  "5  | 2          | 24.00  | 42.00",
+  "4  | 3          | 12.50  | 24.50",
+  "8  | 3          | 12.00  | 24.50",
+  "6  | 4          | 30.00  | 30.00",
+]} caption="La spesa totale del cliente, ripetuta accanto a ogni suo ordine." />
+
+Otto ordini in ingresso, otto righe in uscita. Il 58.00 del cliente 1 compare tre volte, una per ogni suo ordine. Con `GROUP BY cliente_id` ne avresti avuta una sola.
+
+<Callout kind="regola">
+`GROUP BY` **riduce** le righe. `OVER` **aggiunge** una colonna e lascia le righe come sono.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sulle funzioni finestra:
+
+<Video />
+
+<Say who="assistente">PARTITION BY è come GROUP BY, ma senza far collassare niente. Pensa a «dividi in gruppi, ma tieni tutto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Classifiche e primo di ogni gruppo">
+Con `ORDER BY` dentro `OVER` le righe si mettono in fila e si possono numerare. Tre funzioni, tre modi di trattare i **pari merito**. Qui gli ordini 2 e 3 valgono entrambi 18.00.
+
+<Log lines={[
+  "SELECT id, totale,",
+  "       ROW_NUMBER() OVER (ORDER BY totale DESC, id) AS riga,",
+  "       RANK() OVER (ORDER BY totale DESC) AS rango,",
+  "       DENSE_RANK() OVER (ORDER BY totale DESC) AS rango_denso",
+  "FROM ordini",
+  "ORDER BY totale DESC, id;",
+  "",
+  "id | totale | riga | rango | rango_denso",
+  "6  | 30.00  | 1    | 1     | 1",
+  "1  | 25.00  | 2    | 2     | 2",
+  "5  | 24.00  | 3    | 3     | 3",
+  "2  | 18.00  | 4    | 4     | 4",
+  "3  | 18.00  | 5    | 4     | 4",
+  "7  | 15.00  | 6    | 6     | 5",
+  "4  | 12.50  | 7    | 7     | 6",
+  "8  | 12.00  | 8    | 8     | 7",
+]} caption="Tre modi di fare la classifica degli ordini per importo." />
+
+- `ROW_NUMBER`: numeri tutti diversi (1, 2, 3...), anche per i pari merito (si decide con un secondo criterio, qui l'id).
+- `RANK`: i pari merito hanno lo **stesso** numero e poi si **salta** (4, 4, 6).
+- `DENSE_RANK`: stesso numero per i pari merito e **nessun salto** (4, 4, 5).
+
+<Say who="sensei">Guarda gli ordini 2 e 3. Pari merito al quarto posto. RANK salta il quinto e arriva al sesto. DENSE_RANK no. Ricordalo.</Say>
+
+**Il migliore di ogni gruppo.** Un uso classico: **il primo di ogni gruppo**. Per esempio, l'ordine più grande di ogni cliente. Si numera dentro ogni partizione e si tiene il numero 1.
+
+<Log lines={[
+  "WITH classifica AS (",
+  "  SELECT cliente_id, id, totale,",
+  "         ROW_NUMBER() OVER (PARTITION BY cliente_id ORDER BY totale DESC) AS pos",
+  "  FROM ordini",
+  ")",
+  "SELECT cliente_id, id AS ordine, totale",
+  "FROM classifica",
+  "WHERE pos = 1",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id | ordine | totale",
+  "1          | 1      | 25.00",
+  "2          | 5      | 24.00",
+  "3          | 4      | 12.50",
+  "4          | 6      | 30.00",
+]} caption="L'ordine più grande di ogni cliente." />
+
+<Callout kind="attenzione">
+Una funzione finestra **non si può usare nel WHERE** (si calcola dopo). Per filtrarla, come qui, la si mette in una CTE o in una sottoquery e si filtra fuori.
+</Callout>
+
+<Say who="assistente">Prima numeri dentro ogni gruppo, poi tieni solo il numero uno. Due passi, ecco perché la CTE.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Totali progressivi">
+Con `SUM(...) OVER (ORDER BY ...)` ottieni un **totale progressivo**: a ogni riga si somma tutto fino a quella riga.
+
+<Log lines={[
+  "SELECT data, totale,",
+  "       SUM(totale) OVER (ORDER BY data) AS cumulato",
+  "FROM ordini",
+  "ORDER BY data;",
+  "",
+  "data       | totale | cumulato",
+  "2025-03-02 | 25.00  | 25.00",
+  "2025-03-05 | 18.00  | 43.00",
+  "2025-03-09 | 18.00  | 61.00",
+  "2025-04-01 | 12.50  | 73.50",
+  "2025-04-03 | 24.00  | 97.50",
+  "2025-04-10 | 30.00  | 127.50",
+  "2025-04-15 | 15.00  | 142.50",
+  "2025-05-02 | 12.00  | 154.50",
+]} caption="L'incasso accumulato giorno dopo giorno." />
+
+L'ultimo valore, 154.50, è il totale di tutti gli ordini: lo stesso che darebbe un semplice `SUM(totale)`.
+
+<Callout kind="curiosita">
+Qui ogni ordine ha una data diversa. Se più righe hanno la stessa data, di solito il database le somma **insieme**, e tutte mostrano lo stesso totale progressivo. Per avere un gradino per ogni riga, ordina con una colonna unica, per esempio `ORDER BY data, id`.
+</Callout>
+
+<Say who="sensei">Un totale progressivo è un grafico a scala. Ogni gradino è un ordine. Sull'ultimo gradino c'è il totale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="LAG e LEAD: vicini di riga">
+`LAG` guarda la riga **precedente**, `LEAD` la **successiva**, secondo l'ordine della finestra. Utili per confrontare un valore con il precedente (mese su mese, ordine su ordine).
+
+<Log lines={[
+  "SELECT cliente_id, data, totale,",
+  "       LAG(totale) OVER (PARTITION BY cliente_id ORDER BY data) AS precedente,",
+  "       LEAD(totale) OVER (PARTITION BY cliente_id ORDER BY data) AS successivo",
+  "FROM ordini",
+  "ORDER BY cliente_id, data;",
+  "",
+  "cliente_id | data       | totale | precedente | successivo",
+  "1          | 2025-03-02 | 25.00  | NULL       | 18.00",
+  "1          | 2025-03-09 | 18.00  | 25.00      | 15.00",
+  "1          | 2025-04-15 | 15.00  | 18.00      | NULL",
+  "2          | 2025-03-05 | 18.00  | NULL       | 24.00",
+  "2          | 2025-04-03 | 24.00  | 18.00      | NULL",
+  "3          | 2025-04-01 | 12.50  | NULL       | 12.00",
+  "3          | 2025-05-02 | 12.00  | 12.50      | NULL",
+  "4          | 2025-04-10 | 30.00  | NULL       | NULL",
+]} caption="Per ogni cliente, l'importo dell'ordine precedente e di quello successivo." />
+
+Il primo ordine di ogni cliente non ha un precedente: compare **NULL**. L'ultimo non ha un successivo: NULL. La partizione per cliente impedisce che la riga del cliente 2 guardi un ordine del cliente 1.
+
+<Callout kind="trucco">
+Per sapere di quanto è cambiato l'importo rispetto all'ordine prima: `totale - LAG(totale) OVER (...)`. Il primo ordine darà NULL, e va bene così: non c'è un confronto.
+</Callout>
+
+<Say who="assistente">LAG guarda indietro, LEAD guarda avanti. Il NULL ai bordi è normale: non c'è nessuno prima del primo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta vuole una classifica degli ordini per importo in cui i pari merito hanno lo stesso numero e dopo un pari merito non si saltano posizioni (1, 2, 2, 3). Quale funzione serve?"
+  options={["DENSE_RANK() OVER (ORDER BY totale DESC)", "RANK() OVER (ORDER BY totale DESC)", "ROW_NUMBER() OVER (ORDER BY totale DESC)", "SUM(totale) OVER (ORDER BY totale DESC)"]}
+  answer={0}
+  explain="DENSE_RANK dà lo stesso numero ai pari merito e non salta (1, 2, 2, 3). RANK dà 1, 2, 2, 4. ROW_NUMBER dà numeri tutti diversi. SUM OVER non fa classifiche: fa una somma progressiva."
+/>
+
+<Say who="sensei">Pari merito e salti: tre funzioni, tre risposte. Scegli in base alla domanda, non al caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle funzioni finestra. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-finestra" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Le funzioni finestra sono la differenza tra chi sa SQL e chi lo usa soltanto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- OVER calcola su una finestra di righe senza far sparire le righe; PARTITION BY divide in gruppi, ORDER BY mette in fila.
+- ROW_NUMBER numera senza pari merito, RANK salta dopo un pari merito, DENSE_RANK non salta.
+- SUM OVER (ORDER BY) dà il totale progressivo; LAG e LEAD guardano la riga prima e dopo (NULL ai bordi).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra GROUP BY e OVER?", a: "GROUP BY riduce le righe; OVER le lascia tutte e aggiunge una colonna" },
+    { q: "RANK con due pari merito al secondo posto, qual è il terzo numero?", a: "4 (salta il 3)" },
+    { q: "Come si filtra il risultato di ROW_NUMBER?", a: "Mettendolo in una CTE o sottoquery e filtrando fuori" },
+    { q: "Cosa restituisce LAG sulla prima riga?", a: "NULL, perché non c'è una riga precedente" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: CASE, date e testo, per ripulire e classificare i dati.</Say>
+</Scene>

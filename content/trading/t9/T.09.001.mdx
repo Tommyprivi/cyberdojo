@@ -1,0 +1,176 @@
+---
+id: T.09.001
+course: trading
+module: 9
+title: "Seguire il trend, con i suoi limiti"
+belt: verde
+duration_min: 9
+prerequisites: [T.08.006]
+objectives:
+  - "Spiegare l'idea del trend following e scrivere una regola semplice con una media mobile"
+  - "Riconoscere perché perde spesso poco e vince raramente molto"
+  - "Nominare i limiti: falsi segnali, mercati senza direzione, costi"
+video:
+  provider: youtube
+  id: "ggnIGZiDoFY"
+  start: 0
+  end: 600
+  channel: "Rayner Teo"
+  title: "A Simple Trend Following Strategy (Backed By Data)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-trend
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una regola che funziona in un grafico passato funzioni sempre"
+  - "Confondere «seguire il trend» con «prevedere il futuro»: si reagisce, non si indovina"
+  - "Dimenticare i costi: tanti piccoli scambi falsi li fanno pesare molto"
+commands: []
+---
+
+<Scene title="La freccia che cambia">
+**Marta** studia un titolo fittizio, «Alfa SpA». Per settimane il prezzo sale. Poi scende di colpo. Poi risale.
+
+Si chiede: «E se avessi una regola che mi tiene dentro quando sale e mi fa uscire quando scende, senza dover indovinare niente?»
+
+La domanda del caso: **si può seguire la direzione del prezzo con una regola semplice? E quanto è affidabile?**
+
+<Callout kind="attenzione">
+In questo corso si può perdere denaro, anche tutto. Le strategie sono idee da studiare e criticare con dati storici o fittizi: **non sono consulenza finanziaria** e non sono ricette sicure.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Oggi studiamo un'idea famosa, e soprattutto i suoi difetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il trend following">
+Un **trend** è una direzione che il prezzo tiene per un po': su o giù. Il **trend following** («seguire il trend») è una strategia che non prevede il futuro. Fa così:
+
+- se il prezzo ha preso una direzione, la **segue**;
+- se la direzione sembra finita, **esce**.
+
+Pensa a una barca a vela: non decidi dove soffia il vento, ma regoli la vela quando lo senti cambiare.
+
+<Callout kind="regola">
+Trend following = **reagire** a ciò che il prezzo sta già facendo. Non predice: segue, sempre un po' in ritardo.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese con sottotitoli, e anche lui mostra i limiti:
+
+<Video />
+
+<Say who="assistente">Seguire significa arrivare dopo. È il prezzo da pagare: non prendi mai l'inizio del movimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una regola con la media mobile">
+Una regola semplice usa la **media mobile**: la media degli ultimi giorni, che «liscia» il prezzo (l'hai vista nel modulo T3).
+
+Regola di esempio, con prezzi **fittizi** e una media a 3 giorni:
+
+- se la chiusura è **sopra** la media: restiamo dentro (posizione lunga, cioè «compriamo»);
+- se è **sotto**: restiamo fuori.
+
+| giorno | chiusura | media a 3 giorni | stato |
+|---|---|---|---|
+| 1 | 30 | | |
+| 2 | 33 | | |
+| 3 | 36 | 33 | dentro |
+| 4 | 33 | 34 | fuori |
+| 5 | 39 | 36 | dentro |
+| 6 | 42 | 38 | dentro |
+| 7 | 30 | 37 | fuori |
+
+Controlla il giorno 3: (30 + 33 + 36) / 3 = 99 / 3 = 33. Il prezzo, 36, è sopra: dentro.
+
+<Say who="sensei">Guarda i giorni 4 e 5: fuori, poi dentro. Il segnale ha cambiato idea in fretta. Ci torniamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova il codice">
+La stessa regola in Python puro. Cambia i prezzi e riesegui:
+
+<PythonTerminal code={"prezzi = [30, 33, 36, 33, 39, 42, 30]\nn = 3\nfor i in range(n - 1, len(prezzi)):\n    media = sum(prezzi[i - n + 1 : i + 1]) / n\n    stato = 'dentro' if prezzi[i] > media else 'fuori'\n    print(i + 1, prezzi[i], media, stato)"} />
+
+Output atteso:
+
+<Log lines={[
+  "3 36 33.0 dentro",
+  "4 33 34.0 fuori",
+  "5 39 36.0 dentro",
+  "6 42 38.0 dentro",
+  "7 30 37.0 fuori",
+]} />
+
+<Callout kind="attenzione">
+Il segnale di oggi si calcola a fine giornata: si può agire solo **da domani**. Usare la chiusura di oggi per comprare oggi è il look-ahead bias, che hai visto nel modulo T5.
+</Callout>
+
+<Say who="assistente">Il codice è corto perché la regola è semplice. La parte difficile non è scriverla: è capire quando non funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pochi colpi grossi, tanti graffi">
+Il trend following di solito ha un profilo particolare. Esempio **fittizio**, 10 operazioni in punti:
+
+- 4 operazioni vincenti da **+6** punti ciascuna: 4 × 6 = +24;
+- 6 operazioni perdenti da **-2** punti ciascuna: 6 × 2 = -12;
+- totale: 24 - 12 = **+12** punti.
+
+Vince solo 4 volte su 10, eppure il totale è positivo, perché le vincite sono più grandi delle perdite. Ma ci sono i lati cattivi:
+
+- nei mercati **senza direzione** (laterali) i falsi segnali si ripetono e le piccole perdite si accumulano;
+- più operazioni fai, più **costi** paghi (modulo T8);
+- serve **pazienza**: lunghi periodi di perdita sono normali.
+
+<Quiz
+  question="Una regola di trend following vince 3 operazioni su 10, ma ogni vincita vale +9 punti e ogni perdita -2. Il totale è positivo o negativo?"
+  options={["Positivo: 27 - 14 = +13", "Negativo: vince troppo poco spesso", "Zero: vincite e perdite si annullano", "Impossibile dirlo senza conoscere il titolo"]}
+  answer={0}
+  explain="Vincite: 3 × 9 = 27. Perdite: 7 × 2 = 14. Totale 27 - 14 = +13. Chi risponde «negativo» guarda solo la percentuale di vittorie e dimentica la dimensione di vincite e perdite. Attenzione: sono numeri di esempio, non una promessa."
+/>
+
+<Say who="sensei">La percentuale di vittorie da sola non dice niente. Conta anche quanto vinci e quanto perdi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su regole di trend, vincite e perdite, limiti. Servono **cinque risposte giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-trend" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: un grafico passato che «funziona» non è una garanzia sul futuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il trend following segue la direzione del prezzo con regole (per esempio chiusura sopra la media mobile): reagisce, non prevede.
+- Spesso vince poche volte ma in grande e perde spesso poco: conta il totale, non la percentuale di vittorie.
+- Limiti: falsi segnali nei mercati laterali, costi, periodi lunghi di perdita. Si può perdere denaro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa il trend following?", a: "Segue la direzione del prezzo con regole, senza prevedere il futuro" },
+    { q: "Quando soffre di più?", a: "Nei mercati laterali, senza direzione: falsi segnali e costi" },
+    { q: "Si può vincere poche volte su dieci ed essere in positivo?", a: "Sì, se le vincite sono molto più grandi delle perdite" },
+    { q: "Perché il segnale di oggi si usa da domani?", a: "Per evitare il look-ahead bias: la chiusura si conosce solo a fine giornata" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'idea opposta. Se il prezzo si allontana troppo dalla media, torna indietro? La mean reversion.</Say>
+</Scene>

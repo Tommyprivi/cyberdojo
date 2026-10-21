@@ -1,0 +1,174 @@
+---
+id: H.02.001
+course: hedge
+module: 2
+title: "Long/short: comprare e vendere allo scoperto"
+belt: gialla
+duration_min: 9
+prerequisites: [H.01.006]
+objectives:
+  - "Spiegare che cosa sono una posizione long e una short"
+  - "Calcolare il risultato di un portafoglio long/short con numeri semplici"
+  - "Distinguere esposizione netta e lorda e riconoscere i rischi della vendita allo scoperto"
+video:
+  provider: youtube
+  id: "gQZtOFsCc8Q"
+  start: 0
+  end: 554
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "Long/Short Portfolios Explained | Long Extension & Market Neutral Strategies"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-long-short
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che chi vende allo scoperto non rischi nulla perché «scommette al ribasso»: la perdita può superare il capitale"
+  - "Confondere esposizione netta (long meno short) ed esposizione lorda (long più short)"
+  - "Credere che un fondo long/short guadagni sempre, anche quando il mercato scende"
+commands: []
+---
+
+<Scene title="Due azioni, una scommessa">
+**Fondo Arno** è un hedge fund fittizio con 100 milioni di euro. Il gestore, Marta, ha studiato due aziende fittizie dello stesso settore, le bevande.
+
+- **Alfa Bevande** le sembra solida e ben gestita.
+- **Beta Spumanti** le sembra in difficoltà: vende meno, spende troppo.
+
+Marta non vuole solo comprare Alfa. Vuole anche **puntare contro Beta**. La domanda del caso: **come si guadagna da un'azione che scende?**
+
+<Callout kind="attenzione">
+Questo corso spiega come ragionano i fondi, non consiglia niente a nessuno. Con i mercati si può perdere denaro, anche tutto. Le aziende e i numeri di questa lezione sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima capiamo il meccanismo, poi i rischi. Cominciamo dal meccanismo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Long e short">
+Comprare un'azione nella speranza che salga si chiama stare **long** («lungo»). Se sale, guadagni. Se scende, perdi.
+
+La **vendita allo scoperto** (in inglese *short selling*) fa il contrario. Funziona così:
+
+1. Prendi in **prestito** le azioni da qualcuno (di solito tramite il broker).
+2. Le **vendi subito** al prezzo di oggi.
+3. Più tardi le **ricompri** e le restituisci.
+
+Se nel frattempo il prezzo è sceso, le ricompri a meno di quanto le hai vendute: la differenza è il tuo guadagno. Se è salito, perdi. Questa posizione si chiama **short**.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di dieci minuti, in inglese: attiva i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Pensa a un amico che ti presta un libro molto richiesto. Lo vendi oggi a 20 euro. Se domani costa 12, lo ricompri e lo rendi: ti restano 8 euro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di Marta">
+Marta mette **50 milioni long su Alfa** e **50 milioni short su Beta**. Guarda tre possibili futuri (numeri inventati, in milioni di euro):
+
+<Guided
+  steps={[
+    "Caso A: Alfa scende dell'8%, Beta scende del 12%. Su Alfa perde 4 (8% di 50). Su Beta guadagna 6 (12% di 50). Totale: +2.",
+    "Caso B: Alfa sale del 12%, Beta sale dell'8%. Su Alfa guadagna 6. Su Beta perde 4. Totale: +2.",
+    "Caso C: Alfa scende del 4%, Beta sale del 10%. Su Alfa perde 2. Su Beta perde 5. Totale: -7.",
+    "Nei casi A e B il fondo guadagna sia con il mercato giù sia con il mercato su: conta se Alfa va meglio di Beta. Nel caso C Marta ha sbagliato tutte e due le idee e perde due volte.",
+  ]}
+/>
+
+<Callout kind="regola">
+Un fondo long/short non scommette sul mercato: scommette che **le azioni comprate vadano meglio di quelle vendute**.
+</Callout>
+
+<Say who="sensei">Il guadagno viene dalla differenza tra le due scelte. Se scegli male, il «coperto» non ti salva: perdi su entrambe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Netta e lorda">
+Due numeri descrivono quanto rischio prende un fondo, in percentuale del capitale.
+
+- **Esposizione lorda** = long **più** short. Nel caso di Marta: 50% + 50% = **100%**.
+- **Esposizione netta** = long **meno** short. Nel caso di Marta: 50% - 50% = **0%**.
+
+Con netta 0% il fondo è quasi indifferente all'andamento generale del mercato. Se Marta avesse messo 70 long e 30 short, la lorda sarebbe 100% e la netta **40%**: in parte segue il mercato.
+
+<Callout kind="curiosita">
+Molti fondi long/short restano sempre con una netta positiva, cioè «un po' long». Altri puntano a una netta vicina a zero e si chiamano **market neutral**.
+</Callout>
+
+<Say who="assistente">Netta = quanta strada il fondo fa insieme al mercato. Lorda = quanto è grande il suo gioco in tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi dello short">
+Una posizione long può perdere al massimo il 100%: un'azione non scende sotto zero. Una posizione short è diversa. Il prezzo può salire senza limiti, quindi **la perdita teorica non ha un tetto**.
+
+- Se vendi allo scoperto a 20 e il prezzo sale a 60, perdi 40 per azione: **il doppio** di quanto hai incassato.
+- Se molti shortisti devono ricomprare in fretta, il prezzo schizza ancora più su: si chiama **short squeeze**.
+- Chi ti presta le azioni può chiederle indietro, o costare di più: il prestito ha un prezzo.
+
+Quindi i fondi seri fissano **limiti di perdita** e tengono le posizioni short piccole e sparse.
+
+<Say who="sensei">Comprando un'azione perdi al massimo quello che hai pagato. Con una vendita allo scoperto no. Serve rispetto, e limiti scritti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha 60 milioni long e 40 milioni short, su un capitale di 100 milioni. Quali sono esposizione lorda e netta?"
+  options={[
+    "Lorda 100%, netta 20%",
+    "Lorda 20%, netta 100%",
+    "Lorda 100%, netta 100%",
+    "Lorda 60%, netta 40%",
+  ]}
+  answer={0}
+  explain="Lorda = 60 + 40 = 100% del capitale. Netta = 60 - 40 = 20%. Chi risponde 20% e 100% ha invertito i due nomi; chi risponde 60% e 40% ha letto solo i due pezzi senza sommarli né sottrarli."
+/>
+
+<Say who="assistente">Due operazioni: una somma, una sottrazione. Prima la lorda, poi la netta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi di fondi long/short con numeri semplici: calcola risultati ed esposizioni, e riconosci i rischi.
+
+Hai 3 tentativi e le domande cambiano a ogni tentativo.
+
+<Practice generator="h02-long-short" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: questi sono esercizi su numeri inventati, non un invito a fare niente con i tuoi soldi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Long = compri e speri che salga. Short = prendi in prestito, vendi, ricompri dopo: guadagni se scende.
+- Il long/short guadagna se le azioni comprate vanno meglio di quelle vendute, non perché il mercato sale o scende.
+- Lorda = long + short; netta = long - short. Lo short può perdere più del capitale investito in quella posizione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la vendita allo scoperto?", a: "Prendi in prestito azioni, le vendi, le ricompri dopo per restituirle" },
+    { q: "Qual è la perdita massima di una posizione long?", a: "Il 100% di quanto hai investito (il prezzo non scende sotto zero)" },
+    { q: "Come si calcola l'esposizione netta?", a: "Long meno short, in percentuale del capitale" },
+    { q: "Che cos'è uno short squeeze?", a: "Una salita rapida del prezzo causata da shortisti costretti a ricomprare" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il global macro. Non due aziende, ma interi Paesi, monete e tassi d'interesse.</Say>
+</Scene>

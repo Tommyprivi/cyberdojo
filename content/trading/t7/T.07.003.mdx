@@ -1,0 +1,186 @@
+---
+id: T.07.003
+course: trading
+module: 7
+title: "Sharpe e Sortino"
+belt: arancione
+duration_min: 9
+prerequisites: [T.07.002]
+objectives:
+  - "Calcolare l'indice di Sharpe da rendimento, tasso privo di rischio e volatilità"
+  - "Calcolare l'indice di Sortino con la deviazione al ribasso"
+  - "Dire perché un Sharpe alto in un backtest non è una garanzia"
+video:
+  provider: youtube
+  id: "2s13_3R3Jog"
+  start: 0
+  end: 600
+  channel: "Percorso Finanza"
+  title: "L'indice di Sharpe"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-sharpe
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di sottrarre il tasso privo di rischio al numeratore"
+  - "Confrontare Sharpe calcolati con periodi diversi (giornaliero e annuo) senza annualizzare"
+  - "Fidarsi di uno Sharpe ottenuto su pochi dati o su un backtest ottimizzato"
+commands: []
+---
+
+<Scene title="Chi ha lavorato meglio?">
+Due strategie fittizie, stessi anni di dati storici inventati:
+
+- **A**: rendimento medio annuo 8%, volatilità 12%.
+- **B**: rendimento medio annuo 6%, volatilità 4%.
+
+A rende di più. Ma ha richiesto molta più sopportazione delle oscillazioni.
+
+La domanda del caso: **come si confronta un rendimento tenendo conto del rischio?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: si può perdere denaro, anche tutto. I numeri qui sono inventati e nessuno è una promessa. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Un rendimento senza il suo rischio è mezza frase. Si dice sempre: quanto, e a che prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'indice di Sharpe">
+L'**indice di Sharpe** misura il rendimento **in eccesso** rispetto a un investimento senza rischio, per ogni unità di volatilità.
+
+Sharpe = (rendimento − tasso privo di rischio) / volatilità
+
+Il **tasso privo di rischio** è quanto renderebbe un impiego quasi senza rischio (per esempio titoli di Stato a breve termine). Per semplicità nel corso lo fissiamo al **2% annuo**, un numero scelto per gli esercizi.
+
+- A: (8% − 2%) / 12% = 6 / 12 = **0,5**
+- B: (6% − 2%) / 4% = 4 / 4 = **1,0**
+
+Per Sharpe, **B è migliore**: per ogni punto di volatilità ha reso il doppio.
+
+<Callout kind="regola">
+Con dati giornalieri: Sharpe annuo = Sharpe giornaliero × √252. Esempio: Sharpe giornaliero 0,05 → 0,05 × 15,87 ≈ 0,79.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Indizio: il numeratore è «quanto hai guadagnato in più del conto sicuro», non il rendimento intero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti di Sharpe">
+Sharpe tratta **ogni oscillazione allo stesso modo**: anche quelle verso l'alto. Una strategia che ogni tanto fa un balzo in su viene «punita» come se perdesse.
+
+Sharpe inoltre:
+
+- vale solo se la volatilità descrive bene il rischio (le perdite rare e gigantesche sfuggono);
+- su pochi dati è molto instabile;
+- nei backtest è sempre ottimistico: costi, slippage e scelte fatte guardando i dati lo gonfiano.
+
+<Callout kind="attenzione">
+Non esiste un numero «buono» valido per sempre. Uno Sharpe alto in un backtest può essere solo il segno di una strategia ritoccata finché i dati andavano bene.
+</Callout>
+
+<Say who="sensei">Se uno Sharpe sembra troppo bello, sospetta. I mercati non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il Sortino">
+L'**indice di Sortino** corregge il difetto: al denominatore mette solo la **deviazione al ribasso**, cioè quanto si scende **sotto una soglia** (qui 0).
+
+Quattro rendimenti fittizi: **+5%, −3%, +4%, −4%**.
+
+- Media = (5 − 3 + 4 − 4) / 4 = **0,5%**
+- Valori sotto zero: −3 e −4 (gli altri contano 0). Quadrati: 9 e 16.
+- Convenzione: media dei quadrati su **tutte e 4** le osservazioni: (0 + 9 + 0 + 16) / 4 = 6,25. Radice = **2,5%**
+- Sortino = 0,5 / 2,5 = **0,2**
+
+Lo Sharpe sugli stessi numeri (soglia 0, deviazione standard con n − 1): 0,5 / 4,65 ≈ **0,11**.
+
+<Callout kind="trucco">
+Sortino = Sharpe che guarda solo le cadute. Le salite non vengono più punite.
+</Callout>
+
+<Say who="assistente">Sortino è più alto di Sharpe quando le oscillazioni sono soprattutto verso l'alto. Quando le perdite sono grandi, i due si avvicinano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+```python
+import numpy as np
+
+r = np.array([0.05, -0.03, 0.04, -0.04])
+sharpe = r.mean() / r.std(ddof=1)
+neg = np.minimum(r, 0)
+dd = np.sqrt((neg ** 2).mean())
+sortino = r.mean() / dd
+print(round(sharpe, 3), round(dd, 4), round(sortino, 2))
+```
+
+Output: `0.107 0.025 0.2`
+
+Qui la soglia e il tasso privo di rischio sono 0 per semplicità.
+
+Prova con Python puro:
+
+<PythonTerminal code={"import math\nsharpe_d = 0.05\nprint(round(sharpe_d * math.sqrt(252), 2))"} />
+
+<Say who="sensei">Da giornaliero ad annuo, sempre per la radice di 252. Se non annualizzi, confronti mele con pere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Strategia fittizia: rendimento annuo 10%, volatilità 16%, tasso privo di rischio 2%. Quanto vale lo Sharpe?"
+  options={["0,5", "0,625", "0,2", "5"]}
+  answer={0}
+  explain="(10% − 2%) / 16% = 8 / 16 = 0,5. Chi risponde 0,625 ha dimenticato di sottrarre il tasso privo di rischio (10 / 16)."
+/>
+
+<Say who="sensei">Sottrai sempre il tasso privo di rischio, prima di dividere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su Sharpe, Sortino e sui loro limiti. Convenzioni dichiarate in ogni domanda. Servono tutte e cinque. Hai 3 tentativi.
+
+<Practice generator="t07-sharpe" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Ora sai misurare il rendimento per unità di rischio, e anche quando non fidarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Sharpe = (rendimento − tasso privo di rischio) / volatilità; da giornaliero ad annuo si moltiplica per √252.
+- Sortino usa solo la deviazione al ribasso: non punisce le oscillazioni verso l'alto.
+- Su pochi dati o dopo molte prove, uno Sharpe alto può essere solo fortuna o ritocchi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Formula dello Sharpe?", a: "(Rendimento − tasso privo di rischio) / volatilità" },
+    { q: "Che cosa cambia nel Sortino?", a: "Al denominatore c'è solo la deviazione al ribasso" },
+    { q: "Rendimento 6%, rf 2%, volatilità 4%: Sharpe?", a: "1,0" },
+    { q: "Sharpe giornaliero 0,05: annuo?", a: "Circa 0,79 (× √252)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il massimo drawdown e il Calmar. Quanto fa male la peggiore discesa.</Say>
+</Scene>

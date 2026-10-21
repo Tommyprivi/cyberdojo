@@ -1,0 +1,150 @@
+---
+id: F.07.001
+course: fondamenta
+module: 7
+title: "TCP e UDP: sicuro o veloce"
+belt: arancione
+duration_min: 8
+prerequisites: [F.06.008]
+objectives:
+  - "Spiegare la differenza tra TCP (affidabile) e UDP (veloce)"
+  - "Scegliere il protocollo adatto a un servizio: pagina web, videochiamata, trasferimento di file"
+video:
+  provider: youtube
+  id: "P6WGbV7vxpA"
+  start: 0
+  end: 600
+  channel: "Small Bytes"
+  title: "TCP e UDP - Protocolli di trasporto a confronto"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-tcp-udp
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "UDP non è «peggiore» di TCP: è più leggero e ha altri usi"
+  - "Affidabile non vuol dire sicuro: TCP garantisce la consegna, non protegge dagli intrusi"
+  - "TCP e UDP stanno al livello di trasporto, sopra IP: non sostituiscono gli indirizzi"
+commands: []
+---
+
+<Scene title="Il file arrivato a metà">
+Nuovo turno al **SOC**. Un collega della contabilità scrive: «Ho scaricato il bilancio dal server. Il file è arrivato **completo**. Ma la videochiamata di ieri era a scatti, e ogni tanto mancava una parola».
+
+Lo stesso cavo, la stessa rete. Perché il file è perfetto e la chiamata no?
+
+<Say who="sensei">Non è sfortuna. Sono due protocolli diversi, con due filosofie diverse. Oggi le impari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due modi di spedire">
+Quando un programma invia dati, li affida a un **protocollo di trasporto** (un insieme di regole per spedirli). Sono due, e li conosci già come «busta TCP» dal modulo precedente.
+
+- **TCP**: come una **raccomandata con ricevuta**. Ogni pezzo viene confermato. Se un pezzo si perde, viene rispedito.
+- **UDP**: come una **cartolina**. La imbuchi e basta. Nessuna ricevuta, nessun controllo se è arrivata.
+
+<Callout kind="regola">
+**TCP** = affidabile, ordinato, un po' più lento. **UDP** = leggero, veloce, senza garanzie.
+</Callout>
+
+<Say who="assistente">La cartolina non è una cattiva spedizione. È la scelta giusta quando la ricevuta costerebbe più del messaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fa TCP in più">
+TCP fa quattro cose che UDP non fa:
+
+- **Apre una connessione** prima di mandare i dati (la vedremo nella prossima lezione).
+- **Numera i pezzi**, così il ricevente li rimette in ordine.
+- **Conferma** ciò che arriva: «ricevuto fino al pezzo 7».
+- **Rispedisce** ciò che manca.
+
+Tutto questo costa tempo: ricevute e rispedizioni aggiungono ritardo.
+
+<Callout kind="attenzione">
+**Affidabile non vuol dire sicuro.** TCP garantisce che i dati arrivino interi e in ordine. Non garantisce che nessuno li legga o li cambi lungo la strada: per quello serve la cifratura (la vedrai con HTTPS).
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Ecco un confronto tra i due protocolli:
+
+<Video />
+
+<Say who="sensei">Raccomandata e cartolina. Se ricordi solo questo, hai già l'80% della lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando conviene UDP">
+In una **videochiamata** un fotogramma perso un secondo fa non serve più a nessuno: rispedirlo farebbe solo ritardo. Meglio perdere un pezzettino e andare avanti.
+
+Per questo UDP è usato per:
+
+- videochiamate e giochi online, dove conta la rapidità;
+- **DNS**, le domande brevi «che indirizzo ha questo nome?» (lo vedrai tra poco);
+- **DHCP**, con cui un dispositivo ottiene l'indirizzo.
+
+TCP si usa quando **ogni byte conta**: pagine web, posta elettronica, trasferimento di file, accesso remoto.
+
+<Callout kind="trucco">
+Domanda guida: «se un pezzo si perde, lo voglio ancora?» Sì, il file non funziona senza → TCP. No, ormai è passato → UDP.
+</Callout>
+
+<Say who="assistente">Il file del bilancio con un byte mancante è un file rotto. Una parola persa in chiamata è solo una parola persa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda trasmette in diretta una riunione video. La rete è un po' instabile e ogni tanto si perde qualche pezzo. Quale protocollo ha più senso per il flusso video?"
+  options={[
+    "UDP: meglio perdere qualche pezzo che far aspettare tutti i pezzi successivi",
+    "TCP: perché garantisce che nessun pezzo si perda, a qualunque costo",
+    "TCP, perché è più veloce di UDP",
+    "Nessuno dei due: il video usa solo gli indirizzi IP"
+  ]}
+  answer={0}
+  explain="Per un flusso in tempo reale conta la tempestività. Con TCP un pezzo perso blocca tutto finché non viene rispedito. Chi sceglie TCP perché «è più veloce» confonde: TCP è più affidabile, UDP è più leggero. E gli indirizzi IP da soli non bastano mai: serve sempre un protocollo di trasporto."
+/>
+
+<Say who="sensei">Pensa al costo di aspettare. Se aspettare è peggio che perdere, usa la cartolina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari: per ciascuno dovrai ragionare su affidabilità e velocità. Hai 3 tentativi.
+
+<Practice generator="f07-tcp-udp" pass="5/5" retries={3} />
+
+<Say who="sensei">Se sbagli, rileggi la domanda guida. Non imparare a memoria: ragiona sul costo di un pezzo perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- TCP è affidabile: apre una connessione, numera, conferma e rispedisce. UDP spedisce e basta, senza garanzie.
+- TCP per pagine web, posta e file; UDP per chiamate, giochi, DNS e DHCP.
+- Affidabile non significa sicuro: TCP non cifra niente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Raccomandata con ricevuta o cartolina: quale è TCP?", a: "La raccomandata con ricevuta" },
+    { q: "Perché una videochiamata usa spesso UDP?", a: "Rispedire un pezzo vecchio farebbe solo ritardo: conta la rapidità" },
+    { q: "TCP protegge i dati dagli sguardi indiscreti?", a: "No: garantisce la consegna, non la riservatezza" },
+    { q: "Quale protocollo conferma i pezzi ricevuti?", a: "TCP" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si apre una connessione TCP. Tre messaggi, e una riga di cattura da leggere.</Say>
+</Scene>

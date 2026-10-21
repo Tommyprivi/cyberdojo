@@ -1,0 +1,169 @@
+---
+id: D.20.004
+course: dati
+module: 20
+title: "Segmenti e coorti nel web"
+belt: blu
+duration_min: 8
+prerequisites: [D.20.003]
+objectives:
+  - "Dividere le sessioni in segmenti: nuovi e di ritorno, canale, dispositivo"
+  - "Calcolare e confrontare i tassi di conversione dei segmenti"
+  - "Fare confronti equi tra gruppi di dimensioni e abitudini diverse"
+video:
+  provider: youtube
+  id: "Z6U8ohxR7QQ"
+  start: 0
+  end: 600
+  channel: "Creator Pro"
+  title: "La Tua VERA Audience: spettatori nuovi vs spettatori di ritorno"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-segmenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo la media di tutti e non accorgersi che i gruppi si comportano in modo opposto"
+  - "Confrontare segmenti di dimensioni molto diverse come se i numeri fossero ugualmente affidabili"
+  - "Concludere che il canale «migliore» sia quello con più acquisti, senza guardare i tassi"
+commands: []
+---
+
+<Scene title="La media che mente">
+Questa settimana **Tavola Bella** ha avuto 10.000 sessioni e 300 acquisti: tasso del **3%**. Giulia è soddisfatta. «Il sito funziona, tutto uguale per tutti.»
+
+Poi guarda meglio e scopre che chi usa il telefono compra molto meno di chi usa il computer. Il 3% era una media che nascondeva due storie diverse.
+
+La domanda del caso: **come si divide il pubblico per vedere le storie dentro la media?**
+
+<Say who="sensei">Una media è un riassunto. Come ogni riassunto, lascia fuori qualcosa. Un analista guarda cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un segmento">
+Un **segmento** è un gruppo di sessioni (o di utenti) che hanno una caratteristica in comune. Si calcola lo stesso indicatore per ogni gruppo e si confrontano.
+
+Tre tagli molto usati:
+
+- **nuovi e di ritorno**: prima volta sul sito o già visto;
+- **canale di provenienza**: da dove arrivano (ricerca, social, email);
+- **dispositivo**: telefono, computer, tablet.
+
+Ecco la settimana di Tavola Bella divisa per **nuovi e di ritorno**:
+
+| gruppo | sessioni | acquisti | tasso |
+|---|---|---|---|
+| nuovi | 8.000 | 160 | 2% |
+| di ritorno | 2.000 | 140 | 7% |
+| totale | 10.000 | 300 | 3% |
+
+Controllo: 8.000 + 2.000 = 10.000; 160 + 140 = 300. I tassi: 160 ÷ 8.000 = 2%; 140 ÷ 2.000 = 7%.
+
+<Callout kind="trucco">
+I segmenti devono **dividere** il totale senza sovrapporsi: la somma dei gruppi deve dare il totale. È il primo controllo.
+</Callout>
+
+<Say who="assistente">Indizio: chi ritorna ti conosce già. Per questo compra più spesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Canale e dispositivo">
+Lo stesso 3% tagliato per **canale**:
+
+| canale | sessioni | acquisti | tasso |
+|---|---|---|---|
+| email | 1.000 | 80 | 8% |
+| ricerca | 5.000 | 160 | 3,2% |
+| social | 4.000 | 60 | 1,5% |
+| totale | 10.000 | 300 | 3% |
+
+Controllo: 1.000 + 5.000 + 4.000 = 10.000; 80 + 160 + 60 = 300. Il canale con più acquisti è la **ricerca** (160), ma quello con il tasso più alto è l'**email** (8%).
+
+E per **dispositivo**: telefono 6.000 sessioni con 120 acquisti (2%), computer 4.000 con 180 acquisti (4,5%). Totali: 10.000 e 300.
+
+Vuoi sentire un'altra voce sulla differenza tra nuovi e di ritorno? Il video parla di un canale YouTube, ma l'idea è la stessa:
+
+<Video />
+
+<Say who="sensei">Più acquisti non vuol dire tasso migliore. Dipende da quante persone hai portato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Confronti equi">
+Non tutti i confronti tra segmenti sono giusti.
+
+- **Dimensioni diverse**: un gruppo di 40 sessioni con 4 acquisti (10%) è molto meno affidabile di uno da 4.000 con 400. Con pochi dati un solo acquisto in più cambia tutto.
+- **Periodo diverso**: confrontare la settimana di Natale con una di agosto non è equo. Confronta periodi simili.
+- **Intenzioni diverse**: l'email arriva a chi è già cliente; i social a chi sta scoprendo. Un tasso più basso non vuol dire «lavorare peggio».
+- **Mescolanze**: se il telefono ha più sessioni da social e il computer da ricerca, la differenza tra dispositivi potrebbe essere in parte una differenza di canale.
+
+<Callout kind="attenzione">
+Un segmento è un gruppo costruito da te. Se confronti gruppi molto diversi, il numero ti dirà di più sulla differenza dei gruppi che sul sito.
+</Callout>
+
+<Callout kind="curiosita">
+Una **coorte** è un segmento speciale: persone che hanno iniziato nello stesso momento (per esempio chi ha comprato per la prima volta a marzo), seguite nel tempo come in D.10.004.
+</Callout>
+
+<Say who="sensei">Un buon confronto cambia una sola cosa alla volta. Se ne cambiano due, non sai quale ha agito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Segmento A: 40 sessioni, 4 acquisti. Segmento B: 4.000 sessioni, 280 acquisti. Quale confronto è più affidabile?"
+  options={["Il tasso di B (7%), perché è calcolato su molti più dati", "Il tasso di A (10%), perché è più alto", "Nessuno dei due ha un tasso calcolabile", "Sono uguali, perché sono tutte percentuali"]}
+  answer={0}
+  explain="B ha 280 ÷ 4.000 = 7% su una base grande. A ha 4 ÷ 40 = 10% ma con 4 acquisti: se ne perde uno, scende al 7,5%. Con pochi dati, il tasso è instabile."
+/>
+
+<Quiz
+  question="Telefono: 6.000 sessioni, 120 acquisti. Computer: 4.000 sessioni, 180 acquisti. Qual è il tasso del computer?"
+  options={["4,5%", "45%", "1,8%", "3%"]}
+  answer={0}
+  explain="180 ÷ 4.000 = 0,045, cioè 4,5%. Il 3% è la media di tutti (300 ÷ 10.000); chi risponde 1,8% ha diviso per 10.000 invece che per 4.000."
+/>
+
+<Say who="assistente">Ricordati: ogni gruppo si divide per le **sue** sessioni, non per quelle di tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Segmenti, tassi e confronti: alcuni calcoli e scenari.
+
+<Practice generator="d20-segmenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Dividi per il tuo gruppo, controlla che i pezzi sommino al totale, diffida dei gruppi piccoli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un segmento è un gruppo di sessioni con una caratteristica comune; i segmenti devono sommare al totale.
+- Il tasso di ogni segmento si calcola sulle sue sessioni: più acquisti non vuol dire tasso più alto.
+- Confronti equi: gruppi non troppo piccoli, stesso periodo, attenzione alle intenzioni diverse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Tre tagli comuni di segmenti web?", a: "Nuovi/ritorno, canale, dispositivo" },
+    { q: "140 acquisti su 2.000 sessioni: tasso?", a: "7%" },
+    { q: "Perché diffidare di un gruppo di 40 sessioni?", a: "Pochi dati: un acquisto in più cambia molto il tasso" },
+    { q: "Che cos'è una coorte?", a: "Persone che iniziano nello stesso momento, seguite nel tempo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: attribuzione e campagne. Chi merita il merito di un acquisto?</Say>
+</Scene>

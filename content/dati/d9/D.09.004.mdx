@@ -1,0 +1,179 @@
+---
+id: D.09.004
+course: dati
+module: 9
+title: "Il data warehouse"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.003]
+objectives:
+  - "Spiegare che cos'è un data warehouse e a che cosa serve"
+  - "Distinguere tabella dei fatti e tabelle delle dimensioni"
+  - "Leggere una query su uno schema a stella"
+video:
+  provider: youtube
+  id: "HV8lwTjzslw"
+  start: 0
+  end: 600
+  channel: "Radhika's DB DWH Community"
+  title: "DWH: What is fact/dimension/snowflake/star schema?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-warehouse
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere nella tabella dei fatti anche descrizioni lunghe (nome prodotto, indirizzo)"
+  - "Dimenticare il JOIN con la dimensione e raggruppare per codice invece che per nome"
+  - "Pensare che il warehouse sia solo una copia del database del sito: è organizzato per rispondere a domande"
+commands: []
+---
+
+<Scene title="Una domanda, quindici tabelle">
+Il capo di **Tavola Bella** chiede: «quanto vendiamo per categoria di prodotto?». Nel database del sito servono quindici tabelle da incrociare, con nomi poco chiari. Giulia ci mette un'ora per ogni domanda.
+
+C'è un modo di organizzare i dati **pensato per rispondere**, non per far funzionare il sito. Si chiama **data warehouse** («magazzino di dati»).
+
+La domanda del caso: **come si organizza un magazzino per rispondere in fretta?**
+
+<Say who="sensei">Un magazzino ordinato si riconosce da una cosa: trovi quello che cerchi senza chiedere a nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fatti e dimensioni">
+Nel warehouse i dati si dividono in due tipi di tabelle:
+
+- **Tabella dei fatti**: gli **eventi** che si misurano. Una riga per ogni vendita, con **numeri** (quantità, importo) e i codici che puntano alle dimensioni.
+- **Tabelle delle dimensioni**: il **contesto**. Chi, che cosa, quando, dove: i prodotti, i clienti, le date.
+
+Pensa a uno **scontrino**: i numeri (2 pezzi, 4 euro) sono i fatti; il nome del prodotto e la categoria sono le dimensioni.
+
+<Callout kind="trucco">
+I **fatti** rispondono a «quanto?». Le **dimensioni** rispondono a «chi, che cosa, quando, dove?». Si taglia e si raggruppa **per dimensione**, si somma **sui fatti**.
+</Callout>
+
+<Say who="assistente">Se è un numero che puoi sommare, probabilmente è un fatto. Se è un nome che usi per raggruppare, è una dimensione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo schema a stella">
+Mettendo la tabella dei fatti **al centro** e le dimensioni intorno, il disegno ricorda una **stella**. Ecco Tavola Bella:
+
+<Log lines={[
+  "              dim_prodotto",
+  "                   |",
+  "  dim_data --- fatti_vendite --- dim_cliente",
+]} />
+
+Le tabelle, con pochi dati fittizi.
+
+**dim_prodotto**
+
+| id_prodotto | nome | categoria |
+|-------------|--------|-----------|
+| 1 | Pane | Alimentari |
+| 2 | Latte | Alimentari |
+| 3 | Sapone | Casa |
+
+**fatti_vendite**
+
+| id_data | id_prodotto | quantita | importo |
+|---------|-------------|----------|---------|
+| 1 | 1 | 2 | 4 |
+| 1 | 2 | 1 | 2 |
+| 2 | 3 | 1 | 3 |
+| 2 | 1 | 3 | 6 |
+| 3 | 3 | 2 | 6 |
+
+Ogni riga dei fatti ha **lo stesso livello di dettaglio**: una vendita di un prodotto in un giorno.
+
+<Say who="sensei">La stella ha un vantaggio: ogni domanda è un solo JOIN, non una caccia al tesoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rispondere alla domanda del capo">
+Vendite per categoria: si **unisce** (JOIN) la tabella dei fatti alla dimensione e si **somma**.
+
+<Log lines={[
+  "SELECT p.categoria, SUM(f.importo) AS totale",
+  "FROM fatti_vendite f",
+  "JOIN dim_prodotto p ON f.id_prodotto = p.id_prodotto",
+  "GROUP BY p.categoria",
+  "ORDER BY p.categoria;",
+  "",
+  "categoria   totale",
+  "----------  ------",
+  "Alimentari  12",
+  "Casa        9",
+]} />
+
+Controlla a mano: Alimentari = 4 + 2 + 6 = 12. Casa = 3 + 6 = 9.
+
+Vuoi vederlo spiegato da un'altra voce, con i disegni?
+
+<Video />
+
+<Callout kind="curiosita">
+Nel warehouse si **ripetono** volentieri informazioni (la categoria scritta nella dimensione) per rendere le query più semplici. È l'opposto di quanto si fa nel database del sito, dove si evita di ripetere.
+</Callout>
+
+<Say who="assistente">Sommare sui fatti, raggruppare per dimensione. La formula dell'analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi sapere gli incassi per città dei clienti. In quale tabella cerchi il nome della città e in quale l'importo?"
+  options={[
+    "La città in dim_cliente, l'importo nella tabella dei fatti",
+    "Entrambi nella tabella dei fatti",
+    "La città nella tabella dei fatti, l'importo in dim_cliente",
+    "Entrambi in dim_prodotto",
+  ]}
+  answer={0}
+  explain="La città è contesto (chi), quindi sta in una dimensione. L'importo è una misura (quanto), quindi sta nei fatti. Si fa il JOIN tra le due."
+/>
+
+<Say who="sensei">Contesto fuori, misure dentro. Ripetilo finché non diventa un riflesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul warehouse: fatti o dimensioni, e che cosa è andato storto in un modello.
+
+<Practice generator="d09-warehouse" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un modello a stella ben fatto vale mille query geniali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il data warehouse è un magazzino di dati organizzato per rispondere a domande.
+- Lo schema a stella ha una tabella dei fatti al centro (misure) e dimensioni intorno (contesto).
+- Una domanda tipica è: JOIN fatti-dimensione, SUM sui fatti, GROUP BY sulla dimensione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene la tabella dei fatti?", a: "Gli eventi misurati: numeri come quantità e importo, e i codici delle dimensioni" },
+    { q: "Che cosa contiene una dimensione?", a: "Il contesto: chi, che cosa, quando, dove" },
+    { q: "Perché si chiama schema a stella?", a: "I fatti sono al centro, le dimensioni intorno" },
+    { q: "Che cosa vuol dire livello di dettaglio dei fatti?", a: "Che cosa rappresenta una riga: per esempio una vendita di un prodotto in un giorno" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando i dati non hanno ancora una forma. Data lake e lakehouse.</Say>
+</Scene>

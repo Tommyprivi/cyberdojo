@@ -1,0 +1,185 @@
+---
+id: C.13.002
+course: cybersecurity
+module: 13
+title: "Filtri di cattura e di visualizzazione"
+belt: blu
+duration_min: 10
+prerequisites: [C.13.001]
+objectives:
+  - "Distinguere un filtro di cattura (prima di salvare) da un filtro di visualizzazione (dopo)"
+  - "Scrivere filtri semplici e combinati per isolare un host, una porta o un tipo di pacchetto"
+  - "Scegliere il filtro giusto in base alla domanda a cui si deve rispondere"
+video:
+  provider: youtube
+  id: "-HDpYR_QSFw"
+  start: 0
+  end: 600
+  channel: "Chris Greer"
+  title: "How to Filter Traffic // Intro to Wireshark Tutorial // Lesson 5"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-filtri
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare la sintassi del filtro di visualizzazione (tcp.port == 80) nel campo del filtro di cattura, che vuole quella BPF (tcp port 80)"
+  - "Mettere un filtro di cattura troppo stretto e non potersi più accorgere di quello che è stato scartato"
+  - "Scrivere ip.addr == X && ip.addr == Y pensando di vedere tutto il traffico di X: si vede solo quello tra X e Y"
+commands: []
+---
+
+<Scene title="Il rumore">
+Nel laboratorio di Officina Verdi la cattura di ieri pesa **2 GB**. Il responsabile vuole sapere una cosa sola: **che cosa ha fatto il computer di prova 192.168.1.20 sulla porta 53 tra le 10:00 e le 10:05**?
+
+Nel file ci sono migliaia di conversazioni di tutti gli altri computer di prova. La risposta è lì in mezzo, ma sommersa.
+
+<Say who="sensei">Una cattura senza filtri è un pagliaio. Il filtro è il magnete. Ma attenzione: ne esistono due, e fanno cose diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due filtri, due momenti">
+Wireshark ha **due tipi di filtro**, con due sintassi diverse.
+
+- **Filtro di cattura**: si imposta **prima** di avviare la cattura. I pacchetti che non lo rispettano **non vengono nemmeno salvati**. Usa la sintassi **BPF** (la stessa di `tcpdump`).
+- **Filtro di visualizzazione**: si scrive **dopo**, nella barra in alto. Nasconde i pacchetti ma **non li cancella**: se cambi filtro, riappaiono.
+
+<Callout kind="regola">
+Cattura: scarti per sempre. Visualizzazione: nascondi e puoi tornare indietro. Nel dubbio, **cattura largo, filtra dopo**.
+</Callout>
+
+Il filtro di cattura serve solo quando la cattura sarebbe enorme, o quando ci sono dati che **non devi avere** (per la privacy è un buon motivo per catturare meno).
+
+<Say who="assistente">Se non sei sicuro di che cosa ti servirà, non buttare niente. Filtrare dopo costa solo un clic.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il filtro di cattura (BPF)">
+Sintassi con parole semplici: `host`, `net`, `port`, e gli operatori `and`, `or`, `not`.
+
+<Log
+  lines={[
+    "host 192.168.1.20                  tutto il traffico di quel computer",
+    "port 53                            solo la porta 53 (il DNS)",
+    "tcp port 80                        solo TCP sulla porta 80",
+    "net 192.168.1.0/24                 tutta la rete locale /24",
+    "host 192.168.1.20 and port 53      quel computer, solo DNS",
+    "not port 22                        tutto tranne gli accessi remoti",
+  ]}
+  caption="Esempi di filtri di cattura"
+/>
+
+Si scrivono nel campo «Filtro di cattura» prima di premere avvio. Se il filtro ha un errore di sintassi, Wireshark lo segnala in rosso e non parte.
+
+<Callout kind="attenzione">
+Il filtro di cattura capisce solo il basso livello (host, porte, protocolli di trasporto). Per cercare «le richieste HTTP di tipo GET» serve il filtro di **visualizzazione**.
+</Callout>
+
+<Say who="sensei">Poche parole, nessun punto. Se scrivi «tcp.port» nel filtro di cattura, sbagli sintassi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il filtro di visualizzazione">
+È più potente e più ricco: usa i **nomi dei campi** dei protocolli, con il punto, e gli operatori `==`, `!=`, `&&` (e), `||` (o), `!` (non).
+
+<Log
+  lines={[
+    "ip.addr == 192.168.1.20            pacchetti da o verso quel computer",
+    "tcp.port == 80                     porta 80, in entrambe le direzioni",
+    "dns                                tutti i pacchetti DNS",
+    "dns.qry.name contains \"verdi\"      richieste DNS con «verdi» nel nome",
+    "http.request.method == \"GET\"       solo le richieste GET",
+    "tcp.flags.syn == 1 && tcp.flags.ack == 0    solo i SYN iniziali",
+    "!(arp || icmp)                     tutto tranne ARP e ICMP",
+  ]}
+  caption="Esempi di filtri di visualizzazione"
+/>
+
+La barra diventa **verde** se il filtro è valido, **rossa** se ha un errore, **gialla** se funziona ma è ambiguo. Se vuoi scoprire il nome di un campo, clicca sul campo nel pannello dei dettagli: in basso Wireshark scrive il suo nome esatto.
+
+Vuoi vedere i filtri usati dal vivo, da un'altra voce? In inglese, con immagini chiare:
+
+<Video />
+
+<Say who="assistente">Il trucco: clicca col destro su un campo e scegli «Applica come filtro». Wireshark scrive la sintassi per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: la domanda del responsabile">
+Rispondiamo alla domanda del caso, passo per passo, sul file di cattura di esempio.
+
+<Guided
+  steps={[
+    "Domanda: che cosa ha fatto 192.168.1.20 sulla porta 53 tra le 10:00 e le 10:05?",
+    "Primo filtro: ip.addr == 192.168.1.20 && udp.port == 53. Resta solo il DNS di quel computer.",
+    "Per l'orario si usa un filtro sul tempo: frame.time >= \"2026-10-14 10:00:00\" && frame.time <= \"2026-10-14 10:05:00\" (ricorda di controllare il fuso della cattura).",
+    "Si aggiunge dns.qry.name e si guardano i nomi richiesti: sono tutti normali? Ce n'è uno strano, lungo e casuale?",
+    "Si salva solo ciò che serve: File, Esporta pacchetti specificati, «Solo visualizzati». Il file originale resta intatto.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Attenzione a `ip.addr == A && ip.addr == B`: mostra solo il traffico **tra A e B**. Per vedere **tutto** il traffico di A basta `ip.addr == A`.
+</Callout>
+
+<Say who="sensei">Un filtro alla volta. Si restringe, si guarda, si restringe ancora. Un filtro lunghissimo scritto in un colpo solo è un filtro sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Devi catturare il traffico del laboratorio per un'ora, ma sul disco c'è poco spazio e ti interessano solo le richieste DNS. Non sai ancora che cosa cercherai dentro. Qual è la scelta più ragionevole?"
+  options={[
+    "Filtro di cattura «port 53»: se è davvero l'unica cosa che ti serve, risparmi spazio; altrimenti cattura largo e filtra dopo",
+    "Filtro di visualizzazione «dns» durante la cattura, così i pacchetti non vengono salvati",
+    "Nessun filtro in nessun caso, perché i filtri sono vietati",
+    "Filtro di cattura «tcp.port == 53», con la sintassi dei campi",
+  ]}
+  answer={0}
+  explain="Il filtro di visualizzazione non decide cosa viene salvato: nasconde soltanto. Per risparmiare spazio serve il filtro di cattura, in sintassi BPF: «port 53». «tcp.port == 53» è sintassi di visualizzazione e non è valida nel campo di cattura. Se non sai che cosa ti servirà, meglio catturare più largo."
+/>
+
+<Say who="assistente">Chiediti: sto scegliendo che cosa tenere, o che cosa guardare? La prima è cattura, la seconda è visualizzazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui filtri: quale scrivere e in quale campo. Cinque su cinque, tre tentativi.
+
+<Practice generator="c13-filtri" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un buon filtro vale mezz'ora di lavoro risparmiata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Filtro di cattura (BPF, «tcp port 80»): decide cosa si salva, ed è definitivo. Filtro di visualizzazione («tcp.port == 80»): nasconde, e si può cambiare.
+- Cattura larga e filtro dopo, salvo spazio limitato o dati che non si devono raccogliere.
+- Si restringe un filtro alla volta; «ip.addr == A» mostra tutto il traffico di A, «ip.addr == A && ip.addr == B» solo quello tra i due.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale filtro serve per non salvare certi pacchetti?", a: "Il filtro di cattura, con sintassi BPF" },
+    { q: "Come si scrive «solo la porta 80 TCP» nel filtro di visualizzazione?", a: "tcp.port == 80" },
+    { q: "Come si scrive lo stesso nel filtro di cattura?", a: "tcp port 80" },
+    { q: "Che cosa mostra ip.addr == A && ip.addr == B?", a: "Solo il traffico scambiato tra A e B" },
+  ]}
+/>
+
+<Say who="sensei">Sai tagliare il rumore. Prossima lezione: leggere DNS, HTTP e TLS, i tre protocolli che raccontano quasi tutto.</Say>
+</Scene>

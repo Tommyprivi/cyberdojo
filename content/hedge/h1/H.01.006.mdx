@@ -1,0 +1,151 @@
+---
+id: H.01.006
+course: hedge
+module: 1
+title: "Il panorama: Italia e mondo"
+belt: bianca
+duration_min: 8
+prerequisites: [H.01.005]
+objectives:
+  - "Descrivere in sintesi dove si trovano e quanto pesano gli hedge fund"
+  - "Spiegare che i fondi sono molto diversi tra loro e che alcuni chiudono"
+  - "Riconoscere il bias di sopravvivenza"
+video:
+  provider: youtube
+  id: "AsJyxV2-dMo"
+  start: 0
+  end: 600
+  channel: "MFA"
+  title: "Hedge Funds 101"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-panorama
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo i fondi sopravvissuti e concludere che vadano tutti bene"
+  - "Credere che gli hedge fund gestiscano una parte enorme del risparmio mondiale"
+  - "Fidarsi di una sola cifra di rendimento senza contesto"
+commands: []
+---
+
+<Scene title="Una cifra sola">
+Un gestore fittizio manda un volantino: «**+40% in un anno!**». Sotto, in piccolo: nessun'altra informazione.
+
+Sara, che studia economia, si chiede: «Ma gli hedge fund vanno tutti così bene? E chi sono, quanti sono?».
+
+La domanda del caso: **com'è fatto il mondo degli hedge fund, e come si legge una cifra isolata?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. I dati di panorama sono in sintesi, ottobre 2026: controlla le fonti ufficiali.
+
+<Say who="sensei">Una cifra sola è una fotografia ritoccata. Prima il quadro, poi il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel mondo">
+Gli hedge fund si concentrano nei grandi centri finanziari: **New York** e le zone vicine (come il Connecticut) e **Londra**, poi Hong Kong, Singapore e altri.
+
+Insieme gestiscono **migliaia di miliardi di dollari**, cioè una cifra grande ma **piccola rispetto a tutto il risparmio mondiale**. Le stime variano da fonte a fonte: qui non c'è un numero esatto da ricordare.
+
+Due caratteristiche:
+
+- **Pochi fondi molto grandi** gestiscono una parte rilevante del totale.
+- Tra un fondo e l'altro i risultati sono **molto diversi**.
+
+<Callout kind="curiosita">
+Il settore è nato in America nel 1949, ma oggi è globale. Molti fondi sono domiciliati in Paesi come Lussemburgo, Irlanda o Isole Cayman.
+</Callout>
+
+<Say who="assistente">Grande in valore assoluto, piccolo rispetto al mondo. Tienilo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="In Italia">
+In Italia il mercato degli hedge fund è **più piccolo** che negli Stati Uniti o nel Regno Unito. Molti fondi usati dagli investitori italiani hanno **sede all'estero**.
+
+Nella normativa europea questi fondi rientrano tra i **fondi di investimento alternativi** (**FIA**, in inglese **AIF**), regolati dalla direttiva **AIFMD**. In Italia a vigilare sono, con ruoli diversi, la **Consob** (trasparenza e correttezza) e la **Banca d'Italia** (stabilità degli intermediari).
+
+Per sapere se un intermediario è autorizzato, si guardano gli elenchi sui **siti ufficiali** di Consob e Banca d'Italia: non basta il sito dell'intermediario.
+
+Un video in inglese (sottotitoli) introduce il settore:
+
+<Video />
+
+<Say who="sensei">L'autorizzazione si controlla da chi controlla, non da chi vende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi chiude non fa notizia">
+Ogni anno alcuni fondi, di solito i meno riusciti, **chiudono** e restituiscono i soldi. Se si guardano solo i fondi **ancora esistenti**, si vedono solo i vincitori e il settore sembra più bravo di com'è.
+
+Questo errore si chiama **bias di sopravvivenza**.
+
+<Guided
+  steps={[
+    "Immagina 10 fondi fittizi. Dopo cinque anni, 4 hanno chiuso perché andavano male.",
+    "Un giornale intervista solo i 6 rimasti, che hanno risultati buoni.",
+    "Conclusione sbagliata: «i fondi vanno bene». I 4 chiusi non compaiono nei dati.",
+    "Conclusione corretta: servono i dati di tutti i fondi, anche di quelli spariti.",
+  ]}
+/>
+
+<Say who="sensei">Il cimitero dei fondi non scrive lettere ai giornali. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un gestore diffonde una sola cifra: «+40% in un anno». Che cosa devi chiedere?"
+  options={[
+    "Su quanti anni, con quale rischio, al netto di quali commissioni e se i dati sono verificati da terzi",
+    "Niente: il dato basta",
+    "Solo il colore del logo",
+    "Soltanto il nome del gestore",
+  ]}
+  answer={0}
+  explain="Una cifra isolata non dice nulla su periodo, rischio e costi. Chi la considera sufficiente rischia di scambiare fortuna e rischio alto per abilità."
+/>
+
+<Say who="assistente">Indizio: un risultato ha sempre un periodo, un rischio e un costo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul panorama, sulle autorità e sul bias di sopravvivenza.
+
+<Practice generator="h01-panorama" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il primo modulo da persona attenta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli hedge fund sono concentrati nei grandi centri (New York, Londra): migliaia di miliardi di dollari ma una piccola parte del risparmio mondiale.
+- In Italia il mercato è piccolo; i fondi alternativi rientrano nella normativa AIFMD, con Consob e Banca d'Italia a vigilare.
+- Chi chiude non compare nelle statistiche: attenzione al bias di sopravvivenza e alle cifre isolate.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sono i FIA?", a: "Fondi di investimento alternativi, tra cui molti hedge fund" },
+    { q: "Che cos'è il bias di sopravvivenza?", a: "Guardare solo i fondi rimasti e non quelli chiusi" },
+    { q: "Dove si controlla un intermediario italiano?", a: "Sui siti ufficiali di Consob e Banca d'Italia" },
+    { q: "Che cosa chiedere davanti a «+40%»?", a: "Periodo, rischio, costi e verifica da terzi" },
+  ]}
+/>
+
+<Say who="sensei">Fine del primo modulo. Nel prossimo: le strategie, cioè che cosa fanno davvero i gestori.</Say>
+</Scene>

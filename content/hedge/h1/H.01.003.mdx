@@ -1,0 +1,157 @@
+---
+id: H.01.003
+course: hedge
+module: 1
+title: "Commissioni «2 e 20»"
+belt: bianca
+duration_min: 9
+prerequisites: [H.01.002]
+objectives:
+  - "Spiegare commissione di gestione e commissione di performance"
+  - "Calcolare quanto resta agli investitori, con e senza soglia"
+  - "Capire perché la performance può spingere a rischiare di più"
+video:
+  provider: youtube
+  id: "sdVIuJ24nIg"
+  start: 0
+  end: 600
+  channel: "KINGCADEMY"
+  title: "2 & 20 Hedge Fund Fee Structure Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-commissioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Applicare il 20% al capitale invece che al profitto"
+  - "Dimenticare che la commissione di gestione si paga anche quando il fondo perde"
+  - "Confrontare il rendimento lordo senza togliere le commissioni"
+commands: []
+---
+
+<Scene title="Quanto resta davvero">
+Il fondo fittizio **Alba Capital** ha 100 milioni di euro. L'anno scorso ha guadagnato 10 milioni. La lettera ai soci dice: «Rendimento lordo: 10%».
+
+Il signor Bruni chiede: «E a me, in tasca, quanto resta?».
+
+La domanda del caso: **quanto trattiene il gestore, e quanto resta agli investitori?**
+
+Ricorda: il corso è educazione, non consulenza. Tutti i numeri sono fittizi e non sono previsioni.
+
+<Say who="sensei">Il rendimento lordo è la vetrina. Quello netto è lo scontrino. Si guarda lo scontrino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due commissioni">
+Molti hedge fund usano la formula **«2 e 20»**:
+
+- **2%** di **commissione di gestione**: si calcola ogni anno sul **capitale** gestito, sia che il fondo guadagni sia che perda;
+- **20%** di **commissione di performance**: è una quota del **profitto**, e si paga solo se c'è un profitto.
+
+Convenzione di questa lezione: la performance è calcolata sul **profitto lordo**, cioè prima di togliere la commissione di gestione. Nella realtà le regole cambiano da fondo a fondo e vanno lette nei documenti.
+
+<Callout kind="regola">
+Gestione: **% sul capitale**, sempre. Performance: **% sul profitto**, solo se c'è.
+</Callout>
+
+<Say who="assistente">Il 2 si paga comunque. Il 20 si paga solo se si guadagna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il calcolo, passo per passo">
+Capitale: **100 milioni**. Profitto lordo: **10 milioni**.
+
+<Guided
+  steps={[
+    "Gestione: 2% di 100 milioni = 2 milioni.",
+    "Performance: 20% di 10 milioni = 2 milioni.",
+    "Commissioni totali: 2 + 2 = 4 milioni.",
+    "Agli investitori restano 10 − 4 = 6 milioni, cioè il 6% su 100 milioni (non il 10% della vetrina).",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Errore tipico: applicare il 20% ai 100 milioni di capitale. Il 20% va sul **profitto**: 20% di 10 milioni, non di 100.
+</Callout>
+
+<Say who="sensei">Dal 10% della vetrina al 6% dello scontrino. Quattro punti sono andati in commissioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Soglia e anno in perdita">
+Molti fondi mettono una **soglia** (in inglese *hurdle*): un rendimento minimo, per esempio 5%, da superare prima che scatti la performance.
+
+Con soglia 5% (5 milioni) la performance si calcola solo sulla parte **oltre** la soglia: profitto 10 − 5 = 5 milioni, 20% = **1 milione**. Commissioni totali: 2 + 1 = 3 milioni. Restano **7 milioni**, il 7%.
+
+E in un anno **in perdita**? Il fondo perde 10 milioni: performance zero, ma la gestione del 2% (2 milioni) si paga comunque. Gli investitori perdono 10 + 2 = **12 milioni**, il 12%.
+
+Un'altra regola frequente è l'**high-water mark**: dopo una perdita, la performance si paga solo quando il valore supera il massimo già raggiunto.
+
+Vuoi sentirlo da un'altra voce? Un video in inglese, usa i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Le commissioni non perdonano. Il fondo perde, tu paghi lo stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo da 50 milioni guadagna 5 milioni lordi. Commissione di performance 20% sul profitto, nessuna soglia. Quanto vale la performance?"
+  options={[
+    "1 milione di euro",
+    "10 milioni di euro",
+    "500.000 euro",
+    "5 milioni di euro",
+  ]}
+  answer={0}
+  explain="Il 20% si applica al profitto: 20% di 5 milioni = 1 milione. Chi risponde 10 milioni ha applicato il 20% al capitale (50 milioni) e confuso le due basi di calcolo."
+/>
+
+<Callout kind="curiosita">
+Perché la performance può spingere a rischiare di più? Se il gestore guadagna, incassa una quota; se perde, di solito non restituisce le commissioni già incassate. Per questo contano gli incentivi, anche la quota di soldi propri.
+</Callout>
+
+<Say who="assistente">Indizio: chiediti sempre «percentuale di che cosa?». Capitale o profitto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di commissioni, con e senza soglia, e domande sugli incentivi.
+
+<Practice generator="h01-commissioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa fare i conti non si innamora della vetrina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- «2 e 20»: 2% sul capitale (sempre) e 20% sul profitto (solo se c'è).
+- Su 100 milioni con profitto lordo di 10 milioni restano agli investitori 6 milioni; con soglia 5% restano 7.
+- Si guarda sempre il rendimento netto, e si ricorda che gli incentivi possono spingere a rischiare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire «2 e 20»?", a: "2% di gestione sul capitale, 20% di performance sul profitto" },
+    { q: "La gestione si paga se il fondo perde?", a: "Sì, è calcolata sul capitale" },
+    { q: "Che cos'è la soglia (hurdle)?", a: "Rendimento minimo da superare prima della performance" },
+    { q: "Che cos'è l'high-water mark?", a: "Si paga performance solo oltre il massimo già raggiunto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si confronta un hedge fund con un fondo comune e con un ETF.</Say>
+</Scene>

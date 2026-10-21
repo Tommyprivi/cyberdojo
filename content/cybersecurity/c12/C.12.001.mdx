@@ -1,0 +1,216 @@
+---
+id: C.12.001
+course: cybersecurity
+module: 12
+title: "Oltre rwx: ACL e permessi speciali"
+belt: blu
+duration_min: 10
+prerequisites: [C.07.006]
+objectives:
+  - "Dare a una persona un permesso preciso con le ACL (setfacl e getfacl) senza aprire la cartella a tutti"
+  - "Spiegare il ruolo della mask e delle ACL predefinite (default) nelle cartelle condivise"
+  - "Riconoscere i permessi speciali setuid, setgid e sticky bit e cercare quelli sospetti"
+video:
+  provider: youtube
+  id: "UH60yCzEOE8"
+  start: 0
+  end: 600
+  channel: "TechTooniya"
+  title: "Linux POSIX ACLs Explained: setfacl & getfacl Hands-On Tutorial with Mask"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-acl
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Risolvere con chmod o+r: il permesso diventa di tutti, non solo della persona che serviva"
+  - "Dimenticare la mask: una ACL può risultare «efficace» meno di quanto sembra"
+  - "Credere che le ACL di una cartella passino da sole ai file creati dopo: serve la ACL predefinita (default)"
+commands: [setfacl, getfacl, find]
+---
+
+<Scene title="Una cartella, tre esigenze">
+Alla «Bianchi Logistica» il server dei file ha la cartella `/srv/progetti`. Appartiene al gruppo `sviluppo`: chi è nel gruppo legge e scrive, gli altri non entrano.
+
+Marta, della contabilità, deve **solo leggere** i file di un progetto per fare le fatture. Il capo sistemista, stanco, propone: «Facciamo `chmod o+r` e finiamo».
+
+<Log lines={[
+  "$ ls -ld /srv/progetti",
+  "drwxrwx--- 2 root sviluppo 4096 ott 21 09:10 /srv/progetti",
+]} caption="Proprietario e gruppo hanno tutto, gli altri niente." />
+
+La domanda del caso: **come dare a Marta il permesso di lettura senza darlo a tutta l'azienda?**
+
+<Say who="sensei">Il modello classico ha tre caselle: proprietario, gruppo, altri. Marta non sta in nessuna delle prime due. Aprire «altri» è come lasciare la porta di casa aperta perché è arrivata un'ospite.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le ACL: permessi con il nome">
+Le **ACL** (Access Control List, «elenco di controllo degli accessi») aggiungono al modello classico delle **voci con nome**: «l'utente marta può leggere», «il gruppo audit può leggere».
+
+Si usano due comandi:
+
+- `setfacl` per impostare;
+- `getfacl` per leggere.
+
+<Log lines={[
+  "$ sudo setfacl -m u:marta:r-x /srv/progetti",
+  "$ getfacl /srv/progetti",
+  "# file: srv/progetti",
+  "# owner: root",
+  "# group: sviluppo",
+  "user::rwx",
+  "user:marta:r-x",
+  "group::rwx",
+  "mask::rwx",
+  "other::---",
+]} caption="`-m` significa «modifica»; `u:marta:r-x` = utente marta, lettura ed esecuzione." />
+
+Sulle cartelle la `x` serve per **entrarci**: senza `x` Marta non potrebbe aprire i file dentro.
+
+<Callout kind="trucco">
+Se `ls -l` mostra un **+** dopo i permessi (per esempio `drwxrwx---+`), quel file ha una ACL. Fai subito `getfacl`: i permessi che vedi con `ls` non sono più tutta la verità.
+</Callout>
+
+<Say who="assistente">Il permesso è andato solo a Marta. Gli altri dipendenti continuano a non vedere nulla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La mask: il tetto massimo">
+Nell'elenco c'è una riga strana: `mask::rwx`. La **mask** è un **tetto**: i permessi delle voci con nome e del gruppo non possono superarla.
+
+Esempio svolto. Il sistemista, per un'altra ragione, fa `chmod g-w` sulla cartella. Con le ACL attive, `chmod g` cambia proprio la **mask**:
+
+<Log lines={[
+  "user:marta:rwx          #effective:r-x",
+  "group::rwx              #effective:r-x",
+  "mask::r-x",
+]} caption="Marta ha scritto «rwx», ma il tetto è «r-x»: in pratica può solo leggere." />
+
+<Callout kind="attenzione">
+Quando una ACL «sembra» dare un permesso e non funziona, controlla la colonna **#effective** e la mask. È l'errore più comune.
+</Callout>
+
+Vuoi vedere le ACL spiegate e provate da un'altra voce? Il video è in inglese: attiva i sottotitoli.
+
+<Video />
+
+<Say who="sensei">Un permesso scritto e un permesso efficace non sono la stessa cosa. Si legge sempre la colonna «effective».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le ACL predefinite per i file nuovi">
+Altro problema: Marta legge i file che esistono oggi. Ma domani gli sviluppatori creeranno file nuovi. Li vedrà?
+
+**No**, se hai impostato la ACL solo sulla cartella. I file nuovi non ereditano da soli. Serve la ACL **predefinita** (default), che si scrive con `d:`.
+
+<Log lines={[
+  "$ sudo setfacl -m d:u:marta:r-x /srv/progetti",
+  "$ sudo setfacl -R -m u:marta:r-x /srv/progetti",
+]} caption="La prima vale per i file futuri, la seconda per quelli già presenti (`-R` = ricorsivo)." />
+
+Per togliere un permesso:
+
+- `setfacl -x u:marta /srv/progetti` toglie la voce di Marta;
+- `setfacl -b /srv/progetti` toglie **tutte** le ACL.
+
+<Callout kind="regola">
+Principio del **minimo privilegio**: a ciascuno solo ciò che serve, per il tempo che serve. Le ACL permettono di rispettarlo dove tre caselle non bastano. Ogni ACL che non serve più va tolta.
+</Callout>
+
+<Say who="assistente">Due comandi: uno per ciò che c'è, uno per ciò che verrà. Tutti dimenticano il secondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Setuid, setgid e sticky bit">
+Esistono tre **permessi speciali**, che comparirebbero al posto della `x`:
+
+- **setuid** (`s` nella casella del proprietario): chi esegue il programma lo esegue **con i diritti del proprietario**. `passwd` lo usa per poter modificare il file delle password anche se lo lancia un utente normale.
+- **setgid** (`s` nella casella del gruppo): su una **cartella** fa sì che i file nuovi prendano il gruppo della cartella. Utile per le cartelle condivise.
+- **sticky bit** (`t` in fondo): in una cartella condivisa, ognuno può cancellare **solo i propri file**. È il caso di `/tmp`.
+
+<Log lines={[
+  "$ ls -l /usr/bin/passwd",
+  "-rwsr-xr-x 1 root root 59976 ... /usr/bin/passwd",
+  "$ ls -ld /tmp",
+  "drwxrwxrwt 15 root root 4096 ... /tmp",
+]} caption="La `s` di passwd è il setuid; la `t` di /tmp è lo sticky bit." />
+
+<Callout kind="attenzione">
+Un programma setuid root difettoso o inatteso è una scorciatoia verso i poteri di amministratore. Per questo i difensori li **elencano e li confrontano nel tempo**: un programma nuovo in elenco è un campanello.
+</Callout>
+
+Un controllo di lettura, che non modifica niente:
+
+<Log lines={[
+  "$ find /usr -perm -4000 -type f 2>/dev/null",
+  "/usr/bin/passwd",
+  "/usr/bin/sudo",
+  "/usr/bin/su",
+]} caption="`-perm -4000` cerca i file con il bit setuid." />
+
+<Say who="sensei">Salva l'elenco di oggi. Tra un mese lo confronti con quello nuovo. Quello che compare e nessuno ha installato, lo indaghi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il server ha la cartella /srv/contratti (gruppo legale). Il revisore esterno Paolo deve leggere solo i contratti di quest'anno, per due settimane. Quale scelta è la più prudente?"
+  options={[
+    "Una ACL di sola lettura per l'utente paolo, da rimuovere con setfacl -x a fine incarico",
+    "Aggiungere paolo al gruppo legale con permessi di scrittura",
+    "chmod o+r sulla cartella, così non serve ricordare nulla",
+    "Dargli la password dell'utente del capo del legale",
+  ]}
+  answer={0}
+  explain="La ACL dà il permesso minimo (solo lettura) a una persona precisa e si toglie in un comando. Il gruppo darebbe più diritti del necessario, o+r aprirebbe a tutta l'azienda, e condividere una password rompe la responsabilità personale."
+/>
+
+Qui sotto, una prova libera nel terminale di allenamento. Non serve per la verifica.
+
+<LinuxTerminal goal="Elenca con ls -l il contenuto della cartella corrente e guarda le caselle dei permessi." scenario="permessi" />
+
+<Say who="assistente">Chiediti sempre tre cose: a chi serve, quanto serve, fino a quando serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su ACL, mask, permessi predefiniti e permessi speciali. Scegli la risposta che risolve il problema senza aprire più del necessario.
+
+<Practice generator="c12-acl" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un permesso troppo largo si nota solo il giorno in cui qualcuno lo usa male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Le ACL aggiungono permessi con nome (`setfacl -m u:marta:r-x`) e si leggono con `getfacl`; il segno + in `ls -l` le segnala.
+- La mask è il tetto dei permessi: conta la colonna «effective». Per i file futuri serve la ACL predefinita `d:`.
+- Setuid, setgid e sticky bit sono permessi speciali: i file setuid vanno elencati e confrontati nel tempo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si dà all'utente marta la sola lettura con una ACL?", a: "setfacl -m u:marta:r-x sulla cartella (r-x per poterci entrare)" },
+    { q: "A cosa serve la mask?", a: "È il tetto dei permessi effettivi delle voci con nome e del gruppo" },
+    { q: "Come si fa perché i file futuri ereditino una ACL?", a: "Con la ACL predefinita: setfacl -m d:u:marta:r-x" },
+    { q: "Che cosa fa lo sticky bit su una cartella?", a: "Ognuno cancella solo i propri file (come in /tmp)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'hardening. Dopo aver chiuso le porte interne, togliamo le finestre che non servono.</Say>
+</Scene>

@@ -1,0 +1,185 @@
+---
+id: T.05.002
+course: trading
+module: 5
+title: "Il primo backtest vettoriale"
+belt: arancione
+duration_min: 9
+prerequisites: [T.05.001]
+objectives:
+  - "Spiegare che cos'è un backtest e che cosa NON dimostra"
+  - "Calcolare rendimenti e segnale con pandas senza scrivere cicli"
+  - "Calcolare il rendimento di «compra e tieni» come riferimento"
+video:
+  provider: youtube
+  id: "WBPnN8DIMYI"
+  start: 0
+  end: 600
+  channel: "Martin Bel"
+  title: "Backtesting with Pandas and TA-lib"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-backtest-vettoriale
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un backtest positivo prometta lo stesso risultato in futuro"
+  - "Usare un ciclo lento dove una riga di pandas fa tutto insieme"
+  - "Non confrontare la strategia con il semplice «compra e tieni»"
+commands: []
+---
+
+<Scene title="La macchina del tempo">
+Luca ha la sua regola precisa: **segnale = 1 se oggi il prezzo è più alto di ieri**. Ora la vuole provare. Non può comprare davvero (e in questo corso non si usano soldi veri): può però **tornare indietro** e vedere che cosa sarebbe successo con i prezzi del passato.
+
+Questo si chiama **backtest**: simulare una regola su dati storici.
+
+La domanda del caso: **come si fa un backtest con poche righe, e che cosa ci si può fidare di quello che dice?**
+
+<Say who="sensei">Un backtest è uno specchietto retrovisore. Ti dice dove sei passato. Non ti dice dove vai.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. I numeri in questa lezione sono fittizi.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo lento: il ciclo">
+Con i prezzi fittizi della lezione scorsa (100, 102, 101, 104, 103, 106, 105, 108) il modo più «umano» è un ciclo: giorno per giorno, si calcola quanto è variato il prezzo.
+
+Un **rendimento semplice** giornaliero è la variazione in proporzione: (prezzo di oggi ÷ prezzo di ieri) − 1. Da 100 a 102 fa 102 ÷ 100 − 1 = **0,02**, cioè +2%.
+
+<PythonTerminal code={"prezzi = [100, 102, 101, 104, 103, 106, 105, 108]\nrend = []\nfor i in range(1, len(prezzi)):\n    rend.append(round(prezzi[i] / prezzi[i-1] - 1, 4))\nprint(rend)"} />
+
+<Say who="assistente">Funziona, ma con dieci anni di prezzi giornalieri sono circa 2.500 passaggi. E con cento strumenti diventano 250.000.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo vettoriale">
+**Vettoriale** vuol dire: una sola istruzione lavora su tutta la colonna di numeri insieme, senza ciclo scritto da te. In pandas (versione 2.x) una colonna di dati è una **Series**.
+
+```python
+import pandas as pd
+
+prezzo = pd.Series([100, 102, 101, 104, 103, 106, 105, 108])
+rend = prezzo.pct_change()
+print(rend.round(4).tolist())
+```
+
+Risultato:
+
+<Log lines={[
+  "[nan, 0.02, -0.0098, 0.0297, -0.0096, 0.0291, -0.0094, 0.0286]",
+]} />
+
+`pct_change()` calcola il rendimento semplice di ogni giorno rispetto al giorno prima. Il primo giorno non ha un «ieri»: viene `nan` («not a number», valore mancante).
+
+<Callout kind="regola">
+Convenzione del corso: rendimento **semplice**, giornaliero, sui prezzi di chiusura.
+</Callout>
+
+<Say who="sensei">Una riga, tutti i giorni. Quando il ciclo non serve, non scriverlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segnale in una riga">
+Anche il segnale si calcola su tutta la colonna. Si confronta il prezzo con quello di ieri, che si ottiene con `shift(1)` (sposta i valori di un giorno in avanti):
+
+```python
+segnale = (prezzo > prezzo.shift(1)).astype(int)
+print(segnale.tolist())
+```
+
+Risultato:
+
+<Log lines={[
+  "[0, 1, 0, 1, 0, 1, 0, 1]",
+]} />
+
+Il confronto con un `nan` dà falso, quindi il giorno 0 vale 0, come volevamo.
+
+Ecco un'altra voce che mostra un backtest costruito con pandas. Il video è in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Guarda come il codice del video separa tre cose: i prezzi, il segnale, il risultato. È la stessa struttura che stiamo costruendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metro di paragone">
+Un risultato da solo non dice niente. Serve un riferimento: **«compra e tieni»** (in inglese buy and hold), cioè comprare il primo giorno e non toccare più nulla.
+
+Con i nostri prezzi: da 100 a 108, quindi 108 ÷ 100 − 1 = **0,08**, cioè +8%.
+
+```python
+buy_and_hold = prezzo.iloc[-1] / prezzo.iloc[0] - 1
+print(round(buy_and_hold, 4))
+```
+
+<Log lines={["0.08"]} />
+
+<Callout kind="trucco">
+Una strategia che fa +5% quando «compra e tieni» farebbe +8% ha lavorato di più per ottenere meno. Confronta sempre.
+</Callout>
+
+<Say who="sensei">Se non sai battere chi non fa niente, il tuo lavoro non vale. Il riferimento è la prima cosa che si calcola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il backtest di una strategia dà +12% e «compra e tieni» sullo stesso periodo dà +15%. Che cosa puoi concludere?"
+  options={[
+    "La strategia ha fatto meno di non fare niente in quel periodo, e non prova nulla sul futuro",
+    "La strategia è buona perché il risultato è positivo",
+    "Il risultato futuro sarà +12%",
+    "Il backtest è sbagliato per forza"
+  ]}
+  answer={0}
+  explain="Un risultato positivo non basta: il confronto con «compra e tieni» dice che la strategia ha reso meno. In ogni caso un backtest descrive il passato e non garantisce il futuro. Non è detto che sia sbagliato: semplicemente non è convincente."
+/>
+
+<Say who="assistente">Due errori comuni: guardare solo il segno (positivo = buono) e leggere il passato come una promessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su backtest, rendimenti e paragone con «compra e tieni». Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-backtest-vettoriale" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Hai tutti i pezzi: prezzi, rendimenti, segnale, riferimento. Nella prossima lezione li montiamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un backtest simula una regola sul passato: descrive, non promette.
+- Vettoriale = una istruzione su tutta la colonna: `pct_change()` per i rendimenti, un confronto per il segnale.
+- Ogni risultato si confronta con «compra e tieni».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un backtest?", a: "La simulazione di una regola su dati storici" },
+    { q: "Che cosa calcola pct_change()?", a: "Il rendimento semplice di ogni giorno rispetto al giorno prima" },
+    { q: "Che cosa vuol dire «vettoriale»?", a: "Un'istruzione lavora su tutta la colonna di dati, senza ciclo scritto da te" },
+    { q: "Qual è il riferimento da battere?", a: "Compra e tieni: comprare il primo giorno e non toccare più nulla" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come passare dal segnale alla posizione e al rendimento della strategia. Là c'è una trappola.</Say>
+</Scene>

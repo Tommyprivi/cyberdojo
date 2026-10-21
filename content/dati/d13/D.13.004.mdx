@@ -1,0 +1,157 @@
+---
+id: D.13.004
+course: dati
+module: 13
+title: "Il report e la storia"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.003]
+objectives:
+  - "Strutturare un report che parte dalla risposta"
+  - "Scegliere un grafico adatto e non ingannevole per ogni messaggio"
+  - "Scrivere una raccomandazione e dichiarare i limiti dell'analisi"
+video:
+  provider: youtube
+  id: "Flg8munT7nI"
+  start: 0
+  end: 600
+  channel: "OpenCoesione"
+  title: "Lezione 4 - Istat: Come comunicare e visualizzare i dati statistici"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-report
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere nel report tutti i grafici fatti, invece di quelli che servono alla risposta"
+  - "Troncare l'asse di un grafico a barre per far sembrare grandi le differenze"
+  - "Presentare un risultato come certo senza dire i limiti dei dati"
+commands: []
+---
+
+<Scene title="Dodici pagine, nessuna risposta">
+Davide ha analizzato la raccolta differenziata del suo comune (dati inventati, comune fittizio). Ha scritto un report di dodici pagine, con sette grafici e tutte le tabelle intermedie.
+
+L'assessore lo apre, scorre e dice: «Bene, ma alla fine: sta migliorando o no? Cosa dobbiamo fare?».
+
+La domanda del caso: **come si scrive un report che qualcuno legge davvero e usa per decidere?**
+
+<Say who="sensei">Chi legge ha poco tempo e una domanda. La risposta va in cima, non in fondo alla pagina dodici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La struttura che funziona">
+Un report breve segue questo ordine:
+
+1. **Titolo che dice la risposta**: «La raccolta differenziata di Valdoro è salita dal 54% al 67% in cinque anni».
+2. **Sintesi** di tre-quattro righe: risposta, motivo, raccomandazione.
+3. **Domanda e dati**: cosa volevi sapere, da quale fonte vengono i numeri, di che periodo.
+4. **Risultati**: pochi grafici, ognuno con un messaggio.
+5. **Raccomandazione**: cosa fare, in concreto.
+6. **Limiti**: cosa i dati non dicono.
+7. **Appendice**: metodo, tabelle, codice, per chi vuole controllare.
+
+Vuoi sentire come l'Istat insegna a comunicare e visualizzare i dati? Una lezione di un corso pubblico:
+
+<Video />
+
+<Say who="assistente">Il lettore frettoloso legge il titolo e la sintesi. Se sono chiari, hai già comunicato l'80% del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un grafico, un messaggio">
+Ogni grafico deve rispondere a **una frase**. Se non riesci a scrivere quella frase, il grafico è inutile.
+
+- **Andamento nel tempo**: grafico a **linee**. «La quota cresce ogni anno.»
+- **Confronto tra categorie**: grafico a **barre**. «Il quartiere nord è sopra gli altri.»
+- **Parti di un totale** (poche, al massimo quattro): barra impilata o torta.
+
+Regole che evitano di ingannare:
+
+- nelle **barre l'asse parte da zero**: se parte da 50, una differenza piccola sembra enorme;
+- **titolo che dice il messaggio**, assi con le unità, fonte sotto il grafico;
+- un solo colore evidenziato per ciò che conta, grigio per il resto.
+
+<Callout kind="attenzione">
+Un grafico che «funziona» solo perché l'asse è tagliato non è una buona comunicazione: è un inganno, anche se involontario.
+</Callout>
+
+<Say who="sensei">Se il grafico ha bisogno di una spiegazione di tre righe, rifallo. Deve parlare da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Raccomandazione e limiti">
+Una **raccomandazione** dice cosa fare e perché, in modo concreto: «Estendere il porta a porta ai due quartieri sotto il 60%, dove la quota è più bassa». Non basta scrivere «migliorare la raccolta».
+
+I **limiti** dicono cosa non sai:
+
+- il periodo è breve o ha un anno anomalo;
+- i dati sono dichiarati dal comune e non controllati;
+- la correlazione non è causa: la quota è salita **mentre** si estendeva il servizio, ma altri fattori possono aver contribuito.
+
+<Callout kind="regola">
+Non confondere **punti percentuali** e **percentuale**. Dal 54% al 67% la quota sale di **13 punti percentuali**. In relativo, 13 / 54 è circa il 24% in più. Sono due cose diverse: scrivi sempre quale usi.
+</Callout>
+
+<Say who="assistente">Dichiarare i limiti non indebolisce il report: lo rende credibile. Chi li nasconde, prima o poi viene scoperto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un report mostra un grafico a barre di due quartieri: 61% e 63% di raccolta differenziata, con l'asse verticale che va da 60 a 64. Cosa c'è che non va?"
+  options={[
+    "L'asse non parte da zero: una differenza di 2 punti sembra enorme",
+    "Il grafico a barre non si può usare per due quartieri",
+    "Le percentuali non si possono mettere in un grafico",
+    "Va benissimo: un asse stretto rende il grafico più preciso e quindi più onesto",
+  ]}
+  answer={0}
+  explain="Nelle barre la lunghezza rappresenta il valore: se l'asse parte da 60, la barra del 63% sembra tre volte quella del 61%. La differenza reale è di 2 punti. Si parte da zero, oppure si usa un altro tipo di grafico e si dichiara."
+/>
+
+<Say who="sensei">L'occhio giudica la lunghezza delle barre, non i numeri sull'asse. Non approfittarne.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su struttura del report, grafici, raccomandazioni e limiti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-report" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Un report onesto e chiaro vale più di uno bello e vago.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il report parte dalla risposta: titolo-messaggio, sintesi, poi dati, risultati, raccomandazione, limiti, appendice.
+- Un grafico, un messaggio; barre con asse da zero; titolo, unità e fonte sempre indicati.
+- La raccomandazione è concreta; i limiti si dichiarano; punti percentuali e percentuale non sono la stessa cosa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa va in cima a un report?", a: "La risposta alla domanda, in un titolo e in una sintesi" },
+    { q: "Quale grafico per un andamento nel tempo?", a: "Un grafico a linee" },
+    { q: "Dal 54% al 67%: di quanto sale la quota?", a: "Di 13 punti percentuali" },
+    { q: "Perché dichiarare i limiti?", a: "Perché rende il report credibile e dice cosa i dati non provano" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il portfolio. Il tuo lavoro deve poter essere trovato e capito da chi non ti conosce.</Say>
+</Scene>

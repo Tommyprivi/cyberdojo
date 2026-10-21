@@ -1,0 +1,160 @@
+---
+id: H.02.007
+course: hedge
+module: 2
+title: "Managed futures: seguire il trend"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.006]
+objectives:
+  - "Spiegare che cosa sono i futures e che cosa fa un fondo managed futures (CTA)"
+  - "Descrivere una regola semplice di trend following e il suo andamento tipico: molte piccole perdite, pochi grandi guadagni"
+  - "Calcolare quando una strategia con molte perdite piccole è in pari e riconoscere i periodi difficili"
+video:
+  provider: youtube
+  id: "FtphPwxPCKc"
+  start: 0
+  end: 600
+  channel: "Virtus Investment Partners"
+  title: "Overview of Managed Futures & Trend Following"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-managed-futures
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una strategia che perde due volte su tre sia sbagliata: conta il rapporto tra guadagno medio e perdita media"
+  - "Credere che il trend following guadagni in ogni periodo: nei mercati senza direzione perde a ripetizione"
+  - "Confondere futures e azioni: il future è un contratto con una scadenza e di solito si usa con la leva"
+commands: []
+---
+
+<Scene title="Il grano di Aldo">
+**Aldo** ha un'azienda fittizia di pasta. Teme che il grano salga e fa un contratto con un agricoltore: tra sei mesi comprerà grano a un prezzo **fissato oggi**. Questo accordo si chiama **future**: un contratto per comprare o vendere qualcosa a una data futura a un prezzo deciso adesso.
+
+Anche un fondo può comprare e vendere futures, non per fare pasta ma per scommettere sul prezzo. Un fondo fittizio, **Rotta Lunga**, ne gestisce su cinquanta mercati: grano, petrolio, oro, euro-dollaro, titoli di Stato, indici di borsa.
+
+La domanda del caso: **come decide un fondo che non ha opinioni su nessuno di questi mercati?**
+
+<Callout kind="attenzione">
+La lezione spiega un metodo, non consiglia niente. Con i futures si può perdere più del capitale messo. Fondo e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Il future non è un'azione: ha una scadenza, e di solito usa la leva. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il managed futures">
+I fondi **managed futures** (a volte chiamati **CTA**, dall'inglese *commodity trading advisor*, «consulente sulle materie prime») negoziano futures su molti mercati. La maggior parte segue il **trend**: se un prezzo sta salendo da tempo, compra; se sta scendendo, vende allo scoperto.
+
+Questa idea si chiama **trend following** («seguire la tendenza»). Non tenta di indovinare la causa, né di prevedere: reagisce a ciò che i prezzi stanno già facendo.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese con i sottotitoli, guardane i primi minuti.
+
+<Video />
+
+<Say who="assistente">Il trend following non dice «salirà». Dice «sta salendo, quindi sono dalla parte della salita finché non cambia».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una regola semplice">
+Una regola tipica, molto semplificata:
+
+- Se il prezzo oggi è **sopra** la media degli ultimi 100 giorni: **compra** (long).
+- Se è **sotto**: **vendi allo scoperto** (short), oppure resta fuori.
+- Se il prezzo si inverte, la posizione si chiude in perdita limitata.
+
+Ogni tentativo di seguire un trend ha esito incerto. Succede questo, nei fondi che funzionano così:
+
+<Guided
+  steps={[
+    "In un anno ci sono 10 tentativi su un mercato: 7 si chiudono in perdita di 1, 3 si chiudono in guadagno di 4 (numeri inventati).",
+    "Totale: 3 x 4 - 7 x 1 = 12 - 7 = +5. Anche se si perde 7 volte su 10.",
+    "Se invece i guadagni fossero di 2: 3 x 2 - 7 x 1 = 6 - 7 = -1. Stesse percentuali di successo, risultato in perdita.",
+    "Con il 30% di tentativi vincenti, il guadagno medio deve superare la perdita media di più di 2,3 volte (0,7 / 0,3 = 2,33) per andare in pari.",
+  ]}
+/>
+
+<Callout kind="regola">
+Nel trend following non conta quante volte si vince, ma **quanto si guadagna quando va bene rispetto a quanto si perde quando va male**.
+</Callout>
+
+<Say who="sensei">Perdere sette volte su dieci e chiudere in guadagno è possibile. Ma solo se le perdite le hai tenute piccole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando funziona e quando no">
+Il trend following guadagna quando c'è un **movimento lungo e netto** in una direzione: un prezzo che sale per mesi, o scende per mesi. Per questo ha funzionato in alcuni periodi di grandi cambiamenti.
+
+Perde nei mercati **senza direzione**, quando il prezzo sale un poco, poi scende un poco, poi risale: ogni volta la regola entra, il prezzo si inverte, e la regola esce in perdita. Questo si chiama **whipsaw** (come essere colpiti da una frusta avanti e indietro). Ci possono essere **anni interi** così.
+
+Altri rischi:
+
+- **Costi**: tanti ingressi e uscite, quindi commissioni e scarto tra prezzo di acquisto e di vendita.
+- **Leva**: i futures si usano con margini ridotti, quindi le perdite possono essere grandi rispetto al capitale messo.
+- **Troppi uguali**: molti fondi seguono regole simili, e le inversioni improvvise possono colpire tutti insieme.
+
+<Callout kind="curiosita">
+Non si può contare sul fatto che questo tipo di fondo guadagni quando le altre strategie perdono. È successo in alcuni periodi, ma non è una garanzia.
+</Callout>
+
+<Say who="assistente">Il trend following è come cavalcare un'onda: se non arriva, resti in acqua. A volte per molto tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una regola di trend following ha successo solo 4 volte su 10. Ogni perdita vale -1 e ogni guadagno vale +2. Qual è il risultato su 10 tentativi?"
+  options={[
+    "+2",
+    "-2",
+    "+4",
+    "0",
+  ]}
+  answer={0}
+  explain="4 guadagni da +2 fanno +8. 6 perdite da -1 fanno -6. Totale 8 - 6 = +2. Anche se si perde 6 volte su 10, la strategia chiude in positivo. Chi risponde -2 ha guardato solo che le perdite sono più numerose. Chi risponde 0 ha sommato i tentativi senza pesare gli importi."
+/>
+
+<Say who="assistente">Non contare le vittorie. Moltiplica ogni gruppo per il suo valore, poi somma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sui managed futures: conti di guadagni e perdite, e riconoscimento dei periodi difficili.
+
+<Practice generator="h02-managed-futures" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi segue il trend deve saper aspettare. E saper perdere poco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un future è un contratto per comprare o vendere a una data futura a un prezzo fissato oggi; si usa spesso con la leva.
+- Il trend following segue i prezzi: compra ciò che sale, vende allo scoperto ciò che scende, su molti mercati.
+- Molte piccole perdite e pochi grandi guadagni; nei mercati senza direzione (whipsaw) perde a lungo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un future?", a: "Un contratto per comprare o vendere qualcosa a una data futura a un prezzo deciso oggi" },
+    { q: "Che cos'è il trend following?", a: "Una strategia che segue la direzione dei prezzi: compra ciò che sale, vende ciò che scende" },
+    { q: "Che cos'è il whipsaw?", a: "Una serie di inversioni rapide che causano perdite ripetute a chi segue il trend" },
+    { q: "Si può perdere 6 volte su 10 e chiudere in guadagno?", a: "Sì, se il guadagno medio è abbastanza più grande della perdita media" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i multi-strategy. Tante squadre, ciascuna con la sua idea, sotto un unico controllo del rischio.</Say>
+</Scene>

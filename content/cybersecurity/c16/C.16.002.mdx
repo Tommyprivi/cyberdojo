@@ -1,0 +1,164 @@
+---
+id: C.16.002
+course: cybersecurity
+module: 16
+title: "JWT e i suoi errori tipici"
+belt: blu
+duration_min: 10
+prerequisites: [C.16.001]
+objectives:
+  - "Descrivere le tre parti di un JWT e dire che è firmato, non cifrato"
+  - "Elencare i controlli che il server deve fare su ogni token"
+  - "Riconoscere gli errori tipici: segreto debole, algoritmo non vincolato, scadenza assente, dati sensibili nel contenuto"
+video:
+  provider: youtube
+  id: "Y2H3DXDeS3Q"
+  start: 0
+  end: 600
+  channel: "Ariel Weinberger"
+  title: "JWT Explained In Under 10 Minutes (JSON Web Tokens)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-jwt
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il contenuto di un JWT sia segreto: è solo codificato, chiunque lo legge"
+  - "Controllare la firma ma non la scadenza, l'emittente e il destinatario"
+  - "Lasciare che sia il token a dire con quale algoritmo va verificato"
+commands: []
+---
+
+<Scene title="Il ruolo scritto sul token">
+Nel sistema fittizio di **PrenotaSale**, dopo il login ogni utente riceve un token. Nel supporto, Elena apre il suo e lo incolla in un sito che «decodifica» i token. Appare, leggibile:
+
+<Log lines={[
+  "utente  : elena.r",
+  "ruolo   : studente",
+  "scade   : tra 15 minuti",
+  "telefono: 333 000 0000",
+]} />
+
+Elena si chiede: «Se tutti possono leggerlo, che cosa impedisce a chiunque di cambiare **ruolo: studente** in **ruolo: amministratore**?»
+
+La domanda del caso: **che cosa rende un JWT affidabile, se il suo contenuto si legge?**
+
+<Say who="sensei">Leggere e fidarsi sono due verbi diversi. Un biglietto leggibile può comunque essere sigillato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre parti, un sigillo">
+Un **JWT** (JSON Web Token, si dice «giot») è una stringa fatta di **tre parti** separate da punti:
+
+- **Header**: dice che tipo di token è e con quale algoritmo è firmato.
+- **Payload**: i dati, chiamati **claim**: chi è l'utente, il ruolo, la scadenza.
+- **Firma**: un sigillo calcolato su header e payload con una chiave segreta (o con una coppia di chiavi).
+
+Header e payload sono solo **codificati** (in base64url, una scrittura che si legge con qualunque strumento): non sono cifrati. La **firma** non nasconde nulla: serve a **scoprire se qualcuno ha cambiato qualcosa**. Se Elena cambiasse «studente» in «amministratore», la firma non tornerebbe più e il server rifiuterebbe il token.
+
+<Callout kind="regola">
+Un JWT è **firmato, non segreto**. Nel payload non si mette nulla che non possa leggere chi ha il token: niente password, niente dati sanitari, niente numeri di telefono.
+</Callout>
+
+<Say who="assistente">Come una busta trasparente con un sigillo di ceralacca: leggi la lettera, ma se la modifichi si rompe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa controlla il server">
+Quando arriva un token, il server non si limita a «c'è una firma». Controlla, in ordine:
+
+<Guided
+  steps={[
+    "Firma: è valida con la chiave che il server ha scelto? Se no, scarta.",
+    "Algoritmo: è uno di quelli che il server permette? (La scelta la fa il server, non l'header del token.)",
+    "Emittente (iss): l'ha emesso il nostro servizio di login?",
+    "Destinatario (aud): è stato fatto per questa API e non per un'altra?",
+    "Scadenza (exp) e inizio validità: è ancora valido adesso?",
+    "Autorizzazione: il ruolo o gli scope dentro il token bastano per **questa** azione?",
+  ]}
+/>
+
+Un token con firma valida ma scaduto, o emesso per un altro servizio, va comunque rifiutato.
+
+<Say who="sensei">Sei controlli, sempre tutti. Il token buono non chiede di essere creduto sulla parola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori tipici">
+Questi errori si trovano davvero nelle revisioni di codice. Li spieghiamo solo per **difendersi**.
+
+- **Segreto debole**: se la chiave di firma è una parola semplice, chi ha un token può provare a indovinarla offline e poi firmare token falsi. La chiave deve essere lunga, casuale e custodita come una password di sistema.
+- **Algoritmo non vincolato**: se il server si fida dell'header per scegliere come verificare, un token può chiedere una verifica più debole o nessuna (esiste perfino un valore «none»). Il server deve avere una lista fissa di algoritmi ammessi. Esiste anche la confusione tra chiave segreta e chiave pubblica: si evita con lo stesso principio.
+- **Nessuna scadenza, o scadenza di mesi**: un token rubato vale per sempre.
+- **Dati sensibili nel payload**: lo vede chiunque abbia il token, compreso chi legge i log.
+- **Token conservato dove lo legge uno script**: se la pagina ha un difetto XSS (lo ricordi da C.05), lo script dell'estraneo può portarsi via il token.
+- **Nessun modo di revocare**: un JWT valido resta valido finché non scade, anche se l'utente è stato disattivato. Si mitiga con scadenze brevi, controlli aggiuntivi e liste di revoca.
+
+<Callout kind="attenzione">
+Falsificare token o indovinare chiavi di un sistema che non è tuo è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo o per cui hai un permesso scritto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Quasi tutti gli errori hanno una radice sola: il server crede troppo a ciò che il token dice di sé.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una API controlla che la firma del JWT sia valida, ma non guarda mai il campo di scadenza. Che cosa può succedere?"
+  options={[
+    "Un token rubato mesi fa continua a funzionare, perché la firma resta valida per sempre",
+    "Nulla: la firma valida basta a garantire che il token sia recente",
+    "Il token si autodistrugge dopo il primo uso",
+    "Il contenuto del token diventa cifrato"
+  ]}
+  answer={0}
+  explain="La firma garantisce solo che il contenuto non è stato modificato, non che il token sia ancora da accettare. Senza controllo di exp, un token vecchio o rubato resta utilizzabile. Per questo il server controlla anche emittente, destinatario e scadenza."
+/>
+
+<Say who="assistente">Indizio: la firma risponde a «è stato manomesso?». Chi risponde a «è ancora valido?»</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su struttura, controlli ed errori dei token: scegli la risposta giusta.
+
+<Practice generator="c16-jwt" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un token ben firmato ma mal controllato è una porta con la serratura e lo stipite di cartone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un JWT ha header, payload e firma: il contenuto si legge, la firma scopre le modifiche.
+- Il server controlla firma, algoritmo (deciso da lui), iss, aud, scadenza e permessi per l'azione.
+- Errori tipici: segreto debole, algoritmo scelto dal token, scadenze lunghe, dati sensibili nel payload, nessuna revoca.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Il payload di un JWT è cifrato?", a: "No, è solo codificato: chiunque ha il token lo legge" },
+    { q: "A che cosa serve la firma?", a: "A scoprire se header o payload sono stati modificati" },
+    { q: "Chi decide l'algoritmo di verifica?", a: "Il server, con una lista fissa; non l'header del token" },
+    { q: "Perché le scadenze brevi?", a: "Perché un JWT non si revoca facilmente: se viene rubato, vale poco" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: sessioni o token? Due modi di ricordarsi chi sei, con costi e rischi diversi.</Say>
+</Scene>

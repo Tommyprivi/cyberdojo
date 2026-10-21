@@ -1,0 +1,157 @@
+---
+id: T.01.006
+course: trading
+module: 1
+title: "Borsa, broker e orari"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.005]
+objectives:
+  - "Spiegare che cos'è una borsa e che cosa fa un broker"
+  - "Leggere prezzo di acquisto, prezzo di vendita e spread"
+  - "Sapere che i mercati hanno orari e che bisogna verificarli"
+video:
+  provider: youtube
+  id: "BynZ8InMm38"
+  start: 0
+  end: 600
+  channel: "Directa"
+  title: "Come funziona la Borsa, spiegato ai ragazzi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-borsa-broker
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare di comprare direttamente dalla borsa: si passa sempre da un intermediario autorizzato"
+  - "Confondere il prezzo a cui compri (lettera) con quello a cui vendi (denaro)"
+  - "Dimenticare che fuori orario gli ordini non vengono eseguiti subito"
+commands: []
+---
+
+<Scene title="Un ordine alle sette di sera">
+Marta, alle sette di sera, vede una notizia sul Panificio Rossi (inventato) e vuole comprare subito. Apre l'app del suo conto di investimento e preme «compra». Succede qualcosa di strano: l'ordine risulta **in attesa**.
+
+La domanda del caso: **perché non viene eseguito subito, e chi esegue davvero l'ordine?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza. Nel corso non si usa denaro reale: lavoreremo con dati inventati e, più avanti, con ambienti demo. Sui mercati veri si può perdere denaro.
+</Callout>
+
+<Say who="sensei">Il mercato non è una macchinetta sempre aperta. Ha regole, orari e intermediari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La borsa e il broker">
+La **borsa** è un mercato organizzato e regolamentato dove si scambiano titoli quotati, con regole uguali per tutti. In Italia il mercato principale delle azioni è gestito da Borsa Italiana, parte del gruppo Euronext.
+
+Un piccolo investitore **non entra in borsa di persona**. Passa da un **broker**, cioè un intermediario autorizzato (una banca o una società di intermediazione) che riceve il suo ordine e lo porta sul mercato, in cambio di **commissioni**.
+
+<Callout kind="regola">
+Tu dai l'ordine al broker, il broker lo porta in borsa, la borsa abbina compratore e venditore.
+</Callout>
+
+<Callout kind="attenzione">
+Un broker serio deve essere **autorizzato e vigilato**. Più avanti nel corso vedremo come verificarlo: i falsi broker esistono.
+</Callout>
+
+<Say who="assistente">Il broker è come un corriere: tu non vai al mercato, lui porta il tuo ordine fino al banco giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due prezzi, non uno">
+Su un titolo ci sono sempre **due prezzi**, perché compratori e venditori non chiedono la stessa cifra:
+
+- **denaro** (*bid*): il prezzo più alto che un compratore offre ora; è quello a cui **vendi** tu;
+- **lettera** (*ask*): il prezzo più basso a cui un venditore cede ora; è quello a cui **compri** tu.
+
+La differenza si chiama **spread**.
+
+Esempio inventato per ALFA: denaro 9,98 euro, lettera 10,02 euro.
+
+<Log lines={[
+  "denaro = 9.98",
+  "lettera = 10.02",
+  "spread = lettera - denaro",
+  "spread = 0.04",
+]} />
+
+Se compri e rivendi subito, perdi lo spread: compri a 10,02 e vendi a 9,98, quindi **−0,04 per azione**, prima ancora delle commissioni.
+
+<Say who="sensei">Lo spread è un costo nascosto. Chi compra e rivende di continuo lo paga ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli orari">
+Ogni mercato ha i suoi **orari di negoziazione**. In sintesi, a ottobre 2026: per le azioni italiane, la negoziazione continua si svolge nei giorni feriali dalla mattina (circa le 9:00) al tardo pomeriggio (circa le 17:30, ora italiana), con aste di apertura e chiusura. Le borse di altri paesi hanno orari diversi: quella di New York, per esempio, apre nel pomeriggio italiano.
+
+<Callout kind="attenzione">
+Gli orari e le regole possono cambiare e variano per strumento e mercato. Verifica sempre sul sito ufficiale della borsa o del tuo broker.
+</Callout>
+
+Fuori orario un ordine resta **in attesa** fino alla riapertura: il caso di Marta si spiega così. Questa pausa è anche un rischio: se arrivano notizie importanti a mercato chiuso, il prezzo di apertura del giorno dopo può essere molto diverso da quello di chiusura.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="assistente">Il giorno dopo il prezzo può «saltare»: non ci sono scambi nel mezzo, quindi niente prezzi intermedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Su un titolo vedi denaro 24,90 e lettera 25,10. Compri a mercato e rivendi subito a mercato, senza commissioni. Quanto perdi per azione?"
+  options={[
+    "0,20 euro, cioè lo spread",
+    "0,10 euro",
+    "Niente, il prezzo è lo stesso",
+    "25,10 euro",
+  ]}
+  answer={0}
+  explain="Compri alla lettera (25,10) e vendi al denaro (24,90): perdi 0,20, cioè lo spread. Chi risponde 0,10 ha diviso lo spread a metà."
+/>
+
+<Say who="sensei">Si compra al prezzo più alto e si vende al prezzo più basso. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Borsa, broker, denaro e lettera, orari.
+
+<Practice generator="t01-borsa-broker" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere chi esegue l'ordine, e a quale prezzo, protegge il tuo denaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La borsa è un mercato regolamentato; si accede tramite un broker autorizzato, che chiede commissioni.
+- Si compra alla lettera (più alta) e si vende al denaro (più bassa): la differenza è lo spread.
+- I mercati hanno orari: verifica sempre quelli ufficiali. Fuori orario gli ordini restano in attesa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa un broker?", a: "Porta sul mercato gli ordini dell'investitore, in cambio di commissioni" },
+    { q: "A quale prezzo compri: denaro o lettera?", a: "Alla lettera (il prezzo più alto)" },
+    { q: "Che cos'è lo spread?", a: "La differenza tra lettera e denaro" },
+    { q: "Dove si controllano gli orari di una borsa?", a: "Sul sito ufficiale della borsa o del broker, perché possono cambiare" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: gli ordini. A mercato, limite e stop: tre modi di dire cosa vuoi, e a che prezzo.</Say>
+</Scene>

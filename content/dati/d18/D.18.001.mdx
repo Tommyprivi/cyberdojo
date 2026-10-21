@@ -1,0 +1,207 @@
+---
+id: D.18.001
+course: dati
+module: 18
+title: "Le transazioni"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.006]
+objectives:
+  - "Spiegare le quattro proprietà ACID con parole semplici"
+  - "Usare BEGIN, COMMIT e ROLLBACK e prevedere lo stato dei dati dopo ciascuno"
+  - "Descrivere a che cosa serve l'isolamento tra transazioni"
+video:
+  provider: youtube
+  id: "OSFY6EJoyDg"
+  start: 0
+  end: 600
+  channel: "Giovanni Pace - Archety"
+  title: "Stored Procedure SQL Server (5/7): transazioni con TRANSACTION, COMMIT e ROLLBACK"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-transazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il COMMIT sia automatico anche dentro un BEGIN: finché non scrivi COMMIT, i cambiamenti non sono definitivi"
+  - "Dimenticare che dopo un errore in PostgreSQL la transazione resta «rotta»: serve un ROLLBACK prima di continuare"
+  - "Credere che l'isolamento significhi che nessuno può leggere i dati: significa che si vedono solo le modifiche già confermate"
+commands: []
+---
+
+<Scene title="Il bonifico a metà">
+La banca fittizia «Cassa Piccola» tiene i conti in una tabella. Giulia vuole mandare **100 euro** a Marco.
+
+<Log lines={[
+  "id | titolare     | saldo",
+  "1  | Giulia Ferri | 500.00",
+  "2  | Marco Bassi  | 200.00",
+]} caption="La tabella conti prima del bonifico. Dati inventati." />
+
+Per spostare i soldi servono **due** modifiche: togliere 100 a Giulia e aggiungere 100 a Marco. Ma il server si spegne **tra la prima e la seconda**.
+
+<Log lines={[
+  "id | titolare     | saldo",
+  "1  | Giulia Ferri | 400.00",
+  "2  | Marco Bassi  | 200.00",
+]} caption="Dopo il guasto: 100 euro sono spariti nel nulla." />
+
+La domanda del caso: **come si fa perché le due modifiche avvengano insieme, oppure per niente?**
+
+<Say who="sensei">Un database che perde soldi non è un database. Oggi impari lo strumento che lo impedisce: la transazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una transazione">
+Una **transazione** è un gruppo di istruzioni SQL trattato come **un'unica operazione indivisibile**: o riescono tutte, o non ne riesce nessuna.
+
+Si scrive così:
+
+<Log lines={[
+  "BEGIN;",
+  "UPDATE conti SET saldo = saldo - 100 WHERE id = 1;",
+  "UPDATE conti SET saldo = saldo + 100 WHERE id = 2;",
+  "COMMIT;",
+]} caption="Il bonifico come transazione." />
+
+- `BEGIN` apre la transazione.
+- `COMMIT` la **conferma**: le modifiche diventano definitive e visibili a tutti.
+- `ROLLBACK` la **annulla**: tutto torna come prima di `BEGIN`.
+
+Se il server si spegne prima del `COMMIT`, al riavvio il database annulla da solo la transazione incompleta. I saldi restano 500 e 200.
+
+<Callout kind="trucco">
+Pensa al carrello di un negozio: puoi riempirlo e svuotarlo quanto vuoi. Solo alla cassa (il COMMIT) il conto diventa vero.
+</Callout>
+
+<Say who="assistente">Senza BEGIN, ogni istruzione è già una transazione da sola, con il suo COMMIT automatico. Per questo il bonifico a due passi serve il BEGIN esplicito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ACID: le quattro garanzie">
+Una transazione seria offre quattro garanzie. Le iniziali formano la sigla **ACID**.
+
+- **A, Atomicità**: tutto o niente. Non esistono transazioni a metà.
+- **C, Consistenza**: i dati rispettano sempre le regole (per esempio «il saldo non è negativo»). Una transazione che le viola viene rifiutata.
+- **I, Isolamento**: due transazioni che corrono insieme non si pestano i piedi.
+- **D, Durabilità**: dopo il COMMIT il dato resta, anche se un attimo dopo salta la corrente.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video mostra BEGIN, COMMIT e ROLLBACK su un altro database (SQL Server), ma l'idea è identica:
+
+<Video />
+
+<Callout kind="curiosita">
+In PostgreSQL le regole di consistenza si scrivono nella tabella, per esempio `CHECK (saldo >= 0)`. Anche MySQL (con il motore InnoDB) e SQL Server offrono transazioni ACID.
+</Callout>
+
+<Say who="sensei">Quattro lettere, quattro promesse. Se una manca, non puoi fidarti di un conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ROLLBACK: tornare indietro">
+Giulia prova a mandare **600 euro**, ma ne ha solo 500. La tabella ha la regola `CHECK (saldo >= 0)`.
+
+<Log lines={[
+  "BEGIN;",
+  "UPDATE conti SET saldo = saldo - 600 WHERE id = 1;",
+  "ERRORE: il nuovo valore viola il vincolo conti_saldo_check",
+  "ROLLBACK;",
+  "SELECT id, saldo FROM conti ORDER BY id;",
+]} caption="Il vincolo blocca la prima modifica." />
+
+<Log lines={[
+  "id | saldo",
+  "1  | 500.00",
+  "2  | 200.00",
+]} caption="Risultato dell'ultima SELECT: nulla è cambiato." />
+
+<Callout kind="attenzione">
+In PostgreSQL, dopo un errore dentro una transazione, ogni altra istruzione viene rifiutata finché non scrivi `ROLLBACK`. In MySQL, invece, la transazione di solito resta aperta e decidi tu.
+</Callout>
+
+`ROLLBACK` serve anche quando sei **tu** a cambiare idea: hai scritto un `UPDATE` senza `WHERE` per sbaglio? Se sei ancora dentro la transazione, annulli e nessuno se ne accorge.
+
+<Say who="sensei">Prima di ogni modifica importante: BEGIN. Poi controlli. Poi decidi: COMMIT o ROLLBACK.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'isolamento, in parole semplici">
+Mentre la transazione di Giulia è aperta (ha tolto 100 ma non ha ancora scritto COMMIT), un'impiegata esegue `SELECT saldo FROM conti WHERE id = 1`. Che cosa vede?
+
+<Log lines={[
+  "Transazione A (Giulia)           Transazione B (impiegata)",
+  "BEGIN;",
+  "UPDATE ... saldo = saldo - 100;",
+  "                                 SELECT saldo ... id = 1;   -> 500.00",
+  "COMMIT;",
+  "                                 SELECT saldo ... id = 1;   -> 400.00",
+]} caption="Livello predefinito di PostgreSQL: READ COMMITTED." />
+
+B vede **solo dati già confermati**. Prima del COMMIT di A vede 500. Dopo, vede 400. Non vede mai il «mezzo bonifico».
+
+Il **livello di isolamento** decide quanto B è protetto dai cambiamenti che arrivano mentre lavora:
+
+- **READ COMMITTED** (predefinito in PostgreSQL): ogni istruzione vede i dati confermati fino a quel momento.
+- **REPEATABLE READ**: B vede una «fotografia» scattata all'inizio e non cambia mai, per tutta la transazione.
+- **SERIALIZABLE**: come se le transazioni andassero una dopo l'altra. Il più sicuro, il più lento, a volte rifiuta una transazione che va ritentata.
+
+<Callout kind="curiosita">
+In MySQL (InnoDB) il livello predefinito è REPEATABLE READ, non READ COMMITTED. Stessi comandi, comportamenti leggermente diversi: controlla sempre il database che usi.
+</Callout>
+
+<Say who="assistente">Più isolamento vuol dire più sicurezza e meno velocità. Si sceglie caso per caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Stato iniziale: Giulia 500, Marco 200. Esegui BEGIN; UPDATE saldo = saldo - 100 per Giulia; UPDATE saldo = saldo + 100 per Marco; ROLLBACK;. Quali sono i saldi alla fine?"
+  options={["Giulia 500, Marco 200", "Giulia 400, Marco 300", "Giulia 400, Marco 200", "Giulia 500, Marco 300"]}
+  answer={0}
+  explain="Il ROLLBACK annulla tutta la transazione: entrambe le modifiche spariscono e i saldi tornano 500 e 200. Chi risponde 400 e 300 ha confuso ROLLBACK con COMMIT. Le altre due risposte sono il caso del guasto a metà, che l'atomicità esclude."
+/>
+
+<Say who="sensei">Il ROLLBACK cancella tutto, non solo l'ultima riga. Ricordalo quando lo usi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su transazioni, ACID e ROLLBACK. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-transazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi maneggia soldi o ordini senza transazioni prima o poi li perde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Una transazione raggruppa più istruzioni: o riescono tutte (COMMIT) o non ne resta nessuna (ROLLBACK).
+- ACID: atomicità, consistenza, isolamento, durabilità.
+- L'isolamento decide che cosa vede una transazione delle altre: in PostgreSQL, di base, solo dati già confermati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa ROLLBACK?", a: "Annulla tutte le modifiche fatte dopo BEGIN" },
+    { q: "Che cosa significa atomicità?", a: "Tutto o niente: nessuna transazione a metà" },
+    { q: "Livello di isolamento predefinito di PostgreSQL?", a: "READ COMMITTED: si vedono solo i dati confermati" },
+    { q: "Che cosa garantisce la durabilità?", a: "Dopo il COMMIT il dato resta anche in caso di guasto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso: nessun euro perso. Prossima lezione: gli indici, per trovare una riga tra milioni senza leggerle tutte.</Say>
+</Scene>

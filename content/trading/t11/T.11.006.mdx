@@ -1,0 +1,164 @@
+---
+id: T.11.006
+course: trading
+module: 11
+title: "Rischi e overfitting: perché quasi tutti falliscono"
+belt: blu
+duration_min: 9
+prerequisites: [T.11.005]
+objectives:
+  - "Spiegare l'overfitting e riconoscerlo dal confronto tra addestramento e test"
+  - "Calcolare la probabilità di trovare per caso un modello «buono» provando molte idee"
+  - "Calcolare l'effetto dei costi su un piccolo vantaggio e dire che cosa fare prima di fidarsi"
+video:
+  provider: youtube
+  id: "FHJfubAnos8"
+  start: 0
+  end: 600
+  channel: "Piero Savastano"
+  title: "Machine learning in python - 17 - Overfitting vs Underfitting spiegato facile con grafici"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-rischi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Provare molte idee e tenere solo quella che funziona, dimenticando le altre"
+  - "Dimenticare i costi: un piccolo vantaggio lordo può diventare una perdita netta"
+  - "Pensare che un buon risultato nel passato valga anche per il futuro"
+commands: []
+---
+
+<Scene title="Il campione dei venti modelli">
+Paolo, con dati fittizi, prova **20 modelli** diversi. Uno dà il **58%** di giorni indovinati sul test. Lo annuncia a tutti: «Ho trovato il metodo».
+
+Il Sensei gli chiede: «E gli altri diciannove?». Paolo alza le spalle: «Non funzionavano.»
+
+La domanda del caso: **quel 58% è merito del modello o di Paolo che ha continuato a provare?**
+
+<Say who="sensei">Ultima lezione, ed è quella che ti salva i risparmi. La maggior parte dei modelli non funziona fuori campione. Ricorda: educazione, non consulenza; si può perdere denaro, anche tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'overfitting">
+Si ha **overfitting** («adattamento eccessivo») quando il modello impara anche il **rumore** del passato e non una regola vera. Va benissimo sui dati già visti, e fallisce sui dati nuovi.
+
+Il segnale tipico: **95% sull'addestramento, 50% sul test**. Ha memorizzato, non capito.
+
+Aumenta con:
+
+- **pochi dati**;
+- **molte feature**;
+- **tanti tentativi** di modello e di impostazioni.
+
+<Callout kind="regola">
+Un modello vale quanto il suo risultato **fuori campione**: su dati mai usati né dal modello né da te per scegliere.
+</Callout>
+
+Vuoi sentire l'overfitting spiegato con i grafici da un'altra voce? Un video in italiano, guarda i primi minuti:
+
+<Video />
+
+<Say who="assistente">Come imparare a memoria le risposte di un compito: all'esame, con domande nuove, non sai fare niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare tante idee">
+Rifacciamo il conto di Paolo. Ogni modello senza alcuna capacità ha circa il **5%** di probabilità di sembrare «buono» per pura fortuna (per esempio superare una certa soglia di accuratezza).
+
+Probabilità che **tutti e 20** i modelli non sembrino buoni: 0,95 elevato alla 20, circa **0,36**.
+
+Quindi la probabilità che **almeno uno** sembri buono è 1 − 0,36 = circa **64%**.
+
+Più idee provi, più è probabile che una funzioni per caso. Se non conti gli altri tentativi, il risultato migliore ti inganna.
+
+<Callout kind="attenzione">
+Dichiara **sempre** quanti modelli hai provato. Un «ho provato un solo modello» e un «ne ho provati duecento» non sono la stessa storia.
+</Callout>
+
+<Say who="sensei">Il modello migliore di venti non è il modello migliore del mondo. È il più fortunato di venti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I costi mangiano il vantaggio">
+Supponiamo che il modello di Paolo indovini davvero il **52%** dei giorni, e che ogni operazione guadagni o perda **1%**.
+
+Guadagno medio per operazione, **prima dei costi**: 0,52 × 1% − 0,48 × 1% = **+0,04%**.
+
+Ora un costo fittizio di **0,10%** per operazione (commissioni e spread):
+
+Risultato netto medio: 0,04% − 0,10% = **−0,06%** per operazione. In **perdita**.
+
+<Callout kind="curiosita">
+Un vantaggio piccolo, come tutti quelli che si trovano nei mercati, può essere cancellato dai costi. E ricorda: i mercati cambiano, le regolarità del passato possono sparire.
+</Callout>
+
+<Say who="assistente">Anche un modello «vero» può perdere soldi, se il suo vantaggio è più piccolo di quello che costa usarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La lista della prudenza">
+Prima di dare un minimo di fiducia a un modello, la lista:
+
+1. Feature note a fine giornata t? (niente perdita di dati)
+2. Divisione per tempo, con più finestre e gap se serve?
+3. Confronto con la baseline e con la moneta, sul numero giusto di giorni?
+4. Quanti modelli hai provato in tutto?
+5. Risultato **dopo i costi**?
+6. Prova su un periodo mai guardato, poi in ambiente **demo**?
+
+<Quiz
+  question="Un modello va benissimo nel backtest degli ultimi 5 anni, dopo che l'hai ritoccato molte volte guardando il test. Che cosa fai prima di fidarti?"
+  options={[
+    "Lo provo su un periodo mai guardato, con costi, e poi solo in demo",
+    "Lo uso subito con i risparmi: 5 anni sono tanti",
+    "Aggiungo altre feature finché il risultato migliora ancora",
+    "Scelgo il periodo più favorevole e lo mostro agli amici",
+  ]}
+  answer={0}
+  explain="Il test guardato e ritoccato più volte non è più una prova onesta. Serve un periodo mai usato per scegliere, con costi, e poi l'ambiente demo. Aggiungere feature o scegliere il periodo migliore peggiora l'inganno."
+/>
+
+<Say who="sensei">Chi dice «funziona» prima di aver fatto tutta la lista, vende qualcosa. Se ce l'hai davanti, controlla il portafoglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su overfitting, tentativi multipli, costi e prudenza.
+
+<Practice generator="t11-rischi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai perché i mercati non regalano niente: e perché il tuo scetticismo è la tua migliore difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Overfitting: il modello impara il rumore del passato; 95% in addestramento e 50% in test è il segnale tipico.
+- Provando 20 idee senza segnale, la probabilità che almeno una sembri buona è circa il 64%; i costi (0,10%) possono cancellare un vantaggio lordo di 0,04%.
+- Prima di fidarsi: niente perdita di dati, validazione temporale, baseline, conto dei tentativi, costi, periodo mai guardato e demo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'overfitting?", a: "Il modello impara anche il rumore del passato e fallisce sui dati nuovi" },
+    { q: "Probabilità che almeno uno di 20 modelli sembri buono per caso?", a: "Circa 64% (1 − 0,95 alla 20)" },
+    { q: "Vantaggio 0,04% lordo e costo 0,10%: risultato netto?", a: "−0,06% per operazione" },
+    { q: "Che cos'è un risultato fuori campione?", a: "Su dati mai usati dal modello né da chi sceglie il modello" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Prossimo: psicologia e disciplina. Il mercato sarà rumoroso, ma anche tu lo sei.</Say>
+</Scene>

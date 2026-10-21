@@ -1,0 +1,176 @@
+---
+id: T.10.003
+course: trading
+module: 10
+title: "Le chiavi non stanno nel codice"
+belt: verde
+duration_min: 9
+prerequisites: [T.10.002]
+objectives:
+  - "Spiegare perché una chiave API non va mai scritta nel codice"
+  - "Leggere una chiave da una variabile d'ambiente"
+  - "Scegliere permessi minimi (sola lettura) e agire se una chiave è trapelata"
+video:
+  provider: youtube
+  id: "VsSEsFu7NCU"
+  start: 0
+  end: 600
+  channel: "SystemDR - Scalable System Design"
+  title: "Secrets Management Explained: Stop Hardcoding API Keys & Passwords!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-chiavi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere la chiave nel codice «solo per provare» e poi caricare il file online"
+  - "Dare alla chiave più permessi del necessario"
+  - "Stampare la chiave nei messaggi di errore o nei registri"
+commands: []
+---
+
+<Scene title="Il file caricato per sbaglio">
+Marta carica il suo progetto su un sito di condivisione del codice, per mostrarlo a un amico. Nel file `bot.py` c'è una riga: `CHIAVE = "chiave-finta-1234"`.
+
+Il progetto è pubblico. Chiunque può leggere quella riga. Con una chiave vera, **chi la trova può fare quello che la chiave permette**.
+
+La domanda del caso: **dove si tiene una chiave, e che cosa si fa se è finita nel posto sbagliato?**
+
+<Say who="sensei">Una chiave nel codice è come la chiave di casa attaccata alla porta con un cartello. Prima o poi qualcuno la prende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una chiave API">
+Una **chiave API** è una password per programmi. Il broker la dà a te; il tuo programma la manda a ogni richiesta, di solito in un header:
+
+<Log lines={[
+  "GET /paper/v1/account",
+  "Authorization: Bearer <la-tua-chiave>",
+]} />
+
+Chi ha la chiave **è** te, per il broker. Per questo:
+
+- si tiene **segreta**, come una password;
+- si dà **un permesso alla volta**: chiavi diverse per cose diverse;
+- si può **revocare** e rifare in qualsiasi momento.
+
+<Callout kind="regola">
+Nel corso usiamo **solo chiavi dell'ambiente demo**. Una chiave di un conto con denaro vero non va mai usata negli esercizi.
+</Callout>
+
+<Say who="assistente">Una chiave demo che trapela è una seccatura. Una chiave reale che trapela è un guaio serio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fuori dal codice">
+Il segreto va **fuori** dal file. Il posto più semplice è una **variabile d'ambiente**: un valore che il sistema tiene per te e che il programma legge al volo.
+
+```python
+import os
+
+chiave = os.environ.get("BROKER_PAPER_KEY")
+if chiave is None:
+    raise SystemExit("Manca la variabile BROKER_PAPER_KEY: mi fermo.")
+```
+
+Altre buone abitudini:
+
+- un file `.env` **fuori dal progetto condiviso** (o elencato in `.gitignore`, che dice a Git di non salvarlo);
+- in azienda, un **gestore di segreti** (un servizio fatto per custodire chiavi);
+- mai in chat, mai in email, mai in uno screenshot.
+
+Vuoi sentire un'altra voce sul tema? Il video è in inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Il codice si condivide. Il segreto no. Tienili in posti diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Permessi minimi">
+Quando crei una chiave, il broker ti chiede che cosa può fare. Regola: **il minimo che serve**.
+
+- Un programma che **legge** prezzi e saldo: chiave di **sola lettura**.
+- Un programma che invia ordini demo: chiave demo con permesso di ordine, ma **solo demo**.
+- Mai permessi di prelievo o di trasferimento: il corso non ne ha bisogno.
+
+Una funzione utile: **non stampare mai la chiave intera**. Provala:
+
+<PythonTerminal code={"def maschera(chiave):\n    return chiave[:4] + '****'\n\nprint(maschera('abcd1234efgh'))"} />
+
+Risultato atteso: `abcd****`.
+
+<Callout kind="trucco">
+Se la chiave è di sola lettura, anche chi la rubasse potrebbe al massimo guardare. Il danno possibile dipende dai permessi.
+</Callout>
+
+<Say who="assistente">Quando dubiti, togli un permesso. Si può sempre riaggiungere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se la chiave è trapelata">
+<Guided
+  steps={[
+    "Passo 1: non far finta di niente. Cancellare il file non basta, la chiave è già stata vista.",
+    "Passo 2: vai nel pannello del broker e revoca la chiave subito.",
+    "Passo 3: crea una chiave nuova, con permessi minimi, e mettila nella variabile d'ambiente.",
+    "Passo 4: controlla i registri del broker per richieste che non riconosci.",
+    "Passo 5: togli la chiave anche dalla cronologia del progetto, o crea un progetto nuovo.",
+  ]}
+/>
+
+<Quiz
+  question="Hai caricato online un file con una chiave demo. Che cosa fai per prima cosa?"
+  options={[
+    "Revoco la chiave nel pannello del broker e ne creo una nuova",
+    "Cancello il file dal sito e considero chiuso il problema",
+    "Aspetto un po': se nessuno l'ha usata, va bene",
+    "Cambio solo il nome del file in qualcosa di meno ovvio",
+  ]}
+  answer={0}
+  explain="Un file cancellato resta nella cronologia e può essere già stato copiato. L'unica difesa vera è rendere la chiave inutile, cioè revocarla, e poi crearne una nuova."
+/>
+
+<Say who="sensei">Una chiave vista da altri è una chiave morta. Si cambia, senza vergogna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su dove tenere le chiavi, permessi e che cosa fare in caso di fuga.
+
+<Practice generator="t10-chiavi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La sicurezza di un bot comincia da dove tiene la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una chiave API è una password per programmi: chi la ha è te, per il broker.
+- La chiave sta fuori dal codice (variabile d'ambiente, .env ignorato da Git, gestore di segreti), con permessi minimi e mai stampata intera.
+- Se trapela: revoca subito, chiave nuova, controllo dei registri. Cancellare il file non basta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove NON va mai scritta una chiave API?", a: "Nel codice, in chat, in email o in screenshot" },
+    { q: "Dove si può tenere una chiave?", a: "In una variabile d'ambiente o in un gestore di segreti" },
+    { q: "Che permessi dare a una chiave?", a: "Il minimo che serve, per esempio sola lettura" },
+    { q: "Che cosa fare se una chiave è trapelata?", a: "Revocarla subito e crearne una nuova" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: finalmente un ordine. Simulato, nel conto demo, con tutti i controlli.</Say>
+</Scene>

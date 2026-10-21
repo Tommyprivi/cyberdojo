@@ -1,0 +1,153 @@
+---
+id: H.05.004
+course: hedge
+module: 5
+title: "Le greche in modo intuitivo"
+belt: verde
+duration_min: 9
+prerequisites: [H.05.003]
+objectives:
+  - "Spiegare in parole semplici delta, gamma, theta e vega"
+  - "Stimare la variazione del premio con delta, theta e vega usando numeri semplici"
+  - "Capire perché il tempo e la volatilità cambiano il prezzo di un'opzione"
+video:
+  provider: youtube
+  id: "79JmGZ_myDA"
+  start: 0
+  end: 339
+  channel: "FinGrad"
+  title: "Option Greeks Explained | Delta, Gamma, Theta & Vega"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-greche
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che le greche siano costanti: cambiano con prezzo, tempo e volatilità"
+  - "Credere che il tempo giochi a favore di chi compra opzioni"
+  - "Usare il delta come una probabilità certa o come una previsione"
+commands: []
+---
+
+<Scene title="Il premio che si scioglie">
+Marta ha comprato una call su Alfa Spa, strike 100, scadenza tra 30 giorni. Premio pagato: 5 euro. Dopo dieci giorni l'azione è **ferma a 100** e il premio è sceso a 4,50.
+
+«Ma il prezzo non si è mosso!», dice Marta.
+
+La domanda del caso: **perché il premio di un'opzione cambia anche se l'azione sta ferma, e come si misurano questi effetti?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Il tempo non è neutro, per chi compra opzioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le greche: quattro sensibilità">
+Le **greche** (si indicano con lettere greche) misurano **quanto cambia il premio** quando cambia un fattore, tenendo fermi gli altri. Sono **approssimazioni**.
+
+- **Delta**: quanto cambia il premio se l'azione si muove di 1 euro.
+- **Gamma**: quanto cambia il delta se l'azione si muove di 1 euro.
+- **Theta**: quanto premio si perde ogni giorno che passa.
+- **Vega**: quanto cambia il premio se la volatilità attesa sale di 1 punto percentuale.
+
+<Callout kind="regola">
+Le greche sono **sensibilità**, non previsioni. Dicono «se succede X, di quanto si muove il premio», non «succederà X».
+</Callout>
+
+<Say who="assistente">Come un cruscotto: ogni lancetta guarda una cosa sola. Il rischio vero è l'insieme delle lancette.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Delta">
+Il **delta** di una call va da **0 a 1**; quello di una put da **-1 a 0**.
+
+Esempio fittizio: call con delta **0,50**. Se Alfa sale di **2 euro**, il premio sale di circa 0,50 × 2 = **1 euro**. Se scende di 2, il premio scende di circa 1.
+
+<Guided
+  steps={[
+    "Delta 0,50: il premio si muove circa la metà dell'azione.",
+    "Opzione su 100 azioni con delta 0,40: si comporta come circa 40 azioni.",
+    "Una put ha delta negativo: guadagna quando l'azione scende.",
+    "Call molto «dentro» ai soldi: delta vicino a 1. Molto «fuori»: vicino a 0.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Il delta è usato dai professionisti come «equivalente in azioni»: serve per sapere quanta esposizione dà davvero un'opzione.
+</Callout>
+
+<Say who="sensei">Il delta ti dice quanto sei esposto al prezzo. Non lo chiamare probabilità: è solo una misura di sensibilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gamma, theta e vega">
+- **Gamma** misura quanto cambia il delta. Esempio: delta 0,50, gamma 0,06. Se l'azione sale di 1, il delta passa a circa **0,56**.
+- **Theta** è la perdita di valore col tempo. Esempio: theta -0,05 al giorno per azione. In 10 giorni, circa -0,50 (con tutto il resto fermo). Chi **compra** opzioni paga il tempo; chi le **vende** lo incassa.
+- **Vega** misura la volatilità: più l'azione è incerta, più l'opzione vale (c'è più possibilità di grandi movimenti). Esempio: vega 0,10. Se la volatilità attesa passa da 20% a 23%, il premio sale di circa 3 × 0,10 = **0,30**.
+
+Un'altra voce, in inglese con sottotitoli:
+
+<Video />
+
+<Callout kind="attenzione">
+Theta e vega spiegano il caso di Marta: l'azione ferma ha fatto perdere valore al tempo. Una opzione può perdere denaro anche se il prezzo non si muove.
+</Callout>
+
+<Say who="assistente">Il tempo è come un gelato al sole: chi compra opzioni lo tiene in mano mentre si scioglie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'opzione ha vega 0,20. La volatilità attesa sale di 2 punti percentuali, e il resto resta fermo. Di quanto cambia il premio, circa?"
+  options={[
+    "Sale di circa 0,40",
+    "Sale di circa 0,10",
+    "Scende di circa 0,40",
+    "Resta uguale: la volatilità non conta"
+  ]}
+  answer={0}
+  explain="Vega 0,20 per ogni punto di volatilità: 2 punti fanno 2 × 0,20 = 0,40, e il premio sale perché più incertezza rende l'opzione più preziosa. Chi risponde 'resta uguale' ignora che la volatilità fa parte del prezzo."
+/>
+
+<Say who="sensei">Un numero, una sensibilità. Non mescolare le lancette: una per volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su delta, gamma, theta e vega con piccoli calcoli. Numeri fittizi, valori approssimati.
+
+<Practice generator="h05-greche" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Le greche non prevedono niente, ma ti dicono dove ti fa male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Delta: variazione del premio per 1 euro di movimento dell'azione; call tra 0 e 1, put tra -1 e 0. Gamma: variazione del delta.
+- Theta: perdita di valore per il passare del tempo (la paga chi compra, la incassa chi vende). Vega: effetto della volatilità attesa.
+- Le greche sono sensibilità approssimate e cambiano continuamente: non sono previsioni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Delta 0,50, azione +2 euro: premio?", a: "Circa +1 euro" },
+    { q: "Theta -0,05 al giorno, 10 giorni?", a: "Circa -0,50 di premio" },
+    { q: "Vega 0,10, volatilità +3 punti?", a: "Circa +0,30 di premio" },
+    { q: "Chi paga il tempo (theta)?", a: "Chi compra l'opzione" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le coperture. Usare questi strumenti per proteggersi, non per scommettere.</Say>
+</Scene>

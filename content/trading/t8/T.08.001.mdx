@@ -1,0 +1,165 @@
+---
+id: T.08.001
+course: trading
+module: 8
+title: "Commissioni e spread"
+belt: arancione
+duration_min: 8
+prerequisites: [T.07.006]
+objectives:
+  - "Leggere bid, ask e spread e dire a che prezzo si compra e si vende"
+  - "Calcolare il costo di un giro completo (acquisto e vendita) tra spread e commissioni"
+  - "Spiegare perché un backtest senza costi è troppo ottimistico"
+video:
+  provider: youtube
+  id: "1LNgRcjY_lo"
+  start: 0
+  end: 341
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "What Is the Bid-Ask Spread? | Order Book & Trading Impact"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-commissioni-spread
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «zero commissioni» voglia dire «zero costi»: lo spread resta"
+  - "Dimenticare che si paga due volte: all'acquisto e alla vendita"
+  - "Confrontare lo spread in euro invece che in percentuale del prezzo"
+commands: []
+---
+
+<Scene title="Il guadagno che sparisce">
+Nora ha scritto una strategia in Python. Nel backtest, su dati storici, guadagna un pochino ogni volta che compra e rivende. Poi la prova in un ambiente **demo**, con soldi finti, e il conto scende.
+
+Guarda il prezzo di un titolo fittizio, «Alfa Spa»:
+
+<Log lines={[
+  "Alfa Spa",
+  "bid (denaro):  49,90",
+  "ask (lettera): 50,10",
+]} />
+
+Nora compra e rivende subito, senza che il prezzo si muova. Perde comunque. La domanda del caso: **dove finiscono i soldi?**
+
+<Say who="sensei">I mercati non regalano niente. Ogni operazione ha un prezzo, anche quando nessuno te lo scrive sullo scontrino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Bid, ask e spread">
+In ogni momento ci sono due prezzi:
+
+- **bid** (denaro): il prezzo più alto che qualcuno è disposto a pagare. È il prezzo a cui **vendi**.
+- **ask** (lettera): il prezzo più basso a cui qualcuno è disposto a vendere. È il prezzo a cui **compri**.
+
+La differenza si chiama **spread**: 50,10 − 49,90 = **0,20 euro** per azione.
+
+Pensa a un negozio che compra oro usato: te lo paga 49,90 e lo rivende a 50,10. La differenza è il suo margine, e per te è un costo.
+
+<Callout kind="regola">
+Compri all'**ask**, vendi al **bid**. Lo spread lo paghi subito, appena entri.
+</Callout>
+
+Vuoi vederlo spiegato da un'altra voce? Cinque minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Se hai un dubbio, ricorda: chi compra paga il prezzo più alto, chi vende incassa il più basso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il giro completo">
+Nora compra **100 azioni** all'ask e le rivende subito al bid. Facciamo il conto, convenzioni semplici, nessuna commissione per ora:
+
+<Guided
+  steps={[
+    "Acquisto: 100 × 50,10 = 5.010 euro.",
+    "Vendita subito dopo: 100 × 49,90 = 4.990 euro.",
+    "Risultato: 4.990 − 5.010 = −20 euro. Il prezzo non si è mosso, ma lo spread è costato 20 euro (0,20 × 100).",
+    "In percentuale: 0,20 / 50,00 = 0,4% del prezzo, solo per entrare e uscire.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Lo spread si misura meglio in **percentuale**: 0,20 su un titolo da 50 euro è lo 0,4%. Lo stesso 0,20 su un titolo da 5 euro sarebbe il 4%.
+</Callout>
+
+<Say who="sensei">Venti euro persi senza che il mercato abbia fatto nulla. Questo è il primo muro contro cui sbatte un backtest.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le commissioni">
+Il secondo costo è la **commissione**: la somma che il broker (l'intermediario che esegue gli ordini) addebita per ogni ordine. Può essere fissa (per esempio 2 euro) o una percentuale.
+
+Con 2 euro per ordine, il giro di Nora ha **due ordini** (acquisto e vendita):
+
+<Log lines={[
+  "spread:       20 euro",
+  "commissioni:   2 + 2 = 4 euro",
+  "-----------------------------",
+  "costo totale: 24 euro",
+]} />
+
+Una commissione fissa pesa molto sulle operazioni piccole: 5 euro su un ordine da 1.000 euro sono lo **0,5%**, ma su un ordine da 100 euro sono il **5%**.
+
+<Callout kind="curiosita">
+Alcuni broker pubblicizzano «zero commissioni». Lo spread però c'è sempre: il costo è spostato lì. Si confrontano i **costi totali**, non gli slogan.
+</Callout>
+
+<Say who="assistente">Fai sempre due conti: costi per ordine, e quanti ordini farà la tua strategia in un anno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un titolo ha bid 19,98 e ask 20,02. Compri 100 azioni a mercato e le rivendi subito a mercato, senza commissioni. Quanto perdi?"
+  options={["4 euro", "2 euro", "0,04 euro", "40 euro"]}
+  answer={0}
+  explain="Compri a 20,02 e vendi a 19,98: perdi 0,04 per azione, quindi 0,04 × 100 = 4 euro. Chi risponde 0,04 ha dimenticato di moltiplicare per le 100 azioni."
+/>
+
+<Say who="sensei">Prezzo per azione, poi quantità. Un passo alla volta, senza fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque calcoli di bid, ask, spread e commissioni su titoli fittizi. Numeri puliti, nessun trucco.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-commissioni-spread" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nel trading un errore di calcolo sui costi è un errore che paghi sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si compra all'ask e si vende al bid: la differenza (lo spread) è un costo che si paga subito.
+- Un giro completo costa lo spread più due commissioni (una per ordine): i costi di ogni operazione si sommano.
+- Un backtest senza costi è troppo ottimistico. Questo corso è educativo, non è consulenza finanziaria, e nel trading si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che prezzo si compra con un ordine a mercato?", a: "All'ask (la lettera), il prezzo più basso a cui qualcuno vende" },
+    { q: "Che cos'è lo spread?", a: "La differenza tra ask e bid" },
+    { q: "Bid 49,90 e ask 50,10: quanto vale lo spread in percentuale su 50,00?", a: "0,20 / 50,00 = 0,4%" },
+    { q: "Perché «zero commissioni» non vuol dire «zero costi»?", a: "Perché lo spread resta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: lo slippage, il costo che nessuno ti mostra prima di operare.</Say>
+</Scene>

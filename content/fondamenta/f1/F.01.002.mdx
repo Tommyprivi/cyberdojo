@@ -1,0 +1,143 @@
+---
+id: F.01.002
+course: fondamenta
+module: 1
+title: "Bit e byte: i due simboli"
+belt: bianca
+duration_min: 7
+prerequisites: [F.01.001]
+objectives:
+  - "Spiegare che cos'è un bit e perché i computer usano 0 e 1"
+  - "Sapere che un byte sono 8 bit e che ha 256 valori possibili"
+video:
+  provider: youtube
+  id: "_rrUqhiFOPU"
+  start: 0
+  end: 450
+  channel: "Docenti Informatica"
+  title: "Come i Computer Rappresentano i Dati: Bit, Byte e Sistema Binario Spiegati Semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-bit-byte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il computer capisca testo e immagini «come noi»: vede solo bit"
+  - "Contare 8 valori in un byte invece di 256"
+  - "Pensare che la stessa sequenza di bit abbia un solo significato"
+commands: []
+---
+
+<Scene title="Una foto, una canzone, un testo">
+Sul disco del tuo computer ci sono una foto, una canzone e un messaggio. Sembrano tre cose diversissime.
+
+Eppure, per il computer, **sono la stessa cosa**: lunghe file di **0 e 1**.
+
+<Callout kind="attenzione">
+La domanda del caso: **come fa una macchina a ricordare una foto usando solo due simboli?**
+</Callout>
+
+<Say who="sensei">Poco spazio, pochissimi simboli. La forza del computer non è la varietà: è la quantità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il bit: un interruttore">
+Un **bit** è la più piccola informazione possibile: **0 oppure 1**. Come un interruttore: spento o acceso.
+
+Perché solo due simboli? Perché dentro il computer c'è l'elettricità, e distinguere **«passa corrente» da «non passa»** è semplice e affidabile. Distinguere dieci livelli diversi sarebbe molto più difficile.
+
+<Callout kind="trucco">
+Bit = interruttore. Due stati soltanto: 0 o 1.
+</Callout>
+
+<Say who="assistente">Un interruttore da solo dice poco. Ma tanti interruttori insieme possono dire moltissimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il byte: otto interruttori">
+Otto bit insieme formano un **byte**. Ecco un byte:
+
+<Log lines={["01000001"]} caption="Otto bit: un byte." />
+
+Quante combinazioni diverse esistono con otto interruttori? Con un bit ce ne sono 2. Con due bit, 4. Ogni bit in più **raddoppia** le combinazioni. Con otto bit sono **256**.
+
+<Callout kind="curiosita">
+Il calcolo preciso del binario lo farai nel modulo sulle reti. Per ora basta l'idea: un byte può assumere **256 valori diversi**, da tutti zeri a tutti uno.
+</Callout>
+
+<Say who="sensei">Otto bit, duecentocinquantasei possibilità. Tienilo a mente: tornerà molte volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo stesso byte, tanti significati">
+Il byte che abbiamo visto, **01000001**, può significare cose diverse a seconda di **come lo legge il programma**:
+
+- il **numero 65**
+- la **lettera A**, se il programma lo tratta come testo
+- una parte dei colori di un pixel, in una foto
+
+I bit non hanno un significato scritto sopra. Il significato lo decide **chi li legge**.
+
+<Callout kind="regola">
+Un dato è fatto di bit. Che cosa **rappresentano** lo stabilisce il programma che li interpreta.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Circa sette minuti, con esempi:
+
+<Video />
+
+<Say who="assistente">Per questo una canzone rinominata «.txt» non diventa un testo: i bit restano gli stessi, cambia solo come li si legge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quanti valori diversi si possono scrivere con un byte?"
+  options={["256", "8", "100", "64"]}
+  answer={0}
+  explain="Ogni bit raddoppia le combinazioni: 2 x 2 x 2 x 2 x 2 x 2 x 2 x 2 = 256. Chi risponde 8 ha contato i bit invece delle combinazioni."
+/>
+
+<Say who="sensei">Otto sono i bit. Duecentocinquantasei sono i valori. Non confonderli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su bit e byte. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-bit-byte" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi sa leggere i bit, un giorno saprà leggere un pacchetto di rete. Per ora, esercizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un bit è 0 o 1: l'informazione più piccola, come un interruttore.
+- Otto bit formano un byte, che ha 256 valori possibili.
+- I bit non hanno un significato proprio: dipende da come il programma li interpreta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un bit?", a: "Uno 0 o un 1: la più piccola informazione" },
+    { q: "Quanti bit ha un byte?", a: "Otto" },
+    { q: "Quanti valori diversi può avere un byte?", a: "256" },
+    { q: "Chi decide che cosa significa una sequenza di bit?", a: "Il programma che la legge" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il sistema operativo. Il direttore d'orchestra che dà ordine a tutti questi pezzi.</Say>
+</Scene>

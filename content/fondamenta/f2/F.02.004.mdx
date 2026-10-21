@@ -1,0 +1,200 @@
+---
+id: F.02.004
+course: fondamenta
+module: 2
+title: "Creare, copiare, spostare"
+belt: bianca
+duration_min: 9
+prerequisites: [F.02.003]
+objectives:
+  - "Creare cartelle e file vuoti con mkdir e touch"
+  - "Copiare e spostare o rinominare con cp e mv"
+  - "Cancellare con rm sapendo che non c'è il cestino, e lavorare solo in una cartella di prova"
+video:
+  provider: youtube
+  id: "jnv0wge-OFo"
+  start: 0
+  end: 322
+  channel: "sass drew"
+  title: "Linux Basics - Directory and File Manipulation Commands mkdir,rmdir,touch,rm,cp,mv,file"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-creare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che rm mandi i file nel cestino: su Linux la cancellazione è definitiva"
+  - "Usare mv credendo di copiare: mv sposta e l'originale non c'è più"
+  - "Dimenticare -r per copiare una cartella con il suo contenuto"
+commands: [mkdir, touch, cp, mv, rm]
+---
+
+<Scene title="Mai sull'originale">
+Il collega del SOC è chiaro:
+
+«Le prove si copiano, non si toccano. Se rovini l'originale di un registro, nessuno ti crede più. Crea una cartella di lavoro e lavora lì.»
+
+Finora hai solo guardato. Oggi **costruisci**: crei cartelle e file, li copi, li sposti e, con molta prudenza, li cancelli.
+
+La domanda del caso: **come si prepara uno spazio di lavoro sicuro, e come si maneggiano i file senza fare danni?**
+
+<Say who="sensei">Si lavora su una copia. L'originale resta dov'è. Questa è la regola numero uno di chi fa indagini.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="mkdir e touch: creare">
+- **mkdir** (make directory) crea una cartella
+- **touch** crea un **file vuoto** (se il file esiste già, aggiorna solo la data di modifica, senza cambiare il contenuto)
+
+<Log lines={[
+  "studente@lab:~$ mkdir prova",
+  "studente@lab:~$ cd prova",
+  "studente@lab:~/prova$ touch note.txt",
+  "studente@lab:~/prova$ ls",
+  "note.txt",
+]} caption="Una cartella di prova, e dentro un file vuoto." />
+
+<Callout kind="regola">
+Prima di fare **qualsiasi** cosa che modifica file: `pwd`. Controlla di essere nella cartella di prova, non altrove.
+</Callout>
+
+<Callout kind="trucco">
+Con `mkdir -p prova/uno/due` crei in un colpo solo tutta la catena di cartelle. Senza `-p` il comando fallisce se «prova/uno» non esiste ancora.
+</Callout>
+
+<Say who="assistente">Se mkdir risponde «File exists», la cartella c'è già. Nessun danno: usa quella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="cp: copiare">
+**cp** (copy) duplica un file. Il formato è: cp **da dove** **dove**. L'originale resta al suo posto.
+
+<Log lines={[
+  "studente@lab:~/prova$ cp note.txt copia.txt",
+  "studente@lab:~/prova$ ls",
+  "copia.txt  note.txt",
+]} />
+
+Per copiare una **cartella** con tutto quello che contiene serve l'opzione **-r** (ricorsivo):
+
+<Log lines={[
+  "studente@lab:~$ cp -r prova prova2",
+]} caption="Senza -r, cp si rifiuta di copiare una cartella." />
+
+<Callout kind="attenzione">
+Se il file di destinazione esiste già, di norma `cp` lo **sovrascrive senza chiedere**. Controlla con `ls` prima di scegliere il nome della copia.
+</Callout>
+
+<Say who="sensei">Da dove, poi dove. Se inverti l'ordine, la copia vecchia schiaccia quella nuova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="mv: spostare e rinominare">
+**mv** (move) fa due lavori con lo stesso comando:
+
+- se la destinazione è un **nuovo nome**, **rinomina**
+- se la destinazione è una **cartella**, **sposta**
+
+<Log lines={[
+  "studente@lab:~/prova$ mv copia.txt appunti.txt",
+  "studente@lab:~/prova$ mkdir archivio",
+  "studente@lab:~/prova$ mv appunti.txt archivio/",
+  "studente@lab:~/prova$ ls",
+  "archivio  note.txt",
+  "studente@lab:~/prova$ ls archivio",
+  "appunti.txt",
+]} caption="Prima rinomino, poi sposto nella cartella archivio." />
+
+<Callout kind="curiosita">
+In Linux **rinominare e spostare sono la stessa cosa**: cambia solo il «percorso» del file. Per questo c'è un solo comando.
+</Callout>
+
+Vuoi vederlo fare da un'altra voce? Pochi minuti:
+
+<Video />
+
+<Say who="assistente">Con mv l'originale sparisce dal vecchio posto. Se vuoi tenerlo, usa cp.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="rm: con cautela">
+**rm** (remove) cancella i file. Attenzione: su Linux **non esiste il cestino**. Quello che cancelli è perso.
+
+<Log lines={[
+  "studente@lab:~/prova$ rm -i note.txt",
+  "rm: remove regular empty file 'note.txt'? y",
+  "studente@lab:~/prova$ ls",
+  "archivio",
+]} caption="L'opzione -i chiede conferma prima di cancellare: rispondi y per sì, n per no." />
+
+<Callout kind="attenzione">
+Tre abitudini per non farsi male: 1) `pwd` e `ls` prima di cancellare; 2) usa `rm -i` quando impari; 3) niente opzioni forzate (`-f`) né cancellazioni di cartelle (`-r`) finché non sai esattamente che cosa colpiscono. In questo corso cancelli **solo** dentro la tua cartella di prova.
+</Callout>
+
+<Say who="sensei">Nel dubbio non cancellare. Si può sempre cancellare domani, ma non si recupera ciò che hai tolto oggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sei nella cartella di prova e scrivi «mv rapporto.txt archivio/». Che cosa succede?"
+  options={[
+    "Il file passa nella cartella archivio e non è più nella cartella di prima",
+    "Il file viene copiato in archivio e resta anche dov'era",
+    "Il file viene cancellato",
+    "Il file viene rinominato «archivio»",
+  ]}
+  answer={0}
+  explain="La destinazione è una cartella, quindi mv sposta. L'originale non resta nel vecchio posto. Se volevi due copie, serviva cp. Il file sarebbe stato rinominato solo se «archivio» non fosse una cartella esistente."
+/>
+
+<Say who="sensei">Sposta e copia sono due verbi diversi. Scegli quello che ti serve, prima di premere Invio.</Say>
+
+Prepara il tuo spazio di lavoro sicuro: una cartella di prova con dentro un file e la sua copia.
+
+<LinuxTerminal goal="Crea la cartella prova, entraci, crea il file note.txt e copialo in copia.txt." />
+
+<Say who="assistente">Quattro passi: mkdir, cd, touch, cp. Dopo ogni passo prova un ls: ti dice se hai fatto ciò che pensavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su mkdir, touch, cp, mv e rm. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-creare" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima si capisce, poi si preme Invio. Con rm, mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- mkdir crea cartelle, touch crea file vuoti, cp copia (con -r anche le cartelle), mv sposta o rinomina.
+- rm cancella per sempre, senza cestino: usa rm -i e controlla con pwd e ls prima.
+- Si lavora sulle copie e dentro una cartella di prova.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale comando crea una cartella?", a: "mkdir" },
+    { q: "Come si copia una cartella con tutto il contenuto?", a: "cp -r cartella copia" },
+    { q: "mv note.txt archivio/ che cosa fa?", a: "Sposta il file nella cartella archivio" },
+    { q: "Dove va a finire un file cancellato con rm?", a: "Da nessuna parte: Linux non ha cestino, il file è perso" },
+  ]}
+/>
+
+<Say who="sensei">Hai uno spazio di lavoro. Ora devi leggere ciò che c'è nei file: cat, less, head e tail. Si parte dai registri.</Say>
+</Scene>

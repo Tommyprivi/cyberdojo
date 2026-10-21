@@ -1,0 +1,162 @@
+---
+id: F.07.002
+course: fondamenta
+module: 7
+title: "Come inizia una connessione TCP"
+belt: arancione
+duration_min: 8
+prerequisites: [F.07.001]
+objectives:
+  - "Descrivere i tre messaggi dell'handshake TCP: SYN, SYN-ACK, ACK"
+  - "Riconoscere le flag SYN, ACK e FIN in una riga di cattura"
+video:
+  provider: youtube
+  id: "MquR7zIRmNE"
+  start: 0
+  end: 236
+  channel: "Informaticaso"
+  title: "TCP: Three Way Handshake & Four Way Handshake"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-handshake
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il primo pacchetto è SYN da solo, non SYN-ACK: SYN-ACK è la risposta del server"
+  - "Tanti SYN senza il ACK finale non sono una connessione: sono tentativi rimasti a metà"
+  - "FIN chiude con garbo, non è un errore"
+commands: []
+---
+
+<Scene title="Una riga strana">
+Il SOC ti mostra una riga catturata sulla rete, in un laboratorio di prova:
+
+<Log lines={["10:02:11  10.0.0.8:51532 -> 10.0.0.5:80  flag=SYN"]} caption="Una riga di cattura fittizia: sorgente:porta -> destinazione:porta, e le flag." />
+
+Nessun dato dentro, solo una sigla: **SYN**. Che cosa sta chiedendo?
+
+<Say who="sensei">Prima di parlare, TCP bussa. Questa è la riga del bussare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre messaggi per salutarsi">
+Prima di scambiarsi dati, due computer si mettono d'accordo con tre messaggi. È come una telefonata:
+
+1. **SYN** (da «synchronize», sincronizza): «Pronto? Mi senti?»
+2. **SYN-ACK**: «Ti sento. E tu senti me?»
+3. **ACK** (da «acknowledge», conferma): «Ti sento. Cominciamo.»
+
+Questa sequenza si chiama **three-way handshake**, «stretta di mano in tre tempi».
+
+<Callout kind="regola">
+SYN → SYN-ACK → ACK. Solo dopo il terzo messaggio la connessione è **stabilita** e i dati possono viaggiare.
+</Callout>
+
+<Say who="assistente">Se manca anche uno solo dei tre messaggi, la telefonata non è mai partita davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le flag">
+Nella busta TCP ci sono dei piccoli interruttori chiamati **flag** (bandierine): ognuna è accesa o spenta.
+
+- **SYN**: «voglio iniziare una connessione»
+- **ACK**: «confermo di aver ricevuto»
+- **FIN**: «ho finito, chiudiamo» (la chiusura ordinata)
+
+Il SYN-ACK non è un terzo tipo di flag: è un pacchetto con **SYN e ACK accesi insieme**.
+
+<Callout kind="curiosita">
+Esiste anche una flag **RST** (reset): «interrompi subito». Si vede per esempio quando ci si connette a una porta dove nessun servizio ascolta.
+</Callout>
+
+Un'altra voce, per vederlo in movimento:
+
+<Video />
+
+<Say who="sensei">Una flag è un interruttore. Leggere una cattura significa leggere quali interruttori sono accesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggi la cattura">
+Ecco tutta la sequenza, in un laboratorio di prova.
+
+<Log lines={[
+  "10:02:11  10.0.0.8:51532 -> 10.0.0.5:80  flag=SYN",
+  "10:02:11  10.0.0.5:80 -> 10.0.0.8:51532  flag=SYN,ACK",
+  "10:02:11  10.0.0.8:51532 -> 10.0.0.5:80  flag=ACK",
+  "10:02:12  10.0.0.8:51532 -> 10.0.0.5:80  flag=ACK  (dati)"
+]} caption="Handshake completo, poi i dati." />
+
+<Guided
+  steps={[
+    "Riga 1: il client 10.0.0.8 bussa al server 10.0.0.5 sulla porta 80 (SYN). La sua porta, 51532, è scelta a caso.",
+    "Riga 2: il server risponde SYN,ACK. Nota che sorgente e destinazione si sono invertite.",
+    "Riga 3: il client conferma con ACK. Ora la connessione è stabilita.",
+    "Riga 4: da qui in poi viaggiano i dati. Il lavoro è fatto, e finirà con un FIN.",
+  ]}
+/>
+
+<Say who="assistente">Quando le due porte si invertono, sta rispondendo l'altro. È un indizio utile in ogni log.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel log compaiono molti pacchetti SYN verso lo stesso server, ma nessun ACK finale da parte dei client. Che cosa vuol dire?"
+  options={[
+    "Molte connessioni sono state iniziate ma non completate: il terzo messaggio non è mai arrivato",
+    "Molte connessioni sono state stabilite correttamente e i dati stanno viaggiando",
+    "Il server ha chiuso tutte le connessioni con garbo",
+    "Sono pacchetti UDP, quindi non servono conferme"
+  ]}
+  answer={0}
+  explain="Senza il terzo messaggio (ACK) la connessione resta a metà. Una pioggia di SYN senza completamento può essere un guasto, o il segnale di qualcuno che sta sovraccaricando il server con richieste incomplete: per questo l'analista lo nota. La chiusura ordinata è FIN, non SYN. E UDP non ha né SYN né ACK."
+/>
+
+<Callout kind="attenzione">
+Un solo SYN senza risposta è normale: il server può essere spento. Preoccupa il **volume**, non il singolo pacchetto.
+</Callout>
+
+<Say who="sensei">Un analista non si allarma per un pacchetto. Si allarma per un modello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Righe di cattura da leggere e sequenze da ordinare. Hai 3 tentativi.
+
+<Practice generator="f07-handshake" pass="5/5" retries={3} />
+
+<Say who="sensei">SYN, SYN-ACK, ACK. Se l'ordine non ti esce a occhi chiusi, ripassa la telefonata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La connessione TCP inizia con tre messaggi: SYN, SYN-ACK, ACK.
+- Le flag sono interruttori nella busta TCP: SYN apre, ACK conferma, FIN chiude con garbo.
+- Tanti SYN senza ACK finale sono connessioni lasciate a metà: da guardare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "I tre messaggi dell'handshake, in ordine?", a: "SYN, SYN-ACK, ACK" },
+    { q: "Chi invia il SYN-ACK?", a: "Il server, in risposta al SYN del client" },
+    { q: "A cosa serve la flag FIN?", a: "A chiudere la connessione in modo ordinato" },
+    { q: "Quando è stabilita la connessione?", a: "Dopo il terzo messaggio, l'ACK finale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le porte. Chi risponde, e che cosa vede chi guarda la tua rete da fuori.</Say>
+</Scene>

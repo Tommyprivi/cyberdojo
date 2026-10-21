@@ -1,0 +1,185 @@
+---
+id: D.13.003
+course: dati
+module: 13
+title: "L'analisi passo per passo"
+belt: blu
+duration_min: 10
+prerequisites: [D.13.002]
+objectives:
+  - "Seguire l'ordine pulizia, esplorazione, analisi, controllo"
+  - "Controllare un risultato prima di fidarsi"
+  - "Registrare ogni scelta in un notebook che altri possano rifare"
+video:
+  provider: youtube
+  id: "UPOMTTwxTlI"
+  start: 0
+  end: 600
+  channel: "JM Dieke"
+  title: "Progetto tecnico per DATA ANALYST"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-analisi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Modificare il file originale invece di lavorare su una copia"
+  - "Pulire i dati a mano senza annotare cosa è stato cambiato"
+  - "Fidarsi di un risultato senza un controllo di buon senso"
+commands: []
+---
+
+<Scene title="Il totale che non torna">
+Elisa gestisce i dati di una piccola libreria online. Ha un file con gli ordini del primo trimestre. Calcola la media degli importi, la manda al titolare e lui risponde: «Mi sembra troppo bassa. E il numero di ordini non corrisponde a quello che vedo io».
+
+Elisa riapre il lavoro e scopre un problema: ha sistemato il file a mano, cella per cella, e non ricorda più cosa ha cambiato.
+
+La domanda del caso: **in che ordine si lavora, e come si evita di perdere la strada?**
+
+<Say who="sensei">Un'analisi che non puoi rifare non è un'analisi: è un ricordo. Lavora in modo che chiunque, tu compreso, possa ripetere ogni passo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le quattro fasi">
+L'analisi segue sempre lo stesso ordine:
+
+1. **Pulizia**: togliere o correggere ciò che è sbagliato (duplicati, valori vuoti, formati strani).
+2. **Esplorazione**: guardare i dati prima di calcolare: quante righe, quali valori minimo e massimo, come sono distribuiti.
+3. **Analisi**: il calcolo o il confronto previsto nel piano.
+4. **Controllo**: verificare che il risultato abbia senso.
+
+Un'idea importante: **il file originale non si tocca mai**. Si salva in una cartella «dati grezzi» e si lavora su una copia, con il codice che registra ogni modifica.
+
+Un esempio di progetto svolto da capo a fondo, da un'altra voce:
+
+<Video />
+
+<Say who="assistente">Il file grezzo è la tua rete di sicurezza. Se sbagli una pulizia, riparti da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pulire senza barare">
+Ecco gli ordini di Elisa (importi in euro, dati inventati):
+
+| ordine | mese | importo |
+|---|---|---|
+| 101 | gen | 20 |
+| 102 | gen | 35 |
+| 103 | feb | 40 |
+| 103 | feb | 40 |
+| 104 | feb | (vuoto) |
+| 105 | mar | 25 |
+| 106 | mar | 30 |
+| 107 | mar | 50 |
+
+Due problemi: l'ordine 103 compare **due volte identico** (un duplicato), e l'ordine 104 non ha importo.
+
+<Callout kind="attenzione">
+Ogni scelta di pulizia cambia il risultato, quindi va **annotata con il motivo**. Il duplicato esatto si elimina. Il valore vuoto si può escludere, recuperare da un'altra fonte o sostituire: dipende dal caso, e lo si scrive.
+</Callout>
+
+<Say who="sensei">Mai riempire un buco con un numero «a occhio» senza dirlo. Un dato inventato in silenzio è peggio di un dato mancante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controllare il risultato">
+Dopo la pulizia Elisa calcola la media. Ma il lavoro non è finito: serve il **controllo**.
+
+- **Conta le righe prima e dopo**: 8 righe, meno 1 duplicato, meno 1 senza importo, restano 6. Sai perché hai perso due righe.
+- **Controlla un totale a mano**: 20 + 35 + 40 + 25 + 30 + 50 = 200 euro. Con 6 ordini, la media è 200 / 6, circa 33,33 euro.
+- **Chiediti se ha senso**: un importo medio di 33 euro per una libreria è plausibile; 3300 no.
+- **Confronta con una fonte nota**: il titolare vede 7 ordini diversi (101-107): coincide con le righe dopo aver tolto il duplicato.
+
+<Callout kind="trucco">
+Se il risultato ti sorprende, non festeggiare e non nasconderlo: **cerca prima l'errore**. Spesso la sorpresa è un duplicato o un filtro sbagliato.
+</Callout>
+
+<Say who="assistente">Il numero di Elisa poteva risultare basso perché un vuoto letto come zero fa scendere la media. Un controllo sulle righe l'avrebbe scoperto subito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il notebook racconta tutto">
+Un **notebook** (come Jupyter o Google Colab, entrambi gratuiti) mescola testo, codice e risultati nello stesso documento. È il tuo diario di lavoro.
+
+Per ogni passo scrivi:
+
+- cosa stai facendo e perché (una riga di testo);
+- il codice che lo fa;
+- cosa è venuto fuori e cosa ne concludi.
+
+<Log lines={[
+  "# 1. Carico il file grezzo (mai modificato)",
+  "ordini = pd.read_csv('dati/grezzi/ordini.csv')",
+  "# 2. Pulizia: tolgo i duplicati esatti e annoto quante righe",
+  "ordini = ordini.drop_duplicates()   # 8 -> 7 righe",
+  "# 3. Escludo l'ordine senza importo, lo scrivo nel report",
+  "ordini = ordini.dropna(subset=['importo'])   # 7 -> 6 righe",
+]} />
+
+<Callout kind="regola">
+Regola finale: **rilancia il notebook da zero**, dalla prima cella all'ultima. Se funziona e dà lo stesso risultato, la tua analisi è riproducibile.
+</Callout>
+
+<Say who="sensei">Se sei l'unico che può rifare il lavoro, il lavoro è fragile. Scrivi per chi verrà dopo di te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un file ha 120 righe. Dopo la pulizia ne restano 105 e l'analista non ha annotato perché. Il risultato è la media di un campo. Qual è il problema principale?"
+  options={[
+    "Non si sa quali 15 righe sono state tolte e perché: il risultato non si può né controllare né rifare",
+    "Nessuno: meno righe significa dati più puliti",
+    "Il problema è solo che la media è calcolata su meno dati: basta rifarla con tutte le 120 righe",
+    "Bisogna ricominciare con un file diverso, perché 15 righe da togliere sono troppe in ogni caso",
+  ]}
+  answer={0}
+  explain="La pulizia non è sbagliata in sé: lo è non sapere cosa è stato tolto. Ogni scelta va registrata con il motivo, così il risultato si controlla e si rifà. Togliere meno o più righe non è un errore per principio."
+/>
+
+<Say who="sensei">Un numero senza storia non vale niente. Con la sua storia, vale tanto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su pulizia, controlli e notebook.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-analisi" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi controlla prima di consegnare non deve poi spiegare gli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'ordine è pulizia, esplorazione, analisi, controllo; il file grezzo non si modifica mai.
+- Ogni scelta di pulizia si annota con il motivo; si contano le righe prima e dopo.
+- Si controlla il risultato (totale a mano, buon senso, fonte nota) e si registra tutto in un notebook rieseguibile da zero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le quattro fasi dell'analisi?", a: "Pulizia, esplorazione, analisi, controllo" },
+    { q: "Cosa fai del file originale?", a: "Lo conservi intatto e lavori su una copia" },
+    { q: "8 righe, 1 duplicato, 1 senza importo: quante restano?", a: "6" },
+    { q: "Come provi che il notebook è riproducibile?", a: "Lo rilanci da zero e controlli che dia lo stesso risultato" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il report e la storia. I numeri ci sono: ora vanno raccontati.</Say>
+</Scene>

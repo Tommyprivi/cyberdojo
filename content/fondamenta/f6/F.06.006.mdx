@@ -1,0 +1,165 @@
+---
+id: F.06.006
+course: fondamenta
+module: 6
+title: "Il gateway: dentro o fuori?"
+belt: arancione
+duration_min: 9
+prerequisites: [F.06.005]
+objectives:
+  - "Decidere se una destinazione è nella rete locale o fuori"
+  - "Spiegare il ruolo del gateway e quali indirizzi cambiano quando il pacchetto esce"
+video:
+  provider: youtube
+  id: "wbWuwiIHOyg"
+  start: 0
+  end: 600
+  channel: "Love IT - Esercizi Informatica e Telecomunicazioni"
+  title: "Indirizzo IP, Subnet Mask e Default Gateway - Cosa sono e a cosa servono"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-gateway
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "La destinazione si confronta con la maschera del mittente, non con quella del destinatario"
+  - "Verso l'esterno il MAC è quello del gateway, ma l'IP di destinazione resta quello del server"
+  - "Il gateway deve stare nella stessa rete del PC: con la maschera sbagliata non lo si raggiunge"
+commands: []
+---
+
+<Scene title="Il server che sta altrove">
+Ricordi il server dei dati, quello bersaglio dei due allarmi? Sta nella **rete dei server**, la 10.0.0.0/24, con indirizzo **10.0.0.5**. La postazione .66 della contabilità sta nella 192.168.1.0/24.
+
+Quando la .66 deve parlare con il server, l'ARP non può chiedere il MAC del server: il server **non è nella sua rete**. Ma come fa il PC a sapere che è fuori?
+
+<Say who="sensei">Un computer non intuisce: calcola. Oggi vedi quale calcolo fa prima di ogni pacchetto che invia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tre dati del PC">
+Ogni PC in rete ha tre impostazioni:
+
+<Log lines={[
+  "indirizzo IP  192.168.1.66",
+  "maschera  255.255.255.0",
+  "gateway predefinito  192.168.1.1",
+]} caption="Quello che mostra un PC della rete uffici." />
+
+Le prime due ti dicono **chi sei e quanto è grande la tua rete**. Il terzo è l'indirizzo del **gateway predefinito**: il router a cui il PC consegna tutto ciò che **non** è nella sua rete. È la porta d'uscita dalla stanza.
+
+<Say who="assistente">Il gateway è un router, e ha un indirizzo nella tua stessa rete. Per questo il PC lo può raggiungere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il test: stessa rete?">
+Prima di inviare, il PC applica la **propria maschera** a due indirizzi: il suo e quello di destinazione. Se le reti coincidono, la destinazione è locale. Altrimenti è fuori.
+
+<Guided
+  steps={[
+    "Mittente: 192.168.1.66 con maschera 255.255.255.0. La sua rete: 192.168.1.0.",
+    "Destinazione: 10.0.0.5. Applico la stessa maschera: 10.0.0.0.",
+    "192.168.1.0 è diverso da 10.0.0.0: la destinazione è fuori dalla rete.",
+    "Il PC non prova a cercare il server: consegna il pacchetto al gateway, 192.168.1.1.",
+  ]}
+/>
+
+<Say who="sensei">Un AND, un confronto. Due righe di conti, e il PC sa se parlare al vicino o alla porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dentro o fuori: cosa cambia">
+| | Destinazione nella rete | Destinazione fuori |
+|---|---|---|
+| IP di destinazione | quello del destinatario | quello del destinatario |
+| MAC di destinazione | quello del destinatario (con ARP) | quello del **gateway** (con ARP) |
+| Chi consegna | il PC direttamente | il gateway, che inoltra |
+
+<Callout kind="regola">
+L'IP di destinazione **non cambia mai** nel viaggio (senza NAT). Cambia il MAC: il PC lo scrive di volta in volta con quello del prossimo salto.
+</Callout>
+
+Il PC fa quindi l'ARP del **gateway**, non del server: è l'indirizzo 192.168.1.1 che ha bisogno di tradurre in MAC.
+
+<Say who="assistente">Due indirizzi diversi nella stessa busta: l'IP guarda lontano, il MAC guarda il prossimo passo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando la maschera sbaglia">
+Cosa succede se, per errore, alla .66 viene data la maschera **255.255.255.192** (/26) al posto della /24?
+
+- La sua rete diventa 192.168.1.64 (da .64 a .127).
+- Il PC 192.168.1.10, che è fisicamente nel suo ufficio, ora risulta **fuori**: il PC lo manda al gateway.
+- Peggio: il gateway 192.168.1.1 è nella rete 192.168.1.0, **non** nella sua. Il PC non sa più raggiungerlo.
+
+Risultato: la rete «non funziona» e nessuna scheda è rotta. Un tecnico esperto controlla **prima la maschera**.
+
+Un'altra voce che ripassa IP, maschera e gateway con esempi:
+
+<Video />
+
+<Say who="sensei">Un numero sbagliato in una maschera spezza una rete in due senza che nessuno se ne accorga. Si controlla sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il PC 192.168.1.66/26 deve parlare con 192.168.1.10. Come procede?"
+  options={[
+    "Passa dal gateway: 192.168.1.10 è nella rete 192.168.1.0, diversa dalla 192.168.1.64",
+    "Direttamente: i primi tre numeri sono uguali",
+    "Direttamente: 10 è minore di 66",
+    "Non è raggiungibile in nessun modo",
+  ]}
+  answer={0}
+  explain="Con /26 la rete del PC è 192.168.1.64 (da .64 a .127). Il .10 cade nella 192.168.1.0, un'altra rete. Chi risponde «direttamente» ragiona con i primi tre numeri, cioè con una /24 che qui non c'è."
+/>
+
+<Callout kind="curiosita">
+Per un analista il gateway è un posto prezioso: **tutto** il traffico che esce dalla rete passa da lì. È il punto dove si registra e si controlla.
+</Callout>
+
+<Say who="assistente">Calcola prima la rete del mittente con la sua maschera. Poi guarda dove cade la destinazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su rete locale e gateway. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-gateway" pass="5/5" retries={3} />
+
+<Say who="sensei">Maschera del mittente, rete del mittente, rete della destinazione. Tre passi che non si saltano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il PC applica la propria maschera al proprio indirizzo e a quello di destinazione: se le reti coincidono, parla direttamente; altrimenti manda tutto al gateway.
+- Verso l'esterno il MAC è quello del gateway, l'IP di destinazione resta quello del server.
+- Il gateway deve stare nella rete del PC: una maschera sbagliata può renderlo irraggiungibile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il gateway predefinito?", a: "Il router a cui il PC manda i pacchetti destinati ad altre reti" },
+    { q: "Come sa il PC se la destinazione è locale?", a: "Applica la propria maschera a sé stesso e alla destinazione e confronta le reti" },
+    { q: "Quale MAC si usa per un server in un'altra rete?", a: "Quello del gateway" },
+    { q: "Senza gateway, cosa funziona?", a: "Solo la rete locale" },
+  ]}
+/>
+
+<Say who="sensei">Il pacchetto è arrivato al gateway. E poi? Come sceglie il router la strada giusta? Domani apri la tabella di routing.</Say>
+</Scene>

@@ -48,9 +48,7 @@ export function lintLessons(lessons: RawLesson[]): Issue[] {
     if (fm.video && !usesVideo) add(l.file, "video dichiarato nel frontmatter ma <Video /> manca nel corpo");
     if (!fm.video && usesVideo) add(l.file, "<Video /> nel corpo ma manca video: nel frontmatter");
     if (fm.status === "published" && !fm.video) add(l.file, "una lezione pubblicata deve avere un video");
-    if (fm.status === "published" && fm.video && !fm.video.reviewed) {
-      add(l.file, "il video va guardato dal titolare prima di pubblicare (video.reviewed: true)");
-    }
+    // Dal 2026-10-20 (DECISIONS.md) il titolare non rivede ogni video prima di pubblicare: video.reviewed è solo informativo.
     if (fm.verification.type === "generated-numeric") {
       if (!fm.verification.generator || !isGeneratorId(fm.verification.generator)) {
         add(l.file, `verification.generator sconosciuto: ${fm.verification.generator ?? "(mancante)"}`);
@@ -60,9 +58,7 @@ export function lintLessons(lessons: RawLesson[]): Issue[] {
     // Regole di pubblicazione.
     if (fm.status === "published") {
       if (!fm.approved) add(l.file, "status published richiede approved: true (approvazione del titolare)");
-      if (m[1] === "C" && fm.module === 8 && !fm.human_reviewed) {
-        add(l.file, "i moduli di attacco etico (C8) richiedono human_reviewed: true");
-      }
+      // Dal 2026-10-20 (DECISIONS.md) la revisione umana di C8 non è più obbligatoria: l'ha accettato il titolare.
     }
 
     // Struttura del corpo.

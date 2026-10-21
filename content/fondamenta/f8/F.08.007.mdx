@@ -1,0 +1,190 @@
+---
+id: F.08.007
+course: fondamenta
+module: 8
+title: "IPv6 e diagnosi di rete"
+belt: arancione
+duration_min: 10
+prerequisites: [F.08.006]
+objectives:
+  - "Leggere e abbreviare un indirizzo IPv6 e riconoscere un link-local (fe80::)"
+  - "Usare ping, traceroute, ss e nslookup per capire dove si rompe una rete"
+video:
+  provider: youtube
+  id: "65CblJbQoNA"
+  start: 0
+  end: 441
+  channel: "Informaticaso"
+  title: "Ipv6"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-ipv6-diagnosi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare i due punti doppi (::) più di una volta in un indirizzo IPv6"
+  - "Cercare il guasto lontano prima di controllare il vicino (cavo, indirizzo, gateway)"
+  - "Pensare che gli asterischi in un traceroute indichino sempre un guasto"
+commands:
+  - "ping"
+  - "traceroute"
+  - "ss -tuln"
+  - "nslookup"
+---
+
+<Scene title="«Non funziona Internet»">
+Giovedì, ore 9. Arriva una segnalazione: «Non funziona Internet.» Poche parole, nessun dettaglio. In un SOC o in un ufficio IT questa frase vale quanto «sta male» detto a un medico.
+
+Prima di toccare qualunque cosa, devi **capire dove si rompe**. Per questo imparerai quattro strumenti. E prima, un'ultima novità sugli indirizzi, che vedrai sempre più spesso.
+
+<Say who="sensei">Il guasto non si indovina. Si cerca, partendo dal vicino. Gli strumenti ti dicono dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché esiste IPv6">
+Gli indirizzi **IPv4** (come 192.168.1.66) sono a **32 bit**: circa **quattro miliardi**. Sembravano tanti, ma con telefoni, telecamere, frigoriferi e computer **sono finiti**.
+
+La soluzione si chiama **IPv6**: indirizzi a **128 bit**, cioè un numero di indirizzi talmente grande che ogni dispositivo può averne uno proprio.
+
+Un indirizzo IPv6 si scrive con **otto gruppi di quattro cifre esadecimali**, separati da due punti:
+
+<Log lines={["2001:0db8:0000:0000:0000:0000:0000:0001"]} caption="L'indirizzo «completo». Il prefisso 2001:db8 è riservato agli esempi." />
+
+Le cifre esadecimali vanno da 0 a 9 e da a ad f. Per abbreviare ci sono **due regole**:
+
+1. Gli **zeri all'inizio** di un gruppo si possono togliere (0db8 diventa db8).
+2. Una **serie di gruppi tutti a zero** si sostituisce con **::**, ma **una sola volta** per indirizzo.
+
+<Say who="assistente">Il «:: una sola volta» è la regola che si dimentica. Se ne metti due, non si capisce quanti zeri vanno in ciascuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Abbreviare e riconoscere">
+<Guided
+  steps={[
+    "Partiamo da 2001:0db8:0000:0000:0000:0000:0000:0001.",
+    "Togliamo gli zeri iniziali di ogni gruppo: 2001:db8:0:0:0:0:0:1.",
+    "I cinque gruppi di zeri consecutivi diventano i due punti doppi: 2001:db8::1.",
+    "L'indirizzo ::1 è il loopback, cioè «il computer stesso» (come 127.0.0.1 in IPv4).",
+    "Un indirizzo che inizia con fe80:: è un link-local: valido solo sul collegamento locale, il corridoio dove sei attaccato. I router non lo instradano oltre.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Un computer con IPv6 attivo ha **sempre** un indirizzo link-local, anche se non ha ancora nessun altro indirizzo. Serve ai dispositivi per parlarsi sul collegamento, per esempio per trovare il router.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="sensei">Non devi memorizzare gli indirizzi. Devi riconoscerne la forma: otto gruppi, due punti, e fe80 vuol dire locale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Diagnosi: dal vicino al lontano">
+Torniamo alla segnalazione. L'ordine giusto è dal vicino al lontano. Ogni passo risponde a una domanda.
+
+- **ping verso il gateway**: «Il tratto locale funziona?» (cavo o Wi-Fi, indirizzo, gateway)
+- **ping verso un indirizzo esterno** (per esempio 8.8.8.8): «Si esce dalla rete?»
+- **ping verso un nome**: «Il DNS risolve?»
+
+<Log
+  lines={[
+    "$ ping -c 2 192.168.1.1",
+    "64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=1.2 ms",
+    "64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=1.1 ms",
+    "$ ping -c 2 8.8.8.8",
+    "64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=14 ms",
+    "64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=15 ms",
+    "$ ping -c 2 www.esempio.it",
+    "ping: www.esempio.it: Temporary failure in name resolution",
+  ]}
+  caption="Gateway e Internet rispondono, il nome no: il guasto è nel DNS."
+/>
+
+<Callout kind="trucco">
+Se `ping 8.8.8.8` funziona e `ping www.esempio.it` no, la rete va bene: è il **DNS** che non traduce i nomi. Non toccare cavi e router.
+</Callout>
+
+<Say who="sensei">Un ping è una domanda: «ci sei?». Tre ping a distanze diverse ti dicono dove la risposta si perde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli altri tre strumenti">
+- **traceroute** (su Windows `tracert`): mostra i **router attraversati**, uno per riga, fino alla destinazione. Se dopo il quarto salto ci sono solo asterischi, sai dove cercare. Ma un router può essere configurato per non rispondere: un asterisco non è sempre un guasto.
+- **nslookup** nome: chiede al **DNS** l'indirizzo associato a un nome, e dice quale server DNS ha risposto.
+- **ss -tuln** (su Linux): elenca le **porte TCP e UDP su cui il computer è in ascolto**. Utile per sapere se un servizio è attivo, e per accorgersi di porte aperte che non ti aspetti.
+
+<Log
+  lines={[
+    "$ traceroute www.esempio.it",
+    " 1  192.168.1.1      1.2 ms",
+    " 2  10.255.0.1       5.8 ms",
+    " 3  203.0.113.1      9.4 ms",
+    " 4  * * *",
+    " 5  * * *",
+    "",
+    "$ ss -tuln",
+    "tcp  LISTEN  0  128  0.0.0.0:22   0.0.0.0:*",
+    "udp  UNCONN  0  0    0.0.0.0:68   0.0.0.0:*",
+  ]}
+  caption="Traceroute senza risposte dal quarto salto; una macchina con SSH in ascolto sulla porta 22."
+/>
+
+<Say who="assistente">Traceroute dice «dove», nslookup dice «quale indirizzo», ss dice «che cosa ascolta». Tre domande, tre strumenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="`ping 192.168.1.1` (il gateway) non risponde. Da dove parte la tua indagine?"
+  options={["Dal tratto locale: cavo o Wi-Fi, indirizzo del computer e gateway impostato", "Dal server DNS, che è lontano", "Dal sito che volevi raggiungere", "Da un traceroute verso un sito dall'altra parte del mondo"]}
+  answer={0}
+  explain="Se non arrivi neanche al gateway, è inutile guardare il DNS o il sito: sono dopo. Il guasto è nel tratto più vicino a te: collegamento fisico o Wi-Fi, indirizzo del computer, gateway, porta dello switch."
+/>
+
+<Say who="sensei">Se non arrivi al vicino, non cercare il lontano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su IPv6 e sulla diagnosi. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f08-ipv6-diagnosi" pass="5/5" retries={3} />
+
+<Say who="sensei">Dal vicino al lontano, con lo strumento giusto in ogni punto. È il mestiere di chi ripara le reti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- IPv6: 128 bit, otto gruppi esadecimali separati da due punti; abbreviazione con zeri iniziali tolti e un solo ::. fe80:: è link-local, ::1 è il loopback.
+- Diagnosi dal vicino al lontano: gateway, indirizzo esterno, nome.
+- ping verifica, traceroute mostra i salti, nslookup interroga il DNS, ss -tuln elenca le porte in ascolto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti bit ha un indirizzo IPv6?", a: "128" },
+    { q: "Quante volte si può usare :: in un indirizzo?", a: "Una sola" },
+    { q: "ping 8.8.8.8 va, ping un nome no: dove sta il guasto?", a: "Nel DNS" },
+    { q: "A che cosa serve ss -tuln?", a: "A elencare le porte TCP e UDP in ascolto" },
+  ]}
+/>
+
+<Say who="sensei">Hai chiuso Reti 4. Nel prossimo modulo si programma, ma non dimenticare queste mappe: ti serviranno nel progetto finale.</Say>
+</Scene>

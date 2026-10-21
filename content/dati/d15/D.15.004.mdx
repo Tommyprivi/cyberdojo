@@ -1,0 +1,166 @@
+---
+id: D.15.004
+course: dati
+module: 15
+title: "Dashboard per i dirigenti"
+belt: marrone
+duration_min: 9
+prerequisites: [D.15.003]
+objectives:
+  - "Partire dalle domande del dirigente e non dai dati disponibili"
+  - "Organizzare una dashboard in gerarchia, dal numero alla causa"
+  - "Impostare soglie, avvisi e una versione leggibile da telefono"
+video:
+  provider: youtube
+  id: "zFcXNxR12aY"
+  start: 0
+  end: 600
+  channel: "Explained Hub"
+  title: "Dashboards Explained: Build an Executive KPI Dashboard"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d15-dirigenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Riempire la pagina di grafici perché i dati ci sono: il dirigente non sa dove guardare"
+  - "Mostrare un numero senza confronto: 184 non dice nulla senza obiettivo o periodo precedente"
+  - "Colori usati come unico segnale: chi non distingue rosso e verde perde l'informazione"
+commands: []
+---
+
+<Scene title="Venti grafici, nessuna risposta">
+La direttrice di Bottega Rossi, la signora Gallo, apre il nuovo report. Trova venti grafici, tre filtri e una tabella di quaranta righe. Chiude il report dopo dieci secondi e chiede a Marta: «Stiamo andando bene o no?»
+
+Marta capisce di aver risposto a una domanda che nessuno aveva fatto.
+
+<Say who="sensei">Un dirigente ha pochi minuti e una decisione da prendere. La dashboard serve a quella decisione, non a mostrare quanto sai fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Parti dalle domande">
+Prima di aprire lo strumento, si intervista chi userà la dashboard. Tre domande semplici:
+
+- Quali **decisioni** prendi con questi numeri?
+- Ogni quanto li guardi (ogni giorno, ogni settimana)?
+- Che cosa ti farebbe **agire subito**?
+
+Le risposte diventano le poche domande a cui la dashboard deve rispondere. Per esempio: «Siamo in linea con l'obiettivo del mese? Dove stiamo perdendo?»
+
+<Callout kind="regola">
+Ogni elemento della dashboard risponde a una domanda scritta. Se non riesci a dire quale, lo togli.
+</Callout>
+
+<Say who="assistente">Pensa al cruscotto dell'auto: velocità, benzina, spia dell'olio. Non ti mostra la temperatura di ogni cilindro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La gerarchia: dal numero alla causa">
+Una buona dashboard va dal generale al particolare, come una piramide rovesciata.
+
+1. **In alto**: pochi numeri chiave (3-5), ognuno con un confronto.
+2. **Al centro**: la scomposizione, per esempio per negozio o categoria, che spiega dove si muove il numero.
+3. **In basso o in una pagina a parte**: il dettaglio, per chi vuole scavare.
+
+Un numero senza confronto non dice niente. Ricavi 184: è tanto o poco? Con l'obiettivo di 200 e il mese scorso a 160 diventa leggibile.
+
+<Log lines={["Ricavi del mese: 184", "Obiettivo: 200  ->  92% dell'obiettivo", "Mese precedente: 160  ->  +15%  (24 / 160)"]} caption="Un numero con i suoi due confronti. Esempio fittizio." />
+
+<Say who="sensei">Prima la risposta, poi la prova, poi il dettaglio. Chi vuole di più scende. Chi no, ha già capito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Soglie e avvisi">
+Le **soglie** trasformano un numero in un segnale. Si decidono con il dirigente, non da soli, e si scrivono.
+
+| stato | regola sull'obiettivo |
+|---|---|
+| verde | 100% o più |
+| giallo | da 90% a 99% |
+| rosso | sotto il 90% |
+
+Con 92% dell'obiettivo, i ricavi sono **gialli**.
+
+Un **avviso** è un messaggio che arriva da solo quando una soglia viene superata, per esempio una email se i ricavi del giorno scendono sotto il rosso. Così il dirigente non deve aprire il report ogni mattina.
+
+<Callout kind="attenzione">
+Non usare solo il colore: aggiungi un simbolo o una parola («in ritardo»). Una persona su dodici fra gli uomini ha difficoltà a distinguere rosso e verde, e un report stampato in bianco e nero perde i colori.
+</Callout>
+
+<Say who="assistente">Troppe soglie e troppi avvisi fanno il lupo che non arriva mai: dopo una settimana nessuno li legge più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mobile e usabilità">
+Molti dirigenti guardano i numeri dal telefono, in piedi, tra due riunioni. Allora:
+
+- la **versione per telefono** è una pagina a parte, in verticale, con i 3-5 numeri chiave uno sotto l'altro;
+- **testi grandi**, niente tabelle larghe, nessun bisogno di zoomare;
+- **titoli che dicono la conclusione**: «Ricavi al 92% dell'obiettivo» e non «Grafico ricavi»;
+- la **data di aggiornamento** sempre visibile, per sapere quanto è fresco il numero;
+- pochi filtri, con valori già scelti in modo sensato (il mese in corso).
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, sull'idea di una dashboard esecutiva:
+
+<Video />
+
+<Callout kind="trucco">
+Prova del colpo d'occhio: mostra la dashboard a una persona per cinque secondi, poi nascondila e chiedi che cosa ha capito. Se non sa dirlo, va semplificata.
+</Callout>
+
+<Say who="sensei">Una dashboard chiara non è quella con più informazioni. È quella che fa agire più in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La dashboard mostra «Ricavi: 184» senza altro. La direttrice chiede se va bene. Che cosa manca per rispondere?"
+  options={["Un confronto: obiettivo o periodo precedente, con una soglia di stato", "Altri dieci grafici sullo stesso tema", "Un colore più acceso", "Un filtro in più per ogni negozio"]}
+  answer={0}
+  explain="Un numero da solo non è né buono né cattivo. Con l'obiettivo (200) e il mese precedente (160) si legge: 92% dell'obiettivo e +15%. Più grafici e più filtri aumentano la confusione, il colore da solo non basta."
+/>
+
+<Say who="assistente">Ogni numero si porta dietro un confronto. È il suo documento d'identità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su domande dei dirigenti, gerarchia, soglie e uso da telefono, con piccoli calcoli. Cinque domande, senza errori.
+
+<Practice generator="d15-dirigenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi decide non vuole i tuoi dati. Vuole la risposta, e la strada per verificarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si parte dalle decisioni e dalle domande del dirigente, non dai dati disponibili.
+- La gerarchia va dai pochi numeri chiave, con confronto, alla scomposizione, al dettaglio.
+- Soglie scritte e avvisi misurati, un segnale non solo di colore, una pagina pensata per il telefono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si parte per una dashboard dirigenziale?", a: "Dalle decisioni e dalle domande di chi la userà" },
+    { q: "Quanti numeri chiave in alto?", a: "Pochi, circa 3-5, ognuno con un confronto" },
+    { q: "184 su obiettivo 200: che percentuale?", a: "92% (184 / 200)" },
+    { q: "Perché non basta il colore per una soglia?", a: "Perché chi non distingue i colori o stampa in bianco e nero perde il segnale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi può vedere che cosa, e chi garantisce che i numeri siano affidabili. La governance dei report.</Say>
+</Scene>

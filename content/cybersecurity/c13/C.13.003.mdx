@@ -1,0 +1,191 @@
+---
+id: C.13.003
+course: cybersecurity
+module: 13
+title: "DNS, HTTP e TLS: cosa si vede e cosa no"
+belt: blu
+duration_min: 10
+prerequisites: [C.13.002]
+objectives:
+  - "Leggere in una cattura una richiesta DNS, una richiesta HTTP e l'apertura di una connessione TLS"
+  - "Dire che cosa resta visibile anche con la cifratura (chi, quando, quanto) e che cosa no (il contenuto)"
+  - "Scegliere i filtri di visualizzazione giusti per DNS, HTTP e TLS"
+video:
+  provider: youtube
+  id: "e5d19Rrmyco"
+  start: 0
+  end: 600
+  channel: "Networkbachelor"
+  title: "HTTPS Webserver Traffic Analysis using Wireshark - TCP TLS handshake"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-dns-http-tls
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che HTTPS renda invisibile la conversazione: restano visibili indirizzi, tempi, quantità di dati e spesso il nome del sito (SNI)"
+  - "Scambiare un 404 o un 403 per un problema di rete: sono risposte del server, la rete ha funzionato"
+  - "Ignorare il DNS: è la prima cosa che un computer fa prima di collegarsi, e racconta dove vuole andare"
+commands: []
+---
+
+<Scene title="La cattura che parla poco">
+Nel laboratorio di Officina Verdi hai catturato cinque minuti sul computer di prova (con il permesso del responsabile). Dentro, tre storie: una pagina interna aperta in HTTP, un sito esterno aperto in HTTPS e qualche richiesta di nomi.
+
+Il responsabile chiede: **«Che cosa posso dire con certezza guardando solo la cattura? E che cosa non posso dire?»**
+
+È la domanda più importante di un analista di rete: sapere **dove finisce ciò che vedi**.
+
+<Say who="sensei">Un buon analista dice «vedo questo». Un cattivo analista dice «ho capito tutto». Impariamo a dire la prima frase.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="DNS: dove vuole andare">
+Prima di collegarsi a un sito, il computer chiede al **DNS** l'indirizzo IP del nome. Quasi sempre su UDP, porta **53**, **senza cifratura**.
+
+<Log
+  lines={[
+    "11  10:14:03.201  192.168.1.20 -> 192.168.1.1   DNS  Richiesta  A  www.esempio-meteo.it",
+    "12  10:14:03.215  192.168.1.1  -> 192.168.1.20  DNS  Risposta   A  203.0.113.40  (TTL 300)",
+    "13  10:14:09.700  192.168.1.20 -> 192.168.1.1   DNS  Richiesta  A  aggiorna.nonesiste-xyz.example",
+    "14  10:14:09.731  192.168.1.1  -> 192.168.1.20  DNS  Risposta   Nome inesistente (NXDOMAIN)",
+  ]}
+  caption="Filtro: dns   ·   campi utili: dns.qry.name, dns.flags.rcode"
+/>
+
+Il DNS ti dice **che cosa il computer voleva raggiungere**, anche se poi la connessione è cifrata. Una riga **NXDOMAIN** (rcode 3) vuol dire «questo nome non esiste»: una o due sono normali (errori di battitura), **molte di seguito** meritano attenzione.
+
+<Callout kind="curiosita">
+Il DNS «cifrato» (DNS su HTTPS o su TLS) esiste e protegge la privacy. Ma in azienda può togliere visibilità ai controlli: per questo se ne parla spesso nelle policy di rete.
+</Callout>
+
+<Say who="assistente">Il DNS è la rubrica che il computer sfoglia ad alta voce, davanti a tutti. Ascoltala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="HTTP: tutto in chiaro">
+Sulla porta **80**, HTTP viaggia **in chiaro**: richiesta e risposta si leggono come testo.
+
+<Log
+  lines={[
+    "21  10:14:04.010  192.168.1.20 -> 192.168.1.50  HTTP  GET /intranet/listino.html",
+    "22  10:14:04.032  192.168.1.50  -> 192.168.1.20  HTTP  HTTP/1.1 200 OK (text/html)",
+    "23  10:14:11.440  192.168.1.20 -> 192.168.1.50  HTTP  GET /intranet/admin.html",
+    "24  10:14:11.452  192.168.1.50  -> 192.168.1.20  HTTP  HTTP/1.1 403 Forbidden",
+  ]}
+  caption="Filtro: http   ·   campi utili: http.request.method, http.response.code, http.host"
+/>
+
+Che cosa leggi: un GET riuscito (**200**) e un secondo GET respinto (**403**, «vietato»). Il **403** è una risposta del server: la rete ha funzionato benissimo, è il server che ha detto «tu qui non entri».
+
+Nel flusso HTTP trovi anche l'intestazione **User-Agent**, che dichiara il programma usato: un `python-requests` dove ti aspetti un browser è un indizio.
+
+<Callout kind="attenzione">
+Se compare una password o un cookie di sessione in chiaro, **è un problema da segnalare**: quella pagina deve passare a HTTPS.
+</Callout>
+
+<Say who="sensei">In HTTP vedi tutto: percorso, risposte, intestazioni. Per questo oggi si usa solo per cose che non contano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="TLS: la busta chiusa">
+Con **HTTPS** (porta **443**) prima si apre la connessione TCP, poi parte la stretta di mano **TLS**: il computer manda un **Client Hello** («ciao, parliamo in modo cifrato, ecco le mie opzioni»), il server risponde con **Server Hello** e il suo certificato, poi i dati viaggiano cifrati.
+
+<Log
+  lines={[
+    "31  10:14:03.300  192.168.1.20 -> 203.0.113.40  TLSv1.3  Client Hello  (SNI: www.esempio-meteo.it)",
+    "32  10:14:03.322  203.0.113.40  -> 192.168.1.20  TLSv1.3  Server Hello, Change Cipher Spec",
+    "33  10:14:03.325  203.0.113.40  -> 192.168.1.20  TLSv1.3  Dati applicativi (cifrati)",
+    "34  10:14:03.330  192.168.1.20 -> 203.0.113.40  TLSv1.3  Dati applicativi (cifrati)",
+  ]}
+  caption="Filtro: tls   ·   Client Hello: tls.handshake.type == 1"
+/>
+
+Che cosa **resta visibile**: gli indirizzi IP, le porte, gli orari, **quanti dati** passano, la versione di TLS e di solito il **nome del sito** nel campo **SNI** del Client Hello. Che cosa **non si vede**: pagine, parole chiave, password, contenuto.
+
+Vuoi vedere la stretta di mano TLS in una cattura vera, spiegata da un'altra voce? In inglese:
+
+<Video />
+
+<Say who="assistente">Vedi chi parla con chi, quando e quanto. Non vedi che cosa dicono. È già moltissimo, per un analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: la risposta al responsabile">
+Mettiamo ordine, come in un rapporto.
+
+<Guided
+  steps={[
+    "Dal DNS: il computer .20 ha chiesto www.esempio-meteo.it (risolto) e aggiorna.nonesiste-xyz.example (NXDOMAIN).",
+    "Da HTTP: ha letto /intranet/listino.html (200) e ha provato /intranet/admin.html, ricevendo 403.",
+    "Da TLS: ha aperto una connessione cifrata verso 203.0.113.40, con SNI www.esempio-meteo.it.",
+    "Si può affermare con certezza: queste richieste esistono, a quest'ora, verso questi indirizzi.",
+    "NON si può affermare: che cosa conteneva la pagina HTTPS; chi era seduto al computer; perché ha provato admin.html. Sono ipotesi da verificare altrove.",
+  ]}
+/>
+
+<Callout kind="regola">
+Nel rapporto separa sempre i **fatti** (visti nella cattura) dalle **ipotesi** (ragionamenti). Mescolarli è l'errore più comune.
+</Callout>
+
+<Say who="sensei">Fatto: l'ho visto. Ipotesi: lo penso. Non scrivere mai le due cose con lo stesso tono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In una cattura vedi solo traffico TLS verso 198.51.100.9, con SNI «archivio-file.example», 120 MB inviati dal computer interno in 3 minuti. Quale frase è corretta e prudente?"
+  options={[
+    "Il computer ha inviato circa 120 MB verso quel nome, ma dalla sola cattura non si può dire quali file fossero: serve verificare altrove",
+    "Il computer ha rubato dei documenti riservati, lo dimostrano i 120 MB",
+    "Non si può dire niente, perché il traffico è cifrato",
+    "Il traffico è sicuramente innocuo, perché è TLS",
+  ]}
+  answer={0}
+  explain="Con TLS vedi chi, quando e quanto, ma non il contenuto: 120 MB verso un archivio esterno sono un fatto, le sue ragioni sono un'ipotesi. Dire «rubato» senza prove è una conclusione affrettata; dire «non si può dire niente» ignora i fatti visibili; dire «innocuo perché TLS» è un errore: anche il traffico cifrato può essere un problema."
+/>
+
+<Say who="assistente">Fatti dalla cattura, ipotesi a parte. Se separi le due cose, il tuo rapporto regge anche davanti a un avvocato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su DNS, HTTP e TLS: che cosa si legge, che cosa no, quale filtro serve. Cinque su cinque.
+
+<Practice generator="c13-dns-http-tls" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere dove finisce ciò che vedi è metà del mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- DNS (UDP 53, in chiaro) dice dove il computer vuole andare; molti NXDOMAIN di seguito meritano attenzione.
+- HTTP (porta 80) si legge tutto; i codici 200, 403, 404 sono risposte del server, non guasti di rete. HTTPS (443) cifra il contenuto, ma restano visibili IP, orari, quantità e spesso il nome del sito (SNI).
+- Nel rapporto si separano i fatti visti nella cattura dalle ipotesi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale filtro mostra solo i pacchetti DNS?", a: "dns" },
+    { q: "Che cosa è il campo SNI nel Client Hello di TLS?", a: "Il nome del sito a cui il client vuole collegarsi, di solito visibile anche se il resto è cifrato" },
+    { q: "Che cosa significa NXDOMAIN?", a: "Il nome richiesto non esiste" },
+    { q: "Che cosa NON si vede in una connessione TLS?", a: "Il contenuto: pagine, parole chiave e password" },
+  ]}
+/>
+
+<Say who="sensei">Sai leggere i tre protocolli. Prossima lezione: riconoscere quando qualcosa non va: le anomalie.</Say>
+</Scene>

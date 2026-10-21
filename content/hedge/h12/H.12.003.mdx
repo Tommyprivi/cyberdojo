@@ -1,0 +1,153 @@
+---
+id: H.12.003
+course: hedge
+module: 12
+title: "Il team e i ruoli"
+belt: marrone
+duration_min: 8
+prerequisites: [H.12.002]
+objectives:
+  - "Descrivere i ruoli principali di un fondo (gestore, analisti, rischio, compliance, operazioni)"
+  - "Spiegare perché rischio e compliance devono essere indipendenti dal gestore"
+  - "Distinguere ciò che fa il team interno da ciò che fanno i fornitori esterni"
+video:
+  provider: youtube
+  id: "0p-bBv_jQ9g"
+  start: 0
+  end: 600
+  channel: "Afzal Hussein"
+  title: "What Do Portfolio Managers Do? (Hedge Funds & Asset Management)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h12-team-ruoli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il gestore possa fare anche il controllo del rischio di se stesso"
+  - "Credere che esternalizzare un compito significhi non essere più responsabili"
+  - "Dimenticare il rischio dell'uomo chiave: se il gestore se ne va, il fondo resta senza guida"
+commands: []
+---
+
+<Scene title="Un fondo di due persone">
+Marco ed Elena stanno per lanciare Aurora Capital. Marco sceglie le azioni, le compra, controlla il rischio, tiene i conti e scrive le lettere agli investitori. Elena lo aiuta quando può.
+
+Un giorno una posizione perde molto più del limite che si erano dati. Marco pensa: «Aspetto, tornerà su». Nessuno gli dice di vendere.
+
+La domanda del caso: **chi dovrebbe fermarlo, e quali ruoli servono in un fondo?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">Chi decide non deve essere l'unico a controllare le proprie decisioni. Mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I ruoli dentro il fondo">
+In un fondo di dimensioni medie compaiono di solito questi ruoli:
+
+- **Gestore di portafoglio** (*portfolio manager*): decide che cosa comprare e vendere.
+- **Analisti**: studiano aziende, mercati, dati, e propongono idee.
+- **Trader**: eseguono gli ordini al miglior prezzo possibile.
+- **Responsabile del rischio** (*risk manager*): misura i rischi e verifica i limiti.
+- **Compliance**: controlla che il fondo rispetti le regole e le leggi.
+- **Operazioni e finanza**: regolamenti, conti, rapporti con i fornitori.
+- **Rapporti con gli investitori**: informazioni, risposte, lettere periodiche.
+
+<Callout kind="trucco">
+In un fondo piccolo una persona può avere più ruoli, ma **non** quelli che si controllano a vicenda.
+</Callout>
+
+<Say who="assistente">Chi sceglie e chi controlla devono essere due persone diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché il controllo è indipendente">
+Il responsabile del rischio può dire «basta, questa posizione è troppo grande» anche al gestore. Per questo **non deve dipendere dal gestore**: né per lo stipendio né per la carriera.
+
+Nella normativa europea sui gestori di fondi alternativi (AIFMD, in sintesi, ottobre 2026: verifica le fonti ufficiali) la funzione di gestione del rischio deve essere **separata** da quella di gestione del portafoglio. Lo stesso principio vale per la compliance.
+
+<Callout kind="regola">
+Il gestore può proporre i limiti, ma non può cancellarli da solo. Un controllo che si può spegnere non è un controllo.
+</Callout>
+
+<Say who="sensei">Un fondo che non fa dire «no» al gestore è un fondo senza freni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fornitori esterni">
+Un fondo piccolo non fa tutto da solo. Si affida a **fornitori esterni**:
+
+- **Amministratore del fondo**: calcola il valore delle quote (NAV) e tiene i registri.
+- **Depositario o banca di custodia**: custodisce le attività del fondo.
+- **Prime broker**: esegue e finanzia le operazioni.
+- **Revisore**: controlla i conti ogni anno.
+- **Studio legale**: documenti, struttura, regole.
+
+<Callout kind="attenzione">
+Esternalizzare un compito **non** cancella la responsabilità. Il gestore resta responsabile verso gli investitori e deve controllare i fornitori.
+</Callout>
+
+Un video in inglese (sottotitoli) racconta che cosa fa un gestore di portafoglio e con chi lavora:
+
+<Video />
+
+<Say who="assistente">Il fornitore fa il lavoro. La responsabilità resta a chi ha firmato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Aurora ha due soci. Il solo gestore decide gli acquisti e stabilisce anche se i limiti di rischio sono rispettati. Qual è il problema principale?"
+  options={[
+    "Chi decide controlla se stesso: manca un controllo indipendente",
+    "Due soci sono troppo pochi per comprare azioni",
+    "I limiti di rischio non servono nei fondi piccoli",
+    "Il gestore dovrebbe delegare tutto agli analisti",
+  ]}
+  answer={0}
+  explain="Il rischio nasce proprio dalle decisioni del gestore. Se è lui a giudicarle, nessuno lo ferma nei momenti difficili. La soluzione può essere una persona o un fornitore indipendente per rischio e compliance."
+/>
+
+<Say who="sensei">E c'è un altro rischio: se Marco se ne va, il fondo è senza guida. Si chiama rischio dell'uomo chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ruoli, indipendenza dei controlli, fornitori esterni, rischio dell'uomo chiave.
+
+<Practice generator="h12-team-ruoli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un fondo è fatto di persone, e di persone che si controllano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ruoli principali: gestore, analisti, trader, rischio, compliance, operazioni, rapporti con gli investitori.
+- Rischio e compliance devono essere indipendenti da chi decide gli investimenti.
+- I fornitori esterni aiutano ma la responsabilità verso gli investitori resta al gestore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Chi decide cosa comprare e vendere?", a: "Il gestore di portafoglio" },
+    { q: "Perché il rischio è separato dal gestore?", a: "Perché chi decide non deve controllare se stesso" },
+    { q: "Esternalizzare cancella la responsabilità?", a: "No: resta al gestore" },
+    { q: "Che cos'è il rischio dell'uomo chiave?", a: "Il fondo dipende da una persona sola e, se se ne va, resta senza guida" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quanto costa far funzionare tutto questo, e di che capitale ha bisogno un fondo per partire.</Say>
+</Scene>

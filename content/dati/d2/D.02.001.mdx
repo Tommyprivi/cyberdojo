@@ -1,0 +1,165 @@
+---
+id: D.02.001
+course: dati
+module: 2
+title: "Celle, righe, colonne e formule"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.006]
+objectives:
+  - "Leggere l'indirizzo di una cella (colonna e riga)"
+  - "Scrivere una formula che usa altre celle invece di numeri scritti a mano"
+  - "Spiegare perché una formula si aggiorna da sola"
+video:
+  provider: youtube
+  id: "F9nGdL7ucjg"
+  start: 0
+  end: 567
+  channel: "Edoardo Midali"
+  title: "Introduzione alle FORMULE - EXCEL TUTORIAL ITALIANO 09"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-formule
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il segno = all'inizio: senza, il foglio mostra il testo e non calcola"
+  - "Scrivere il risultato a mano invece della formula: al primo cambio di un dato il totale è sbagliato"
+  - "Scambiare colonna e riga nell'indirizzo: B3 è colonna B, riga 3"
+commands: []
+---
+
+<Scene title="Il totale che non torna">
+Giulia gestisce le spese del club di robotica. Per ora usa un quaderno: scrive quanti oggetti compra, quanto costano e ricalcola il totale con la calcolatrice.
+
+Poi il fornitore cambia il prezzo dei quaderni. Giulia deve rifare **tutti** i conti, e alla terza correzione sbaglia una somma.
+
+La domanda del caso: **come si fa a cambiare un numero e vedere il totale aggiornarsi da solo?**
+
+<Say who="sensei">La calcolatrice fa un conto. Il foglio di calcolo fa un conto e lo ricorda. Questa è la differenza. Cominciamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il foglio è una griglia">
+Un **foglio di calcolo** è una grande tabella. Excel e Fogli Google (gratuito, si usa nel browser) sono i più diffusi. Esiste anche LibreOffice Calc, gratuito da installare. Le idee sono le stesse in tutti e tre.
+
+- Le **colonne** vanno da sinistra a destra e hanno lettere: A, B, C...
+- Le **righe** vanno dall'alto in basso e hanno numeri: 1, 2, 3...
+- Una **cella** è l'incrocio tra una colonna e una riga. Il suo nome è il suo **indirizzo**: colonna prima, riga dopo.
+
+<Callout kind="trucco">
+Come la battaglia navale: **B3** vuol dire colonna **B**, riga **3**. Prima la lettera, poi il numero.
+</Callout>
+
+<Quiz
+  question="Quale cella si trova nella colonna C, alla riga 4?"
+  options={["C4", "4C", "D3", "C3"]}
+  answer={0}
+  explain="L'indirizzo si scrive prima la colonna (la lettera) e poi la riga (il numero): C4. Chi risponde 4C ha invertito l'ordine."
+/>
+
+<Say who="assistente">Se ti perdi, guarda le lettere in alto e i numeri a sinistra: ti dicono sempre dove sei.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo foglio">
+Ecco le spese di Giulia scritte nel foglio. La riga 1 contiene i titoli delle colonne.
+
+| | A | B | C | D |
+|---|---|---|---|---|
+| **1** | Articolo | Quantità | Prezzo | Totale |
+| **2** | Quaderni | 4 | 3 | |
+| **3** | Penne | 10 | 2 | |
+| **4** | Righelli | 5 | 2 | |
+
+Il totale di una riga è quantità per prezzo. Per i quaderni: 4 per 3 fa 12.
+
+<Callout kind="regola">
+In una cella, il segno **=** all'inizio dice al foglio: «quello che segue è un calcolo, non del testo».
+</Callout>
+
+<Say who="sensei">Senza il segno uguale il foglio non calcola: ti mostra solo quello che hai scritto. Non dimenticarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La formula">
+Nella cella D2 non scriviamo 12. Scriviamo una **formula**, cioè un calcolo che usa gli indirizzi delle altre celle.
+
+<Guided
+  steps={[
+    "Clicca la cella D2 e scrivi: =B2*C2 (l'asterisco * significa «per»). Premi Invio.",
+    "Il foglio guarda B2 (4) e C2 (3), li moltiplica e mostra 12. La cella D2 contiene la formula, ma mostra il risultato.",
+    "Lo stesso per le altre righe: in D3 =B3*C3 dà 20, in D4 =B4*C4 dà 10.",
+    "Il totale generale (in D5) è =D2+D3+D4 e dà 42, perché 12 + 20 + 10 = 42.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Gli operatori sono quelli che conosci: **+** somma, **-** sottrazione, **\*** moltiplicazione, **/** divisione, **^** potenza. Le parentesi funzionano come in matematica: si calcola prima ciò che è dentro.
+</Callout>
+
+<Say who="assistente">Prova anche tu: ripeti i tre calcoli in un foglio vuoto, con le formule.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché la formula vince">
+Il fornitore alza il prezzo dei quaderni da 3 a 5. Cambi **solo** la cella C2.
+
+- La formula in D2 si ricalcola da sola: 4 per 5 fa 20.
+- Il totale in D5 si aggiorna: 20 + 20 + 10 = 50.
+
+Se invece avessi scritto a mano 12 e 42, quei numeri sarebbero rimasti lì, sbagliati e senza avvisare nessuno.
+
+Vuoi sentirlo spiegare da un'altra voce? Questo video mostra le formule nel foglio, dal vivo:
+
+<Video />
+
+<Callout kind="attenzione">
+Numero scritto a mano dove poteva esserci una formula: è il primo errore dei fogli di calcolo, e il più difficile da scoprire.
+</Callout>
+
+<Say who="sensei">I dati si cambiano. I calcoli si lasciano al foglio. Chi scrive i totali a mano prima o poi sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su celle, indirizzi e formule. Qualche risultato lo dovrai calcolare tu: fallo con calma.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-formule" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un foglio con una formula sbagliata è peggio di un foglio vuoto: sembra giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una cella ha un indirizzo: prima la colonna (lettera), poi la riga (numero), per esempio B3.
+- Una formula comincia con = e usa gli indirizzi delle celle: si ricalcola da sola quando i dati cambiano.
+- Mai scrivere a mano un risultato che può calcolare il foglio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa indica l'indirizzo D7?", a: "La cella nella colonna D, alla riga 7" },
+    { q: "Con che segno comincia una formula?", a: "Con il segno = (uguale)" },
+    { q: "Cosa dà =B2*C2 se B2 vale 4 e C2 vale 3?", a: "12" },
+    { q: "Perché una formula batte un numero scritto a mano?", a: "Perché si aggiorna da sola quando cambiano i dati" },
+  ]}
+/>
+
+<Say who="sensei">Ottimo lavoro. Prossima lezione: le funzioni, per sommare e contare cento celle con una sola parola.</Say>
+</Scene>

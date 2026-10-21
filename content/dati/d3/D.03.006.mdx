@@ -1,0 +1,249 @@
+---
+id: D.03.006
+course: dati
+module: 3
+title: "Sottoquery e CTE"
+belt: gialla
+duration_min: 9
+prerequisites: [D.03.005]
+objectives:
+  - "Usare una sottoquery per confrontare un valore con un risultato calcolato (per esempio la media)"
+  - "Scrivere una CTE con WITH per spezzare un problema in passi leggibili"
+  - "Evitare la trappola di NOT IN quando la sottoquery contiene NULL"
+video:
+  provider: youtube
+  id: "abOH2IUB8n4"
+  start: 0
+  end: 600
+  channel: "Yimp - La scuola dei dati"
+  title: "Tutorial SUBQUERY e CTE SQL: risolvere problemi complessi combinando query semplici"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-sottoquery
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare una sottoquery che restituisce più righe dove ne serve una sola (con = o >)"
+  - "NOT IN con una sottoquery che contiene NULL: non restituisce mai niente"
+  - "Scrivere una query unica gigantesca invece di spezzarla in passi"
+commands: []
+---
+
+<Scene title="Più della media">
+Marta ti chiede due cose:
+
+1. «Quali prodotti costano **più della media**?»
+2. «Quali clienti hanno speso **più della spesa media dei clienti**?»
+
+Ci sono due passaggi in ciascuna: prima bisogna calcolare la media, poi confrontarla con ogni riga. Con quello che sai finora servirebbero due query, con un numero copiato a mano da una all'altra. Se i dati cambiano, il numero è sbagliato.
+
+La domanda del caso: **come si usa il risultato di una query dentro un'altra?**
+
+<Say who="sensei">Un problema difficile è quasi sempre due problemi facili in fila. Impara a metterli in fila dentro SQL.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La sottoquery">
+Una **sottoquery** è una SELECT scritta **tra parentesi dentro un'altra query**. Il database la esegue per prima e usa il risultato.
+
+Prima, la media da sola:
+
+<Log lines={[
+  "SELECT AVG(prezzo) AS media_prezzo",
+  "FROM prodotti;",
+  "",
+  "media_prezzo",
+  "14.50",
+]} caption="Il prezzo medio dei prodotti." />
+
+Ora la mettiamo dentro il WHERE al posto del numero:
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "WHERE prezzo > (SELECT AVG(prezzo) FROM prodotti)",
+  "ORDER BY id;",
+  "",
+  "nome          | prezzo",
+  "candela cedro | 18.00",
+  "profumatore   | 24.00",
+  "candela mirra | 19.00",
+]} caption="Prodotti più cari della media (14.50)." />
+
+Se i prezzi cambiano, la media si ricalcola da sola. Nessun numero scritto a mano.
+
+<Callout kind="attenzione">
+Con `=`, `>`, `<` la sottoquery deve restituire **un solo valore** (una riga, una colonna). Se ne restituisce di più, il database dà errore.
+</Callout>
+
+<Say who="assistente">Le parentesi dicono: «calcola questo prima». Dentro puoi mettere qualsiasi SELECT che dia un solo numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sottoquery con IN">
+Se la sottoquery restituisce **un elenco** di valori, si usa `IN` (lo conosci già dai filtri).
+
+<Log lines={[
+  "SELECT nome",
+  "FROM clienti",
+  "WHERE id IN (SELECT cliente_id FROM ordini WHERE prodotto_id = 2)",
+  "ORDER BY id;",
+  "",
+  "nome",
+  "Marco Bassi",
+  "Sara Neri",
+  "Luca Riva",
+]} caption="Chi ha ordinato sapone lavanda (prodotto 2)?" />
+
+Il contrario è `NOT IN`: i clienti **che non compaiono** tra gli ordini.
+
+<Log lines={[
+  "SELECT nome",
+  "FROM clienti",
+  "WHERE id NOT IN (SELECT cliente_id FROM ordini)",
+  "ORDER BY id;",
+  "",
+  "nome",
+  "Anna Conti",
+  "Paolo Gallo",
+]} caption="Clienti che non hanno mai ordinato." />
+
+<Callout kind="attenzione">
+Trappola: se la sottoquery di un `NOT IN` contiene anche **un solo NULL**, il risultato è **vuoto**, perché per il database «non so se è diverso da NULL». Se `cliente_id` potesse essere NULL, quella query non restituirebbe nessun cliente. Più sicuro: `NOT EXISTS`, oppure il `LEFT JOIN ... IS NULL` della lezione scorsa.
+</Callout>
+
+<Say who="sensei">NOT IN e NULL: una coppia che ha rovinato molti report. Nel dubbio, usa il LEFT JOIN.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La CTE: dare un nome a un passo">
+Per problemi in più passi, le sottoquery annidate diventano illeggibili. Una **CTE** (*common table expression*) dà un **nome** a un risultato intermedio, con `WITH`, e lo si usa dopo come se fosse una tabella.
+
+Passo 1: la spesa totale di ogni cliente.
+
+<Log lines={[
+  "WITH spesa AS (",
+  "  SELECT cliente_id, SUM(totale) AS tot",
+  "  FROM ordini",
+  "  GROUP BY cliente_id",
+  ")",
+  "SELECT cliente_id, tot",
+  "FROM spesa",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id | tot",
+  "1          | 58.00",
+  "2          | 42.00",
+  "3          | 24.50",
+  "4          | 30.00",
+]} caption="La CTE spesa, da sola." />
+
+Passo 2: chi ha speso più della media di quelle spese? La media di 58, 42, 24.50 e 30 è 38.625.
+
+<Log lines={[
+  "WITH spesa AS (",
+  "  SELECT cliente_id, SUM(totale) AS tot",
+  "  FROM ordini",
+  "  GROUP BY cliente_id",
+  ")",
+  "SELECT c.nome, s.tot",
+  "FROM clienti c",
+  "JOIN spesa s ON s.cliente_id = c.id",
+  "WHERE s.tot > (SELECT AVG(tot) FROM spesa)",
+  "ORDER BY s.tot DESC;",
+  "",
+  "nome         | tot",
+  "Giulia Ferri | 58.00",
+  "Marco Bassi  | 42.00",
+]} caption="Clienti che hanno speso più della spesa media." />
+
+Vuoi sentirlo spiegare da un'altra voce? Un video su sottoquery e CTE:
+
+<Video />
+
+<Callout kind="trucco">
+Ogni CTE si può usare più volte nella query principale (qui due volte: nel JOIN e nella sottoquery). Una CTE è come un appunto: «chiamo spesa questo calcolo, così lo riuso».
+</Callout>
+
+<Say who="assistente">Leggi la query dall'alto: prima c'è il passo 1 con il suo nome, poi la domanda finale che lo usa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spezzare un problema">
+Come si arriva a una query così? Non la si scrive di getto. Si **spezza** il problema.
+
+<Guided
+  steps={[
+    "Domanda: quali clienti hanno speso più della media dei clienti?",
+    "Passo 1: serve la spesa di ogni cliente. Tabella ordini, GROUP BY cliente_id, SUM(totale). Verifica: 4 righe (1: 58.00, 2: 42.00, 3: 24.50, 4: 30.00).",
+    "Passo 2: serve la media di quelle 4 spese: (58 + 42 + 24.5 + 30) / 4 = 38.625. Verifica: la media sta tra il minimo e il massimo.",
+    "Passo 3: tengo i clienti con spesa maggiore di 38.625: Giulia (58.00) e Marco (42.00).",
+    "Passo 4: aggiungo il nome unendo con clienti. Ogni passo si può provare da solo, prima di montarli insieme.",
+  ]}
+/>
+
+<Callout kind="regola">
+Sottoquery per un confronto veloce con un valore o un elenco. CTE quando i passi sono due o più, o quando il risultato intermedio serve in più punti. Nessuna delle due è «più veloce» per principio: scegli la più leggibile.
+</Callout>
+
+<Say who="sensei">Scrivi un passo, controlla il risultato, scrivi il passo dopo. Chi scrive tutto in una volta non sa dove ha sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale query restituisce i nomi dei prodotti che costano meno della media dei prezzi?"
+  options={[
+    "SELECT nome FROM prodotti WHERE prezzo < (SELECT AVG(prezzo) FROM prodotti);",
+    "SELECT nome FROM prodotti WHERE prezzo < AVG(prezzo);",
+    "SELECT nome FROM prodotti WHERE prezzo < (SELECT prezzo FROM prodotti);",
+    "SELECT nome FROM prodotti HAVING prezzo < (SELECT AVG(prezzo));",
+  ]}
+  answer={0}
+  explain="La media si calcola in una sottoquery tra parentesi e restituisce un solo valore. AVG nel WHERE senza sottoquery è un errore (le aggregazioni non vanno nel WHERE). La terza sottoquery restituisce sei prezzi dove ne serve uno. La quarta non ha una FROM nella sottoquery e usa HAVING senza gruppi."
+/>
+
+<Say who="sensei">Risultato: candela vaniglia, sapone lavanda, sapone argilla (12.50, 6.00 e 7.50, tutti sotto 14.50).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sottoquery e CTE. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-sottoquery" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa spezzare un problema risolve anche quelli che non ha mai visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una sottoquery è una SELECT tra parentesi dentro un'altra: con =, > e < deve dare un solo valore, con IN un elenco.
+- NOT IN con un NULL nella sottoquery non restituisce niente: meglio NOT EXISTS o LEFT JOIN.
+- Una CTE (WITH nome AS (...)) dà un nome a un passo intermedio e rende la query leggibile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una sottoquery?", a: "Una SELECT tra parentesi dentro un'altra query" },
+    { q: "Cosa serve per scrivere una CTE?", a: "WITH nome AS (SELECT ...) prima della query principale" },
+    { q: "Quanti valori deve dare la sottoquery in prezzo > (...)?", a: "Uno solo" },
+    { q: "Perché NOT IN può dare un risultato vuoto?", a: "Se la sottoquery contiene NULL" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le funzioni finestra. Calcoli su più righe senza perdere le righe.</Say>
+</Scene>

@@ -1,0 +1,149 @@
+---
+id: H.02.004
+course: hedge
+module: 2
+title: "Relative value e arbitraggio"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.003]
+objectives:
+  - "Distinguere l'arbitraggio vero dalle scommesse di tipo relative value"
+  - "Calcolare il risultato di una coppia di posizioni quando la differenza di prezzo si riduce o si allarga"
+  - "Spiegare perché i costi e la leva possono trasformare un'idea giusta in una perdita"
+video:
+  provider: youtube
+  id: "waVUvKjXD6I"
+  start: 0
+  end: 600
+  channel: "Algovibes"
+  title: "Unlocking Profits with Statistical Arbitrage: Step-by-Step Pairs Trading Tutorial"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-relative-value
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Chiamare «arbitraggio» ogni scommessa su due prezzi: solo quello senza rischio lo è davvero, e quasi non esiste"
+  - "Dimenticare i costi: una differenza piccola può sparire del tutto dopo commissioni e prestito titoli"
+  - "Pensare che due prezzi che si sono allontanati debbano per forza riavvicinarsi presto"
+commands: []
+---
+
+<Scene title="Le due banche gemelle">
+**Banca Aurora** e **Banca Borea** sono due banche fittizie quasi identiche: stessa dimensione, stesso Paese, stessi clienti. Da anni le loro azioni costano più o meno lo stesso, con differenze di 2 euro al massimo.
+
+Un lunedì Aurora costa **52 euro** e Borea **48 euro**. Differenza: 4 euro, il doppio del solito.
+
+Luca, che lavora in un fondo fittizio, pensa: «Una delle due è fuori posto». La domanda del caso: **si può guadagnare dalla distanza tra due prezzi, senza sapere se il mercato sale o scende?**
+
+<Callout kind="attenzione">
+Questa lezione spiega un ragionamento, non consiglia di comprare o vendere niente. Si può perdere denaro, anche tutto. Banche e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Due prezzi lontani non sono ancora un guadagno: sono una domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Arbitraggio e relative value">
+L'**arbitraggio** vero è comprare una cosa dove costa meno e venderla dove costa di più **nello stesso momento**, bloccando il guadagno senza rischio. Esempio: l'oro costa 100 a Milano e 101 a Londra. Compro a Milano e vendo a Londra: +1. Ma se mi costa 1,20 tra commissioni e trasporto, **perdo 0,20**. Questi spazi sono rari e durano pochissimo, perché molti li cercano.
+
+Il **relative value** («valore relativo») è più umile e più rischioso: si confrontano due cose **simili ma non uguali** e si scommette che la differenza di prezzo **torni normale**. Compro quella che costa troppo poco, vendo allo scoperto quella che costa troppo. Una forma classica è il **pairs trading** («scambio di coppie»).
+
+Un video da un'altra voce: è un tutorial con un po' di Python, non serve capire il codice, ma guardare l'idea della coppia. In inglese con i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Arbitraggio: stesso oggetto, due prezzi, nessun rischio. Relative value: oggetti simili, e un po' di fiducia che la differenza si chiuda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La coppia di Luca">
+Luca vende allo scoperto **1 azione Aurora a 52** e compra **1 azione Borea a 48**. La differenza è 4. Tre futuri possibili, in euro per coppia (numeri inventati, senza costi):
+
+<Guided
+  steps={[
+    "Le due azioni tornano a 50 e 50. Aurora short: 52 - 50 = +2. Borea long: 50 - 48 = +2. Totale: +4.",
+    "Tornano entrambe a 45. Aurora short: 52 - 45 = +7. Borea long: 45 - 48 = -3. Totale: +4. Il guadagno è lo stesso: conta solo che la differenza si chiuda, non dove vanno i prezzi.",
+    "La differenza si allarga: Aurora va a 56 e Borea a 46. Aurora short: 52 - 56 = -4. Borea long: 46 - 48 = -2. Totale: -6.",
+    "La differenza è passata da 4 a 10: è peggiorata di 6 e Luca ha perso 6. Il risultato è sempre la differenza iniziale meno quella finale.",
+  ]}
+/>
+
+<Callout kind="regola">
+Nel relative value il risultato dipende da **quanto cambia la distanza** tra i due prezzi, non da dove va il mercato.
+</Callout>
+
+<Say who="sensei">Se la distanza si chiude, incassi. Se si allarga, perdi. Il mercato in sé non c'entra, la distanza sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché può andare male">
+- **Il «normale» può cambiare.** Forse Aurora costa di più perché ha un problema vero. Allora la distanza non si chiude: era un nuovo equilibrio.
+- **Il tempo costa.** La posizione short ha costi di prestito, e ogni mese in cui la distanza resta aperta è un mese di spese.
+- **I costi mangiano i guadagni piccoli.** Se la distanza si chiude di 4 ma pagate 1 euro di commissioni e prestito, il guadagno è 3.
+- **La leva.** Poiché i guadagni per coppia sono piccoli, molti fondi usano la leva per renderli visibili. Così una distanza che si allarga di poco può costare molto.
+
+<Callout kind="curiosita">
+Nel 1998 un fondo americano molto famoso, **LTCM**, usava proprio idee di relative value con una leva enorme: quando le distanze si allargarono invece di chiudersi, perse quasi tutto il capitale nel giro di pochi mesi. Lo vedremo bene nel modulo sul rischio.
+</Callout>
+
+<Say who="assistente">Piccolo guadagno ripetuto, grossa perdita rara: ricorda questa forma, la ritroverai spesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo vende allo scoperto un'azione a 70 e compra un'azione simile a 64, quindi la differenza è 6. Dopo qualche settimana i prezzi sono 68 e 66. Qual è il risultato per coppia, senza costi?"
+  options={[
+    "+4 euro",
+    "+2 euro",
+    "-4 euro",
+    "0 euro",
+  ]}
+  answer={0}
+  explain="Azione venduta allo scoperto: 70 - 68 = +2. Azione comprata: 66 - 64 = +2. Totale +4. Si può controllare anche con le differenze: la distanza è passata da 6 a 2, cioè si è ridotta di 4. Chi risponde +2 ha contato una sola gamba della coppia."
+/>
+
+<Say who="assistente">Due posizioni, due piccoli conti. Poi li sommi. O guardi come è cambiata la distanza: stesso risultato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su arbitraggio e relative value: differenze di prezzo, costi e rischi.
+
+<Practice generator="h02-relative-value" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Quando vedi un guadagno facile, cerca il costo e il rischio nascosti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'arbitraggio vero blocca un guadagno senza rischio ed è raro; il relative value è una scommessa sul ritorno alla normalità di due prezzi simili.
+- Nel pairs trading il risultato è la differenza iniziale meno la differenza finale tra i due prezzi.
+- Costi, tempo, un nuovo «normale» e la leva possono trasformare un'idea giusta in una perdita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'arbitraggio in senso stretto?", a: "Sfruttare due prezzi diversi per lo stesso bene, bloccando un guadagno senza rischio" },
+    { q: "Che cos'è il pairs trading?", a: "Comprare un titolo e vendere allo scoperto uno simile, puntando che la distanza di prezzo si riduca" },
+    { q: "Da che cosa dipende il guadagno di una coppia?", a: "Da quanto cambia la distanza tra i due prezzi, non dalla direzione del mercato" },
+    { q: "Perché la leva è pericolosa nel relative value?", a: "I guadagni per coppia sono piccoli e la leva ingrandisce anche le perdite quando la distanza si allarga" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i fondi quantitativi. Le stesse idee, ma scelte da un modello e non da una persona.</Say>
+</Scene>

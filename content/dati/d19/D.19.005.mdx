@@ -1,0 +1,248 @@
+---
+id: D.19.005
+course: dati
+module: 19
+title: "Grafici con ggplot2"
+belt: blu
+duration_min: 10
+prerequisites: [D.19.004]
+objectives:
+  - "Costruire un grafico a strati con ggplot(), aes() e una geometria"
+  - "Usare facet_wrap, labs e un tema per rendere il grafico chiaro"
+  - "Scegliere colori e ordinamenti leggibili, anche per chi non distingue tutti i colori"
+video:
+  provider: youtube
+  id: "lbt4BH9Q82E"
+  start: 0
+  end: 600
+  channel: "Statistics for Sustainable Development (Stats4SD)"
+  title: "Introduction to ggplot2 (Part One): Data Visualisation in R and the Grammar of Graphics"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-ggplot2
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare la pipe al posto del + tra i livelli di ggplot: i livelli si sommano con +"
+  - "Confondere geom_bar (conta le righe) con geom_col (usa i valori di y)"
+  - "Mettere il colore dentro aes() quando è fisso, o fuori quando dipende da una colonna"
+commands: []
+---
+
+<Scene title="Un grafico che parla">
+Giulia deve presentare le vendite al suo socio. Una tabella con tre città non basta: vuole **vedere** subito dove si vende di più.
+
+In R il pacchetto per i grafici è **ggplot2**, parte del tidyverse. Non è una lista di grafici pronti («fai un istogramma»): è una **grammatica**. Ogni grafico si costruisce a strati, dicendo:
+
+- quali **dati** usare;
+- quali colonne vanno su quali **estetiche** (asse x, asse y, colore, dimensione);
+- quale **geometria** disegnare (barre, punti, linee);
+- eventuali **faccette**, **etichette** e **tema**.
+
+La domanda del caso: **come si descrive un grafico a parole, in modo che R lo disegni?**
+
+<Say who="sensei">Un grafico non si «sceglie», si compone. Dati, estetiche, geometria. Tre domande, in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati, estetiche, geometria">
+Partiamo dalla tabella `ordini` della lezione sul tidyverse e calcoliamo il totale per città:
+
+```r
+library(tidyverse)
+
+totali <- ordini |>
+  group_by(citta) |>
+  summarise(totale = sum(importo))
+```
+
+Ora il grafico. Ogni riga aggiunge uno strato, e gli strati si uniscono con `+`:
+
+```r
+ggplot(totali, aes(x = citta, y = totale)) +
+  geom_col()
+```
+
+- `ggplot(totali, ...)` dice **quali dati**;
+- `aes(x = citta, y = totale)` abbina colonne ed estetiche: la città sull'asse x, il totale sull'asse y;
+- `geom_col()` disegna **una barra per riga**, alta quanto il valore di y.
+
+Il risultato: tre barre, alte 50 (Milano), 120 (Roma) e 10 (Torino), in ordine alfabetico.
+
+Vuoi vedere la grammatica spiegata da un'altra voce? Il video è in inglese, con sottotitoli attivabili:
+
+<Video />
+
+<Callout kind="attenzione">
+Tra gli strati si usa `+`, **non** la pipe. Il `+` va **alla fine** della riga, non all'inizio della successiva: altrimenti R pensa che il grafico sia finito.
+</Callout>
+
+<Say who="assistente">Leggi il codice da dentro a fuori: i dati, poi cosa va dove, poi cosa disegnare. Gli strati dopo sono rifiniture.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le geometrie">
+Cambiando geometria cambia il grafico, ma i dati e le estetiche restano gli stessi. Le più usate:
+
+| Geometria | Che cosa disegna | Quando |
+|---|---|---|
+| `geom_col()` | barre alte quanto y | confronto di totali tra categorie |
+| `geom_bar()` | barre alte quanto il **conteggio** delle righe | contare quante righe per categoria |
+| `geom_point()` | punti | due numeri, per vedere se sono legati |
+| `geom_line()` | linee | un valore che cambia nel tempo |
+| `geom_histogram()` | barre dei conteggi per fasce | la forma di un solo numero |
+| `geom_boxplot()` | scatole con quartili | confrontare la distribuzione tra gruppi |
+
+Un diagramma a punti con ore di studio e voto di sette studenti, più una retta di tendenza:
+
+```r
+studenti <- tibble(
+  ore  = 1:7,
+  voto = c(4, 5, 6, 6, 7, 7, 7)
+)
+
+ggplot(studenti, aes(x = ore, y = voto)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Si vedono sette punti che salgono da sinistra a destra, e una retta che li segue. `method = "lm"` chiede una retta (modello lineare), `se = FALSE` toglie la banda d'incertezza. Ne parliamo nella lezione di statistica.
+
+<Callout kind="trucco">
+Una proprietà **fissa** (tutti i punti di grandezza 3) va **fuori** da `aes()`. Una proprietà che **dipende da una colonna** (colore diverso per ogni città) va **dentro** `aes()`.
+</Callout>
+
+<Say who="sensei">Barre per confrontare, punti per cercare legami, linee per il tempo. Scegli la forma in base alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Faccette, etichette e temi">
+Con `facet_wrap()` si disegna **un piccolo grafico per ogni valore** di una colonna, con gli stessi assi. È più chiaro che sovrapporre molte linee.
+
+```r
+vendite <- tibble(
+  citta   = c("Roma", "Roma", "Roma", "Milano", "Milano", "Milano"),
+  mese    = c(1, 2, 3, 1, 2, 3),
+  importo = c(120, 150, 180, 50, 60, 55)
+)
+
+ggplot(vendite, aes(x = mese, y = importo)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ citta) +
+  scale_x_continuous(breaks = 1:3) +
+  labs(
+    title = "Roma cresce ogni mese, Milano è quasi ferma",
+    x = "Mese (1 = gennaio)",
+    y = "Importo (euro)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+Il risultato: due riquadri, uno per Milano e uno per Roma. In quello di Roma la linea sale da 120 a 150 a 180; in quello di Milano oscilla tra 50 e 60.
+
+- `~ citta` si legge «per ogni città»;
+- `labs()` dà titolo e nomi agli assi: scrivi sempre **l'unità** (euro);
+- `theme_minimal()` toglie gli sfondi pesanti; `base_size` ingrandisce i testi.
+
+Per salvare l'ultimo grafico in un file: `ggsave("output/vendite.png", width = 6, height = 4)`.
+
+<Callout kind="attenzione">
+Se l'asse x contiene testo come `"gen"`, `"feb"`, `"mar"`, R lo ordina in **ordine alfabetico** (feb, gen, mar). Per i mesi usa numeri, date o un fattore con i livelli nell'ordine giusto.
+</Callout>
+
+<Say who="assistente">Il titolo dice il messaggio, non l'argomento. «Vendite per città» è un'etichetta; «Roma pesa due terzi» è una conclusione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggibilità e colori">
+Un grafico bello ma illeggibile non serve. Le regole del modulo sulla visualizzazione valgono anche in R:
+
+- **barre sempre da zero**: tagliare l'asse ingrandisce le differenze;
+- **ordina le categorie** per valore, non in ordine alfabetico: `fct_reorder(citta, totale, .desc = TRUE)` mette Roma, Milano, Torino;
+- **pochi colori**: un grigio per tutto e un colore forte per ciò che vuoi mostrare;
+- **colori adatti a chi non distingue rosso e verde**: circa un uomo su dodici ha una forma di daltonismo. Usa `scale_fill_viridis_d()` oppure `scale_colour_brewer(palette = "Dark2")`;
+- **niente torte e niente 3D**.
+
+```r
+ggplot(totali, aes(x = fct_reorder(citta, totale, .desc = TRUE), y = totale)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "Roma pesa due terzi delle vendite", x = "Città", y = "Totale ordini (euro)") +
+  theme_minimal()
+```
+
+Il titolo è vero: 120 euro su 180 totali sono due terzi. Le barre sono ordinate dalla più alta alla più bassa e partono da zero.
+
+Errori di nome nelle colonne danno un messaggio che indica il livello colpevole. Con `y = prezzo` (colonna che non esiste) R risponde in modo simile a:
+
+```text
+Error in `geom_col()`:
+! Problem while computing aesthetics.
+ℹ Error occurred in the 1st layer.
+Caused by error:
+! object 'prezzo' not found
+```
+
+Il testo esatto cambia un poco da una versione all'altra, ma l'ultima riga indica sempre il nome sbagliato.
+
+<Say who="sensei">Un grafico serve a far capire una cosa a chi ha dieci secondi. Se serve una legenda lunga, hai sbagliato grafico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi un diagramma a punti con ore sull'asse x e voto sull'asse y, tutti i punti blu. Quale codice è corretto?"
+  options={[
+    "ggplot(studenti, aes(x = ore, y = voto)) + geom_point(colour = \"blue\")",
+    "ggplot(studenti, aes(x = ore, y = voto)) |> geom_point(colour = \"blue\")",
+    "ggplot(studenti) + geom_point(aes(x = ore, y = voto), colour = blue)",
+    "ggplot(aes(x = ore, y = voto)) + geom_col(studenti)"
+  ]}
+  answer={0}
+  explain="Il colore è fisso, quindi sta fuori da aes(), tra virgolette. La seconda risposta usa la pipe invece del +. La terza scrive blue senza virgolette: R cerca un oggetto chiamato blue e non lo trova. La quarta non indica i dati nel posto giusto e usa geom_col, che disegna barre."
+/>
+
+<Say who="assistente">Controlla tre cose: il segno + tra gli strati, le virgolette sui colori, e se il colore è fisso o dipende dai dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su aes, geometrie, faccette e leggibilità. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-ggplot2" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima di tracciare, chiediti che cosa vuoi far vedere. Poi scegli la geometria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un grafico ggplot2 si compone: dati, estetiche in `aes()`, geometria, poi faccette, etichette e tema, uniti con `+`.
+- `geom_col()` usa i valori di y, `geom_bar()` conta le righe; un valore fisso va fuori da `aes()`, uno che dipende da una colonna va dentro.
+- Barre da zero, categorie ordinate, pochi colori adatti ai daltonici, titolo che dice il messaggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con che cosa si uniscono gli strati di un grafico ggplot2?", a: "Con il segno +" },
+    { q: "Che cosa fa facet_wrap(~ citta)?", a: "Un piccolo grafico per ogni città, con gli stessi assi" },
+    { q: "Differenza tra geom_bar e geom_col?", a: "geom_bar conta le righe, geom_col usa i valori di y" },
+    { q: "Quale funzione ordina le barre dalla più alta alla più bassa?", a: "fct_reorder(citta, totale, .desc = TRUE)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dalla descrizione alla domanda. Statistica applicata in R, senza farsi ingannare dai numeri.</Say>
+</Scene>

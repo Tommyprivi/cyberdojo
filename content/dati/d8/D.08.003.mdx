@@ -1,0 +1,204 @@
+---
+id: D.08.003
+course: dati
+module: 8
+title: "Formati e tipi"
+belt: arancione
+duration_min: 9
+prerequisites: [D.08.002]
+objectives:
+  - "Riconoscere date e numeri scritti in formati diversi o come testo"
+  - "Convertire con astype e to_datetime, gestendo gli errori"
+  - "Ridurre unità di misura diverse a una sola"
+video:
+  provider: youtube
+  id: "VVgw9F8ymt0"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Pulire dati - Pandas Python Tutorial Italiano 14"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-formati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "03/02/2025 è il 3 febbraio o il 2 marzo? Senza format o dayfirst pandas legge prima il mese"
+  - "Un numero scritto come testo non si somma: '12,50' con la virgola non è un numero per Python"
+  - "Convertire senza errors='coerce' blocca tutto al primo valore strano; con coerce il valore strano diventa NaT o NaN, da contare"
+commands: []
+---
+
+<Scene title="Il file che non si somma">
+Un collega ti manda le vendite di una settimana, esportate da tre casse diverse. Provi a sommare i prezzi e ottieni un errore.
+
+| data | prezzo |
+|---|---|
+| 03/02/2025 | 12,50 |
+| 04/02/2025 | 8 |
+| 15/02/2025 | 9,90 |
+| ieri | 7,5 |
+| 20/02/2025 | 10 |
+
+Sembrano numeri e date, ma per il computer sono **testo**. Una data come «ieri» non è una data. E «12,50» ha la virgola all'italiana.
+
+La domanda del caso: **come trasformi questo testo in date e numeri veri?**
+
+<Say who="sensei">Un computer non capisce ciò che «sembra». Capisce il **tipo**: numero, data o testo. Se il tipo è sbagliato, il calcolo è sbagliato o impossibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tipo conta">
+Ogni colonna di pandas ha un **tipo** (`dtype`): `int64` per gli interi, `float64` per i decimali, `datetime64[ns]` per le date, `object` per il testo.
+
+<Log lines={[
+  "import pandas as pd",
+  "",
+  "v = pd.DataFrame({",
+  "    'data': ['03/02/2025', '04/02/2025', '15/02/2025', 'ieri', '20/02/2025'],",
+  "    'prezzo': ['12,50', '8', '9,90', '7,5', '10'],",
+  "})",
+  "print(v.dtypes)",
+  "",
+  "data      object",
+  "prezzo    object",
+  "dtype: object",
+]} caption="Entrambe le colonne sono object, cioè testo." />
+
+<Callout kind="trucco">
+Dopo aver caricato un file guarda **sempre** `df.dtypes`. Se vedi `object` dove aspettavi un numero, c'è del testo mescolato ai numeri.
+</Callout>
+
+<Say who="assistente">Una colonna di prezzi che risulta object è un campanello d'allarme: da qualche parte c'è un simbolo, una virgola o una parola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri scritti come testo">
+Per i prezzi servono due passi: cambiare la virgola in punto (Python usa il punto per i decimali), poi convertire con `astype(float)`.
+
+<Log lines={[
+  "v['prezzo'] = v['prezzo'].str.replace(',', '.').astype(float)",
+  "print(v['prezzo'])",
+  "",
+  "0    12.50",
+  "1     8.00",
+  "2     9.90",
+  "3     7.50",
+  "4    10.00",
+  "Name: prezzo, dtype: float64",
+]} />
+
+Se provi `astype(float)` direttamente su `'12,50'`, pandas si ferma con un errore (`ValueError: could not convert string to float`). È un bene: l'errore ti dice che il dato non è come pensavi.
+
+Stesso discorso per le **unità di misura**. Se il peso arriva in chili e in grammi, scegli **una** unità e converti tutto:
+
+<Log lines={[
+  "p = pd.DataFrame({'valore': [2, 500, 1.5, 750], 'unita': ['kg', 'g', 'kg', 'g']})",
+  "p['kg'] = p['valore'].where(p['unita'] == 'kg', p['valore'] / 1000)",
+  "print(p['kg'])",
+  "",
+  "0    2.00",
+  "1    0.50",
+  "2    1.50",
+  "3    0.75",
+  "Name: kg, dtype: float64",
+]} caption="where tiene il valore dove la condizione è vera (kg) e usa valore diviso 1000 dove è falsa (g)." />
+
+<Callout kind="attenzione">
+Un 500 che dovrebbe essere 0,5 chili falsa la media di tutta la colonna. L'unità di misura si scrive **nel nome della colonna** (peso_kg), così nessuno la dimentica.
+</Callout>
+
+<Say who="sensei">Una colonna, una unità. Sempre. E l'unità sta nel nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le date">
+Con le date c'è un trabocchetto. Cosa significa «03/02/2025»?
+
+<Log lines={[
+  "print(pd.to_datetime('03/02/2025'))",
+  "2025-03-02 00:00:00",
+  "print(pd.to_datetime('03/02/2025', format='%d/%m/%Y'))",
+  "2025-02-03 00:00:00",
+]} caption="Senza indicazioni pandas legge prima il mese, come negli Stati Uniti: 3 febbraio diventa 2 marzo." />
+
+La regola: **dichiara sempre il formato**. `%d` è il giorno, `%m` il mese, `%Y` l'anno a quattro cifre. E per i valori impossibili come «ieri» si usa `errors='coerce'`: li trasforma in **NaT** (la «NaN» delle date) invece di bloccare tutto.
+
+<Log lines={[
+  "v['data'] = pd.to_datetime(v['data'], format='%d/%m/%Y', errors='coerce')",
+  "print(v)",
+  "",
+  "        data  prezzo",
+  "0 2025-02-03   12.50",
+  "1 2025-02-04    8.00",
+  "2 2025-02-15    9.90",
+  "3        NaT    7.50",
+  "4 2025-02-20   10.00",
+  "",
+  "print(v.dtypes)",
+  "data      datetime64[ns]",
+  "prezzo           float64",
+  "dtype: object",
+]} caption="«ieri» è diventato NaT: ora è un valore mancante, da trattare come nella prima lezione." />
+
+Spaziature e maiuscole si sistemano allo stesso modo prima di confrontare: `.str.strip().str.upper()` toglie gli spazi ai bordi e mette tutto maiuscolo (ne parliamo meglio tra due lezioni).
+
+Un'altra voce che ripulisce un dataset passo per passo:
+
+<Video />
+
+<Say who="assistente">Con coerce non perdi i valori strani: li trasformi in buchi che puoi contare con isna().</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai una colonna di date scritte come 25/12/2025 (giorno/mese/anno). Quale riga le converte senza ambiguità?"
+  options={["pd.to_datetime(s, format='%d/%m/%Y')", "pd.to_datetime(s)", "s.astype(float)", "s.str.upper()"]}
+  answer={0}
+  explain="Il format dichiara che si legge prima il giorno, poi il mese, poi l'anno. Senza format pandas può leggere prima il mese e sbagliare le date ambigue come 03/02/2025. astype(float) su un testo con barre dà errore; str.upper() cambia solo le maiuscole."
+/>
+
+<Say who="sensei">Se la data può avere due letture, dichiara tu quale è la tua. Poi controlla con NaT.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tipi, `astype`, `to_datetime` e unità di misura. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-formati" pass="5/5" retries={3} />
+
+<Say who="sensei">Un tipo sbagliato è un errore che aspetta. Controllalo prima che lo trovi il tuo capo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Guarda `df.dtypes`: un `object` dove aspetti numeri o date è un campanello d'allarme.
+- Numeri come testo: sistema i simboli (virgola, euro), poi `astype`. Date: `to_datetime` con `format` esplicito e `errors='coerce'`.
+- Una colonna, una unità di misura, e scritta nel nome della colonna.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale tipo ha una colonna di testo in pandas?", a: "object" },
+    { q: "A cosa serve errors='coerce'?", a: "Trasforma i valori non convertibili in NaN o NaT invece di fermarsi" },
+    { q: "Come si legge la data 03/02/2025 con format='%d/%m/%Y'?", a: "3 febbraio 2025" },
+    { q: "Perché '12,50' non si converte con astype(float)?", a: "Python vuole il punto come separatore decimale" },
+  ]}
+/>
+
+<Say who="sensei">Formati a posto. Prossima lezione: gli outlier, i valori che escono dal gruppo. Errori o verità?</Say>
+</Scene>

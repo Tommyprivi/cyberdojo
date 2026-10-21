@@ -1,0 +1,170 @@
+---
+id: F.08.003
+course: fondamenta
+module: 8
+title: "Packet Tracer: una rete di prova"
+belt: arancione
+duration_min: 9
+prerequisites: [F.08.002]
+objectives:
+  - "Spiegare che cos'è Packet Tracer e come si ottiene"
+  - "Costruire a parole una rete di prova: PC, switch, router, indirizzi e gateway"
+video:
+  provider: youtube
+  id: "5AY5Ls9LQ3A"
+  start: 0
+  end: 600
+  channel: "Giovanni Pace - Archety"
+  title: "Cisco Packet Tracer Tutorial ITA (1/15): prima rete con PC e switch"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-packettracer
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare ai PC indirizzi in reti diverse senza un router in mezzo"
+  - "Dimenticare il gateway: i PC si vedono tra loro, ma non escono dalla rete"
+  - "Credere che il simulatore sia identico agli apparati veri"
+commands: []
+---
+
+<Scene title="Una rete senza rischi">
+Il capo del SOC ha un'idea: «Prima di cambiare qualcosa nella rete vera, proviamo tutto in una finta. Senza rischi, senza cavi, senza spegnere nessuno.»
+
+Lo strumento si chiama **Packet Tracer**: un **simulatore di reti** gratuito, prodotto da Cisco. Sul computer trascini router, switch e PC, li colleghi con cavi virtuali e vedi i pacchetti muoversi.
+
+<Say who="sensei">Un pilota non impara a volare su un aereo vero con i passeggeri. Impara su un simulatore. Tu pure.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si ottiene">
+Packet Tracer è gratuito, ma non si scarica da un sito qualsiasi.
+
+- Si crea un account gratuito alla **Cisco Networking Academy** (netacad.com).
+- Da lì si segue il percorso di introduzione a Packet Tracer e si scarica il programma per il proprio sistema (Windows, macOS, Linux).
+- Si accede con l'account all'apertura del programma.
+
+<Callout kind="attenzione">
+Scarica **solo** dal sito ufficiale della Networking Academy. Versioni «già pronte» trovate in giro possono nascondere malware.
+</Callout>
+
+<Callout kind="curiosita">
+Packet Tracer simula bene i comandi e il comportamento di router e switch Cisco, ma resta una **simulazione**: alcuni dettagli sono semplificati rispetto agli apparati veri.
+</Callout>
+
+<Say who="assistente">Se non vuoi creare un account adesso, nessun problema: questa lezione si segue anche solo leggendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La prima rete">
+L'area di lavoro è una tela bianca, con in basso la barra dei dispositivi. Costruiamo la rete più piccola che abbia senso: **due PC e uno switch**.
+
+<Guided
+  steps={[
+    "Trascina sulla tela due PC e uno switch.",
+    "Collega ogni PC allo switch con un cavo diretto in rame (straight-through): è il cavo normale tra un computer e uno switch.",
+    "Aspetta qualche secondo: i pallini sui cavi diventano verdi. Rosso o spento vuol dire che il collegamento non è attivo.",
+    "Dai ai PC un indirizzo nella stessa rete: PC1 192.168.1.10 e PC2 192.168.1.11, maschera 255.255.255.0.",
+    "Dal prompt dei comandi di PC1 fai un ping verso 192.168.1.11: se le risposte tornano, la rete funziona.",
+  ]}
+/>
+
+Vuoi vederlo fatto da un'altra voce, con le mani sul programma? Il primo video di una serie in italiano:
+
+<Video />
+
+<Say who="sensei">Cavo, indirizzo, ping. È la prova più semplice, e la prima che ripeterai in ogni progetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiungere un router">
+Adesso vuoi una seconda rete, per esempio il reparto vendite, con indirizzi **192.168.2.x**. Due reti diverse comunicano solo attraverso un **router**.
+
+<Log
+  lines={[
+    "Rete A:  PC1 192.168.1.10/24   gateway 192.168.1.1",
+    "Rete B:  PC3 192.168.2.10/24   gateway 192.168.2.1",
+    "Router:  interfaccia 1 = 192.168.1.1/24  (verso la rete A)",
+    "         interfaccia 2 = 192.168.2.1/24  (verso la rete B)",
+  ]}
+  caption="Lo schema della rete di prova, in testo."
+/>
+
+Ogni interfaccia del router ha un indirizzo **nella rete a cui è collegata** e va accesa. Quell'indirizzo è il **gateway** dei PC: «la porta verso il resto del mondo».
+
+<Callout kind="regola">
+Per parlare con un'altra rete, un PC manda il pacchetto al **suo gateway**. Se il gateway manca o è sbagliato, il PC vede i vicini ma non esce dalla propria rete.
+</Callout>
+
+<Say who="assistente">Il router è la porta tra due stanze. Il gateway è il numero civico di quella porta, dal tuo lato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il modo simulazione">
+In basso a destra c'è un interruttore: **Realtime** e **Simulation**.
+
+- In **Realtime** la rete funziona come una vera, in tempo reale.
+- In **Simulation** vedi i pacchetti muoversi **passo passo**: clicchi su una busta e leggi le intestazioni (MAC, IP, porte) a ogni dispositivo.
+
+È lo stesso lavoro di Wireshark, ma dentro una rete che hai costruito tu. Una buona palestra: puoi chiederti «e se togliessi il gateway?», fare la prova e guardare il pacchetto che si ferma.
+
+<Callout kind="trucco">
+Salva spesso: il progetto è un file con estensione **.pkt**. Provare un guasto e tornare indietro è il vero vantaggio del simulatore.
+</Callout>
+
+<Say who="sensei">Guasta la rete di proposito, nel simulatore. Imparerai più da un guasto provocato che da dieci reti che funzionano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel simulatore PC1 ha 192.168.1.10/24 e PC2 ha 192.168.2.10/24. Sono collegati allo stesso switch, senza router. Il ping da PC1 a PC2 funziona?"
+  options={["No: sono in reti diverse e serve un router", "Sì: sono collegati allo stesso switch", "Sì: iniziano tutti e due con 192.168", "Funziona solo da PC2 a PC1"]}
+  answer={0}
+  explain="Lo switch collega dispositivi della stessa rete. Con /24 le due reti sono 192.168.1.0 e 192.168.2.0: per passare dall'una all'altra serve un router, e i PC devono avere il gateway impostato."
+/>
+
+<Say who="sensei">Lo stesso switch non basta. Conta la rete a cui appartieni, non il cavo a cui sei attaccato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul simulatore e sulla rete di prova. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f08-packettracer" pass="5/5" retries={3} />
+
+<Say who="sensei">Hai una palestra senza rischi. D'ora in poi ogni nuova idea passa da lì, prima di toccare la rete vera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Packet Tracer è un simulatore Cisco gratuito: si scarica con un account della Networking Academy.
+- Una rete di prova: PC e switch con indirizzi nella stessa rete; per due reti serve un router e il gateway sui PC.
+- Modalità simulazione: si vedono i pacchetti passo passo; si prova ogni guasto senza rischi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è Packet Tracer?", a: "Un simulatore di reti gratuito di Cisco" },
+    { q: "Che cos'è il gateway di un PC?", a: "L'indirizzo del router sulla rete del PC" },
+    { q: "Che cavo collega un PC a uno switch?", a: "Un cavo diretto in rame (straight-through)" },
+    { q: "A che cosa serve la modalità simulazione?", a: "A vedere i pacchetti muoversi passo passo" },
+  ]}
+/>
+
+<Say who="sensei">Ora hai il banco di prova. Prossima lezione: separare la rete in tante reti virtuali con le VLAN.</Say>
+</Scene>

@@ -1,0 +1,257 @@
+---
+id: F.09.006
+course: fondamenta
+module: 9
+title: "Liste e dizionari"
+belt: verde
+duration_min: 10
+prerequisites: [F.09.005]
+objectives:
+  - "Usare liste con indici, slice e metodi base"
+  - "Usare dizionari: leggere, aggiungere, ciclare su chiavi e valori"
+  - "Contare le occorrenze di un indirizzo IP con un dizionario"
+video:
+  provider: youtube
+  id: "1I5FvliJZ_w"
+  start: 0
+  end: 600
+  channel: "PyMike"
+  title: "13. Le liste (Corso Python base)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-liste-dizionari
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Gli indici partono da 0 e un indice troppo grande dà IndexError"
+  - "Una chiave che non esiste dà KeyError: si evita con .get()"
+  - "list.sort() modifica la lista e restituisce None"
+commands: []
+---
+
+<Scene title="Chi bussa più spesso?">
+Marta ti passa un elenco degli indirizzi che hanno tentato un accesso nella notte (indirizzi fittizi, riservati alla documentazione):
+
+<Log lines={["203.0.113.9  198.51.100.4  203.0.113.9  192.0.2.77  203.0.113.9"]} caption="Cinque tentativi. Un indirizzo ritorna più volte." />
+
+«Voglio sapere chi è tornato più volte. Se un indirizzo appare tre volte o più, lo segno.»
+
+Per contare ti servono due strumenti: un posto dove **tenere tanti valori insieme** (la **lista**) e un modo per **associare un valore a un nome** (il **dizionario**).
+
+La domanda del caso: **come si conta quante volte compare ciascun indirizzo?**
+
+<Say who="sensei">Dati sparsi non servono. Dati in ordine, con un nome per ritrovarli: quello è il lavoro dell'analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le liste">
+Una **lista** è una sequenza ordinata di valori tra parentesi quadre, separati da virgole. Gli indici funzionano come per le stringhe: partono da 0, `-1` è l'ultimo, `[a:b]` esclude `b`.
+
+```python
+ips = ["203.0.113.9", "198.51.100.4", "203.0.113.9", "192.0.2.77"]
+print(len(ips))
+print(ips[0])
+print(ips[-1])
+print(ips[1:3])
+```
+
+Output:
+
+```text
+4
+203.0.113.9
+192.0.2.77
+['198.51.100.4', '203.0.113.9']
+```
+
+<Callout kind="attenzione">
+Chiedere un indice che non esiste, per esempio `ips[10]`, dà l'errore `IndexError: list index out of range`. Con 4 elementi gli indici validi sono 0, 1, 2 e 3.
+</Callout>
+
+Vuoi vedere le liste spiegate da un'altra voce? Guarda i primi minuti.
+
+<Video />
+
+<Say who="assistente">Una slice crea una lista nuova. [:2] prende i primi due elementi, [2:] prende dal terzo in poi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I metodi delle liste">
+A differenza delle stringhe, una lista si **può modificare**. I metodi più usati:
+
+```python
+porte = [80, 22, 443]
+porte.append(8080)
+porte.sort()
+print(porte)
+print(22 in porte)
+porte.remove(80)
+print(porte)
+print(porte.count(22))
+```
+
+Output:
+
+```text
+[22, 80, 443, 8080]
+True
+[22, 443, 8080]
+1
+```
+
+- `append(x)` aggiunge in fondo
+- `remove(x)` toglie la prima occorrenza di `x`
+- `sort()` ordina la lista **sul posto**
+- `count(x)` conta quante volte compare `x`
+- `x in lista` risponde True o False
+
+<Callout kind="attenzione">
+`sort()` modifica la lista e **restituisce None**. Quindi `print(porte.sort())` stampa `None`, non la lista ordinata. Per avere una copia ordinata usa `sorted(porte)`.
+</Callout>
+
+<Say who="sensei">Le liste cambiano. Se due parti del programma usano la stessa lista, una può rovinare il lavoro dell'altra: occhio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I dizionari">
+Un **dizionario** associa una **chiave** a un **valore**, tra parentesi graffe: come una rubrica, dove il nome (la chiave) porta al numero (il valore). Le chiavi non si ripetono.
+
+```python
+host = {"nome": "server-dati", "porta": 22, "attivo": True}
+print(host["nome"])
+host["porta"] = 2222
+host["os"] = "linux"
+print(host)
+print(host.get("utente", "sconosciuto"))
+```
+
+Output:
+
+```text
+server-dati
+{'nome': 'server-dati', 'porta': 2222, 'attivo': True, 'os': 'linux'}
+sconosciuto
+```
+
+- `d[chiave]` legge un valore; `d[chiave] = valore` lo cambia o lo aggiunge
+- `d.get(chiave, predefinito)` legge senza rischi: se manca dà il valore predefinito
+- `chiave in d` controlla se la **chiave** esiste (non il valore)
+
+<Callout kind="attenzione">
+`host["utente"]` con una chiave che non c'è dà `KeyError: 'utente'`. Usa `.get()` quando non sei sicuro che la chiave esista.
+</Callout>
+
+Per scorrere un dizionario si usa `.items()`, che dà chiave e valore insieme:
+
+```python
+porte = {"ssh": 22, "http": 80, "https": 443}
+for nome, numero in porte.items():
+    print(nome, "->", numero)
+```
+
+Output:
+
+```text
+ssh -> 22
+http -> 80
+https -> 443
+```
+
+<Say who="assistente">Se scrivi solo for nome in porte, ottieni le chiavi. Con .values() ottieni i valori, con .items() entrambi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare gli indirizzi">
+Ora hai tutto per rispondere a Marta. Il dizionario avrà come chiave l'indirizzo e come valore **quante volte è comparso**.
+
+```python
+ips = ["203.0.113.9", "198.51.100.4", "203.0.113.9", "192.0.2.77", "203.0.113.9"]
+conteggio = {}
+for ip in ips:
+    if ip in conteggio:
+        conteggio[ip] += 1
+    else:
+        conteggio[ip] = 1
+print(conteggio)
+```
+
+Output:
+
+```text
+{'203.0.113.9': 3, '198.51.100.4': 1, '192.0.2.77': 1}
+```
+
+Con `.get()` il ciclo si accorcia: `conteggio[ip] = conteggio.get(ip, 0) + 1` fa la stessa cosa in una riga. E per segnalare chi compare tre volte o più:
+
+```python
+for ip, n in conteggio.items():
+    if n >= 3:
+        print("sospetto:", ip, n)
+```
+
+Output:
+
+```text
+sospetto: 203.0.113.9 3
+```
+
+<Say who="sensei">Ecco la tecnica che userai cento volte: dizionario vuoto, ciclo, aggiorna il contatore. Ricordala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa questo codice? d = {'a': 2} e poi print(2 in d)"
+  options={["False", "True", "a", "Errore"]}
+  answer={0}
+  explain="L'operatore in, sui dizionari, controlla le chiavi, non i valori. La chiave è 'a', non 2, quindi il risultato è False. Per controllare i valori si userebbe 2 in d.values()."
+/>
+
+Ora conta tu: aggiungi un indirizzo all'elenco e guarda come cambia il conteggio.
+
+<PythonTerminal code={"ips = ['203.0.113.9', '198.51.100.4', '203.0.113.9']\nconteggio = {}\nfor ip in ips:\n    conteggio[ip] = conteggio.get(ip, 0) + 1\nprint(conteggio)"} />
+
+<Say who="assistente">Prova ad aggiungere '192.0.2.77' due volte. Chi sale in cima alla lista dei sospetti?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, quale riga contiene l'errore, quale metodo serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-liste-dizionari" pass="4/5" retries={3} />
+
+<Say who="sensei">Indice da zero, chiave tra virgolette, sort che non restituisce niente. Tre trappole, tre sicurezze.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una lista è ordinata e modificabile: indici da 0, slice `[a:b]`, metodi `append`, `remove`, `sort`, `count`.
+- Un dizionario associa chiavi a valori: si legge con `d[k]` o `d.get(k, x)` e si scorre con `.items()`.
+- Per contare le occorrenze: dizionario vuoto, ciclo, `conteggio[x] = conteggio.get(x, 0) + 1`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa stampa print([1, 2, 3][1:])?", a: "[2, 3]" },
+    { q: "Cosa dà una chiave inesistente in d[k]?", a: "KeyError" },
+    { q: "Cosa restituisce lista.sort()?", a: "None (ordina la lista sul posto)" },
+    { q: "Cosa controlla 'x in dizionario'?", a: "Se x è una chiave" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le funzioni. Metterai questi pezzi in scatole con un nome, da riusare ogni volta che servono.</Say>
+</Scene>

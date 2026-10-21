@@ -1,0 +1,178 @@
+---
+id: T.04.006
+course: trading
+module: 4
+title: "Campioni e significatività"
+belt: gialla
+duration_min: 9
+prerequisites: [T.04.005]
+objectives:
+  - "Calcolare l'errore standard della media e la statistica t di un rendimento medio"
+  - "Spiegare perché un campione piccolo può ingannare"
+  - "Calcolare la probabilità di un falso positivo quando si provano molte strategie"
+video:
+  provider: youtube
+  id: "vemZtEM63GY"
+  start: 0
+  end: 600
+  channel: "StatQuest with Josh Starmer"
+  title: "p-values: What they are and how to interpret them"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-significativita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di un risultato ottenuto su pochi giorni"
+  - "Credere che il p-value sia la probabilità che l'ipotesi sia vera"
+  - "Provare tante strategie e tenere solo quella che «funziona»: trovare un falso positivo è quasi certo"
+commands: []
+---
+
+<Scene title="Venti strategie, una vincente">
+Lucia prova **venti** regole di trading diverse su dati fittizi. Diciannove non funzionano. Una sì: ha guadagnato in modo netto negli ultimi cento giorni. «L'ho trovata!»
+
+Ma i dati sono stati generati a caso: in realtà **nessuna** delle venti regole ha un vero vantaggio.
+
+La domanda del caso: **come si decide se un risultato è reale o solo fortuna?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. Dati inventati e nessun uso di soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Quello che sembra un regalo, spesso è solo un caso fortunato che non si ripete.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il campione e il vero valore">
+Non conosciamo mai la «verità» di un titolo: abbiamo solo un **campione** di giorni. Se ripetessimo l'esperimento con altri giorni, otterremmo medie diverse. Quanto diverse?
+
+Lo dice l'**errore standard della media**:
+
+errore standard = volatilità giornaliera / √n
+
+dove n è il numero di giorni. Più giorni hai, più l'errore si riduce, ma **lentamente**: per dimezzarlo servono **quattro volte** i dati.
+
+<Callout kind="regola">
+Dividere per la radice di n significa: 100 giorni → errore diviso 10; 400 giorni → diviso 20; 2.500 giorni → diviso 50.
+</Callout>
+
+<Say who="assistente">Quattro volte i dati per metà dell'errore. Questo spiega perché pochi mesi di dati non bastano mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La statistica t">
+Una strategia fittizia ha rendimento medio **0,1% al giorno** e volatilità giornaliera **1%**. Quanto possiamo fidarci?
+
+La **statistica t** confronta la media con il suo errore standard:
+
+t = media / errore standard
+
+<Log lines={[
+  "n = 100:  errore = 1 / 10 = 0,1   t = 0,1 / 0,1 = 1",
+  "n = 400:  errore = 1 / 20 = 0,05  t = 0,1 / 0,05 = 2",
+  "n = 2500: errore = 1 / 50 = 0,02  t = 0,1 / 0,02 = 5",
+]} />
+
+Regola pratica: |t| intorno a **2** è la soglia tipica (circa il 5% di probabilità di vederlo per caso se la media vera è zero). Con 100 giorni t = 1: **nessuna prova**. Con 400 giorni t = 2: al limite. Con 2.500 giorni t = 5: ben oltre.
+
+<PythonTerminal code={"media = 0.1\nvol = 1.0\n\nfor n in [100, 400, 2500]:\n    errore = vol / n ** 0.5\n    print(n, round(media / errore, 2))"} />
+
+<Say who="sensei">Stessa media, stessa volatilità, tre risultati. La differenza la fa solo quanti giorni hai osservato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il p-value">
+Il **p-value** risponde a una domanda precisa: **«se in realtà non ci fosse nessun vantaggio, con che probabilità vedrei un risultato almeno così estremo per puro caso?»**
+
+Un p-value di 0,05 significa: il 5% di probabilità di vedere un risultato così per caso, **se non c'è nessun vantaggio**.
+
+<Callout kind="attenzione">
+Il p-value **non** è la probabilità che la strategia funzioni. E «significativo» non vuol dire «grande» né «utile»: una media minuscola può essere significativa con tanti dati, e un costo di commissione può mangiarsela.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Una voce molto chiara, circa undici minuti, in inglese con i sottotitoli (mostriamo i primi dieci):
+
+<Video />
+
+<Say who="assistente">Il p-value parla del caso, non della tua strategia. Ricordalo, e sbaglierai meno interpretazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provarne tante">
+Torniamo alle venti strategie. Con soglia 5%, ciascuna strategia **senza vantaggio** ha una probabilità 0,05 di sembrare «significativa» per caso, e 0,95 di non sembrarlo.
+
+La probabilità che **nessuna** delle venti sembri significativa è 0,95 elevato a 20, circa **0,36**. Quindi la probabilità che **almeno una** lo sembri è:
+
+<Log lines={[
+  "1 - 0,95^20 = 1 - 0,358 = 0,642",
+  "Circa il 64%",
+]} />
+
+Cioè è **più probabile che sì che no**: se provi venti strategie inutili, quasi due volte su tre ne troverai una che sembra buona. Questo è il **falso positivo da test multipli**, a volte detto **data mining** o **p-hacking**.
+
+<Callout kind="regola">
+Più tentativi fai, più alta deve essere la prova richiesta. Un buon metodo: tieni da parte dati che non hai mai guardato (fuori campione) e controlla lì. Lo vedremo nel modulo sul backtesting.
+</Callout>
+
+<Say who="sensei">Non fidarti della miglior strategia tra venti. Fidati di quella che regge su dati che non ha mai visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia fittizia ha media 0,2% al giorno, volatilità 2% al giorno, su 100 giorni. Quanto vale la statistica t?"
+  options={[
+    "1: errore standard 0,2, t = 0,2 / 0,2 = 1, nessuna prova",
+    "10: la media è dieci volte più grande di 0,02",
+    "2: la media è il doppio della volatilità divisa per 100",
+    "0,1: si divide la media per la volatilità e per 100",
+  ]}
+  answer={0}
+  explain="L'errore standard è 2 / √100 = 0,2, quindi t = 0,2 / 0,2 = 1: sotto la soglia di 2, nessuna prova. Chi risponde 10 dimentica che serve dividere per la radice di n, non per n."
+/>
+
+<Say who="sensei">Una media buona con volatilità alta e pochi giorni non prova niente. Serve anche il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di errore standard, statistica t e falsi positivi da test multipli. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-significativita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il modulo di statistica finisce qui: ti ha dato il metro per giudicare. Nel prossimo modulo ci servirà per i backtest.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Errore standard della media = volatilità / √n; t = media / errore standard; soglia pratica |t| circa 2.
+- Più giorni servono: per dimezzare l'errore servono quattro volte i dati.
+- Provando 20 strategie inutili, la probabilità di trovarne una «significativa» per caso è circa 64%.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Formula dell'errore standard della media?", a: "Volatilità giornaliera divisa per la radice di n" },
+    { q: "Media 0,1%, volatilità 1%, n = 400: quanto vale t?", a: "2 (errore 0,05)" },
+    { q: "Che cosa NON è il p-value?", a: "La probabilità che la strategia funzioni davvero" },
+    { q: "Probabilità di almeno un falso positivo su 20 prove al 5%?", a: "Circa 64% (1 - 0,95^20)" },
+  ]}
+/>
+
+<Say who="sensei">Fine del modulo. Il prossimo è il cuore del corso: strategie e backtesting. Ora sai quanto fidarti dei numeri.</Say>
+</Scene>

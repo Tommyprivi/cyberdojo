@@ -1,0 +1,161 @@
+---
+id: F.06.008
+course: fondamenta
+module: 6
+title: "Routing statico, dinamico e riepilogo"
+belt: arancione
+duration_min: 10
+prerequisites: [F.06.007]
+objectives:
+  - "Distinguere routing statico e dinamico"
+  - "Dire a cosa servono RIP, OSPF e BGP"
+  - "Ripercorrere il viaggio di un pacchetto da una rete all'altra"
+video:
+  provider: youtube
+  id: "rzVA-684QEw"
+  start: 0
+  end: 600
+  channel: "Sistemi e reti / TPSI - Prof. Francesco Urbano"
+  title: "Routing statico e dinamico"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-routing-dinamico
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Una route statica non si adatta ai guasti: se il collegamento cade, resta nella tabella"
+  - "RIP, OSPF e BGP non sono intercambiabili: RIP e OSPF lavorano dentro un'organizzazione, BGP tra organizzazioni"
+  - "Un router che si fida di ogni annuncio può essere ingannato da annunci sbagliati o falsi"
+commands: []
+---
+
+<Scene title="Il collegamento che cade">
+Alle **05:00** il collegamento tra la sede e la filiale si interrompe. Il router ha una riga nella tabella che dice «per la filiale, passa di qui». Ma di qui non si passa più.
+
+Il traffico si ferma? Dipende da **chi ha scritto quella riga**: una persona, o i router stessi.
+
+<Say who="sensei">Una tabella è fotografia del momento in cui è stata scritta. Se la rete cambia, la fotografia mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Routing statico">
+Una **route statica** è scritta **a mano** dall'amministratore: «per 192.168.50.0/24, manda i pacchetti al router 192.168.1.2».
+
+- **Pro**: semplice, prevedibile, nessun traffico in più, ideale per reti piccole.
+- **Contro**: se il collegamento cade, la riga resta lì e nessuno la cambia da solo. Con cento router, scriverle tutte a mano è un incubo.
+
+Una route statica molto comune è la **default**: nel router di un piccolo ufficio, «tutto il resto va al provider».
+
+<Callout kind="trucco">
+Un solo router, un solo provider: bastano due righe statiche. Non servono protocolli.
+</Callout>
+
+<Say who="assistente">Semplice è un pregio. Finché la rete non cambia, la statica non sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Routing dinamico">
+Nel **routing dinamico** i router **si scambiano messaggi** con i vicini, dicendo quali reti conoscono e a che distanza. Con queste informazioni ognuno costruisce la propria tabella. Se un collegamento cade, i vicini lo dicono e le tabelle si **aggiornano da sole**.
+
+Il tempo che serve perché tutti i router abbiano di nuovo tabelle corrette si chiama **convergenza**.
+
+<Callout kind="curiosita">
+Per questo Internet non si ferma quando un cavo sottomarino si rompe: i router trovano un'altra strada senza che nessuno scriva niente a mano.
+</Callout>
+
+<Say who="sensei">I router chiacchierano. Chi ascolta bene non ha bisogno che gli si ripeta la strada ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre nomi da riconoscere">
+Non devi configurarli: devi sapere **a cosa servono**.
+
+| Protocollo | Dove si usa | Come ragiona |
+|---|---|---|
+| **RIP** | reti molto piccole, è il più vecchio | conta i **salti** (router attraversati); massimo 15, il 16 significa irraggiungibile |
+| **OSPF** | dentro un'azienda, anche grande | ogni router costruisce una **mappa** della rete e calcola la strada migliore |
+| **BGP** | **tra** organizzazioni, su Internet | scambia le route tra **sistemi autonomi** (reti di organizzazioni diverse); decide con regole e accordi, non solo con le distanze |
+
+RIP e OSPF lavorano **dentro** un'organizzazione. BGP **le collega tra loro**.
+
+<Say who="assistente">RIP conta i passi, OSPF disegna la mappa, BGP mette d'accordo le organizzazioni. Tre mestieri diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fidarsi degli annunci">
+C'è un punto debole: nel routing dinamico un router **crede a ciò che dicono i vicini**. Se un annuncio è sbagliato, o falso, il traffico può essere **deviato o interrotto**. È capitato più volte, anche per errori di configurazione, che pezzi di Internet diventassero irraggiungibili.
+
+Le difese sono di principio: **autenticare** i router che si parlano e **filtrare** gli annunci, accettando solo quelli che hanno senso. Lo stesso principio dell'ARP: se nessuno controlla, qualcuno approfitta.
+
+Un'altra voce che confronta statico e dinamico:
+
+<Video />
+
+<Say who="sensei">Fiducia cieca, di nuovo. In rete, quasi ogni cosa funziona perché qualcuno ha creduto a qualcun altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un piccolo ufficio ha un solo router collegato a un solo provider. Che cosa basta di solito?"
+  options={[
+    "Una route statica di default verso il provider",
+    "OSPF con tante aree",
+    "BGP per ricevere tutta Internet",
+    "Una route per ogni sito web",
+  ]}
+  answer={0}
+  explain="Con una sola uscita tutto ciò che non è locale va al provider: basta una default statica. OSPF e BGP servono quando ci sono molti router o più organizzazioni da collegare. Una route per ogni sito è impossibile: i siti sono milioni."
+/>
+
+<Say who="assistente">Una sola uscita, una sola riga. Gli strumenti grossi si usano quando c'è qualcosa da decidere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su routing statico e dinamico. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-routing-dinamico" pass="5/5" retries={3} />
+
+<Say who="sensei">Statico o dinamico, dentro o tra organizzazioni. Se distingui queste due coppie sei a posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il viaggio completo e riepilogo del modulo">
+Rimetti insieme tutto il modulo con il pacchetto delle 03:12, dalla .66 al server 10.0.0.5:
+
+- La .66 applica la **maschera** (/24) al proprio indirizzo e alla destinazione: reti diverse, quindi fuori.
+- Manda il pacchetto al **gateway**: MAC del gateway, IP di destinazione del server.
+- Il router legge la sua **tabella di routing**: sceglie la riga con il prefisso più lungo (qui, la rete diretta 10.0.0.0/24).
+- Il server riceve. Il registro riporta l'IP della .66: il percorso è ricostruibile.
+
+<Recap xp={30}>
+- Subnet mask, CIDR e AND dicono quale rete è un indirizzo; con 2^n − 2 si contano gli host e con i blocchi si trovano rete e broadcast.
+- Le sottoreti separano i reparti; VLSM dà a ognuna la misura giusta. Il gateway porta fuori ciò che non è locale.
+- Il router sceglie dalla tabella con il prefisso più lungo, poi la default. Le route sono scritte a mano (statiche) o imparate (RIP, OSPF, BGP).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il limite di una route statica?", a: "Non si adatta ai guasti: resta in tabella anche se il collegamento cade" },
+    { q: "Che cosa conta RIP?", a: "I salti (router attraversati), massimo 15" },
+    { q: "Quale protocollo collega le organizzazioni su Internet?", a: "BGP" },
+    { q: "Quale regola sceglie la riga della tabella?", a: "Il prefisso più lungo" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Sai leggere un indirizzo, tagliarlo, contare una rete, dividerla e seguire il pacchetto fino a destinazione. Non è poco: è il mestiere di chi guarda il traffico.</Say>
+</Scene>

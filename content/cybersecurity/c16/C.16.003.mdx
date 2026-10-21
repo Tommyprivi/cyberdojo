@@ -1,0 +1,154 @@
+---
+id: C.16.003
+course: cybersecurity
+module: 16
+title: "Sessioni contro token"
+belt: blu
+duration_min: 10
+prerequisites: [C.16.002]
+objectives:
+  - "Confrontare una sessione sul server con un token autonomo: come funzionano, pro e contro"
+  - "Scegliere gli attributi giusti del cookie di sessione (HttpOnly, Secure, SameSite)"
+  - "Spiegare perché la revoca e la scadenza decidono molto della scelta"
+video:
+  provider: youtube
+  id: "yo7IoQiZpy8"
+  start: 0
+  end: 600
+  channel: "Giovanni Pace - Archety"
+  title: "Decifrando JWT (2/7): sessioni HTTP e conservazione sicura dei dati sul server"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-sessioni-token
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che i token siano sempre più sicuri delle sessioni, o il contrario: dipende dall'uso"
+  - "Dimenticare HttpOnly e Secure sul cookie di sessione"
+  - "Non avere un modo per chiudere subito l'accesso di un utente disattivato o di un dispositivo rubato"
+commands: []
+---
+
+<Scene title="Il telefono perso alle 18:40">
+**Tavola Bella** (azienda fittizia) ha un gestionale. Alle 18:40 Marco, un commesso, perde il telefono con l'app aperta. Il responsabile della sicurezza, Sofia, lo disattiva subito dall'elenco utenti.
+
+Con il vecchio gestionale, il telefono smette di funzionare **all'istante**. Con la nuova app, basata su token, il telefono continua a funzionare ancora per **un'ora**.
+
+La domanda del caso: **perché lo stesso «disattiva utente» ha effetti così diversi, e come si sceglie?**
+
+<Say who="sensei">Ogni scelta tecnica è un compromesso. Si impara a leggere cosa si guadagna e cosa si paga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La sessione: il numero del guardaroba">
+Nel modello a **sessione** il server tiene un registro. Dopo il login crea una riga («sessione 7f3a… appartiene a Marco, valida fino alle 19:00») e consegna al browser **solo il numero**, dentro un **cookie**.
+
+Come il **cappotto al guardaroba**: il numero non dice nulla da solo, il guardarobiere guarda il registro.
+
+- Il numero è un **identificativo opaco**: lungo, casuale, senza significato.
+- Per **chiudere** l'accesso basta cancellare la riga: effetto immediato.
+- Costo: il server deve **ricordare** tutte le sessioni (un archivio condiviso se i server sono molti).
+
+<Callout kind="regola">
+Sessione = lo **stato sta sul server**; il cliente porta solo un numero imprevedibile.
+</Callout>
+
+<Say who="assistente">Se Sofia cancella la riga di Marco, il numero nel telefono diventa carta straccia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il token: il biglietto con il timbro">
+Nel modello a **token** (per esempio un JWT) il server **non tiene il registro**: dà al cliente un biglietto timbrato che contiene già chi è, che cosa può fare e quando scade. A ogni richiesta controlla il timbro (la firma) e la scadenza.
+
+Come il **biglietto del treno con data e timbro**: il controllore non chiama la biglietteria, guarda il biglietto.
+
+- Pro: nessun archivio da consultare, comodo con molte API e molti servizi.
+- Contro: **revocarlo prima della scadenza è difficile**. Per questo il telefono di Marco ha ancora un'ora di vita.
+- Mitigazioni: token di accesso **brevi** (minuti) più un **refresh token** (più durevole, custodito meglio, con cambio a ogni uso) e, se serve, una **lista di token revocati**.
+
+<Say who="sensei">Un biglietto non si richiama indietro. Si fa in modo che scada presto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove si tiene il numero o il token">
+Per un sito nel browser, il posto più robusto è un **cookie** con tre attributi:
+
+<Log lines={[
+  "Set-Cookie: sid=7f3a9c41e2...; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=1800",
+  "",
+  "HttpOnly -> gli script della pagina non possono leggerlo (difesa da XSS che ruba la sessione)",
+  "Secure   -> viaggia solo su HTTPS",
+  "SameSite -> il browser non lo allega a richieste partite da altri siti (difesa da CSRF, lezione 4)",
+  "Max-Age  -> scade da solo dopo 30 minuti",
+]} />
+
+Se invece un token viene conservato in un posto leggibile dagli script della pagina, un difetto XSS lo consegna all'estraneo. Se viaggia nell'intestazione Authorization, non è allegato in automatico dal browser: protegge da CSRF, ma non da XSS.
+
+<Callout kind="attenzione">
+In entrambi i modelli: dopo il login il server **rigenera** l'identificativo (per non riusarne uno scelto da altri), e il logout deve davvero invalidarlo, non solo cancellarlo dal browser.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">HttpOnly, Secure, SameSite: tre parole da scrivere sempre quando crei un cookie di sessione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scegliere: un caso">
+<Quiz
+  question="Una banca fittizia vuole poter bloccare un accesso entro pochi secondi se sospetta una frode. Quale scelta rispecchia meglio questa esigenza?"
+  options={[
+    "Sessioni sul server (o token molto brevi con controllo di revoca), così l'accesso si chiude subito",
+    "Token con scadenza di sette giorni e nessun controllo successivo",
+    "Un JWT con tutti i dati dell'utente nel payload",
+    "Conservare il token in un posto leggibile dagli script, per comodità"
+  ]}
+  answer={0}
+  explain="La revoca immediata è il punto di forza delle sessioni sul server. Con i token senza controllo, l'accesso resta aperto fino alla scadenza: più la scadenza è lunga, più dura il rischio."
+/>
+
+<Say who="sensei">La domanda giusta non è «quale tecnologia è moderna», ma «quanto in fretta devo poter dire basta».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su sessioni, token, cookie e revoca: scegli la risposta giusta.
+
+<Practice generator="c16-sessioni-token" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa cosa paga ogni scelta sbaglia di meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Sessione: stato sul server, il cliente ha un numero opaco; la revoca è immediata, ma serve un archivio.
+- Token: stato nel token firmato; comodo e leggero, ma si revoca con difficoltà: scadenze brevi e refresh token.
+- Cookie di sessione: HttpOnly, Secure, SameSite e scadenza; l'identificativo si rigenera al login e muore al logout.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove sta lo stato in una sessione?", a: "Sul server; il browser porta solo un identificativo opaco" },
+    { q: "Qual è il punto debole principale di un token autonomo?", a: "È difficile revocarlo prima della scadenza" },
+    { q: "Che cosa fa HttpOnly?", a: "Impedisce agli script della pagina di leggere il cookie" },
+    { q: "Che cosa fa SameSite?", a: "Limita l'invio del cookie con richieste partite da altri siti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: CORS e CSRF, le regole del browser che spesso si confondono.</Say>
+</Scene>

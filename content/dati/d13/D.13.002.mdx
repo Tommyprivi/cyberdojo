@@ -1,0 +1,135 @@
+---
+id: D.13.002
+course: dati
+module: 13
+title: "Dalla domanda ai dati"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.001]
+objectives:
+  - "Scrivere una domanda chiara, un'ipotesi che si può smentire e le misure da usare"
+  - "Preparare un piano di analisi prima di toccare i dati"
+  - "Accettare un risultato che contraddice l'ipotesi"
+video:
+  provider: youtube
+  id: "wSct_cbqzpM"
+  start: 0
+  end: 600
+  channel: "Grow with Google"
+  title: "Problem Solving with Data Analytics | Google Data Analytics Certificate"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-domanda-dati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare domande vaghe a cui nessun numero può rispondere"
+  - "Guardare i dati prima e inventare l'ipotesi dopo, per farla tornare"
+  - "Cambiare la misura a metà strada perché il risultato non piace"
+commands: []
+---
+
+<Scene title="La biblioteca d'estate">
+Marco fa il volontario nella biblioteca del suo quartiere. La responsabile gli dice: «Io credo che d'estate venga più gente. Dobbiamo tenere aperto più a lungo?».
+
+Marco ha l'elenco dei prestiti di un anno. Potrebbe aprirlo e cominciare a fare grafici. Ma prima si ferma.
+
+La domanda del caso: **come si passa da un'opinione a un piano che i dati possono confermare o smentire?**
+
+<Say who="sensei">Un'opinione non si analizza. Si trasforma in una domanda, poi in un'ipotesi, poi in un piano. Solo dopo si aprono i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Domanda, ipotesi, misura">
+Tre pezzi, in ordine:
+
+- **Domanda**: cosa vuoi sapere. «D'estate la biblioteca è più usata?»
+- **Ipotesi**: la risposta che ti aspetti, scritta in modo che i dati possano **smentirla**. «Il numero medio di prestiti al mese in giugno, luglio e agosto è più alto della media degli altri mesi.»
+- **Misura**: il numero esatto che userai, con unità e periodo. «Prestiti registrati al mese, anno 2025.»
+
+Vuoi sentire un'altra voce parlare di come si formulano le domande in un progetto di dati? Il video è in inglese, con i sottotitoli attivabili:
+
+<Video />
+
+<Callout kind="attenzione">
+«È più usata» è vago: usata da chi? Misurata come? Prestiti, visite, ore di apertura piene? Scegli **una misura** e dichiarala prima di guardare i dati.
+</Callout>
+
+<Say who="assistente">Una buona ipotesi può essere falsa. Se qualunque risultato la conferma, non è un'ipotesi: è una scusa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano di analisi">
+Prima dei grafici, scrivi un **piano di analisi**: mezza pagina con queste voci.
+
+1. Domanda e ipotesi.
+2. **Dati**: quale dataset, quale fonte, quali colonne servono (solo quelle).
+3. **Passi**: come li pulisci, cosa confronti, con quale grafico o calcolo.
+4. **Criterio**: che cosa ti farà dire «l'ipotesi regge» o «non regge».
+5. **Rischi**: cosa potrebbe falsare il confronto (un mese con la biblioteca chiusa, un cambio di orario).
+
+<Callout kind="regola">
+Il criterio si scrive **prima**. Se lo decidi dopo aver visto i numeri, finirai per scegliere quello che ti dà ragione.
+</Callout>
+
+<Say who="sensei">Il piano si può correggere, ma ogni correzione si annota con il motivo. Questo distingue un'analisi da una scommessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te: il piano di Marco">
+Guarda come Marco ragiona. I numeri sono inventati e semplici.
+
+<Guided
+  steps={[
+    "Domanda: «D'estate la biblioteca è più usata?». Ipotesi: la media dei prestiti mensili in giugno, luglio e agosto è più alta della media degli altri nove mesi. Misura: prestiti al mese, anno 2025.",
+    "Dati del 2025 (prestiti): gen 410, feb 395, mar 430, apr 420, mag 440, giu 300, lug 250, ago 190, set 450, ott 460, nov 470, dic 400.",
+    "Estate: (300 + 250 + 190) / 3 = 740 / 3, circa 247 prestiti al mese. Altri mesi: 3875 / 9, circa 431 prestiti al mese.",
+    "Criterio scritto prima: se la media estiva non supera quella degli altri mesi, l'ipotesi è smentita. Qui 247 è molto sotto 431, circa il 43% in meno.",
+    "Conclusione onesta: l'ipotesi è smentita per i prestiti. Attenzione però al limite: i prestiti non contano chi entra solo a studiare. Prima di decidere gli orari conviene misurare anche le presenze.",
+  ]}
+/>
+
+<Say who="assistente">Marco aveva torto, e va bene così. Il risultato più utile è spesso quello che non ti aspettavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari: domande, ipotesi, misure e piani di analisi.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-domanda-dati" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi scrive il piano prima non può barare, nemmeno con se stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'opinione diventa una domanda, poi un'ipotesi che i dati possono smentire, poi una misura precisa con unità e periodo.
+- Il piano di analisi si scrive prima di guardare i dati: dati, passi, criterio di decisione, rischi.
+- Se il risultato smentisce l'ipotesi, lo si riporta così com'è, con i suoi limiti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa rende buona un'ipotesi?", a: "Che i dati possano smentirla" },
+    { q: "Quando si scrive il criterio per decidere?", a: "Prima di guardare i risultati" },
+    { q: "Cosa va dichiarato di una misura?", a: "Cosa si conta, in che unità e in che periodo" },
+    { q: "L'ipotesi è smentita: cosa fai?", a: "La riporti com'è, con i limiti dell'analisi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'analisi passo per passo, dalla pulizia al controllo dei risultati, con un notebook che racconta tutto.</Say>
+</Scene>

@@ -1,0 +1,165 @@
+---
+id: T.04.004
+course: trading
+module: 4
+title: "Code grasse ed eventi rari"
+belt: gialla
+duration_min: 8
+prerequisites: [T.04.003]
+objectives:
+  - "Ricordare la regola 68-95-99,7 della distribuzione normale"
+  - "Spiegare che cosa sono le code grasse e perché la normale sottostima gli eventi rari"
+  - "Capire perché i giorni estremi pesano molto sui risultati di una strategia"
+video:
+  provider: youtube
+  id: "4cSHmMGAh9g"
+  start: 0
+  end: 362
+  channel: "La finanza amichevole - Alessandro Fatichi"
+  title: "Cosa sono i cigni neri?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-code-grasse
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «evento da un caso su milioni» non possa succedere nella vita di un trader"
+  - "Usare la normale per stimare il rischio di crollo e fidarsi del risultato"
+  - "Confondere «coda grassa» con «volatilità alta»: sono due cose diverse"
+commands: []
+---
+
+<Scene title="Il giorno che non doveva esistere">
+Un modello fittizio dice: «Una perdita così grande in un giorno capita una volta ogni 14.000 anni». Poi, in un solo decennio, capita **tre volte**.
+
+Il gestore del fondo inventato di Lucia, la **Cassa Verde**, aveva fatto i conti con la distribuzione a campana. I conti erano giusti. Il modello no.
+
+La domanda del caso: **perché i giorni estremi nei mercati arrivano molto più spesso di quanto la campana prometta?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. Casi e fondi sono inventati e nel corso non si usano soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. E quando ti sembra che il rischio sia piccolo, di solito il modello ti sta mentendo con garbo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola 68-95-99,7">
+La **distribuzione normale** (la campana) ha una regola semplice, con σ = deviazione standard (la volatilità):
+
+- circa **68%** dei giorni sta entro **1σ** dalla media;
+- circa **95%** entro **2σ**;
+- circa **99,7%** entro **3σ**.
+
+Quindi i giorni oltre 3σ (da una parte o dall'altra) dovrebbero essere circa lo 0,3%, cioè **uno ogni 370 giorni**. Per la sola coda negativa (perdite oltre 3σ) è la metà: circa un giorno su **741**, uno ogni quasi tre anni di borsa.
+
+<Callout kind="regola">
+Più ci si allontana, più la normale dice che l'evento è raro **in modo vertiginoso**: oltre 4σ in perdita sarebbe circa 1 giorno su 31.600 (circa 125 anni); oltre 5σ circa 1 su 3,5 milioni (circa 14.000 anni).
+</Callout>
+
+Verifica tu il calcolo:
+
+<PythonTerminal code={"import math\n\ndef p_coda(z):\n    return 0.5 * (1 + math.erf(-z / math.sqrt(2)))\n\np3 = p_coda(3)\nprint(round(p3, 5))\nprint(round(1 / p3))\np5 = p_coda(5)\nprint(round(1 / p5 / 252 / 1000))"} />
+
+Questo codice stampa 0.00135, poi 741 e infine 14: i migliaia di anni di borsa a 252 giorni l'anno per un -5σ secondo la normale.
+
+<Say who="assistente">Il codice usa erf, la funzione degli errori. Non serve capirla a memoria: serve vedere che lo -5σ, per la normale, è quasi impossibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le code grasse">
+Nei mercati reali i giorni oltre 4σ o 5σ sono capitati **molte più volte** di quanto la normale preveda. Si dice che i rendimenti hanno le **code grasse**: le estremità della distribuzione, le **code**, sono più «pesanti» di quelle della campana.
+
+Un esempio famoso: il **19 ottobre 1987**, in un solo giorno, i principali indici azionari americani persero oltre il 20%. Con una volatilità giornaliera di circa 1%, per la normale sarebbe stato un evento da circa 20σ: praticamente impossibile.
+
+<Callout kind="trucco">
+Una ragione comune: la volatilità **non è costante**. Ci sono mesi calmi (1% al giorno) e periodi di crisi (4% al giorno). Mescolando i due periodi nello stesso istogramma, le code diventano più grasse. Un −4% in un periodo calmo è −4σ, ma in una crisi è solo −1σ.
+</Callout>
+
+Un'altra misura che si incontra è la **curtosi**: dice quanto sono pesanti le code. Per la normale, la curtosi in eccesso è 0; per i rendimenti reali, di solito, è positiva.
+
+Vuoi sentire il tema dei «cigni neri» da un'altra voce? Poco più di sei minuti, in italiano:
+
+<Video />
+
+<Say who="sensei">Gli eventi rari non sono rari quanto dice la campana. Preparati a quel giorno. Non provare a prevederlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pochi giorni, tanto effetto">
+Un'altra conseguenza: **pochi giorni estremi** possono decidere il risultato di un intero anno.
+
+Esempio fittizio con 10 giorni. Nove giorni a +0,5% e un solo giorno a −9%:
+
+<Log lines={[
+  "9 giorni a +0,5%: somma = +4,5%",
+  "1 giorno a -9%:   somma = -9%",
+  "Somma semplice: +4,5% - 9% = -4,5%",
+]} />
+
+Con la composizione (si moltiplicano i fattori): 1,005 elevato a 9 fa circa 1,0459, che moltiplicato per 0,91 dà circa 0,952, cioè circa −4,8%. In entrambi i casi il giorno brutto pesa **più di nove giorni buoni messi insieme**.
+
+<Callout kind="attenzione">
+Un backtest (la prova di una strategia sui dati del passato) che esclude i giorni peggiori sembra bellissimo e non rappresenta il rischio vero. Ricorda: mai concludere «è impossibile» da un campione di pochi anni.
+</Callout>
+
+<Say who="assistente">Quando vedi una strategia che non ha mai avuto un brutto giorno, chiediti se il periodo era davvero calmo o se i brutti giorni sono stati tolti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello normale dice che una perdita oltre 4σ capita circa una volta ogni 125 anni, ma nei dati degli ultimi 30 anni se ne sono viste diverse. Che conclusione è più sensata?"
+  options={[
+    "Le code reali sono più grasse della normale: il modello sottostima il rischio",
+    "Sono state coincidenze sfortunate, il modello va bene",
+    "Bisogna aspettare altri 100 anni per capirlo",
+    "I dati sono sbagliati e vanno corretti",
+  ]}
+  answer={0}
+  explain="Se un evento «da un secolo» compare più volte in pochi decenni, è il modello a essere sbagliato, non la realtà. Rispondere «coincidenze» è la scusa tipica di chi non vuole cambiare modello."
+/>
+
+<Say who="sensei">Quando i dati contraddicono il modello, si cambia il modello. Non si cambia il dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su regola 68-95-99,7, code grasse ed eventi rari. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-code-grasse" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa che il giorno estremo arriva, rischia con più prudenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Normale: 68% entro 1σ, 95% entro 2σ, 99,7% entro 3σ. Perdite oltre 3σ: circa 1 giorno su 741.
+- Nei mercati le code sono grasse: gli eventi estremi sono molto più frequenti di quanto la normale dica.
+- Pochi giorni estremi possono pesare più di molti giorni normali: attenzione ai backtest troppo belli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti giorni stanno entro 2σ nella normale?", a: "Circa il 95%" },
+    { q: "Che cosa sono le code grasse?", a: "Code della distribuzione più pesanti della normale: più eventi estremi" },
+    { q: "Una causa comune delle code grasse?", a: "La volatilità cambia nel tempo, e si mescolano periodi calmi e di crisi" },
+    { q: "Se un evento «da un secolo» capita più volte in pochi anni, di chi è l'errore?", a: "Del modello, non della realtà" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il passato aiuta a prevedere il futuro? Autocorrelazione e rumore.</Say>
+</Scene>

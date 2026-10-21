@@ -1,0 +1,187 @@
+---
+id: F.02.002
+course: fondamenta
+module: 2
+title: "Muoversi: pwd, ls, cd"
+belt: bianca
+duration_min: 8
+prerequisites: [F.02.001]
+objectives:
+  - "Sapere in quale cartella ti trovi con pwd e vedere che cosa contiene con ls"
+  - "Spostarti con cd, anche verso la cartella superiore (..) e la home (~)"
+  - "Usare le opzioni -l e -a di ls e il tasto Tab per completare i nomi"
+video:
+  provider: youtube
+  id: "caDqB7Dzmak"
+  start: 0
+  end: 350
+  channel: "Tigerman Root"
+  title: "Corso Terminale Linux - #1. Introduzione || Comandi ls/pwd/cd"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-navigare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che cd mostri qualcosa: se funziona non stampa niente, cambia solo il prompt"
+  - "Scrivere cd.. senza lo spazio: il comando è cd e poi .. separati da uno spazio"
+  - "Dimenticare che ls -a serve a vedere i file nascosti, quelli che iniziano con il punto"
+commands: [pwd, ls, cd]
+---
+
+<Scene title="Dove sono i file del caso?">
+Il collega del SOC ti scrive un messaggio:
+
+«I file dell'indagine sono nella cartella indagine, dentro la tua cartella personale. Aprila e dimmi che cosa c'è dentro.»
+
+Per ora non vedi niente: solo il prompt. Un computer senza finestre non ti mostra le cartelle, bisogna **chiedergliele**.
+
+<Log lines={["studente@lab:~$ _"]} caption="Sei nella tua cartella personale (il simbolo ~)." />
+
+La domanda del caso: **come si guarda in giro, e come ci si sposta, usando solo comandi?**
+
+<Say who="sensei">Prima di entrare in una stanza si guarda dov'è la porta. Tre comandi: pwd, ls, cd. Sono tutti qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="pwd: dove sono?">
+**pwd** significa «print working directory»: stampa il **percorso completo** della cartella in cui ti trovi. Una cartella si chiama anche **directory**: sono la stessa cosa.
+
+<Log lines={[
+  "studente@lab:~$ pwd",
+  "/home/studente",
+]} caption="~ è solo un'abbreviazione di /home/studente." />
+
+<Callout kind="trucco">
+Se ti senti perso, scrivi `pwd`. È il «voi siete qui» della mappa del centro commerciale.
+</Callout>
+
+<Say who="assistente">Il prompt ti dice già la cartella, ma abbreviata. pwd la dice per intero, e non lascia dubbi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ls: che cosa c'è qui?">
+**ls** (da «list») elenca i file e le cartelle di dove ti trovi.
+
+<Log lines={[
+  "studente@lab:~$ ls",
+  "appunti  indagine",
+]} />
+
+Le **opzioni** cambiano il modo di lavorare di un comando. Si scrivono dopo il nome, con un trattino:
+
+- **ls -l**: elenco lungo, con dimensione e data di ogni voce
+- **ls -a**: mostra anche i file **nascosti**, quelli il cui nome inizia con un punto
+- **ls -la**: le due cose insieme
+
+<Log lines={[
+  "studente@lab:~$ ls -l indagine",
+  "total 12",
+  "drwxr-xr-x 2 studente studente 4096 Oct 20 09:15 evidenze",
+  "-rw-r--r-- 1 studente studente  214 Oct 20 09:20 note.txt",
+  "-rw-r--r-- 1 studente studente 2048 Oct 20 09:18 registro.log",
+]} caption="Con ls -l la prima lettera della riga vale d per le cartelle (directory) e un trattino per i file." />
+
+<Callout kind="curiosita">
+Un nome come `.bashrc` inizia con il punto: ls lo nasconde per non riempirti lo schermo di file di configurazione. Con `ls -a` compare.
+</Callout>
+
+<Say who="sensei">ls senza argomenti guarda dove sei. ls con un nome guarda dove dici tu, senza spostarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="cd: andiamo là">
+**cd** (da «change directory») ti sposta in un'altra cartella. Se funziona **non stampa niente**: cambia solo il prompt.
+
+<Log lines={[
+  "studente@lab:~$ cd indagine",
+  "studente@lab:~/indagine$ pwd",
+  "/home/studente/indagine",
+  "studente@lab:~/indagine$ cd ..",
+  "studente@lab:~$",
+]} />
+
+Le scorciatoie da ricordare:
+
+- **cd ..**: sali di un livello (la cartella «sopra»). Lo spazio dopo cd è obbligatorio.
+- **cd ~** oppure solo **cd**: torni alla tua home, da qualsiasi punto.
+- **cd -**: torni alla cartella in cui eri un attimo prima.
+
+<Callout kind="trucco">
+Premi **Tab** mentre scrivi un nome: la shell lo completa da sola. Scrivi `cd ind`, premi Tab e compare `cd indagine/`. Risparmi tempo e non sbagli i nomi.
+</Callout>
+
+Vuoi vederlo fatto da un'altra voce? Pochi minuti:
+
+<Video />
+
+<Say who="assistente">Se Tab non completa niente, o il nome non esiste, o ce ne sono due simili: premi Tab due volte e la shell elenca le possibilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sei in /home/studente/indagine. Scrivi «cd ..» e poi «pwd». Che cosa stampa pwd?"
+  options={[
+    "/home/studente",
+    "/home/studente/indagine/..",
+    "/home",
+    "Niente: cd .. dà errore",
+  ]}
+  answer={0}
+  explain="I due puntini .. significano «la cartella sopra». Sopra /home/studente/indagine c'è /home/studente. Per arrivare a /home servirebbero due salti (cd ../..)."
+/>
+
+<Say who="sensei">Due puntini, un passo indietro. Conta i salti, non indovinare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova nel terminale">
+Ora entra nell'indagine e guarda che cosa c'è. Nel laboratorio qui sotto trovi la stessa struttura del caso.
+
+<LinuxTerminal goal="Entra nella cartella indagine ed elenca il suo contenuto con ls -l." />
+
+<Say who="assistente">Parti dal fondo: ls -l mostra l'elenco. Ma prima devi essere nella cartella giusta. Quale comando ti ci porta?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: quale comando serve, cosa stampa, dove ti trovi dopo un cd. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-navigare" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi sa sempre dove si trova non si perde nemmeno in un server con migliaia di cartelle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- pwd dice dove sei, ls elenca il contenuto, cd ti sposta (e non stampa niente se va bene).
+- ls -l mostra i dettagli, ls -a mostra anche i file nascosti che iniziano con il punto.
+- cd .. sale di un livello, cd ~ torna alla home, il tasto Tab completa i nomi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale comando mostra la cartella in cui sei?", a: "pwd" },
+    { q: "Quale opzione di ls mostra i file nascosti?", a: "-a" },
+    { q: "Che cosa fa cd ..?", a: "Sale di un livello, nella cartella superiore" },
+    { q: "A che cosa serve il tasto Tab?", a: "A completare automaticamente i nomi di file e cartelle" },
+  ]}
+/>
+
+<Say who="sensei">Sai muoverti. Ora serve la mappa: come è fatto l'intero filesystem, dalla radice in giù. È la lezione di domani.</Say>
+</Scene>

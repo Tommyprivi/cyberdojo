@@ -1,0 +1,158 @@
+---
+id: H.10.004
+course: hedge
+module: 10
+title: "Lock-up e rimborsi"
+belt: blu
+duration_min: 9
+prerequisites: [H.10.003]
+objectives:
+  - "Spiegare lock-up, preavviso e finestre di rimborso"
+  - "Calcolare come un gate ripartisce i rimborsi tra gli investitori"
+  - "Capire perché i soldi in un fondo possono restare bloccati"
+video:
+  provider: youtube
+  id: "pOrCIpu99fo"
+  start: 0
+  end: 600
+  channel: "HedgeFundGroup"
+  title: "Hedge Fund Liquity & Lock Up Period Definitions"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h10-lockup
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare di poter ritirare i soldi in qualsiasi giorno, come da un conto"
+  - "Dimenticare il preavviso: una richiesta fuori tempo slitta alla data successiva"
+  - "Ignorare che il gate può pagare solo una parte del rimborso richiesto"
+commands: []
+---
+
+<Scene title="I soldi che non escono">
+Il signor Marchi ha investito nel fondo fittizio **Faro Capital** e dopo otto mesi ha una spesa imprevista. Scrive al fondo: «Vorrei ritirare tutto».
+
+La risposta: «Il lock-up è di 12 mesi. Dopo, i rimborsi sono trimestrali, con preavviso di 60 giorni».
+
+La domanda del caso: **perché non può avere i soldi subito, come da un conto in banca?**
+
+Questo corso è educazione, non consulenza. Con i fondi si può perdere denaro, anche tutto, e i soldi possono restare bloccati.
+
+<Say who="sensei">Un fondo non è un salvadanaio. Prima di entrare si legge quando si può uscire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di uscita">
+Le regole sono scritte nei documenti del fondo:
+
+- **Lock-up**: periodo iniziale in cui non si può chiedere il rimborso (a volte con una penale per uscire prima).
+- **Finestre di rimborso**: il fondo restituisce i soldi solo in certe date, per esempio a fine trimestre.
+- **Preavviso**: la richiesta va fatta con un certo anticipo (qui 60 giorni). Se arriva tardi, slitta alla data successiva.
+
+Perché queste regole? Perché il fondo investe in strumenti che **non si vendono in un giorno senza perdere valore**. Se tutti uscissero insieme, il fondo dovrebbe svendere.
+
+<Callout kind="regola">
+Più il fondo investe in cose difficili da vendere, più le regole di uscita sono rigide.
+</Callout>
+
+<Say who="assistente">Pensa a una casa: puoi venderla, ma non in un pomeriggio e non senza sconti, se hai fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio con i numeri">
+Il signor Marchi possiede **500 quote** e ogni quota vale **120 euro**.
+
+<Guided
+  steps={[
+    "Valore: 500 × 120 = 60.000 euro.",
+    "Se uscisse prima del tempo con una penale del 3% prevista dal regolamento: 3% di 60.000 = 1.800 euro.",
+    "Riceverebbe 60.000 - 1.800 = 58.200 euro.",
+    "Se aspetta la fine del lock-up e rispetta il preavviso, in genere non paga la penale: ma il valore delle quote può nel frattempo salire o scendere.",
+  ]}
+/>
+
+Vuoi sentire un'altra voce su lock-up e liquidità? Un video in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Il valore delle quote cambia. Il lock-up non ti protegge da una perdita: ti impedisce solo di scappare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il gate">
+Quando molti investitori chiedono il rimborso insieme, il fondo può usare un **gate**, cioè una barriera: si può rimborsare solo una parte del fondo in quella data.
+
+Esempio fittizio: il fondo vale **200 milioni**, il gate è **10% a trimestre**. Gli investitori chiedono **50 milioni** in tutto.
+
+<Log lines={[
+  "disponibile: 10% di 200 = 20 milioni",
+  "richiesto: 50 milioni",
+  "quota pagata: 20 / 50 = 40% della richiesta di ciascuno",
+  "chi chiedeva 5 milioni riceve 40% di 5 = 2 milioni",
+  "il resto resta in coda per le date successive",
+]} />
+
+<Callout kind="attenzione">
+Nei momenti di panico le richieste si concentrano: è proprio allora che il gate può scattare. In casi eccezionali un fondo può anche **sospendere** i rimborsi, per proteggere tutti gli investitori.
+</Callout>
+
+<Say who="sensei">Chi corre per primo all'uscita non esce meglio. Il gate tratta tutti allo stesso modo, in proporzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha 20 milioni disponibili per i rimborsi del trimestre, ma gli investitori ne chiedono 50. Un investitore aveva chiesto 5 milioni. Quanto riceve, se il fondo divide in modo proporzionale?"
+  options={[
+    "2 milioni: il 40% della richiesta (20 su 50)",
+    "5 milioni: tutta la richiesta",
+    "2,5 milioni",
+    "1 milione",
+  ]}
+  answer={0}
+  explain="La quota pagata è 20 / 50 = 40% della richiesta di ciascuno: 40% di 5 milioni = 2 milioni. Il resto resta in coda."
+/>
+
+<Say who="assistente">Prima trova la percentuale pagata, poi applicala alla tua richiesta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Regole di uscita e calcoli sui rimborsi, con numeri fittizi.
+
+<Practice generator="h10-lockup" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: prima di entrare, chiedi sempre quando e come si esce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lock-up, finestre di rimborso e preavviso limitano quando si può ritirare il denaro.
+- Il gate limita la quota rimborsabile in una data: i rimborsi si dividono in proporzione e il resto resta in coda.
+- Prima di investire si chiede se si potrà fare a meno di quei soldi per tutto il tempo in cui potrebbero essere bloccati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il lock-up?", a: "Il periodo iniziale in cui non si può chiedere il rimborso" },
+    { q: "Che cos'è il preavviso?", a: "L'anticipo con cui va fatta la richiesta di rimborso" },
+    { q: "Che cos'è un gate?", a: "Un limite alla quota del fondo rimborsabile in una data" },
+    { q: "Gate 20 milioni, richieste 50: quale quota si paga?", a: "Il 40% della richiesta di ciascuno" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: le aspettative. Che cosa ci si può ragionevolmente aspettare da un fondo, e che cosa no.</Say>
+</Scene>

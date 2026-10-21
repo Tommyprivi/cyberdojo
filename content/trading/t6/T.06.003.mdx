@@ -1,0 +1,170 @@
+---
+id: T.06.003
+course: trading
+module: 6
+title: "Lo stop loss e i suoi limiti"
+belt: arancione
+duration_min: 8
+prerequisites: [T.06.002]
+objectives:
+  - "Spiegare che cosa fa un ordine stop e perché non garantisce il prezzo di uscita"
+  - "Calcolare la perdita reale quando il prezzo salta oltre lo stop (gap)"
+  - "Riconoscere i difetti di uno stop troppo vicino, troppo lontano o di tipo stop-limite"
+video:
+  provider: youtube
+  id: "V-dnip2p3O4"
+  start: 0
+  end: 600
+  channel: "Charles Schwab"
+  title: "Trading Up-Close: Stop and Stop-Limit Orders"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-stop-loss
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che lo stop faccia uscire esattamente al prezzo scritto"
+  - "Mettere lo stop così vicino che il normale rumore del prezzo lo fa scattare"
+  - "Usare lo stop-limite pensando che sia più sicuro: può non essere eseguito affatto"
+commands: []
+---
+
+<Scene title="Il buco della notte">
+Sei un trader di prova, con un conto demo. Hai comprato **50 azioni** fittizie a **50 €**, con uno stop a **48 €**. Perdita massima prevista: 2 € × 50 = **100 €**.
+
+Durante la notte esce una brutta notizia. La mattina dopo il titolo **apre a 44 €**. Il prezzo non è mai passato per 48: ha saltato.
+
+Controlli il conto: la perdita non è 100 €. La domanda del caso: **a che prezzo è uscito lo stop, e perché?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Il caso è fittizio e il conto è demo.
+</Callout>
+
+<Say who="sensei">Lo stop non è un muro. È una promessa che il mercato non ti ha mai fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è lo stop">
+Un **ordine stop** (o stop loss, «ferma la perdita») è un'istruzione al broker: **se il prezzo tocca il livello X, vendi**.
+
+Lo stop è un **livello di innesco**, non un prezzo garantito. Quando il prezzo lo raggiunge, l'ordine diventa un **ordine a mercato** e viene eseguito **al primo prezzo disponibile**, che può essere diverso da X.
+
+<Callout kind="regola">
+Stop a 48 vuol dire: «quando il prezzo arriva a 48 o sotto, vendi al prezzo che c'è». Non vuol dire: «vendi a 48».
+</Callout>
+
+<Say who="assistente">Pensa a un cartello «fermati qui»: se arrivi in macchina troppo veloce, ti fermi più avanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il gap">
+Un **gap** è un salto di prezzo: il mercato chiude a un livello e riapre molto più in là (di solito dopo una notizia, o tra una seduta e la successiva).
+
+Nel caso: lo stop a 48 scatta, ma il primo prezzo disponibile è circa **44 €**.
+
+- Perdita prevista: (50 − 48) × 50 = **100 €**.
+- Perdita reale: (50 − 44) × 50 = **300 €**.
+
+La perdita è **tre volte** quella prevista. Il calcolo della quantità (lezione precedente) funziona se lo stop viene eseguito al suo livello: con i gap il rischio reale è più alto.
+
+<Callout kind="curiosita">
+Per questo i backtest che assumono l'uscita «esattamente al prezzo dello stop» sono ottimistici: nella realtà l'uscita può essere peggiore. Lo vedremo anche nel modulo sui costi.
+</Callout>
+
+<Say who="sensei">Il rischio che hai calcolato è il rischio nei giorni normali. I giorni anormali non chiedono il permesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Troppo vicino, troppo lontano">
+Lo stop ha anche un problema di posizione.
+
+- **Troppo vicino**: il prezzo si muove su e giù anche nei giorni tranquilli (rumore). Con un titolo che oscilla di circa 1 € al giorno, uno stop a 0,50 € dall'ingresso scatta quasi sempre: esci in perdita e poi il prezzo magari risale.
+- **Troppo lontano**: scatta solo se le cose vanno molto male. La perdita per operazione è grande, e per restare nel rischio deciso devi comprare meno unità.
+
+Lo stop va messo dove, se il prezzo arriva lì, **l'idea dell'operazione è sbagliata**, non dove «fa meno male».
+
+<Callout kind="trucco">
+Prima si sceglie lo stop in base all'idea dell'operazione e alla normale oscillazione del prezzo. Poi, con la lezione precedente, si calcola la quantità.
+</Callout>
+
+<Say who="assistente">Non adattare lo stop alla quantità che vorresti comprare. Fai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Stop-limite e stop mobile">
+Esistono varianti.
+
+- **Stop-limite**: oltre al livello di innesco indichi un **prezzo limite** sotto il quale non vendi. Esempio: innesco 48, limite 47,50. Se il titolo apre a 44, l'ordine **non viene eseguito**: sei ancora dentro, mentre il prezzo continua a scendere.
+- **Stop mobile** (trailing stop): segue il prezzo verso l'alto a una distanza fissa. Con distanza 3 €, se il massimo raggiunto è 60 €, lo stop è a **57 €**; se il prezzo scende, lo stop resta fermo.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese, di una grande società finanziaria, sugli ordini stop e stop-limite (con i sottotitoli). È materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="sensei">Lo stop-limite ti protegge dal prezzo cattivo, ma può lasciarti senza uscita. Ogni protezione ha un costo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai comprato a 50 € con uno stop a 48 €. Il titolo apre a 45 € dopo una notizia. Che cosa succede, di solito, con un normale ordine stop?"
+  options={[
+    "L'ordine diventa a mercato e viene eseguito intorno a 45 €, peggio di 48 €",
+    "Viene eseguito esattamente a 48 € perché lo stop lo garantisce",
+    "Viene annullato perché il prezzo non è passato da 48 €",
+    "Viene eseguito a 50 € perché l'ingresso è a 50 €"
+  ]}
+  answer={0}
+  explain="Il prezzo ha saltato lo stop: l'ordine scatta e viene eseguito al primo prezzo disponibile, circa 45 €. Lo stop non garantisce il prezzo di uscita, garantisce solo l'innesco."
+/>
+
+<Say who="sensei">Tre euro in più di perdita per azione. Moltiplicali per la quantità e capisci perché esistono i gap nei tuoi calcoli.</Say>
+
+Confronta perdita prevista e perdita con gap. Cambia il prezzo di apertura e riesegui.
+
+<PythonTerminal code={"ingresso = 50\nstop = 48\nquantita = 50\napertura = 44   # prezzo del primo scambio dopo il gap\nprevista = (ingresso - stop) * quantita\nreale = (ingresso - apertura) * quantita\nprint('Prevista:', prevista)\nprint('Reale:', reale)\nprint('Volte piu grande:', reale / prevista)"} />
+
+<Say who="assistente">Dovrebbe uscire 100, 300 e 3.0. Con apertura a 48 la perdita reale coincide con quella prevista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su stop, gap e perdite reali, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-stop-loss" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Lo stop è uno strumento utile, non un'assicurazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lo stop è un livello di innesco: dopo l'innesco l'ordine va a mercato e il prezzo non è garantito.
+- Con un gap la perdita reale può essere molto più grande di quella prevista.
+- Lo stop troppo vicino scatta per il rumore, quello troppo lontano aumenta la perdita per unità; lo stop-limite può non essere eseguito.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un gap?", a: "Un salto di prezzo tra una chiusura e la riapertura successiva" },
+    { q: "Lo stop a 48 garantisce l'uscita a 48?", a: "No: dopo l'innesco si esce al primo prezzo disponibile" },
+    { q: "Ingresso 50, apertura 44, 50 azioni: perdita reale?", a: "300 € ((50 − 44) × 50)" },
+    { q: "Rischio dello stop-limite?", a: "Può non essere eseguito se il prezzo salta sotto il limite" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il drawdown, cioè quanto scende il conto dal suo massimo, e perché risalire costa più che scendere.</Say>
+</Scene>

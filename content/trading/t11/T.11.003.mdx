@@ -1,0 +1,169 @@
+---
+id: T.11.003
+course: trading
+module: 11
+title: "Il target e la perdita di dati"
+belt: blu
+duration_min: 9
+prerequisites: [T.11.002]
+objectives:
+  - "Costruire un target «domani sale» con shift(-1) e gestire l'ultima riga"
+  - "Spiegare che cos'è la perdita di dati (data leakage) con esempi"
+  - "Controllare ogni feature con la domanda «lo sapevo a fine giornata t?»"
+video:
+  provider: youtube
+  id: "xzCXqYlV2HE"
+  start: 0
+  end: 600
+  channel: "Schovia"
+  title: "Data Leakage Explained Visually | How Models Cheat Without You Realizing"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-target-perdita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare l'ultima riga del target: NaN > 0 dà False e sembra un ribasso"
+  - "Normalizzare le feature con medie calcolate su tutto il periodo, futuro incluso"
+  - "Fidarsi di un risultato quasi perfetto invece di cercare l'errore"
+commands: []
+---
+
+<Scene title="Il modello quasi perfetto">
+Luca costruisce un modello su dati fittizi e ottiene **98% di giorni indovinati**. Salta dalla sedia.
+
+Poi qualcuno gli chiede: «Quali feature hai usato?». Lui legge la lista. Tra le colonne c'è **«rendimento_domani»**.
+
+La domanda del caso: **come ha fatto il modello a «indovinare»? E come si evita di ingannare sé stessi così?**
+
+<Say who="sensei">Un risultato troppo bello, in finanza, è quasi sempre un errore. Prima di festeggiare, cerca il difetto. Ricorda: educazione, non consulenza; si può perdere denaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il target">
+Il **target** è la cosa che il modello deve prevedere. Qui è semplice: **domani il rendimento è positivo (1) oppure no (0)**.
+
+Convenzione: la riga del giorno t contiene le feature note a fine giornata t, e il target è il rendimento del giorno **t+1**. In pandas si usa `shift(-1)`, che «tira su» di una riga il valore del giorno dopo.
+
+```python
+import pandas as pd
+
+r = pd.Series([1, -2, 3, -1, 2, 1])      # rendimenti in %
+target = (r.shift(-1) > 0).astype(int)
+print(target.tolist())
+```
+
+<Log lines={[
+  "[0, 1, 0, 1, 1, 0]",
+]} />
+
+Controlliamo a mano. Riga 1: domani (−2) non è positivo, quindi **0**. Riga 2: domani vale 3, quindi **1**. Riga 3: domani vale −1, quindi **0**. E così via.
+
+<Callout kind="attenzione">
+L'ultimo **0** è una trappola. Dopo l'ultimo giorno non c'è un «domani»: il valore è NaN, e il confronto di NaN con 0 dà False, che diventa 0. Sembra un ribasso, ma è un **buco**. Quella riga va eliminata.
+</Callout>
+
+<Say who="assistente">Se un target viene da un confronto con NaN, il risultato è falso senza che pandas ti avvisi. Guarda sempre l'ultima riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La perdita di dati">
+Si ha **perdita di dati** (in inglese *data leakage*) quando il modello riceve in ingresso informazioni che, nella realtà, **non avrebbe ancora**.
+
+Il caso di Luca è il più brutale: la feature «rendimento_domani» **è** il target. Ovvio che il modello «indovina».
+
+Ma i casi veri sono più sottili:
+
+- una media mobile **centrata** (`rolling(3, center=True)`) include anche il giorno dopo;
+- una **normalizzazione** con media e deviazione standard calcolate su **tutto** il periodo: il passato «conosce» le statistiche del futuro;
+- un target su 5 giorni, con righe che si sovrappongono tra addestramento e test.
+
+<Callout kind="regola">
+Per ogni feature chiediti: **«lo avrei saputo a fine giornata t?»**. Se la risposta è no, o forse, la feature è sospetta.
+</Callout>
+
+Vuoi vederlo spiegato con figure da un'altra voce? Un video in inglese, usa i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Nessun modello è così bravo da prevedere con il futuro in mano. Se ce l'ha in mano, non sta prevedendo: sta copiando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La normalizzazione giusta">
+Molti modelli vogliono feature **normalizzate** (stessa scala). Il modo corretto: calcolare media e deviazione standard **solo sui dati di addestramento**, poi applicarle al test.
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler().fit(X_addestramento)     # impara solo dal passato
+X_add = scaler.transform(X_addestramento)
+X_test = scaler.transform(X_test)                  # applica, senza reimparare
+```
+
+Qui `X_addestramento` e `X_test` sono le tabelle di feature già divise per data: ne parla la prossima lezione.
+
+<Callout kind="attenzione">
+Sbagliato: `StandardScaler().fit(X_tutto)`. Sembra innocuo, ma il test ha già «insegnato» qualcosa all'addestramento.
+</Callout>
+
+<Say who="assistente">La regola è la stessa ovunque: quello che il test non può ancora sapere, non entra mai nel calcolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello indovina quasi il 100% dei giorni, e una delle feature è il rendimento medio dei prossimi 5 giorni. Che cosa conclude chi è prudente?"
+  options={[
+    "C'è una perdita di dati: il modello sta guardando il futuro",
+    "Il modello ha scoperto la regola segreta del mercato",
+    "Il mercato è più semplice di quanto si pensi",
+    "Il modello è pronto per essere usato con denaro vero",
+  ]}
+  answer={0}
+  explain="La media dei prossimi 5 giorni contiene il rendimento di domani, cioè il target. Il modello non prevede: copia. Dire «ha scoperto la regola» è l'errore tipico di chi si fida del risultato senza guardare le feature."
+/>
+
+<Say who="sensei">Più il risultato è bello, più devi essere sospettoso. Sembra strano, ma è la regola più utile del corso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su target, NaN e perdita di dati. Per ogni caso chiediti: lo avrei saputo a fine giornata t?
+
+<Practice generator="t11-target-perdita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa trovare la perdita di dati ha già evitato l'errore che rovina più modelli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il target «domani sale» si costruisce con shift(-1); l'ultima riga è NaN e va eliminata.
+- Perdita di dati: il modello riceve informazioni che nella realtà non avrebbe ancora (feature future, finestre centrate, normalizzazioni su tutto il periodo).
+- Per ogni feature: «lo avrei saputo a fine giornata t?». Un risultato quasi perfetto è un campanello d'allarme.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il target?", a: "La cosa che il modello deve prevedere, per esempio «domani il rendimento è positivo»" },
+    { q: "Che cosa fa r.shift(-1)?", a: "Porta alla riga di oggi il valore del giorno dopo" },
+    { q: "Che cos'è la perdita di dati?", a: "Dare al modello informazioni che nella realtà non avrebbe ancora" },
+    { q: "Su quali dati si calcola la normalizzazione?", a: "Solo su quelli di addestramento, poi applicata al test" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si divide il tempo tra addestramento e prova. La validazione temporale.</Say>
+</Scene>

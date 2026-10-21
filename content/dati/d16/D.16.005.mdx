@@ -1,0 +1,156 @@
+---
+id: D.16.005
+course: dati
+module: 16
+title: "Le serie storiche"
+belt: marrone
+duration_min: 9
+prerequisites: [D.16.004]
+objectives:
+  - "Riconoscere trend, stagionalità e autocorrelazione in una serie"
+  - "Dividere train e test rispettando il tempo"
+  - "Costruire e valutare un previsore semplice"
+video:
+  provider: youtube
+  id: "jhsX7NveIOs"
+  start: 0
+  end: 600
+  channel: "Paola Minopoli"
+  title: "SERIE STORICA: Definizione ed esempi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-serie-storiche
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mescolare a caso le righe prima di dividere train e test: si addestra con il futuro per prevedere il passato"
+  - "Scambiare la stagionalità (si ripete a intervalli fissi) con il trend (direzione di lungo periodo)"
+  - "Partire da modelli complicati senza aver provato un previsore semplice di confronto"
+commands: []
+---
+
+<Scene title="Le vendite dei gelati">
+Il bar «Gelati Rossi» (fittizio) registra le vendite di ogni trimestre. Il titolare chiede: «Quanto venderemo nel prossimo trimestre?»
+
+I dati sono ordinati nel tempo. E il tempo cambia tutto: l'ordine delle righe **conta**. Nei dati dei clienti potevi mescolare le righe; qui no.
+
+<Say who="sensei">Una serie storica è una sequenza di valori misurati a intervalli regolari. L'ordine è parte del dato. Non si tocca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trend e stagionalità">
+Vendite in centinaia di euro, due anni, quattro trimestri l'anno:
+
+| | T1 | T2 | T3 | T4 | media |
+|---|---|---|---|---|---|
+| anno 1 | 100 | 120 | 140 | 110 | 117,5 |
+| anno 2 | 110 | 130 | 150 | 120 | 127,5 |
+
+Due cose si vedono subito:
+
+- **Trend**: la direzione di lungo periodo. La media sale da 117,5 a 127,5: **+10** all'anno.
+- **Stagionalità**: uno schema che si ripete a intervalli fissi. Il T3 (estate) è sempre il più alto: 22,5 sopra la media dell'anno, sia nell'anno 1 sia nell'anno 2. Il T1 è sempre 17,5 sotto.
+
+Vuoi sentirlo spiegare da un'altra voce? Che cosa è una serie storica, con esempi, in italiano:
+
+<Video />
+
+<Say who="assistente">Trend è la strada in salita. Stagionalità è il saliscendi che si ripete, come le onde sulla strada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Autocorrelazione">
+**Autocorrelazione** vuol dire correlazione di una serie con **se stessa spostata nel tempo**. Se i valori di oggi assomigliano a quelli di ieri, c'è autocorrelazione a distanza 1. Se i valori di questo trimestre assomigliano a quelli di quattro trimestri fa, c'è a distanza 4: è il segno della stagionalità annuale.
+
+Esempio minimo: la serie 1, 2, 3, 4, 5. Le coppie (oggi, ieri) sono (2, 1), (3, 2), (4, 3), (5, 4) e salgono sempre insieme: la correlazione tra i due elenchi è 1.
+
+<Callout kind="trucco">
+Se un valore di oggi aiuta a indovinare quello di domani, la serie ha «memoria»: un previsore può usarla.
+</Callout>
+
+<Say who="sensei">Un dato che non ha memoria non si può prevedere dal passato. Uno che ce l'ha, sì. Si misura prima di scegliere il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dividere train e test nel tempo">
+Con le serie storiche **non si mescola**. Il train è il passato, il test è il futuro:
+
+- train: i primi 6 trimestri (100, 120, 140, 110, 110, 130);
+- test: gli ultimi 2 (150, 120).
+
+Se mescolassi a caso, il modello vedrebbe valori del futuro mentre impara: sarebbe una **perdita di dati** nel tempo, e il voto sarebbe troppo bello.
+
+<Callout kind="attenzione">
+Anche la validazione incrociata va fatta «a finestre che avanzano» (in scikit-learn c'è `TimeSeriesSplit`), mai con parti scelte a caso.
+</Callout>
+
+<Say who="assistente">Come nella vita: puoi imparare dal passato per prevedere il futuro, non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un previsore semplice">
+Prima di ogni modello complicato serve un **previsore di confronto**. Due semplici:
+
+- **Ultimo valore**: prevedo che resti come l'ultimo del train, 130. Previsioni 130 e 130, vere 150 e 120. Errori 20 e 10, errore medio **15**.
+- **Stagionale ingenuo**: prevedo lo stesso trimestre dell'anno scorso, 140 e 110. Errori 10 e 10, errore medio **10**.
+
+Il secondo vince perché sfrutta la stagionalità. Se poi aggiungi il trend (+10), prevedi 150 e 120: esatto.
+
+<Log lines={[
+  "import pandas as pd",
+  "vendite = pd.Series([100, 120, 140, 110, 110, 130, 150, 120])",
+  "train, test = vendite[:6], vendite[6:]",
+  "errore = test.to_numpy() - train.iloc[2:4].to_numpy()",
+  "print(abs(errore).mean())"
+]} caption="Previsore stagionale ingenuo: stampa 10.0" />
+
+<Quiz
+  question="Con il train di 6 trimestri, il previsore «stesso trimestre dell'anno scorso» prevede 140 e 110 per il test (150 e 120). Qual è l'errore medio assoluto?"
+  options={["10", "20", "15", "5"]}
+  answer={0}
+  explain="Gli errori sono |150 − 140| = 10 e |120 − 110| = 10. La media è (10 + 10) / 2 = 10. Il 15 è l'errore del previsore «ultimo valore»."
+/>
+
+<Say who="sensei">Se il tuo modello nuovo non batte quello ingenuo, non serve. Il confronto semplice è il metro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Trend, stagionalità, divisione nel tempo, errori dei previsori. Cinque domande, senza errori.
+
+<Practice generator="d16-serie-storiche" pass="5/5" retries={3} />
+
+<Say who="sensei">Il futuro non si mescola con il passato. Chi lo fa illude se stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una serie storica ha un ordine che conta: trend (direzione), stagionalità (schema che si ripete) e autocorrelazione (memoria).
+- Train e test si dividono nel tempo: passato per imparare, futuro per giudicare.
+- Si parte da un previsore semplice, come «stesso trimestre dell'anno scorso», e lo si batte con modelli migliori.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra trend e stagionalità?", a: "Il trend è la direzione di lungo periodo; la stagionalità è uno schema che si ripete a intervalli fissi" },
+    { q: "Perché non si mescolano le righe di una serie storica?", a: "Il modello vedrebbe il futuro durante l'addestramento: perdita di dati" },
+    { q: "Test 150 e 120, previsioni 140 e 110: errore medio assoluto?", a: "10" },
+    { q: "Che cos'è l'autocorrelazione?", a: "La correlazione di una serie con se stessa spostata nel tempo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dal testo ai numeri. Come far leggere le parole a una macchina.</Say>
+</Scene>

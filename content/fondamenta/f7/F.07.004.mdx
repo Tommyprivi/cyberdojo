@@ -1,0 +1,180 @@
+---
+id: F.07.004
+course: fondamenta
+module: 7
+title: "Il DNS: la rubrica di Internet"
+belt: arancione
+duration_min: 9
+prerequisites: [F.07.003]
+objectives:
+  - "Spiegare come il DNS trasforma un nome in un indirizzo IP"
+  - "Riconoscere i record A, MX, NS, CNAME e TXT"
+  - "Leggere un risultato di nslookup e capire il rischio dell'avvelenamento della cache"
+video:
+  provider: youtube
+  id: "qyzG02cEiYk"
+  start: 0
+  end: 600
+  channel: "morrolinux"
+  title: "DNS, cos'è e come funziona?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-dns
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il DNS traduce nomi in indirizzi, non cifra e non controlla che il sito sia sicuro"
+  - "MX riguarda la posta, A riguarda il sito: non vanno scambiati"
+  - "Una risposta in cache può essere vecchia: dopo una modifica serve aspettare la scadenza (TTL)"
+commands:
+  - nslookup
+  - dig
+---
+
+<Scene title="Il sito che non si apre">
+Un utente chiama il SOC: «Il sito dei fornitori non si apre. Ma se scrivo il numero a mano, funziona».
+
+Il server c'è. La rete c'è. Eppure il **nome** non porta a nulla.
+
+<Say who="sensei">Se il numero funziona e il nome no, il guasto non è il server. È la rubrica. Si chiama DNS.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nomi per noi, numeri per le macchine">
+Le persone ricordano **nomi** come `esempio.it`. I router ragionano con **indirizzi IP**. Il **DNS** (Domain Name System) è la rubrica che collega i due mondi: dato un nome, restituisce l'indirizzo.
+
+Il DNS usa di solito la **porta 53**, spesso con UDP perché le domande sono brevi.
+
+<Callout kind="regola">
+**DNS** = da nome a indirizzo. Senza DNS Internet funziona ancora, ma noi non sapremmo più dove andare.
+</Callout>
+
+<Say who="assistente">Come nel telefono: tu scegli «Mamma», lui compone il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si risolve un nome">
+Il tuo computer non conosce tutti i nomi del mondo. Chiede a catena:
+
+1. Controlla la **cache**: la memoria delle risposte recenti.
+2. Se non c'è, chiede al **resolver**, il server DNS del provider o dell'azienda.
+3. Il resolver, se non sa, interroga i server che gestiscono la zona giusta, dall'alto verso il basso: prima i server della radice, poi quelli di `.it`, poi quelli del dominio.
+4. La risposta torna indietro e viene tenuta in cache per un tempo limitato, il **TTL**.
+
+<Callout kind="curiosita">
+La cache rende tutto veloce, ma ha un effetto: dopo che un indirizzo cambia, per un po' c'è chi vede ancora quello vecchio. Finché non scade il TTL.
+</Callout>
+
+Un'altra voce, con calma:
+
+<Video />
+
+<Say who="sensei">Prima la memoria, poi il vicino, poi l'autorità. Così si risolve un nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tipi di record">
+Ogni dominio ha una scheda con righe chiamate **record**. Cinque da conoscere:
+
+- **A**: il nome punta a un indirizzo IPv4 (il sito).
+- **MX**: dove consegnare la **posta** del dominio.
+- **NS**: quali server DNS sono responsabili del dominio.
+- **CNAME**: un nome è un **alias** di un altro nome.
+- **TXT**: testo libero, usato per esempio per dichiarare quali server possono inviare posta a nome del dominio.
+
+<Log lines={[
+  "esempio.it      A      203.0.113.20",
+  "esempio.it      MX     10 posta.esempio.it",
+  "www.esempio.it  CNAME  esempio.it",
+  "esempio.it      TXT    \"v=spf1 mx -all\""
+]} caption="Un dominio fittizio e le sue righe." />
+
+<Say who="assistente">Il sito e la posta possono stare su macchine diverse: per questo hanno record diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiedere al DNS">
+Su un computer puoi fare tu la domanda con **nslookup** (o **dig** su Linux). È una semplice consultazione, sicura da fare sui domini che usi ogni giorno.
+
+<Log lines={[
+  "> nslookup esempio.it",
+  "Server:   192.168.1.1",
+  "Address:  192.168.1.1#53",
+  "",
+  "Name:     esempio.it",
+  "Address:  203.0.113.20"
+]} caption="Risultato fittizio: il resolver è 192.168.1.1, e la risposta è l'indirizzo 203.0.113.20." />
+
+<Guided
+  steps={[
+    "Prima riga: la domanda, il nome esempio.it.",
+    "Server e Address in alto: chi ha risposto. Qui è il router (192.168.1.1) sulla porta 53.",
+    "Name e Address in basso: la risposta, cioè l'indirizzo del sito.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+**Rischio, a livello di concetto: l'avvelenamento della cache.** Se un resolver accetta una risposta falsa, la tiene in cache e la consegna a tutti i suoi utenti: un nome noto porta a un indirizzo sbagliato. Difese: resolver aggiornati, DNSSEC (le risposte vengono firmate) e controllo dei log. Provare l'attacco su sistemi altrui è reato (art. 615-ter c.p.).
+</Callout>
+
+<Say who="sensei">Se il nome porta al posto sbagliato, tutto ciò che viene dopo sembra normale. Per questo il DNS si sorveglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda cambia il server del sito, quindi cambia l'indirizzo nel record A. Un'ora dopo alcuni utenti arrivano ancora al vecchio server. Perché?"
+  options={[
+    "Alcuni resolver hanno ancora la vecchia risposta in cache, fino alla scadenza del TTL",
+    "Il record A è stato cancellato per sempre dal DNS",
+    "Il record MX ha preso il posto del record A",
+    "Il vecchio indirizzo non può più essere raggiunto da nessuno"
+  ]}
+  answer={0}
+  explain="La cache tiene le risposte per un tempo (TTL). Finché non scade, alcuni vedono il vecchio indirizzo. Per questo prima di una migrazione si abbassa il TTL. Gli altri record non c'entrano: MX riguarda la posta."
+/>
+
+<Say who="assistente">Ricordi il caso iniziale? Un nome che non funziona può dipendere dalla cache, non dal server.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Record, nslookup e casi di cache. Hai 3 tentativi.
+
+<Practice generator="f07-dns" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Quando sbagli un record, chiediti: sito o posta?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il DNS trasforma i nomi in indirizzi; la cache e il TTL rendono le risposte rapide ma a volte vecchie.
+- A = sito, MX = posta, NS = server DNS del dominio, CNAME = alias, TXT = testo libero.
+- Una cache avvelenata consegna indirizzi falsi: difese sono resolver aggiornati, DNSSEC e log controllati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale record indica dove consegnare la posta?", a: "MX" },
+    { q: "Che cos'è un CNAME?", a: "Un alias: un nome che punta a un altro nome" },
+    { q: "Che cosa significa TTL?", a: "Per quanto tempo una risposta può restare in cache" },
+    { q: "Quale porta usa di solito il DNS?", a: "La 53" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: HTTP. Che cosa si dicono davvero il browser e il sito dopo che il nome è stato trovato.</Say>
+</Scene>

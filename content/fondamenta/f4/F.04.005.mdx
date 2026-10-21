@@ -1,0 +1,194 @@
+---
+id: F.04.005
+course: fondamenta
+module: 4
+title: "Bash scripting 1: il primo script"
+belt: gialla
+duration_min: 10
+prerequisites: [F.04.004]
+objectives:
+  - "Scrivere uno script con shebang e renderlo eseguibile con chmod +x"
+  - "Usare variabili, anche con il risultato di un comando"
+  - "Scrivere un if con un test"
+video:
+  provider: youtube
+  id: "-T3m6kGbHUE"
+  start: 0
+  end: 600
+  channel: "The Linux Nerd"
+  title: "scripting Bash: creare un semplice script Bash"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-bash1
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Nelle variabili non ci sono spazi attorno all'uguale: nome=mario, non nome = mario"
+  - "Dentro le parentesi quadre degli if servono gli spazi: [ \"$n\" -gt 3 ], non [\"$n\" -gt 3]"
+  - "Uno script senza permesso di esecuzione dà «Permesso negato»: serve chmod +x (o bash nomefile)"
+commands: []
+---
+
+<Scene title="Ogni mattina, gli stessi comandi">
+Ogni mattina il capo del SOC chiede la stessa cosa: **«Quanti accessi falliti ci sono stati?»** E ogni mattina tu scrivi lo stesso comando, lo stesso grep, lo stesso conteggio.
+
+Quando fai la stessa cosa due volte, il computer può farla al posto tuo. Basta scrivere i comandi in un file e dirgli di eseguirli: quel file si chiama **script**.
+
+<Log lines={[
+  "studente@lab:~$ grep -c FALLITO accessi.log",
+  "4",
+]} caption="Il comando che ripeti ogni mattina." />
+
+Oggi lo trasformi in uno script che, oltre a contare, **decide** se avvisarti.
+
+<Say who="sensei">Un buon analista è pigro nel modo giusto: automatizza ciò che ripete. Si comincia da un file di testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Shebang e primo script">
+Uno script è un file di testo con i comandi, uno per riga. La **prima riga** è speciale: si chiama **shebang** e dice al sistema con quale programma eseguire il file. Per bash è `#!/bin/bash`.
+
+Crea il file con un editor (per esempio `nano saluto.sh`) e scrivi dentro due righe:
+
+<Log lines={[
+  "studente@lab:~$ cat saluto.sh",
+  "#!/bin/bash",
+  "echo \"Ciao dal laboratorio\"",
+  "studente@lab:~$ bash saluto.sh",
+  "Ciao dal laboratorio",
+]} caption="Con bash davanti al nome, lo script funziona già." />
+
+Le righe che iniziano con **`#`** (a parte lo shebang) sono **commenti**: bash le ignora, servono a te per spiegare cosa fai.
+
+<Say who="assistente">Il nome .sh è solo una convenzione per ricordarti che è uno script. Quello che conta è la prima riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rendere eseguibile">
+Se provi a lanciare lo script direttamente, il sistema ti ferma: il file non ha il **permesso di esecuzione** (lo hai visto nel modulo sui permessi). Si aggiunge con **`chmod +x`**. Si lancia con **`./`** davanti: significa «il file qui, nella cartella corrente».
+
+<Log lines={[
+  "studente@lab:~$ ./saluto.sh",
+  "bash: ./saluto.sh: Permesso negato",
+  "studente@lab:~$ chmod +x saluto.sh",
+  "studente@lab:~$ ./saluto.sh",
+  "Ciao dal laboratorio",
+]} caption="Prima del chmod +x il sistema rifiuta; dopo, lo script parte." />
+
+<Callout kind="curiosita">
+Perché `./saluto.sh` e non solo `saluto.sh`? Perché la cartella corrente, per sicurezza, non è tra quelle in cui il sistema cerca i programmi. Con `./` dici tu dove si trova.
+</Callout>
+
+<Say who="sensei">Permesso negato non è un bug. È il sistema che fa il suo mestiere. Tu gli dai il permesso, e solo a chi serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Variabili">
+Una **variabile** è una scatola con un nome che contiene un valore. Si assegna **senza spazi** attorno all'uguale e si legge con il **`$`** davanti. Si può mettere dentro anche il risultato di un comando, con **`$( )`**.
+
+<Log lines={[
+  "studente@lab:~$ nome=\"studente\"",
+  "studente@lab:~$ echo \"Ciao $nome\"",
+  "Ciao studente",
+  "studente@lab:~$ n=$(grep -c FALLITO accessi.log)",
+  "studente@lab:~$ echo \"Falliti: $n\"",
+  "Falliti: 4",
+  "studente@lab:~$ nome = \"studente\"",
+  "bash: nome: comando non trovato",
+]} caption="L'ultimo errore: con gli spazi bash pensa che nome sia un comando." />
+
+<Callout kind="attenzione">
+**Niente spazi attorno all'uguale.** `nome=mario` va bene. `nome = mario` fa cercare a bash un comando chiamato «nome».
+</Callout>
+
+<Say who="assistente">Metti sempre le virgolette attorno a una variabile quando la usi. Ti salvano da guai quando il valore contiene spazi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="if e test">
+Con **`if`** lo script prende una decisione. Il controllo si scrive tra parentesi quadre, con **spazi dentro**:
+
+La forma è: `if [ test ]; then`, i comandi da eseguire, e `fi` per chiudere (è «if» scritto al contrario).
+
+Test più comuni: sui **numeri** `-eq` (uguale), `-ne` (diverso), `-gt` (maggiore), `-lt` (minore); sui **testi** `=` e `!=`; sui **file** `-f` (esiste ed è un file) e `-d` (esiste ed è una cartella).
+
+Ecco lo script `controlla.sh` completo:
+
+<Log lines={[
+  "studente@lab:~$ cat controlla.sh",
+  "#!/bin/bash",
+  "# conta i tentativi falliti e avvisa se sono troppi",
+  "FILE=\"accessi.log\"",
+  "FALLITI=$(grep -c FALLITO \"$FILE\")",
+  "echo \"Tentativi falliti: $FALLITI\"",
+  "if [ \"$FALLITI\" -gt 3 ]; then",
+  "  echo \"ATTENZIONE: troppi tentativi\"",
+  "fi",
+  "studente@lab:~$ chmod +x controlla.sh",
+  "studente@lab:~$ ./controlla.sh",
+  "Tentativi falliti: 4",
+  "ATTENZIONE: troppi tentativi",
+]} caption="4 è maggiore di 3, quindi scatta l'avviso." />
+
+Un'altra voce per vedere un primo script dal vivo, circa dieci minuti:
+
+<Video />
+
+<Say who="sensei">Spazi dentro le quadre. Virgolette sulle variabili. Due abitudini che ti evitano il novanta per cento degli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale riga assegna correttamente il valore 5 alla variabile n?"
+  options={["n=5", "n = 5", "$n=5", "set n 5"]}
+  answer={0}
+  explain="In bash non ci sono spazi attorno all'uguale e il $ si usa solo per leggere la variabile, non per assegnarla. Con n = 5 bash cerca un comando chiamato n."
+/>
+
+<LinuxTerminal goal="Crea uno script saluto.sh, rendilo eseguibile e lancialo" />
+
+<Say who="assistente">Ripensa al messaggio «comando non trovato»: cosa credeva bash che fosse n?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su script, variabili e if: cosa stampa, quale riga è giusta. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-bash1" pass="4/5" retries={3} />
+
+<Say who="sensei">Gli script piccoli fanno già molto. Scrivili chiari: tra sei mesi il lettore sarai tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Uno script è un file di comandi: la prima riga `#!/bin/bash` (shebang) dice con cosa eseguirlo, `#` apre un commento.
+- Per lanciarlo: `chmod +x nome.sh` e poi `./nome.sh`. Senza permesso: «Permesso negato».
+- Variabili: `n=5` (senza spazi), si leggono con `$n`; `$( )` salva l'output di un comando. `if [ ... ]; then ... fi` decide.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è lo shebang?", a: "La prima riga #!/bin/bash: indica con quale programma eseguire lo script" },
+    { q: "Come si rende eseguibile uno script?", a: "chmod +x nomescript.sh" },
+    { q: "Come si salva l'output di un comando in una variabile?", a: "n=$(comando)" },
+    { q: "Test numerico «maggiore di»?", a: "-gt, dentro [ ] con gli spazi" },
+  ]}
+/>
+
+<Say who="sensei">Il primo script gira. Prossima lezione: cicli, argomenti e funzioni, e come scrivere script che non fanno danni quando qualcosa va storto.</Say>
+</Scene>

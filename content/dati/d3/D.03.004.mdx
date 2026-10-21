@@ -1,0 +1,238 @@
+---
+id: D.03.004
+course: dati
+module: 3
+title: "Aggregazioni: contare e riassumere"
+belt: gialla
+duration_min: 9
+prerequisites: [D.03.003]
+objectives:
+  - "Usare COUNT, SUM, AVG, MIN e MAX per riassumere una tabella"
+  - "Raggruppare le righe con GROUP BY e filtrare i gruppi con HAVING"
+  - "Spiegare la differenza tra WHERE e HAVING"
+video:
+  provider: youtube
+  id: "Rs4rO3pU2_0"
+  start: 0
+  end: 488
+  channel: "Edoardo Midali"
+  title: "SQL Tutorial Italiano 21 - GROUP BY e HAVING per lavorare su più record"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-aggregazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare una funzione di aggregazione nel WHERE: serve HAVING"
+  - "Scrivere nel SELECT una colonna che non è nel GROUP BY e non è aggregata"
+  - "Confondere COUNT(*) con COUNT(colonna): il secondo non conta i NULL"
+commands: []
+---
+
+<Scene title="Quanto ho incassato?">
+Fine mese. Marta ti chiede: «Quanti ordini ho ricevuto? Quanto ho incassato? Quanto ha speso ogni cliente?».
+
+Finora le query restituivano **righe**. Qui serve **un numero** che riassume molte righe: un conteggio, una somma, una media. Si chiamano **aggregazioni**, e sono il cuore del lavoro di un analista.
+
+La domanda del caso: **come si riassumono molte righe in pochi numeri, anche gruppo per gruppo?**
+
+<Say who="sensei">Nessuno legge ottomila righe. Si legge un totale e una media. Impara a produrli giusti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cinque funzioni">
+Cinque funzioni riassumono una colonna in un solo valore: `COUNT` (quante), `SUM` (somma), `AVG` (media), `MIN` (minimo), `MAX` (massimo).
+
+<Log lines={[
+  "SELECT COUNT(*) AS n_ordini,",
+  "       SUM(totale) AS incasso,",
+  "       ROUND(AVG(totale), 2) AS media,",
+  "       MIN(totale) AS minimo,",
+  "       MAX(totale) AS massimo",
+  "FROM ordini;",
+  "",
+  "n_ordini | incasso | media | minimo | massimo",
+  "8        | 154.50  | 19.31 | 12.00  | 30.00",
+]} caption="Cinque numeri su tutti gli ordini. ROUND arrotonda a 2 decimali." />
+
+Con le aggregazioni il risultato è **una sola riga**. Attenzione ai valori mancanti: `COUNT(*)` conta le righe, `COUNT(colonna)` conta solo quelle in cui la colonna **non è NULL**. SUM, AVG, MIN e MAX **ignorano** i NULL.
+
+<Log lines={[
+  "SELECT COUNT(*) AS clienti,",
+  "       COUNT(citta) AS con_citta,",
+  "       COUNT(DISTINCT citta) AS citta_diverse",
+  "FROM clienti;",
+  "",
+  "clienti | con_citta | citta_diverse",
+  "6       | 5         | 3",
+]} caption="Sei clienti, ma solo cinque città note, e tre città diverse." />
+
+<Callout kind="trucco">
+`COUNT(DISTINCT colonna)` conta i valori diversi. Serve spesso: «quanti clienti diversi hanno ordinato?», non «quante righe ci sono».
+</Callout>
+
+<Say who="assistente">COUNT(*) conta le righe. COUNT(città) conta le città che ci sono. Se c'è un NULL, i due numeri sono diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="GROUP BY: un riassunto per gruppo">
+Il totale generale non basta: Marta vuole il totale **per ogni cliente**. `GROUP BY` divide le righe in gruppi (una riga per ogni valore della colonna) e applica le funzioni **dentro ogni gruppo**.
+
+<Log lines={[
+  "SELECT cliente_id,",
+  "       COUNT(*) AS n_ordini,",
+  "       SUM(totale) AS spesa",
+  "FROM ordini",
+  "GROUP BY cliente_id",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id | n_ordini | spesa",
+  "1          | 3        | 58.00",
+  "2          | 2        | 42.00",
+  "3          | 2        | 24.50",
+  "4          | 1        | 30.00",
+]} caption="Per ogni cliente: quanti ordini e quanto ha speso." />
+
+<Log lines={[
+  "SELECT prodotto_id, SUM(quantita) AS pezzi",
+  "FROM ordini",
+  "GROUP BY prodotto_id",
+  "ORDER BY prodotto_id;",
+  "",
+  "prodotto_id | pezzi",
+  "1           | 3",
+  "2           | 10",
+  "3           | 1",
+  "4           | 1",
+  "5           | 2",
+]} caption="Per ogni prodotto: quanti pezzi venduti in tutto." />
+
+<Callout kind="regola">
+Nel `SELECT` possono stare solo due tipi di colonne: quelle nel `GROUP BY` e quelle dentro una funzione di aggregazione. Tutto il resto non ha un valore unico per il gruppo.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video su GROUP BY e HAVING:
+
+<Video />
+
+<Say who="sensei">Una riga per gruppo. Se il gruppo ha tre ordini, il risultato ne mostra uno solo: il riassunto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="WHERE contro HAVING">
+Sono due filtri diversi, e si applicano in momenti diversi:
+
+- `WHERE` filtra le **righe**, **prima** di formare i gruppi;
+- `HAVING` filtra i **gruppi**, **dopo** aver calcolato le aggregazioni.
+
+L'ordine in cui il database lavora è: `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, `LIMIT`.
+
+<Log lines={[
+  "SELECT cliente_id, SUM(totale) AS spesa",
+  "FROM ordini",
+  "WHERE data >= '2025-04-01'",
+  "GROUP BY cliente_id",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id | spesa",
+  "1          | 15.00",
+  "2          | 24.00",
+  "3          | 24.50",
+  "4          | 30.00",
+]} caption="WHERE: considero solo gli ordini di aprile e maggio, poi raggruppo." />
+
+<Log lines={[
+  "SELECT cliente_id, SUM(totale) AS spesa",
+  "FROM ordini",
+  "GROUP BY cliente_id",
+  "HAVING SUM(totale) > 30",
+  "ORDER BY cliente_id;",
+  "",
+  "cliente_id | spesa",
+  "1          | 58.00",
+  "2          | 42.00",
+]} caption="HAVING: tengo solo i clienti il cui totale supera 30." />
+
+<Callout kind="attenzione">
+La spesa del cliente 1 è 15.00 nella prima query e 58.00 nella seconda: nella prima il `WHERE` ha già scartato i suoi ordini di marzo. Stessa tabella, domande diverse.
+</Callout>
+
+<Say who="sensei">WHERE guarda la riga. HAVING guarda il gruppo. Se il filtro contiene SUM o COUNT, è un HAVING.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori tipici">
+Due errori che ti capiteranno di sicuro. Leggili con calma.
+
+<Guided
+  steps={[
+    "Errore 1: SELECT cliente_id, SUM(totale) FROM ordini WHERE SUM(totale) > 30 GROUP BY cliente_id; — il database risponde con un errore.",
+    "Perché: il WHERE lavora prima dei gruppi, quando SUM(totale) ancora non esiste. Il filtro sulla somma va in HAVING.",
+    "Errore 2: SELECT cliente_id, data, SUM(totale) FROM ordini GROUP BY cliente_id; — la colonna data non è nel GROUP BY e non è aggregata.",
+    "PostgreSQL rifiuta la query. Attenzione: SQLite e MySQL (in alcune impostazioni) la accettano e mostrano una data qualsiasi del gruppo. Un risultato che sembra giusto ma non lo è: peggio di un errore.",
+  ]}
+/>
+
+<Say who="assistente">Se il database ti dà un errore, ringrazialo. Gli errori silenziosi sono quelli che fanno danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marta vuole sapere quali clienti hanno fatto **almeno due ordini**.
+
+<Quiz
+  question="Quale query restituisce gli id dei clienti con almeno due ordini?"
+  options={[
+    "SELECT cliente_id FROM ordini GROUP BY cliente_id HAVING COUNT(*) >= 2;",
+    "SELECT cliente_id FROM ordini WHERE COUNT(*) >= 2 GROUP BY cliente_id;",
+    "SELECT cliente_id FROM ordini GROUP BY cliente_id WHERE COUNT(*) >= 2;",
+    "SELECT cliente_id, COUNT(*) FROM ordini HAVING cliente_id >= 2;",
+  ]}
+  answer={0}
+  explain="Il conteggio per cliente esiste solo dopo il GROUP BY, quindi il filtro va in HAVING, scritto dopo il GROUP BY. WHERE con COUNT è un errore, WHERE dopo GROUP BY è un errore di sintassi, e HAVING cliente_id >= 2 filtra sull'id del cliente, non sul numero di ordini."
+/>
+
+<Say who="sensei">Risultato: i clienti 1, 2 e 3 (tre, due e due ordini). Il cliente 4 ne ha uno solo: fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su aggregazioni, GROUP BY e HAVING. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-aggregazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un totale sbagliato in un report finisce nelle decisioni di qualcuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- COUNT, SUM, AVG, MIN, MAX riassumono molte righe in un valore; COUNT(colonna) e le altre ignorano i NULL.
+- GROUP BY crea un gruppo per ogni valore e calcola le funzioni dentro il gruppo.
+- WHERE filtra le righe prima dei gruppi, HAVING filtra i gruppi dopo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra COUNT(*) e COUNT(colonna)?", a: "COUNT(*) conta le righe; COUNT(colonna) salta i NULL" },
+    { q: "Dove va il filtro su una SUM?", a: "In HAVING, non in WHERE" },
+    { q: "Cosa può stare nel SELECT con un GROUP BY?", a: "Colonne del GROUP BY e funzioni di aggregazione" },
+    { q: "Cosa fa COUNT(DISTINCT colonna)?", a: "Conta i valori diversi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i JOIN. Per sapere chi ha speso, bisogna unire le tabelle.</Say>
+</Scene>

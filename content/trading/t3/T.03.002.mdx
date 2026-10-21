@@ -1,0 +1,179 @@
+---
+id: T.03.002
+course: trading
+module: 3
+title: "Medie mobili: il prezzo smussato"
+belt: gialla
+duration_min: 9
+prerequisites: [T.03.001]
+objectives:
+  - "Calcolare a mano una media mobile semplice (SMA) e una esponenziale (EMA)"
+  - "Spiegare perché una media mobile è in ritardo e che cos'è un incrocio"
+  - "Dire perché gli incroci danno molti falsi segnali nei mercati laterali"
+video:
+  provider: youtube
+  id: "_sq7Y2Lx0Uc"
+  start: 0
+  end: 404
+  channel: "teletrading"
+  title: "Le medie mobili"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-medie-mobili
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una media più corta sia sempre meglio: reagisce prima ma sbaglia più spesso"
+  - "Dimenticare che la media mobile è in ritardo per costruzione"
+  - "Fidarsi degli incroci nei mercati laterali, dove i falsi segnali sono tanti"
+commands: []
+---
+
+<Scene title="Il grafico che balla">
+Giulia guarda i prezzi di chiusura di un titolo inventato, la **Rossi Spa**: salgono, scendono, risalgono. Il grafico balla così tanto che non si capisce se il prezzo, in generale, stia salendo o no.
+
+Un'idea: e se **livellassimo** le oscillazioni di ogni giorno, per vedere meglio la direzione?
+
+La domanda del caso: **come si fa, e che cosa si perde?**
+
+<Callout kind="attenzione">
+Ricorda: corso educativo, non consulenza finanziaria. Si può perdere denaro, anche tutto. Tutti i numeri qui sono inventati.
+</Callout>
+
+<Say who="sensei">Per vedere la strada, ogni tanto bisogna smettere di guardare ogni singolo sasso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La media mobile semplice">
+La **media mobile semplice** (in inglese **SMA**, simple moving average) è la media degli ultimi **N** prezzi di chiusura. «Mobile» perché a ogni nuovo giorno la finestra **scorre**: entra il prezzo nuovo, esce il più vecchio.
+
+Chiusure inventate: 10, 12, 14, 16, 18, 20. Media mobile a **3 giorni**:
+
+<Log lines={[
+  "giorno  chiusura  SMA3",
+  "1       10        -",
+  "2       12        -",
+  "3       14        (10+12+14)/3 = 12",
+  "4       16        (12+14+16)/3 = 14",
+  "5       18        (14+16+18)/3 = 16",
+  "6       20        (16+18+20)/3 = 18",
+]} />
+
+I primi due giorni non hanno la media: mancano dati per riempire la finestra.
+
+<Callout kind="regola">
+SMA(N) = somma delle ultime N chiusure ÷ N. Con 20 prezzi e N = 5 si ottengono 16 valori (20 - 5 + 1).
+</Callout>
+
+<Say who="sensei">Finestra di tre: tre prezzi, una somma, una divisione. Niente di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provala in Python">
+Il calcolo a mano si può far fare a Python. Cambia i prezzi e guarda cosa succede.
+
+<PythonTerminal height={300} code={`prezzi = [10, 12, 14, 16, 18, 20]
+n = 3
+
+for i in range(n - 1, len(prezzi)):
+    finestra = prezzi[i - n + 1 : i + 1]
+    print("giorno", i + 1, "SMA", sum(finestra) / n)
+`} />
+
+L'uscita deve coincidere con la tabella: 12.0, 14.0, 16.0, 18.0.
+
+<Say who="assistente">Prova n = 2 e poi n = 5. Più la finestra è lunga, meno valori ottieni e più la linea è liscia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La media esponenziale">
+La **EMA** (media mobile esponenziale) dà **più peso ai prezzi recenti**. Si calcola con una regola semplice, passo dopo passo:
+
+EMA di oggi = α × prezzo di oggi + (1 − α) × EMA di ieri, con **α = 2 ÷ (N + 1)**.
+
+Esempi con numeri puliti:
+
+<Log lines={[
+  "N = 3  -> α = 2/4 = 0,5",
+  "EMA ieri 10, prezzo 14: 0,5×14 + 0,5×10 = 12",
+  "N = 9  -> α = 2/10 = 0,2",
+  "EMA ieri 50, prezzo 60: 0,2×60 + 0,8×50 = 52",
+]} />
+
+<Callout kind="curiosita">
+La EMA non butta via i prezzi vecchi: li fa pesare sempre meno. Per questo reagisce **prima** di una SMA con lo stesso N, ma resta comunque in ritardo.
+</Callout>
+
+Vuoi vederlo spiegato da un'altra voce? Un video in italiano, con grafici:
+
+<Video />
+
+<Say who="sensei">SMA tratta tutti i giorni uguali. EMA ascolta di più l'ultimo. Nessuna delle due vede il futuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Incroci e ritardo">
+Si usano spesso **due medie**: una **veloce** (finestra corta) e una **lenta** (finestra lunga). Quando la veloce **supera** la lenta si parla di **incrocio**. Molti lo leggono come «il prezzo sta prendendo una direzione».
+
+<Callout kind="attenzione">
+In un mercato **laterale** (il prezzo va su e giù senza direzione) le due medie si incrociano di continuo: tanti **falsi segnali**. In un trend l'incrocio arriva **tardi**, perché le medie seguono il prezzo.
+</Callout>
+
+La scelta di N è sempre un compromesso: finestra corta = reattiva ma nervosa; lunga = calma ma lenta. E provare tante finestre fino a trovare quella «perfetta» sui dati passati è un modo per ingannare se stessi: ne parleremo parlando di overfitting.
+
+<Say who="assistente">Un incrocio dice cosa è già successo alle medie. Non promette cosa succederà al prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Chiusure 50, 52, 54, 56, 58. Quanto vale la SMA a 5 giorni?"
+  options={["54", "50", "58", "270"]}
+  answer={0}
+  explain="Si sommano le cinque chiusure: 50+52+54+56+58 = 270. Poi si divide per 5: 54. Chi risponde 270 si è dimenticato la divisione; chi risponde 58 ha preso l'ultimo prezzo."
+/>
+
+<Say who="sensei">Prima somma, poi dividi. Con i numeri puliti, controllare è facile: fallo sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di SMA ed EMA e domande sugli incroci e sul ritardo.
+
+<Practice generator="t03-medie-mobili" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai capito lo strumento, e anche perché non va adorato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- SMA = media delle ultime N chiusure; EMA = media che pesa di più i prezzi recenti (α = 2 ÷ (N + 1)).
+- Ogni media mobile è in ritardo: segue il prezzo, non lo anticipa.
+- Gli incroci tra una media veloce e una lenta danno molti falsi segnali nei mercati laterali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola una SMA a 3 giorni su 10, 12, 14?", a: "(10 + 12 + 14) ÷ 3 = 12" },
+    { q: "Quanto vale α per una EMA a 9 periodi?", a: "2 ÷ 10 = 0,2" },
+    { q: "Che cos'è un incrocio?", a: "La media veloce supera (o scende sotto) quella lenta" },
+    { q: "Dove sbagliano di più gli incroci?", a: "Nei mercati laterali: tanti falsi segnali" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'RSI, che non misura il prezzo ma la sua forza recente.</Say>
+</Scene>

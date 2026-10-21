@@ -1,0 +1,147 @@
+---
+id: D.10.006
+course: dati
+module: 10
+title: "Leggere un test A/B"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.005]
+objectives:
+  - "Calcolare la differenza tra due gruppi in punti percentuali e in percentuale relativa"
+  - "Leggere un intervallo e dire se il risultato è chiaro o dubbio"
+  - "Evitare le trappole: fermarsi presto, fidarsi di una sola cifra"
+video:
+  provider: youtube
+  id: "BmNBxAhatYI"
+  start: 0
+  end: 176
+  channel: "ABoptimization"
+  title: "A/B testing - Statistical significance for beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-ab-lettura
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere punti percentuali e percentuale relativa"
+  - "Fermare il test appena B è in vantaggio"
+  - "Leggere solo la differenza e ignorare l'intervallo di incertezza"
+commands: []
+---
+
+<Scene title="Il test è finito">
+Il test sul bottone di **Tavola Bella** è durato due settimane intere. Questi sono i numeri:
+
+| Gruppo | Visitatori | Acquisti | Conversione |
+|---|---|---|---|
+| A (grigio) | 5.000 | 250 | 5,0% |
+| B (verde) | 5.000 | 300 | 6,0% |
+
+B è davanti. Ma il caso a volte fa vincere chi non lo merita. La domanda del caso: **è una vittoria vera o fortuna?**
+
+<Say who="sensei">Un numero più alto non è una prova. Prima si misura la differenza, poi si misura quanto ci si può fidare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La differenza">
+Differenza assoluta: 6,0% − 5,0% = **1,0 punto percentuale**.
+
+Differenza relativa: 6,0 ÷ 5,0 = 1,2, cioè **+20%**.
+
+Sono due modi di dire la stessa cosa. «+1 punto» e «+20%» suonano molto diversi: il secondo sembra enorme. Si scrivono **tutti e due**, con il nome giusto.
+
+Vuoi sentirlo da un'altra voce? Meno di tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Callout kind="attenzione">
+**Punti percentuali** e **percentuale** non sono la stessa cosa. Da 5% a 6% si sale di 1 punto, ma del 20%.
+</Callout>
+
+<Say who="assistente">Un punto su cento sembra poco. Ma su cento che erano cinque, è un quinto in più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'intervallo">
+Con 5.000 visitatori per gruppo, la differenza vera potrebbe essere un po' più alta o più bassa di 1 punto. Il calcolo statistico (lo fa lo strumento, non tu) dà un **intervallo**: qui da circa **+0,1 a +1,9 punti**.
+
+Si legge così: «La differenza vera sta quasi certamente in questa fascia». Lo **zero non c'è dentro**: B è migliore di A. Quanto, non lo sappiamo con precisione: forse poco, forse tanto.
+
+Questo si chiama **risultato significativo**: la differenza è più grande di quanto farebbe il solo caso.
+
+<Callout kind="regola">
+Se l'intervallo **contiene lo zero**, la differenza potrebbe non esistere: il test non ha deciso. Se **non lo contiene**, la differenza è significativa.
+</Callout>
+
+<Say who="sensei">Mai una sola cifra. Un risultato onesto è una fascia, non un punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando non è chiaro">
+Un secondo test, su un altro negozio fittizio: A 2.000 visitatori e 100 acquisti (5,0%); B 2.000 visitatori e 110 acquisti (5,5%).
+
+Differenza: **0,5 punti**. L'intervallo calcolato dallo strumento: da circa **−0,9 a +1,9 punti**.
+
+<Quiz
+  question="L'intervallo va da −0,9 a +1,9 punti. Che cosa si conclude?"
+  options={["Il test non decide: la differenza potrebbe essere anche zero o negativa", "B vince, perché 0,5 è positivo", "A vince, perché c'è un −0,9", "Il test è sbagliato e va buttato"]}
+  answer={0}
+  explain="L'intervallo contiene lo zero: non si può dire che B sia meglio. Né peggio. Serve più tempo o più visitatori. Dire «B vince» guardando solo +0,5 è proprio la trappola."
+/>
+
+<Say who="assistente">«Non lo so ancora» è una risposta legittima. Spesso è quella giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trappole e quando fermarsi">
+La trappola più comune: **guardare ogni giorno e fermarsi appena B vince**. Nei primi giorni i numeri ballano molto. Se aspetti il momento in cui B è davanti, quasi sempre lo trovi, anche se i due gruppi sono uguali.
+
+<Callout kind="trucco">
+**Si ferma quando si arriva alla durata decisa prima**, o al numero di visitatori previsto. Non quando il grafico piace.
+</Callout>
+
+Altre trappole: guardare dieci metriche e prendere quella che è andata bene; fidarsi di un test sbagliato nel progetto (gruppi non casuali); dire «+20%» senza dire quanto era la base.
+
+<Say who="sensei">Se aspetti di vedere B vincere, prima o poi vince. Per caso. Non farlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Altri test, altri numeri. Calcola le differenze con attenzione e leggi gli intervalli.
+
+<Practice generator="d10-ab-lettura" pass="5/5" retries={3} />
+
+<Say who="sensei">Differenza, fascia, decisione. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La differenza si scrive in punti percentuali e in percentuale relativa: 5% → 6% è +1 punto, +20%.
+- Se l'intervallo contiene lo zero, il test non ha deciso; se non lo contiene, è significativo.
+- Non ci si ferma quando B è davanti, ma alla durata decisa prima.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da 5% a 6%: differenza in punti e relativa?", a: "+1 punto, +20%" },
+    { q: "Intervallo da −0,9 a +1,9: che cosa si dice?", a: "Non è deciso: contiene lo zero" },
+    { q: "Quando si ferma un test?", a: "Alla durata o ai visitatori decisi prima" },
+    { q: "Perché è un errore guardare ogni giorno e fermarsi quando B vince?", a: "Perché presto i numeri ballano e il caso può far vincere B" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione, l'ultima del modulo: come scrivere tutto questo in una pagina per chi deve decidere.</Say>
+</Scene>

@@ -1,0 +1,150 @@
+---
+id: D.05.004
+course: dati
+module: 5
+title: "Le distribuzioni"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.003]
+objectives:
+  - "Leggere un istogramma e riconoscerne la forma"
+  - "Distinguere distribuzione simmetrica e asimmetrica e prevedere l'ordine di media e mediana"
+  - "Descrivere la distribuzione normale e la regola 68-95"
+video:
+  provider: youtube
+  id: "SC3NCzAw8Sk"
+  start: 0
+  end: 323
+  channel: "Samuel Leanza - WebTutorDiMatematica"
+  title: "La DISTRIBUZIONE NORMALE: cos'è e perché è così famosa"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-distribuzioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere istogramma e grafico a barre: nell'istogramma le colonne sono intervalli di numeri e si toccano"
+  - "Dire «distribuzione asimmetrica a destra» pensando che i dati stiano a destra: è la coda lunga a stare a destra"
+  - "Pensare che tutte le distribuzioni siano a campana"
+commands: []
+---
+
+<Scene title="La coda alla cassa">
+Un supermercato ha cronometrato l'attesa alla cassa di **20 clienti**. Raggruppati in intervalli di 2 minuti:
+
+| Attesa (minuti) | Clienti |
+| --- | --- |
+| da 0 a 2 | 8 |
+| da 2 a 4 | 6 |
+| da 4 a 6 | 3 |
+| da 6 a 8 | 2 |
+| da 8 a 10 | 1 |
+
+Otto più sei più tre più due più uno fa 20. Ma cosa racconta questa tabella, se la disegniamo?
+
+<Say who="sensei">Prima di calcolare, guarda la forma dei dati. La forma ti dice quale indice puoi usare e quale no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'istogramma">
+L'**istogramma** disegna una colonna per ogni intervallo. L'**altezza** della colonna dice **quanti dati** cadono lì dentro.
+
+Per l'attesa alla cassa: colonna alta 8 per «0-2», poi 6, 3, 2, 1. Le colonne **si toccano**, perché gli intervalli sono consecutivi.
+
+<Callout kind="attenzione">
+Il grafico a barre è un'altra cosa: serve per le **categorie** (colori, città) e le barre sono separate. L'istogramma serve per **numeri** raggruppati in intervalli.
+</Callout>
+
+<Callout kind="trucco">
+Gli intervalli sono una scelta tua. Troppo larghi nascondono la forma; troppo stretti la rendono rumorosa. Prova qualche larghezza.
+</Callout>
+
+<Say who="assistente">Altezza uguale a quanti dati. Più alta la colonna, più clienti in quell'intervallo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Simmetrica o asimmetrica">
+Guarda la forma del supermercato: la colonna più alta è a sinistra, e poi scende lentamente verso destra, con una **coda lunga** verso i valori alti. È una distribuzione **asimmetrica a destra** (o con asimmetria positiva).
+
+<Callout kind="regola">
+La coda lunga **tira la media** dalla sua parte. Coda a **destra**: la **media è più alta** della mediana. Coda a **sinistra**: la media è più bassa della mediana. Forma **simmetrica**: media e mediana quasi uguali.
+</Callout>
+
+Esempi tipici di coda a destra: stipendi, prezzi delle case, tempi di attesa. Coda a sinistra: i voti di un esame facile, dove quasi tutti vanno bene e pochi vanno male.
+
+<Say who="sensei">La coda ha un nome diverso da quello che pensi: è asimmetrica a destra se la coda lunga sta a destra, anche se i dati si ammassano a sinistra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una distribuzione a due gobbe">
+Non tutte le forme hanno un solo picco. Se in un istogramma ne vedi **due**, la distribuzione è **bimodale**: spesso significa che hai **due gruppi** mescolati.
+
+Esempio: le altezze di una squadra che mescola bambini di 8 anni e adulti. Un solo numero, la media, descriverebbe male entrambi i gruppi: cade in mezzo, dove quasi nessuno si trova.
+
+<Quiz
+  question="Un istogramma delle altezze di un gruppo mostra due picchi ben distinti. Qual è la spiegazione più probabile?"
+  options={["Ci sono due gruppi diversi mescolati nei dati", "Tutti hanno la stessa altezza", "Il campione è troppo grande", "Ci sono degli errori di battitura in tutte le righe"]}
+  answer={0}
+  explain="Due picchi suggeriscono due sottogruppi, per esempio bambini e adulti. Prima di calcolare una media unica conviene separarli. Chi risponde «errori di battitura» ignora che gli errori non creano due picchi regolari."
+/>
+
+<Say who="assistente">Due gobbe? Cerca due gruppi. Poi analizzali separatamente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La distribuzione normale">
+La **distribuzione normale** è una forma a **campana**: un solo picco al centro, simmetrica, con code che si assottigliano ai lati.
+
+Succede per molte misure naturali: altezze, errori di misura, tempi di una stessa corsa fatta tante volte. Nella normale **media, mediana e moda coincidono** al centro.
+
+<Callout kind="regola">
+Regola 68-95: in una distribuzione normale circa il **68%** dei dati sta entro **1 deviazione standard** dalla media, e circa il **95%** entro **2 deviazioni standard**. Esempio: media 100 e deviazione standard 10, circa il 68% dei valori sta tra 90 e 110, circa il 95% tra 80 e 120.
+</Callout>
+
+Vuoi sentirla spiegare da un'altra voce? Poco più di cinque minuti:
+
+<Video />
+
+<Say who="sensei">La regola vale solo per le distribuzioni a campana. Non applicarla agli stipendi: hanno una coda lunga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su istogrammi, forma e distribuzione normale. Hai 3 tentativi.
+
+<Practice generator="d05-distribuzioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Disegna la forma nella testa prima di rispondere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'istogramma mostra quanti dati cadono in ogni intervallo: colonne attaccate, altezza uguale a frequenza.
+- Coda lunga a destra: media maggiore della mediana. Coda a sinistra: media minore. Simmetrica: quasi uguali.
+- La normale è una campana simmetrica: circa 68% entro 1 deviazione standard, 95% entro 2.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa indica l'altezza di una colonna in un istogramma?", a: "Quanti dati cadono in quell'intervallo" },
+    { q: "Coda lunga a destra: quale è più grande, media o mediana?", a: "La media" },
+    { q: "Normale con media 50 e deviazione standard 5: dove sta circa il 95%?", a: "Tra 40 e 60" },
+    { q: "Due picchi in un istogramma suggeriscono…", a: "Due gruppi mescolati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la correlazione. Quando due serie di numeri si muovono insieme, e perché questo non basta per dire che una causa l'altra.</Say>
+</Scene>

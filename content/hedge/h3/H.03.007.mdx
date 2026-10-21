@@ -1,0 +1,163 @@
+---
+id: H.03.007
+course: hedge
+module: 3
+title: "I limiti dei modelli"
+belt: arancione
+duration_min: 8
+prerequisites: [H.03.006]
+objectives:
+  - "Elencare i limiti di Markowitz, CAPM e modelli a fattori"
+  - "Spiegare perché le correlazioni salgono in crisi e cosa significa per la diversificazione"
+  - "Descrivere il rischio di modello e come usare i modelli con prudenza"
+video:
+  provider: youtube
+  id: "DUgKyNUQ2ls"
+  start: 0
+  end: 425
+  channel: "Marco Piovesan"
+  title: "Il Cigno Nero di Nassim Nicholas Taleb"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-limiti-modelli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi del modello come di una previsione"
+  - "Credere che la diversificazione protegga sempre, anche in crisi"
+  - "Dimenticare che un buon backtest può essere adattamento ai dati passati"
+commands: []
+---
+
+<Scene title="Il modello non sbaglia mai">
+Alla presentazione del fondo fittizio **Delta Sereno**, il gestore dice: «Il nostro modello non sbaglia mai». Mostra un grafico perfetto e una frontiera efficiente elegante.
+
+Marta, di Rondine Capital, solleva un sopracciglio. Poi arriva una settimana di crisi: tutti i titoli scendono insieme, e il portafoglio «diversificato» perde molto più di quanto il grafico diceva.
+
+La domanda del caso: **dove si rompono i modelli del modulo, e come si usano senza farsi male?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Chi dice «non sbaglia mai» ti sta vendendo qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eventi estremi">
+I modelli di questo modulo spesso suppongono che i rendimenti seguano la **distribuzione normale** (la «campana»). Nella realtà i crolli estremi sono **più frequenti** di quanto la campana preveda: se ne parla come di **code spesse**.
+
+Un'altra voce, in italiano, parla dei «cigni neri», gli eventi rari e di grande impatto che i modelli non vedono:
+
+<Video />
+
+<Callout kind="attenzione">
+Quando un modello giudica «quasi impossibile» un evento che poi accade, di solito è il modello a sbagliare, non il mondo a essere stato sfortunato.
+</Callout>
+
+<Say who="assistente">Un indizio: la media va bene nei giorni normali. Le perdite grosse stanno nei giorni strani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le correlazioni cambiano">
+Ricordi due titoli con volatilità 10%, pesi 50/50 e correlazione -0,5? Volatilità del portafoglio: **5%**.
+
+<Guided
+  steps={[
+    "In crisi la correlazione può salire a +1.",
+    "Volatilità con ρ = +1: la media delle due, cioè 10%.",
+    "Il rischio del portafoglio è raddoppiato (da 5% a 10%): la diversificazione protegge meno proprio quando serve di più.",
+    "Il modello usava la correlazione di ieri, ma il mercato di domani può essere un'altra cosa.",
+  ]}
+/>
+
+<Say who="sensei">La protezione calcolata in tempi calmi non è la protezione che avrai in tempi di crisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Stime fragili e assunzioni">
+Altri limiti da tenere a mente:
+
+- **Stime in ingresso**: rendimenti attesi e correlazioni sono stime. In Markowitz piccole variazioni cambiano molto i pesi.
+- **Assunzioni del CAPM**: investitori uguali, senza costi, con prestiti al tasso privo di rischio. Semplificazioni forti.
+- **Beta instabile**: si stima sul passato e cambia con l'azienda e con il mercato.
+- **Il rischio non è solo volatilità**: liquidità, leva e rischio di controparte non appaiono nella deviazione standard.
+- **Backtest e adattamento**: un modello ottimizzato sui dati passati può funzionare male sul futuro.
+
+<Callout kind="regola">
+Il **rischio di modello** è il rischio di perdere denaro perché il modello è sbagliato, incompleto o usato oltre i suoi limiti.
+</Callout>
+
+<Say who="sensei">Ogni numero di un modello nasce da una scelta. Se non sai quale, non sai che cosa stai guardando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un backtest mostra che un portafoglio ottimizzato ha reso molto bene sui dati passati. Che cosa significa, da solo?"
+  options={[
+    "Poco: il modello è stato adattato a quei dati e potrebbe non funzionare sul futuro",
+    "Che funzionerà sicuramente in futuro",
+    "Che il rischio è zero",
+    "Che il gestore ha alpha certo",
+  ]}
+  answer={0}
+  explain="Un modello tarato sul passato si adatta anche al caso. Servono prove su dati nuovi, scenari estremi e prudenza: da solo il backtest non prova nulla sul futuro."
+/>
+
+<Say who="assistente">Un buon uso del modello: confronta, stressa, dubita. Un cattivo uso: crederci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come usarli con prudenza">
+Questi modelli sono **strumenti per ragionare**, non per prevedere. Alcune regole:
+
+- Affiancali con **prove di scenario**: «che cosa succede se tutto scende insieme?».
+- Non fidarti di **un solo numero**, né di una sola stima.
+- Tieni margini di sicurezza: non usare tutta la leva che il modello «permette».
+- Diffida di chi dice che il suo modello è infallibile.
+
+<Callout kind="curiosita">
+Proprio da errori di modello nascono molti fallimenti di fondi; ne parleremo nei moduli sul rischio e sui fallimenti.
+</Callout>
+
+<Say who="sensei">Un modello è una mappa. Chi la scambia per il territorio, prima o poi si perde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sui limiti dei modelli, con qualche calcolo. Numeri fittizi.
+
+<Practice generator="h03-limiti-modelli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere dove un modello si rompe è la parte più utile del mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Markowitz, CAPM e modelli a fattori sono semplificazioni: dipendono da stime incerte e da assunzioni poco realistiche.
+- I crolli estremi sono più frequenti di quanto la distribuzione normale preveda, e in crisi le correlazioni salgono.
+- Il rischio di modello esiste: i modelli servono a ragionare, insieme a scenari estremi e prudenza, non a prevedere.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Due titoli σ 10%, 50/50, ρ da -0,5 a +1: rischio?", a: "Da 5% a 10%" },
+    { q: "Che cosa sono le «code spesse»?", a: "Eventi estremi più frequenti di quanto preveda la distribuzione normale" },
+    { q: "Che cos'è il rischio di modello?", a: "Perdere denaro perché il modello è sbagliato o usato oltre i suoi limiti" },
+    { q: "Un backtest eccellente prova il futuro?", a: "No, può essere adattamento ai dati passati" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossimo: l'analisi fondamentale, per capire quanto vale davvero un'azienda.</Say>
+</Scene>

@@ -1,0 +1,176 @@
+---
+id: D.09.008
+course: dati
+module: 9
+title: "Costi e sicurezza"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.007]
+objectives:
+  - "Applicare il principio del privilegio minimo a ruoli e permessi"
+  - "Distinguere cifratura a riposo e in transito e trattare i dati personali nelle pipeline"
+  - "Stimare il costo di una query che legge molti dati e ridurlo"
+video:
+  provider: youtube
+  id: "cEhFUefOOfA"
+  start: 0
+  end: 600
+  channel: "ClickHouse"
+  title: "The real cost of cloud data warehouses: how they bill you and which is the most cost-efficient"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-costi-sicurezza
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare a tutti il permesso massimo «per comodità»"
+  - "Copiare dati personali (email, codici fiscali) in ogni tabella di analisi senza necessità"
+  - "Scrivere SELECT * su tabelle enormi: si paga per ogni colonna letta"
+commands: []
+---
+
+<Scene title="La bolletta e l'email">
+Due brutte sorprese in una settimana a **Tavola Bella**.
+
+La prima: la fattura del magazzino dati cloud è **cinque volte** quella del mese scorso. Un tirocinante ha lanciato una query su tutta la tabella dei clic del sito, ripetuta ogni ora.
+
+La seconda: un file di analisi condiviso con un fornitore contiene **email e telefoni** dei clienti, che al fornitore non servivano.
+
+La domanda del caso: **come si tengono sotto controllo costi e accessi?**
+
+<Say who="sensei">I dati hanno un costo e una responsabilità. Chi li maneggia risponde di entrambi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ruoli e permessi">
+Il principio da ricordare è il **privilegio minimo**: ognuno ha **solo i permessi che servono** al suo lavoro, per il tempo che serve.
+
+Si fa con i **ruoli**: gruppi di permessi (leggere, scrivere, cancellare, amministrare) assegnati a persone o programmi.
+
+| Ruolo | Può leggere | Può scrivere | Può cancellare |
+|-------|-------------|--------------|----------------|
+| analista | tabelle di analisi | no | no |
+| pipeline | tabelle grezze | tabelle pulite | no |
+| amministratore | tutto | tutto | sì |
+
+Anche i **programmi** (la pipeline) hanno un ruolo, separato da quello delle persone.
+
+<Callout kind="attenzione">
+«Diamo a tutti i permessi massimi, così nessuno ci chiede nulla» è l'errore più comune. Un errore di una persona qualunque diventa un errore irreparabile.
+</Callout>
+
+<Say who="assistente">Chiediti: questa persona ha davvero bisogno di poter scrivere? Se la risposta è no, togli il permesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifratura e dati personali">
+La **cifratura** rende i dati illeggibili a chi non ha la chiave. Due momenti:
+
+- **A riposo**: i dati sono salvati su disco già cifrati (se rubano il disco, non leggono nulla).
+- **In transito**: i dati viaggiano cifrati sulla rete (se qualcuno intercetta, non capisce).
+
+Per i **dati personali** (nome, email, telefono, codice fiscale) valgono le regole del **GDPR**: si tiene **solo ciò che serve** (minimizzazione) e si nasconde il resto. Nelle analisi basta spesso un codice al posto della persona, o una vista che toglie le colonne riservate:
+
+<Log lines={[
+  "CREATE VIEW clienti_analisti AS",
+  "SELECT id_cliente, citta",
+  "FROM clienti;",
+]} />
+
+L'analista interroga `clienti_analisti` e **non vede mai** email e telefono, che restano nella tabella `clienti`, accessibile solo a chi ne ha bisogno.
+
+<Callout kind="regola">
+Salute, finanza e minori richiedono attenzione ancora maggiore. Se non sei sicuro, **non copiare** il dato personale.
+</Callout>
+
+<Say who="sensei">Il dato che non copi è il dato che non puoi perdere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto costa archiviare e interrogare">
+Nei magazzini cloud ci sono di solito due voci:
+
+- **archiviazione**: quanto spazio occupano i dati (costa poco, nel lake pochissimo);
+- **query**: in molti servizi si paga in base alla **quantità di dati letta** oppure al **tempo di calcolo** usato.
+
+Un esempio con prezzi **inventati**: 5 euro per ogni terabyte (TB) letto. Una query legge una tabella di 2 TB con 20 colonne:
+
+<Log lines={[
+  "SELECT * FROM clic;                 -> legge 2 TB   -> 2 x 5 = 10 euro",
+  "SELECT pagina FROM clic;            -> legge 1 colonna su 20",
+  "                                    -> circa 0,1 TB -> 0,1 x 5 = 0,5 euro",
+]} />
+
+Ripetuta ogni ora per un mese (720 volte), la prima costa 7200 euro, la seconda 360 euro.
+
+Per risparmiare:
+
+- **scegli solo le colonne che servono** (niente `SELECT *`);
+- **limita le date** se la tabella è divisa per giorno (partizioni);
+- usa formati **per colonna** come Parquet;
+- non rieseguire ogni ora ciò che basta fare una volta al giorno.
+
+Un'altra voce mostra come vengono fatturati davvero i magazzini cloud:
+
+<Video />
+
+<Say who="assistente">Prima di lanciare una query pesante, chiediti: quanti dati sto leggendo, e mi servono tutti?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una dashboard rilegge ogni 5 minuti l'intera tabella degli ordini di tre anni, anche se mostra solo gli ultimi 7 giorni. La bolletta sale. Qual è la correzione migliore?"
+  options={[
+    "Leggere solo gli ultimi 7 giorni, con le sole colonne necessarie",
+    "Cifrare di nuovo tutta la tabella",
+    "Dare all'analista il ruolo di amministratore",
+    "Aggiungere altre colonne alla query",
+  ]}
+  answer={0}
+  explain="Si paga ciò che si legge: limitare date e colonne riduce la quantità letta. La cifratura riguarda la sicurezza, non il costo di lettura, e un ruolo più potente non risolve nulla."
+/>
+
+<Say who="sensei">Meno dati letti, meno euro spesi. Semplice, e dimenticato da quasi tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su permessi, dati personali e costi.
+
+<Practice generator="d09-costi-sicurezza" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il modulo: ora sai come funziona il viaggio dei dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Privilegio minimo: ognuno ha solo i permessi che servono, tramite ruoli, anche per i programmi.
+- Cifratura a riposo e in transito; dati personali ridotti al minimo, con viste e codici al posto delle persone.
+- Le query si pagano in base ai dati letti: poche colonne, poche date, niente ripetizioni inutili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il privilegio minimo?", a: "Dare a ciascuno solo i permessi che servono al suo lavoro" },
+    { q: "Cifratura a riposo o in transito?", a: "A riposo: dati sul disco. In transito: dati sulla rete" },
+    { q: "Come nascondi email e telefono agli analisti?", a: "Con una vista che mostra solo le colonne necessarie" },
+    { q: "Perché evitare SELECT * su tabelle enormi?", a: "Si paga per i dati letti: si leggono anche le colonne inutili" },
+  ]}
+/>
+
+<Say who="sensei">Modulo finito. Hai visto il viaggio dei dati dalla sorgente al report. Ora si va avanti con le prossime tappe del corso.</Say>
+</Scene>

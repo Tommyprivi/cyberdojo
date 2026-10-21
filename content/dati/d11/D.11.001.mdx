@@ -1,0 +1,158 @@
+---
+id: D.11.001
+course: dati
+module: 11
+title: "Che cos'è il machine learning"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.007]
+objectives:
+  - "Distinguere regole scritte a mano e regole imparate dai dati"
+  - "Riconoscere un problema supervisionato e uno non supervisionato"
+  - "Dire che cosa il machine learning non è"
+video:
+  provider: youtube
+  id: "DHsnGoH9VWo"
+  start: 0
+  end: 378
+  channel: "Piero Savastano"
+  title: "Machine Learning - Apprendimento Supervisionato vs Non Supervisionato"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-che-cose
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il modello capisca le cose come una persona: trova regolarità nei dati"
+  - "Credere che più dati vadano sempre bene, anche se sono sbagliati"
+  - "Usare il machine learning dove basta una regola semplice e nota"
+commands: []
+---
+
+<Scene title="Il filtro che non basta più">
+Marta gestisce la posta di un piccolo negozio online. Ha scritto una regola a mano: **se l'email contiene «vinci subito», è spam**.
+
+Funziona per una settimana. Poi arrivano email con «hai vinto un premio», «offerta riservata», «ultima chance». Nessuna contiene «vinci subito». Passano tutte.
+
+La domanda del caso: **si possono scrivere tutte le regole a mano, o può impararle il computer?**
+
+<Say who="sensei">Una regola scritta a mano è precisa, ma è ferma. I truffatori cambiano parole ogni giorno. Tu non puoi rincorrerli a mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole scritte, regole imparate">
+Nella programmazione di sempre **tu scrivi le regole**. Il computer riceve i dati, applica le regole e dà le risposte.
+
+Nel **machine learning** (apprendimento automatico) si fa il contrario. Dai al computer **i dati e le risposte giuste**, e lui **ricava le regole**.
+
+<Log lines={["Programmazione: dati + REGOLE (scritte da te) -> risposte", "Machine learning: dati + RISPOSTE (esempi) -> regole (il modello)"]} caption="La differenza in due righe." />
+
+Le regole trovate dal computer si chiamano **modello**. Trovarle si dice **addestramento**. Usarle su un caso nuovo si dice **previsione**.
+
+<Say who="assistente">Pensa a un bambino che impara cosa sia un cane. Non gli dai una definizione: gli mostri tanti cani. Il modello fa lo stesso con i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Supervisionato: gli esempi hanno la risposta">
+Nell'**apprendimento supervisionato** ogni esempio ha già la risposta giusta, detta **etichetta**.
+
+| parole sospette | contiene un link | etichetta |
+|---|---|---|
+| 0 | no | non spam |
+| 5 | sì | spam |
+| 1 | sì | non spam |
+| 7 | sì | spam |
+
+Le colonne con cui si prevede (parole sospette, link) si chiamano **caratteristiche**. La colonna da prevedere è l'etichetta.
+
+<Callout kind="regola">
+Etichette presenti: supervisionato. Compiti tipici: prevedere un numero (regressione) o una categoria (classificazione).
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Sei minuti, con la differenza tra le due famiglie:
+
+<Video />
+
+<Say who="sensei">Gli esempi etichettati sono il tuo maestro. Se le etichette sono sbagliate, il modello imparerà cose sbagliate.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non supervisionato: nessuna risposta">
+Nell'**apprendimento non supervisionato** non ci sono etichette. Al computer si danno solo i dati e gli si chiede: **trova dei gruppi o delle regolarità**.
+
+Esempio: un negozio ha i dati di 1.000 clienti, ma nessuno ha mai deciso a quale «tipo» appartengano. Il computer li raggruppa per somiglianza. Poi **sono le persone** a guardare i gruppi e a dar loro un nome.
+
+<Callout kind="trucco">
+Domanda rapida per riconoscerli: ho la risposta giusta per ogni esempio? Sì: supervisionato. No: non supervisionato.
+</Callout>
+
+<Say who="assistente">Nelle prossime lezioni vedremo un esempio per ogni tipo: la retta, le categorie, i gruppi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa NON è">
+<Callout kind="attenzione">
+Il machine learning **non capisce**. Trova regolarità nei dati, e le applica. Non sa il perché delle cose.
+</Callout>
+
+- Non è magia: con dati sbagliati dà previsioni sbagliate.
+- Non è sempre la scelta giusta: per calcolare l'IVA al 22% basta una formula, e un modello sarebbe peggio.
+- Non è sempre corretto: sbaglia, e va misurato (lo vedremo).
+- Non è uguale all'intelligenza artificiale: ne è **una parte**, il modo che impara dagli esempi.
+
+<Say who="sensei">Un modello è uno studente che ha visto solo i tuoi esempi. Non conosce il mondo: conosce quello che gli hai mostrato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda ha i dati di 5.000 clienti passati, con scritto per ciascuno se ha disdetto l'abbonamento (sì o no). Vuole prevedere chi disdirà. Che tipo di apprendimento è?"
+  options={["Supervisionato: ogni esempio ha l'etichetta sì/no", "Non supervisionato: servono solo i gruppi", "Nessuno: servono regole scritte a mano", "Regressione, perché si prevede un numero"]}
+  answer={0}
+  explain="Per ogni cliente passato si conosce la risposta giusta (disdetto sì/no): è un'etichetta, quindi l'apprendimento è supervisionato. La risposta è una categoria, quindi si parla di classificazione e non di regressione."
+/>
+
+<Say who="assistente">Cerca l'etichetta. Se ogni esempio ha la risposta già scritta, hai la tua risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su regole, esempi, etichette e limiti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d11-che-cose" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di parlare di modelli, devi saperne distinguere i tipi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Machine learning: dati e risposte entrano, le regole (il modello) escono. Nella programmazione di sempre le regole le scrivi tu.
+- Supervisionato: gli esempi hanno l'etichetta. Non supervisionato: nessuna etichetta, si cercano gruppi.
+- Il modello non capisce: trova regolarità. Dati sbagliati, previsioni sbagliate; dove basta una regola semplice non serve.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'etichetta?", a: "La risposta giusta già nota per un esempio" },
+    { q: "Che cosa produce l'addestramento?", a: "Un modello: le regole ricavate dai dati" },
+    { q: "Supervisionato o non supervisionato: raggruppare clienti senza categorie?", a: "Non supervisionato" },
+    { q: "Il machine learning capisce il significato delle cose?", a: "No: trova regolarità nei dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la regressione. Prevedere un numero con una retta, e misurare quanto si sbaglia.</Say>
+</Scene>

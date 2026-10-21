@@ -1,0 +1,154 @@
+---
+id: T.12.003
+course: trading
+module: 12
+title: "Il diario di trading"
+belt: blu
+duration_min: 8
+prerequisites: [T.12.002]
+objectives:
+  - "Dire che cosa scrivere in un diario di trading e quando"
+  - "Calcolare totale e numero di operazioni vincenti da un piccolo diario"
+  - "Cercare schemi che si ripetono per trasformarli in regole"
+video:
+  provider: youtube
+  id: "zXJvpLmQtew"
+  start: 0
+  end: 600
+  channel: "BBold Forex [BBFX]"
+  title: "Keeping A Trading Journal |Course 9.4| Undergraduate Junior| Babypips Forex Education"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t12-diario
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere il motivo dell'operazione solo dopo, quando si sa com'è andata"
+  - "Tenere il diario solo quando si vince"
+  - "Annotare il risultato ma non lo stato d'animo"
+commands: []
+---
+
+<Scene title="Che cosa è successo davvero?">
+Sara ha chiuso la settimana in perdita sul conto demo. Un'amica le chiede: «Come mai?» Sara risponde: «Sfortuna. Il mercato era strano.»
+
+Ma è andata davvero così? Sara non ricorda bene quando è entrata, né perché. Ricorda solo che alla fine era in rosso.
+
+La domanda del caso: **come si impara da ciò che non si ricorda?**
+
+<Say who="sensei">La memoria ti racconta una storia comoda. Il diario ti racconta quello che hai fatto.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. Qui lavoriamo con dati fittizi e conti demo.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa si scrive">
+Un diario di trading è un quaderno (o un file) dove si registra ogni operazione, **anche quelle simulate**. Per ciascuna:
+
+- **Prima di entrare**: perché entro (quale regola?), quanto rischio al massimo, come sto (calmo, agitato, stanco).
+- **Dopo l'uscita**: risultato, se ho rispettato le regole, che cosa ho imparato.
+
+<Callout kind="regola">
+Il motivo dell'ingresso si scrive **prima**, non dopo. Dopo, la memoria si adatta al risultato.
+</Callout>
+
+<Say who="assistente">Scrivi anche le perdite e anche le volte in cui hai violato le regole. Un diario di soli successi non serve a niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un diario piccolo">
+Ecco cinque operazioni demo, con risultati in unità fittizie:
+
+| n | Motivo | Regola rispettata? | Risultato |
+|---|--------|--------------------|-----------|
+| 1 | Segnale 1 attivo | sì | +40 |
+| 2 | Segnale 1 attivo | sì | -25 |
+| 3 | «Mi sembrava salire» | no | +10 |
+| 4 | Segnale 1 attivo | sì | -30 |
+| 5 | Voglia di rifarsi | no | -20 |
+
+Calcolo: 40 - 25 + 10 - 30 - 20 = **-25**. Vincenti: la 1 e la 3, quindi **2 su 5**. Provalo anche tu:
+
+<PythonTerminal code={"risultati = [40, -25, 10, -30, -20]\nprint('Operazioni:', len(risultati))\nvincenti = [r for r in risultati if r > 0]\nprint('Vincenti:', len(vincenti))\nprint('Totale:', sum(risultati))"} />
+
+Guarda la colonna centrale: le due operazioni **fuori dalle regole** hanno motivi vaghi. Una è andata bene per caso, l'altra è stata una vendetta. Senza il diario non lo vedresti.
+
+<Say who="sensei">Un guadagno ottenuto violando le regole è una fortuna, non una prova. Annotalo come violazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cercare gli schemi">
+Dopo qualche settimana rileggi il diario e cerchi **schemi che si ripetono**: stessi errori, stesse ore, stesse emozioni.
+
+Esempio: quasi tutte le perdite grandi sono dopo le 16, quando sei stanco. Non è un caso da ignorare: è un dato. La risposta è una **regola scritta**: «nessuna nuova operazione dopo le 16». Poi si controlla nel tempo se funziona.
+
+Vuoi sentire un'altra voce spiegare il diario? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Callout kind="trucco">
+Rileggi il diario a fine settimana. Il lavoro vero non è scrivere, è rileggere.
+</Callout>
+
+<Say who="assistente">Il diario non serve a punirti. Serve a scoprire come ti comporti davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel diario di una settimana vedi che le perdite più grandi sono tutte arrivate dopo una perdita precedente, con dimensioni raddoppiate. Che cosa è più prudente fare?"
+  options={[
+    "Scrivere una regola: dopo una perdita, dimensione uguale e stop alla giornata al limite fissato",
+    "Cancellare quelle righe dal diario",
+    "Raddoppiare ancora per compensare",
+    "Dare la colpa al mercato",
+  ]}
+  answer={0}
+  explain="Il diario ha mostrato uno schema (revenge trading). La risposta utile è una regola scritta, misurabile. Cancellare le righe nasconde il problema; raddoppiare lo peggiora."
+/>
+
+<Say who="sensei">Un dato che non ti piace è il più utile. Non nasconderlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su che cosa scrivere nel diario, quando scriverlo e come leggerlo, con qualche piccolo calcolo.
+
+<Practice generator="t12-diario" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi tiene il diario sa che cosa fa. Chi non lo tiene crede di saperlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il diario registra ogni operazione, anche quelle simulate: motivo e stato d'animo prima, risultato e lezione dopo.
+- Si scrivono anche le perdite e le violazioni delle regole: altrimenti il diario mente.
+- Dopo qualche settimana si cercano gli schemi che si ripetono e li si trasforma in regole misurabili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando si scrive il motivo dell'ingresso?", a: "Prima di entrare, a mente fredda" },
+    { q: "Si annotano le perdite?", a: "Sì, tutte, anche le violazioni delle regole" },
+    { q: "Che cosa si cerca rileggendo il diario?", a: "Schemi che si ripetono: errori, ore, emozioni" },
+    { q: "Un guadagno ottenuto violando le regole che cos'è?", a: "Una fortuna da annotare come violazione, non una prova" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: regole scritte e check-list, per trasformare quello che hai imparato in abitudini.</Say>
+</Scene>

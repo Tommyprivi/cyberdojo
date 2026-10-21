@@ -1,0 +1,207 @@
+---
+id: F.04.003
+course: fondamenta
+module: 4
+title: "Ordinare e contare"
+belt: gialla
+duration_min: 10
+prerequisites: [F.04.002]
+objectives:
+  - "Estrarre una colonna con cut e contare righe con wc"
+  - "Ordinare con sort e contare i duplicati con sort | uniq -c"
+  - "Costruire una pipeline che risponde a una domanda sul log"
+video:
+  provider: youtube
+  id: "nLa6jAbULe8"
+  start: 0
+  end: 509
+  channel: "tutoriaLinux"
+  title: "Linux Sysadmin Basics 4.1 -- Filtering Output and Finding Things (&&, cut, sort, uniq, wc, grep)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-ordina
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "uniq toglie solo i duplicati vicini: senza sort prima, non conta bene"
+  - "sort ordina come testo: 10 viene prima di 9. Per i numeri serve sort -n"
+  - "cut ha bisogno del separatore: -d' ' per gli spazi, e -f per scegliere il campo"
+commands: []
+---
+
+<Scene title="Chi insiste di più?">
+Il capo del SOC fa una domanda semplice: **«Da quale indirizzo sono arrivati più accessi falliti?»**
+
+Hai sempre il tuo `accessi.log`:
+
+<Log lines={[
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "03:02 198.51.100.7 web OK -",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:07 192.168.1.66 ssh OK mario",
+  "03:09 198.51.100.7 web OK -",
+  "03:12 198.51.100.7 ssh FALLITO test",
+  "03:15 192.168.1.20 ssh OK lucia",
+]} caption="Con ottomila righe la risposta non si vede a occhio." />
+
+Con `grep` filtri le righe. Ora servono altri attrezzi per **estrarre, ordinare e contare**. Poi li metti in fila con la pipe.
+
+<Say who="sensei">Una domanda, una pipeline. Ogni pezzo fa una cosa semplice. Costruiamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="cut e wc">
+**`cut`** taglia una colonna. Con **`-d`** indichi il separatore, con **`-f`** il numero del campo. Qui i campi sono separati da spazi: il campo 2 è l'indirizzo.
+
+**`wc`** (word count) conta. Con **`-l`** conta le righe.
+
+<Log lines={[
+  "studente@lab:~$ cut -d' ' -f2 accessi.log | head -n 3",
+  "203.0.113.9",
+  "203.0.113.9",
+  "198.51.100.7",
+  "studente@lab:~$ wc -l accessi.log",
+  "8 accessi.log",
+  "studente@lab:~$ grep FALLITO accessi.log | wc -l",
+  "4",
+]} caption="Colonna 2 = indirizzo. Righe totali: 8. Righe con FALLITO: 4." />
+
+<Callout kind="trucco">
+Se `cut` non ti dà quello che vuoi, conta i campi: prima colonna = `-f1`, seconda = `-f2`. Se ne servono due insieme: `-f1,5`.
+</Callout>
+
+<Say who="assistente">cut non capisce da solo dove finisce una colonna. Gli dici tu il separatore con -d.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="sort e uniq">
+**`sort`** mette le righe in ordine alfabetico. **`uniq`** elimina le righe uguali **ma solo se sono vicine**. Per questo si usano quasi sempre insieme: prima `sort`, poi `uniq`. Con **`uniq -c`** ogni riga è preceduta dal **numero di volte** in cui compare.
+
+<Log lines={[
+  "studente@lab:~$ cut -d' ' -f2 accessi.log | sort | uniq -c",
+  "      1 192.168.1.20",
+  "      1 192.168.1.66",
+  "      3 198.51.100.7",
+  "      3 203.0.113.9",
+]} caption="sort mette vicini gli indirizzi uguali, uniq -c li conta." />
+
+<Callout kind="attenzione">
+**`sort` ordina come testo.** Con i numeri, 10 viene prima di 9. Per ordinare i numeri come numeri serve **`sort -n`**. Con **`-r`** l'ordine si inverte.
+</Callout>
+
+<Log lines={[
+  "studente@lab:~$ printf '10\\n9\\n100\\n' | sort",
+  "10",
+  "100",
+  "9",
+  "studente@lab:~$ printf '10\\n9\\n100\\n' | sort -n",
+  "9",
+  "10",
+  "100",
+]} caption="printf stampa tre righe: 10, 9 e 100." />
+
+<Say who="sensei">Prima sort, poi uniq. Sempre. Chi salta sort conta male e non se ne accorge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La pipeline completa">
+Ora la risposta al capo. Un pezzo alla volta:
+
+<Guided
+  steps={[
+    "grep FALLITO accessi.log: tieni solo i tentativi falliti. Restano 4 righe.",
+    "| cut -d' ' -f2: di ogni riga tieni solo l'indirizzo. Escono 203.0.113.9 tre volte e 198.51.100.7 una volta.",
+    "| sort | uniq -c: raggruppi gli indirizzi uguali e li conti.",
+    "| sort -rn: ordini dal conteggio più alto al più basso, trattando i numeri come numeri.",
+  ]}
+/>
+
+<Log lines={[
+  "studente@lab:~$ grep FALLITO accessi.log | cut -d' ' -f2 | sort | uniq -c | sort -rn",
+  "      3 203.0.113.9",
+  "      1 198.51.100.7",
+]} caption="Risposta: 203.0.113.9, con 3 tentativi falliti." />
+
+Vuoi vedere questi comandi in azione? Video in inglese, circa otto minuti:
+
+<Video />
+
+<Say who="assistente">Quando una pipeline sembra lunga, leggila da sinistra a destra, un pezzo alla volta. Ogni pezzo è semplice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="tr: cambiare i caratteri">
+**`tr`** (translate) sostituisce o toglie **singoli caratteri**. Legge solo dalla pipe, non da un file.
+
+<Log lines={[
+  "studente@lab:~$ echo \"ssh\" | tr 'a-z' 'A-Z'",
+  "SSH",
+  "studente@lab:~$ echo \"03:01 admin\" | tr -d ':'",
+  "0301 admin",
+  "studente@lab:~$ echo \"a   b\" | tr -s ' '",
+  "a b",
+]} caption="Maiuscole, cancellare un carattere (-d), comprimere gli spazi ripetuti (-s)." />
+
+<Callout kind="curiosita">
+Con `tr -s ' '` si «schiacciano» gli spazi doppi: utile prima di `cut`, quando le colonne sono separate da più spazi di fila.
+</Callout>
+
+<Say who="sensei">tr lavora sui caratteri, non sulle parole. Se vuoi cambiare una parola intera, ti servirà sed. Lo vediamo nella prossima lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa questa pipeline? grep OK accessi.log | cut -d' ' -f5 | sort | uniq -c | sort -rn | head -n 1"
+  options={["Una sola riga: il conteggio 2 davanti al trattino «-»", "Il numero totale delle righe OK", "Tutti gli utenti, ordinati alfabeticamente", "Un errore: head non si usa dopo sort"]}
+  answer={0}
+  explain="grep OK tiene 4 righe (mario, lucia e due righe web con utente «-»). cut prende l'utente, uniq -c conta: «-» compare 2 volte, gli altri una. sort -rn mette in cima il più frequente, head -n 1 tiene solo quello. Chi risponde «numero totale» ha confuso la pipeline con wc -l."
+/>
+
+<LinuxTerminal goal="Trova quale indirizzo compare più volte in accessi.log" />
+
+<Say who="assistente">Segui il dato passo per passo: quante righe restano dopo ogni pezzo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su pipeline di filtraggio: cosa stampano, quale comando serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-ordina" pass="4/5" retries={3} />
+
+<Say who="sensei">Una domanda sul log, una pipeline. Questo è lavoro da analista, ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `cut -d' ' -f2` estrae una colonna; `wc -l` conta le righe.
+- `sort | uniq -c` conta i duplicati; `sort -n` ordina i numeri, `-r` inverte.
+- `tr` cambia o toglie caratteri. Una pipeline si legge da sinistra a destra, un pezzo alla volta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché prima di uniq serve sort?", a: "uniq toglie solo i duplicati vicini" },
+    { q: "Cosa fa uniq -c?", a: "Mette davanti a ogni riga quante volte compare" },
+    { q: "Come si ordinano i numeri come numeri?", a: "sort -n" },
+    { q: "Cosa fa tr -d ':'?", a: "Toglie tutti i due punti" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai estrarre e contare. Prossima lezione: sed e awk, per sostituire testo e prendere colonne con più precisione.</Say>
+</Scene>

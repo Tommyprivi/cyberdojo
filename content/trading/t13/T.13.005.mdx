@@ -1,0 +1,157 @@
+---
+id: T.13.005
+course: trading
+module: 13
+title: "Insider trading"
+belt: blu
+duration_min: 8
+prerequisites: [T.13.004]
+objectives:
+  - "Definire che cos'è un'informazione privilegiata"
+  - "Distinguere ciò che è vietato (usare, comunicare, consigliare) da ciò che è lecito"
+  - "Scegliere il comportamento corretto davanti a una voce o a una soffiata"
+video:
+  provider: youtube
+  id: "JLeOf5RIvzc"
+  start: 0
+  end: 600
+  channel: "Percorso Finanza"
+  title: "Che cos'è l'Insider trading"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-insider
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'insider trading riguardi solo i dirigenti: vale anche per chi riceve la notizia per caso o da un amico"
+  - "Credere che sia lecito se la somma è piccola: la gravità conta, ma il divieto vale lo stesso"
+  - "Confondere un'informazione privilegiata con un'analisi fatta bene su dati pubblici"
+commands: []
+---
+
+<Scene title="La cena di Paolo">
+Paolo lavora in una piccola azienda quotata in borsa. A cena, sua cugina Irene, che studia analisi dei dati, gli racconta qualcosa che ha sentito in ufficio: **la sua azienda sta per essere acquistata da una grande società. L'annuncio ufficiale arriverà tra tre giorni.**
+
+Irene aggiunge: «Se compri azioni adesso, quando lo annunciano il prezzo salta. Ma non dirlo a nessuno».
+
+La domanda del caso: **è lecito comprare? E se lo dice ad altri?**
+
+<Callout kind="attenzione">
+Il corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Si spiega l'insider trading per **riconoscerlo ed evitarlo**, non per praticarlo.
+</Callout>
+
+<Say who="sensei">Sapere una cosa prima degli altri non è un merito. Se quella cosa non è pubblica, usarla è un'altra storia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un'informazione privilegiata">
+In sintesi, secondo le regole europee sugli abusi di mercato (ottobre 2026: controlla le fonti ufficiali), un'**informazione privilegiata** è:
+
+- **precisa**: riguarda fatti concreti, non voci vaghe;
+- **non pubblica**: non è ancora stata comunicata al mercato;
+- **capace di muovere il prezzo**: se fosse pubblica, probabilmente influirebbe sul prezzo di uno strumento finanziario.
+
+Esempi: una fusione non ancora annunciata, i conti trimestrali non ancora pubblicati, il risultato di una sperimentazione di un farmaco.
+
+<Callout kind="regola">
+Tre parole: **precisa, non pubblica, rilevante per il prezzo**. Se mancano, non è privilegiata.
+</Callout>
+
+<Say who="assistente">Una voce vaga come «ho sentito che le cose vanno bene» non è privilegiata. Una notizia precisa e segreta sì. La differenza è nei dettagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa è vietato">
+Le regole vietano, in sintesi, tre comportamenti a chi ha un'informazione privilegiata:
+
+- **usarla** per comprare o vendere (per sé o per altri);
+- **comunicarla** a qualcuno senza che sia necessario per il proprio lavoro;
+- **consigliare** di comprare o vendere sulla base di quella notizia.
+
+Questo vale per chi la riceve per il proprio ruolo, ma anche per chi la riceve **da altri** sapendo che è privilegiata. Non conta se sei un dirigente o un amico.
+
+<Callout kind="curiosita">
+In Italia le regole sono nel Testo unico della finanza (TUF), in linea con il regolamento europeo. La Consob vigila e può sanzionare; nei casi più gravi c'è anche la responsabilità penale.
+</Callout>
+
+Una voce che racconta che cos'è, in italiano:
+
+<Video />
+
+<Say who="sensei">Usare, comunicare, consigliare. Tre verbi, tre divieti. La cugina che ha parlato ha sbagliato. Paolo, se comprasse, sbaglierebbe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa invece è lecito">
+Non tutto ciò che sai in anticipo è insider trading. È lecito:
+
+- fare **analisi** usando dati e notizie **pubbliche**, anche con un modello originale;
+- trarre una conclusione da tanti piccoli indizi pubblici (il cosiddetto «mosaico»);
+- comprare o vendere azioni della propria azienda **se non si possiede alcuna informazione privilegiata**, rispettando le regole interne.
+
+Per un trader che scrive algoritmi vale una regola in più: **i dati che usi devono essere pubblici o legittimamente tuoi**. Un file che «è arrivato» da qualcuno dell'azienda con numeri non ancora pubblicati non va usato.
+
+<Callout kind="attenzione">
+Se dubiti che una notizia sia pubblica, trattala come non pubblica: **non operare** e, se lavori in un'azienda, chiedi all'ufficio che si occupa di conformità alle regole (compliance).
+</Callout>
+
+<Say who="assistente">Un test semplice: se puoi mostrare a un'autorità da dove arriva l'informazione e la risposta è «da una fonte pubblica», sei tranquillo. Se devi nasconderlo, non è tranquilla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Irene racconta a Paolo che la sua azienda sarà acquistata e che l'annuncio ufficiale è tra tre giorni. Qual è la scelta corretta per Paolo?"
+  options={[
+    "Non comprare e non ripetere la notizia a nessuno: è un'informazione privilegiata",
+    "Comprare poche azioni, perché la somma è piccola e nessuno se ne accorge",
+    "Dirlo a due amici fidati, ma comprare solo lui",
+    "Comprare azioni di una società collegata, così non è la stessa società",
+  ]}
+  answer={0}
+  explain="La notizia è precisa, non pubblica e capace di muovere il prezzo: è privilegiata. Usarla o comunicarla è vietato. La somma piccola non cancella il divieto; comprare titoli di una società collegata per sfruttare la stessa notizia è comunque uso dell'informazione."
+/>
+
+<Say who="sensei">La scelta giusta è la più noiosa: non fai niente. In questo caso, non fare niente protegge anche te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su informazioni privilegiate e comportamenti leciti o vietati: scegli la risposta più corretta.
+
+<Practice generator="t13-insider" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce il confine tra analisi e soffiata non ha paura di nessuna autorità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'informazione è privilegiata se è precisa, non pubblica e capace di muovere il prezzo.
+- Sono vietati l'uso, la comunicazione e il consiglio basati su quell'informazione, anche per chi la riceve da altri.
+- L'analisi su dati pubblici è lecita; i dati di cui non conosci la provenienza non si usano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le tre caratteristiche di un'informazione privilegiata?", a: "Precisa, non pubblica, capace di muovere il prezzo" },
+    { q: "Quali tre comportamenti sono vietati?", a: "Usarla, comunicarla senza necessità di lavoro, consigliare operazioni basandosi su di essa" },
+    { q: "Vale solo per i dirigenti?", a: "No: vale anche per chi la riceve da altri sapendo che è privilegiata" },
+    { q: "Fare analisi su dati pubblici è insider trading?", a: "No: è lecito" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: come si verifica un intermediario, passo dopo passo, sui siti ufficiali.</Say>
+</Scene>

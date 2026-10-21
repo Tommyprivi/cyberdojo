@@ -1,0 +1,159 @@
+---
+id: D.14.005
+course: dati
+module: 14
+title: "Orchestrazione e infrastruttura come codice"
+belt: marrone
+duration_min: 9
+prerequisites: [D.14.004]
+objectives:
+  - "Spiegare workflow, dipendenze e ripetizioni automatiche"
+  - "Capire ambienti separati e infrastruttura come codice"
+  - "Descrivere versionamento, test e rilascio di una pipeline"
+video:
+  provider: youtube
+  id: "eeSLDdz-aLg"
+  start: 0
+  end: 600
+  channel: "CodeLucky"
+  title: "Apache Airflow Tutorial for Beginners: Workflow Orchestration Explained!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-orchestrazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lanciare i lavori a mano o con orari fissi sperando che i precedenti siano finiti"
+  - "Provare le modifiche direttamente nell'ambiente di produzione"
+  - "Cambiare l'infrastruttura a mano dalla console, senza lasciare traccia nel codice"
+commands: []
+---
+
+<Scene title="Il lavoro delle 06:00 che parte troppo presto">
+Ogni mattina alle 06:00 parte il report di «Pasta Bianchi». Ma il lavoro che raccoglie le vendite dai negozi alle volte finisce alle 06:20. Quel giorno il report parte sui dati di ieri, e nessuno se ne accorge.
+
+Ivo propone: «Il report deve partire **quando i dati sono pronti**, non quando suona la sveglia».
+
+<Say who="sensei">Gli orari fissi sono promesse. Le dipendenze sono fatti. Una pipeline seria si fida dei fatti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Workflow e dipendenze">
+Una pipeline è una catena di passi: raccogli, pulisci, calcola, pubblica. Un **workflow** descrive i passi e le loro **dipendenze**: «il passo C parte solo quando A e B sono riusciti».
+
+Un **orchestratore** (strumenti come Apache Airflow, o simili) esegue il workflow: rispetta l'ordine, riprova i passi falliti, avvisa se qualcosa va storto, tiene un registro di ciò che è successo.
+
+<Log lines={["raccogli_vendite  ->  pulisci_dati  ->  calcola_totali  ->  pubblica_report", "se pulisci_dati fallisce: calcola_totali e pubblica_report NON partono, e arriva un avviso"]} caption="Un workflow in forma di schema. Esempio fittizio." />
+
+<Callout kind="regola">
+L'orchestratore non fa il lavoro dei dati: **decide quando e in che ordine** si fa, e che cosa accade se va male.
+</Callout>
+
+<Say who="assistente">È il direttore d'orchestra: non suona, ma dà l'attacco a ciascuno al momento giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ambienti separati">
+Un cambiamento non si prova mai dove lavorano tutti. Si usano **ambienti** separati:
+
+- **sviluppo**: dove si scrive e si sbaglia;
+- **prova** (o collaudo): dove si verifica con dati di test;
+- **produzione**: dove girano i lavori veri.
+
+Con dati di persone vere si fa attenzione: in sviluppo si usano dati fittizi o resi anonimi, per il GDPR.
+
+<Callout kind="attenzione">
+Provare «un attimo» in produzione è come provare un paracadute nuovo durante il primo salto vero.
+</Callout>
+
+Una introduzione video all'orchestrazione:
+
+<Video />
+
+<Say who="sensei">Sbagliare è normale. Sbagliare dove sbagliano tutti gli altri, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Infrastruttura come codice">
+Anche i server, gli archivi e i permessi si possono **descrivere in un file**, invece di cliccare nella console: è l'**infrastruttura come codice**. Esistono strumenti che leggono il file e creano ciò che descrive.
+
+Vantaggi:
+- si può **rifare uguale** un ambiente, in prova e in produzione;
+- ogni cambiamento resta scritto e **versionato**;
+- le modifiche si **rileggono** prima di applicarle.
+
+<Callout kind="trucco">
+Se per ricostruire il sistema serve «ricordarsi che cosa avevamo cliccato», allora il sistema non è sotto controllo.
+</Callout>
+
+<Say who="assistente">Una ricetta scritta dà sempre lo stesso piatto. Cucinare a occhio, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Versionare, testare, rilasciare">
+Anche la pipeline è codice, quindi si tratta come tale:
+
+1. **Versionare**: ogni modifica viene salvata con la sua storia (con uno strumento come Git), con una persona che la rilegge.
+2. **Testare**: controlli automatici su piccoli dati di esempio (le colonne ci sono? i totali tornano? nessun valore vuoto dove non deve?).
+3. **Rilasciare**: se i test passano, la modifica passa in produzione in modo ordinato; se qualcosa va storto, si torna alla versione precedente.
+
+<Callout kind="curiosita">
+Rilasciare spesso, a piccoli passi, è più sicuro che rilasciare ogni tre mesi un cambiamento enorme: se qualcosa si rompe, sai che cosa è stato.
+</Callout>
+
+<Say who="sensei">Test automatici, rilascio con possibilità di tornare indietro. Con queste due cose si dorme la notte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un passo di pulizia dei dati fallisce alle 05:40. Che cosa deve fare un buon workflow con i passi successivi, come il report delle 06:00?"
+  options={["Non partire e avvisare, perché dipendono dal passo fallito", "Partire lo stesso, tanto è l'orario previsto", "Partire e poi cancellare il report se i dati sono errati", "Ripartire da capo per sempre senza avvisare nessuno"]}
+  answer={0}
+  explain="Le dipendenze servono proprio a questo: se un passo da cui dipendi non è riuscito, non parti, e qualcuno viene avvisato. Un report su dati sbagliati è peggio di un report in ritardo."
+/>
+
+<Say who="assistente">Un report in ritardo si capisce. Un report sbagliato che nessuno sa di aver ricevuto, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su workflow, ambienti, infrastruttura come codice e rilascio.
+
+<Practice generator="d14-orchestrazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Ordine, prova, traccia. Così lavora chi vuole che i dati siano affidabili anche quando lui è in ferie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un orchestratore esegue i passi in base alle dipendenze, riprova, avvisa e tiene un registro.
+- Si usano ambienti separati (sviluppo, prova, produzione) e si descrive l'infrastruttura in file versionati.
+- La pipeline è codice: si versiona, si testa in automatico e si rilascia con possibilità di tornare indietro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una dipendenza in un workflow?", a: "Un passo che deve riuscire prima che un altro possa partire" },
+    { q: "Perché ambienti separati?", a: "Per sbagliare e provare senza toccare i dati veri" },
+    { q: "Che cos'è l'infrastruttura come codice?", a: "Descrivere server e archivi in file, così si rifanno uguali e restano tracciati" },
+    { q: "Che cosa serve per rilasciare in sicurezza?", a: "Test automatici e possibilità di tornare alla versione precedente" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del ramo: far andare tutto più veloce e spendere meno. Ma si misura prima di toccare.</Say>
+</Scene>

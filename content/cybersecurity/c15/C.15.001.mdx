@@ -1,0 +1,190 @@
+---
+id: C.15.001
+course: cybersecurity
+module: 15
+title: "La catena che regge il lucchetto"
+belt: blu
+duration_min: 10
+prerequisites: [C.02.007]
+objectives:
+  - "Descrivere come una catena di certificati (radice, intermedio, foglia) permette di fidarsi di un sito"
+  - "Spiegare perché i certificati scadono sempre più in fretta e perché conviene automatizzarne il rinnovo"
+  - "Leggere un errore di certificato (scaduto, nome sbagliato, catena incompleta) e capire da dove viene"
+video:
+  provider: youtube
+  id: "ZBTR_dgRG5A"
+  start: 0
+  end: 600
+  channel: "Fabrizio Antares (Majestic Man)"
+  title: "Tutorial Sicurezza Informatica 5. Che cosa sono i Certificati Digitali CA?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-pki
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il lucchetto nel browser voglia dire «il sito è onesto»: dice solo che il nome è garantito e la connessione è cifrata"
+  - "Dimenticare un certificato in scadenza perché il rinnovo è manuale: il sito si ferma di colpo"
+  - "Installare sul server solo il certificato del sito, senza il certificato intermedio, e ottenere errori su alcuni dispositivi"
+commands: []
+---
+
+<Scene title="Il sito che si ferma di venerdì">
+**Officine Bianchi**, azienda fittizia di ricambi, ha un portale per i clienti. Un venerdì mattina tutti i browser mostrano una pagina rossa: **«La connessione non è privata»**. Il portale è fermo, il telefono squilla.
+
+Il tecnico apre i dettagli. Una riga dice: *certificato scaduto ieri*. Nessuno si ricordava che quel certificato andava rinnovato a mano, una volta l'anno.
+
+La domanda del caso: **che cos'è davvero un certificato, chi lo garantisce, e come si evita che una scadenza fermi l'azienda?**
+
+<Say who="sensei">Nel modulo C2 hai visto il lucchetto. Qui apriamo la scatola: chi lo fabbrica, chi lo controlla, quando smette di valere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il certificato è un documento d'identità">
+Un **certificato digitale** è un piccolo file che lega due cose: un **nome** (per esempio `portale.officinebianchi.example`) e una **chiave pubblica**. Dice: «chi possiede la chiave privata corrispondente è davvero il titolare di questo nome».
+
+Chi lo garantisce? Una **CA**, *Certificate Authority*, cioè un'autorità di certificazione. La CA **firma** il certificato con la propria chiave privata. Il browser controlla quella firma.
+
+L'insieme di regole, autorità, software e procedure che fa funzionare tutto questo si chiama **PKI**, *Public Key Infrastructure*, infrastruttura a chiave pubblica.
+
+<Callout kind="regola">
+Certificato = nome + chiave pubblica + firma di una CA di cui ci si fida + date di validità.
+</Callout>
+
+<Say who="assistente">Pensa alla carta d'identità: foto e nome, il timbro del comune, una data di scadenza. Il certificato fa lo stesso per un sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La catena di fiducia">
+Il browser non può conoscere tutte le CA del mondo. Ne ha però un elenco di poche centinaia di cui si fida già: le **radici** (root), che stanno nell'archivio di fiducia del sistema.
+
+Una radice raramente firma direttamente i siti. Firma invece alcune **CA intermedie**, e sono queste a firmare i certificati dei siti, detti **foglia**. Si forma una **catena**:
+
+<Log lines={[
+  "Radice (nell'archivio del browser)",
+  "  └─ firma → CA intermedia",
+  "        └─ firma → certificato foglia: portale.officinebianchi.example",
+]} />
+
+Perché l'intermedio? Perché la chiave della radice è preziosissima: si tiene spenta e protetta, e si usa il meno possibile. Se un intermedio ha un problema, si revoca lui e la radice resta salva.
+
+<Callout kind="attenzione">
+Il server deve mandare al browser il certificato foglia **e** gli intermedi. Se manca un intermedio, alcuni dispositivi falliscono e altri no: è un guasto fastidioso, difficile da capire da fuori.
+</Callout>
+
+<Say who="sensei">Il browser risale la catena anello per anello, fino a una radice che conosce. Se un anello manca o è scaduto, la catena si rompe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa controlla il browser">
+Quando apri un sito, il browser verifica, in ordine:
+
+1. **La firma**: il certificato è firmato da una CA della catena?
+2. **Il nome**: il nome nel certificato (campo *SAN*, nomi alternativi) coincide con quello che hai digitato?
+3. **Le date**: oggi è dentro il periodo di validità?
+4. **La revoca**: il certificato è stato dichiarato non più valido prima della scadenza (per esempio per una chiave rubata)?
+
+Se uno dei controlli fallisce, compare l'errore. Il testo dell'errore ti dice quale.
+
+Vuoi sentire la spiegazione da un'altra voce? Parla di che cosa sono i certificati e le CA, in italiano:
+
+<Video />
+
+<Callout kind="curiosita">
+La revoca è la parte più fragile: dipende da liste (CRL) o da servizi online (OCSP) che il browser deve poter consultare. Per questo la strada più solida, oggi, è tenere i certificati **di breve durata** e rinnovarli spesso.
+</Callout>
+
+<Say who="assistente">Un indizio utile: «nome non corrispondente» e «scaduto» sono errori diversi, con rimedi diversi. Leggi sempre la riga dell'errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un cliente vede «certificato non valido» solo dal telefono, mentre dal computer il sito funziona. Il certificato del sito è corretto e non scaduto. Quale causa è la più probabile?"
+  options={[
+    "Il server non invia il certificato intermedio e il telefono non lo ha già in memoria",
+    "La chiave privata del sito è stata rubata dal telefono",
+    "Il telefono non usa la crittografia asimmetrica",
+    "La radice della catena è scaduta ieri per tutti gli utenti",
+  ]}
+  answer={0}
+  explain="Alcuni dispositivi sanno recuperare da soli gli intermedi mancanti, altri no: per questo l'errore compare a macchia di leopardo. La soluzione è configurare il server perché mandi la catena completa. Se fosse scaduta la radice, o rubata la chiave, il problema sarebbe per tutti."
+/>
+
+<Say who="assistente">Se il guasto riguarda solo alcuni dispositivi, pensa a qualcosa che alcuni hanno già in memoria e altri no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché durano sempre meno">
+Una volta un certificato valeva anche anni. Ma più dura, più a lungo può essere usato da chi ne ruba la chiave. Il settore ha deciso di accorciare le durate.
+
+Per i certificati dei siti pubblici (in sintesi, ottobre 2026) il limite massimo è **200 giorni**. Le regole dell'organismo che le decide (il CA/Browser Forum) lo portano a **100 giorni** nel 2027 e a **47 giorni** nel 2029. Controlla sempre le date aggiornate prima di pianificare.
+
+Rinnovare a mano ogni pochi mesi non regge. La risposta è l'**automazione**: un protocollo chiamato **ACME** permette al server di chiedere e installare da solo un nuovo certificato. Un servizio gratuito che lo usa è **Let's Encrypt**.
+
+<Callout kind="regola">
+Il rinnovo manuale è un guasto che aspetta di accadere. Si automatizza, si **monitora la scadenza** con un allarme (per esempio 21 giorni prima) e si tiene un inventario di tutti i certificati.
+</Callout>
+
+<Say who="sensei">Il tecnico di Officine Bianchi non ha sbagliato per cattiveria. Ha dipinto un calendario sulla memoria di una persona. Non si fa.</Say>
+
+Rimettiamo in ordine il portale di Officine Bianchi. Ecco come ragiona chi progetta bene il rinnovo.
+
+<Guided
+  steps={[
+    "Inventario: si elencano tutti i certificati dell'azienda (portale, posta, VPN, strumenti interni). Un certificato che non è in elenco è un certificato che scadrà senza che nessuno lo sappia.",
+    "Automazione: sul server si attiva un client ACME, che chiede il rinnovo da solo quando mancano circa due terzi della vita del certificato.",
+    "Chiave nuova: a ogni rinnovo conviene generare anche una coppia di chiavi nuova. La chiave privata resta sul server, leggibile solo dal servizio che la usa.",
+    "Controllo: un allarme avvisa se il certificato attivo scade fra meno di 21 giorni, cioè se l'automazione si è inceppata.",
+    "Prova: dopo ogni cambio si apre il sito da più dispositivi e si controlli che la catena sia completa.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un certificato di prova o interno, firmato da una CA aziendale, si usa solo per sistemi dell'azienda. Per i siti pubblici serve una CA pubblica. E la chiave privata non si manda mai per email né si copia in chat.
+</Callout>
+
+<Say who="sensei">Un buon sistema di certificati è noioso: si rinnova da solo e nessuno se ne accorge. Noioso è il complimento più alto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su catene, errori e scadenze: scegli la lettura giusta.
+
+<Practice generator="c15-pki" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa leggere un errore di certificato risolve in dieci minuti ciò che altri cercano per un giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un certificato lega un nome a una chiave pubblica e porta la firma di una CA; la fiducia risale una catena fino a una radice nota al browser.
+- Il browser controlla firma, nome, date e revoca; il server deve mandare anche gli intermedi.
+- Le durate scendono (200 giorni oggi, in sintesi): rinnovo automatico con ACME, inventario e allarme di scadenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una CA?", a: "Un'autorità che firma i certificati e garantisce il legame tra nome e chiave pubblica" },
+    { q: "Qual è l'ordine di una catena di certificati?", a: "Radice, uno o più intermedi, certificato foglia del sito" },
+    { q: "Che cosa fa ACME?", a: "Permette al server di chiedere e rinnovare i certificati in automatico" },
+    { q: "Il lucchetto dice che il sito è onesto?", a: "No: dice che il nome è garantito e che la connessione è cifrata" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il certificato c'è, ma il server lo usa bene? Vediamo come si configura TLS.</Say>
+</Scene>

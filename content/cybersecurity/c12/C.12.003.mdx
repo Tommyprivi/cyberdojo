@@ -1,0 +1,175 @@
+---
+id: C.12.003
+course: cybersecurity
+module: 12
+title: "AppArmor e SELinux: il guinzaglio dei programmi"
+belt: blu
+duration_min: 10
+prerequisites: [C.12.002]
+objectives:
+  - "Spiegare la differenza tra controllo discrezionale (permessi) e obbligatorio (MAC)"
+  - "Distinguere AppArmor (profili per percorso) da SELinux (etichette) e le loro modalità"
+  - "Reagire a un blocco del MAC leggendo il log, senza disattivare la protezione"
+video:
+  provider: youtube
+  id: "8lGK80UYeSY"
+  start: 0
+  end: 600
+  channel: "CodeLucky"
+  title: "Mandatory Access Control (MAC): SELinux & AppArmor Explained for Beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-mac
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Disattivare SELinux o AppArmor appena un'applicazione non funziona"
+  - "Credere che root possa sempre tutto: con il MAC anche un processo root può essere limitato"
+  - "Pensare che il MAC sostituisca i permessi e gli aggiornamenti: è uno strato in più, non un'alternativa"
+commands: [aa-status, getenforce, setenforce, ausearch]
+---
+
+<Scene title="Il sito compromesso che legge tutto">
+Un sito web della «Neri Editore» ha un difetto in un modulo: un malintenzionato riesce a far leggere al programma web file che non dovrebbe. Il programma gira come utente normale, ma sul server ci sono file sensibili leggibili da molti.
+
+<Log lines={[
+  "$ ls -l /etc/shadow /var/www/html/index.php /home/redazione/budget.xlsx",
+  "-rw-r----- 1 root shadow  1190 ... /etc/shadow",
+  "-rw-r--r-- 1 root root    2048 ... /var/www/html/index.php",
+  "-rw-r--r-- 1 redazione redazione 51200 ... /home/redazione/budget.xlsx",
+]} caption="Il budget è leggibile da tutti: anche dal programma web." />
+
+La domanda del caso: **come si impedisce al programma web di leggere il budget, anche se i permessi classici lo permettono?**
+
+<Say who="sensei">I permessi dicono «chi» può. Non dicono «che cosa dovrebbe fare questo programma». Il sito web non ha bisogno del budget. Punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Discrezionale e obbligatorio">
+I permessi che hai studiato (rwx, ACL) sono **discrezionali** (DAC): li decide il proprietario del file, e l'utente root li scavalca.
+
+Esiste un secondo strato, **obbligatorio** (MAC, *Mandatory Access Control*): regole decise **dall'amministratore e dal sistema**, che valgono per tutti, anche per un processo che gira come root. Ogni programma ha un ambito preciso e il kernel lo fa rispettare.
+
+<Callout kind="regola">
+I due strati si **sommano**: un'azione passa solo se la permettono sia i permessi classici sia il MAC. Se un programma viene compromesso, il MAC limita i danni.
+</Callout>
+
+Su Linux i due sistemi più diffusi sono **AppArmor** (di default su Ubuntu, Debian e SUSE) e **SELinux** (di default su Red Hat, Fedora, Rocky e AlmaLinux). Non si usano insieme sulla stessa macchina: uno o l'altro.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese, attiva i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Pensa a un guinzaglio: il cane (il programma) corre dove vuole, ma solo fin dove arriva la corda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="AppArmor: un profilo per programma">
+AppArmor ragiona per **percorsi**: ogni programma ha un **profilo**, un file che elenca cosa può leggere, scrivere o eseguire.
+
+<Log lines={[
+  "/usr/sbin/nginx {",
+  "  /etc/nginx/** r,",
+  "  /var/www/** r,",
+  "  /var/log/nginx/* w,",
+  "}",
+]} caption="Forma semplificata: percorsi e permessi. Tutto ciò che non è scritto è vietato." />
+
+Con questo profilo il server web **non può** aprire `/home/redazione/budget.xlsx`, anche se i permessi classici lo permetterebbero. Caso risolto.
+
+Due modalità:
+
+- **enforce**: le regole vengono applicate e le violazioni bloccate;
+- **complain**: le violazioni vengono **solo registrate**, utile per capire cosa serve a un programma nuovo.
+
+Lo stato si controlla con `sudo aa-status`.
+
+<Say who="sensei">Il profilo è una lista di ciò che è permesso. Il resto è vietato. È il principio del minimo privilegio, applicato al programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="SELinux: tutto ha un'etichetta">
+SELinux ragiona per **etichette**: ogni processo ha un **dominio** (per esempio `httpd_t`), ogni file un **tipo** (per esempio `httpd_sys_content_t`). Le regole dicono quali domini possono toccare quali tipi.
+
+<Log lines={[
+  "$ ls -Z /var/www/html/index.html /home/redazione/budget.xlsx",
+  "system_u:object_r:httpd_sys_content_t  /var/www/html/index.html",
+  "unconfined_u:object_r:user_home_t      /home/redazione/budget.xlsx",
+]} caption="Il dominio del web server può leggere httpd_sys_content_t, non user_home_t." />
+
+Tre modalità, che si leggono con `getenforce`:
+
+- **Enforcing**: le regole sono applicate;
+- **Permissive**: le violazioni vengono solo registrate;
+- **Disabled**: spento.
+
+<Callout kind="attenzione">
+Quando un'applicazione non parte, il consiglio da forum «disattiva SELinux» è sbagliato. La strada giusta: passare **un attimo** a permissive o complain, leggere cosa viene negato nel log, e correggere l'etichetta o il profilo. Poi tornare in enforce.
+</Callout>
+
+<Say who="assistente">Etichette o percorsi: due modi diversi di fare la stessa cosa, tenere ogni programma nel suo recinto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il responsabile IT sposta il sito di Neri Editore in una nuova cartella, `/srv/sito`. Il sito smette di funzionare e nel log compare una riga di «denied».
+
+<Log lines={[
+  "apparmor=\"DENIED\" operation=\"open\" profile=\"/usr/sbin/nginx\" name=\"/srv/sito/index.html\" requested_mask=\"r\"",
+]} caption="Il MAC ha bloccato la lettura dei file nella nuova cartella." />
+
+<Quiz
+  question="Che cosa è corretto fare in questa situazione?"
+  options={[
+    "Aggiungere al profilo nginx la lettura di /srv/sito, provare e poi lasciare il profilo in enforce",
+    "Disattivare AppArmor per tutto il server",
+    "Dare permessi 777 a /srv/sito",
+    "Riavviare il server finché il problema passa",
+  ]}
+  answer={0}
+  explain="Il log dice esattamente cosa è stato negato: il profilo va aggiornato con quel percorso. Disattivare il MAC toglie la protezione a tutti i servizi, 777 non c'entra (non è un problema di permessi classici), e riavviare non cambia le regole."
+/>
+
+<Say who="sensei">Il blocco non è un nemico. È un messaggio che ti dice che cosa il sistema ha impedito. Impara a leggerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su MAC, AppArmor e SELinux: ragiona su cosa serve al programma e su cosa dice il log.
+
+<Practice generator="c12-mac" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il guinzaglio ora lo sai tenere. Non ti basta più vedere i permessi: devi vedere anche i programmi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Permessi classici (DAC) e MAC si sommano: il MAC limita ciò che un programma può fare anche se è root o se i permessi lo permettono.
+- AppArmor usa profili per percorso (enforce e complain); SELinux usa etichette di dominio e tipo (enforcing, permissive, disabled).
+- Se il MAC blocca qualcosa, si legge il log e si corregge il profilo o l'etichetta: non si disattiva la protezione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra DAC e MAC?", a: "DAC lo decide il proprietario del file; il MAC lo impone il sistema, per tutti" },
+    { q: "Su quali famiglie si trova AppArmor e su quali SELinux?", a: "AppArmor su Ubuntu, Debian, SUSE; SELinux su Red Hat, Fedora, Rocky, AlmaLinux" },
+    { q: "Che cosa fa la modalità complain (o permissive)?", a: "Registra le violazioni senza bloccarle, per capire cosa serve al programma" },
+    { q: "Come si reagisce a un blocco del MAC?", a: "Si legge il log e si corregge profilo o etichetta, senza spegnere il MAC" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: auditd. Se qualcosa accade sul server, lo sapremo, e lo sapremo con precisione.</Say>
+</Scene>

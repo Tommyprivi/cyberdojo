@@ -1,0 +1,176 @@
+---
+id: F.03.008
+course: fondamenta
+module: 3
+title: "Il registro del sistema"
+belt: gialla
+duration_min: 9
+prerequisites: [F.03.007]
+objectives:
+  - "Trovare i log in /var/log e leggerli con head, tail e journalctl"
+  - "Leggere le prime righe di auth.log e riconoscere un accesso fallito"
+  - "Collegare i log di Linux al lavoro di analisi del corso Cybersecurity"
+video:
+  provider: youtube
+  id: "0dG3vUYt7Uk"
+  start: 0
+  end: 600
+  channel: "Learn Linux TV"
+  title: "journalctl Basics: How to Easily Check Your Linux Logs"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-registro
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aprire un file di log enorme con cat invece di guardarne solo le prime o ultime righe"
+  - "Leggere una sola riga di log senza guardare quelle intorno"
+  - "Pensare che un accesso fallito isolato sia un attacco: conta il ripetersi"
+commands: []
+---
+
+<Scene title="Cosa è successo stanotte?">
+Stamattina Marta controlla il server dei dati. Tutto funziona, ma qualcuno nota che la porta 22 è stata molto «viva» durante la notte.
+
+Un computer non ha memoria nostra, ma tiene **un diario**. Ogni accesso, ogni errore, ogni sudo: Linux scrive tutto. La domanda del caso: **dove sta quel diario, e come si legge?**
+
+<Say who="sensei">Un analista non indovina. Apre il registro e legge. Cominciamo dal posto giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La cartella /var/log">
+I registri, in inglese **log**, stanno quasi tutti nella cartella `/var/log`.
+
+<Log lines={[
+  "studente@lab:~$ ls /var/log",
+  "alternatives.log  apt  auth.log  boot.log  dpkg.log  journal  syslog",
+]} caption="Elenco semplificato. Ogni file ha un tema." />
+
+I più utili per cominciare:
+
+- `auth.log`: accessi, tentativi falliti, uso di sudo
+- `syslog`: messaggi generali del sistema
+- `apt/`: cosa è stato installato o aggiornato
+
+<Callout kind="curiosita">
+Molti file di log sono leggibili solo da root: servono `sudo`, e per il principio del privilegio minimo si usa solo per quel comando di lettura.
+</Callout>
+
+<Say who="assistente">auth.log è il file da cui parte quasi ogni indagine sugli accessi. Memorizza il nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere senza annegare">
+Un log può avere **migliaia** di righe. Non si apre tutto con `cat`: si guardano le **prime** o le **ultime**.
+
+- `head -n 10 file`: le prime 10 righe
+- `tail -n 10 file`: le ultime 10
+- `tail -f file`: segue il file **in diretta**, mostrando le righe nuove appena arrivano (si esce con Ctrl+C)
+
+<Log lines={[
+  "studente@lab:~$ sudo tail -n 4 /var/log/auth.log",
+  "Oct 12 02:11:07 server sshd[2310]: Failed password for ale from 203.0.113.9 port 51022 ssh2",
+  "Oct 12 02:11:09 server sshd[2312]: Failed password for ale from 203.0.113.9 port 51024 ssh2",
+  "Oct 12 02:11:12 server sshd[2315]: Failed password for ale from 203.0.113.9 port 51027 ssh2",
+  "Oct 12 02:14:30 server sshd[2399]: Accepted password for marta from 192.168.1.20 port 40112 ssh2",
+]} caption="Le ultime righe di auth.log. L'indirizzo 203.0.113.9 è riservato alla documentazione, quindi non è un computer vero." />
+
+<Say who="sensei">Le ultime righe dicono cosa è successo di recente. Le prime, com'era cominciata la giornata. Scegli in base alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una riga, parola per parola">
+Prendiamo la prima riga e leggiamola a pezzi:
+
+<Guided
+  steps={[
+    "Oct 12 02:11:07: quando è successo, data e ora precise. Serve a mettere in ordine gli eventi.",
+    "server sshd[2310]: chi ha scritto la riga. sshd è il servizio degli accessi remoti, 2310 è il suo PID.",
+    "Failed password for ale: qualcuno ha provato a entrare come utente ale, e la password era sbagliata.",
+    "from 203.0.113.9 port 51022: l'indirizzo da cui è arrivato il tentativo.",
+    "Tre tentativi falliti per ale in cinque secondi dallo stesso indirizzo, poi un accesso riuscito di marta da un indirizzo interno: ale è stato provato a ripetizione, marta è entrata normalmente.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un solo `Failed password` non è un attacco: capita a tutti di sbagliare. Un attacco si riconosce dal **ripetersi**: molti tentativi, in poco tempo, dallo stesso indirizzo.
+</Callout>
+
+<Say who="assistente">Tre cose sempre: quando, chi, da dove. Con quelle tre ricostruisci quasi tutta la storia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="journalctl">
+Molte distribuzioni moderne raccolgono i log anche in un **giornale** gestito da systemd. Si legge con `journalctl`.
+
+<Log lines={[
+  "studente@lab:~$ sudo journalctl -u ssh -n 3",
+  "Oct 12 02:11:12 server sshd[2315]: Failed password for ale from 203.0.113.9",
+  "Oct 12 02:14:30 server sshd[2399]: Accepted password for marta from 192.168.1.20",
+  "Oct 12 02:14:30 server systemd[1]: Started session 41 of user marta.",
+]} caption="-u ssh mostra solo i messaggi del servizio ssh; -n 3 limita a tre righe." />
+
+<Video />
+
+<Say who="sensei">Due strade, stessa informazione: i file in /var/log o il giornale di systemd. Impara a usarle entrambe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il collegamento con la cybersecurity">
+Chi difende un sistema vive di log. Nel corso **Cybersecurity** ritroverai tutto questo: rilevare accessi sospetti, ricostruire un incidente, capire cosa ha fatto un attaccante.
+
+<Callout kind="regola">
+I log servono a **ricostruire** cosa è successo e quando. Per questo un attaccante cerca di cancellarli: se spariscono, sparisce la storia. Anche per questo i log importanti si copiano su un altro computer.
+</Callout>
+
+<Quiz
+  question="In auth.log vedi decine di Failed password per lo stesso utente, dallo stesso indirizzo, in un minuto. Cosa suggerisce?"
+  options={["Un tentativo di indovinare la password con prove ripetute", "Una normale attività di backup", "Un aggiornamento dei pacchetti", "Un guasto del disco"]}
+  answer={0}
+  explain="Tanti fallimenti ravvicinati, stesso utente e stesso indirizzo: è il modello di un tentativo ripetuto di indovinare la password. Un errore singolo, invece, è normale."
+/>
+
+<Say who="sensei">Si prova solo ciò che è tuo. Qui i log sono quelli del nostro laboratorio, e li leggi per difenderlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su /var/log, auth.log, head, tail e journalctl. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-registro" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi legge bene i log sa cosa è successo anche quando nessuno lo ha visto accadere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I log stanno in /var/log (auth.log per gli accessi, syslog per il sistema) e nel giornale di systemd (journalctl).
+- Si leggono a pezzi: head per le prime righe, tail per le ultime, tail -f per seguirli in diretta.
+- Una riga dice quando, chi e da dove. Un attacco si riconosce dal ripetersi, non da un singolo errore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si trovano di solito i log di sistema?", a: "In /var/log" },
+    { q: "Quale file registra accessi e uso di sudo?", a: "/var/log/auth.log" },
+    { q: "Cosa fa tail -f?", a: "Segue il file in diretta, mostrando le nuove righe" },
+    { q: "Cosa suggeriscono molti Failed password ravvicinati?", a: "Un tentativo ripetuto di indovinare la password" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso: sai chi sei, cosa puoi fare, cosa gira e cosa è successo. Prossimo modulo, Linux 3: pipe, grep e script, per far lavorare il terminale al posto tuo.</Say>
+</Scene>

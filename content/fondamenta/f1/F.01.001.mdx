@@ -1,0 +1,158 @@
+---
+id: F.01.001
+course: fondamenta
+module: 1
+title: "Dentro il computer"
+belt: bianca
+duration_min: 8
+prerequisites: []
+objectives:
+  - "Dire che cosa fanno CPU, RAM, disco e scheda madre"
+  - "Spiegare perché un file non salvato sparisce allo spegnimento"
+video:
+  provider: youtube
+  id: "QFopGI2qcB8"
+  start: 0
+  end: 226
+  channel: "Edulia dal sapere Treccani"
+  title: "Come è fatto un pc"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-hardware
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere RAM e disco: la RAM è la scrivania, il disco è l'armadio"
+  - "Pensare che più RAM voglia dire più spazio per i file"
+  - "Credere che la CPU lavori direttamente sul disco"
+commands: []
+---
+
+<Scene title="Il primo giorno nel dojo">
+Benvenuto. Prima di imparare a difendere un computer, bisogna sapere **com'è fatto**: un medico non cura un corpo che non conosce.
+
+Prova a immaginare questo caso. Un collega scrive una relazione di dieci pagine. Va via la luce. Il computer si spegne. Al ritorno, **l'ultima ora di lavoro è sparita**. Le vecchie foto, invece, sono tutte lì.
+
+<Callout kind="attenzione">
+La domanda del caso: **perché una parte è scomparsa e l'altra no?** La risposta sta nei pezzi che vedremo adesso.
+</Callout>
+
+<Say who="sensei">Un computer non è una scatola magica. Sono pochi pezzi, ognuno con un compito. Li conoscerai tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La CPU: il cuoco">
+La **CPU** (unità centrale di elaborazione) è il **processore**. Esegue le istruzioni dei programmi, una dopo l'altra, a una velocità enorme: miliardi di operazioni al secondo.
+
+Pensa a un **cuoco** velocissimo. Non conserva gli ingredienti: li prende, li lavora, li rimette giù.
+
+<Callout kind="regola">
+La CPU **calcola e decide**. Non è un posto dove si tengono i file.
+</Callout>
+
+<Say who="assistente">Quando il computer «pensa», in realtà sta facendo moltissimi piccoli calcoli. Niente di più, niente di meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La RAM: la scrivania">
+La **RAM** è la memoria di lavoro. Ci finisce tutto ciò che stai usando **in questo momento**: il programma aperto, il documento che stai scrivendo.
+
+È come il **piano della scrivania**: veloce da raggiungere, ma **piccolo**. E soprattutto **si svuota quando manca la corrente**.
+
+<Callout kind="trucco">
+RAM = scrivania. Veloce, limitata, **temporanea**.
+</Callout>
+
+<Say who="sensei">Ecco la risposta al caso. La relazione non salvata viveva sulla scrivania. Quando la luce è andata via, la scrivania è stata spazzata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il disco: l'armadio">
+Il **disco** conserva i dati **anche a computer spento**. Può essere un **SSD** (veloce, senza parti in movimento) o un **disco rigido** (con un piatto che gira, più lento ed economico).
+
+È come l'**armadio d'archivio**: molto capiente e duraturo, ma servono più tempo e fatica per prendere le cose.
+
+<Callout kind="attenzione">
+Salvare un file significa **copiarlo dalla RAM al disco**. Se non salvi, resta solo sulla scrivania.
+</Callout>
+
+<Say who="assistente">Per questo le vecchie foto erano ancora lì: stavano già nell'armadio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La scheda madre e tutto insieme">
+La **scheda madre** è la grande scheda a cui tutto si collega: CPU, RAM, disco, porte USB. Non calcola e non archivia. **Fa comunicare** i pezzi tra loro, come le strade di una città.
+
+<Guided
+  steps={[
+    "Apri un documento: il file viene copiato dal disco alla RAM.",
+    "La CPU lavora sui dati che trova nella RAM e li modifica.",
+    "Tu premi «Salva»: i dati tornano dalla RAM al disco.",
+    "La scheda madre trasporta tutto questo avanti e indietro.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Se la RAM è piena, il sistema usa il disco come ripiego. Funziona, ma è **molto più lento**: ecco perché un computer con troppe schede aperte «si siede».
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di quattro minuti:
+
+<Video />
+
+<Say who="sensei">Quattro pezzi, quattro compiti. Se li sai dire senza guardare, hai finito la prima parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai 40 schede aperte, il computer è lentissimo e la RAM è quasi tutta occupata. Quale spiegazione è giusta?"
+  options={["Il sistema deve usare il disco come ripiego, che è molto più lento della RAM", "La CPU ha perso la memoria dei calcoli", "La scheda madre si è consumata", "Il disco ha cancellato i file"]}
+  answer={0}
+  explain="Quando la scrivania (RAM) è piena, il sistema appoggia i dati sull'armadio (disco), molto più lento. La CPU e la scheda madre non c'entrano: chi risponde «la CPU ha perso la memoria» confonde chi calcola con chi ricorda."
+/>
+
+<Say who="assistente">Chiediti sempre: chi calcola? chi tiene i dati adesso? chi li tiene per sempre? Sono tre pezzi diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui pezzi del computer. Devi rispondere giusto a **tutte e cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-hardware" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi confonde RAM e disco perde un'ora di lavoro. Qui ti alleni prima che succeda davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La CPU calcola, la RAM tiene ciò che usi adesso (e si svuota allo spegnimento), il disco conserva per sempre.
+- Salvare vuol dire copiare i dati dalla RAM al disco.
+- La scheda madre collega tutti i pezzi e li fa parlare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa la CPU?", a: "Esegue le istruzioni dei programmi: calcola e decide" },
+    { q: "Perché un file non salvato sparisce con il blackout?", a: "Era nella RAM, che si svuota senza corrente" },
+    { q: "RAM e disco: quale conserva a computer spento?", a: "Il disco" },
+    { q: "A che cosa serve la scheda madre?", a: "Collega tutti i componenti e li fa comunicare" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come ragiona il computer. Tutto, dentro, è fatto di due soli simboli.</Say>
+</Scene>

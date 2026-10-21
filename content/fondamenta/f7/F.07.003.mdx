@@ -1,0 +1,164 @@
+---
+id: F.07.003
+course: fondamenta
+module: 7
+title: "Le porte e i servizi"
+belt: arancione
+duration_min: 8
+prerequisites: [F.07.002]
+objectives:
+  - "Associare le porte note (22, 25, 53, 80, 443, 3389) al loro servizio"
+  - "Spiegare che cosa sono un servizio in ascolto e un socket"
+  - "Capire che cosa vede chi osserva la rete dall'esterno, e perché meno porte aperte è meglio"
+video:
+  provider: youtube
+  id: "wWz95zvDNmY"
+  start: 0
+  end: 294
+  channel: "Informaticaso"
+  title: "Porte di rete in 5 minuti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-porte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Una porta non è un connettore fisico: è un numero che indica un servizio"
+  - "Porta aperta non vuol dire «hackerata»: vuol dire che un servizio ascolta"
+  - "Un servizio può girare su una porta non standard: il numero è una convenzione, non una legge"
+commands: []
+---
+
+<Scene title="L'elenco delle porte aperte">
+Il responsabile dell'azienda chiede al SOC: «Se qualcuno guardasse il nostro server da Internet, che cosa vedrebbe?»
+
+Il tuo collega ti porge un rapporto dell'**ultimo controllo interno**, fatto sulla nostra macchina di prova:
+
+<Log lines={[
+  "porta 22    aperta   servizio: accesso remoto (SSH)",
+  "porta 80    aperta   servizio: web in chiaro",
+  "porta 443   aperta   servizio: web sicuro",
+  "porta 3389  aperta   servizio: desktop remoto"
+]} caption="Controllo fittizio sul server di prova, in un laboratorio nostro." />
+
+<Say who="sensei">Quattro porte aperte. Ne servono davvero quattro? Questa è la domanda di un difensore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un palazzo con tanti citofoni">
+L'indirizzo IP è l'indirizzo del **palazzo**. La **porta** è il **citofono**: dice a quale appartamento, cioè a quale servizio, vuoi parlare.
+
+Le porte sono numeri da **0 a 65535**. Quelle basse sono assegnate per convenzione ai servizi più comuni:
+
+- **22**: accesso remoto sicuro (SSH)
+- **25**: invio di posta tra server (SMTP)
+- **53**: DNS, i nomi dei siti
+- **80**: web in chiaro (HTTP)
+- **443**: web cifrato (HTTPS)
+- **3389**: desktop remoto di Windows (RDP)
+
+<Callout kind="regola">
+IP = quale **macchina**. Porta = quale **servizio** su quella macchina.
+</Callout>
+
+<Say who="assistente">Se il palazzo ha troppi citofoni inutili, ogni citofono in più è un possibile disturbo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ascolto e socket">
+Un servizio è **in ascolto** (in inglese «listening») quando un programma ha detto al sistema: «Se qualcuno bussa alla porta 443, passamelo».
+
+Una connessione attiva si descrive con una coppia **indirizzo + porta** per ciascun lato. Questa coppia si chiama **socket**.
+
+- Il server ascolta su un socket fisso: per esempio `10.0.0.5:443`.
+- Il client usa una porta **temporanea** a caso, per esempio `10.0.0.8:51532`.
+
+Se nessun programma ascolta su una porta, la porta è **chiusa**: chi bussa riceve un rifiuto.
+
+<Callout kind="curiosita">
+Il numero della porta è una convenzione. Un amministratore può far girare il web sulla 8080, o l'accesso remoto su una porta strana. Per questo il numero aiuta a **intuire**, ma non prova che servizio ci sia dietro.
+</Callout>
+
+Un'altra voce, in cinque minuti:
+
+<Video />
+
+<Say who="sensei">Citofono fisso per il servizio, citofono temporaneo per chi chiama. Due socket, una connessione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa vede chi guarda da fuori">
+Esiste un modo di controllare quali porte di una macchina rispondono: la **scansione delle porte**. Per un difensore è uno strumento di controllo sui propri sistemi: fa vedere «ciò che vede chi guarda dall'esterno».
+
+Il risultato ha tre possibilità:
+
+- **aperta**: un servizio ascolta e risponde;
+- **chiusa**: la macchina risponde che qui non c'è nessuno;
+- **filtrata**: non risponde nessuno, spesso perché un filtro (il firewall) scarta la richiesta.
+
+<Callout kind="attenzione">
+Scansionare sistemi che non sono tuoi, o per cui non hai un permesso scritto, può essere reato: in Italia è l'accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si controlla solo ciò che è tuo, in un laboratorio tuo.
+</Callout>
+
+<Say who="sensei">Il difensore si chiede: «Che cosa mostro al mondo?». E poi chiude ciò che non serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torna all'elenco della prima schermata. Il server serve solo il sito aziendale, e gli amministratori lavorano dalla sede.
+
+<Quiz
+  question="Nel rapporto compaiono aperte le porte 22, 80, 443 e 3389. Il server serve solo un sito web. Che cosa farebbe un difensore?"
+  options={[
+    "Chiuderebbe o filtrerebbe 3389 e restringerebbe 22 a chi ne ha bisogno, tenendo 80 e 443 per il sito",
+    "Chiuderebbe 80 e 443, perché il web è la porta più esposta",
+    "Non farebbe nulla: una porta aperta non è mai un problema",
+    "Cambierebbe l'indirizzo IP del server per nascondere le porte"
+  ]}
+  answer={0}
+  explain="Il sito web ha bisogno di 80 e 443; l'accesso amministrativo (22, 3389) va limitato a chi serve, o chiuso. Meno porte esposte significa meno punti da difendere. Chiudere 80 e 443 spegnerebbe il sito, e cambiare l'IP non chiude nessun servizio."
+/>
+
+<Say who="assistente">Regola semplice: se un servizio non serve a chi guarda da fuori, non deve essere visibile da fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Porte, servizi e righe del rapporto da interpretare. Hai 3 tentativi.
+
+<Practice generator="f07-porte" pass="5/5" retries={3} />
+
+<Say who="sensei">Sei numeri da conoscere. Il resto lo trovi in una tabella: l'importante è saper ragionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IP indica la macchina, la porta indica il servizio. Le porte vanno da 0 a 65535.
+- Porte note: 22 SSH, 25 posta, 53 DNS, 80 HTTP, 443 HTTPS, 3389 desktop remoto.
+- Un socket è indirizzo più porta. Meno porte esposte all'esterno vuol dire meno superficie da difendere.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che porta usa il web cifrato?", a: "La 443 (HTTPS)" },
+    { q: "Che cos'è un socket?", a: "Una coppia indirizzo IP + porta" },
+    { q: "Una porta «filtrata» che cosa indica?", a: "Che nessuno risponde, spesso perché un firewall scarta la richiesta" },
+    { q: "Perché si controllano le proprie porte aperte?", a: "Per sapere che cosa vede chi guarda da fuori e chiudere ciò che non serve" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il DNS. La rubrica che trasforma i nomi in numeri, e senza la quale Internet non si usa.</Say>
+</Scene>

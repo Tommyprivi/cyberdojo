@@ -1,0 +1,159 @@
+---
+id: D.06.008
+course: dati
+module: 6
+title: "Errori di tipo I e II"
+belt: arancione
+duration_min: 10
+prerequisites: [D.06.007]
+objectives:
+  - "Distinguere falsi positivi (tipo I) e falsi negativi (tipo II)"
+  - "Spiegare che cos'è la potenza e che cosa la fa aumentare"
+  - "Distinguere significatività statistica e importanza pratica"
+video:
+  provider: youtube
+  id: "Rsc5znwR5FA"
+  start: 0
+  end: 499
+  channel: "StatQuest with Josh Starmer"
+  title: "Statistical Power, Clearly Explained!!!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-errori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere errore di tipo I e di tipo II"
+  - "Credere che un risultato significativo sia anche importante"
+  - "Concludere «nessun effetto» da un test con pochi dati e poca potenza"
+commands: []
+---
+
+<Scene title="L'allarme antifurto">
+L'antifurto di un negozio può sbagliare in **due modi**.
+
+- Suona anche se **non c'è nessun ladro**: falso allarme.
+- **Non suona** anche se il ladro è dentro: furto non scoperto.
+
+Quale errore è peggiore? Dipende. Ma si possono **evitare entrambi del tutto**? No: se lo rendi molto sensibile aumentano i falsi allarmi, se lo rendi meno sensibile aumentano i furti non scoperti.
+
+La domanda del caso: **come si chiamano questi due errori nei test statistici, e come si tengono sotto controllo?**
+
+<Say who="sensei">Ogni decisione sotto incertezza può sbagliare in due direzioni. Un buon analista le conosce entrambe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tipo I e tipo II">
+Nel linguaggio dei test, con H0 = «nessun effetto», «nessun ladro», «persona sana»:
+
+| | H0 vera | H0 falsa |
+| --- | --- | --- |
+| Rifiuto H0 | **Errore di tipo I** (falso positivo) | Decisione giusta |
+| Non rifiuto H0 | Decisione giusta | **Errore di tipo II** (falso negativo) |
+
+- **Tipo I**: dichiaro un effetto che non c'è. Il suo rischio è la soglia **α** (di solito 0,05).
+- **Tipo II**: non vedo un effetto che c'è. Il suo rischio si chiama **β**.
+
+<Callout kind="trucco">
+Falso allarme = **tipo I**. Allarme che non suona = **tipo II**. Nei test medici, H0 è «sano»: dire «malato» a un sano è il tipo I, dire «sano» a un malato è il tipo II.
+</Callout>
+
+<Say who="assistente">Primo tipo: gridi al lupo. Secondo tipo: il lupo c'è e non lo vedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La potenza">
+La **potenza** di un test è la probabilità di **vedere un effetto che esiste davvero**:
+
+**potenza = 1 - β**
+
+Se β = 0,2, la potenza è **0,8**: se l'effetto c'è, il test lo trova nell'80% dei casi. Valori vicini a 0,8 sono una scelta comune di partenza.
+
+La potenza **aumenta** se:
+- il **campione è più grande**;
+- i dati sono **meno variabili**;
+- l'effetto da trovare è **più grande**;
+- la soglia α è meno severa (ma questo alza il rischio di tipo I).
+
+<Callout kind="attenzione">
+Abbassare α da 0,05 a 0,01 riduce i falsi allarmi ma, a parità di campione, **aumenta** gli errori di tipo II. Un compromesso, non un regalo.
+</Callout>
+
+Vuoi sentire una spiegazione approfondita della potenza? Meno di otto minuti, in inglese (con sottotitoli attivabili):
+
+<Video />
+
+<Say who="sensei">Se un test ha poca potenza e dice «nessun effetto», sappi che non ha guardato abbastanza forte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il campione che decide">
+Il modo più pulito per aumentare la potenza senza alzare il rischio di tipo I è **raccogliere più dati**. Per questo si calcola la **dimensione del campione** prima di cominciare uno studio.
+
+Un esempio: un test con soli 10 studenti per gruppo dà p = 0,20 e conclude «nessuna differenza». Poteva esserci una differenza vera, ma con 10 studenti il test non aveva la potenza per vederla. Non rifiutare H0 qui non dice quasi nulla.
+
+<Quiz
+  question="Con un campione molto piccolo un test ottiene p = 0,20. Quale spiegazione è plausibile?"
+  options={["Il test può avere poca potenza e non vedere un effetto reale", "È dimostrato che non c'è alcun effetto", "Il test ha commesso un errore di tipo I", "Il campione è troppo grande"]}
+  answer={0}
+  explain="Con pochi dati il test ha poca potenza: un effetto reale può restare nascosto (errore di tipo II). Non è dimostrato che non esista. L'errore di tipo I si commette solo rifiutando H0, e qui non si è rifiutata."
+/>
+
+<Say who="assistente">Test piccolo, risposta poco affidabile. Prima di fidarti del «niente», chiedi quanti erano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Significativo non vuol dire importante">
+Due scuole con **100 000 studenti per gruppo**. La media di un voto su scala da 1 a 10 è 7,00 contro 7,02. Differenza: **0,02 punti**.
+
+Con campioni così grandi l'errore standard è minuscolo (circa 0,0045, se σ = 1): z = 0,02 diviso 0,0045 = circa **4,5**. Il p-value è piccolissimo: il risultato è **statisticamente significativo**.
+
+Ma 0,02 punti su 10 è una differenza **irrilevante**: nessuno cambierebbe metodo per questo.
+
+<Callout kind="regola">
+**Significatività statistica**: la differenza è difficile da spiegare con il caso. **Importanza pratica**: la differenza è abbastanza grande da contare per le decisioni. Sono due domande diverse. Oltre al p-value, riporta sempre la **grandezza dell'effetto** (e un intervallo di confidenza).
+</Callout>
+
+<Say who="sensei">Il p-value dice se un effetto c'è. Non dice se vale la pena di occuparsene. Quello lo decidi tu, con i numeri e il buonsenso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tipi di errore, potenza e importanza pratica. Hai 3 tentativi.
+
+<Practice generator="d06-errori" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con questo si chiude il modulo: probabilità, distribuzioni, medie, intervalli, test, p-value, errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tipo I = falso positivo (rifiutare H0 vera, rischio α). Tipo II = falso negativo (non rifiutare H0 falsa, rischio β).
+- Potenza = 1 - β: cresce con più dati, meno variabilità, effetti più grandi. Ridurre α senza aumentare i dati alza β.
+- «Significativo» non vuol dire «importante»: riporta anche la grandezza dell'effetto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che errore è dire «malato» a una persona sana?", a: "Tipo I (falso positivo)" },
+    { q: "β = 0,2: quanto vale la potenza?", a: "0,8" },
+    { q: "Che cosa aumenta la potenza di un test?", a: "Più dati, meno variabilità, effetto più grande" },
+    { q: "Differenza 0,02 punti su 10, ma p piccolissimo: che cosa dici?", a: "Significativa ma probabilmente irrilevante" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossimo: scegliere il grafico giusto per raccontare ciò che hai trovato.</Say>
+</Scene>

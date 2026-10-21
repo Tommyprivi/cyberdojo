@@ -1,0 +1,181 @@
+---
+id: F.08.002
+course: fondamenta
+module: 8
+title: "Leggere una cattura"
+belt: arancione
+duration_min: 9
+prerequisites: [F.08.001]
+objectives:
+  - "Riconoscere in una cattura la richiesta DNS, l'apertura TCP e la richiesta HTTP"
+  - "Spiegare che cosa fa «Segui flusso TCP» e che cosa rivela HTTP in chiaro"
+video:
+  provider: youtube
+  id: "ixVXfUBEciU"
+  start: 0
+  end: 330
+  channel: "Learning Tree International"
+  title: "How to Use Wireshark's Follow TCP Stream Feature"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-cattura
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Leggere i pacchetti uno alla volta senza seguire il flusso: si perde il filo della conversazione"
+  - "Scambiare un 404 (la risorsa non esiste) per un server spento"
+  - "Dimenticare che HTTP viaggia in chiaro, mentre HTTPS è cifrato"
+commands: []
+---
+
+<Scene title="La cattura della contabilità">
+Il capo del SOC ti consegna una cattura di **venti secondi**, fatta sul computer di prova del laboratorio (un computer dell'azienda, con il permesso del responsabile). Dentro c'è una visita a una pagina web interna di prova.
+
+Tu devi rispondere a tre domande: **che nome ha cercato? con chi ha parlato? che cosa si sono detti?**
+
+Per lavorare sul testo, ti diamo una versione ridotta della cattura. Tutti i dati sono inventati.
+
+<Say who="sensei">Una cattura si legge come un racconto: prima il nome, poi la porta che si apre, poi la conversazione. Segui l'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Atto primo: il nome">
+Per visitare un sito scrivendo il nome, il computer deve prima scoprirne l'indirizzo IP. Lo chiede al **DNS**, di solito sulla porta **53**.
+
+<Log
+  lines={[
+    "1  10:01:02.001  192.168.1.20 -> 192.168.1.1   DNS   Richiesta: portale.esempio.it ?",
+    "2  10:01:02.014  192.168.1.1  -> 192.168.1.20  DNS   Risposta: portale.esempio.it = 203.0.113.80",
+  ]}
+  caption="Filtro di visualizzazione: dns"
+/>
+
+Chi chiede? Il computer .20. Chi risponde? Il .1, che è il router con il servizio DNS. E la risposta contiene proprio ciò che mancava: **203.0.113.80**.
+
+<Callout kind="curiosita">
+Se il nome non esiste, la risposta dice **NXDOMAIN**. Una postazione che fa tante richieste a nomi strani o inesistenti è un indizio, e il DNS in una cattura te lo racconta.
+</Callout>
+
+<Say who="assistente">Il DNS è la rubrica. Prima di chiamare qualcuno, il computer cerca il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Atto secondo: la porta si apre">
+Ora il computer conosce l'indirizzo e vuole parlare con il server. Prima di qualsiasi dato, TCP apre la connessione con **tre pacchetti**, la stretta di mano in tre tempi.
+
+<Log
+  lines={[
+    "3  10:01:02.020  192.168.1.20 -> 203.0.113.80  TCP   porta 51234 -> 80   [SYN]",
+    "4  10:01:02.045  203.0.113.80 -> 192.168.1.20  TCP   porta 80 -> 51234   [SYN, ACK]",
+    "5  10:01:02.046  192.168.1.20 -> 203.0.113.80  TCP   porta 51234 -> 80   [ACK]",
+  ]}
+  caption="Filtro di visualizzazione: tcp.port == 80"
+/>
+
+- **SYN**: «Ci sei? Vorrei parlare.»
+- **SYN-ACK**: «Ci sono, e ti ascolto.»
+- **ACK**: «Perfetto, comincio.»
+
+Nota le porte. Il server risponde sulla **80** (il servizio web, senza cifratura). Il computer usa come partenza una porta alta scelta a caso, qui la **51234**.
+
+<Callout kind="attenzione">
+Vedi tanti SYN ripetuti **senza** SYN-ACK? Il server è spento, irraggiungibile, oppure un firewall scarta i pacchetti. E un **RST** è una chiusura brusca: la porta rifiuta la connessione.
+</Callout>
+
+<Say who="sensei">Tre pacchetti, tre battute. Se manca la seconda, nessuno ascolta dall'altra parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Atto terzo: la conversazione">
+Dopo la stretta di mano arriva la richiesta vera e propria, in **HTTP**: il linguaggio delle pagine web.
+
+<Log
+  lines={[
+    "6  10:01:02.050  192.168.1.20 -> 203.0.113.80  HTTP  GET /listino.html",
+    "7  10:01:02.071  203.0.113.80 -> 192.168.1.20  HTTP  HTTP/1.1 200 OK (text/html)",
+  ]}
+  caption="Filtro di visualizzazione: http"
+/>
+
+Il **GET** chiede una pagina. Il **200 OK** dice «trovata, eccola». Se leggessi **404 Not Found**, il server sarebbe vivo, ma la pagina non esiste.
+
+<Callout kind="trucco">
+Non leggere pacchetto per pacchetto: clicca con il destro su uno di questi e scegli **Segui, Flusso TCP**. Wireshark rimette in ordine tutta la conversazione tra i due e la mostra come un dialogo: richiesta in un colore, risposta in un altro.
+</Callout>
+
+Vuoi vederlo fare da un'altra voce (in inglese, ma le immagini parlano da sole)? Cinque minuti:
+
+<Video />
+
+<Say who="assistente">Clicca, segui il flusso, leggi il dialogo dall'alto in basso. Le parole del server sono quelle azzurre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segreto in chiaro">
+Nel flusso HTTP scopri una cosa importante: **HTTP non cifra**. Quello che leggi è quello che viaggia.
+
+<Guided
+  steps={[
+    "Immagina che l'utente compili un modulo con un nome e una password e prema «Invia».",
+    "Nel flusso TCP compare una riga POST con il testo del modulo, leggibile da chiunque abbia catturato il traffico.",
+    "Con HTTPS (porta 443) il flusso mostra soltanto dati cifrati: vedi che c'è una conversazione e con chi, ma non che cosa si dicono.",
+    "Conclusione per un'azienda: pagine di accesso solo in HTTPS. Una cattura è la prova più chiara di perché.",
+  ]}
+/>
+
+<Say who="sensei">Se puoi leggerlo tu, può leggerlo chiunque stia in mezzo. Per questo si cifra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella cattura vedi un SYN dal computer verso un server, poi altri tre SYN identici a distanza di secondi, e nessuna risposta. Che cosa ne deduci?"
+  options={["Il server non risponde: è spento, irraggiungibile o filtrato da un firewall", "La connessione è stata aperta e la pagina è in caricamento", "Il DNS ha restituito l'indirizzo sbagliato", "Il server ha risposto con un 404"]}
+  answer={0}
+  explain="Un SYN ripetuto senza SYN-ACK vuol dire che dall'altra parte nessuno ascolta, o che i pacchetti non arrivano. Un 404 sarebbe una risposta HTTP, e per averla la connessione dovrebbe essere già aperta."
+/>
+
+<Say who="sensei">Le risposte mancanti raccontano quanto le risposte presenti. Impara anche a leggere i silenzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: flusso TCP, DNS e HTTP. Cinque su cinque, 3 tentativi, domande diverse a ogni tentativo.
+
+<Practice generator="f08-cattura" pass="5/5" retries={3} />
+
+<Say who="sensei">Nome, porta, conversazione. Chi legge in questo ordine non si perde mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Prima il DNS (porta 53) trasforma il nome in indirizzo; poi TCP apre la connessione con SYN, SYN-ACK, ACK.
+- HTTP viaggia in chiaro (porta 80): con «Segui flusso TCP» leggi tutto il dialogo. HTTPS (443) lo cifra.
+- Anche i silenzi contano: SYN senza risposta, RST e 404 raccontano cose diverse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i tre pacchetti di apertura di TCP?", a: "SYN, SYN-ACK, ACK" },
+    { q: "Che cosa fa «Segui flusso TCP»?", a: "Mostra in ordine tutta la conversazione tra le due estremità" },
+    { q: "Che cosa significa un 404?", a: "Il server è vivo, ma la risorsa non esiste" },
+    { q: "Perché HTTP è pericoloso per le password?", a: "Perché non cifra: tutto viaggia in chiaro" },
+  ]}
+/>
+
+<Say who="sensei">Sai leggere una cattura. Prossima lezione: costruire reti di prova in un simulatore, senza toccare quelle vere.</Say>
+</Scene>

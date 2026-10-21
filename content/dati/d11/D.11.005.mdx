@@ -1,0 +1,145 @@
+---
+id: D.11.005
+course: dati
+module: 11
+title: "Addestramento e test"
+belt: verde
+duration_min: 9
+prerequisites: [D.11.004]
+objectives:
+  - "Dividere i dati in addestramento e test e calcolare le dimensioni delle due parti"
+  - "Spiegare perché non si valuta sui dati usati per imparare"
+  - "Riconoscere un caso di perdita di dati (data leakage)"
+video:
+  provider: youtube
+  id: "fSytzGwwBVw"
+  start: 0
+  end: 365
+  channel: "StatQuest with Josh Starmer"
+  title: "Machine Learning Fundamentals: Cross Validation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-train-test
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Valutare il modello sugli stessi dati usati per addestrarlo"
+  - "Guardare il test molte volte per scegliere il modello, fino a adattarsi a lui"
+  - "Inserire tra le caratteristiche qualcosa che si conosce solo a cose fatte"
+commands: []
+---
+
+<Scene title="Il modello perfetto">
+Sara ha un modello che prevede se un cliente disdirà l'abbonamento. Lo prova sui dati con cui l'ha addestrato: **100% di risposte giuste**. Tutto perfetto.
+
+Poi lo usa sui clienti del mese dopo: **65%**.
+
+La domanda del caso: **perché il modello perfetto non lo era?**
+
+<Say who="sensei">Un modello che ha già visto le risposte le sa. Non dimostra niente. Si prova su ciò che non ha mai visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Interrogazione con domande nuove">
+Immagina uno studente che prepara l'esame con 100 domande d'esempio. Se l'esame ripete **le stesse 100 domande**, il voto dice solo quanto ha memorizzato. Se le domande sono **nuove**, il voto dice quanto ha capito.
+
+Per i modelli è uguale. Prima di cominciare si divide il dataset in due parti:
+
+- **addestramento** (train): il modello ci impara;
+- **test**: si tiene da parte, e si usa **una volta, alla fine**, per misurare.
+
+<Callout kind="regola">
+Il punteggio vero di un modello è quello sul test, non sull'addestramento.
+</Callout>
+
+<Say who="assistente">Il test è la domanda a sorpresa. Se l'hai già vista, non è più a sorpresa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dividere i dati">
+Le percentuali tipiche: **80% addestramento e 20% test**, o 70% e 30%.
+
+<Log lines={["200 righe, 80/20  ->  addestramento: 200 x 0,80 = 160  |  test: 200 x 0,20 = 40", "300 righe, 70/30  ->  addestramento: 300 x 0,70 = 210  |  test: 300 x 0,30 = 90"]} caption="Controlla sempre che le due parti sommino al totale: 160 + 40 = 200, 210 + 90 = 300." />
+
+Prima di dividere, le righe si **mescolano**, tranne quando conta il tempo: per prevedere il futuro si addestra sul passato e si testa sul periodo più recente.
+
+In scikit-learn (Python 3.11+, scikit-learn 1.4+):
+
+<Log lines={["from sklearn.model_selection import train_test_split", "X = [[1], [2], [3], [4], [5], [6], [7], [8]]", "y = [0, 0, 0, 0, 1, 1, 1, 1]", "X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.25, random_state=42)", "print(len(X_tr), len(X_te))", "# 6 2"]} caption="random_state rende la divisione ripetibile." />
+
+<Say who="sensei">Sempre la stessa regola: i numeri tornano, o hai sbagliato il conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La perdita di dati">
+La **perdita di dati** (data leakage) è quando al modello arriva, durante l'addestramento, un'informazione che **nella vita vera non avrebbe**. Il punteggio sul test sembra bellissimo, ma è truccato.
+
+Tre casi tipici:
+
+- tra le caratteristiche c'è una colonna come «ha già disdetto», o «data di chiusura del conto»: contiene già la risposta;
+- la stessa riga, o la stessa foto, compare sia nell'addestramento sia nel test;
+- si calcola la media usata per «scalare» i numeri su **tutte** le righe, prima di dividere: il test ha già influenzato l'addestramento.
+
+<Callout kind="attenzione">
+Quando un modello ottiene un punteggio incredibilmente alto, sospetta la perdita di dati prima di festeggiare.
+</Callout>
+
+Vuoi sentirlo da un'altra voce (in inglese, con sottotitoli)? Il video spiega come si prova un modello su pezzi diversi dei dati:
+
+<Video />
+
+<Say who="assistente">Chiediti sempre: questo dato, nel momento in cui devo fare la previsione, lo avrei già?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Si vuole prevedere chi disdirà l'abbonamento. Tra le caratteristiche c'è la colonna «ha già disdetto». Qual è il problema?"
+  options={["È una perdita di dati: la colonna contiene già la risposta", "Nessuno: più colonne si usano meglio è", "Il modello diventa non supervisionato", "Il test diventa troppo piccolo"]}
+  answer={0}
+  explain="La colonna «ha già disdetto» è l'etichetta stessa, o la conosce. Il modello sembra perfetto, ma nella vita vera quell'informazione arriva solo dopo la previsione."
+/>
+
+<Say who="sensei">Se un dato ti dice già la risposta, non è un indizio. È un imbroglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su divisioni, test e perdita di dati. Hai 3 tentativi.
+
+<Practice generator="d11-train-test" pass="5/5" retries={3} />
+
+<Say who="sensei">Il test si guarda una volta, alla fine. Non barare con te stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si divide in addestramento (per imparare) e test (per misurare), per esempio 80/20: 200 righe diventano 160 e 40.
+- Il punteggio che conta è quello sul test, su dati mai visti.
+- Perdita di dati: informazioni del test o del futuro che arrivano all'addestramento; il punteggio diventa troppo bello per essere vero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché si tiene da parte il test?", a: "Per misurare il modello su dati mai visti" },
+    { q: "300 righe divise 70/30: quante per l'addestramento?", a: "210" },
+    { q: "Che cos'è la perdita di dati?", a: "Informazione del test o del futuro che finisce nell'addestramento" },
+    { q: "Dati nel tempo: come si divide?", a: "Addestramento sul passato, test sul periodo più recente" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si misura un modello. Accuratezza, precision, recall: e la trappola delle classi sbilanciate.</Say>
+</Scene>

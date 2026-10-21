@@ -1,0 +1,167 @@
+---
+id: D.05.002
+course: dati
+module: 5
+title: "Quanto sono sparsi i dati"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.001]
+objectives:
+  - "Calcolare il campo di variazione di un insieme di numeri"
+  - "Calcolare varianza e deviazione standard di 5 numeri seguendo i passi"
+  - "Interpretare una deviazione standard piccola o grande"
+video:
+  provider: youtube
+  id: "Vpl-4meNrN8"
+  start: 0
+  end: 274
+  channel: "Polimi OpenKnowledge"
+  title: "Media, varianza e deviazione standard (Domenico Brunetto)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-dispersione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che due gruppi con la stessa media siano uguali"
+  - "Dividere per n invece che per n−1 senza dirlo (in questo corso si divide sempre per n−1)"
+  - "Dimenticare di elevare al quadrato gli scarti: senza il quadrato la somma fa sempre zero"
+commands: []
+---
+
+<Scene title="Due linee, un ritardo medio">
+Due linee di autobus servono la tua scuola. Hai segnato per cinque giorni i **minuti di ritardo** di ciascuna.
+
+| Giorno | Linea 1 | Linea 2 |
+| --- | --- | --- |
+| Lun | 4 | 3 |
+| Mar | 5 | 3 |
+| Mer | 6 | 6 |
+| Gio | 7 | 9 |
+| Ven | 8 | 9 |
+
+Sommando: Linea 1 fa 30, Linea 2 fa 30. Media di entrambe: **6 minuti**. Eppure prendere la Linea 2 sembra più rischioso. Perché?
+
+<Say who="sensei">La media dice dove sta il centro. Non dice quanto i numeri se ne allontanano. Serve un secondo indice: la dispersione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il campo di variazione">
+Il modo più semplice: guardare **il più grande meno il più piccolo**. Si chiama **campo di variazione** (in inglese range).
+
+- Linea 1: 8 − 4 = **4** minuti
+- Linea 2: 9 − 3 = **6** minuti
+
+La Linea 2 è più «larga». Ma questo indice usa solo **due** numeri, i più estremi.
+
+<Callout kind="attenzione">
+Basta un giorno strano (un guasto, 40 minuti di ritardo) per far esplodere il campo di variazione, anche se gli altri quattro giorni sono tranquilli.
+</Callout>
+
+<Say who="assistente">Facile da calcolare, ma fragile. Guarda solo il minimo e il massimo, non tutti i giorni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli scarti dalla media">
+Per usare **tutti** i dati, si misura quanto ciascuno dista dalla media. Questa distanza con segno si chiama **scarto**: valore meno media.
+
+Linea 2 (media 6): gli scarti sono 3−6 = −3, 3−6 = −3, 6−6 = 0, 9−6 = +3, 9−6 = +3.
+
+Se li sommi: −3 −3 +0 +3 +3 = **0**. Sempre zero, per qualsiasi insieme di numeri: i positivi cancellano i negativi.
+
+<Callout kind="trucco">
+Per evitare che si cancellino, si **eleva al quadrato** ogni scarto. Un quadrato è sempre positivo: 9 per −3 e 9 per +3.
+</Callout>
+
+<Say who="sensei">Gli scarti da soli si annullano. Al quadrato, no. È tutto qui il trucco della varianza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Varianza e deviazione standard">
+La **varianza** è la «media» dei quadrati degli scarti. La **deviazione standard** è la sua radice quadrata: torna nell'unità di misura dei dati (minuti, non minuti al quadrato).
+
+<Callout kind="regola">
+In tutto il corso la varianza si calcola **sul campione**: la somma dei quadrati degli scarti si divide per **n − 1**, non per n. È la scelta di Fogli Google (VAR.S e DEV.ST.S) e di LibreOffice. Dividere per n dà la varianza della popolazione: un numero un po' più piccolo.
+</Callout>
+
+Con pochi dati, dividere per n − 1 corregge una piccola sottostima. Per ora ti basta ricordare la regola.
+
+Vuoi sentirla spiegare da un'altra voce? Meno di cinque minuti, dal Politecnico di Milano:
+
+<Video />
+
+<Say who="assistente">Quattro passi: scarti, quadrati, somma divisa per n meno uno, radice. Li facciamo insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Calcolo guidato su 5 numeri">
+Linea 2: 3, 3, 6, 9, 9. Media 6.
+
+<Guided
+  steps={[
+    "Scarti dalla media: −3, −3, 0, +3, +3.",
+    "Quadrati degli scarti: 9, 9, 0, 9, 9.",
+    "Somma dei quadrati: 9 + 9 + 0 + 9 + 9 = 36.",
+    "Varianza (n − 1 = 4): 36 / 4 = 9.",
+    "Deviazione standard: la radice di 9 è 3 minuti.",
+  ]}
+/>
+
+Per confronto la Linea 1 (4, 5, 6, 7, 8, media 6) ha scarti −2, −1, 0, +1, +2, quadrati 4, 1, 0, 1, 4, somma 10, varianza 10 / 4 = 2,5 e deviazione standard circa 1,6 minuti.
+
+<Say who="sensei">Stessa media, deviazione standard 3 contro 1,6. La Linea 2 è meno prevedibile. Ora lo dicono i numeri, non l'impressione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Due classi hanno la stessa media di voto, 6. La classe A ha deviazione standard 0,5 e la classe B ha deviazione standard 2,5. Cosa possiamo dire?"
+  options={["I voti della classe B sono molto più sparsi attorno al 6", "I voti della classe A sono molto più sparsi attorno al 6", "La classe B ha una media più alta", "Le due classi hanno voti identici"]}
+  answer={0}
+  explain="La deviazione standard misura quanto i valori si allontanano in genere dalla media. Più è grande, più i dati sono sparsi. Con la stessa media, la classe B ha voti molto più diversi tra loro."
+/>
+
+<Say who="assistente">Piccola deviazione standard: tutti vicini al centro. Grande: sparsi in giro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su campo di variazione, varianza e deviazione standard. Ricorda: dividi per n − 1. Hai 3 tentativi.
+
+<Practice generator="d05-dispersione" pass="5/5" retries={3} />
+
+<Say who="sensei">Scarti, quadrati, somma, divisione, radice. In ordine, senza saltare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il campo di variazione è massimo meno minimo: semplice ma fragile.
+- Varianza: somma dei quadrati degli scarti divisa per n − 1. Deviazione standard: la sua radice, nell'unità dei dati.
+- Stessa media non vuol dire stessi dati: la deviazione standard dice quanto sono sparsi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Campo di variazione di 4, 9, 2, 7?", a: "9 − 2 = 7" },
+    { q: "Quanto fa la somma degli scarti dalla media?", a: "Sempre zero" },
+    { q: "Deviazione standard di un insieme con varianza 9?", a: "3 (la radice quadrata)" },
+    { q: "Per quale numero si divide la somma dei quadrati in questo corso?", a: "n − 1" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quartili e box plot. Un disegno solo per vedere centro e dispersione insieme.</Say>
+</Scene>

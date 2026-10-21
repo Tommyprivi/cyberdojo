@@ -1,0 +1,146 @@
+---
+id: D.14.004
+course: dati
+module: 14
+title: "Il lakehouse"
+belt: marrone
+duration_min: 9
+prerequisites: [D.14.003]
+objectives:
+  - "Spiegare la differenza tra data lake, data warehouse e lakehouse"
+  - "Capire a che cosa servono i formati a tabella aperti come Delta, Iceberg e Hudi"
+  - "Descrivere transazioni e versioni dei dati con un'analogia"
+video:
+  provider: youtube
+  id: "Z0BpxL561fM"
+  start: 0
+  end: 600
+  channel: "endjin"
+  title: "How does Delta Lake work?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-lakehouse
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un data lake di semplici file offra da solo transazioni e storia delle modifiche"
+  - "Credere che Delta, Iceberg e Hudi siano database: sono formati e regole che stanno sopra i file"
+  - "Pensare che il viaggio nel tempo sia una copia di sicurezza: le versioni vecchie si possono anche cancellare"
+commands: []
+---
+
+<Scene title="La tabella a metà">
+Nella notte un lavoro di «Pasta Bianchi» riscrive la tabella delle vendite, composta da tanti file nel data lake. A metà lavoro, il computer si ferma.
+
+Al mattino Nora apre la tabella: alcuni file sono nuovi, altri vecchi. I totali non tornano, e nessuno sa quali righe siano giuste.
+
+<Say who="sensei">Dei file buttati in un armadio non hanno memoria. Se un lavoro si interrompe a metà, nessuno lo sa. Serve ordine sopra i file.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lake, warehouse, lakehouse">
+- **Data lake**: un grande armadio di file di ogni tipo, economico e flessibile, ma senza regole sulle tabelle.
+- **Data warehouse**: un magazzino ordinato con tabelle, regole e query veloci, ma più rigido e costoso.
+- **Lakehouse**: unisce le due idee. I file restano nell'armadio economico, ma sopra c'è uno strato che li fa comportare come tabelle affidabili.
+
+<Callout kind="regola">
+Lakehouse = **file nel lake** + **uno strato di regole** che dà tabelle, transazioni e versioni.
+</Callout>
+
+<Say who="assistente">Pensa a una biblioteca: il lake è il magazzino dei libri, il lakehouse è lo stesso magazzino con il catalogo e le schede di prestito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Formati a tabella aperti">
+Lo strato di regole è fatto da formati a tabella **aperti** (le specifiche sono pubbliche): **Delta Lake**, **Apache Iceberg**, **Apache Hudi**. Fanno cose simili con scelte diverse.
+
+Il trucco comune: oltre ai file dei dati tengono un **registro delle modifiche** (metadati). La tabella «ufficiale» è quella descritta dal registro, non l'insieme dei file presenti.
+
+Se un lavoro si ferma a metà, il registro non è stato aggiornato: i file nuovi non fanno parte della tabella, e chi legge vede ancora la versione intera e precedente.
+
+<Callout kind="curiosita">
+«Aperto» vuol dire che più strumenti possono leggere la stessa tabella. Questo riduce il rischio di restare legati a un solo fornitore.
+</Callout>
+
+Una spiegazione video del funzionamento di un formato:
+
+<Video />
+
+<Say who="sensei">La tabella è ciò che dice il registro. Questa frase risolve metà dei misteri del lakehouse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Transazioni">
+Una **transazione** è un gruppo di modifiche che valgono **tutte o nessuna**. È come un bonifico: o i soldi escono da un conto ed entrano nell'altro, o non succede niente. Mai a metà.
+
+Nel lakehouse il registro cambia **in un colpo solo** alla fine del lavoro. Prima di quel momento, i lettori vedono la versione vecchia; dopo, la nuova. Mai un miscuglio.
+
+<Log lines={["versione 7: 12 file, vendite fino al 30 giugno", "lavoro notturno: scrive 3 file nuovi...", "versione 8: 15 file, vendite fino al 1 luglio  (registro aggiornato)"]} caption="Il lettore passa dalla 7 alla 8 in un istante. Esempio fittizio." />
+
+<Say who="assistente">Due persone che leggono mentre un lavoro scrive vedono lo stesso risultato, vecchio o nuovo, ma mai a pezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Versioni dei dati">
+Ogni cambiamento crea una **versione**. Il registro le ricorda, quindi si può chiedere: «com'era la tabella ieri?» (a volte detto **viaggio nel tempo**). Utile per ripetere un report, trovare un errore o tornare indietro.
+
+<Callout kind="attenzione">
+Non è una copia di sicurezza vera. Le versioni vecchie occupano spazio, e di solito vengono ripulite dopo un po'. Un backup resta un'altra cosa.
+</Callout>
+
+<Say who="sensei">Poter tornare indietro cambia il modo di lavorare: sbagliare costa meno. Ma ricordare le versioni costa spazio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un lavoro che riscrive una tabella del lakehouse si interrompe a metà. Che cosa vede un analista che legge la tabella subito dopo?"
+  options={["La versione precedente intera, perché il registro non è stato aggiornato", "Un miscuglio di file vecchi e nuovi", "Una tabella vuota", "La nuova versione a metà"]}
+  answer={0}
+  explain="La tabella è quella descritta dal registro. Se il lavoro non ha completato la modifica, il registro punta ancora ai file vecchi. Il miscuglio succede invece in un lake di semplici file, senza strato di regole."
+/>
+
+<Say who="assistente">Cerca sempre la parola chiave: «registro». Se il registro non cambia, per i lettori nulla è cambiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su lake, warehouse, lakehouse, transazioni e versioni.
+
+<Practice generator="d14-lakehouse" pass="5/5" retries={3} />
+
+<Say who="sensei">Tabelle affidabili sopra file economici. Se lo spieghi in una frase, hai capito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il lakehouse unisce file economici di un lake e le regole di tabelle affidabili di un warehouse.
+- Delta, Iceberg e Hudi sono formati aperti con un registro delle modifiche che dà transazioni (tutto o niente) e versioni.
+- Le versioni permettono di rivedere il passato, ma non sostituiscono un backup.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un lakehouse?", a: "File di un lake con sopra regole da tabella affidabile" },
+    { q: "Che cos'è una transazione?", a: "Un gruppo di modifiche che valgono tutte o nessuna" },
+    { q: "Che cosa descrive la tabella in Delta o Iceberg?", a: "Il registro delle modifiche, non il semplice elenco di file" },
+    { q: "Il viaggio nel tempo sostituisce il backup?", a: "No: le versioni vecchie si possono cancellare" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: far partire tutti questi lavori nell'ordine giusto, ogni giorno, senza che nessuno li lanci a mano.</Say>
+</Scene>

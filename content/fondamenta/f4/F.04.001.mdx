@@ -1,0 +1,198 @@
+---
+id: F.04.001
+course: fondamenta
+module: 4
+title: "Redirezioni e pipe"
+belt: gialla
+duration_min: 9
+prerequisites: [F.03.008]
+objectives:
+  - "Salvare l'output di un comando in un file con > e >>"
+  - "Distinguere output normale (stdout) ed errori (stderr)"
+  - "Collegare due comandi con una pipe"
+video:
+  provider: youtube
+  id: "Eri1rEBuX8E"
+  start: 0
+  end: 548
+  channel: "Franco Bugnano"
+  title: "Scatena la potenza del terminale con redirezioni e pipe - Impariamo la linea di comando"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-pipe
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il simbolo > sovrascrive il file senza chiedere: per aggiungere in fondo serve >>"
+  - "Una pipe passa l'output di un comando al successivo, non il nome del file: i due comandi lavorano insieme, non uno dopo l'altro"
+  - "Gli errori (stderr) non finiscono in un file con > e non passano nella pipe: servono 2> oppure 2>&1"
+commands: []
+---
+
+<Scene title="Un log da leggere">
+Torni al **SOC**, il centro che sorveglia la sicurezza dell'azienda. Il collega del turno di notte ha lasciato un file: `accessi.log`, il registro degli accessi ai server. Per ora ha **otto righe**, ma domani ne avrà ottomila.
+
+<Log lines={[
+  "studente@lab:~$ cat accessi.log",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "03:02 198.51.100.7 web OK -",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:07 192.168.1.66 ssh OK mario",
+  "03:09 198.51.100.7 web OK -",
+  "03:12 198.51.100.7 ssh FALLITO test",
+  "03:15 192.168.1.20 ssh OK lucia",
+]} caption="Ogni riga: ora, indirizzo, servizio, esito, utente. Dati inventati." />
+
+La domanda del caso: **quante righe ha il registro, e come salvo un pezzo di output in un file da mandare al capo?** Con gli occhi non si fa. Con i comandi collegati tra loro sì.
+
+<Say who="sensei">In questo modulo il terminale diventa una catena di montaggio. Oggi impari a collegare i pezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre canali">
+Ogni comando ha **tre canali**, come tre tubi:
+
+- **stdin** (ingresso): da dove legge. Di solito la tastiera.
+- **stdout** (uscita normale): dove scrive il risultato. Di solito lo schermo.
+- **stderr** (uscita errori): dove scrive i messaggi di errore. Di solito, di nuovo lo schermo.
+
+Sullo schermo sembra un unico flusso, ma i tubi sono separati. Ed è proprio questo che permette di **deviarli**.
+
+<Callout kind="trucco">
+I tre canali hanno anche un numero: **0** = stdin, **1** = stdout, **2** = stderr. Lo rivedrai tra poco.
+</Callout>
+
+<Say who="assistente">Pensa a un rubinetto con due tubi: acqua pulita da una parte, scarichi dall'altra. Puoi mandare ciascuno dove vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Salvare nei file">
+Il simbolo **`>`** manda l'output in un file invece che sullo schermo. Il simbolo **`>>`** lo **aggiunge in fondo**. Il simbolo **`<`** fa il contrario: dà un file in ingresso al comando.
+
+<Log lines={[
+  "studente@lab:~$ echo \"prima riga\" > note.txt",
+  "studente@lab:~$ echo \"seconda riga\" >> note.txt",
+  "studente@lab:~$ cat note.txt",
+  "prima riga",
+  "seconda riga",
+  "studente@lab:~$ echo \"ricomincio\" > note.txt",
+  "studente@lab:~$ cat note.txt",
+  "ricomincio",
+  "studente@lab:~$ wc -l < note.txt",
+  "1",
+]} caption="Il secondo > ha cancellato tutto. wc -l conta le righe." />
+
+<Callout kind="attenzione">
+**`>` sovrascrive senza chiedere.** Se il file esisteva, il vecchio contenuto sparisce. Per non perdere niente usa **`>>`**.
+</Callout>
+
+<Say who="sensei">Un solo simbolo di troppo e un file è perso. Prima di scrivere `>`, chiediti se il file esiste già.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori vanno a parte">
+Prova a elencare una cartella che non esiste, e a deviare l'output:
+
+<Log lines={[
+  "studente@lab:~$ ls /archivio",
+  "ls: impossibile accedere a '/archivio': File o directory non esistente",
+  "studente@lab:~$ ls /archivio > out.txt",
+  "ls: impossibile accedere a '/archivio': File o directory non esistente",
+  "studente@lab:~$ ls /archivio 2> errori.txt",
+  "studente@lab:~$ cat errori.txt",
+  "ls: impossibile accedere a '/archivio': File o directory non esistente",
+  "studente@lab:~$ ls /archivio > tutto.txt 2>&1",
+]} caption="Il testo dell'errore dipende dalla lingua del sistema." />
+
+Con **`>`** l'errore compare comunque sullo schermo: `>` devia solo lo stdout. Per gli errori serve **`2>`**. Per mandare **tutto insieme** nello stesso file si scrive **`> file 2>&1`**.
+
+<Callout kind="curiosita">
+Esiste un file speciale, **`/dev/null`**, che butta via tutto ciò che riceve. `comando 2> /dev/null` serve a far tacere gli errori noiosi.
+</Callout>
+
+<Say who="assistente">Se un comando «non scrive niente» nel file ma a schermo vedi degli errori, ecco perché: erano su un altro tubo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La pipe">
+La **pipe** si scrive con la barra verticale **`|`**. Prende lo **stdout** del primo comando e lo dà come **stdin** al secondo. Niente file intermedi.
+
+<Log lines={[
+  "studente@lab:~$ cat accessi.log | head -n 2",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "studente@lab:~$ cat accessi.log | wc -l",
+  "8",
+  "studente@lab:~$ cat accessi.log | head -n 5 | tail -n 1",
+  "03:07 192.168.1.66 ssh OK mario",
+]} caption="head prende le prime righe, tail le ultime. Si possono mettere più pipe di fila." />
+
+Ecco la risposta al caso: il registro ha **8 righe**. L'ultima pipe prende le prime 5 righe e di quelle tiene l'ultima: la quinta.
+
+Vuoi sentirlo spiegare da un'altra voce? Circa nove minuti, con esempi dal vivo:
+
+<Video />
+
+<Callout kind="regola">
+`>` porta l'output **verso un file**. `|` lo porta **verso un altro comando**. Se a destra c'è un comando, è una pipe.
+</Callout>
+
+<Say who="sensei">Ogni comando fa una cosa sola, e la fa bene. La pipe li mette in fila. È la filosofia di Linux.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai un file elenco.txt con 10 righe. Esegui: echo fine > elenco.txt. Che cosa contiene ora il file?"
+  options={["Solo la riga «fine»", "Le 10 righe e in fondo «fine»", "Le 10 righe invariate", "Il file è vuoto"]}
+  answer={0}
+  explain="Il simbolo > sovrascrive: il vecchio contenuto sparisce. Per aggiungere «fine» in coda serviva >>. Chi sceglie la seconda risposta ha confuso > con >>."
+/>
+
+<LinuxTerminal goal="Conta le righe del file accessi.log usando una pipe" />
+
+<Say who="assistente">Pensa a cosa deve arrivare in ingresso a wc: l'output di cat. Quale simbolo li collega?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su redirezioni e pipe: cosa stampa, cosa contiene il file, quale simbolo serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-pipe" pass="4/5" retries={3} />
+
+<Say who="sensei">Un simbolo sbagliato può cancellare un file o far sparire un errore. Qui si legge con attenzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ogni comando ha tre canali: stdin (0), stdout (1), stderr (2). Si possono deviare.
+- `>` scrive in un file (e sovrascrive), `>>` aggiunge in fondo, `<` legge da un file, `2>` devia gli errori.
+- `|` collega l'output di un comando all'ingresso del successivo: così si compongono comandi semplici.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra > e >>?", a: "> sovrascrive il file, >> aggiunge in fondo" },
+    { q: "Quale canale devia 2>?", a: "Lo stderr, cioè i messaggi di errore" },
+    { q: "Cosa fa la pipe |?", a: "Passa l'output di un comando come ingresso del successivo" },
+    { q: "A cosa serve /dev/null?", a: "A buttare via ciò che ci si manda" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai far viaggiare l'output. Prossima lezione: `grep`, per pescare nel log solo le righe che contano.</Say>
+</Scene>

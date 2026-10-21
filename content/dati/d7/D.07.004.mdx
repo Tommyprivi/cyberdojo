@@ -1,0 +1,147 @@
+---
+id: D.07.004
+course: dati
+module: 7
+title: "I grafici che ingannano"
+belt: arancione
+duration_min: 8
+prerequisites: [D.07.003]
+objectives:
+  - "Riconoscere asse tagliato, doppio asse, 3D, aree non proporzionali e cherry picking"
+  - "Correggere ciascun inganno"
+  - "Controllare un grafico prima di fidarsi"
+video:
+  provider: youtube
+  id: "IooMV0UCw04"
+  start: 0
+  end: 192
+  channel: "I-Math"
+  title: "Grafici fuorvianti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-ingannevoli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere a un grafico senza leggere da dove parte l'asse"
+  - "Confondere una relazione tra due curve con una causa"
+  - "Usare il periodo più favorevole e chiamarlo «la tendenza»"
+commands: []
+---
+
+<Scene title="Il volantino che esagera">
+Un concorrente della Bottega Verde manda ai clienti un volantino. Titolo: «Le nostre piante crescono il doppio!». Sotto, due barre: la sua con 100, quella degli altri con 98.
+
+Marta guarda meglio. L'asse verticale non parte da zero: parte da 96. Le altezze visibili sono 4 e 2: per questo sembra il doppio. La differenza vera è circa il 2%.
+
+La domanda della lezione: **quanti modi ci sono di far mentire un grafico, e come li si smaschera?**
+
+<Say who="sensei">Un grafico non mente da solo. Lo fa chi lo disegna. Imparare i trucchi serve a non cadere nel trucco e a non usarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Asse tagliato e doppio asse">
+**Asse tagliato.** Il caso del volantino. Correzione: nelle barre l'asse parte sempre da zero, oppure si mostrano i numeri e si dichiara la scala.
+
+**Doppio asse.** Una figura con due scale verticali, una a sinistra e una a destra. Esempio: a sinistra i gelati venduti, a destra gli annegamenti; scegliendo le scale si fanno sovrapporre le due linee. Sembra un legame diretto. In realtà entrambi salgono in estate.
+
+<Callout kind="attenzione">
+Con due assi chi disegna può far combaciare qualsiasi coppia di curve. Correzione: due grafici separati, uno sopra l'altro, con lo stesso asse del tempo.
+</Callout>
+
+<Say who="assistente">Quando due curve si somigliano troppo, chiediti: chi ha scelto le scale?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="3D e aree che non tornano">
+**3D.** Una torta in 3D inclinata fa sembrare più grande la fetta davanti e più piccola quella dietro, anche se valgono lo stesso. Correzione: grafici piatti, sempre.
+
+**Aree non proporzionali.** Per mostrare che un valore è doppio, si disegna un cerchio con il raggio doppio. Ma l'area cresce con il quadrato del raggio: raggio doppio, area **4 volte** più grande. Il valore sembra quadruplicato. Lo stesso vale per le icone che crescono in altezza e larghezza. Correzione: usare barre, dove conta una sola dimensione.
+
+**Scale irregolari.** Anni 1990, 2000 e 2020 a distanze uguali sull'asse: il periodo lungo sembra corto e la pendenza è falsata.
+
+**Parti che non fanno un intero.** Una torta con 50%, 45% e 35% somma a 130%.
+
+<Say who="sensei">Se lo spazio sulla pagina non è proporzionale al valore, il grafico sta mentendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cherry picking">
+**Cherry picking** significa scegliere solo le ciliegie migliori: il periodo o i dati che danno l'effetto che vuoi.
+
+Le vendite della Bottega Verde nel 2024:
+
+| Mese | Vendite | Mese | Vendite |
+| --- | --- | --- | --- |
+| Gen | 140 | Lug | 121 |
+| Feb | 135 | Ago | 127 |
+| Mar | 130 | Set | 134 |
+| Apr | 125 | Ott | 142 |
+| Mag | 120 | Nov | 150 |
+| Giu | 118 | Dic | 158 |
+
+Un grafico che mostra solo da giugno a dicembre dice «+34%»: da 118 a 158 è proprio il 34%. Ma su tutto l'anno si va da 140 a 158: circa **+13%**, con un calo fino a giugno.
+
+Non c'è nessun numero falso. Il periodo è stato scelto con furbizia.
+
+Vuoi sentirlo spiegare da un'altra voce? Poco più di tre minuti:
+
+<Video />
+
+<Say who="assistente">Quando un grafico mostra un periodo corto con un titolo clamoroso, chiedi sempre: cosa c'era prima? E dopo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un grafico mostra gli incidenti totali di due paesi, ma uno ha una popolazione 10 volte più grande. Come lo correggi?"
+  options={["Con un tasso: incidenti ogni 100.000 abitanti", "Ingrandendo il paese più piccolo", "Con un asse in scala logaritmica senza dirlo", "Togliendo i nomi dei paesi"]}
+  answer={0}
+  explain="Confrontare numeri assoluti tra gruppi di dimensione diversa inganna. Il tasso (incidenti ogni 100.000 abitanti) rende i due paesi confrontabili. Le altre opzioni nascondono il problema invece di risolverlo."
+/>
+
+<Say who="sensei">Prima di giudicare un grafico controlla quattro cose: da dove parte l'asse, quale scala, quale periodo, quale fonte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque grafici sospetti descritti a parole. Per ognuno: dov'è l'inganno e come lo correggi.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-ingannevoli" pass="5/5" retries={3} />
+
+<Say who="sensei">Un buon analista smaschera. Un analista onesto non inganna. La seconda parte è la più importante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Asse tagliato, doppio asse, 3D, aree non proporzionali, scale irregolari e cherry picking sono i trucchi più comuni.
+- Correzioni: barre da zero, due grafici separati, grafici piatti, barre al posto di cerchi, tassi invece di numeri assoluti, periodo completo.
+- Controllo rapido: asse, scala, periodo, fonte. Due curve che salgono insieme non provano una causa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Raggio doppio: area di quante volte?", a: "4 volte" },
+    { q: "Cosa significa cherry picking?", a: "Scegliere solo il periodo o i dati che danno l'effetto voluto" },
+    { q: "Come si corregge un asse tagliato nelle barre?", a: "Partendo da zero" },
+    { q: "Come si confrontano due paesi di popolazione molto diversa?", a: "Con un tasso, per esempio ogni 100.000 abitanti" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: raccontare con i dati, per far capire quello che hai trovato.</Say>
+</Scene>

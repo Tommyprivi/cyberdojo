@@ -1,0 +1,171 @@
+---
+id: T.03.001
+course: trading
+module: 3
+title: "Leggere il passato: che cos'è l'analisi tecnica"
+belt: gialla
+duration_min: 8
+prerequisites: [T.02.007]
+objectives:
+  - "Spiegare che cosa studia l'analisi tecnica e come si differenzia da quella fondamentale"
+  - "Dire che cos'è un indicatore e perché è quasi sempre «in ritardo»"
+  - "Riconoscere i limiti: schemi visti a posteriori, casi scelti, promesse di guadagno"
+video:
+  provider: youtube
+  id: "kQUtE-wfGTM"
+  start: 0
+  end: 600
+  channel: "Skill Gateway"
+  title: "Introduzione all'Analisi Tecnica | Grafici, Supporti, Resistenze e Trend"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-analisi-tecnica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un indicatore preveda il futuro: calcola solo sul passato"
+  - "Guardare solo i casi in cui l'indicatore ha «funzionato» e dimenticare gli altri"
+  - "Vedere figure nei grafici dopo che i prezzi si sono mossi (a posteriori è facilissimo)"
+commands: []
+---
+
+<Scene title="Il video che promette il 90%">
+Luca ha 16 anni e guarda un video: un tizio mostra un grafico pieno di linee colorate e dice che «con questo indicatore si vince nel 90% dei casi». Tre esempi sul grafico, tre volte l'indicatore ci aveva preso.
+
+Luca pensa: «Se funziona sempre, perché non lo usano tutti?»
+
+La domanda del caso: **che cosa può dire davvero un indicatore, e che cosa no?**
+
+<Callout kind="attenzione">
+Questo corso è **educazione**, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. Qui lavoriamo solo con dati inventati o storici e mai con soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima di fidarti di una linea colorata, impara che cosa calcola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due modi di guardare un'azienda">
+Per capire se un'azienda quotata «vale» il suo prezzo ci sono due scuole.
+
+- **Analisi fondamentale**: studia l'azienda. Bilanci, utili, debiti, settore. Domanda: *quanto vale davvero?*
+- **Analisi tecnica**: studia il **grafico**. Prezzi e volumi del passato. Domanda: *come si è comportato il prezzo e che schemi ha lasciato?*
+
+L'analisi tecnica parte da un'idea: i prezzi passati e i volumi (quante azioni si scambiano) contengono informazioni utili. È un'**ipotesi**, non un fatto.
+
+<Callout kind="regola">
+Analisi tecnica = studio di **prezzi e volumi passati** per cercare schemi. Analisi fondamentale = studio dei **conti dell'azienda**.
+</Callout>
+
+<Say who="assistente">Un modo per ricordarlo: la tecnica guarda il grafico, la fondamentale guarda l'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un indicatore">
+Un **indicatore tecnico** è un calcolo fatto su prezzi (e a volte volumi) passati. Prende molti numeri e ne restituisce uno solo, o una linea, più facile da leggere.
+
+Un esempio minuscolo, con prezzi inventati:
+
+<Log lines={[
+  "Chiusure degli ultimi 3 giorni: 10, 12, 14",
+  "Media dei 3 giorni: (10 + 12 + 14) / 3 = 12",
+]} />
+
+Quel «12» è già un indicatore. Non dice cosa farà il prezzo domani: dice che negli ultimi tre giorni il prezzo medio è stato 12.
+
+Vuoi sentirlo spiegare da un'altra voce? Una panoramica in italiano, con grafici veri:
+
+<Video />
+
+<Say who="sensei">Un indicatore è una fotografia del passato, ricalcolata ogni giorno. Non è una sfera di cristallo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché sono sempre in ritardo">
+Ogni indicatore usa solo **prezzi già accaduti**. Per questo, quasi sempre, **segue** il prezzo: quando una media «gira», il prezzo si è già mosso.
+
+Immagina di guidare guardando solo lo specchietto retrovisore: sai com'è fatta la strada appena passata, ma la curva davanti a te non la vedi.
+
+<Callout kind="trucco">
+Più la finestra è lunga (50 giorni invece di 10), più l'indicatore è **stabile**, ma anche più **in ritardo**. Non esiste una finestra perfetta: è sempre uno scambio.
+</Callout>
+
+<Callout kind="curiosita">
+Secondo l'**ipotesi dei mercati efficienti**, in sintesi, i prezzi incorporano già l'informazione disponibile. Se fosse del tutto vera, dai soli prezzi passati non si ricaverebbe alcun vantaggio. Gli studiosi ne discutono ancora: per questo ogni idea va **messa alla prova**.
+</Callout>
+
+<Say who="sensei">Se vedi la curva solo dopo averla fatta, hai già perso tempo. Con gli indicatori succede spesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre trappole">
+Tornando a Luca, ecco perché quel video non regge.
+
+1. **Casi scelti**: tre esempi riusciti non provano niente. Servono **tutti** i casi, anche i fallimenti.
+2. **Schemi visti a posteriori**: quando il prezzo si è già mosso, è facile tracciare linee che lo «spiegano». Il cervello trova figure anche nel puro caso.
+3. **Costi e realtà ignorati**: commissioni e differenze di prezzo mangiano parte di ogni operazione (ne parleremo nel modulo T8).
+
+<Callout kind="attenzione">
+Chi promette percentuali di successo altissime o guadagni sicuri sta vendendo qualcosa. Nessun indicatore garantisce risultati. In Italia ti puoi informare sui siti di CONSOB e Banca d'Italia.
+</Callout>
+
+<Say who="assistente">Una regola semplice: se non ti mostrano anche i casi sbagliati, ti stanno mostrando solo la pubblicità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un indicatore ha «previsto» bene tre rialzi su un grafico mostrato in un video. Che cosa serve per fidarsi?"
+  options={[
+    "Tutti i casi, anche quelli in cui ha sbagliato, e un test con costi inclusi",
+    "Altri tre esempi riusciti dello stesso autore",
+    "Il numero di visualizzazioni del video",
+    "Un indicatore in più, di colore diverso",
+  ]}
+  answer={0}
+  explain="Tre esempi scelti non dimostrano nulla: forse ce ne sono trenta andati male. Servono tutti i casi e un test che conti anche i costi. Le visualizzazioni misurano la popolarità, non la correttezza."
+/>
+
+<Say who="sensei">Un buon scettico non dice «è falso». Dice «dimostramelo con tutti i dati».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cosa studia l'analisi tecnica, che cos'è un indicatore e quali sono i suoi limiti.
+
+<Practice generator="t03-analisi-tecnica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: stai imparando a ragionare, non a speculare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'analisi tecnica studia prezzi e volumi passati; quella fondamentale studia i conti dell'azienda.
+- Un indicatore è un calcolo sul passato: quasi sempre segue il prezzo, non lo anticipa.
+- Diffida di casi scelti, schemi visti a posteriori e promesse di guadagno: ogni idea va messa alla prova con dati storici.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa studia l'analisi tecnica?", a: "L'andamento passato di prezzi e volumi" },
+    { q: "Che cos'è un indicatore tecnico?", a: "Un calcolo sui prezzi (e volumi) passati" },
+    { q: "Perché un indicatore è in ritardo?", a: "Perché usa solo prezzi già accaduti" },
+    { q: "Tre casi riusciti bastano come prova?", a: "No: servono tutti i casi, anche i fallimenti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la media mobile, l'indicatore più semplice e più usato. Con i numeri in mano.</Say>
+</Scene>

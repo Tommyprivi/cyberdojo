@@ -1,0 +1,227 @@
+---
+id: F.09.002
+course: fondamenta
+module: 9
+title: "Variabili e tipi"
+belt: arancione
+duration_min: 9
+prerequisites: [F.09.001]
+objectives:
+  - "Creare variabili e scegliere nomi validi"
+  - "Distinguere int, float, str e bool"
+  - "Convertire i valori con int(), str(), float() e riconoscere il TypeError"
+video:
+  provider: youtube
+  id: "2ijbjW-PQ9w"
+  start: 0
+  end: 600
+  channel: "Gloria Coding"
+  title: "Lezione 1: Variabili e tipi di dato | Corso completo Python"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-variabili
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "= assegna un valore, non confronta: per confrontare si usa =="
+  - "'22' (testo) e 22 (numero) sono cose diverse: non si sommano"
+  - "La divisione con / dà sempre un numero con la virgola (float)"
+commands: []
+---
+
+<Scene title="Quaranta tentativi da ricordare">
+Marta torna con un dato preciso: nel log ci sono **40 tentativi di accesso falliti** dall'indirizzo `203.0.113.9`, tutti sulla **porta 22**.
+
+«Voglio che lo script si ricordi questi valori e ci faccia dei calcoli: quanti tentativi al minuto, per esempio.»
+
+Per ricordare un valore, un programma ha bisogno di un posto dove metterlo e di un nome per ritrovarlo. Quel posto si chiama **variabile**.
+
+La domanda del caso: **come si dà un nome a un dato, e che tipo di dato è?**
+
+<Say who="sensei">Un programma senza memoria non serve a niente. La variabile è la sua memoria. Cominciamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una variabile è un'etichetta">
+Pensa a una scatola con un'etichetta. Il valore sta dentro, il nome è scritto fuori. Si crea con il segno `=`:
+
+```python
+porta = 22
+ip = "203.0.113.9"
+tentativi = 40
+print(ip, porta, tentativi)
+```
+
+Output:
+
+```text
+203.0.113.9 22 40
+```
+
+<Callout kind="attenzione">
+In Python `=` significa «metti questo valore in questa scatola», non «è uguale a». Per confrontare due valori si usa `==`, lo vedremo nella lezione sulle decisioni.
+</Callout>
+
+**Regole dei nomi:** lettere, numeri e trattino basso `_`; non si comincia con un numero; niente spazi; maiuscole e minuscole contano (`Porta` e `porta` sono due variabili diverse). Meglio nomi chiari: `tentativi_falliti` è meglio di `t`.
+
+<Say who="assistente">Un valore può cambiare nel tempo. Scrivi `tentativi = 41` e la scatola contiene il nuovo valore: quello vecchio sparisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro tipi base">
+Ogni valore ha un **tipo**. Python lo capisce da solo, ma tu devi saperlo, perché con tipi diversi si possono fare cose diverse.
+
+- **int**: numero intero, come `22` o `-3`
+- **float**: numero con la virgola (che in Python è un punto), come `0.75`
+- **str**: testo, sempre tra virgolette, come `"ssh"`
+- **bool**: vero o falso, solo `True` o `False` (con la maiuscola)
+
+La funzione `type()` ti dice di che tipo è un valore:
+
+```python
+print(type(22))
+print(type(0.75))
+print(type("ssh"))
+print(type(True))
+```
+
+Output:
+
+```text
+<class 'int'>
+<class 'float'>
+<class 'str'>
+<class 'bool'>
+```
+
+Vuoi sentirlo spiegare da un'altra voce? Un video più lungo: guarda i primi minuti, quelli sulle variabili.
+
+<Video />
+
+<Say who="sensei">Un 22 senza virgolette è un numero. Un "22" con le virgolette è testo. A un computer sono due cose lontane.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fare i conti">
+Con i numeri si calcola. Gli operatori da conoscere sono `+`, `-`, `*`, `/` (divisione), `//` (divisione intera), `%` (resto) e `**` (potenza).
+
+```python
+tentativi = 40
+print(tentativi + 2)
+print(tentativi / 8)
+print(tentativi // 3)
+print(tentativi % 3)
+```
+
+Output:
+
+```text
+42
+5.0
+13
+1
+```
+
+<Callout kind="attenzione">
+La divisione `/` dà **sempre un float**: `40 / 8` fa `5.0`, non `5`. Se ti serve la parte intera della divisione usa `//`; se ti serve il resto usa `%`.
+</Callout>
+
+<Callout kind="curiosita">
+Anche il testo si può «moltiplicare»: `"ab" * 3` dà `ababab`. E si può sommare con un altro testo: `"ssh" + "d"` dà `sshd`. Ma non si somma un testo con un numero.
+</Callout>
+
+<Say who="assistente">Il resto `%` è più utile di quanto sembri: serve per sapere se un numero è pari, per esempio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cambiare tipo, e gli errori tipici">
+Se una variabile contiene il **testo** `"22"` e ci sommi un numero, Python si ferma:
+
+```python
+porta = "22"
+print(porta + 1)
+```
+
+L'ultima riga del messaggio d'errore dice:
+
+```text
+TypeError: can only concatenate str (not "int") to str
+```
+
+**TypeError** significa «tipo sbagliato per questa operazione». Si risolve convertendo:
+
+```python
+porta = "22"
+print(int(porta) + 1)
+print("Porta: " + str(22))
+```
+
+Output:
+
+```text
+23
+Porta: 22
+```
+
+Le funzioni di conversione sono `int()`, `float()`, `str()` e `bool()`. Attenzione ai casi limite: `int(3.9)` dà `3` (taglia, non arrotonda) e `int("ventidue")` dà `ValueError`: il testo non è un numero.
+
+<Say who="sensei">Quando vedi TypeError, chiediti: di che tipo è ciascun valore? Quasi sempre uno dei due è testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa succede con queste righe? porta = '22' e poi print(porta + 1)"
+  options={["TypeError: non si somma testo e numero", "Stampa 23", "Stampa 221", "Stampa 22 + 1"]}
+  answer={0}
+  explain="porta contiene il testo '22', non il numero 22. Sommare un testo e un intero è vietato: serve int(porta) + 1. Chi risponde 221 ha pensato a una concatenazione, ma funziona solo tra due testi."
+/>
+
+Ora scrivi tu: cambia i valori e guarda che tipo hanno. Poi prova a togliere le virgolette da `'22'`.
+
+<PythonTerminal code={"porta = '22'\nprint(type(porta))\nprint(int(porta) + 1)"} />
+
+<Say who="assistente">Esegui, poi cambia una riga alla volta. Se compare un errore, leggi l'ultima riga: ti dice cosa non va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, che tipo ha un valore, dove sta l'errore. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-variabili" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima il tipo, poi l'operazione. Se non sai il tipo, non sai il risultato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una variabile è un nome che punta a un valore; si crea con `=`, che assegna e non confronta.
+- I tipi base sono int, float, str e bool; `type()` ti dice quale è.
+- Per mescolare testo e numeri si converte con `int()`, `float()`, `str()`; `/` dà sempre un float.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa stampa print(7 // 2)?", a: "3 (divisione intera)" },
+    { q: "Cosa stampa print(10 / 5)?", a: "2.0 (la divisione dà un float)" },
+    { q: "Che errore dà '22' + 1?", a: "TypeError: testo e numero non si sommano" },
+    { q: "Come si trasforma il testo '22' in numero?", a: "int('22')" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il testo da vicino, e come chiedere un dato all'utente. Servirà per scrivere una riga di log ordinata.</Say>
+</Scene>

@@ -1,0 +1,150 @@
+---
+id: T.01.004
+course: trading
+module: 1
+title: "ETF e fondi: il paniere"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.003]
+objectives:
+  - "Spiegare che cos'è un fondo e che cos'è un ETF"
+  - "Capire perché un paniere diversifica il rischio"
+  - "Calcolare l'effetto dei costi annui in euro"
+video:
+  provider: youtube
+  id: "1vCPdh3cAKo"
+  start: 0
+  end: 600
+  channel: "justETF Italia"
+  title: "Che cos'è un ETF? Spiegato semplice | justETF Italia"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-etf-fondi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un ETF sia sicuro solo perché contiene tanti titoli: se il mercato scende, scende anche lui"
+  - "Ignorare i costi annui, che si pagano ogni anno anche quando il fondo perde"
+  - "Confondere ETF (negoziato in borsa) e fondo comune (si compra dalla società di gestione)"
+commands: []
+---
+
+<Scene title="Tutte le uova in un cestino">
+Luca ha 1.000 euro e decide di comprare azioni di **una sola** azienda: il Panificio Rossi (inventato). Pochi mesi dopo il panificio ha un problema grosso e il titolo perde molto.
+
+Marta, invece, ha diviso i suoi 1.000 euro tra cento aziende diverse. Quando una va male, le altre compensano in parte.
+
+La domanda del caso: **come si possono comprare cento aziende insieme senza fare cento acquisti?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza. Anche un paniere di titoli può perdere valore, e talvolta molto. Si può perdere denaro.
+</Callout>
+
+<Say who="sensei">Non mettere tutte le uova nello stesso cestino. È un proverbio, ma anche un metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il fondo: un cestino condiviso">
+Un **fondo comune di investimento** raccoglie i soldi di tanti risparmiatori e li investe in un **paniere** di titoli (azioni, obbligazioni, o entrambi). Ogni risparmiatore possiede **quote** del fondo.
+
+Lo gestisce una società specializzata. Spesso un gestore sceglie quali titoli comprare e vendere: è la **gestione attiva**. Questo lavoro ha un costo, pagato ogni anno dai risparmiatori.
+
+<Callout kind="regola">
+Fondo = tanti risparmiatori + un paniere di titoli + una società che lo gestisce, a pagamento.
+</Callout>
+
+<Say who="assistente">Come comprare una fetta di una grande pizza mista invece di scegliere ogni ingrediente da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ETF: il paniere in borsa">
+**ETF** sta per *Exchange Traded Fund*, «fondo negoziato in borsa». È un fondo che si compra e si vende **in borsa come un'azione**, durante tutta la giornata di contrattazione.
+
+Quasi sempre un ETF è **passivo**: copia un **indice**, cioè una lista di titoli che misura l'andamento di un mercato. Se l'indice contiene le cento maggiori aziende di un paese, l'ETF compra quelle cento, nelle stesse proporzioni. Nessun gestore sceglie: il computer segue la lista. Per questo i costi sono di solito più bassi.
+
+| | Fondo comune | ETF |
+|---|---|---|
+| Dove si compra | dalla società di gestione (o dalla banca) | in borsa, tramite un broker |
+| Gestione | spesso attiva | quasi sempre passiva |
+| Costi annui | in genere più alti | in genere più bassi |
+
+<Say who="assistente">Passivo vuol dire «segue una lista». Non vuol dire che non possa perdere: se l'indice scende, scende anche l'ETF.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il peso dei costi">
+Ogni fondo o ETF applica un costo annuo, espresso in percentuale (spesso chiamato **TER**, costo totale annuo). Sembra poco, ma si paga **ogni anno**, anche quando il fondo perde.
+
+Esempio con numeri inventati, su 10.000 euro investiti:
+
+<Log lines={[
+  "costo annuo 0,20%  ->  10.000 * 0,20 / 100 =  20 euro all'anno",
+  "costo annuo 2,00%  ->  10.000 * 2,00 / 100 = 200 euro all'anno",
+]} />
+
+Dieci volte il costo, dieci volte la spesa. In molti anni la differenza pesa parecchio.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="sensei">Sul rendimento nessuno decide. Sui costi puoi decidere tu. Leggili prima di comprare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un ETF costa lo 0,50% all'anno. Hai 4.000 euro investiti. Quanti euro di costo paghi in un anno, a prezzo invariato?"
+  options={[
+    "20 euro",
+    "200 euro",
+    "2 euro",
+    "0,50 euro",
+  ]}
+  answer={0}
+  explain="4.000 × 0,50 / 100 = 20 euro. Chi risponde 200 ha spostato la virgola di un posto, chi risponde 2 di due posti."
+/>
+
+<Say who="assistente">Percentuale vuol dire «ogni cento». Su 100 euro sarebbe mezzo euro. Su 4.000 sono quaranta volte tanto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Fondi, ETF, diversificazione e costi.
+
+<Practice generator="t01-etf-fondi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi legge i costi parte avanti rispetto a chi non lo fa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un fondo mette insieme i soldi di molti risparmiatori e li investe in un paniere di titoli.
+- Un ETF è un fondo negoziato in borsa, di solito passivo: copia un indice con costi più bassi.
+- Il paniere diversifica, ma non elimina il rischio. I costi annui si pagano sempre.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un ETF?", a: "Un fondo negoziato in borsa, che di solito copia un indice" },
+    { q: "Che cosa vuol dire gestione passiva?", a: "Il fondo segue una lista di titoli (indice) senza scelte del gestore" },
+    { q: "Quanto costa in un anno lo 0,30% su 10.000 euro?", a: "30 euro" },
+    { q: "Un ETF diversificato può perdere valore?", a: "Sì, se il mercato che copia scende" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i derivati, in breve. Strumenti potenti e pericolosi, da conoscere con prudenza.</Say>
+</Scene>

@@ -1,0 +1,141 @@
+---
+id: H.01.004
+course: hedge
+module: 1
+title: "Hedge fund, fondi comuni ed ETF"
+belt: bianca
+duration_min: 8
+prerequisites: [H.01.003]
+objectives:
+  - "Confrontare hedge fund, fondo comune ed ETF su accesso, regole, costi e uscita"
+  - "Spiegare che cos'è un periodo di lock-up"
+  - "Non confondere costo alto con qualità alta"
+video:
+  provider: youtube
+  id: "fUeOclCC9Bo"
+  start: 0
+  end: 600
+  channel: "Finance Simply Explained"
+  title: "ETFs vs Index Funds vs Mutual Funds vs Hedge Funds Explained Simply | Stock Market For Beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-confronto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un prodotto più caro sia più bravo"
+  - "Credere di poter vendere un hedge fund in qualsiasi momento come un ETF"
+  - "Pensare che un ETF «batta» il mercato: di solito lo segue"
+commands: []
+---
+
+<Scene title="Tre prodotti, un risparmiatore">
+Luca ha 25.000 euro da parte e tre opuscoli sul tavolo: un **fondo comune**, un **ETF** e un **hedge fund**. Il consulente della banca gli dice: «Quello più caro è sempre il migliore».
+
+La domanda del caso: **è vero? In che cosa sono diversi?**
+
+Ricorda: il corso è educazione, non consulenza. Non diciamo quale prodotto scegliere e si può perdere denaro.
+
+<Say who="sensei">Il prezzo di un prodotto dice quanto costa, non quanto vale. Confrontiamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fondo comune ed ETF">
+Un **fondo comune** (di investimento) raccoglie i soldi di molti risparmiatori e un gestore li investe. È aperto al **pubblico** e segue **regole stringenti**: nell'Unione europea i più diffusi sono i fondi armonizzati, detti **UCITS**, con limiti su diversificazione e leva, e un valore delle quote calcolato spesso ogni giorno.
+
+Un **ETF** (*exchange traded fund*) è un fondo **quotato in borsa**: si compra e si vende come un'azione, negli orari di borsa. Di solito **replica un indice**: l'obiettivo è seguirlo, non batterlo. I costi sono in genere bassi.
+
+<Callout kind="regola">
+Fondo comune e ETF: **aperti al pubblico**, regole forti, trasparenza sul contenuto. Per l'ETF, vendita in borsa.
+</Callout>
+
+<Say who="assistente">Un ETF è come una cesta di titoli con il biglietto in borsa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'hedge fund, per differenza">
+L'**hedge fund** è invece riservato a **investitori selezionati**, ha **più libertà** (vendite allo scoperto, derivati, leva) e **commissioni più alte**, spesso «2 e 20».
+
+Spesso c'è un **lock-up**: un periodo iniziale in cui **non si possono ritirare i soldi**. Dopo, i rimborsi avvengono a date fisse, con **preavviso**, e il valore delle quote si calcola di solito meno spesso, per esempio una volta al mese.
+
+Un video, in inglese con sottotitoli, mette a confronto i prodotti:
+
+<Video />
+
+<Say who="sensei">Libertà, costi alti, uscita lenta. Se non sai quando riavrai i soldi, non sono liquidi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una tabella per ricordare">
+| | Fondo comune | ETF | Hedge fund |
+|---|---|---|---|
+| Chi può investire | Pubblico | Pubblico | Investitori selezionati |
+| Regole | Stringenti | Stringenti | Più flessibili |
+| Costi | Medi | Bassi | Alti (es. 2 e 20) |
+| Uscita | Spesso giornaliera | In borsa | Con lock-up e preavviso |
+| Obiettivo | Varia | Seguire un indice | Varia, spesso rendimento con rischio controllato |
+
+<Callout kind="attenzione">
+Costo alto non vuol dire qualità alta. Si guarda il risultato **al netto delle commissioni** e il **rischio** corso.
+</Callout>
+
+<Say who="sensei">La tabella è una mappa, non un verdetto. Nessun prodotto è giusto per tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico dice: «Un hedge fund è migliore di un ETF perché costa di più». Che cosa rispondi?"
+  options={[
+    "Il costo non dice niente sulla qualità: conta il risultato al netto delle commissioni e il rischio",
+    "Hai ragione, il prezzo misura sempre la qualità",
+    "Costa di più perché non può perdere",
+    "Costa di più perché lo garantisce lo Stato",
+  ]}
+  answer={0}
+  explain="Il costo è una spesa certa, il risultato no. Chi crede che il prezzo garantisca la qualità confonde due cose diverse: nessun prodotto finanziario garantisce rendimento in base al suo costo."
+/>
+
+<Say who="assistente">Indizio: confronta sempre «quanto mi resta» e «quanto ho rischiato».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di confronto tra i tre prodotti.
+
+<Practice generator="h01-confronto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere le differenze ti protegge dalle etichette.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Fondo comune ed ETF sono aperti al pubblico e molto regolati; l'ETF si vende in borsa e di solito segue un indice.
+- L'hedge fund è per investitori selezionati, più libero, più caro, con lock-up e rimborsi a date fisse.
+- Costo alto non è qualità alta: si guarda il risultato netto e il rischio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un ETF?", a: "Un fondo quotato in borsa che di solito replica un indice" },
+    { q: "Che cosa sono gli UCITS?", a: "Fondi europei armonizzati con regole su diversificazione e leva" },
+    { q: "Che cos'è il lock-up?", a: "Periodo in cui non si possono ritirare i soldi" },
+    { q: "Il costo garantisce la qualità?", a: "No" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi può davvero investire in un hedge fund.</Say>
+</Scene>

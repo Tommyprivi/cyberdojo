@@ -1,0 +1,155 @@
+---
+id: D.10.001
+course: dati
+module: 10
+title: "I KPI: che cosa misurare"
+belt: verde
+duration_min: 8
+prerequisites: [D.09.008]
+objectives:
+  - "Dire che cosa rende buona una metrica: legata a un obiettivo, chiara, confrontabile"
+  - "Distinguere un indicatore di risultato da uno di processo"
+  - "Riconoscere una metrica di vanità"
+video:
+  provider: youtube
+  id: "1LCuEm9HhbY"
+  start: 0
+  end: 171
+  channel: "Headvisor"
+  title: "KPI aziendali: cosa sono, esempi e come misurarli"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-kpi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere la metrica che cresce di più invece di quella legata all'obiettivo"
+  - "Confondere un numero grande (visite, follower) con un risultato (ordini, ricavo)"
+  - "Misurare tutto: con trenta numeri nessuno sa quale guardare"
+commands: []
+---
+
+<Scene title="Il numero che sale">
+**Tavola Bella**, il negozio online di prodotti da cucina, ha un obiettivo per l'anno: **guadagnare di più**.
+
+Il responsabile social festeggia: i follower sono passati da 12.000 a 12.500. Giulia, l'analista, guarda gli ordini del mese: da 400 a 380. **I follower salgono, gli ordini scendono.**
+
+La domanda del caso: **quale dei due numeri dice come sta andando il negozio?**
+
+<Say who="sensei">Un numero può salire e raccontare niente. Prima si sceglie l'obiettivo, poi il numero che lo misura. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un KPI">
+Una **metrica** è un numero che misura qualcosa: gli ordini del mese, il tempo di consegna, i resi.
+
+Un **KPI** (in inglese *Key Performance Indicator*, «indicatore chiave di prestazione») è una metrica speciale: quella che dice **se stai raggiungendo un obiettivo**. Poche, scelte con cura.
+
+Pensa al cruscotto dell'auto. Ci sono tante spie, ma per sapere se arrivi in tempo guardi due cose: la velocità e la benzina.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di tre minuti:
+
+<Video />
+
+<Say who="assistente">Un KPI è la domanda «stiamo andando verso l'obiettivo?» trasformata in un numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una metrica buona">
+Come si riconosce una metrica buona? Quattro domande.
+
+- **Legata a un obiettivo?** Se nessuna decisione dipende da lei, non serve.
+- **Chiara?** Tutti devono calcolarla allo stesso modo. «Cliente attivo» che cosa vuol dire? Chi ha comprato negli ultimi 30 giorni? Si scrive.
+- **Confrontabile?** Un numero da solo non dice niente: 380 ordini sono tanti o pochi? Serve il mese scorso, o un obiettivo.
+- **Si può influenzare?** Se il meteo decide il numero, il team non può farci niente.
+
+<Callout kind="regola">
+Una buona metrica ha un **nome chiaro**, una **formula scritta**, un **confronto** e un **obiettivo** dietro.
+</Callout>
+
+<Say who="sensei">Se due colleghi calcolano la stessa metrica e ottengono numeri diversi, non hai una metrica. Hai una discussione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Risultato e processo">
+Ci sono due famiglie di indicatori.
+
+- **Di risultato**: dicono *cosa è successo*. Ricavo del mese, numero di ordini.
+- **Di processo**: dicono *come stiamo lavorando*, e si muovono prima. Giorni medi per spedire, percentuale di pacchi arrivati integri.
+
+Il risultato arriva tardi, quando ormai è fatto. Il processo ti avvisa **in anticipo**: se la spedizione passa da 2 a 6 giorni, i clienti scontenti e gli ordini in calo arriveranno dopo.
+
+<Callout kind="trucco">
+Per ogni obiettivo scegli **un indicatore di risultato** e **uno o due di processo** che lo anticipano.
+</Callout>
+
+<Say who="assistente">Il risultato è il voto in pagella. Il processo sono i compiti fatti ogni sera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metriche di vanità">
+Una **metrica di vanità** è un numero che fa bella figura ma non cambia nessuna decisione: follower, visite totali, «mi piace».
+
+Non sono vietate. Sono **pericolose quando si scambiano per risultati**. 12.500 follower non pagano lo stipendio a nessuno. 380 ordini sì.
+
+<Quiz
+  question="Obiettivo: far comprare più clienti. Quale numero è il KPI più adatto?"
+  options={["Gli ordini completati ogni mese", "I follower sui social", "Le visite totali al sito", "I «mi piace» agli articoli"]}
+  answer={0}
+  explain="Gli ordini completati misurano direttamente l'obiettivo. Follower, visite e «mi piace» possono salire anche quando nessuno compra: sono metriche di vanità."
+/>
+
+<Say who="sensei">Chiediti sempre: se questo numero cambia, che cosa faccio di diverso? Se la risposta è «niente», non è un KPI.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Il caso delle visite: guarda come si ragiona a passi.
+
+<Guided
+  steps={[
+    "Obiettivo del trimestre: aumentare il ricavo. Il KPI di risultato è il ricavo mensile.",
+    "Un indicatore di processo che lo anticipa: i giorni medi di spedizione. Se salgono, i clienti non tornano.",
+    "Le visite al sito salgono del 30%, ma gli ordini restano 400. Le visite sono un numero di vanità: non spiegano il ricavo.",
+    "Conclusione: si mettono nel cruscotto ricavo e spedizione. Le visite restano come informazione di contorno.",
+  ]}
+/>
+
+Ora tocca a te: 5 domande, 3 tentativi.
+
+<Practice generator="d10-kpi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sceglie male il KPI corre veloce nella direzione sbagliata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un KPI è una metrica legata a un obiettivo: poche, chiare, con formula scritta e confronto.
+- Il risultato dice cosa è successo; il processo avvisa in anticipo.
+- Le metriche di vanità (follower, visite) fanno numero ma non guidano decisioni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un KPI?", a: "Una metrica che misura se si raggiunge un obiettivo" },
+    { q: "Differenza tra risultato e processo?", a: "Il risultato dice cosa è successo, il processo come si lavora e avvisa prima" },
+    { q: "Che cos'è una metrica di vanità?", a: "Un numero che fa bella figura ma non cambia nessuna decisione" },
+    { q: "Perché un numero da solo non basta?", a: "Serve un confronto: mese scorso o obiettivo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le metriche di un negozio online, con i numeri di un mese di Tavola Bella.</Say>
+</Scene>

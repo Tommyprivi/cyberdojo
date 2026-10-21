@@ -1,0 +1,243 @@
+---
+id: D.04.007
+course: dati
+module: 4
+title: "Raggruppare e riassumere"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.006]
+objectives:
+  - "Calcolare somme e medie per gruppo con groupby e agg"
+  - "Contare le categorie con value_counts, size e nunique"
+  - "Costruire una tabella a doppia entrata con pivot_table e gestire i NaN"
+video:
+  provider: youtube
+  id: "Is5Lo8Z49ds"
+  start: 0
+  end: 507
+  channel: "Claudio Cama"
+  title: "Corso completo di pandas (Lezione 10): Ordinare, raggruppare e aggregare i dati"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-raggruppare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di scegliere la colonna dopo groupby: pandas prova a sommare anche il testo"
+  - "Confondere count (celle piene) con size (righe del gruppo) e con nunique (valori diversi)"
+  - "Leggere NaN in una pivot come zero: significa che quella combinazione non esiste nei dati"
+commands: []
+---
+
+<Scene title="Il rapporto del lunedì">
+Giulia torna alla domanda di sempre: «Quanto abbiamo venduto per città? E quanti ordini?». Con il filtro della lezione scorsa dovresti ripeterlo tre volte, una per città. Con dieci città, dieci volte.
+
+Esiste una sola operazione che lo fa per tutte: **raggruppare**. Si divide la tabella in pezzi (uno per ogni città), si fa il conto su ogni pezzo e si rimettono insieme i risultati in una tabellina.
+
+Il lavoro dell'analista è molto spesso questo: **dividere, calcolare, riunire**. In pandas si scrive con `groupby`.
+
+La domanda del caso: **come si ottiene il rapporto per città in una riga?** Usiamo sempre la tabella degli ordini, con sei righe.
+
+<Say who="sensei">Un dato solo non dice niente. Un dato per gruppo comincia a raccontare. Raggruppa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="groupby: dividere, calcolare, riunire">
+Si indica **per cosa raggruppare**, **quale colonna** guardare e **quale calcolo** fare.
+
+```python
+print(ordini.groupby("citta")["importo"].sum())
+print(ordini.groupby("citta")["importo"].mean())
+```
+
+```text
+citta
+Milano     50.0
+Roma      110.0
+Torino     20.0
+Name: importo, dtype: float64
+citta
+Milano    25.000000
+Roma      36.666667
+Torino    20.000000
+Name: importo, dtype: float64
+```
+
+Controlliamo a mano. Roma ha tre ordini: 40 + 40 + 30 = 110, e la media è 110 / 3, cioè 36,67. Milano: 20 + 30 = 50, media 25. Torino: un solo ordine da 20. Il totale generale è 180: 50 + 110 + 20.
+
+I gruppi escono in **ordine alfabetico**. E il nome del raggruppamento (`citta`) diventa l'**indice** del risultato.
+
+<Callout kind="attenzione">
+Se scrivi `ordini.groupby("citta").sum()` senza scegliere la colonna, pandas prova a sommare **tutte** le colonne, e i testi vengono incollati uno dopo l'altro. Scegli sempre la colonna: `["importo"]`.
+</Callout>
+
+<Say who="assistente">Controlla sempre un gruppo a mano: se un gruppo torna, il metodo è giusto per tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più calcoli insieme con agg">
+Con `agg` chiedi più calcoli in una volta e dai un **nome** a ogni colonna del risultato: `nome=("colonna", "calcolo")`.
+
+```python
+riepilogo = ordini.groupby("citta").agg(
+    totale=("importo", "sum"),
+    ordini=("cliente", "count"),
+    medio=("importo", "mean"),
+)
+print(riepilogo)
+```
+
+```text
+        totale  ordini      medio
+citta                            
+Milano    50.0       2  25.000000
+Roma     110.0       3  36.666667
+Torino    20.0       1  20.000000
+```
+
+`count` conta le celle **piene** della colonna scelta: qui gli ordini per città. Altri calcoli utili: `min`, `max`, `median`, `size`, `nunique`.
+
+Per ordinare dal più grande si usa `sort_values`. Per riportare la città da indice a colonna normale si usa `reset_index()`:
+
+```python
+print(riepilogo.sort_values("totale", ascending=False))
+print(riepilogo["totale"].reset_index())
+```
+
+```text
+        totale  ordini      medio
+citta                            
+Roma     110.0       3  36.666667
+Milano    50.0       2  25.000000
+Torino    20.0       1  20.000000
+    citta  totale
+0  Milano    50.0
+1    Roma   110.0
+2  Torino    20.0
+```
+
+<Say who="sensei">Il risultato del groupby è già una tabellina, pronta per un grafico o per Giulia. Dai alle colonne nomi chiari: «totale» e non «importo_sum».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare le categorie">
+Per la domanda «quante volte compare ogni valore?» c'è una scorciatoia: `value_counts()`.
+
+```python
+print(ordini["prodotto"].value_counts())
+print(ordini["prodotto"].value_counts(normalize=True))
+```
+
+```text
+prodotto
+luci         3
+casco        2
+borraccia    1
+Name: count, dtype: int64
+prodotto
+luci         0.500000
+casco        0.333333
+borraccia    0.166667
+Name: proportion, dtype: float64
+```
+
+Il risultato è già ordinato dal più frequente. Con `normalize=True` ottieni le **proporzioni**: le luci sono la metà degli ordini (3 su 6). Moltiplica per 100 per le percentuali.
+
+Tre modi di contare, da non confondere:
+
+- `size()`: le **righe** di ogni gruppo, `ordini.groupby("citta").size()` dà 2, 3, 1;
+- `count()`: le celle **non vuote** di una colonna (se mancano dei valori, è meno di `size`);
+- `nunique()`: i valori **diversi**: `ordini["citta"].nunique()` dà 3.
+
+<Say who="assistente">Righe, celle piene, valori diversi. Tre domande diverse, tre metodi diversi. Chiediti quale stai facendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="pivot_table: la tabella a doppia entrata">
+A volte i gruppi sono **due**: la città e il prodotto. Una **pivot table** mette un gruppo sulle righe, l'altro sulle colonne e il calcolo nelle caselle. È la stessa tabella pivot di Excel e di Fogli Google.
+
+```python
+pivot = ordini.pivot_table(
+    index="citta", columns="prodotto", values="importo", aggfunc="sum"
+)
+print(pivot)
+print(pivot.fillna(0))
+```
+
+```text
+prodotto  borraccia  casco  luci
+citta                           
+Milano          NaN    NaN  50.0
+Roma            NaN   80.0  30.0
+Torino         20.0    NaN   NaN
+prodotto  borraccia  casco  luci
+citta                           
+Milano          0.0    0.0  50.0
+Roma            0.0   80.0  30.0
+Torino         20.0    0.0   0.0
+```
+
+Roma ha venduto caschi per 80 (40 + 40) e luci per 30. Dove la combinazione **non esiste nei dati**, per esempio borracce a Milano, compare `NaN`: non «zero venduto» ma «nessuna riga». Con `fillna(0)` lo sostituisci con zero, quando per il tuo scopo ha senso.
+
+`index` sono le righe, `columns` le colonne, `values` cosa calcolare e `aggfunc` come (`"sum"`, `"mean"`, `"count"`).
+
+Vuoi vederli spiegare con un'altra voce?
+
+<Video />
+
+<Say who="sensei">NaN non è zero. Dire a Giulia «zero borracce a Milano» quando in realtà non lo sai è un modo elegante di sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale riga calcola la media dell'importo per ogni città?"
+  options={["ordini.groupby('citta')['importo'].mean()", "ordini['importo'].groupby('mean')", "ordini.mean('citta')['importo']", "ordini.value_counts('citta')['importo']"]}
+  answer={0}
+  explain="Prima si raggruppa per città (groupby), poi si sceglie la colonna (importo) e infine si applica il calcolo (mean). Le altre righe invertono l'ordine o usano metodi che non fanno questo lavoro: value_counts conta le righe, non calcola medie."
+/>
+
+<Say who="assistente">Raggruppa per, scegli la colonna, applica il calcolo. Tre pezzi, sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su `groupby`, `agg`, `value_counts` e `pivot_table`: cosa restituisce un codice, quale metodo serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-raggruppare" pass="4/5" retries={3} />
+
+<Say who="sensei">Se un risultato non ti torna, ricalcola un gruppo a mano. Un conto di tre righe vale più di un'ora di dubbi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `df.groupby("chiave")["colonna"].sum()` divide, calcola e riunisce; con `agg(nome=("colonna", "calcolo"))` si ottengono più calcoli con nomi chiari.
+- `value_counts()` conta le categorie (con `normalize=True` le proporzioni); `size` conta le righe, `count` le celle piene, `nunique` i valori diversi.
+- `pivot_table(index, columns, values, aggfunc)` fa la tabella a doppia entrata; NaN significa «combinazione assente», non zero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con la tabella di esempio, quanto fa il totale per Roma?", a: "110 (40 + 40 + 30)" },
+    { q: "Differenza tra size e nunique?", a: "size conta le righe del gruppo, nunique i valori diversi" },
+    { q: "Cosa significa NaN in una pivot_table?", a: "Quella combinazione non compare nei dati" },
+    { q: "Come si ottengono le percentuali con value_counts?", a: "normalize=True, poi si moltiplica per 100" },
+  ]}
+/>
+
+<Say who="sensei">Hai i riepiloghi. Prossima lezione: unire tabelle diverse, perché i dati veri non stanno mai tutti nello stesso posto.</Say>
+</Scene>

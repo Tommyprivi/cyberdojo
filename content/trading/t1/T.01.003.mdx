@@ -1,0 +1,162 @@
+---
+id: T.01.003
+course: trading
+module: 1
+title: "Le obbligazioni: un prestito con la scadenza"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.002]
+objectives:
+  - "Spiegare che cos'è un'obbligazione: cedola, scadenza, valore nominale"
+  - "Calcolare la cedola annua di un'obbligazione"
+  - "Capire perché il prezzo di un'obbligazione scende quando salgono i tassi"
+video:
+  provider: youtube
+  id: "CYN58g_UzPc"
+  start: 0
+  end: 600
+  channel: "Investiamo"
+  title: "Cosa sono le obbligazioni?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-obbligazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che le obbligazioni siano senza rischio: l'emittente può non pagare e il prezzo può scendere"
+  - "Confondere il valore nominale (quello che ti viene restituito) con il prezzo di mercato"
+  - "Pensare che prezzo e tassi si muovano nella stessa direzione"
+commands: []
+---
+
+<Scene title="Il comune che costruisce la palestra">
+Il **Comune di Montebello** (inventato) vuole costruire una palestra e non ha tutti i soldi. Invece di chiedere un mutuo a una banca, chiede un prestito a tante persone insieme: emette **obbligazioni**.
+
+Marta presta 1.000 euro. Il Comune le promette: «Ogni anno ti pago un interesse e, tra 5 anni, ti restituisco i 1.000 euro».
+
+La domanda del caso: **in che cosa un'obbligazione è diversa da un'azione?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza. Anche con le obbligazioni si può perdere denaro: nessuno strumento è senza rischio.
+</Callout>
+
+<Say who="sensei">Con un'azione sei socio. Con un'obbligazione sei creditore. Sono due ruoli molto diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parole da conoscere">
+Un'**obbligazione** (in inglese **bond**) è un prestito diviso in tante piccole parti. Quattro parole:
+
+- **emittente**: chi chiede il prestito (uno Stato, un'azienda, un comune);
+- **valore nominale**: la somma che verrà restituita (qui 1.000 euro);
+- **cedola**: l'interesse periodico, spesso espresso in percentuale annua del nominale;
+- **scadenza**: la data in cui il prestito viene restituito.
+
+Esempio: nominale 1.000 euro, cedola 3% annua. Cedola in euro: 1.000 × 3 / 100 = **30 euro all'anno**. In 5 anni: 150 euro di cedole, più i 1.000 restituiti alla fine.
+
+<Log lines={[
+  "nominale = 1000",
+  "cedola_percentuale = 3",
+  "cedola_annua = nominale * cedola_percentuale / 100",
+  "cedola_annua = 30.0",
+]} />
+
+<Say who="assistente">Cedola vuol dire «tagliando»: una volta si staccava dal titolo di carta per incassare l'interesse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Proviamo il conto">
+Prova tu: cambia i numeri e guarda cosa cambia. Python è solo una calcolatrice qui.
+
+<PythonTerminal code={`nominale = 1000
+cedola_percentuale = 3
+anni = 5
+cedola_annua = nominale * cedola_percentuale / 100
+totale_cedole = cedola_annua * anni
+print("cedola annua:", cedola_annua)
+print("cedole in 5 anni:", totale_cedole)
+print("totale incassato a scadenza:", totale_cedole + nominale)`} />
+
+<Callout kind="regola">
+Se l'emittente mantiene la promessa, incassi cedole e nominale. Il rischio è che **non ce la faccia**: si chiama **rischio di insolvenza**.
+</Callout>
+
+<Say who="sensei">Una promessa vale quanto chi la fa. Uno Stato solido e un'azienda in difficoltà non pagano lo stesso interesse: chi è più a rischio deve offrire di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il prezzo si muove">
+Le obbligazioni si possono rivendere prima della scadenza, e il loro **prezzo di mercato** cambia. Perché?
+
+Esempio inventato: Marta ha un'obbligazione che paga il 3%. Un anno dopo, le nuove obbligazioni simili pagano il 5%. Chi comprerebbe la vecchia al prezzo pieno, se con lo stesso denaro ottiene un interesse più alto? Nessuno: per venderla, Marta deve **abbassare il prezzo**.
+
+<Callout kind="regola">
+Se i tassi **salgono**, i prezzi delle obbligazioni già emesse **scendono**. Se i tassi scendono, i prezzi salgono. Si muovono in direzioni opposte.
+</Callout>
+
+Se Marta la tiene fino a scadenza, riceve comunque il nominale. Il problema nasce solo se deve **vendere prima**.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="assistente">Come due persone sull'altalena: quando i tassi vanno su, il prezzo va giù.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'obbligazione ha nominale 2.000 euro e cedola 4% annua. Quanto incassa in un anno chi la possiede?"
+  options={[
+    "80 euro",
+    "800 euro",
+    "40 euro",
+    "2.080 euro",
+  ]}
+  answer={0}
+  explain="2.000 × 4 / 100 = 80 euro all'anno. 2.080 sarebbe nominale più una cedola, ma si incassa solo alla scadenza. 800 si ottiene sbagliando di dieci volte la percentuale."
+/>
+
+<Say who="sensei">Percentuale del nominale, non del prezzo di mercato. Controlla sempre su cosa si calcola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cedole, scadenza, rischio e rapporto tra tassi e prezzi.
+
+<Practice generator="t01-obbligazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Conti semplici e concetti chiari: ecco la base.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'obbligazione è un prestito: chi la compra è creditore e riceve cedole e, alla scadenza, il nominale.
+- Cedola annua = nominale × percentuale / 100.
+- Se i tassi salgono, il prezzo delle obbligazioni già emesse scende. E l'emittente può non pagare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra azionista e obbligazionista?", a: "L'azionista è socio, l'obbligazionista è creditore" },
+    { q: "Che cos'è la cedola?", a: "L'interesse periodico pagato sull'obbligazione" },
+    { q: "Nominale 1.000 euro e cedola 2%: quanto vale la cedola annua?", a: "20 euro" },
+    { q: "I tassi salgono: che cosa succede al prezzo di un'obbligazione già emessa?", a: "Scende" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: ETF e fondi. Come comprare tanti titoli in un colpo solo.</Say>
+</Scene>

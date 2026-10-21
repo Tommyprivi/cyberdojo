@@ -1,0 +1,271 @@
+---
+id: F.09.008
+course: fondamenta
+module: 9
+title: "File e moduli"
+belt: verde
+duration_min: 10
+prerequisites: [F.09.007]
+objectives:
+  - "Leggere e scrivere file di testo con with open()"
+  - "Gestire gli errori con try/except e leggere/scrivere CSV e JSON"
+  - "Filtrare un file di log di esempio e importare moduli (csv, json, pathlib)"
+video:
+  provider: youtube
+  id: "113u1trnSXs"
+  start: 0
+  end: 540
+  channel: "PyMike"
+  title: "Tutorial Python 3 - Come creare, leggere e scrivere file testuali"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-file
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il modo 'w' cancella il contenuto del file se esiste già"
+  - "Le righe lette da un file finiscono con un a capo: va tolto con strip()"
+  - "I valori letti da un CSV sono sempre testo, anche i numeri"
+commands: []
+---
+
+<Scene title="Il log vero">
+Finora hai lavorato con elenchi scritti dentro lo script. Ma i log veri stanno in **file**. Marta ti manda `accessi.log`: quattro righe di prova, una per accesso.
+
+<Log lines={["03:10 OK ada 10.0.0.5", "03:11 FAILED root 203.0.113.9", "03:12 FAILED admin 203.0.113.9", "03:13 OK bruno 10.0.0.7"]} caption="accessi.log (dati di esempio, tutti inventati)" />
+
+«Voglio un secondo file con solo le righe FAILED. E se il file manca, lo script non deve esplodere.»
+
+La domanda del caso: **come si legge un file, come si filtra e come si scrive il risultato senza sbagliare?**
+
+<Callout kind="regola">
+Gli esempi di questa lezione creano file di prova nella cartella in cui lanci lo script. Esegui sempre in una **cartella di prova** tua, mai in cartelle importanti: il modo `'w'` sovrascrive i file con lo stesso nome.
+</Callout>
+
+<Say who="sensei">Un analista che legge i log a mano è un analista che dorme poco. Facciamo leggere il file a Python.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scrivere e leggere con with open">
+`open(nome, modo)` apre un file. I modi principali sono `"r"` (leggere, il predefinito), `"w"` (scrivere, **cancella** il contenuto precedente) e `"a"` (aggiungere in fondo). Si usa quasi sempre con `with`, che **chiude il file da solo** alla fine del blocco, anche se c'è un errore.
+
+Prima creiamo il file di prova:
+
+```python
+with open("accessi.log", "w", encoding="utf-8") as f:
+    f.write("03:10 OK ada 10.0.0.5\n")
+    f.write("03:11 FAILED root 203.0.113.9\n")
+    f.write("03:12 FAILED admin 203.0.113.9\n")
+    f.write("03:13 OK bruno 10.0.0.7\n")
+```
+
+Il `\n` è il carattere di **a capo**: `write()` non lo aggiunge da solo. Ora leggiamo, una riga alla volta:
+
+```python
+with open("accessi.log", encoding="utf-8") as f:
+    for riga in f:
+        print(riga.strip())
+```
+
+Output:
+
+```text
+03:10 OK ada 10.0.0.5
+03:11 FAILED root 203.0.113.9
+03:12 FAILED admin 203.0.113.9
+03:13 OK bruno 10.0.0.7
+```
+
+<Callout kind="attenzione">
+Ogni riga letta finisce con `\n`. Se non usi `strip()`, `print` aggiunge un altro a capo e vedi righe vuote in mezzo. Con `f.read()` leggi invece **tutto il file in un solo testo**.
+</Callout>
+
+Vuoi vedere come si fa da un'altra voce? Guarda con calma.
+
+<Video />
+
+<Say who="assistente">Il parametro encoding="utf-8" evita sorprese con le lettere accentate. Mettilo sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Filtrare un log">
+Ecco il compito di Marta: leggere `accessi.log`, tenere le righe con `FAILED` e salvarle in `falliti.txt`.
+
+```python
+falliti = []
+with open("accessi.log", encoding="utf-8") as f:
+    for riga in f:
+        if "FAILED" in riga:
+            falliti.append(riga.strip())
+
+with open("falliti.txt", "w", encoding="utf-8") as out:
+    for riga in falliti:
+        out.write(riga + "\n")
+print(len(falliti), "righe salvate")
+```
+
+Output:
+
+```text
+2 righe salvate
+```
+
+In `falliti.txt` ci sono le due righe di `root` e `admin`. Rileggi il programma: è la lezione sui cicli, sulle decisioni e sulle liste, tutte insieme, più un file in entrata e uno in uscita.
+
+<Callout kind="trucco">
+Due blocchi `with` separati: prima si legge e si chiude, poi si scrive. Così non rischi di leggere e scrivere sullo stesso file nello stesso momento.
+</Callout>
+
+<Say who="sensei">Leggi, filtra, scrivi. Questo è lo scheletro di mezzo lavoro di un analista. Imparalo bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se il file non c'è: try e except">
+Se il file non esiste, `open()` si ferma con un errore: `FileNotFoundError`. Con `try` e `except` lo gestisci tu, senza far crollare lo script.
+
+```python
+try:
+    with open("manca.log", encoding="utf-8") as f:
+        print(f.read())
+except FileNotFoundError:
+    print("File non trovato: controlla il percorso")
+```
+
+Output (supponendo che `manca.log` non esista):
+
+```text
+File non trovato: controlla il percorso
+```
+
+Python esegue il blocco `try`. Se compare l'errore **nominato** dopo `except`, salta lì; altrimenti il blocco `except` viene ignorato.
+
+<Callout kind="attenzione">
+Nomina sempre l'errore che ti aspetti (`FileNotFoundError`, `ValueError`, `ZeroDivisionError`). Un `except` generico nasconde anche gli errori che non conosci, e poi non capisci più cosa è successo.
+</Callout>
+
+<Quiz
+  question="Quale parola introduce il blocco che gestisce l'errore, dopo try?"
+  options={["except", "catch", "error", "rescue"]}
+  answer={0}
+  explain="In Python si scrive except. Catch è la parola usata in altri linguaggi come JavaScript o Java, e rescue in Ruby: è un errore tipico di chi arriva da lì."
+/>
+
+<Say who="assistente">Prova a leggere un file che non esiste: il messaggio dice il nome dell'errore, ed è proprio quello da scrivere dopo except.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I file CSV">
+Un file **CSV** è una tabella scritta come testo, con i valori separati da virgole: la prima riga è l'intestazione. Python ha il modulo `csv` per leggerli e scriverli senza spaccare le righe a mano.
+
+```python
+import csv
+
+with open("host.csv", "w", newline="", encoding="utf-8") as f:
+    scrittore = csv.writer(f)
+    scrittore.writerow(["nome", "ip", "porta"])
+    scrittore.writerow(["web1", "10.0.0.5", 80])
+    scrittore.writerow(["db1", "10.0.0.9", 5432])
+
+with open("host.csv", newline="", encoding="utf-8") as f:
+    for riga in csv.DictReader(f):
+        print(riga["nome"], riga["porta"])
+```
+
+Output:
+
+```text
+web1 80
+db1 5432
+```
+
+`DictReader` ti dà ogni riga come un **dizionario**, con le intestazioni come chiavi: lo hai studiato la volta scorsa.
+
+<Callout kind="attenzione">
+I valori letti da un CSV sono **sempre testo**: `riga["porta"]` è `"80"`, non `80`. Per fare i conti serve `int(riga["porta"])`.
+</Callout>
+
+<Say who="sensei">Testo dentro, testo fuori. I numeri li converti tu. Ricordi il TypeError della seconda lezione?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Moduli: import, pathlib, json">
+Python ha già pronti tanti **moduli**: file di funzioni scritte da altri. Si caricano con `import`. Tre da conoscere subito:
+
+- `pathlib` per lavorare con file e cartelle (esiste? come si chiama? che estensione ha?)
+- `json` per salvare e leggere dati strutturati, molto usati nelle configurazioni e nelle API
+- `os` per funzioni del sistema operativo, per esempio `os.getcwd()` mostra la cartella corrente
+
+```python
+import json
+from pathlib import Path
+
+config = {"soglia": 5, "porte": [22, 80]}
+Path("config.json").write_text(json.dumps(config), encoding="utf-8")
+letto = json.loads(Path("config.json").read_text(encoding="utf-8"))
+print(letto["soglia"])
+print(Path("config.json").exists())
+print(Path("config.json").suffix)
+```
+
+Output:
+
+```text
+5
+True
+.json
+```
+
+Due modi di importare: `import json` e poi `json.loads(...)`, oppure `from pathlib import Path` e poi solo `Path(...)`.
+
+<Callout kind="curiosita">
+`json.dumps` trasforma un dizionario in **testo** JSON; `json.loads` fa il contrario. La `s` finale sta per «string».
+</Callout>
+
+Ora prova tu: crea un file, scrivici una riga e rileggilo.
+
+<PythonTerminal code={"from pathlib import Path\n\np = Path('prova.txt')\np.write_text('ciao SOC\\n', encoding='utf-8')\nprint(p.read_text(encoding='utf-8').strip())"} />
+
+<Say who="assistente">Il modulo giusto spesso c'è già. Prima di scrivere codice, cerca se qualcuno non l'ha già fatto per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, quale modo o metodo serve, cosa succede se c'è un errore. Nel testo il codice è su una riga, con il simbolo ↵ al posto dell'a capo. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-file" pass="4/5" retries={3} />
+
+<Say who="sensei">Con i file l'errore costa caro: un 'w' sbagliato cancella una giornata di lavoro. Leggi due volte il modo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `with open(nome, modo, encoding="utf-8") as f:` apre e chiude il file da solo; `'r'` legge, `'w'` cancella e scrive, `'a'` aggiunge.
+- `try`/`except NomeErrore` gestisce gli errori previsti, come `FileNotFoundError`.
+- Con i moduli `csv`, `json` e `pathlib` leggi tabelle, dati strutturati e percorsi; i valori di un CSV sono sempre testo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale modo di open() cancella il contenuto del file?", a: "'w'" },
+    { q: "Perché si usa with open(...)?", a: "Il file si chiude da solo, anche in caso di errore" },
+    { q: "Che errore dà open() su un file che non esiste?", a: "FileNotFoundError" },
+    { q: "Di che tipo sono i valori letti da un CSV?", a: "Sempre testo (str)" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: i socket e l'automazione. Due programmi che si parlano sul tuo computer, e uno script che lavora da solo.</Say>
+</Scene>

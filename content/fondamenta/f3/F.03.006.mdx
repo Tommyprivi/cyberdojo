@@ -1,0 +1,161 @@
+---
+id: F.03.006
+course: fondamenta
+module: 3
+title: "I servizi: i demoni al lavoro"
+belt: gialla
+duration_min: 8
+prerequisites: [F.03.005]
+objectives:
+  - "Spiegare cosa sono un servizio e un demone"
+  - "Usare systemctl status, start, stop, enable e disable"
+  - "Spiegare perché i servizi inutili vanno spenti"
+video:
+  provider: youtube
+  id: "5JVBpXiYMKo"
+  start: 0
+  end: 600
+  channel: "Learn Linux TV"
+  title: "Linux Crash Course - systemd: Using the systemctl command"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-servizi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere start (avvia adesso) con enable (avvia a ogni accensione)"
+  - "Lasciare accesi servizi che non servono, con porte aperte"
+  - "Dimenticare sudo per avviare o fermare un servizio"
+commands: []
+---
+
+<Scene title="Nessuno ha lanciato il server">
+Accendi il server dei dati. Nessuno apre un terminale, nessuno scrive comandi. Eppure, dopo pochi secondi, la porta 22 è in ascolto e il sito interno risponde.
+
+Chi ha avviato quei programmi? Nessuno di noi: si sono avviati da soli.
+
+<Say who="sensei">Un server serio non aspetta che qualcuno lo svegli. I suoi programmi importanti partono da soli e restano lì. Si chiamano servizi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Servizi e demoni">
+Un **servizio** è un programma che offre qualcosa in modo continuo: accessi remoti, un sito web, la stampa, l'orario. Gira in **sottofondo**, senza finestra.
+
+Un programma di questo tipo si chiama **demone** (in inglese *daemon*). Non c'entrano gli spiriti: è un aiutante invisibile che lavora in silenzio. Molti hanno un nome che finisce per `d`: `sshd` è il demone degli accessi remoti SSH.
+
+<Callout kind="curiosita">
+Nelle distribuzioni Linux moderne i servizi sono avviati e gestiti da un programma chiamato **systemd**. Il comando per parlarci è `systemctl`.
+</Callout>
+
+<Say who="assistente">Quando in `ps` vedi `sshd`, stai guardando un demone. Era quella la porta 22 di cui parlavamo nei log.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="systemctl status">
+Il comando più usato è `status`: ti dice se il servizio è vivo.
+
+<Log lines={[
+  "studente@lab:~$ systemctl status ssh",
+  "● ssh.service - OpenBSD Secure Shell server",
+  "     Loaded: loaded (/lib/systemd/system/ssh.service; enabled)",
+  "     Active: active (running) since Mon 2026-10-12 08:01:12",
+]} caption="Output semplificato. Active: active (running) significa che il servizio funziona." />
+
+Due righe da leggere:
+
+- **Loaded ... enabled**: partirà da solo a ogni accensione
+- **Active: active (running)**: sta funzionando in questo momento
+
+<Say who="sensei">Prima di toccare un servizio, ne leggi lo stato. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Start, stop, enable">
+Quattro verbi, due significati diversi:
+
+- `start` / `stop`: **adesso** avvia o ferma
+- `enable` / `disable`: **a ogni accensione** parte o non parte
+
+<Log lines={[
+  "studente@lab:~$ sudo systemctl stop ssh",
+  "studente@lab:~$ sudo systemctl start ssh",
+  "studente@lab:~$ sudo systemctl disable ssh",
+  "studente@lab:~$ sudo systemctl enable ssh",
+]} caption="Servono i permessi di amministratore, quindi sudo." />
+
+<Callout kind="attenzione">
+`enable` **non avvia** il servizio adesso: lo programma per la prossima accensione. Per averlo subito acceso e anche per sempre servono entrambi: `start` e `enable`.
+</Callout>
+
+<Callout kind="trucco">
+Dopo aver cambiato la configurazione di un servizio, `sudo systemctl restart nome` lo ferma e lo riavvia.
+</Callout>
+
+<Say who="assistente">Start è «ora». Enable è «sempre». Stop è «ferma ora». Disable è «non partire più da solo».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Meno servizi, meno rischi">
+Ogni servizio acceso è un programma in più che può avere un difetto, e spesso ascolta su una **porta**. Una porta aperta è una porta a cui qualcuno può bussare.
+
+<Guided
+  steps={[
+    "Il server dei dati ha un servizio di stampa acceso, ma qui nessuno stampa mai.",
+    "Quel servizio ascolta su una porta e può avere vulnerabilità.",
+    "Soluzione: sudo systemctl stop e disable sul servizio che non serve.",
+    "Risultato: una porta in meno da sorvegliare, un programma in meno da aggiornare.",
+  ]}
+/>
+
+<Quiz
+  question="Hai eseguito sudo systemctl enable ssh, ma il servizio ora risulta fermo. Perché?"
+  options={["enable lo programma per l'avvio, non lo avvia subito: serve anche start", "enable non funziona mai", "Il servizio è stato cancellato", "Serve kill -9"]}
+  answer={0}
+  explain="enable agisce sul prossimo avvio del computer. Per avviare il servizio adesso serve start. È uno degli errori più comuni."
+/>
+
+<Video />
+
+<Say who="sensei">Non spegnere a caso. Ma ciò che non serve, spegnilo: meno superficie, meno rischi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su servizi, demoni e systemctl. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-servizi" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi conosce i servizi del proprio server sa anche quali porte ha aperte. È metà del lavoro di difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un servizio (demone) è un programma che gira in sottofondo; systemd lo gestisce con systemctl.
+- status guarda lo stato; start e stop agiscono adesso; enable e disable agiscono dall'accensione successiva.
+- I servizi inutili si fermano e si disattivano: meno programmi, meno porte aperte.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è un demone?", a: "Un programma che gira in sottofondo e offre un servizio" },
+    { q: "Quale comando mostra lo stato di ssh?", a: "systemctl status ssh" },
+    { q: "Differenza tra start ed enable?", a: "start avvia adesso; enable avvia a ogni accensione" },
+    { q: "Perché spegnere i servizi inutili?", a: "Meno programmi attivi e meno porte aperte da difendere" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i pacchetti, cioè come arrivano sul server i programmi. E di chi fidarsi quando si installano.</Say>
+</Scene>

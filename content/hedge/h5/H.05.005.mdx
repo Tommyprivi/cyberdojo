@@ -1,0 +1,156 @@
+---
+id: H.05.005
+course: hedge
+module: 5
+title: "Le coperture: l'assicurazione dei mercati"
+belt: verde
+duration_min: 9
+prerequisites: [H.05.004]
+objectives:
+  - "Spiegare che cos'è una copertura (hedging) e perché ha un costo"
+  - "Calcolare il risultato di una put protettiva e di una copertura con futures"
+  - "Distinguere copertura e speculazione"
+video:
+  provider: youtube
+  id: "kdqgNo6F4Xc"
+  start: 0
+  end: 294
+  channel: "Skylab chronicles"
+  title: "Airline Fuel Hedging Explained: How Airlines Manage Fuel Costs!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-coperture
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una copertura sia gratis o elimini ogni rischio"
+  - "Coprire più di quanto si possiede: diventa speculazione"
+  - "Dimenticare che la copertura toglie anche una parte dei guadagni"
+commands: []
+---
+
+<Scene title="Il portafoglio e l'ombrello">
+Marta gestisce un piccolo portafoglio fittizio: **100 azioni di Alfa Spa a 100 euro**, cioè 10.000 euro. Il mese prossimo c'è un evento che la preoccupa. Non vuole vendere, ma non vuole nemmeno rischiare una perdita grande.
+
+«Compra un ombrello», dice Dario. «Una **put**».
+
+La domanda del caso: **come si usa un derivato per proteggersi, e quanto costa farlo?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Una copertura riduce un rischio, non lo cancella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una copertura">
+**Coprirsi** (in inglese **hedging**) vuol dire prendere una posizione che **guadagna quando l'altra perde**. Come un'assicurazione sulla casa: paghi un costo, e se succede il danno sei rimborsato.
+
+<Callout kind="regola">
+Una copertura **ha sempre un costo**: un premio da pagare, oppure la rinuncia a una parte dei guadagni possibili. E non cancella tutti i rischi.
+</Callout>
+
+Il nome «hedge fund» viene da qui, ma molti hedge fund oggi usano i derivati anche per assumere rischi, non solo per ridurli.
+
+<Say who="assistente">Copertura e speculazione usano gli stessi strumenti. Cambia lo scopo, e quanto si espone chi li usa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La put protettiva">
+Marta compra **1 put per azione**: strike **90**, premio **3** per azione, quindi 3 × 100 = **300 euro** di costo.
+
+Valore del portafoglio a scadenza, azioni più put, meno il premio:
+
+<Log lines={[
+  "S (Alfa)   azioni     put (K 90)   costo   totale",
+  "--------   -------    ----------   -----   ------",
+  "70         7.000      +2.000       -300    8.700",
+  "90         9.000      0            -300    8.700",
+  "100        10.000     0            -300    9.700",
+  "120        12.000     0            -300    11.700",
+]} />
+
+- Perdita massima: da 10.000 a 8.700 = **1.300 euro** (10 per azione di calo, più 3 di premio).
+- Se Alfa sale, guadagna ancora, ma **300 euro in meno**: è il prezzo dell'ombrello.
+
+Un'altra voce, in inglese con sottotitoli, mostra una copertura con i futures:
+
+<Video />
+
+<Say who="sensei">Con la put, la perdita ha un tetto. Ma il tetto si paga. Se non succede niente, i 300 euro sono andati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Coprirsi con i futures">
+Il panificio di Elio compra grano: teme un rialzo. Compra un **future long** a 200 euro la tonnellata, 10 tonnellate.
+
+<Guided
+  steps={[
+    "Grano a 240 a marzo: costa 40 euro in più a tonnellata, +400 euro di spesa.",
+    "Il future guadagna (240 - 200) × 10 = +400 euro. I due effetti si annullano.",
+    "Grano a 170: risparmia 300 euro sul grano, ma il future perde (170 - 200) × 10 = -300.",
+    "Conclusione: con la copertura Elio paga circa 200 a tonnellata in ogni caso. Ha tolto il rischio, e anche il possibile risparmio.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Coprire **più** del necessario (per esempio comprare futures per 100 tonnellate se ne servono 10) non è più copertura: è una scommessa.
+</Callout>
+
+<Say who="sensei">Una copertura perfetta non esiste: il grano che compri può non seguire esattamente il future. Si chiama rischio di base.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un portafoglio fittizio di 100 azioni a 50 euro ha una put protettiva con strike 45 e premio 2 per azione. Qual è la perdita massima a scadenza?"
+  options={[
+    "700 euro: (50 - 45 + 2) × 100",
+    "500 euro: (50 - 45) × 100",
+    "200 euro: il solo premio",
+    "Nessuna: la put elimina ogni rischio"
+  ]}
+  answer={0}
+  explain="Sotto 45 la put compensa il calo: restano 5 di calo fino allo strike più 2 di premio, cioè 7 per azione, 700 su 100 azioni. Chi dimentica il premio dice 500; chi dice 'nessuna perdita' crede che una copertura sia gratis."
+/>
+
+<Say who="assistente">Indizio: la perdita massima è la distanza tra prezzo e strike, più quello che hai pagato per proteggerti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli su put protettive e coperture con futures. Numeri fittizi.
+
+<Practice generator="h05-coperture" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi si copre sa quanto paga e che cosa rinuncia: è già un passo avanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una copertura (hedge) è una posizione che guadagna quando l'altra perde: ha sempre un costo e non elimina ogni rischio.
+- Put protettiva: perdita massima = (prezzo - strike + premio) per azione; i guadagni restano, meno il premio.
+- Futures: fissano il prezzo ma tolgono anche il vantaggio di un prezzo favorevole. Coprire più del necessario è speculazione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una put protettiva?", a: "Una put comprata per limitare la perdita su azioni che si possiedono" },
+    { q: "100 azioni a 100, put K 90, premio 3: perdita massima?", a: "1.300 euro" },
+    { q: "Che cos'è il rischio di base?", a: "La copertura non segue esattamente ciò che copre" },
+    { q: "Una copertura è gratis?", a: "No: costa un premio o rinuncia a guadagni" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli swap, contratti per scambiarsi flussi di denaro. Tassi fissi contro tassi variabili.</Say>
+</Scene>

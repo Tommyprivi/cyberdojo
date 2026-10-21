@@ -1,0 +1,184 @@
+---
+id: C.20.001
+course: cybersecurity
+module: 20
+title: "Playbook e runbook"
+belt: marrone
+duration_min: 10
+prerequisites: [C.09.006]
+objectives:
+  - "Distinguere un playbook (chi decide e perché) da un runbook (i passi operativi)"
+  - "Scrivere un runbook breve con attivazione, passi, controlli e punto di escalation"
+  - "Riconoscere i difetti di un piano che non funziona alle tre di notte"
+video:
+  provider: youtube
+  id: "3_sS0ZfhrvA"
+  start: 0
+  end: 321
+  channel: "CodeLucky"
+  title: "Incident Runbooks: Step-by-Step Response Guide"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-runbook
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un piano lunghissimo che nessuno legge durante l'emergenza"
+  - "Confondere il playbook (decisioni e ruoli) con il runbook (passi eseguibili)"
+  - "Non provare mai il runbook: i comandi e i contatti scritti si scoprono sbagliati solo il giorno dell'incidente"
+commands: []
+---
+
+<Scene title="Il piano nel cassetto">
+**Bianchi Logistica** (azienda fittizia) ha un «Piano di risposta agli incidenti» di 48 pagine. Alle **03:20** il sistema di monitoraggio segnala che l'account di una responsabile di magazzino ha scaricato 9.000 file in dieci minuti.
+
+Il tecnico di turno apre il piano. Pagina 17: «Valutare l'opportunità di disabilitare l'account». Non dice **chi** decide, **come** si disabilita, **chi** va avvisato. Passano 40 minuti.
+
+La domanda del caso: **come si scrive un piano che funziona quando si è stanchi, di notte, sotto pressione?**
+
+<Say who="sensei">Un piano non si scrive per chi ha tempo. Si scrive per chi ha sonno e paura di sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Playbook: la strategia">
+Un **playbook** descrive **come l'organizzazione affronta un tipo di incidente**: account compromesso, ransomware, fuga di dati, phishing. Risponde a domande di **decisione**:
+
+- che cosa **attiva** il playbook (quando lo si apre)?
+- **chi** guida e **chi** può prendere le decisioni difficili (isolare un sistema di produzione, avvisare i clienti)?
+- quali sono le **fasi** (viste in C.09: rilevazione, contenimento, eradicazione, ripristino, lezioni apprese)?
+- quando si **sale di livello** (escalation) e chi si avvisa?
+
+Pensa al **piano di evacuazione** di un edificio: dice chi suona l'allarme, dove ci si raduna, chi conta le persone.
+
+<Callout kind="regola">
+Il playbook risponde a **chi decide e quando**. È breve (1-3 pagine per scenario) e si legge in due minuti.
+</Callout>
+
+<Say who="assistente">Il playbook non ti dice quale tasto premere. Ti dice a chi chiedere il permesso di premerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Runbook: i passi">
+Un **runbook** è la **scheda operativa** di un compito preciso: «come disabilitare un account», «come isolare un computer dalla rete», «come bloccare un indirizzo sul firewall». Risponde a «**come si fa, passo per passo**».
+
+Un buon runbook ha sempre le stesse parti:
+
+1. **Quando si usa** (l'attivazione);
+2. **Chi lo esegue** e con quali permessi;
+3. **Passi numerati**, uno per riga, senza ambiguità;
+4. **Controllo dopo ogni passo meno ovvio** («verifica che l'account risulti disabilitato»);
+5. **Cosa non fare** (per esempio: non cancellare l'account, serve come prova);
+6. **Quando fermarsi e chiamare** qualcuno, con il numero.
+
+<Callout kind="trucco">
+Se un passo contiene «valutare», «eventualmente» o «se opportuno», non è un passo: è una decisione, e va nel playbook con un nome accanto.
+</Callout>
+
+<Say who="sensei">Il runbook deve poterlo eseguire un collega bravo ma nuovo, senza telefonare a nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un runbook svolto">
+Ecco il runbook di Bianchi Logistica per l'**account sospetto** (tutto fittizio). Nota quanto è corto.
+
+<Log lines={[
+  "RUNBOOK RB-07  Account utente con comportamento sospetto",
+  "Attivazione: allarme 'download massivo' o segnalazione dell'utente",
+  "Esegue: tecnico di turno (ruolo Operatore IT)",
+  "1. Annota l'ora e il nome account nel diario dell'incidente",
+  "2. Sospendi l'account (NON cancellarlo) dal pannello utenti",
+  "3. Termina le sessioni attive e revoca i token di accesso",
+  "4. Controllo: l'account risulta sospeso e nessuna sessione e' attiva",
+  "5. Telefona al responsabile dell'utente: e' stato lui? (canale: telefono)",
+  "6. Salva i log degli ultimi 7 giorni dell'account in cartella 'prove'",
+  "Escalation: se i file scaricati contengono dati personali -> chiama il Responsabile IR",
+  "Non fare: non reimpostare la password prima del punto 6",
+  "Ultimo test: 12 settembre   Prossimo test: 12 dicembre",
+]} caption="Una pagina. Ogni passo si esegue senza interpretare." />
+
+Il passo 5 è furbo: una **telefonata** distingue un collega che lavora da casa da un intruso, e non passa dal canale che potrebbe essere compromesso.
+
+<Say who="assistente">Guarda l'ultima riga: la data dell'ultimo test. Un runbook mai provato è una speranza scritta su carta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal playbook al runbook">
+I due documenti lavorano insieme. Il playbook «Account compromesso» dice, per esempio:
+
+| Momento | Decide | Azione |
+|---|---|---|
+| Allarme di download massivo | Operatore IT | Esegue RB-07 (sospendere l'account) |
+| Compaiono dati personali nei file | Responsabile IR | Apre l'incidente, valuta la notifica |
+| Dati di molti clienti coinvolti | Direzione + legale | Decide su comunicazioni e autorità |
+
+La colonna **«Decide»** è il cuore: un nome o un ruolo, mai «il team». Ogni runbook è chiamato da una riga del playbook.
+
+Vuoi sentirlo raccontare da un'altra voce? Pochi minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Callout kind="curiosita">
+Molti runbook ripetitivi (bloccare un indirizzo, sospendere un account) si possono **automatizzare** con strumenti detti SOAR. Ma si automatizza solo ciò che è stato prima scritto, provato e capito da una persona.
+</Callout>
+
+<Say who="sensei">Prima si scrive, poi si prova, poi si automatizza. Mai al contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un runbook dice: «Valutare se isolare il server; se opportuno, avvisare la direzione». Cosa non va e come lo correggi?"
+  options={[
+    "Contiene decisioni vaghe: va separato in un passo eseguibile (isola il server) e in una decisione con un nome e una condizione (se i dati dei clienti sono coinvolti, il Responsabile IR avvisa la direzione)",
+    "Va allungato con più paragrafi che spiegano la teoria dell'isolamento di rete",
+    "Va tolto dal runbook e lasciato alla sensibilità di chi è di turno",
+    "Va scritto in inglese, perché i termini tecnici sono inglesi",
+  ]}
+  answer={0}
+  explain="«Valutare» e «se opportuno» sono giudizi lasciati a chi è stanco e senza autorità. Il runbook deve essere eseguibile; le decisioni vanno nel playbook con un responsabile e una condizione chiara. Più teoria e più pagine peggiorano il problema."
+/>
+
+<Say who="assistente">Indizio: se il compito richiede un permesso, il nome di chi lo dà deve essere scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su playbook, runbook, attivazione ed escalation. Servono tutte e **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c20-runbook" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi scrive bene i piani dorme meglio, e fa dormire meglio gli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il playbook dice chi decide, quando si attiva e quando si sale di livello; il runbook dice i passi per eseguire un compito.
+- Un buon runbook ha attivazione, esecutore, passi numerati, controlli, cosa non fare ed escalation: una pagina, nessuna ambiguità.
+- Piani e runbook si provano a intervalli regolari e si aggiornano: la data dell'ultimo test fa parte del documento.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Playbook o runbook: chi decide se avvisare i clienti?", a: "Il playbook, con un ruolo preciso accanto" },
+    { q: "Playbook o runbook: i passi per sospendere un account?", a: "Il runbook, numerati e con un controllo" },
+    { q: "Perché nel runbook si sospende l'account invece di cancellarlo?", a: "Perché serve come prova e per capire cosa è successo" },
+    { q: "Quale parte del runbook dice quando chiamare qualcuno?", a: "L'escalation, con il numero di telefono" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la comunicazione di crisi. Il piano tecnico regge solo se anche le parole sono preparate.</Say>
+</Scene>

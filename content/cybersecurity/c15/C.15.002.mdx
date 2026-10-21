@@ -1,0 +1,181 @@
+---
+id: C.15.002
+course: cybersecurity
+module: 15
+title: "TLS: la configurazione che conta"
+belt: blu
+duration_min: 10
+prerequisites: [C.15.001]
+objectives:
+  - "Scegliere le versioni di TLS da consentire e quelle da spegnere"
+  - "Spiegare che cos'è la segretezza in avanti (forward secrecy) e perché protegge il passato"
+  - "Leggere il risultato di un controllo di configurazione e decidere che cosa correggere"
+video:
+  provider: youtube
+  id: "JA0vaIb4158"
+  start: 0
+  end: 600
+  channel: "Practical Networking"
+  title: "TLS 1.3 Handshake - many CHANGES from prior versions!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-tls
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare attive versioni vecchie (SSL 3.0, TLS 1.0 e 1.1) «per compatibilità»"
+  - "Pensare che HTTPS attivo basti: contano versioni, cifrari e intestazioni come HSTS"
+  - "Copiare una configurazione trovata in rete senza capire che cosa abilita"
+commands: []
+---
+
+<Scene title="Il voto C del portale">
+Torniamo a **Officine Bianchi**. Dopo il guasto del certificato, la direzione chiede un controllo. Un collega lancia un test di configurazione TLS, sul **proprio** portale, che è il suo da amministrare. Il risultato:
+
+<Log lines={[
+  "Protocolli:   TLS 1.3  sì | TLS 1.2  sì | TLS 1.1  sì | TLS 1.0  sì",
+  "Scambio chiavi: alcune suite senza segretezza in avanti",
+  "HSTS: assente",
+  "Voto complessivo: C",
+]} />
+
+Il sito «funziona» e il lucchetto c'è. Eppure il voto è basso.
+
+La domanda del caso: **che cosa è sbagliato in una connessione cifrata che funziona?**
+
+<Say who="sensei">Cifrare non basta. Bisogna cifrare con regole moderne. Il lucchetto è una promessa, la configurazione è il mantenimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quali versioni tenere">
+**TLS** è il protocollo che protegge la connessione HTTPS (e posta, VPN, molto altro). Esiste in versioni successive, e le vecchie hanno difetti noti.
+
+- **SSL 3.0, TLS 1.0, TLS 1.1**: obsolete. Le ultime due sono state ufficialmente ritirate dall'IETF nel 2021 (RFC 8996). Vanno **spente**.
+- **TLS 1.2** (2008): ancora accettabile se configurato bene. Si tiene per i client che non conoscono la 1.3.
+- **TLS 1.3** (2018, RFC 8446): la versione da preferire. Più veloce e più semplice: ha tolto di mezzo gli algoritmi deboli.
+
+<Callout kind="regola">
+Regola di base, in sintesi a ottobre 2026: **TLS 1.3 attivo e preferito, TLS 1.2 come minimo accettato, tutto il resto spento**.
+</Callout>
+
+<Say who="assistente">Ogni versione vecchia lasciata accesa è una porta aperta «per chi ne ha bisogno». Chiediti chi ne ha davvero bisogno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La segretezza in avanti">
+Immagina che un malintenzionato registri per mesi il traffico cifrato verso il tuo portale, senza poterlo leggere. Un giorno riesce a rubare la **chiave privata** del server. Può leggere tutto il traffico passato?
+
+Dipende dalla **segretezza in avanti** (*forward secrecy*). Con essa, ogni connessione usa una chiave di sessione **nuova**, ricavata con uno scambio chiavi **effimero** (ECDHE: Diffie-Hellman su curve ellittiche) e poi buttata via. La chiave privata del server serve solo a **firmare**, non a proteggere il contenuto.
+
+- **Senza** segretezza in avanti: rubare la chiave del server permette di aprire le registrazioni vecchie.
+- **Con** segretezza in avanti: le registrazioni vecchie restano illeggibili.
+
+<Callout kind="curiosita">
+In TLS 1.3 la segretezza in avanti è **obbligatoria**. In TLS 1.2 bisogna sceglierla, consentendo solo le suite con ECDHE.
+</Callout>
+
+Vuoi sentire come funziona lo scambio in TLS 1.3, da un'altra voce? In inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">La chiave rubata oggi non deve aprire il passato. Questo è il senso di «effimero».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Suite di cifratura e algoritmi">
+Una **suite di cifratura** è il pacchetto di algoritmi scelto durante la stretta di mano. In TLS 1.3 le suite sono poche e tutte buone:
+
+- `TLS_AES_256_GCM_SHA384`
+- `TLS_AES_128_GCM_SHA256`
+- `TLS_CHACHA20_POLY1305_SHA256`
+
+Sono tutte **AEAD**: cifrano e proteggono l'integrità insieme. In TLS 1.2, invece, si lasciano solo suite con ECDHE e AES-GCM o ChaCha20, e si tolgono quelle con **RC4**, **3DES**, **CBC con SHA-1**, **RSA senza scambio effimero** e le suite «export» o «NULL».
+
+Per le chiavi dei certificati: **RSA** da almeno 2048 bit (3072 per lunga durata) oppure **ECDSA** su curva P-256.
+
+<Callout kind="attenzione">
+Il futuro è già in arrivo: i computer quantistici potrebbero un giorno rompere RSA e le curve ellittiche. Molti browser e server già usano uno scambio chiavi **ibrido** (curva classica più un algoritmo post-quantistico, standardizzato dal NIST nel 2024). Per ora, in sintesi, basta tenere software aggiornato: queste novità arrivano con gli aggiornamenti.
+</Callout>
+
+<Say who="assistente">Non devi imparare i nomi a memoria. Devi sapere cosa togliere: ciò che è vecchio, ciò che è senza scambio effimero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una banca fittizia vuole spegnere TLS 1.0 e 1.1, ma teme di tagliare fuori alcuni clienti con vecchi dispositivi. Qual è l'approccio più sensato?"
+  options={[
+    "Misurare nei log quanti accessi usano versioni vecchie, avvisare chi li usa e poi spegnerle",
+    "Lasciarle attive per sempre, perché la compatibilità viene prima",
+    "Spegnere anche TLS 1.2, così si usa solo il più nuovo senza guardare i log",
+    "Cambiare il certificato, perché le versioni vecchie dipendono da lui",
+  ]}
+  answer={0}
+  explain="Si decide con i dati: i log dicono chi usa che cosa. Poi si avvisa e si spegne. Lasciare tutto acceso espone tutti per pochi; spegnere anche la 1.2 senza guardare taglierebbe fuori molti client; il certificato non decide la versione del protocollo."
+/>
+
+<Say who="assistente">Prima misura, poi decidi. Il log è il tuo amico quando devi togliere qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal voto C al voto A">
+Torniamo al risultato di Officine Bianchi e ragioniamo su ogni riga.
+
+<Guided
+  steps={[
+    "«TLS 1.1 sì, TLS 1.0 sì»: versioni ritirate. Si spengono. Si lasciano TLS 1.2 e 1.3.",
+    "«Suite senza segretezza in avanti»: si tolgono le suite TLS 1.2 senza ECDHE. Il traffico di oggi non dovrà dipendere dalla chiave privata di domani.",
+    "«HSTS assente»: HSTS è un'intestazione con cui il sito dice al browser «da ora in poi parlami solo in HTTPS». Evita che qualcuno dirotti la prima richiesta verso la versione non cifrata. Si attiva con una durata lunga, dopo aver verificato che tutto il sito funzioni in HTTPS.",
+    "Il reindirizzamento da HTTP a HTTPS resta, ma da solo non basta: la prima richiesta passa ancora in chiaro, ed è questo che HSTS chiude.",
+    "Si riesegue il test (sul proprio portale) e si salva il risultato come riferimento. La configurazione va ricontrollata dopo ogni aggiornamento del server.",
+  ]}
+/>
+
+<Callout kind="regola">
+Testare la configurazione TLS si fa solo sui sistemi **tuoi** o su cui hai un permesso scritto: un test di questo tipo è una richiesta di rete reale e, su sistemi altrui senza permesso, può violare l'art. 615-ter del codice penale (accesso abusivo a sistema informatico). In laboratorio, si prova sui propri server di prova.
+</Callout>
+
+<Say who="sensei">Un voto A non è un trofeo. È il punto di partenza: la configurazione cambia ogni anno, il controllo anche.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di configurazione: versioni, suite, segretezza in avanti e HSTS.
+
+<Practice generator="c15-tls" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Bene: ora sai che cosa spegnere, e perché.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- TLS 1.3 preferito, TLS 1.2 come minimo, SSL 3.0 e TLS 1.0/1.1 spenti.
+- La segretezza in avanti (ECDHE) fa sì che rubare la chiave del server oggi non apra il traffico di ieri.
+- HSTS dice al browser di usare solo HTTPS; si testa sempre solo ciò che è proprio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali versioni di TLS si spengono?", a: "SSL 3.0, TLS 1.0 e TLS 1.1" },
+    { q: "Che cos'è la segretezza in avanti?", a: "Chiavi di sessione effimere: la chiave privata rubata non apre il traffico passato" },
+    { q: "A che cosa serve HSTS?", a: "A dire al browser di usare solo HTTPS con quel sito" },
+    { q: "Che cosa sono le suite AEAD?", a: "Pacchetti che cifrano e proteggono l'integrità insieme, come AES-GCM e ChaCha20-Poly1305" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le chiavi stanno sotto tutto questo. Dove si tengono, chi le tocca, quando si cambiano.</Say>
+</Scene>

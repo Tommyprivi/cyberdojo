@@ -25,6 +25,7 @@ Data: 2026-10-13
 ## Qualità contenuti
 - Stati: `draft` → `ai-reviewed` → `tested` (comandi in CI) → `published`
 - `published` richiede l'approvazione esplicita del titolare. Per C8 (attacco etico) la revisione umana è obbligatoria
+- **Modifica del 2026-10-20 (decisione del titolare in chat):** non serve la sua approvazione lezione per lezione. Si pubblica tutto ciò che ha un video; la regola resta «una lezione pubblicata deve avere un video». La revisione di fatti, calcoli, domande e sicurezza è fatta da revisori indipendenti (agenti) prima della pubblicazione. Il flag `video.reviewed` non è più un requisito per pubblicare (resta come informazione) e `human_reviewed` non è più richiesto per C8: il titolare lo ha accettato, con la raccomandazione di dare comunque un'occhiata a C8. Le lezioni senza video restano `draft`.
 - Revisione IA con checklist fissa: correttezza tecnica, comandi, tono, accessibilità
 
 ## Design (sostituisce la sezione 8 della spec dove in conflitto)

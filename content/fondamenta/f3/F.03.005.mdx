@@ -1,0 +1,165 @@
+---
+id: F.03.005
+course: fondamenta
+module: 3
+title: "I processi: cosa sta girando"
+belt: gialla
+duration_min: 9
+prerequisites: [F.03.004]
+objectives:
+  - "Elencare i processi con ps e top e leggere PID e utente"
+  - "Terminare un processo con kill, scegliendo il segnale giusto"
+  - "Distinguere foreground e background"
+video:
+  provider: youtube
+  id: "wYwGNgsfN3I"
+  start: 0
+  end: 600
+  channel: "Learn Linux TV"
+  title: "Linux Crash Course - The ps Command"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-processi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare subito kill -9 invece di provare prima la richiesta gentile"
+  - "Terminare un processo senza sapere cosa fa"
+  - "Dimenticare che un comando con & parte in background e continua dopo che il terminale sembra libero"
+commands: []
+---
+
+<Scene title="Il server rallenta">
+Alle 02:40 il server dei dati diventa lento. Nessuno ha toccato niente. Qualcosa, in sottofondo, sta usando la macchina.
+
+La domanda del caso: **cosa sta girando?**
+
+<Say who="sensei">Un programma fermo è un file. Un programma in esecuzione è un processo. Il tuo lavoro è guardare i processi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cos'è un processo">
+Un **processo** è un programma **in esecuzione**. Quando apri un browser, parte un processo. Quando lanci un comando nel terminale, ne parte un altro.
+
+Ogni processo ha un numero, il **PID** (Process ID), che lo identifica finché è vivo. Ha anche un proprietario: l'utente che l'ha avviato, e di cui eredita i poteri.
+
+<Callout kind="regola">
+Il PID è la **targa** del processo: serve per riconoscerlo, indicarlo e, se serve, fermarlo.
+</Callout>
+
+<Say who="assistente">Un file `programma` sul disco è una ricetta. Un processo è il piatto in cottura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ps e top">
+Due comandi per guardare:
+
+- `ps`: una **fotografia** dei processi, istantanea
+- `top`: un **filmato**, che si aggiorna di continuo (si esce con `q`)
+
+<Log lines={[
+  "studente@lab:~$ ps aux | head -n 4",
+  "USER       PID %CPU %MEM COMMAND",
+  "root         1  0.0  0.1 /sbin/init",
+  "root       412  0.0  0.2 /usr/sbin/sshd",
+  "studente  3071 97.2  1.4 python3 raccolta.py",
+]} caption="Output semplificato: l'ultima riga usa il 97% della CPU." />
+
+`ps aux` mostra **tutti** i processi di tutti gli utenti. Le colonne che contano: **USER** (chi lo ha avviato), **PID** (la targa), **%CPU** e **%MEM** (quanto pesa), **COMMAND** (cosa è).
+
+Qui il colpevole sembra il PID 3071: un nostro script, fuori controllo.
+
+<Video />
+
+<Say who="sensei">Prima guardi. Poi capisci cosa è. Solo dopo decidi se fermarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="kill e i segnali">
+Per fermare un processo si usa `kill` con il suo PID. Il nome è brutale, ma il comando in realtà **invia un segnale**, cioè un messaggio al processo.
+
+I due che ti servono:
+
+- **SIGTERM (15)**, il predefinito: «per favore, chiuditi». Il processo può salvare i dati e uscire in ordine.
+- **SIGKILL (9)**: «chiuditi adesso». Il sistema lo ferma di forza, senza salvataggi.
+
+<Log lines={[
+  "studente@lab:~$ kill 3071",
+  "studente@lab:~$ ps -p 3071",
+  "    PID TTY          TIME CMD",
+  "studente@lab:~$ kill -9 4410",
+]} caption="Prima kill 3071: il processo è sparito dall'elenco. kill -9 si usa solo se quello gentile non basta." />
+
+<Callout kind="attenzione">
+Ordine giusto: prima `kill PID`, poi, **solo se non risponde**, `kill -9 PID`. Chi parte subito col 9 rischia di perdere dati.
+</Callout>
+
+<Say who="assistente">Puoi fermare solo i tuoi processi. Per quelli degli altri servirebbe sudo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Foreground e background">
+Quando lanci un comando lungo, il terminale resta occupato finché non finisce: è in **primo piano** (foreground).
+
+Con una `&` alla fine, il comando parte **in background**: continua a lavorare e ti ridà subito il terminale.
+
+<Log lines={[
+  "studente@lab:~$ sleep 60 &",
+  "[1] 5120",
+  "studente@lab:~$ jobs",
+  "[1]+  Running                 sleep 60 &",
+  "studente@lab:~$ kill 5120",
+]} caption="[1] è il numero di lavoro, 5120 il PID. jobs elenca i lavori in background." />
+
+Un comando in primo piano si interrompe con **Ctrl+C**.
+
+<Quiz
+  question="Un processo sconosciuto usa il 95% della CPU in top. Qual è il primo passo ragionevole?"
+  options={["Annotare PID e nome e capire di cosa si tratta, prima di fermarlo", "Fermarlo subito con kill -9", "Ignorarlo: è solo un numero", "Spegnere il server"]}
+  answer={0}
+  explain="Un processo può essere inutile, ma anche essenziale (un servizio, un backup). Prima si guarda USER e COMMAND, poi si decide. Chi risponde kill -9 rischia di fermare ciò che serve e di perdere dati."
+/>
+
+<Say who="sensei">Fermare un processo senza sapere cos'è è come spegnere una macchina a caso in ospedale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ps, top, PID, kill e background. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-processi" pass="5/5" retries={3} />
+
+<Say who="sensei">Il server rallentava per uno script nostro, dimenticato. Ora sai trovarlo e fermarlo con ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un processo è un programma in esecuzione, con un PID e un proprietario. `ps` lo fotografa, `top` lo mostra in diretta.
+- `kill PID` chiede di chiudersi (SIGTERM); `kill -9 PID` lo forza (SIGKILL): solo come ultima scelta.
+- Con `&` un comando parte in background; Ctrl+C interrompe quello in primo piano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è il PID?", a: "Il numero che identifica un processo in esecuzione" },
+    { q: "Differenza tra ps e top?", a: "ps è una fotografia, top si aggiorna di continuo" },
+    { q: "Quale segnale chiude in modo gentile?", a: "SIGTERM (15), quello predefinito di kill" },
+    { q: "Cosa fa una & alla fine del comando?", a: "Lo avvia in background" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i servizi, cioè i processi che devono girare sempre, senza che nessuno li lanci a mano.</Say>
+</Scene>

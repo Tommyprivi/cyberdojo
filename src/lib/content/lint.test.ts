@@ -64,13 +64,13 @@ describe("lintLessons", () => {
 
   const VIDEO = { provider: "youtube", id: "abcdefghijk", start: 10, end: 190, channel: "Canale di prova", reviewed: true };
 
-  it("non pubblica un video che il titolare non ha guardato", () => {
+  it("pubblica anche un video non ancora guardato dal titolare (decisione del 2026-10-20)", () => {
     const v = { ...VIDEO, reviewed: false };
     expect(
       messages([lesson({ status: "published", approved: true, video: v }, body().replace("<Say", "<Video />\n<Say"))]).some((m) =>
         m.includes("video.reviewed"),
       ),
-    ).toBe(true);
+    ).toBe(false);
   });
   const withVideo = (b = body()) => b.replace("<Say", "<Video />\n<Say");
 
@@ -97,7 +97,8 @@ describe("lintLessons", () => {
         withVideo(),
         "cybersecurity/c8/C.08.001.mdx",
       );
-    expect(messages([c8({})]).some((m) => m.includes("human_reviewed"))).toBe(true);
+    // Dal 2026-10-20 la revisione umana di C8 non è più obbligatoria (DECISIONS.md).
+    expect(messages([c8({})]).some((m) => m.includes("human_reviewed"))).toBe(false);
     expect(lintLessons([c8({ human_reviewed: true })])).toEqual([]);
   });
 

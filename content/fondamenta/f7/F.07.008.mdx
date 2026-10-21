@@ -1,0 +1,153 @@
+---
+id: F.07.008
+course: fondamenta
+module: 7
+title: "NAT e PAT: un indirizzo per tutti"
+belt: arancione
+duration_min: 9
+prerequisites: [F.07.007]
+objectives:
+  - "Spiegare come il NAT/PAT traduce indirizzi privati in uno pubblico"
+  - "Leggere una tabella di traduzione"
+  - "Spiegare perché il NAT non è un firewall"
+video:
+  provider: youtube
+  id: "hnpCHz7lEG8"
+  start: 0
+  end: 268
+  channel: "Valerio Mellini"
+  title: "Come funziona il NAT?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-nat
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il NAT non è un firewall: un effetto collaterale non sostituisce un filtro scelto"
+  - "Con il NAT cambia l'indirizzo IP, ma il pacchetto non diventa anonimo"
+  - "Il PAT distingue i dispositivi con le porte, non con gli indirizzi"
+commands: []
+---
+
+<Scene title="Un solo indirizzo, cinquanta PC">
+Ricordi la riga del turno di notte? L'indirizzo `192.168.1.66` era **privato**: non viaggia su Internet. Eppure la postazione naviga.
+
+Il provider dà all'azienda **un solo indirizzo pubblico**, e dentro ci sono cinquanta computer. Come fanno tutti a uscire?
+
+<Say who="sensei">Gli indirizzi privati non escono su Internet. Qualcuno li traduce. Chiudiamo il modulo con lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il portinaio che traduce">
+Il **NAT** (Network Address Translation) è una funzione del router: quando un pacchetto esce, **sostituisce l'indirizzo privato di origine con l'indirizzo pubblico** del router. Quando torna la risposta, rimette l'indirizzo privato.
+
+È come il centralino di un'azienda: i dipendenti hanno interni, ma chi chiama da fuori vede **un solo numero**.
+
+<Callout kind="regola">
+NAT = traduzione di indirizzi tra rete privata e Internet. Gli indirizzi privati restano dentro; all'esterno si vede quello pubblico.
+</Callout>
+
+<Say who="assistente">Fuori vedono il centralino. Dentro, chi ha chiamato lo sa solo il centralino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella di traduzione">
+Con cinquanta PC e un solo indirizzo pubblico, come fa il router a non confondere le risposte? Usa anche le **porte**. Questa versione si chiama **PAT** (Port Address Translation), ed è quella che si usa nelle reti di casa e d'ufficio.
+
+Il router tiene una **tabella di traduzione**:
+
+<Log lines={[
+  "interno             esterno",
+  "192.168.1.50:51000  198.51.100.7:40001",
+  "192.168.1.66:51532  198.51.100.7:40002",
+  "192.168.1.70:49800  198.51.100.7:40003"
+]} caption="Tabella fittizia: tre PC, un solo indirizzo pubblico, tre porte diverse." />
+
+La risposta arriva a `198.51.100.7:40002`: il router guarda la tabella, capisce che è per `192.168.1.66` e glielo consegna.
+
+<Callout kind="curiosita">
+Il NAT ha permesso di fare a meno di un indirizzo pubblico per ogni dispositivo, quando gli indirizzi IPv4 stavano finendo. L'indirizzo `198.51.100.7` usato qui è un valore riservato agli esempi.
+</Callout>
+
+Un'altra voce, per vederlo in azione:
+
+<Video />
+
+<Say who="sensei">Stesso indirizzo pubblico per tutti, porte diverse. La tabella è la memoria del router.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il NAT non è un firewall">
+Un effetto del NAT: se nessuno dentro ha iniziato una conversazione, il router non sa a chi consegnare un pacchetto in arrivo dall'esterno, e di solito lo scarta. Sembra una protezione.
+
+Ma **non è un firewall**:
+
+- non è stato **progettato** per filtrare, e non ha regole di sicurezza;
+- non controlla **che cosa** esce: un programma malevolo già dentro la rete può chiamare fuori senza problemi, e la risposta rientra;
+- chi ha **aperto un inoltro di porta** (port forwarding) ha reso un servizio interno raggiungibile da fuori;
+- non impedisce a un utente di aprire un allegato dannoso.
+
+<Callout kind="attenzione">
+Un firewall decide con **regole scelte**: «questo traffico sì, quest'altro no». Il NAT traduce e basta. Servono entrambi, ciascuno per il proprio compito.
+</Callout>
+
+<Say who="assistente">Un portinaio che non sa dove portare un pacco non è una guardia. È solo un portinaio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amministratore dice: «Siamo dietro il NAT, quindi non serve un firewall». Che cosa rispondi?"
+  options={[
+    "Il NAT traduce indirizzi ma non filtra in modo scelto: non controlla il traffico in uscita e non vale più se c'è un inoltro di porta",
+    "Ha ragione: il NAT blocca ogni tipo di attacco",
+    "Ha ragione, ma solo se il router usa il PAT",
+    "Ha torto: il NAT cifra tutto il traffico e quindi è inutile"
+  ]}
+  answer={0}
+  explain="Il NAT non è stato progettato per proteggere: scarta il traffico in arrivo non richiesto solo come effetto collaterale, e non limita ciò che esce. Con un inoltro di porta un servizio diventa raggiungibile. Il PAT non cambia questo. E il NAT non cifra niente."
+/>
+
+<Say who="sensei">Un effetto collaterale non è una difesa. Le difese si scelgono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Tabelle di traduzione e domande sul NAT. Hai 3 tentativi.
+
+<Practice generator="f07-nat" pass="5/5" retries={3} />
+
+<Say who="sensei">Se capisci la tabella, capisci il NAT. Il resto è ragionamento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il NAT traduce gli indirizzi privati in uno pubblico; il PAT usa anche le porte per distinguere i dispositivi.
+- Il router tiene una tabella di traduzione: interno ↔ esterno.
+- Il NAT non è un firewall: non filtra con regole scelte e non controlla il traffico in uscita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa cambia il NAT in un pacchetto in uscita?", a: "L'indirizzo di origine: da privato a pubblico" },
+    { q: "Che cosa aggiunge il PAT?", a: "L'uso delle porte per distinguere i dispositivi con lo stesso indirizzo pubblico" },
+    { q: "Dove il router ricorda le traduzioni?", a: "Nella tabella di traduzione" },
+    { q: "Il NAT sostituisce un firewall?", a: "No: traduce, non filtra con regole scelte" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Sai come i pacchetti partono, trovano il nome, parlano con il sito, ottengono un indirizzo ed escono. La rete non ha più misteri di base.</Say>
+</Scene>

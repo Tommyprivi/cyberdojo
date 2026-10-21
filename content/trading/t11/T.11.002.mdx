@@ -1,0 +1,169 @@
+---
+id: T.11.002
+course: trading
+module: 11
+title: "Le feature: gli indizi per il modello"
+belt: blu
+duration_min: 9
+prerequisites: [T.11.001]
+objectives:
+  - "Spiegare che cos'è una feature e costruirne qualcuna con pandas (rendimento, media mobile)"
+  - "Calcolare a mano una media mobile e capire perché le prime righe sono NaN"
+  - "Riconoscere il rischio di creare troppe feature su pochi dati"
+video:
+  provider: youtube
+  id: "QLlywrWuXag"
+  start: 0
+  end: 600
+  channel: "Outcome School"
+  title: "Feature Engineering in Machine Learning"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-feature
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare i prezzi grezzi invece dei rendimenti, che hanno una scala confrontabile"
+  - "Creare decine di feature su pochi giorni: prima o poi una «funziona» per caso"
+  - "Dimenticare che le prime righe di una media mobile sono NaN"
+commands: []
+---
+
+<Scene title="Che indizi dare?">
+Giulia vuole un modello che dica se domani il prezzo di un'azienda fittizia sale o scende. Ha una tabella di prezzi di chiusura, e basta.
+
+Un modello non «guarda il grafico» come una persona: riceve **numeri in ingresso**. Quali? Il prezzo di oggi? Quelli di ieri? Una media? Quanto ha oscillato?
+
+La domanda del caso: **come si trasformano i prezzi grezzi in buoni indizi?**
+
+<Say who="sensei">Un modello è bravo quanto gli indizi che riceve. E in borsa gli indizi buoni sono pochi. Lavora con ordine, e ricorda: questo corso è educazione, non consulenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una feature">
+Una **feature** («caratteristica») è un'informazione in ingresso che il modello usa per decidere. Ogni riga della tabella è un giorno; ogni colonna di indizi è una feature.
+
+Convenzione di tutta la lezione: **la riga del giorno t contiene solo ciò che si sa a fine giornata t**.
+
+Esempi comuni:
+
+- il **rendimento di oggi**, cioè di quanto è cambiato il prezzo (nel corso usiamo il rendimento semplice, in %);
+- la **media mobile** dei rendimenti degli ultimi giorni;
+- la **volatilità** degli ultimi giorni, cioè quanto sono ampie le oscillazioni;
+- il **volume relativo**: il volume di oggi diviso la media dei volumi recenti.
+
+<Callout kind="trucco">
+Meglio i **rendimenti** dei prezzi. Un prezzo da 100 e uno da 1000 non sono confrontabili; un rendimento del +1% lo è sempre.
+</Callout>
+
+<Say who="assistente">Una feature è come un indizio in un'indagine. Utile solo se sapevi già quell'informazione quando dovevi decidere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La media mobile, a mano">
+Rendimenti giornalieri fittizi, in %, di sei giorni: **1, −2, 3, −1, 2, 1**.
+
+La **media mobile a 2 giorni** è la media tra il rendimento di oggi e quello di ieri.
+
+| giorno | rendimento | media a 2 giorni |
+|---|---|---|
+| 1 | 1 | non esiste (manca ieri) |
+| 2 | −2 | (1 + (−2)) / 2 = −0,5 |
+| 3 | 3 | (−2 + 3) / 2 = 0,5 |
+| 4 | −1 | (3 + (−1)) / 2 = 1,0 |
+| 5 | 2 | (−1 + 2) / 2 = 0,5 |
+| 6 | 1 | (2 + 1) / 2 = 1,5 |
+
+Lo stesso in pandas:
+
+```python
+import pandas as pd
+
+r = pd.Series([1, -2, 3, -1, 2, 1])   # rendimenti in %
+media2 = r.rolling(2).mean()
+print(media2.tolist())
+```
+
+<Log lines={[
+  "[nan, -0.5, 0.5, 1.0, 0.5, 1.5]",
+]} />
+
+Il primo valore è **NaN** («non è un numero»): serve una finestra di 2 giorni e al primo giorno ne esiste uno solo. Quelle righe si eliminano prima di addestrare il modello.
+
+<Say who="sensei">NaN non è uno zero. È un buco. Se lo tratti come zero, inventi un dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Troppi indizi">
+Più feature non vuol dire modello migliore. Con **100 giorni** di dati e **80 feature** diverse, il modello ha tante possibilità di trovare per caso una combinazione che «funziona» nel passato.
+
+<Callout kind="attenzione">
+Due feature quasi uguali (la media a 5 e quella a 6 giorni) non aggiungono informazione: dicono la stessa cosa. E ogni feature in più è un'occasione in più di prendere un abbaglio.
+</Callout>
+
+Una buona regola: ogni feature ha **un'idea sensata** dietro. «Dopo giorni agitati l'oscillazione resta alta» è un'idea. «Il rendimento diviso il giorno della settimana per la data in numeri romani» no.
+
+Vuoi sentire come si ragiona sulle feature da un'altra voce? Un video in inglese, usa i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il video parla di dati in generale, non di borsa. Guarda soprattutto l'idea: pochi indizi sensati battono molti indizi a caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai 100 giorni di dati e crei 80 feature diverse per prevedere il verso di domani. Qual è il rischio principale?"
+  options={[
+    "Il modello trova per caso combinazioni che sembrano funzionare nel passato",
+    "Il programma diventa troppo lento",
+    "Le feature si annullano e il modello non impara più nulla",
+    "Nessuno: più feature fanno sempre meglio",
+  ]}
+  answer={0}
+  explain="Con pochi giorni e tante feature il modello ha molta libertà per adattarsi al rumore. È l'overfitting, che vedremo nell'ultima lezione. Più feature non sono più informazione."
+/>
+
+<Say who="sensei">Pochi indizi, ognuno con un perché. È la disciplina che ti salva dai modelli «magici».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli a mano e scenari su feature e media mobile. Ricontrolla ogni calcolo.
+
+<Practice generator="t11-feature" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ogni feature è una promessa: dimostra che la mantiene, prima di crederci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una feature è un'informazione in ingresso; la riga del giorno t contiene solo ciò che si sa a fine giornata t.
+- Rendimenti, medie mobili, volatilità e volume relativo sono feature comuni; le prime righe di una media mobile sono NaN.
+- Troppe feature su pochi giorni aumentano il rischio di trovare schemi dovuti al caso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una feature?", a: "Un'informazione in ingresso che il modello usa per decidere" },
+    { q: "Media a 2 giorni dei rendimenti 3 e −1?", a: "(3 + (−1)) / 2 = 1,0" },
+    { q: "Perché usare rendimenti e non prezzi?", a: "Perché i rendimenti sono confrontabili nel tempo, i prezzi cambiano scala" },
+    { q: "Perché la prima riga di rolling(2).mean() è NaN?", a: "Perché al primo giorno manca il giorno precedente" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il target, la cosa da prevedere. E un errore che fa sembrare tutti dei geni: la perdita di dati.</Say>
+</Scene>

@@ -1,0 +1,182 @@
+---
+id: T.03.004
+course: trading
+module: 3
+title: "MACD: due medie a confronto"
+belt: gialla
+duration_min: 9
+prerequisites: [T.03.003]
+objectives:
+  - "Costruire la linea MACD, la linea di segnale e l'istogramma da due EMA"
+  - "Leggere gli incroci e il segno del MACD come descrizione dello slancio, non come previsione"
+  - "Spiegare perché il MACD è in ritardo e dà falsi segnali nei mercati laterali"
+video:
+  provider: youtube
+  id: "kNfU0mCBoKg"
+  start: 0
+  end: 364
+  channel: "Interactive Brokers"
+  title: "Moving Average Convergence Divergence (MACD)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-macd
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un incrocio del MACD sia un segnale di acquisto o vendita certo"
+  - "Confondere la linea MACD (EMA 12 meno EMA 26) con la linea di segnale (EMA 9 del MACD)"
+  - "Confrontare i valori del MACD di titoli con prezzi molto diversi: non sono in scala comune"
+commands: []
+---
+
+<Scene title="Due medie, un solo numero">
+Chiara ha già imparato le medie mobili. Sul grafico di una azienda inventata, la **Bianchi Spa**, vede in basso due linee e delle barrette: è il **MACD**. A lei sembra magia.
+
+Non lo è: è fatto con **due EMA** che già conosci.
+
+La domanda del caso: **come si costruisce il MACD e che cosa descrive?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. I numeri sono inventati.
+</Callout>
+
+<Say who="sensei">Niente magia. Ogni indicatore è aritmetica con un nome elegante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La linea MACD">
+**MACD** sta per «moving average convergence divergence»: convergenza e divergenza di medie mobili. La **linea MACD** è semplicemente:
+
+**MACD = EMA a 12 periodi − EMA a 26 periodi**
+
+La EMA a 12 è la **veloce**, quella a 26 la **lenta**. Un esempio con numeri puliti:
+
+<Log lines={[
+  "EMA a 12 = 105",
+  "EMA a 26 = 102",
+  "MACD = 105 - 102 = 3",
+]} />
+
+Se la veloce è **sopra** la lenta, il MACD è **positivo**: i prezzi recenti stanno sopra la media più lunga. Se è sotto, è negativo. Se le due EMA sono uguali, il MACD vale 0.
+
+<Say who="assistente">Il MACD non è un prezzo: è la distanza tra due medie. Più si allontanano, più il numero cresce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnale e istogramma">
+Si aggiunge una seconda linea, la **linea di segnale**: una **EMA a 9 periodi del MACD** (non del prezzo). È una versione più lenta del MACD.
+
+La differenza tra le due è l'**istogramma**:
+
+**istogramma = MACD − linea di segnale**
+
+<Log lines={[
+  "MACD = 3,   segnale = 2    -> istogramma = 3 - 2 = 1",
+  "MACD = -1,5, segnale = -0,5 -> istogramma = -1,5 - (-0,5) = -1",
+]} />
+
+Quando l'istogramma passa da positivo a negativo, il MACD è sceso **sotto** la linea di segnale: è l'incrocio che molti guardano.
+
+<Callout kind="regola">
+MACD = EMA12 − EMA26. Segnale = EMA9 del MACD. Istogramma = MACD − segnale. Le impostazioni **12, 26, 9** sono una **convenzione**, non una legge.
+</Callout>
+
+<Say who="sensei">Attento ai segni. Meno un negativo fa un più: è lì che si sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provalo in Python">
+Costruiamo il MACD in Python puro, con due EMA più piccole (α = 0,5 e α = 0,25) per avere numeri facili da controllare a mano.
+
+<PythonTerminal height={340} code={`prezzi = [10, 12, 14, 16, 18, 20]
+
+def ema(valori, alfa):
+    risultato = [valori[0]]
+    for v in valori[1:]:
+        risultato.append(alfa * v + (1 - alfa) * risultato[-1])
+    return risultato
+
+veloce = ema(prezzi, 0.5)
+lenta = ema(prezzi, 0.25)
+macd = [a - b for a, b in zip(veloce, lenta)]
+
+print("EMA veloce, ultimo valore:", veloce[-1])
+print("EMA lenta, ultimo valore:", lenta[-1])
+print("MACD, ultimo valore:", round(macd[-1], 3))
+`} />
+
+Deve stampare 18.0625, 15.423828125 e 2.639. Il MACD è positivo: con prezzi che salgono la media veloce sta sopra quella lenta.
+
+Un'altra voce, in inglese con sottotitoli, spiega la stessa costruzione:
+
+<Video />
+
+<Say who="assistente">Nel terminale la lenta parte dal primo prezzo, come fanno molti programmi. Per questo i primi valori vanno presi con cautela.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ritardo e falsi segnali">
+Il MACD nasce da medie mobili, quindi eredita il loro difetto: è **in ritardo**. Quando incrocia, il prezzo si è già mosso.
+
+<Callout kind="attenzione">
+In un mercato **laterale** il MACD incrocia la linea di segnale di continuo e produce tanti **falsi segnali**. E poiché è espresso nella scala del prezzo, **non si possono confrontare** i valori di due titoli con prezzi molto diversi.
+</Callout>
+
+Chi prova decine di combinazioni (10, 20, 7... ) finché trova quella che «funzionava» sui dati passati rischia di adattarsi al caso, non al mercato: è l'**overfitting**, che incontreremo nel modulo sulle strategie.
+
+<Say who="sensei">Il MACD descrive lo slancio di ieri. Chi lo scambia per la mappa di domani prima o poi sbatte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="MACD = −1,5 e linea di segnale = −0,5. Quanto vale l'istogramma?"
+  options={["-1", "1", "-2", "-0,75"]}
+  answer={0}
+  explain="Istogramma = MACD − segnale = −1,5 − (−0,5) = −1,5 + 0,5 = −1. Chi risponde 1 ha perso il segno; chi risponde −2 ha sommato invece di sottrarre."
+/>
+
+<Say who="sensei">Scrivi la sottrazione per intero. Con i negativi, le scorciatoie fanno danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Costruzione del MACD, istogramma e letture prudenti.
+
+<Practice generator="t03-macd" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai costruire l'indicatore e conosci i suoi limiti: ottimo inizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- MACD = EMA a 12 − EMA a 26; segnale = EMA a 9 del MACD; istogramma = MACD − segnale.
+- Il segno e gli incroci descrivono lo slancio recente, non prevedono il prezzo.
+- È in ritardo e dà falsi segnali nei mercati laterali; 12, 26, 9 sono solo una convenzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola la linea MACD?", a: "EMA a 12 periodi − EMA a 26 periodi" },
+    { q: "Che cos'è la linea di segnale?", a: "Una EMA a 9 periodi della linea MACD" },
+    { q: "MACD = 3 e segnale = 2: istogramma?", a: "1" },
+    { q: "Perché il MACD è in ritardo?", a: "Deriva da medie mobili, calcolate su prezzi passati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le bande di Bollinger, che misurano quanto il prezzo balla attorno alla sua media.</Say>
+</Scene>

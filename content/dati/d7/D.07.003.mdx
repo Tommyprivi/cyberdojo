@@ -1,0 +1,150 @@
+---
+id: D.07.003
+course: dati
+module: 7
+title: "I colori"
+belt: arancione
+duration_min: 8
+prerequisites: [D.07.002]
+objectives:
+  - "Scegliere tra palette sequenziali, divergenti e categoriche"
+  - "Rendere un grafico leggibile anche con il daltonismo e con poco contrasto"
+  - "Usare un solo colore di enfasi per guidare l'occhio"
+video:
+  provider: youtube
+  id: "v5brQ4WTlmQ"
+  start: 0
+  end: 226
+  channel: "UNDATABLE"
+  title: "How To Use COLOR In Your Data Visualization - BEGINNERS GUIDE"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-colori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare un colore diverso a ogni elemento invece di usare un colore di enfasi"
+  - "Distinguere le categorie solo con rosso e verde"
+  - "Usare l'arcobaleno per dati continui o testo grigio chiaro su bianco"
+commands: []
+---
+
+<Scene title="Il grafico arcobaleno">
+Marta ha una mappa dei sei punti vendita della Bottega Verde colorata con sei colori vivacissimi: rosso, verde, giallo, viola, azzurro, arancione. Sembra una caramella.
+
+Un collega le dice che non capisce quale punto vendita sia il problema. Un altro, daltonico, dice che due punti vendita per lui sono identici.
+
+La domanda della lezione: **come si usa il colore per aiutare chi legge e non per decorare?**
+
+<Say who="sensei">Il colore non è decorazione. È un segnale. Se lo usi su tutto, non segnala più niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre palette, tre compiti">
+Esistono tre famiglie di palette. Ognuna risponde a un tipo di dato.
+
+| Palette | Dato | Come appare | Esempio matplotlib |
+| --- | --- | --- | --- |
+| Sequenziale | Dal poco al tanto (densità, vendite) | Un colore da chiaro a scuro | 'Blues' |
+| Divergente | Sopra o sotto un centro (differenza dalla media) | Due colori che partono da un centro neutro | 'RdBu' |
+| Categorica | Gruppi senza ordine (marche, reparti) | Colori ben distinti | 'tab10' |
+
+Un esempio: la differenza di vendite rispetto alla media, da -30 a +30. Il centro (zero) è speciale, quindi serve una palette divergente: blu per sotto, rosso per sopra, bianco al centro.
+
+<Callout kind="attenzione">
+Non usare l'arcobaleno per dati continui: non ha un ordine chiaro da chiaro a scuro e l'occhio vede confini che nei dati non ci sono. Per i dati continui, scegli una sequenziale come 'Blues' o 'viridis'.
+</Callout>
+
+<Say who="assistente">Domanda utile: i miei dati hanno un ordine? Se sì, sequenziale. Hanno un centro? Divergente. Sono gruppi? Categorica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Daltonismo e contrasto">
+Circa **1 uomo su 12** ha una forma di daltonismo, quasi sempre per rosso e verde. Per le donne è molto più raro, circa 1 su 200.
+
+Come si rende un grafico leggibile a tutti:
+- non distinguere due categorie **solo** con rosso e verde: blu e arancione funzionano meglio;
+- aggiungi una seconda indicazione: etichette dirette sulle linee, forme diverse dei punti, tratteggi;
+- scegli colori con **luminosità** diversa: se il grafico in bianco e nero si capisce ancora, va bene.
+
+**Contrasto:** testo e linee devono staccarsi dallo sfondo. Il grigio chiaro su bianco si legge male, soprattutto su un proiettore. Per il testo, il contrasto consigliato dalle regole di accessibilità (WCAG) è almeno 4,5 a 1.
+
+<Say who="sensei">Se hai dubbi, guarda il tuo grafico in bianco e nero. Quello che sparisce, era un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un colore di enfasi">
+Torniamo a Marta. Il problema è il punto vendita «Parco», che ha il tasso di reso più alto: 12%. Gli altri cinque stanno tra il 4% e il 6%.
+
+Come lo mostri?
+- Sei barre **grigie**, tutte uguali.
+- La barra di Parco in **arancione**.
+- Il titolo: «Parco ha il doppio dei resi degli altri punti vendita».
+
+L'occhio va subito dove serve. Con sei colori vivaci non ci sarebbe andato da nessuna parte.
+
+<Callout kind="trucco">
+Grigio per tutto ciò che è contesto, un solo colore per ciò che conta. È la tecnica più semplice e più efficace dei grafici professionali.
+</Callout>
+
+Un'altra voce su come usare il colore nei grafici, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Anche i colori hanno un significato culturale: rosso suona come pericolo, verde come via libera. Non invertire quei significati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi colorare un grafico con la differenza di voto di ogni classe rispetto alla media (da -3 a +3, con lo zero al centro). Quale palette scegli?"
+  options={["Divergente: due colori che partono da un centro neutro", "Sequenziale con un solo colore da chiaro a scuro", "Categorica con un colore per classe", "Arcobaleno, per rendere i dati più vivaci"]}
+  answer={0}
+  explain="Il valore zero ha un significato (esattamente nella media): sopra e sotto vanno colorati in modo diverso. La divergente lo fa. Una sequenziale non distingue bene sotto e sopra la media."
+/>
+
+<Say who="sensei">Prima guardi i dati, poi scegli la palette. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Palette, daltonismo, contrasto, enfasi: cinque scenari da risolvere.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-colori" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi, torna ai tre compiti delle palette. Il resto viene da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Sequenziale per dal poco al tanto, divergente per sopra o sotto un centro, categorica per gruppi senza ordine.
+- Per il daltonismo: non solo rosso e verde, aggiungi etichette o forme; per il contrasto: testo scuro su sfondo chiaro.
+- Un solo colore di enfasi su uno sfondo grigio guida l'occhio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale palette per la differenza dalla media?", a: "Divergente (esempio 'RdBu')" },
+    { q: "Quale palette per marche senza ordine?", a: "Categorica (esempio 'tab10')" },
+    { q: "Quanti uomini sono daltonici?", a: "Circa 1 su 12" },
+    { q: "Come si guida l'occhio su una barra?", a: "Tutte grigie, una sola con un colore di enfasi" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: i grafici che ingannano, e come smascherarli.</Say>
+</Scene>

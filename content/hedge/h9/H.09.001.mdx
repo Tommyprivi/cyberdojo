@@ -1,0 +1,168 @@
+---
+id: H.09.001
+course: hedge
+module: 9
+title: "Il quadro europeo: la AIFMD"
+belt: blu
+duration_min: 8
+prerequisites: [H.07.001]
+objectives:
+  - "Spiegare in sintesi che cosa regola la direttiva europea AIFMD"
+  - "Distinguere il gestore (AIFM) dal fondo e dal depositario"
+  - "Capire che un'autorizzazione non garantisce rendimenti"
+video:
+  provider: youtube
+  id: "5Ejti29IQzk"
+  start: 0
+  end: 600
+  channel: "Harneys"
+  title: "AIFMD explained: scope, thresholds, exemptions and compliance"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-aifmd
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «autorizzato» voglia dire «garantito»: l'autorizzazione riguarda regole e organizzazione, non i risultati"
+  - "Confondere il fondo con il gestore: le regole riguardano soprattutto chi gestisce"
+  - "Credere che un piccolo gestore sotto soglia non abbia nessuna regola"
+commands: []
+---
+
+<Scene title="Il volantino europeo">
+Nova Capital è un gestore fittizio. Il suo volantino dice: «**Gestore autorizzato secondo le regole europee. Investi con serenità.**»
+
+Elena, che studia economia, si chiede: **che cosa vuol dire davvero «autorizzato»? Mi protegge dalle perdite?**
+
+Ricorda: questo corso è educazione, non consulenza finanziaria né legale. Si può perdere denaro, anche tutto. I fatti normativi sono in sintesi, ottobre 2026: controlla sempre le fonti ufficiali.
+
+<Say who="sensei">I mercati non regalano niente, e una licenza non è una garanzia. Vediamo che cosa dice la regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la AIFMD">
+Gli hedge fund in Europa sono in gran parte **fondi di investimento alternativi**, in sigla **FIA**, in inglese AIF. La direttiva europea che li riguarda si chiama **AIFMD** (Alternative Investment Fund Managers Directive, del 2011).
+
+Un punto importante: la direttiva regola soprattutto **chi gestisce** il fondo, il **gestore** (in sigla AIFM), più che il fondo come «scatola».
+
+<Callout kind="regola">
+In sintesi: il gestore deve essere **autorizzato**, avere regole di **organizzazione**, controllare **rischio e liquidità**, usare un **depositario** e **informare** gli investitori e le autorità.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? In inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Ricorda la parola chiave: gestore. Le regole guardano a come lavora chi gestisce i soldi degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole in breve">
+Che cosa chiede la direttiva, in sintesi?
+
+- **Autorizzazione** dell'autorità del proprio Paese, con requisiti di organizzazione e di capitale.
+- **Gestione del rischio** e della **liquidità**, con funzioni e procedure scritte.
+- **Leva finanziaria** (il debito usato per investire di più) misurata, controllata e comunicata.
+- **Valutazione** delle attività con procedure chiare, e dove richiesto indipendenti.
+- **Trasparenza**: relazione annuale, informazioni agli investitori e segnalazioni periodiche alle autorità.
+
+<Callout kind="attenzione">
+Una regola scritta non è una garanzia di risultato. L'autorità controlla che il gestore rispetti le regole, non che il fondo guadagni.
+</Callout>
+
+<Say who="sensei">Regole chiare servono a ridurre gli abusi, non a eliminare il rischio. Sono due cose diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il depositario e il passaporto">
+Due idee da ricordare.
+
+**Il depositario.** Chi decide gli investimenti non deve avere da solo in mano i beni del fondo. Un soggetto separato, il **depositario**, custodisce le attività e controlla alcune operazioni. È un doppio paio di chiavi.
+
+**Il passaporto europeo.** Un gestore autorizzato può, seguendo le procedure, offrire il fondo a **investitori professionali** in altri Paesi dell'Unione. Per i piccoli risparmiatori le regole di vendita restano molto più strette.
+
+<Callout kind="curiosita">
+Esistono soglie di patrimonio sotto le quali un piccolo gestore ha regole più leggere (per esempio registrazione e segnalazioni). Le soglie dipendono dal tipo di fondo e dalla leva, e si controllano sui testi ufficiali.
+</Callout>
+
+La direttiva è stata aggiornata nel **2024** (la cosiddetta AIFMD II, da applicare dai Paesi entro aprile 2026): rafforza, tra altri aspetti, liquidità, segnalazioni e regole per i fondi che erogano prestiti. I dettagli nazionali cambiano da Paese a Paese: controlla le fonti ufficiali.
+
+<Say who="assistente">In Italia il gestore di solito è una SGR, società di gestione del risparmio. Ne parleremo nell'ultima lezione del modulo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nova Capital scrive: «Siamo autorizzati secondo la direttiva europea, quindi non perderai mai». Che cosa è corretto rispondere?"
+  options={[
+    "L'autorizzazione riguarda regole e organizzazione: non garantisce i risultati e si può perdere denaro",
+    "È vero: l'autorizzazione assicura il capitale",
+    "È vero, ma solo per i fondi che investono in obbligazioni",
+    "È falso perché i fondi autorizzati non possono investire in azioni",
+  ]}
+  answer={0}
+  explain="Autorizzazione significa che il gestore rispetta requisiti e controlli. Non esiste una licenza che assicuri i rendimenti. Una frase come «non perderai mai» è un campanello d'allarme."
+/>
+
+<Say who="sensei">Chi promette di non perdere mai sta vendendo una favola. Chiediti sempre chi garantisce davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controlla tu">
+Elena vuole capire se Nova Capital è davvero autorizzata. Ecco un ragionamento prudente.
+
+<Guided
+  steps={[
+    "Primo passo: non fidarsi del logo sul volantino, che chiunque può stampare.",
+    "Secondo passo: cercare la società negli elenchi ufficiali dell'autorità di vigilanza (in Italia Consob e Banca d'Italia, per l'Europa anche i registri delle autorità europee).",
+    "Terzo passo: leggere il documento informativo: strategia, rischi, costi, regole di rimborso.",
+    "Quarto passo: se qualcosa non torna (rendimenti garantiti, fretta, nessun nome verificabile), fermarsi e chiedere a un professionista indipendente.",
+  ]}
+/>
+
+<Say who="sensei">Verificare costa dieci minuti. Non verificare può costare tutto. Scegli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla AIFMD: scegli che cosa è corretto fare o pensare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-aifmd" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Si può essere autorizzati e perdere denaro: ricordalo sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La AIFMD regola soprattutto il gestore (AIFM) dei fondi alternativi: autorizzazione, organizzazione, rischio, depositario, trasparenza.
+- Il depositario separa chi decide gli investimenti da chi custodisce i beni del fondo.
+- L'autorizzazione non garantisce rendimenti: si controllano gli elenchi ufficiali e si può comunque perdere denaro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa regola la AIFMD?", a: "I gestori dei fondi di investimento alternativi (AIFM)" },
+    { q: "A che cosa serve il depositario?", a: "A custodire i beni del fondo, separando chi decide da chi custodisce" },
+    { q: "Un gestore autorizzato garantisce il rendimento?", a: "No: l'autorizzazione riguarda le regole, non i risultati" },
+    { q: "Dove si verifica se un gestore è autorizzato?", a: "Negli elenchi ufficiali delle autorità di vigilanza" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: MiFID II, le regole per chi vende e consiglia gli investimenti.</Say>
+</Scene>

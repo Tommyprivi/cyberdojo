@@ -6,6 +6,8 @@ import { BANKS, hexByteToDecimal, ipPrivatePublic, ipValid } from "./banks";
 import { CYBER_BANKS } from "./banks-cyber";
 import { DATI_BANKS } from "./banks-dati";
 import { FOND_BANKS } from "./banks-fond";
+import { HEDGE_BANKS } from "./banks-hedge";
+import { TRADING_BANKS } from "./banks-trading";
 import { parseChoiceAnswer, rng, type Question } from "./core";
 
 export { rng, shuffle, parseChoiceAnswer } from "./core";
@@ -82,7 +84,12 @@ const DATI_GENERATORS = Object.fromEntries(
   Object.entries(DATI_BANKS).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
 ) as typeof CYBER_GENERATORS;
 
+const FINANCE_GENERATORS = Object.fromEntries(
+  Object.entries({ ...TRADING_BANKS, ...HEDGE_BANKS }).map(([id, generate]) => [id, { generate, parse: parseChoiceAnswer }]),
+) as typeof CYBER_GENERATORS;
+
 export const GENERATORS = {
+  ...FINANCE_GENERATORS,
   ...DATI_GENERATORS,
   ...CYBER_GENERATORS,
   ...FOND_GENERATORS,

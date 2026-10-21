@@ -1,0 +1,185 @@
+---
+id: D.06.002
+course: dati
+module: 6
+title: "Eventi indipendenti e condizionati"
+belt: gialla
+duration_min: 10
+prerequisites: [D.06.001]
+objectives:
+  - "Moltiplicare e sommare le probabilità di eventi semplici"
+  - "Calcolare una probabilità condizionata contando i casi"
+  - "Riconoscere la trappola del falso positivo con un esempio alla Bayes"
+video:
+  provider: youtube
+  id: "Uu3dURDaezY"
+  start: 0
+  end: 600
+  channel: "Elia Bombardelli"
+  title: "Probabilità Condizionata - Eventi dipendenti ed Indipendenti ;)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-condizionata
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Sommare le probabilità quando serve moltiplicarle (e viceversa)"
+  - "Scambiare P(positivo dato malato) con P(malato dato positivo)"
+  - "Dimenticare che i malati sono pochi: il falso positivo domina quando la malattia è rara"
+commands: []
+---
+
+<Scene title="Il test che dà positivo">
+Luca, 16 anni, fa il test per una malattia rara. Risulta **positivo**. Il medico dice: «Il test è buono: riconosce il 90% dei malati».
+
+Luca è terrorizzato: «Allora ho il 90% di probabilità di essere malato!»
+
+Il medico sorride e dice: «No. Fermati, facciamo un conto insieme.»
+
+La domanda del caso: **dov'è l'errore di Luca?**
+
+<Say who="sensei">Questa è la trappola più famosa della statistica. Ci cadono anche i medici. Tu no, alla fine di questa lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eventi indipendenti: si moltiplica">
+Due eventi sono **indipendenti** se sapere che uno è accaduto non cambia la probabilità dell'altro.
+
+Per sapere che accadano **tutti e due**, si **moltiplica**:
+
+**P(A e B) = P(A) per P(B)**
+
+Esempi:
+- due monete, due teste: 1/2 per 1/2 = **1/4**;
+- un dado e una moneta, 6 e testa: 1/6 per 1/2 = **1/12**;
+- tre monete, tre teste: 1/2 per 1/2 per 1/2 = **1/8**.
+
+<Callout kind="attenzione">
+Moltiplicare **riduce** la probabilità: chiedere due cose insieme è più difficile che chiederne una.
+</Callout>
+
+<Say who="assistente">E, quindi moltiplico. Con indipendenti, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Oppure: si somma">
+Per sapere che accada **uno oppure l'altro**:
+
+- se non possono accadere insieme (eventi **incompatibili**), si **somma**: con un dado, P(1 oppure 2) = 1/6 + 1/6 = **1/3**;
+- se possono accadere insieme, bisogna togliere il caso contato due volte: **P(A o B) = P(A) + P(B) - P(A e B)**.
+
+Esempio: da un mazzo di 52 carte, «cuori oppure asso». I cuori sono 13, gli assi 4, ma l'asso di cuori è in entrambi i gruppi. Quindi: 13/52 + 4/52 - 1/52 = **16/52 = 4/13**.
+
+<Callout kind="trucco">
+Dice «e»: moltiplica. Dice «oppure»: somma (e togli il doppione, se c'è).
+</Callout>
+
+<Say who="sensei">Un caso contato due volte è un errore. Conta ogni caso una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Probabilità condizionata">
+A volte sappiamo già qualcosa. La **probabilità condizionata** P(A dato B) è la probabilità di A **quando sappiamo che B è accaduto**.
+
+Esempio: lanci un dado e ti dicono che è uscito un numero **pari**. Qual è la probabilità che sia un 6?
+
+I casi possibili ora sono solo 2, 4, 6. Il 6 è uno su tre: P(6 dato pari) = **1/3**, non 1/6.
+
+Regola: **P(A dato B) = casi con A e B insieme diviso casi con B**.
+
+Anche l'estrazione **senza rimessa** funziona così. Un'urna ha 4 palline rosse e 6 blu. Prima pallina rossa: 4/10. Poi, se non la rimetti dentro, restano 3 rosse su 9. Due rosse: 4/10 per 3/9 = 12/90 = **2/15**.
+
+<Callout kind="curiosita">
+Con rimessa le estrazioni sono indipendenti: 4/10 per 4/10 = 16/100 = 4/25. Senza rimessa dipendono l'una dall'altra.
+</Callout>
+
+<Say who="assistente">Quando sai qualcosa in più, il mondo dei casi possibili si restringe. Conta solo quelli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il falso positivo, con i numeri">
+Torniamo a Luca. Immagina **1000 persone**. Dati (inventati per l'esempio):
+- la malattia colpisce 1 persona su 100: sono **10 malate** e **990 sane**;
+- il test è positivo per il **90% dei malati** e anche per il **10% dei sani** (falsi positivi).
+
+<Guided
+  steps={[
+    "Malati positivi: il 90% di 10 fa 9.",
+    "Sani positivi: il 10% di 990 fa 99.",
+    "In tutto i positivi sono 9 + 99 = 108.",
+    "Tra i 108 positivi, i veri malati sono 9: 9/108 è circa 8%, cioè circa 1 su 12.",
+  ]}
+/>
+
+Luca, anche se positivo, ha circa l'**8%** di probabilità di essere malato, non il 90%. Il 90% era P(positivo dato malato). Quello che interessa a lui è P(malato dato positivo): un'altra cosa.
+
+<Callout kind="regola">
+Questa idea si chiama **teorema di Bayes**: aggiorna una probabilità di partenza (la malattia è rara) con una nuova informazione (il test è positivo). Quando la malattia è rara, i sani sono così tanti che anche pochi falsi positivi superano i veri malati.
+</Callout>
+
+<Say who="sensei">La domanda giusta non è «quanto è bravo il test?», ma «quanto è rara la malattia?». Dati sanitari: con privacy e consenso, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo stesso schema con lo spam">
+Stesso ragionamento, altro caso. Su **1000 email**, 100 sono spam. Il filtro blocca il 90% dello spam (90 email) e, per errore, il 5% di quelle legittime (900 per 5% fa 45 email).
+
+Email bloccate in tutto: 90 + 45 = 135. Di queste, quelle davvero spam: 90. Quindi tra le bloccate lo spam è **90/135 = 2/3**.
+
+Un terzo delle email bloccate è legittimo: per questo i filtri anti-spam hanno una cartella «Posta indesiderata» da controllare.
+
+Vuoi sentire un'altra voce sulle probabilità condizionate? Una decina di minuti, in italiano:
+
+<Video />
+
+<Quiz
+  question="Un test riconosce il 90% dei malati. Una persona risulta positiva. Possiamo dire che ha il 90% di probabilità di essere malata?"
+  options={["No: serve sapere quanto è rara la malattia e quanti falsi positivi dà il test", "Sì: il test ha il 90% di precisione", "Sì, ma solo se la malattia è grave", "No: è del 10%"]}
+  answer={0}
+  explain="Il 90% è la probabilità di essere positivi essendo malati. Quella che interessa è la probabilità di essere malati essendo positivi, che dipende anche dalla rarità della malattia e dai falsi positivi. Il 10% è la quota di falsi positivi sui sani, un'altra cosa ancora."
+/>
+
+<Say who="assistente">Due frecce diverse: da malato a positivo, da positivo a malato. Non scambiarle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande tra moltiplicazioni, somme, probabilità condizionate e falsi positivi. Hai 3 tentativi.
+
+<Practice generator="d06-condizionata" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa leggere un falso positivo non si spaventa per un solo esame e non si fida di un solo esame.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- «E» tra eventi indipendenti: si moltiplica. «Oppure»: si somma, togliendo il caso contato due volte.
+- Probabilità condizionata: casi con A e B diviso casi con B. Le estrazioni senza rimessa sono dipendenti.
+- Falso positivo: se la malattia è rara, la maggior parte dei positivi può essere sana. Non scambiare P(positivo dato malato) con P(malato dato positivo).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Due monete: probabilità di due teste?", a: "1/2 per 1/2 = 1/4" },
+    { q: "Dado: P(6 dato che è pari)?", a: "1/3" },
+    { q: "Malattia 1 su 100, test positivo al 90% dei malati e al 10% dei sani: P(malato dato positivo)?", a: "9 su 108, circa 8%" },
+    { q: "Quale errore fa chi crede che il test positivo voglia dire 90% malato?", a: "Scambia P(positivo dato malato) con P(malato dato positivo)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le distribuzioni, cioè le forme tipiche con cui il caso si dispone.</Say>
+</Scene>

@@ -1,0 +1,182 @@
+---
+id: F.04.007
+course: fondamenta
+module: 4
+title: "cron e automazione"
+belt: gialla
+duration_min: 10
+prerequisites: [F.04.006]
+objectives:
+  - "Leggere e scrivere una riga di crontab con i cinque campi"
+  - "Programmare un backup e la rotazione dei log"
+  - "Riconoscere gli errori comuni: PATH, percorsi relativi, simbolo %"
+video:
+  provider: youtube
+  id: "k8totuSsP_s"
+  start: 0
+  end: 600
+  channel: "morrolinux"
+  title: "Pianificare operazioni con CRONTAB | Linux"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-cron
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "I campi sono cinque e in questo ordine: minuto, ora, giorno del mese, mese, giorno della settimana (non ora e minuto)"
+  - "cron lavora con un PATH minimo e senza il tuo ambiente: usa percorsi assoluti per comandi e file"
+  - "Nel crontab il simbolo % ha un significato speciale: dentro un comando va scritto \\%"
+commands: []
+---
+
+<Scene title="Il backup che nessuno ricorda">
+Ogni notte alle **02:30** un backup dei dati dell'azienda deve partire. Nessuno ha voglia di svegliarsi a quell'ora, e prima o poi qualcuno dimenticherebbe.
+
+Ecco il dubbio del capo: **«Posso far partire lo script da solo, a ora fissata, ogni giorno?»** Sì: lo fa **cron**, un servizio di Linux che resta sveglio e, ogni minuto, controlla se c'è qualcosa da eseguire.
+
+<Say who="sensei">Ciò che si ripete uguale, si automatizza. Ciò che è automatizzato, si controlla. Oggi imparerai tutte e due le cose.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="crontab e i cinque campi">
+Le attività di cron stanno in un elenco personale, il **crontab**. Si apre con **`crontab -e`** (e), si legge con **`crontab -l`** (l, list). Ogni riga ha **cinque campi** seguiti dal comando:
+
+<Log lines={[
+  "# minuto  ora  giorno-del-mese  mese  giorno-della-settimana  comando",
+  "# 0-59    0-23 1-31             1-12  0-7 (0 e 7 = domenica)",
+  "studente@lab:~$ crontab -l",
+  "30 2 * * * /home/studente/backup.sh",
+]} caption="La riga dice: ogni giorno, alle 02:30, esegui backup.sh." />
+
+L'**asterisco `*`** significa «qualsiasi valore». Quindi `30 2 * * *` = minuto 30, ora 2, ogni giorno del mese, ogni mese, ogni giorno della settimana.
+
+<Callout kind="attenzione">
+L'ordine parte dal **minuto**, non dall'ora. `30 2` è le 02:30, non le 30 del giorno 2. Con **`crontab -r`** si cancella l'**intero** crontab senza chiedere conferma: non usarlo alla leggera.
+</Callout>
+
+<Say who="assistente">Leggi da sinistra a destra come una data scritta al contrario: minuto, ora, giorno, mese, giorno della settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere gli orari">
+Altri simboli: la **barra `/`** per «ogni tot» (`*/15` = ogni 15), il **trattino `-`** per un intervallo (`1-5`), la **virgola `,`** per un elenco (`1,15`).
+
+<Log lines={[
+  "0 * * * *      comando    # ogni ora, al minuto zero",
+  "*/15 * * * *   comando    # ogni 15 minuti",
+  "30 2 * * *     comando    # ogni giorno alle 02:30",
+  "0 3 * * 1      comando    # ogni lunedì alle 03:00",
+  "30 2 * * 1-5   comando    # alle 02:30, dal lunedì al venerdì",
+  "0 0 1 * *      comando    # il primo di ogni mese, a mezzanotte",
+]} caption="Giorni della settimana: 1 = lunedì, 2 = martedì ... 5 = venerdì, 0 o 7 = domenica." />
+
+<Callout kind="trucco">
+Per provare una riga nuova, mettila a `* * * * *` (ogni minuto) con un comando innocuo come `date >> prova.txt`. Quando hai visto che funziona, la porti all'orario vero.
+</Callout>
+
+<Say who="sensei">Se non sei sicuro di una riga, rileggila come una frase: «al minuto…, all'ora…, nel giorno…». Se la frase non ha senso, è sbagliata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Backup e rotazione dei log">
+Due lavori classici da automatizzare.
+
+**Il backup**: crea ogni notte un archivio con la data nel nome.
+
+<Log lines={[
+  "30 2 * * * tar -czf /home/studente/backup/dati-$(date +\\%F).tar.gz /home/studente/dati >> /home/studente/cron.log 2>&1",
+]} caption="tar crea l'archivio compresso. Il risultato è scritto, errori compresi, in cron.log." />
+
+**La rotazione dei log**: i vecchi log si **comprimono** per non riempire il disco.
+
+<Log lines={[
+  "0 4 * * 0 find /home/studente/log -name \"*.log\" -mtime +7 -exec gzip {} \\; >> /home/studente/cron.log 2>&1",
+]} caption="Ogni domenica alle 04:00 comprime i .log più vecchi di 7 giorni." />
+
+Due dettagli. Primo: nel crontab il **`%`** ha un significato speciale, quindi va scritto **`\%`**. Secondo: con **`>> cron.log 2>&1`** salvi tutto ciò che il comando scrive: senza, non vedresti mai gli errori.
+
+Un'altra voce spiega cron dal vivo, circa dieci minuti:
+
+<Video />
+
+<Say who="assistente">Le date e i nomi con la data sono la ragione per cui esiste il %. Metti il backslash e non ci pensi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché non parte?">
+L'errore più comune: lo script funziona se lo lanci tu, ma **da cron no**. Il motivo è che cron parte con un **ambiente minimo**: un `PATH` corto (di solito solo `/usr/bin:/bin`), nessuna delle tue impostazioni, e la cartella di partenza è la tua home.
+
+<Log lines={[
+  "studente@lab:~$ cat cron.log",
+  "/home/studente/backup.sh: riga 3: miostrumento: comando non trovato",
+]} caption="Esempio di cron.log: il comando esiste, ma cron non sa dove cercarlo." />
+
+Come si evita:
+
+- usa **percorsi assoluti** per comandi e file (`/usr/bin/tar`, `/home/studente/dati`), non relativi;
+- oppure, in cima al crontab, scrivi la riga **`PATH=/usr/local/bin:/usr/bin:/bin`**;
+- controlla che lo script sia **eseguibile** (`chmod +x`) e abbia lo shebang;
+- **salva sempre l'output** in un file, per poter capire cosa è successo.
+
+<Callout kind="curiosita">
+Se cron non fa proprio niente, controlla che il servizio sia attivo: su molte distribuzioni si chiama `cron`, su altre `crond`.
+</Callout>
+
+<Say who="sensei">«Da me funziona» non basta. Cron non è te: non ha il tuo ambiente. Dagli tutto in chiaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa significa la riga di crontab: 15 4 * * 2 /home/studente/pulisci.sh ?"
+  options={["Ogni martedì alle 04:15", "Ogni giorno 15 del mese alle 04:00", "Ogni 15 minuti, il giorno 4 e il giorno 2", "Ogni martedì alle 15:04"]}
+  answer={0}
+  explain="I campi sono, nell'ordine: minuto 15, ora 4, ogni giorno del mese, ogni mese, giorno della settimana 2 (martedì). Chi risponde 15:04 ha letto prima l'ora e poi il minuto: l'ordine è minuto, ora."
+/>
+
+<LinuxTerminal goal="Scrivi una riga di crontab che esegue backup.sh ogni giorno alle 02:30" />
+
+<Say who="assistente">Leggi i campi uno alla volta: il primo è il minuto, il secondo l'ora. Il quinto è il giorno della settimana, e il due è martedì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cron: cosa significa questa riga, quale riga serve, perché non parte. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-cron" pass="4/5" retries={3} />
+
+<Say who="sensei">Un lavoro automatico che nessuno controlla è un guasto che aspetta. Leggi i log di cron.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- cron esegue comandi a orari fissi; `crontab -e` modifica l'elenco, `crontab -l` lo mostra.
+- Cinque campi: minuto, ora, giorno del mese, mese, giorno della settimana; `*` = qualsiasi, `*/15` = ogni 15, `1-5` = intervallo.
+- Errori tipici: PATH minimo (usa percorsi assoluti), `%` da scrivere `\%`, output non salvato (aggiungi `>> file 2>&1`).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa significa 30 2 * * *?", a: "Ogni giorno alle 02:30" },
+    { q: "Cosa significa */15 nel primo campo?", a: "Ogni 15 minuti" },
+    { q: "Perché uno script va da solo ma non da cron?", a: "Cron ha un ambiente e un PATH minimi: servono percorsi assoluti" },
+    { q: "Come si scrive il simbolo % in un crontab?", a: "\\%" },
+  ]}
+/>
+
+<Say who="sensei">Hai concluso Linux 3: pipe, grep, script e cron. Il prossimo passo sono le reti: dall'IP al modello OSI. Il SOC ti aspetta.</Say>
+</Scene>

@@ -1,0 +1,174 @@
+---
+id: H.02.008
+course: hedge
+module: 2
+title: "Multi-strategy: tante squadre, un solo fondo"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.007]
+objectives:
+  - "Spiegare come funziona un fondo multi-strategy con squadre (pod), capitale assegnato e limiti di perdita"
+  - "Calcolare il risultato complessivo di un fondo diviso in squadre e l'effetto di un limite di perdita"
+  - "Riconoscere i rischi: costi alti, leva, posizioni affollate e squadre che si muovono insieme nelle crisi"
+video:
+  provider: youtube
+  id: "m3kJo5kEzTQ"
+  start: 0
+  end: 600
+  channel: "Bloomberg Podcasts"
+  title: "How to Succeed at Multi-Strategy Hedge Funds | Odd Lots"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-multi-strategy
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che unire molte strategie elimini il rischio: nelle crisi molte squadre perdono nello stesso momento"
+  - "Dimenticare i costi: ogni squadra, i dati e i controlli costano, e spesso ricadono sugli investitori"
+  - "Pensare che il limite di perdita di una squadra protegga tutto il fondo: protegge dalle perdite grandi, non da quelle piccole e ripetute"
+commands: []
+---
+
+<Scene title="Il fondo con quattro squadre">
+**Mosaico** è un fondo fittizio con 400 milioni di euro. Non ha un gestore unico: ha **quattro squadre** indipendenti, e ognuna usa una delle strategie viste in questo modulo.
+
+- Squadra 1: long/short azionario
+- Squadra 2: event driven
+- Squadra 3: relative value
+- Squadra 4: managed futures
+
+Ogni squadra ha **100 milioni** da gestire e un responsabile del rischio che le guarda le spalle. La domanda del caso: **perché mettere insieme strategie così diverse, e che cosa può comunque andare storto?**
+
+<Callout kind="attenzione">
+La lezione spiega una struttura, non consiglia niente. Con i mercati si può perdere denaro, anche tutto. Fondo e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Mettere insieme più idee non è una formula magica: è un modo di organizzare il rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un multi-strategy">
+Un fondo **multi-strategy** usa **più strategie insieme**, di solito con **squadre separate** chiamate **pod** (in inglese «baccello»). Ogni pod:
+
+- ha un **capitale assegnato** dal fondo;
+- ha un **limite di perdita**: se lo supera, il capitale viene ridotto o il pod chiuso;
+- risponde a un **controllo centrale del rischio**, che guarda tutti i pod insieme.
+
+L'idea è che le squadre guadagnino da fonti diverse, così **il fondo non dipende da un'unica idea**. Il fondo sposta capitale dai pod che vanno bene a quelli che vanno male, o li chiude.
+
+Vuoi sentirlo spiegare da un'altra voce? Un podcast in inglese con sottotitoli, guardane i primi minuti.
+
+<Video />
+
+<Say who="assistente">Un multi-strategy è una squadra di calcio: ognuno ha un ruolo, e c'è un allenatore che guarda il risultato di tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di Mosaico">
+In un anno inventato i pod di Mosaico (100 milioni ciascuno) chiudono così, in milioni di euro:
+
+<Guided
+  steps={[
+    "Squadra 1: +6. Squadra 2: -2. Squadra 3: +3. Squadra 4: -1.",
+    "Totale: 6 - 2 + 3 - 1 = +6 milioni su 400, cioè 6 / 400 = 1,5%.",
+    "Se tutti i 400 milioni fossero stati affidati alla sola squadra 2, che ha perso il 2%, il fondo avrebbe perso 400 x 2% = 8 milioni, senza i guadagni delle altre.",
+    "Limite di perdita: se un pod ha 100 milioni e il limite è -5%, quando perde 5 milioni il fondo lo ferma o gli toglie capitale. Così un pod non può arrivare a -20 senza che qualcuno intervenga prima.",
+  ]}
+/>
+
+<Callout kind="regola">
+La diversificazione tra strategie riduce il rischio **solo se le strategie non perdono insieme**. E il limite di perdita di ogni pod tiene sotto controllo le perdite grosse, ma non azzera i costi di tenere tante squadre.
+</Callout>
+
+<Say who="sensei">Un fondo con quattro squadre non è quattro volte più sicuro. È meno dipendente da una sola idea. Non è la stessa cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa può andare storto">
+- **Costi alti.** Ogni squadra ha stipendi, dati, programmi, controlli. In molti fondi multi-strategy una parte di questi costi viene addebitata agli investitori, oltre alle commissioni.
+- **Leva.** Per rendere visibili i guadagni piccoli di ogni strategia, molti fondi usano molta leva. Così le perdite, quando arrivano, si ingrandiscono.
+- **Posizioni affollate.** Squadre di fondi diversi possono avere idee uguali. Se tutti devono vendere in fretta, i prezzi si muovono contro tutti.
+- **Crisi che colpiscono tutti.** Nelle crisi gravi molte strategie diverse perdono nello stesso momento: la diversificazione, proprio quando serve, funziona meno.
+- **Squadre che inseguono i limiti.** Un pod vicino al limite di perdita può essere spinto a ridurre il rischio troppo presto, o a nasconderlo.
+
+<Say who="assistente">La cosa importante da guardare non è la media dei pod, ma che cosa succede quando perdono tutti insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le otto strategie a colpo d'occhio">
+Prima di chiudere il modulo, una mappa. Per ognuna: l'idea e il rischio principale.
+
+| Strategia | Idea | Rischio principale |
+|-----------|------|--------------------|
+| Long/short | Comprare ciò che va meglio, vendere ciò che va peggio | Perdere su entrambe le gambe |
+| Global macro | Puntare su Paesi, monete, tassi | Tempi sbagliati, leva |
+| Event driven | Puntare sull'esito di un evento | L'evento salta |
+| Relative value | Distanza tra due prezzi simili | La distanza si allarga |
+| Quantitative | Regole scritte e dati | Overfitting, modelli che smettono di funzionare |
+| Credit / distressed | Debiti di aziende in difficoltà | Recupero basso, tempi lunghi |
+| Managed futures | Seguire il trend su molti mercati | Whipsaw, costi, leva |
+| Multi-strategy | Più squadre insieme | Costi, leva, crisi comuni |
+
+Nessuna strategia è «la migliore»: ognuna ha un tipo di errore che la costringe a perdere. Nei prossimi moduli vedremo come si misurano e si combinano.
+
+<Say who="sensei">Ricorda questa tabella. Ogni idea ha il suo modo di fallire. Conoscerlo è metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha 4 squadre da 100 milioni ciascuna. In un anno chiudono a +5, -3, +4 e -2 milioni. Qual è il risultato del fondo in percentuale del capitale totale?"
+  options={[
+    "+1%",
+    "+4%",
+    "+2%",
+    "+1,5%",
+  ]}
+  answer={0}
+  explain="Somma dei risultati: 5 - 3 + 4 - 2 = +4 milioni. Capitale totale: 400 milioni. 4 / 400 = 0,01, cioè +1%. Chi risponde +4% ha diviso per 100 invece che per 400, cioè per il capitale di una sola squadra. Il risultato complessivo si calcola sempre sul capitale totale."
+/>
+
+<Say who="assistente">Prima somma tutti i risultati, poi dividi per tutto il capitale, non per una squadra sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su fondi con più squadre: calcoli complessivi, limiti di perdita, costi e rischi.
+
+<Practice generator="h02-multi-strategy" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito le strategie. Ora capiremo come si misurano rischio e rendimento di un portafoglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un multi-strategy è composto da squadre (pod) con capitale assegnato, limiti di perdita e un controllo centrale del rischio.
+- Il risultato del fondo è la somma dei risultati dei pod, calcolata sul capitale totale; diversificare aiuta solo se i pod non perdono insieme.
+- Costi alti, leva, posizioni affollate e crisi comuni sono i rischi principali; ogni strategia ha il suo modo di fallire.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un pod?", a: "Una squadra di un fondo multi-strategy, con capitale assegnato e limite di perdita" },
+    { q: "A che cosa serve il limite di perdita di un pod?", a: "A fermare o ridurre la squadra prima che le perdite diventino grandi" },
+    { q: "Perché la diversificazione tra strategie può non bastare?", a: "Perché nelle crisi molte strategie perdono insieme" },
+    { q: "Su quale capitale si calcola il risultato del fondo?", a: "Su quello totale, non su quello di una sola squadra" },
+  ]}
+/>
+
+<Say who="sensei">Fine del modulo sulle strategie. Prossimo modulo: la teoria del portafoglio. Dal rischio e rendimento alla frontiera efficiente.</Say>
+</Scene>

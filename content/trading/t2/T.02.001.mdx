@@ -1,0 +1,167 @@
+---
+id: T.02.001
+course: trading
+module: 2
+title: "Candele e volumi"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.007]
+objectives:
+  - "Leggere i quattro prezzi OHLC di una candela"
+  - "Calcolare corpo e intervallo di una candela"
+  - "Capire che cosa dice il volume e che cosa non dice"
+video:
+  provider: youtube
+  id: "aLxOgB7nOOE"
+  start: 0
+  end: 600
+  channel: "XTB Italia"
+  title: "Candlestick: come interpretare le candele giapponesi?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-candele
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una candela verde garantisca che il giorno dopo il prezzo salga"
+  - "Confondere il corpo (apertura-chiusura) con l'intervallo (massimo-minimo)"
+  - "Dimenticare che i colori verde e rosso sono solo una convenzione della piattaforma"
+commands: []
+---
+
+<Scene title="Una riga di numeri">
+Marta studia i dati di **Forno Rossi**, un'azienda fittizia che fa pane e pizze. Apre un file e trova una riga per ogni giorno, con cinque numeri: apertura, massimo, minimo, chiusura, volume.
+
+Sono tanti numeri per un solo giorno. Da dove si comincia?
+
+La domanda del caso: **che cosa racconta una sola riga di dati sulla giornata di un titolo?**
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. In borsa si può perdere denaro, anche tutto. Qui lavoriamo solo con numeri storici o inventati, mai con soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima di sperare, si impara a leggere i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro prezzi OHLC">
+In una giornata il prezzo si muove di continuo. Per riassumerla bastano **quattro prezzi**, che si abbreviano **OHLC**:
+
+- **O**pen, apertura: il primo prezzo del giorno;
+- **H**igh, massimo: il prezzo più alto toccato;
+- **L**ow, minimo: il prezzo più basso toccato;
+- **C**lose, chiusura: l'ultimo prezzo del giorno.
+
+Ecco cinque giornate fittizie di Forno Rossi (prezzi in euro, volume in azioni):
+
+| giorno | apertura | massimo | minimo | chiusura | volume |
+|--------|----------|---------|--------|----------|--------|
+| Lunedì | 10,00 | 10,60 | 9,80 | 10,40 | 12000 |
+| Martedì | 10,40 | 10,50 | 9,90 | 10,00 | 15000 |
+| Mercoledì | 10,00 | 10,20 | 9,70 | 10,10 | 9000 |
+| Giovedì | 10,10 | 11,00 | 10,00 | 10,90 | 30000 |
+| Venerdì | 10,90 | 11,00 | 10,50 | 10,60 | 14000 |
+
+<Say who="assistente">Il massimo non può mai essere sotto il minimo. Se lo vedi, i dati sono sbagliati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si disegna una candela">
+Una **candela** è il disegno di una riga OHLC:
+
+- il **corpo** è il rettangolo tra apertura e chiusura;
+- le **ombre** (le linee sopra e sotto) arrivano fino a massimo e minimo.
+
+Se la chiusura è **sopra** l'apertura, di solito la candela è **verde**. Se è **sotto**, di solito è **rossa**. Il lunedì di Forno Rossi è verde: apre a 10,00 e chiude a 10,40. Il martedì è rosso: apre a 10,40 e chiude a 10,00.
+
+<Callout kind="attenzione">
+Verde e rosso sono solo una **convenzione**. Alcune piattaforme usano bianco e nero, altre scambiano i colori. Controlla sempre la legenda.
+</Callout>
+
+<Say who="sensei">Un colore non è un consiglio. Dice solo da che parte ha chiuso il prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Corpo e intervallo">
+Due misure che servono sempre:
+
+- **corpo** = chiusura − apertura (in valore assoluto, se guardi solo la lunghezza);
+- **intervallo** (in inglese *range*) = massimo − minimo.
+
+Lunedì: corpo = 10,40 − 10,00 = **0,40**. Intervallo = 10,60 − 9,80 = **0,80**. Giovedì: corpo = 10,90 − 10,10 = **0,80**, intervallo = 11,00 − 10,00 = **1,00**.
+
+Prova a farlo fare a Python. Cambia i numeri e premi Esegui:
+
+<PythonTerminal code={"apertura = 10.00\nmassimo = 10.60\nminimo = 9.80\nchiusura = 10.40\nprint(\"corpo:\", round(chiusura - apertura, 2))\nprint(\"intervallo:\", round(massimo - minimo, 2))\nprint(\"candela verde?\", chiusura > apertura)"} />
+
+<Say who="assistente">Il corpo parla di dove il prezzo ha chiuso rispetto a dove ha aperto. L'intervallo parla di quanto si è mosso in tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il volume">
+Il **volume** è quante azioni sono state scambiate nel periodo. Giovedì: 30000, più del doppio degli altri giorni.
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto sulle candele e su come si leggono:
+
+<Video />
+
+<Callout kind="regola">
+Un movimento di prezzo con **molti scambi** è più «solido» di uno fatto con pochi scambi. Ma il volume descrive il passato: non dice che cosa farà il prezzo domani.
+</Callout>
+
+<Say who="sensei">Una candela e un volume raccontano il giorno. Non predicono il giorno dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Mercoledì Forno Rossi apre a 10,00, ha massimo 10,20, minimo 9,70 e chiude a 10,10. Quanto vale l'intervallo?"
+  options={["0,50", "0,10", "0,20", "10,10"]}
+  answer={0}
+  explain="L'intervallo è massimo meno minimo: 10,20 − 9,70 = 0,50. Chi risponde 0,10 ha calcolato il corpo (chiusura meno apertura), che è un'altra cosa."
+/>
+
+<Say who="assistente">Prima scrivi quale prezzo serve: massimo e minimo per l'intervallo, apertura e chiusura per il corpo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su candele, OHLC e volumi. Hai 3 tentativi e le domande cambiano a ogni tentativo.
+
+<Practice generator="t02-candele" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi legge male i dati sbaglia tutto quello che costruisce sopra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- OHLC sono i quattro prezzi di un periodo: apertura, massimo, minimo, chiusura.
+- Corpo = chiusura − apertura. Intervallo = massimo − minimo. Verde e rosso sono solo una convenzione.
+- Il volume dice quante azioni si sono scambiate, non che cosa farà il prezzo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa OHLC?", a: "Apertura, massimo, minimo, chiusura" },
+    { q: "Come si calcola l'intervallo di una candela?", a: "Massimo meno minimo" },
+    { q: "Che cos'è il volume?", a: "Il numero di azioni scambiate nel periodo" },
+    { q: "Una candela verde garantisce che domani il prezzo salga?", a: "No: descrive solo il passato" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: da dove arrivano questi dati e che cosa ti permettono di farne.</Say>
+</Scene>

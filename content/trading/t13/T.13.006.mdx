@@ -1,0 +1,156 @@
+---
+id: T.13.006
+course: trading
+module: 13
+title: "Come verificare un intermediario"
+belt: blu
+duration_min: 9
+prerequisites: [T.13.005]
+objectives:
+  - "Elencare i passi per verificare se un intermediario è autorizzato"
+  - "Sapere dove cercare: siti ufficiali di CONSOB e Banca d'Italia"
+  - "Decidere che cosa fare se non si trova l'intermediario o c'è un avviso"
+video:
+  provider: youtube
+  id: "SjthjNoZRFA"
+  start: 0
+  end: 600
+  channel: "Consob"
+  title: "CONSOB - \"Occhio alle truffe\" - TG1 ECONOMIA 16.30"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-verifica-intermediario
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi del numero di iscrizione o del logo scritti sul sito dell'intermediario, senza controllare sul sito dell'autorità"
+  - "Cercare solo il nome commerciale: la società può avere un nome diverso o imitare quello di una vera"
+  - "Credere che «non è nell'elenco dei siti oscurati» voglia dire «è sicuro»: l'elenco non è mai completo"
+commands: []
+---
+
+<Scene title="Il sito che somiglia a una banca">
+Chiara trova un sito di trading con il logo di una società che sembra famosa. Offre conti «con autorizzazione europea», bonus di benvenuto e supporto in italiano. In fondo alla pagina c'è un numero di iscrizione.
+
+La domanda del caso: **come fa a sapere se è davvero autorizzato, senza fidarsi di quello che il sito scrive su se stesso?**
+
+<Callout kind="attenzione">
+Il corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Gli indirizzi qui sono solo i domini principali; le sezioni e le pagine cambiano nel tempo: controlla sempre le fonti ufficiali.
+</Callout>
+
+<Say who="sensei">Un sito che dice «sono autorizzato» non dimostra niente. Lo dimostra solo l'autorità, sul suo sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo in cinque passi">
+Un metodo semplice e sempre uguale:
+
+1. **Scrivi i dati** dell'intermediario: ragione sociale esatta (non solo il nome commerciale), sede, numero di iscrizione, sito.
+2. **Vai direttamente** sul sito ufficiale dell'autorità, digitando tu l'indirizzo. Non cliccare da link ricevuti.
+3. **Cerca** la società negli elenchi o albi delle imprese autorizzate.
+4. **Controlla che i dati coincidano**: nome, sede, servizi per cui è autorizzata.
+5. **Cerca avvisi** sulle pagine dedicate alle truffe e ai siti oscurati.
+
+<Callout kind="regola">
+Mai fidarti dei dati scritti sul sito dell'intermediario. Cerca sempre nell'elenco dell'autorità, con una ricerca fatta da te.
+</Callout>
+
+<Say who="assistente">I truffatori copiano nomi e numeri veri di società vere. Per questo controlli anche che sede e dati coincidano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove cercare in Italia">
+In sintesi, ottobre 2026 (i menu cambiano: se non trovi una voce, usa la ricerca del sito):
+
+- **CONSOB**, sito `www.consob.it`: nelle sezioni per i risparmiatori trovi l'area «Occhio alle truffe!», con le avvertenze e i siti oscurati. Nelle sezioni dedicate agli operatori trovi gli elenchi degli intermediari.
+- **Banca d'Italia**, sito `www.bancaditalia.it`: cerca la voce «Albi ed elenchi» per verificare banche e altri intermediari vigilati, e l'elenco dei soggetti non autorizzati.
+- **ESMA**, l'autorità europea: per i fornitori di servizi sulle cripto-attività esiste un registro europeo.
+
+<Callout kind="curiosita">
+CONSOB può **oscurare** i siti che offrono servizi finanziari senza autorizzazione, e pubblica periodicamente l'elenco con comunicati. Il numero dei siti oscurati sale ogni mese: i truffatori riaprono con un altro nome.
+</Callout>
+
+<Callout kind="attenzione">
+Gli intermediari europei possono operare in Italia con l'autorizzazione di un altro Stato dell'Unione. Controlla comunque l'elenco dell'autorità: l'assenza di una società dagli elenchi è già un segnale d'allarme.
+</Callout>
+
+Vuoi sentire la CONSOB raccontare la campagna «Occhio alle truffe»? Un servizio televisivo, in italiano:
+
+<Video />
+
+<Say who="sensei">Due siti, due indirizzi, una ricerca. Cinque minuti che ti evitano di perdere i risparmi di una vita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se qualcosa non torna">
+Che cosa fai quando la verifica dà un risultato strano?
+
+- **Non trovi la società negli elenchi**: non versi nulla. Non è una prova di truffa, ma è un motivo sufficiente per fermarti.
+- **Trovi un avviso o il sito oscurato**: non versi nulla, non fornisci documenti, non rispondi.
+- **Hai già versato denaro**: smetti di inviarne altro, conserva messaggi e ricevute, informa la tua banca e **segnala** all'autorità; se pensi sia un reato, puoi presentare **denuncia alle forze dell'ordine**.
+- **Qualcuno ti propone di recuperare i soldi dietro pagamento anticipato**: è quasi sempre una seconda truffa. Non pagare.
+
+<Callout kind="regola">
+Mai documenti d'identità, foto del volto o codici di accesso a chi non hai verificato. Possono essere usati per altre frodi.
+</Callout>
+
+<Say who="assistente">Segnalare serve anche agli altri: ogni avviso protegge qualcuno che non ha ancora versato niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Chiara cerca «Gamma Trade» sul sito dell'autorità, che non la trova. Il sito di Gamma Trade dice «autorizzata, n. 12345». Che cosa fa?"
+  options={[
+    "Non versa niente: se non c'è negli elenchi ufficiali, il numero scritto sul sito non basta",
+    "Versa una piccola somma: se il numero è scritto, sarà vero",
+    "Chiede al supporto del sito di inviarle un certificato e se lo riceve si fida",
+    "Cerca recensioni positive sui social e, se sono tante, versa",
+  ]}
+  answer={0}
+  explain="Il numero scritto sul sito si può inventare o copiare da un'altra società. Un certificato inviato dal sito stesso non vale più del sito. Le recensioni si comprano o si fabbricano. Conta solo ciò che trovi con la tua ricerca sul sito dell'autorità."
+/>
+
+<Say who="sensei">Se la società non si trova dove dovrebbe, la prudenza non è un'opzione: è la regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul controllo degli intermediari e su che cosa fare se qualcosa non torna.
+
+<Practice generator="t13-verifica-intermediario" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il modulo: sai chi vigila, chi truffa e come controllare. Il resto è disciplina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Si verifica sul sito dell'autorità (CONSOB, Banca d'Italia), digitando tu l'indirizzo, mai dai dati scritti sul sito dell'intermediario.
+- Cerca la ragione sociale esatta negli elenchi, controlla che i dati coincidano e cerca avvisi o siti oscurati.
+- Se non trovi la società o c'è un avviso, non versi niente; se hai già versato, conservi le prove, informi la banca e segnali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove verifichi se un intermediario è autorizzato?", a: "Sui siti ufficiali delle autorità, come CONSOB e Banca d'Italia, con una ricerca fatta da te" },
+    { q: "Il numero di iscrizione scritto sul sito basta?", a: "No: va controllato sull'elenco dell'autorità" },
+    { q: "Non trovi la società negli elenchi. Che cosa fai?", a: "Non versi nulla e ti fermi" },
+    { q: "Qualcuno promette di recuperare i soldi dietro pagamento anticipato. Che cosa pensi?", a: "Probabilmente è una seconda truffa: non pagare" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Sai riconoscere chi ti vuole fregare. Ora tocca al progetto finale: un'idea semplice, onesta e senza promesse.</Say>
+</Scene>

@@ -1,0 +1,152 @@
+---
+id: T.11.001
+course: trading
+module: 11
+title: "Che cosa si può prevedere (e cosa no)"
+belt: blu
+duration_min: 8
+prerequisites: [T.10.006]
+objectives:
+  - "Spiegare perché nei prezzi il rumore pesa più del segnale"
+  - "Confrontare un modello con la fortuna (la moneta) e con una baseline"
+  - "Distinguere ciò che è un po' più prevedibile (la volatilità) da ciò che lo è molto poco (la direzione)"
+video:
+  provider: youtube
+  id: "fnqpkh8FlI8"
+  start: 0
+  end: 219
+  channel: "RSI Edu"
+  title: "Cos'è il machine learning?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-prevedibile
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un buon risultato sul passato dimostri una capacità di previsione"
+  - "Giudicare un modello dalla percentuale di giorni indovinati senza chiedersi quanti giorni sono"
+  - "Confondere «spiegare il passato» con «prevedere il futuro»"
+commands: []
+---
+
+<Scene title="L'app che indovina">
+Davide ti mostra sul telefono un'app: **«Indovino se domani il mercato sale. Successo: 90%.»** Sotto c'è un bel grafico, tutto verso l'alto.
+
+Chiedi: «Su quali giorni?». Lui apre la schermata: sono giorni **già passati**, quelli che l'app ha usato per imparare.
+
+La domanda del caso: **si può davvero prevedere il mercato con il machine learning, e come si capisce se un modello è serio?**
+
+<Say who="sensei">Prima regola del modulo: i mercati non regalano niente. Questo corso è educazione, non consulenza: si può perdere denaro, anche tutto. Qui lavoriamo solo con dati storici e ambienti demo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnale e rumore">
+Il **machine learning** è un modo di far imparare a un programma una regola partendo da esempi, invece di scrivergliela a mano.
+
+Funziona bene quando nei dati c'è un **segnale** chiaro: per esempio, se domani farà più caldo, si consumerà più elettricità.
+
+Nei prezzi di mercato il segnale, se c'è, è **piccolo**. Il **rumore** (le oscillazioni casuali del giorno per giorno) è enorme: notizie, umore, ordini di migliaia di persone.
+
+<Callout kind="regola">
+Quando il rumore è molto più grande del segnale, anche un buon modello sbaglia spesso. E un modello che sembra bravo può esserlo solo per fortuna.
+</Callout>
+
+<Say who="assistente">Pensa a una radio con tanto fruscio: la canzone c'è, ma si sente appena. Un programma troppo zelante può «sentire» canzoni che non esistono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il confronto con la moneta">
+Chi prevede «sale» o «scende» ha **due scelte**. Anche tirando una **moneta** si indovina circa il 50% dei giorni.
+
+Quindi il primo confronto è sempre questo: **il mio modello fa meglio della moneta, o della risposta più banale?** La risposta banale si chiama **baseline**.
+
+Ma attenzione ai numeri piccoli. Su **100 giorni** la moneta non fa sempre esattamente 50: di solito sta tra **45 e 55**, cioè 5 punti percentuali sopra o sotto.
+
+| giorni di prova | scarto tipico della moneta |
+|---|---|
+| 100 | circa 5 punti percentuali |
+| 10.000 | circa 0,5 punti percentuali |
+
+Calcolo: lo scarto tipico è la radice di (0,5 × 0,5 / giorni). Con 100 giorni è radice di 0,0025, cioè 0,05. Con 10.000 giorni è radice di 0,000025, cioè 0,005.
+
+Un modello che indovina il **52%** su 100 giorni sta dentro lo scarto della moneta: **non prova niente**. Lo stesso 52% su 10.000 giorni sarebbe invece 4 scarti sopra: molto più difficile da attribuire alla fortuna.
+
+<Say who="sensei">Percentuale e numero di giorni vanno sempre insieme. Un 52% su cento giorni è una moneta fortunata. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa è un po' più prevedibile">
+Non tutto è ugualmente difficile.
+
+- **La direzione di domani** (sale o scende): molto difficile, quasi una moneta.
+- **La volatilità** (quanto oscilla il prezzo): un po' più prevedibile, perché dopo giorni agitati tende a restare agitata per un po'.
+- **Spiegare il passato**: facilissimo. Si trova sempre una storia che torna con i dati già visti.
+
+<Callout kind="attenzione">
+«Spiegare il passato» e «prevedere il futuro» sono due lavori diversi. Un modello che spiega benissimo il passato può non sapere nulla del futuro: ci tornerà la lezione sull'overfitting.
+</Callout>
+
+Vuoi sentire che cos'è il machine learning da un'altra voce? Meno di quattro minuti, in italiano:
+
+<Video />
+
+<Say who="assistente">Il video è generale, non parla di borsa. Serve per avere le parole giuste: esempi, modello, previsione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello indovina il verso del giorno dopo il 53% delle volte su 100 giorni di prova. Che cosa è corretto dire?"
+  options={[
+    "È compatibile con la fortuna: serve molto più campione prima di fidarsi",
+    "Il modello funziona, perché 53% è più di 50%",
+    "Il mercato è prevedibile e si può investire",
+    "Il modello è sbagliato, perché non arriva al 90%",
+  ]}
+  answer={0}
+  explain="Su 100 giorni la moneta sta tra circa 45% e 55%. Un 53% non si distingue dalla fortuna. Chi risponde «funziona» confonde una piccola differenza con una prova."
+/>
+
+<Say who="sensei">Un numero senza il suo campione è una chiacchiera. Domandati sempre: su quanti giorni, e fatti da chi?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul segnale, sul rumore e sul confronto con la moneta. Leggi con calma i numeri.
+
+<Practice generator="t11-prevedibile" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nel trading chi si fida dei numeri senza chiedersi da dove vengono perde i soldi, e non per sfortuna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Nei prezzi il segnale è piccolo e il rumore è grande: la direzione di domani è quasi una moneta.
+- Un risultato si giudica con la baseline e con il numero di giorni: 52% su 100 giorni è fortuna.
+- La volatilità è un po' più prevedibile della direzione; spiegare il passato non vuol dire prevedere il futuro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la baseline?", a: "La risposta più semplice con cui confrontare il modello (moneta, o «sempre la classe più frequente»)" },
+    { q: "Su 100 giorni, quanto può scostarsi la moneta dal 50%?", a: "Circa 5 punti percentuali (tra 45% e 55%)" },
+    { q: "Che cos'è il rumore?", a: "Le oscillazioni casuali che coprono il segnale utile" },
+    { q: "Che cosa è un po' più prevedibile della direzione?", a: "La volatilità, che tende a restare alta dopo giorni agitati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le «feature», gli indizi che diamo al modello. Gli indizi sbagliati valgono quanto la moneta.</Say>
+</Scene>

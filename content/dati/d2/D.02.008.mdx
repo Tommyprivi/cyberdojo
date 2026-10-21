@@ -1,0 +1,159 @@
+---
+id: D.02.008
+course: dati
+module: 2
+title: "Buone pratiche"
+belt: gialla
+duration_min: 9
+prerequisites: [D.02.007]
+objectives:
+  - "Usare convalida dei dati, nomi e un foglio per scopo per tenere ordinato il lavoro"
+  - "Scrivere formule leggibili, senza numeri nascosti dentro"
+  - "Riconoscere gli errori comuni (#DIV/0!, #N/D, #RIF!, #NOME?, #VALORE!) e le loro cause"
+video:
+  provider: youtube
+  id: "sxKtODH8ZzE"
+  start: 0
+  end: 575
+  channel: "Edoardo Midali"
+  title: "Convalida dati - EXCEL TUTORIAL ITALIANO 56"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-buone-pratiche
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Nascondere un errore con SE.ERRORE senza capire da dove viene"
+  - "Scrivere numeri fissi (22, 0,1) dentro le formule: poi nessuno li trova più"
+  - "Mettere dati, calcoli e grafici sullo stesso foglio, tutti mescolati"
+commands: []
+---
+
+<Scene title="Il foglio che nessuno osa toccare">
+Il foglio del club è cresciuto per due anni. Ci hanno lavorato in cinque. Ora ha celle unite, colori a caso, formule con numeri dentro e un errore rosso in una colonna.
+
+Nessuno sa più perché un numero è quello. Nessuno osa toccare niente.
+
+La domanda del caso: **come si costruisce un foglio che dopo due anni si capisce ancora?**
+
+<Say who="sensei">Un foglio è un lavoro che qualcuno dovrà leggere, forse tu fra sei mesi. Scrivilo per quella persona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati puliti all'ingresso">
+La **convalida dei dati** (Dati > Convalida dati in Excel e Fogli Google; Dati > Validità in LibreOffice Calc) limita ciò che si può scrivere in una cella:
+
+- un **elenco a tendina** (Libri, Penne, Zaini): niente «libri » con lo spazio, niente «Libbri»;
+- un numero **intero tra 0 e 100**;
+- una **data** valida.
+
+Perché serve? Perché per il foglio «Libri» e «libri » (con uno spazio in fondo) sono due categorie diverse. Una pivot li separa, e il totale per reparto è sbagliato.
+
+<Callout kind="regola">
+È molto più facile impedire un errore al momento dell'inserimento che trovarlo dopo in mille righe.
+</Callout>
+
+<Say who="assistente">Se più persone scrivono nel foglio, la tendina è un'assicurazione: tutti scelgono, nessuno inventa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nomi, fogli, formule leggibili">
+Tre abitudini:
+
+1. **Nomi** chiari: dai un nome alla cella dello sconto (per esempio `Sconto`) e scrivi `=B2*(1-Sconto)` invece di `=B2*(1-$E$1)`. Si legge subito. (In Excel: Formule > Gestione nomi; in Fogli Google: Dati > Intervalli con nome.)
+2. **Un foglio per scopo**: uno per i **dati**, uno per i **calcoli**, uno per il **report** con grafici e pivot. Così i dati non si rovinano per sbaglio.
+3. **Niente numeri nascosti**: `=B2*1,22` nasconde l'IVA dentro la formula. Se l'IVA cambia, chi la trova? Mettila in una cella etichettata «IVA» e richiamala.
+
+<Callout kind="trucco">
+Ogni numero che può cambiare sta in una cella con un'etichetta. Dentro le formule restano solo operazioni e riferimenti.
+</Callout>
+
+<Say who="sensei">Se devi spiegare una formula a voce, scrivila meglio. Se un numero è nascosto, tiralo fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori più comuni">
+Il foglio segnala i problemi con un errore che comincia con #. Sapere leggerli fa risparmiare ore. Tre numeri di esempio:
+
+| Cliente | Spesa | Ordini | Media (B diviso C) |
+|---|---|---|---|
+| Anna | 60 | 3 | 20 |
+| Bruno | 0 | 0 | #DIV/0! |
+| Carla | 90 | 2 | 45 |
+
+- **#DIV/0!**: divisione per zero (o per una cella vuota). Bruno ha 0 ordini.
+- **#N/D** (#N/A): valore non trovato, tipico di CERCA.VERT.
+- **#RIF!** (#REF!): un riferimento non esiste più, perché hai cancellato la riga o la colonna a cui puntava.
+- **#NOME?** (#NAME?): il nome di una funzione è scritto male (per esempio SOMA al posto di SOMMA).
+- **#VALORE!** (#VALUE!): dove serviva un numero c'è del testo, come in `="ciao"+1`.
+
+<Say who="assistente">L'errore non è il nemico: ti dice dov'è il problema. Il nemico è un numero sbagliato che sembra giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gestire gli errori">
+Per il caso di Bruno si può dire al foglio cosa fare quando gli ordini sono zero:
+
+<Log lines={[
+  "=SE(C3=0; \"nessun ordine\"; B3/C3)   ->  nessun ordine",
+  "=SE(C2=0; \"nessun ordine\"; B2/C2)   ->  20",
+]} caption="La riga 3 è quella di Bruno. Per Anna (riga 2) il risultato è 60 diviso 3 = 20." />
+
+Questa è una scelta **consapevole**: sappiamo perché l'errore compare e diamo un messaggio utile. Diverso da coprire tutto con SE.ERRORE senza capire.
+
+<Quiz
+  question="Nella cella compare #DIV/0!. Qual è la prima cosa da controllare?"
+  options={["Se il divisore è zero o una cella vuota", "Se il nome della funzione è scritto bene", "Se il valore da cercare esiste nel listino", "Se hai cancellato una colonna"]}
+  answer={0}
+  explain="#DIV/0! nasce da una divisione per zero, o per una cella vuota. Le altre opzioni sono cause di altri errori: #NOME?, #N/D e #RIF!."
+/>
+
+Un video mostra la convalida dei dati in azione:
+
+<Video />
+
+<Say who="sensei">Capisci l'errore prima di nasconderlo. Un errore nascosto resta un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su errori, nomi, convalida e organizzazione dei fogli.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-buone-pratiche" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un foglio ordinato è un foglio di cui ci si fida. E senza fiducia, i numeri non servono a nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Convalida dei dati, nomi chiari e un foglio per scopo (dati, calcoli, report) tengono il lavoro ordinato.
+- Niente numeri nascosti nelle formule: ogni valore che cambia vive in una cella con un'etichetta.
+- Gli errori hanno una causa: #DIV/0! divisione per zero, #N/D non trovato, #RIF! riferimento perso, #NOME? funzione scritta male, #VALORE! testo al posto di un numero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A cosa serve la convalida dei dati?", a: "A limitare ciò che si può scrivere in una cella (elenco, intervallo, data)" },
+    { q: "Perché non scrivere 1,22 dentro la formula?", a: "È un numero nascosto: meglio una cella etichettata «IVA»" },
+    { q: "Che cosa significa #N/D?", a: "Valore non trovato, tipico di CERCA.VERT" },
+    { q: "Che cosa significa #RIF!?", a: "Il riferimento non esiste più (riga o colonna cancellata)" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Sai usare un foglio di calcolo con metodo. Il prossimo passo è SQL: gli stessi dati, ma milioni di righe.</Say>
+</Scene>

@@ -1,0 +1,167 @@
+---
+id: T.06.005
+course: trading
+module: 6
+title: "Il rischio di rovina"
+belt: arancione
+duration_min: 8
+prerequisites: [T.06.004]
+objectives:
+  - "Definire il rischio di rovina e spiegare perché rischiare una frazione grande del capitale lo aumenta"
+  - "Calcolare il capitale dopo una serie di perdite consecutive con una percentuale fissa"
+  - "Calcolare la probabilità di una serie di perdite consecutive con probabilità semplici"
+video:
+  provider: youtube
+  id: "Q5S2t9H1qDs"
+  start: 0
+  end: 600
+  channel: "Kotak Stockshaala"
+  title: "Risk of Ruin in Trading: Why Accounts Blow Up & How to Avoid It | Kotak Stockshaala"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-rovina
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una serie di perdite consecutive sia «impossibile» perché la strategia vince spesso"
+  - "Pensare che la rovina richieda per forza di perdere il 100%: basta scendere sotto la soglia che si può sopportare"
+  - "Dimenticare che, nel lungo periodo, una strategia con valore atteso negativo porta quasi certamente alla rovina"
+commands: []
+---
+
+<Scene title="Dieci perdite di fila">
+Elia, uno studente fittizio, ha un conto demo da **1.000 €** e una strategia che vince **la metà** delle volte. Rischia **il 20%** del conto a ogni operazione, per «guadagnare in fretta».
+
+La strategia è onesta: una moneta, testa o croce. Ma per caso arrivano **quattro perdite consecutive**. Il conto è sceso del 59%. Elia non riesce più ad aprire posizioni utili: troppo poco capitale, troppa paura.
+
+La domanda del caso: **quanto è probabile una serie così, e quanto fa male?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Il caso è inventato e il conto è demo.
+</Callout>
+
+<Say who="sensei">Non devi essere sfortunato per fallire. Basta puntare troppo e aspettare abbastanza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la rovina">
+Il **rischio di rovina** è la probabilità di arrivare a un livello di capitale **dal quale non puoi più continuare**: lo zero, ma anche una soglia come −50%, dove le perdite ti fanno smettere o ti impediscono di recuperare.
+
+È un'idea antica, nata dai giochi d'azzardo: il «problema della rovina del giocatore». Un giocatore con un capitale limitato che gioca a lungo contro un avversario con risorse molto più grandi, a parità di odds, finisce per perdere tutto.
+
+<Callout kind="regola">
+La rovina non è «una brutta giornata». È l'uscita dal gioco. Dopo non esiste una seconda occasione per recuperare.
+</Callout>
+
+<Say who="assistente">Chi resta in gioco può imparare, correggere e riprovare. Chi è fuori dal gioco, no. Il primo obiettivo è restare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto fa male una serie di perdite">
+Se perdi una **frazione fissa** f del capitale a ogni operazione, dopo n perdite consecutive il capitale è moltiplicato per (1 − f) elevato a n.
+
+Dopo **10 perdite consecutive**, capitale iniziale 100:
+
+| Rischio per operazione | Capitale dopo 10 perdite | Perdita |
+|---|---|---|
+| 1% | 90,4 | −9,6% |
+| 2% | 81,7 | −18,3% |
+| 5% | 59,9 | −40,1% |
+| 10% | 34,9 | −65,1% |
+| 20% | 10,7 | −89,3% |
+
+Quante perdite consecutive servono per **dimezzare** il capitale?
+
+| Rischio per operazione | Perdite per scendere sotto il 50% |
+|---|---|
+| 1% | 69 |
+| 2% | 35 |
+| 5% | 14 |
+| 10% | 7 |
+| 20% | 4 |
+
+<Say who="sensei">Con l'1% ti servono 69 perdite per dimezzarti. Con il 20%, quattro. Guarda la differenza e poi decidi quanto rischiare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le serie di perdite esistono">
+Quanto è probabile una serie di perdite? Con una strategia che vince il **50%** delle volte e operazioni indipendenti:
+
+- 5 perdite di fila: (1/2)^5 = 1/32, circa **3,1%** per ogni gruppo di 5 operazioni.
+- 10 perdite di fila: (1/2)^10 = 1/1.024, circa **0,1%** per ogni gruppo di 10.
+
+Sembra poco, ma si ripete a ogni operazione: su centinaia di operazioni, serie di perdite lunghe prima o poi arrivano. E se la strategia vince meno del 50% delle volte, arrivano prima.
+
+<Callout kind="trucco">
+Un backtest con 10 perdite consecutive non è un errore dei dati: è una cosa che puoi aspettarti. Chiediti prima di partire: «se succede, quanto capitale mi resta?»
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese di una piattaforma di formazione di un intermediario (con i sottotitoli): è materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">La domanda giusta non è «perderò 10 volte?», ma «cosa resta di me se capita?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia vince il 50% delle volte. Quanto vale, circa, la probabilità di cinque perdite di fila in un gruppo di cinque operazioni?"
+  options={["3,1% (1/32)", "50%", "10% (5 × 2%)", "25% (1/4)"]}
+  answer={0}
+  explain="Ogni operazione ha probabilità 1/2 di perdere e sono indipendenti: 1/2 × 1/2 × 1/2 × 1/2 × 1/2 = 1/32, circa 3,1%. Chi risponde 50% guarda una sola operazione; chi somma invece di moltiplicare sbaglia l'operazione."
+/>
+
+<Say who="sensei">Le probabilità di eventi indipendenti si moltiplicano. Non si sommano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova con il codice">
+Segui il capitale di Elia dopo ogni perdita del 10%. Cambia la percentuale e il numero di perdite.
+
+<PythonTerminal code={"capitale = 1000\nperc = 10   # percento perso a ogni operazione\nfor n in range(1, 6):\n    capitale = capitale * (100 - perc) / 100\n    print(n, round(capitale, 2))"} />
+
+<Say who="assistente">Dovrebbe uscire 900.0, 810.0, 729.0, 656.1, 590.49. Prova con perc = 1: dopo 5 perdite sei solo a circa 951.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su serie di perdite, capitale residuo e rovina, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-rovina" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di cercare il guadagno, assicurati di restare in gioco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio di rovina è la probabilità di arrivare a un capitale da cui non si può più continuare.
+- Dopo n perdite consecutive con percentuale fissa f il capitale vale (1 − f)^n: rischiare il 20% a operazione lo dimezza in 4 perdite, l'1% in 69.
+- Le serie di perdite sono normali: con probabilità 50%, 5 perdite di fila valgono 1/32.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la rovina?", a: "Arrivare a un capitale da cui non si può più continuare" },
+    { q: "Capitale dopo 2 perdite del 10% (da 100)?", a: "81 (100 × 0,9 × 0,9)" },
+    { q: "Probabilità di 2 perdite di fila con vincita al 50%?", a: "25% (1/4)" },
+    { q: "Perché una serie di perdite lunga è prevedibile?", a: "Perché a ogni operazione la probabilità si ripete: su molte operazioni capita" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la diversificazione, cioè non mettere tutto sullo stesso cavallo.</Say>
+</Scene>

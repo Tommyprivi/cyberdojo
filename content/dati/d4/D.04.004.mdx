@@ -1,0 +1,263 @@
+---
+id: D.04.004
+course: dati
+module: 4
+title: "pandas: Series e DataFrame"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.003]
+objectives:
+  - "Creare un DataFrame da un dizionario e una Series da una colonna"
+  - "Guardare una tabella con head, shape, dtypes, info e describe"
+  - "Leggere l'output di info e describe senza confondere i tipi delle colonne"
+video:
+  provider: youtube
+  id: "39ldF8Oe-9c"
+  start: 0
+  end: 408
+  channel: "Edoardo Midali"
+  title: "Cosa sono i Dataframe - Pandas Python Tutorial Italiano 03"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-pandas
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere una colonna (Series, parentesi singole) con una tabella di una colonna (parentesi doppie)"
+  - "Dimenticare che head() mostra solo le prime righe, non l'intera tabella"
+  - "Credere che describe() analizzi anche il testo: di base riassume solo le colonne numeriche"
+commands: []
+---
+
+<Scene title="Una tabella con i nomi giusti">
+Giulia ti passa gli ordini della settimana: sei righe, cinque colonne. In Excel li guardi a occhio. Ma quando le righe saranno diecimila serve uno strumento che ti dica **com'è fatta** la tabella prima di toccarla.
+
+Per questo esiste **pandas**, la libreria di Python per lavorare con le tabelle. Le colonne hanno un nome, ognuna ha un tipo, e con una riga di codice filtri, raggruppi e riassumi.
+
+Come NumPy si importa con un nome corto: `pd`. Nel resto del modulo useremo sempre questa tabella di esempio.
+
+La domanda del caso: **come si crea una tabella, e come la si guarda prima di fidarsi dei numeri?**
+
+<Say who="sensei">Prima di calcolare, si guarda. Quante righe, quali colonne, di che tipo. Chi salta questo passo scopre l'errore davanti alla titolare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il DataFrame">
+Un **DataFrame** è la tabella di pandas: righe numerate a sinistra (l'**indice**) e colonne con un nome. Il modo più semplice per crearlo è da un **dizionario**: ogni chiave è il nome di una colonna, ogni lista contiene i suoi valori.
+
+```python
+import pandas as pd
+
+ordini = pd.DataFrame({
+    "cliente": ["Anna", "Bruno", "Carla", "Dario", "Elisa", "Anna"],
+    "citta": ["Roma", "Milano", "Roma", "Torino", "Milano", "Roma"],
+    "prodotto": ["casco", "luci", "casco", "borraccia", "luci", "luci"],
+    "quantita": [1, 2, 1, 4, 3, 3],
+    "importo": [40.0, 20.0, 40.0, 20.0, 30.0, 30.0],
+})
+print(ordini)
+```
+
+```text
+   cliente   citta   prodotto  quantita  importo
+0     Anna    Roma      casco         1     40.0
+1    Bruno  Milano       luci         2     20.0
+2    Carla    Roma      casco         1     40.0
+3    Dario  Torino  borraccia         4     20.0
+4    Elisa  Milano       luci         3     30.0
+5     Anna    Roma       luci         3     30.0
+```
+
+Le liste devono avere **tutte la stessa lunghezza**, altrimenti pandas dà un `ValueError`. Non scrivere i dati a mano nei lavori veri: di solito si leggono da un file, come vedremo nella prossima lezione.
+
+Vuoi vederlo spiegato da un'altra voce?
+
+<Video />
+
+<Say who="assistente">Una riga di un DataFrame è un ordine. Una colonna è una caratteristica di tutti gli ordini. Tienilo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La Series: una colonna sola">
+Quando estrai **una colonna** con le parentesi quadre ottieni una **Series**: una fila di valori con indice e nome.
+
+```python
+print(ordini["importo"])
+```
+
+```text
+0    40.0
+1    20.0
+2    40.0
+3    20.0
+4    30.0
+5    30.0
+Name: importo, dtype: float64
+```
+
+L'ultima riga dice due cose: il **nome** della colonna (`importo`) e il **tipo** dei valori (`float64`, numeri con la virgola). Se invece scrivi `ordini[["importo"]]`, con le parentesi doppie, ottieni di nuovo una tabella con una sola colonna.
+
+Una Series si può creare anche da sola, e conosce già i trucchi di NumPy, perché dentro c'è un array:
+
+```python
+importi = pd.Series([40.0, 20.0, 40.0], name="importo")
+print(importi.mean(), importi.max())
+```
+
+```text
+33.333333333333336 40.0
+```
+
+<Callout kind="curiosita">
+Il nome «pandas» non viene dall'animale: deriva da **pan**el **da**ta**s**, cioè dati in forma di pannello, tabelle.
+</Callout>
+
+<Say who="sensei">Una parentesi o due. Una colonna o una tabella. Quel dettaglio ti farà sbagliare almeno una volta: meglio ora, con sei righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Guardare la tabella">
+Prima di ogni analisi si fanno sempre le stesse domande. Ognuna ha il suo comando:
+
+```python
+print(ordini.head(2))
+print(ordini.shape)
+print(ordini.columns)
+```
+
+```text
+   cliente   citta  prodotto  quantita  importo
+0     Anna    Roma     casco         1     40.0
+1    Bruno  Milano      luci         2     20.0
+(6, 5)
+Index(['cliente', 'citta', 'prodotto', 'quantita', 'importo'], dtype='object')
+```
+
+- `head(n)` mostra le **prime n righe** (di default 5): per tabelle grandi è l'unico modo ragionevole di guardarle;
+- `shape` dà (righe, colonne): qui 6 righe e 5 colonne;
+- `columns` elenca i nomi delle colonne.
+
+Per il **tipo** di ogni colonna si usa `dtypes`:
+
+```python
+print(ordini.dtypes)
+```
+
+```text
+cliente      object
+citta        object
+prodotto     object
+quantita      int64
+importo     float64
+dtype: object
+```
+
+`object` è il tipo del testo (nelle versioni più recenti di pandas puoi vedere `str`: è la stessa cosa), `int64` i numeri interi, `float64` quelli con la virgola.
+
+<Say who="assistente">Se una colonna di numeri risulta object, qualcosa non va: forse c'è una parola in mezzo ai numeri. Lo vedrai nella lezione sui file.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="info e describe">
+`info()` è la radiografia della tabella: righe, colonne, tipi e **quante celle sono piene** in ciascuna.
+
+```python
+ordini.info()
+```
+
+```text
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 6 entries, 0 to 5
+Data columns (total 5 columns):
+ #   Column    Non-Null Count  Dtype  
+---  ------    --------------  -----  
+ 0   cliente   6 non-null      object 
+ 1   citta     6 non-null      object 
+ 2   prodotto  6 non-null      object 
+ 3   quantita  6 non-null      int64  
+ 4   importo   6 non-null      float64
+dtypes: float64(1), int64(1), object(3)
+```
+
+Dopo l'ultima riga ne compare un'altra, `memory usage`, con la memoria occupata: cambia da computer a computer e per ora non ti serve. Quello che conta è `Non-Null Count`: se una colonna ha meno di 6 celle piene, ci sono **valori mancanti**.
+
+`describe()` calcola le statistiche principali delle colonne numeriche. Qui lo chiediamo solo per `importo`:
+
+```python
+print(ordini["importo"].describe())
+```
+
+```text
+count     6.000000
+mean     30.000000
+std       8.944272
+min      20.000000
+25%      22.500000
+50%      30.000000
+75%      37.500000
+max      40.000000
+Name: importo, dtype: float64
+```
+
+Conta 6 valori, media 30, deviazione standard 8,94 (pandas divide per n-1, come visto con `ddof=1`), minimo 20, massimo 40. Il 25% e il 75% sono i **quartili**: sotto il 25% c'è un quarto dei valori. Il 50% è la **mediana**.
+
+<Callout kind="regola">
+Il ritmo di ogni analisi: `head`, `shape`, `dtypes` o `info`, `describe`. Quattro comandi, trenta secondi, e sai con cosa hai a che fare.
+</Callout>
+
+<Say who="sensei">Se il massimo è mille volte la media, o un conteggio non torna con le righe: fermati. Il dato strano si guarda prima, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una tabella ha 6 righe e 5 colonne. Cosa restituisce ordini.shape?"
+  options={["(6, 5)", "(5, 6)", "30", "6"]}
+  answer={0}
+  explain="shape restituisce la coppia (righe, colonne): prima le righe, poi le colonne. Chi risponde (5, 6) ha invertito l'ordine. Per il numero di righe da solo si usa len(ordini)."
+/>
+
+<Say who="assistente">Riga prima, colonna poi: lo stesso ordine con cui leggi una tabella. Ritroverai questa regola con loc e iloc.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su Series, DataFrame e comandi per guardare una tabella: cosa restituisce un codice, quale metodo serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-pandas" pass="4/5" retries={3} />
+
+<Say who="sensei">Ogni risposta ha un comando preciso dietro. Se non lo ricordi, ricorda a cosa serve: lo ritrovi in dieci secondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un DataFrame è una tabella con indice e colonne con nome; si crea da un dizionario di liste della stessa lunghezza. Una colonna estratta è una Series.
+- Guardare prima di calcolare: `head()`, `shape` (righe, colonne), `columns`, `dtypes`, `info()`.
+- `describe()` riassume le colonne numeriche: conteggio, media, deviazione standard, minimo, quartili, massimo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa dà ordini['importo'] (parentesi singole)?", a: "Una Series, cioè una sola colonna" },
+    { q: "Che cosa dà ordini[['importo']] (parentesi doppie)?", a: "Un DataFrame con una colonna sola" },
+    { q: "Cosa dice la riga Non-Null Count in info()?", a: "Quante celle sono piene in ogni colonna: se sono meno delle righe, mancano valori" },
+    { q: "Cosa mostra head()?", a: "Le prime 5 righe, o le prime n se scrivi head(n)" },
+  ]}
+/>
+
+<Say who="sensei">Sai creare e guardare una tabella. Prossima lezione: come arriva la tabella dal mondo vero, cioè da un file.</Say>
+</Scene>

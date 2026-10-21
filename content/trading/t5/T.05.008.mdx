@@ -1,0 +1,172 @@
+---
+id: T.05.008
+course: trading
+module: 5
+title: "Leggere un backtest con spirito critico"
+belt: arancione
+duration_min: 9
+prerequisites: [T.05.007]
+objectives:
+  - "Usare una lista di controllo per giudicare un backtest altrui o proprio"
+  - "Stimare l'effetto dei costi su un risultato lordo"
+  - "Dire che cosa un backtest può dimostrare e che cosa no"
+video:
+  provider: youtube
+  id: "0yYwMKm0qzc"
+  start: 0
+  end: 578
+  channel: "Quantapix"
+  title: "Backtests Lie — the Survivorship and Look-Ahead Problem"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-leggere-backtest
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo il rendimento finale e ignorare periodo, costi e numero di operazioni"
+  - "Fidarsi di un backtest ottimizzato senza sapere quante varianti sono state provate"
+  - "Pensare che un buon backtest sia una prova e non solo un'indicazione da verificare"
+commands: []
+---
+
+<Scene title="Il rapporto che luccica">
+Un compagno di classe, Davide, mostra il suo rapporto: **«Strategia Alfa: +60% in cinque anni, contro +50% di compra e tieni!»** Tutti guardano il grafico. La prof. Bianchi legge le note a piè di pagina:
+
+- operazioni totali: **12**;
+- costi: **non inclusi**;
+- varianti provate prima di scegliere questa: **80**;
+- periodo: **cinque anni in cui il mercato è quasi sempre salito**;
+- titoli: **solo quelli presenti oggi** nell'indice.
+
+La domanda del caso: **quanto di quel +60% possiamo credere?**
+
+<Say who="sensei">I numeri belli stanno in grande. Quelli che contano, in piccolo. Tu leggi prima il piccolo.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Dati e strategia fittizi, nessun denaro reale. I mercati non regalano niente.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La lista di controllo">
+Otto domande da fare a ogni backtest, tuo o di altri:
+
+1. **Regole**: sono precise e scritte prima?
+2. **Look-ahead**: la decisione usa solo dati già disponibili?
+3. **Sopravvivenza**: i dati includono anche chi è fallito?
+4. **Varianti**: quante regole sono state provate prima di scegliere questa?
+5. **Fuori campione**: c'è una prova su dati mai visti (meglio se walk-forward)?
+6. **Costi**: commissioni e prezzi peggiori sono inclusi?
+7. **Numero di operazioni**: sono abbastanza da non essere solo fortuna?
+8. **Periodo**: comprende fasi diverse (salita, discesa, calma, panico)?
+
+<Callout kind="regola">
+Un solo «no» non uccide un backtest, ma ogni «no» va scritto nel rapporto, accanto al risultato.
+</Callout>
+
+<Say who="assistente">Stampala e mettila sulla scrivania. Prima di dire «bello!», passa le otto domande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I costi mangiano il vantaggio">
+Torniamo ad Alfa. Il +60% è **lordo**, cioè prima dei costi. Ipotizziamo (fittizio) un costo di **0,5%** per ogni operazione completa (comprare e rivendere). Con 12 operazioni il capitale viene moltiplicato per 0,995 dodici volte. Premi Esegui:
+
+<PythonTerminal code={"lordo = 1.6\nnetto = lordo * 0.995 ** 12\nprint(round(netto - 1, 4))"} />
+
+Il risultato è circa **+50,7%**: quasi identico a «compra e tieni» (+50%). Il vantaggio è sparito, e abbiamo ancora da considerare le varianti provate, il periodo favorevole e i titoli sopravvissuti.
+
+<Callout kind="curiosita">
+I costi reali dipendono dal broker e dallo strumento: nel modulo T8 li vedremo da vicino. Per ora basta ricordare che un vantaggio piccolo e frequente è il primo a sparire.
+</Callout>
+
+<Say who="sensei">Un risultato lordo è un sogno. Il netto è la realtà. Chiedi sempre il netto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Poche operazioni, tanta fortuna">
+Alfa ha fatto **12 operazioni in cinque anni**. Se ne vince 8, sembra bravissima. Ma 12 sono poche: con una moneta truccata o no, otto teste su dodici lanci succedono spesso.
+
+Più operazioni significano più campioni su cui giudicare. Poche operazioni = **risultato fragile**, e la differenza tra fortuna e abilità non si vede.
+
+<Callout kind="trucco">
+Non esiste un numero magico, ma diffida di risultati costruiti su pochissime operazioni o su un solo episodio, come un'unica grande salita.
+</Callout>
+
+<Say who="assistente">Se il risultato dipende da una sola operazione fortunata, tolta quella la strategia non ha più niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dimostra un backtest">
+Un backtest **può** mostrare che una regola è ben definita, che non ha errori grossolani e come si è comportata in passato. **Non può** dimostrare che funzionerà nel futuro.
+
+Il modo onesto per presentarlo: «Con queste regole, questi dati, questi costi e queste ipotesi, nel passato è successo questo. Ecco i limiti.»
+
+<Callout kind="regola">
+Backtest = indizio, mai prova. Il passo successivo, se mai, è una prova su un ambiente demo (paper trading), con soldi finti: ne parleremo nel modulo T10.
+</Callout>
+
+Vuoi sentire in che modi un backtest può mentire? Il video è in inglese con i sottotitoli: abbina ogni errore che senti a una delle otto domande della lista.
+
+<Video />
+
+<Say who="sensei">Chi ti promette un rendimento sulla base di un backtest ti sta vendendo qualcosa. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un backtest mostra +40% netto, 9 operazioni in tre anni, 200 varianti provate e nessuna prova su dati nuovi. Qual è la valutazione più prudente?"
+  options={[
+    "Risultato fragile: poche operazioni, molte varianti e nessuna prova fuori campione",
+    "Ottimo: il +40% è netto, quindi è affidabile",
+    "Ottimo: più varianti ha provato, meglio ha scelto",
+    "Pessimo: i backtest sono sempre inutili"
+  ]}
+  answer={0}
+  explain="Il «netto» è un buon segno, ma 9 operazioni sono poche, 200 varianti rendono probabile un risultato casuale e senza prova su dati nuovi non c'è verifica. I backtest non sono inutili: sono indizi da leggere con attenzione."
+/>
+
+<Say who="assistente">Passa la lista: poche operazioni, tante varianti, niente fuori campione. Tre «no» su otto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: leggi i rapporti di backtest e trova che cosa non torna. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-leggere-backtest" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi legge così non si fa incantare da un grafico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ogni backtest va letto con una lista: regole, look-ahead, sopravvivenza, varianti, fuori campione, costi, operazioni, periodo.
+- Un risultato lordo può sparire dopo i costi; poche operazioni significano risultato fragile.
+- Un backtest è un indizio, non una prova: non promette niente sul futuro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché va chiesto il risultato netto?", a: "Perché i costi riducono il rendimento e possono cancellare il vantaggio" },
+    { q: "Perché poche operazioni rendono fragile un backtest?", a: "Perché fortuna e abilità non si distinguono con pochi campioni" },
+    { q: "Che cosa devi sempre dichiarare insieme al risultato?", a: "Quante varianti hai provato e i limiti dei dati e dei costi" },
+    { q: "Un backtest dimostra che la strategia funzionerà?", a: "No: descrive il passato, è un indizio e non una prova" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Prossimo: la gestione del rischio. Prima di chiedere quanto puoi guadagnare, si chiede quanto puoi perdere.</Say>
+</Scene>

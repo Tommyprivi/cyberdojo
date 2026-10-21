@@ -1,0 +1,159 @@
+---
+id: T.09.003
+course: trading
+module: 9
+title: "Il momentum: chi corre di più"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.002]
+objectives:
+  - "Calcolare il rendimento passato di più titoli e ordinarli in classifica"
+  - "Spiegare la regola «tieni i migliori, ribilancia ogni mese»"
+  - "Nominare i rischi: inversioni brusche, costi di ribilanciamento, affollamento"
+video:
+  provider: youtube
+  id: "rrh7ti8_Uw8"
+  start: 0
+  end: 248
+  channel: "Interactive Brokers"
+  title: "Introduction to Momentum"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-momentum
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere momentum (confronto tra titoli) con trend following (un titolo contro la sua media)"
+  - "Dimenticare che ogni cambio in classifica costa commissioni e spread"
+  - "Pensare che «ha corso tanto» garantisca che continuerà"
+commands: []
+---
+
+<Scene title="La classifica del mese">
+La scuola di **Sofia** organizza una gara fittizia: quattro azioni inventate, A, B, C e D. Alla fine del mese si guarda chi è salito di più.
+
+Una compagna dice: «Chi ha corso di più continuerà a correre!». Un'altra: «No, ormai è caro, scenderà».
+
+La domanda del caso: **esiste una strategia che compra ciò che è salito di più? E quanto è solida?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Studiamo un'idea con dati fittizi: il corso non è consulenza finanziaria.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Impariamo come si costruisce questa regola, e perché può tradire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il momentum">
+Il **momentum** («slancio») è l'idea che i titoli che sono andati meglio negli ultimi mesi tendano, per un po', a continuare ad andare meglio degli altri; e i peggiori a restare indietro.
+
+La differenza con la lezione 1: il trend following guarda **un titolo** rispetto alla sua media. Il momentum **confronta più titoli** tra loro e fa una classifica.
+
+La regola tipica:
+
+1. calcola il rendimento degli ultimi mesi di ogni titolo;
+2. metti i titoli in **classifica**;
+3. tieni i migliori (per esempio i primi 2) e **ribilancia** ogni mese, cioè rifai la classifica e cambi quelli che sono scesi.
+
+<Callout kind="curiosita">
+Il momentum è studiato dagli economisti da molti anni, ed è uno degli effetti più discussi: alcuni lo spiegano con il comportamento degli investitori, altri sostengono che sia solo un rischio che si paga con crolli improvvisi. Non c'è accordo completo.
+</Callout>
+
+Un'altra voce, in inglese con sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il momentum è una gara tra titoli. Non importa il valore assoluto: importa chi è davanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fare la classifica">
+Rendimento semplice = (prezzo finale - prezzo iniziale) / prezzo iniziale. Dati **fittizi**, 12 mesi:
+
+| titolo | prezzo iniziale | prezzo finale | calcolo | rendimento |
+|---|---|---|---|---|
+| A | 80 | 96 | 16 / 80 | +20% |
+| B | 100 | 105 | 5 / 100 | +5% |
+| C | 50 | 45 | -5 / 50 | -10% |
+| D | 25 | 28 | 3 / 25 | +12% |
+
+Classifica: **A (+20%)**, **D (+12%)**, **B (+5%)**, **C (-10%)**. Con la regola «tieni i primi 2» si tengono A e D.
+
+<PythonTerminal code={"prezzi = {'A': (80, 96), 'B': (100, 105), 'C': (50, 45), 'D': (25, 28)}\nrend = {t: (fine - inizio) / inizio for t, (inizio, fine) in prezzi.items()}\nclassifica = sorted(rend, key=rend.get, reverse=True)\nprint(rend)\nprint(classifica)"} />
+
+<Log lines={[
+  "{'A': 0.2, 'B': 0.05, 'C': -0.1, 'D': 0.12}",
+  "['A', 'D', 'B', 'C']",
+]} />
+
+<Say who="sensei">Ricontrolla un calcolo a mano: D, 28 meno 25 fa 3; 3 diviso 25 fa 0,12. Dodici per cento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I punti deboli">
+Il momentum ha limiti seri:
+
+- **Inversioni brusche**: dopo un lungo rialzo, quando il mercato gira, i «campioni» possono crollare tutti insieme, più degli altri.
+- **Costi di ribilanciamento**: ogni mese qualche titolo esce e un altro entra. Commissioni e spread (modulo T8) mangiano parte del risultato.
+- **Affollamento**: se molti seguono la stessa regola, l'effetto può ridursi.
+- **Backtest ottimistici**: scegliere «quanti mesi guardare» e «quanti titoli tenere» dopo aver visto i dati è overfitting.
+
+<Callout kind="attenzione">
+Un titolo salito del 20% non è «promesso» a salire ancora. Il momentum è un'osservazione **statistica** su molti titoli e molti anni, non una regola per il singolo caso.
+</Callout>
+
+<Say who="assistente">Più cambi la classifica, più paghi. Un risultato lordo bello può diventare piccolo al netto dei costi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quattro titoli fittizi hanno rendimenti a 12 mesi: P +8%, Q -4%, R +15%, S +1%. La regola tiene i 2 migliori. Quali tiene?"
+  options={["R e P", "R e S", "P e Q", "Q e S"]}
+  answer={0}
+  explain="Classifica dal migliore: R (+15%), P (+8%), S (+1%), Q (-4%). I primi due sono R e P. Chi risponde «R e S» ha confuso il segno: +1% è meno di +8%."
+/>
+
+<Say who="sensei">Si ordina dal valore più alto. Un meno davanti al numero sta in fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Rendimenti da calcolare, classifiche da fare, limiti da riconoscere. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-momentum" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il passato ordina la classifica, non scrive il futuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il momentum confronta più titoli: classifica per rendimento passato, si tengono i migliori e si ribilancia a intervalli.
+- Rendimento semplice = (finale - iniziale) / iniziale; si ordina dal più alto al più basso.
+- Limiti: inversioni brusche, costi di ribilanciamento, affollamento, overfitting nella scelta dei parametri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra momentum e trend following?", a: "Il momentum confronta più titoli in classifica; il trend following guarda un titolo contro la sua media" },
+    { q: "Prezzo da 50 a 45: rendimento?", a: "-10% (-5 / 50)" },
+    { q: "Che cos'è il ribilanciamento?", a: "Rifare la classifica a intervalli e cambiare i titoli che sono scesi" },
+    { q: "Perché i costi contano nel momentum?", a: "Ogni cambio in classifica costa commissioni e spread" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le coppie. Due titoli che si muovono insieme, e una scommessa sul loro divario.</Say>
+</Scene>

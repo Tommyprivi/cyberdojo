@@ -1,0 +1,174 @@
+---
+id: F.09.001
+course: fondamenta
+module: 9
+title: "Il primo programma"
+belt: arancione
+duration_min: 8
+prerequisites: [F.08.007]
+objectives:
+  - "Spiegare cos'è Python e come si esegue un programma (terminale o file)"
+  - "Scrivere un programma con print() e commenti"
+  - "Riconoscere gli errori più comuni di un primo programma"
+video:
+  provider: youtube
+  id: "e5pSG6okWLo"
+  start: 0
+  end: 363
+  channel: "CodiceFacile"
+  title: "Corso Python #1 – Installare Python su Windows e il primo programma"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-primo-programma
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Python distingue maiuscole e minuscole: Print non è print"
+  - "Le virgolette e le parentesi vanno sempre chiuse"
+  - "Un commento con # non viene eseguito, serve solo a chi legge"
+commands: []
+---
+
+<Scene title="Una richiesta dal capo turno">
+Sei al **SOC**, il centro che sorveglia la sicurezza dell'azienda. Marta, la capo turno, ti ferma con un foglio in mano.
+
+«Ogni mattina qualcuno conta a mano le righe di errore nel log. Sono quaranta righe, sempre le stesse operazioni. Non puoi farlo fare al computer?»
+
+Si può. Ma il computer capisce solo istruzioni scritte in un linguaggio preciso. Un elenco di istruzioni si chiama **programma** (o **script**, se è piccolo e serve a un compito pratico).
+
+La domanda del caso: **in che linguaggio lo scriviamo, e come si fa partire?**
+
+<Say who="sensei">Un analista che sa scrivere piccoli script lavora in dieci minuti ciò che altri fanno in due ore. Da oggi impari a farlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è Python">
+**Python** è un linguaggio di programmazione. Lo scegliamo perché si legge quasi come l'inglese, funziona su Linux, Windows e macOS ed è usatissimo in sicurezza e in amministrazione di sistemi.
+
+Python è un linguaggio **interpretato**: un programma chiamato **interprete** legge il tuo testo e lo esegue una riga alla volta, dall'alto verso il basso. Non devi fare altro.
+
+<Callout kind="curiosita">
+Il nome non viene dal serpente: viene dal gruppo comico britannico «Monty Python». Per questo negli esempi di Python trovi spesso battute su uova e prosciutto.
+</Callout>
+
+<Callout kind="regola">
+Questo corso usa **Python 3.11 o più nuovo**. Sul terminale Linux si controlla con `python3 --version`. Su Windows il comando di solito è `py` oppure `python`.
+</Callout>
+
+Vuoi vederlo spiegato da un'altra voce, con l'installazione e il primo programma?
+
+<Video />
+
+<Say who="assistente">Su Linux Python di solito c'è già. Prova `python3 --version`: se risponde con un numero, sei a posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due modi per farlo partire">
+**Primo modo: la shell interattiva.** Scrivi `python3` nel terminale. Compare il simbolo `>>>`: l'interprete aspetta un comando e risponde subito.
+
+```text
+$ python3
+>>> print("Ciao, SOC")
+Ciao, SOC
+>>> 2 + 3
+5
+>>> exit()
+```
+
+È perfetta per provare una riga e vedere cosa succede. Si esce con `exit()`.
+
+**Secondo modo: un file.** Scrivi le istruzioni in un file di testo che finisce con `.py`, per esempio `ciao.py`, e lo fai eseguire:
+
+```text
+$ python3 ciao.py
+```
+
+<Callout kind="trucco">
+Una riga da provare: shell interattiva. Un programma da conservare e rilanciare: file `.py`.
+</Callout>
+
+<Say who="sensei">Prima si prova nella shell. Quando funziona, si salva in un file. Così non perdi mai il lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="print e commenti">
+La funzione `print()` mostra un valore sullo schermo. Il testo va tra virgolette, i numeri no. Più valori, separati da virgola, vengono scritti con uno spazio in mezzo.
+
+Una riga che comincia con `#` è un **commento**: Python la salta. Serve a chi legge il programma, cioè anche a te fra un mese.
+
+```python
+# saluto del turno di notte
+print("Turno di notte: inizio")
+print("Righe da controllare:", 3)   # il numero resta un numero
+```
+
+Output:
+
+```text
+Turno di notte: inizio
+Righe da controllare: 3
+```
+
+<Callout kind="attenzione">
+Python distingue **maiuscole e minuscole**. Se scrivi `Print("ciao")` ottieni `NameError: name 'Print' is not defined`. Se dimentichi di chiudere le virgolette ottieni un `SyntaxError`: la riga non è scritta secondo le regole del linguaggio.
+</Callout>
+
+<Say who="assistente">Gli errori non sono una bocciatura. Python ti dice il tipo e la riga: leggi l'ultima riga del messaggio, di solito basta quella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa questa riga? print('SOC', 3)"
+  options={["SOC 3", "SOC3", "('SOC', 3)", "Errore"]}
+  answer={0}
+  explain="Con più valori separati da virgola, print li scrive con uno spazio in mezzo e senza virgolette: SOC 3. Il numero 3 non ha bisogno di virgolette."
+/>
+
+Ora prova da solo: cambia il messaggio, aggiungi una riga con `print()` e premi Esegui.
+
+<PythonTerminal code={"# Cambia il messaggio e premi Esegui\nprint('Ciao dal SOC')"} />
+
+<Say who="assistente">Cambia una cosa alla volta e riesegui. Se qualcosa si rompe, sai quale modifica è stata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul primo programma: cosa stampa un codice breve, quale riga è sbagliata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-primo-programma" pass="4/5" retries={3} />
+
+<Say who="sensei">Leggi il codice riga per riga, come farebbe l'interprete. Non indovinare: esegui nella testa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Python è un linguaggio interpretato: l'interprete esegue il codice riga per riga.
+- Si prova una riga nella shell interattiva (`python3`, prompt `>>>`) e si conserva un programma in un file `.py` da lanciare con `python3 file.py`.
+- `print()` mostra valori, `#` apre un commento; maiuscole e virgolette contano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si lancia il file ciao.py da terminale Linux?", a: "python3 ciao.py" },
+    { q: "Cosa significa il prompt >>> ?", a: "L'interprete è pronto a ricevere un comando" },
+    { q: "Come si scrive un commento?", a: "Con # davanti alla riga" },
+    { q: "Che errore dà Print('x') con la P maiuscola?", a: "NameError: il nome non esiste" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le variabili. Imparerai a dare un nome ai dati, così lo script se li ricorda.</Say>
+</Scene>

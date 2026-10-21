@@ -1,0 +1,146 @@
+---
+id: F.10.003
+course: fondamenta
+module: 10
+title: "Esame di cintura Fondamenta"
+belt: verde
+duration_min: 12
+prerequisites: [F.10.002]
+objectives:
+  - "Dimostrare di padroneggiare i fondamenti di computer, Linux e reti"
+  - "Usare un metodo di ripasso efficace per prepararsi a una verifica"
+video:
+  provider: youtube
+  id: "XMVc2dtL4_8"
+  start: 0
+  end: 191
+  channel: "Alessandro de Concini - ADC"
+  title: "Come ripassare al meglio: 2 metodi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f10-esame
+  pass: "8/10"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Rileggere gli appunti invece di mettersi alla prova: sembra ripasso ma non lo è"
+  - "Arrivare all'esame senza aver ripassato le aree deboli (conti sulle sottoreti, permessi Linux, ordine delle ACL)"
+  - "Rispondere di fretta senza leggere tutte le opzioni"
+commands: []
+---
+
+<Scene title="L'ultima prova">
+È sera tardi in sala SOC. Il capo ti consegna una busta con un biglietto: «Hai chiuso un caso, costruito una rete, imparato a leggere un pacchetto. Domani ti metto alla prova su tutto.»
+
+L'**esame di cintura** copre l'intero corso: **computer, Linux e reti**. Sono **10 domande**, e per passare servono **almeno 8 risposte giuste**. Hai **3 tentativi**, e a ogni tentativo le domande cambiano, pescate da una raccolta più ampia.
+
+<Say who="sensei">Un esame non serve a punire. Serve a dire onestamente: sai, oppure devi ripassare. Io preferisco l'onestà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa c'è dentro">
+Le domande sono **scenari**, non definizioni da recitare. Esempi del tipo che incontrerai:
+
+- «Questo comando che cosa stampa?» (Linux)
+- «Quali di queste regole lascia passare questo pacchetto?» (ACL)
+- «In quale rete si trova questo indirizzo con questa maschera?» (indirizzi)
+- «Il ping al gateway va, il sito no: dove guardi?» (diagnosi)
+
+Le aree sono tre.
+
+- **Computer**: bit e byte, binario, RAM e disco, sistema operativo.
+- **Linux**: spostarsi tra le cartelle, leggere file, `grep`, permessi con `chmod`, redirect e pipe, `sudo`.
+- **Reti**: MAC e IP, maschere e sottoreti, porte, DNS e DHCP, switch e router, VLAN, ACL, VPN, IPv6 e strumenti di diagnosi.
+
+<Say who="assistente">Non cercare di ricordare tutto a memoria. Cerca di capire il perché: il perché si ricorda da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un metodo di ripasso">
+Il modo più efficace per ripassare non è rileggere. È **mettersi alla prova**: chiudere gli appunti e **richiamare** ciò che si sa, a voce o su carta. Quello che non esce è ciò da ripassare.
+
+<Callout kind="trucco">
+Un metodo semplice per questa sera:
+
+1. Per ogni area, scrivi **cinque cose che sai**, senza guardare.
+2. Controlla: quali erano giuste? Quali no?
+3. Ripassa solo quelle sbagliate, e prova di nuovo il giorno dopo.
+</Callout>
+
+Un video breve in italiano, con due metodi per ripassare davvero:
+
+<Video />
+
+<Say who="sensei">Chi rilegge si illude di sapere. Chi si mette alla prova scopre cosa gli manca. Scegli di scoprirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le aree deboli di tutti">
+Ci sono quattro punti dove quasi tutti sbagliano almeno una volta. Ripassali.
+
+<Guided
+  steps={[
+    "Sottoreti: indirizzi utilizzabili = totali meno 2. /24 = 254, /26 = 62, /27 = 30. E il gateway è già uno di quelli.",
+    "ACL: la prima regola che corrisponde vince, e in fondo c'è il deny implicito. L'ordine cambia tutto.",
+    "Permessi Linux: rwx per proprietario, gruppo, altri. 600 = rw- --- ---. `>` sovrascrive, `>>` aggiunge.",
+    "Diagnosi: dal vicino al lontano. Se 8.8.8.8 risponde e il nome no, è il DNS.",
+  ]}
+/>
+
+<Say who="sensei">Tre su quattro di questi punti sono ragionamenti, non memoria. Fai due conti, leggi con calma, e non sbagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole dell'esame">
+Prima di cominciare, tre regole, serie quanto l'esame.
+
+- **Leggi tutte le opzioni.** Spesso due sembrano giuste: una lo è davvero, l'altra ha un dettaglio sbagliato.
+- **Niente fretta.** Non c'è un limite di tempo che ti costringa a correre.
+- **Se non passi, non è una condanna.** Hai tre tentativi, e a ogni tentativo le domande cambiano. Tra un tentativo e l'altro ripassa le aree dove hai sbagliato.
+
+<Callout kind="regola">
+Questo è un esame **tuo**: lo svolgi da solo, con il tuo ragionamento. Usare risposte altrui non dimostra niente, e il solo a perdere sei tu.
+</Callout>
+
+<Say who="assistente">Respira. Hai già risolto un caso vero. Dieci domande, una alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'esame">
+Dieci domande su computer, Linux e reti. Servono **8 risposte giuste su 10**. Hai **3 tentativi**.
+
+<Practice generator="f10-esame" pass="8/10" retries={3} />
+
+<Say who="sensei">Dieci domande, otto giuste. Nessuna scorciatoia, nessuna fretta. Vai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cintura e rapporto finale">
+<Recap xp={20}>
+- Hai chiuso il corso Fondamenta: computer, Linux, reti, fino a un progetto completo.
+- Il metodo vale più della memoria: mettersi alla prova, ripassare ciò che non esce, riprovare.
+- Il prossimo passo è la cybersecurity vera e propria: ora hai le basi per capire che cosa si difende.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti indirizzi utilizzabili ha un /26?", a: "62" },
+    { q: "Che cosa succede a un pacchetto che nessuna regola della ACL ammette?", a: "Viene scartato (deny implicito)" },
+    { q: "Qual è il metodo di ripasso più efficace?", a: "Mettersi alla prova, non rileggere" },
+    { q: "ping 8.8.8.8 va, ping un nome no: dove sta il guasto?", a: "Nel DNS" },
+  ]}
+/>
+
+<Say who="sensei">Se hai la cintura, te la sei guadagnata. Se non ancora, ripassa e riprova: la porta resta aperta.</Say>
+</Scene>

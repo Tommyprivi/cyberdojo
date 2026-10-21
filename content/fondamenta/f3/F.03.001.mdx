@@ -1,0 +1,179 @@
+---
+id: F.03.001
+course: fondamenta
+module: 3
+title: "Chi sei sul server?"
+belt: gialla
+duration_min: 8
+prerequisites: [F.02.007]
+objectives:
+  - "Scoprire chi sei e a quali gruppi appartieni con whoami e id"
+  - "Leggere una riga di /etc/passwd e di /etc/group"
+  - "Spiegare perché non si lavora ogni giorno da root"
+video:
+  provider: youtube
+  id: "L2ZvdRxGoHc"
+  start: 0
+  end: 457
+  channel: "Franco Bugnano"
+  title: "Linux: Utenti, Gruppi e Permessi"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-utenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la x in /etc/passwd sia la password: è solo un segnaposto"
+  - "Lavorare da root «per comodità» e scoprire dopo cosa può rompere un errore"
+  - "Confondere utente e gruppo: l'utente è una persona o un programma, il gruppo è un insieme di utenti"
+commands: []
+---
+
+<Scene title="«Ho fatto tutto da root»">
+Nuovo turno al **SOC**. Marta, la collega del turno prima, ha lasciato un biglietto sul server dei dati: «Ho sistemato tutto, ho lavorato da **root**, così non mi dava errori».
+
+Tu non sai ancora cosa sia root. Sai solo che Marta ha scritto quella parola con tono molto tranquillo, e che al Sensei il tono tranquillo non è piaciuto.
+
+<Say who="sensei">Ogni errore su un computer ha una dimensione. Dipende da chi lo commette. Oggi impari a chiederti: chi sono io, su questa macchina?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Whoami e id">
+Linux è un sistema **multiutente**: sullo stesso computer possono esistere tanti **utenti**. Un utente non è sempre una persona: può essere anche un programma che ha bisogno di un suo posto sul sistema.
+
+Per sapere chi sei, il comando è `whoami` («chi sono io»). Per sapere di più, `id`:
+
+<Log lines={[
+  "studente@lab:~$ whoami",
+  "studente",
+  "studente@lab:~$ id",
+  "uid=1000(studente) gid=1000(studente) groups=1000(studente),27(sudo)",
+]} caption="Due comandi, due risposte. Il numero dopo uid è l'identità vista dal sistema." />
+
+Il sistema ragiona con i **numeri**: l'**UID** (User ID) identifica l'utente, il **GID** il gruppo. Il nome è solo un'etichetta comoda per noi.
+
+<Say who="assistente">Quando apri un terminale nuovo, scrivi `whoami`. Costa mezzo secondo e ti toglie ogni dubbio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il file degli utenti">
+Dove sono scritti gli utenti? In un semplice file di testo: `/etc/passwd`. Guardiamo le prime righe:
+
+<Log lines={[
+  "studente@lab:~$ head -n 3 /etc/passwd",
+  "root:x:0:0:root:/root:/bin/bash",
+  "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin",
+  "bin:x:2:2:bin:/bin:/usr/sbin/nologin",
+]} caption="head -n 3 mostra solo le prime tre righe." />
+
+Ogni riga ha **sette campi** separati da due punti:
+
+- **nome**: `root`
+- **x**: un segnaposto, la password cifrata non sta qui ma in un file protetto
+- **UID**: `0`, il numero dell'utente
+- **GID**: `0`, il gruppo principale
+- **descrizione**: un commento
+- **cartella personale**: `/root`
+- **shell**: il programma che parte al login. `nologin` vuol dire «questo utente non può aprire un terminale»
+
+<Callout kind="attenzione">
+La `x` non è la password. Il nome del file è un ricordo del passato, quando le password stavano proprio lì. Oggi sono altrove, e solo l'amministratore può leggerle.
+</Callout>
+
+<Say who="sensei">Sette campi, due punti. Impara a spezzare la riga con gli occhi e leggerai qualsiasi utente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I gruppi">
+Un **gruppo** è un insieme di utenti che condividono gli stessi permessi. Invece di dire «Marta può leggere questa cartella, Luca può leggerla, Sara può leggerla», dici «il gruppo `contabilita` può leggerla».
+
+Anche i gruppi stanno in un file di testo, `/etc/group`:
+
+<Log lines={[
+  "studente@lab:~$ grep sudo /etc/group",
+  "sudo:x:27:studente,marta",
+  "studente@lab:~$ groups",
+  "studente sudo",
+]} caption="Il gruppo sudo ha due membri: studente e marta." />
+
+Il formato è: nome del gruppo, segnaposto, GID, elenco dei membri.
+
+<Callout kind="trucco">
+Utente = **chi sei**. Gruppo = **con chi condividi i permessi**. Un utente può stare in più gruppi, come una persona può stare in più squadre.
+</Callout>
+
+<Say who="assistente">Il gruppo sudo, per esempio, è la squadra di chi può chiedere poteri da amministratore. Ne parliamo tra due lezioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché non si lavora da root">
+**Root** è l'utente con **UID 0**: l'amministratore. Può leggere, modificare e cancellare qualsiasi file, fermare qualsiasi programma, creare e togliere altri utenti. Nessun permesso lo ferma.
+
+Ed è proprio questo il problema.
+
+<Callout kind="regola">
+Ogni programma che lanci eredita i poteri di chi lo lancia. Da utente normale, un errore rovina **i tuoi file**. Da root, un errore può rovinare **tutto il sistema**.
+</Callout>
+
+Pensa alla patente: la guidi sempre con l'auto che hai, non con un mezzo da cantiere. Esiste, serve in certi casi, ma non lo usi per andare a scuola.
+
+Vuoi sentirlo raccontare da un'altra voce? Utenti, gruppi e permessi, in meno di otto minuti:
+
+<Video />
+
+<Say who="sensei">Marta non era in malafede. Era comoda. In sicurezza, la comodità è spesso la prima falla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un programma infetto gira con il tuo utente normale, non con root. Cosa può danneggiare, di norma?"
+  options={["Soprattutto i tuoi file: il resto del sistema è protetto dai permessi", "Tutti i file del sistema, come se fosse root", "Niente: i programmi infetti non esistono su Linux", "Solo i file degli altri utenti"]}
+  answer={0}
+  explain="Un processo ha i poteri dell'utente che lo ha lanciato. Da utente normale può toccare ciò che l'utente può toccare: la sua cartella personale. Per questo lavorare da root è pericoloso: lo stesso programma avrebbe il controllo di tutto."
+/>
+
+<Say who="assistente">Ricorda il biglietto di Marta. Cosa sarebbe successo, se uno dei suoi comandi fosse stato sbagliato?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su utenti, gruppi e sul file `/etc/passwd`. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-utenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi sa dire chi è, sulla macchina, sa già dire cosa può rompere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `whoami` dice chi sei, `id` mostra UID, GID e gruppi. Il sistema ragiona con i numeri.
+- `/etc/passwd` elenca gli utenti (sette campi), `/etc/group` i gruppi. La `x` non è la password.
+- Root ha UID 0 e può tutto: per questo non si lavora ogni giorno da root.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale comando ti dice con quale utente stai lavorando?", a: "whoami" },
+    { q: "Cosa contiene /etc/passwd?", a: "L'elenco degli utenti, una riga ciascuno, sette campi separati da due punti" },
+    { q: "Che UID ha root?", a: "0" },
+    { q: "Perché non si lavora da root ogni giorno?", a: "Un errore o un programma ostile avrebbe il potere di danneggiare tutto il sistema" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai chi sei. Nella prossima lezione vediamo cosa ti è permesso fare: i permessi, lettera per lettera.</Say>
+</Scene>

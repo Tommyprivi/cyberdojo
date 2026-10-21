@@ -1,0 +1,215 @@
+---
+id: D.18.006
+course: dati
+module: 18
+title: "PostgreSQL in pratica"
+belt: marrone
+duration_min: 10
+prerequisites: [D.18.005]
+objectives:
+  - "Spiegare a che cosa servono ruoli, schemi, JSONB, array ed estensioni"
+  - "Usare pgAdmin per connettersi, esplorare un database ed eseguire una query"
+  - "Installare PostgreSQL e pgAdmin in locale, senza esporli a Internet"
+video:
+  provider: youtube
+  id: "zVIaAgSX9Tg"
+  start: 0
+  end: 600
+  channel: "Data Whisperer Academy"
+  title: "How to Install PostgreSQL and pgAdmin 4: Step-by-Step Guide For Beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-postgres
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Collegare l'applicazione con il ruolo postgres (amministratore) invece di un ruolo con pochi permessi"
+  - "Aprire la porta 5432 verso Internet «per comodità»: un database non va mai esposto"
+  - "Usare JSONB per tutto: i dati che si filtrano e si uniscono spesso stanno meglio in colonne normali"
+commands: []
+---
+
+<Scene title="Un solo account per tutti">
+Nel negozio di Marta, il programma dell'e-commerce, il report del contabile e lo stagista usano **tutti** lo stesso accesso: l'utente `postgres`, l'amministratore. Un giorno lo stagista, per sbaglio, cancella una tabella.
+
+Intanto Marta vuole salvare le preferenze dei clienti (tema scuro, lingua) senza creare dieci colonne nuove, e vorrebbe vedere i dati con un programma comodo, non solo con la riga di comando.
+
+La domanda del caso: **come si organizza PostgreSQL perché ognuno faccia solo il suo, e come si lavora comodamente?**
+
+<Say who="sensei">Un database è come un edificio: serve un portinaio, serve un piano per ogni reparto e una chiave per ogni persona. Cominciamo dalle chiavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ruoli e schemi">
+In PostgreSQL utenti e gruppi sono entrambi **ruoli**. Un ruolo può accedere (`LOGIN`) oppure essere solo un gruppo di permessi.
+
+<Log lines={[
+  "CREATE ROLE analista LOGIN PASSWORD 'scegli-una-password-lunga';",
+  "GRANT SELECT ON ALL TABLES IN SCHEMA public TO analista;",
+]} caption="Un ruolo che può solo leggere. La password qui è un segnaposto: la scegli tu e non la scrivi in nessun file condiviso." />
+
+Lo **schema** è una «cartella» dentro un database, che raggruppa tabelle e oggetti. Ogni database ha almeno lo schema `public`.
+
+<Log lines={[
+  "CREATE SCHEMA magazzino;",
+  "CREATE TABLE magazzino.scaffali (id int PRIMARY KEY, zona text);",
+  "SELECT * FROM magazzino.scaffali;",
+]} caption="Nome completo: schema.tabella." />
+
+Gli schemi servono a **separare** i reparti (vendite, magazzino, contabilità) e a dare permessi per reparto: `GRANT USAGE ON SCHEMA magazzino TO ...`.
+
+<Callout kind="regola">
+Permessi minimi: ogni persona o programma riceve solo ciò che serve. L'applicazione usa un ruolo suo, mai `postgres`.
+</Callout>
+
+<Say who="assistente">Il ruolo dice chi sei. Lo schema dice dove lavori. I GRANT dicono che cosa puoi fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tipi utili: JSONB e array">
+PostgreSQL ha tipi che altri database non hanno, o hanno solo in parte.
+
+**JSONB** salva un documento JSON in forma binaria, e permette di cercare dentro. La tabella `profili`:
+
+<Log lines={[
+  "id | preferenze",
+  '1  | {"tema": "scuro", "lingua": "it"}',
+  '2  | {"tema": "chiaro", "lingua": "en"}',
+]} caption="Colonna preferenze di tipo JSONB." />
+
+<Log lines={[
+  "SELECT id, preferenze->>'tema' AS tema",
+  "FROM profili",
+  "WHERE preferenze->>'lingua' = 'it';",
+]} caption="L'operatore ->> estrae un valore come testo." />
+
+<Log lines={[
+  "id | tema",
+  "1  | scuro",
+]} caption="Solo il profilo 1 ha la lingua italiana." />
+
+**Array**: una colonna può contenere una lista. La tabella `prodotti_tag`:
+
+<Log lines={[
+  "prodotto         | tag",
+  "candela vaniglia | {regalo,casa}",
+  "sapone lavanda   | {bagno,regalo}",
+]} caption="Colonna tag di tipo text[]." />
+
+<Log lines={[
+  "SELECT prodotto FROM prodotti_tag WHERE 'bagno' = ANY(tag);",
+]} caption="Restituisce una sola riga: «sapone lavanda». Con 'regalo' le righe sarebbero due." />
+
+<Callout kind="attenzione">
+JSONB è comodo per dati variabili, ma non sostituisce le colonne: se filtri spesso su un campo, mettilo in una colonna vera, oppure crea un indice **GIN** sul JSONB.
+</Callout>
+
+<Say who="sensei">JSONB per ciò che cambia da riga a riga. Colonne normali per ciò che interroghi ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le estensioni">
+Un'**estensione** aggiunge funzioni e tipi a PostgreSQL, come un componente aggiuntivo. Si attiva per database:
+
+<Log lines={[
+  "CREATE EXTENSION pg_trgm;",
+  "SELECT extname FROM pg_extension;",
+]} caption="Attiva la ricerca per somiglianza e mostra quelle installate." />
+
+Alcune molto usate:
+
+- **pg_trgm**: ricerca di testi simili («candela» trova anche «candella»).
+- **pgcrypto**: funzioni di cifratura e hash.
+- **pg_stat_statements**: statistiche sulle query più lente (la userai nella lezione 8).
+- **PostGIS**: dati geografici (mappe, distanze).
+
+<Callout kind="attenzione">
+Installa solo estensioni di cui ti fidi e di cui hai bisogno: girano dentro il server e hanno accesso ai dati.
+</Callout>
+
+Vuoi vedere come si installa tutto da zero? Un video in inglese guida l'installazione di PostgreSQL e pgAdmin su Windows:
+
+<Video />
+
+<Say who="assistente">Un'estensione per volta, e solo se serve. Più codice dentro il server, più cose possono andare storte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="pgAdmin: connettersi ed esplorare">
+**pgAdmin** è il programma grafico gratuito per lavorare con PostgreSQL: un'interfaccia al posto della riga di comando.
+
+<Guided
+  steps={[
+    "Apri pgAdmin. A sinistra c'è l'albero degli oggetti (Object Explorer), sotto «Servers».",
+    "Registra il server: tasto destro su Servers, poi Register, Server. Nome a piacere; scheda Connection: host localhost, porta 5432, database postgres, utente scelto in installazione.",
+    "Esplora l'albero: Servers, il tuo server, Databases, il database, Schemas, public, Tables. Tasto destro su una tabella, poi View/Edit Data per vederne le righe.",
+    "Apri lo strumento per le query: scegli il database e usa Tools, poi Query Tool. Scrivi una SELECT e premi F5 (o il tasto «play»): i risultati compaiono nel riquadro in basso.",
+    "Nella scheda Messages leggi eventuali errori. Il pulsante Explain (tasto F7) mostra il piano di esecuzione, come nella lezione 3.",
+  ]}
+/>
+
+Altri strumenti utili dentro pgAdmin: **Dashboard** (connessioni e attività), **ERD Tool** (disegna lo schema con le relazioni), **Backup** e **Restore** (li vedrai nella prossima lezione). Le voci di menu possono cambiare un po' tra una versione e l'altra.
+
+<Say who="sensei">Prima guardi, poi tocchi. Esplora l'albero e leggi i dati prima di scrivere qualunque cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Installare in locale, mai esposto">
+Per esercitarti, installa PostgreSQL e pgAdmin **sul tuo computer**, scaricandoli solo dai siti ufficiali (postgresql.org e pgadmin.org). L'installatore per Windows e macOS include entrambi.
+
+- Durante l'installazione scegli una **password lunga e unica** per l'utente `postgres`. Non riutilizzarne una già usata altrove.
+- Lascia la **porta 5432** e l'ascolto su `localhost`: il database accetta connessioni solo dal tuo computer.
+- Se usi Docker, pubblica la porta come `127.0.0.1:5432:5432`, non come `5432:5432`.
+
+<Callout kind="attenzione">
+**Mai esporre un database a Internet.** Niente apertura della porta 5432 sul router, niente «accesso da qualsiasi indirizzo». I bot scandiscono continuamente la rete cercando database aperti con password banali. Per accedere da fuori si usa una VPN o un tunnel SSH, e solo su sistemi che sono tuoi o per cui hai un permesso.
+</Callout>
+
+<Callout kind="regola">
+In laboratorio usa solo dati inventati. Se un giorno lavori con dati veri di persone, valgono GDPR, minimizzazione e permessi minimi.
+</Callout>
+
+<Say who="sensei">Un database di prova tiene a bada la curiosità. Un database esposto con una password debole la attira. Scegli tu quale dei due vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ruoli, schemi, tipi di PostgreSQL e pgAdmin. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-postgres" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora il database è tuo: ricordati di non aprirlo al mondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- In PostgreSQL utenti e gruppi sono ruoli; gli schemi separano gli oggetti; i GRANT danno permessi minimi.
+- JSONB e array gestiscono dati flessibili; le estensioni aggiungono funzioni (pg_trgm, pgcrypto, PostGIS).
+- pgAdmin si collega, esplora e lancia query con il Query Tool (F5). In locale, mai esposto a Internet.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è lo schema predefinito di ogni database PostgreSQL?", a: "public" },
+    { q: "Che cosa estrae l'operatore ->> da un JSONB?", a: "Il valore di una chiave, come testo" },
+    { q: "Con quale tasto si esegue una query nel Query Tool di pgAdmin?", a: "F5" },
+    { q: "Perché non si apre la porta 5432 a Internet?", a: "I bot cercano database aperti con password deboli" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i backup. Un database senza copie è un database che aspetta il suo giorno peggiore.</Say>
+</Scene>

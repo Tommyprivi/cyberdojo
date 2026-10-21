@@ -1,0 +1,149 @@
+---
+id: D.05.006
+course: dati
+module: 5
+title: "Gli outlier"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.005]
+objectives:
+  - "Riconoscere un outlier con la regola dell'IQR e con le deviazioni standard"
+  - "Decidere cosa fare di un outlier e cosa non fare"
+video:
+  provider: youtube
+  id: "t1SgIs69D5o"
+  start: 0
+  end: 247
+  channel: "Yimp - La scuola dei dati"
+  title: "Individuare gli OUTLIER e calcolare il COEFFICIENTE DI VARIAZIONE"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-outlier
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Togliere un outlier perché «rovina» il risultato, senza verificare da dove viene"
+  - "Usare la regola delle deviazioni standard quando l'outlier stesso gonfia la deviazione standard"
+  - "Dimenticare di dire nel rapporto che dei dati sono stati tolti o corretti"
+commands: []
+---
+
+<Scene title="Il 45 allo sportello">
+Un ufficio comunale ha annotato i **minuti di attesa** di 10 persone allo sportello:
+
+<Log lines={[
+  "4  5  5  6  7  8  8  9  10  45",
+]} />
+
+Nove persone aspettano tra 4 e 10 minuti. Una ha aspettato **45**. Il responsabile vuole sapere se il dato è sbagliato, se va tolto, e se cambia la media.
+
+<Say who="sensei">Un valore lontano da tutti gli altri si chiama outlier. Non è un nemico. È una domanda: come mai?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo metodo: la regola dell'IQR">
+Si usano i quartili, come nel box plot (stessa convenzione: mediana delle due metà). Per questi dieci dati: Q1 = 5 (mediana di 4, 5, 5, 6, 7) e Q3 = 9 (mediana di 8, 8, 9, 10, 45).
+
+<Guided
+  steps={[
+    "IQR = Q3 − Q1 = 9 − 5 = 4.",
+    "Si moltiplica per 1,5: 1,5 · 4 = 6.",
+    "Limite inferiore: Q1 − 6 = 5 − 6 = −1. Limite superiore: Q3 + 6 = 9 + 6 = 15.",
+    "Un valore fuori da [−1, 15] è un outlier. 45 è oltre 15: è un outlier. Gli altri nove sono dentro.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+La regola dell'1,5 è una convenzione, attribuita allo statistico John Tukey. Con 3 al posto di 1,5 si cercano solo gli outlier «estremi».
+</Callout>
+
+<Say who="assistente">Quartili, IQR, uno e mezzo per l'IQR, due limiti. Fuori dai limiti, outlier.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il secondo metodo: le deviazioni standard">
+Un altro modo è misurare a quante **deviazioni standard** dalla media sta un valore. Qui la media è 10,7 e la deviazione standard (divisa per n − 1, come sempre) è circa **12,2**.
+
+- Limite a **2** deviazioni standard: 10,7 + 2 · 12,2 = 35,1. Il 45 è oltre: segnalato.
+- Limite a **3** deviazioni standard: 10,7 + 3 · 12,2 = 47,3. Il 45 **non** è oltre: non segnalato!
+
+<Callout kind="attenzione">
+L'outlier ha gonfiato lui stesso la media e la deviazione standard. Così si «nasconde». La regola dell'IQR non ha questo difetto, perché i quartili non si lasciano spostare da un solo valore estremo.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Poco più di quattro minuti:
+
+<Video />
+
+<Say who="sensei">Con pochi dati e un outlier grosso, fidati dei quartili. La media e la deviazione standard sono le prime vittime.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fare">
+Trovare l'outlier è solo il primo passo. Poi si **indaga**.
+
+<Callout kind="regola">
+1. **Controlla la fonte**: è un errore di battitura (45 invece di 4,5), un sensore guasto, un'età di 250 anni? Se è un errore chiaro, correggi o segna il valore come mancante.
+2. **Se è reale**, tienilo: è un pezzo di verità (un cliente che ha speso moltissimo, un giorno di picco).
+3. **Documenta tutto**: scrivi cosa hai trovato e cosa hai fatto, e quando serve mostra i risultati sia con sia senza.
+</Callout>
+
+<Callout kind="attenzione">
+Cosa **non** fare: togliere un valore solo perché ti fa uscire un risultato che non ti piace. Non è pulizia dei dati, è truccare la risposta.
+</Callout>
+
+<Say who="sensei">Un outlier non si cancella: si spiega. Se non sai spiegarlo, lo tieni e lo dichiari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In un elenco di età di clienti compare 250. Cosa fai?"
+  options={["Controllo l'origine del dato: quasi certamente è un errore, da correggere o segnare come mancante", "Lo tengo, perché i dati non si toccano mai", "Lo tolgo senza dire niente, così la media torna normale", "Lo sostituisco con la media di tutti gli altri senza annotarlo"]}
+  answer={0}
+  explain="250 anni è impossibile: quasi certamente un errore. Va verificato alla fonte, poi corretto o segnato come mancante, e annotato nel rapporto. Toglierlo o sostituirlo di nascosto rende il lavoro non verificabile."
+/>
+
+<Say who="assistente">Prima indaghi, poi decidi, poi scrivi cosa hai fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su limiti dell'IQR, deviazioni standard e scelte sugli outlier. Hai 3 tentativi.
+
+<Practice generator="d05-outlier" pass="5/5" retries={3} />
+
+<Say who="sensei">Calcola i limiti con cura: ogni numero fuori posto è un errore nel rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Regola dell'IQR: outlier se sta sotto Q1 − 1,5·IQR o sopra Q3 + 1,5·IQR.
+- Con le deviazioni standard (2 o 3 dalla media) un grosso outlier può nascondersi, perché gonfia la deviazione standard.
+- Un outlier si indaga e si documenta: errore da correggere, valore reale da tenere. Mai tolto in silenzio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Q1 = 20 e Q3 = 30: qual è il limite superiore dell'IQR?", a: "30 + 1,5 · 10 = 45" },
+    { q: "Perché la regola dell'IQR è più robusta?", a: "Perché i quartili non sono gonfiati da un solo valore estremo" },
+    { q: "Hai trovato un outlier reale. Che fai?", a: "Lo tieni, lo dichiari e mostri i risultati con e senza" },
+    { q: "Cosa non fare mai?", a: "Toglierlo in silenzio perché ti fa uscire un risultato scomodo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: campionamento e bias. Se i dati sono scelti male, nessun calcolo li salva.</Say>
+</Scene>

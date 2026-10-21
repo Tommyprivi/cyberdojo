@@ -1,0 +1,153 @@
+---
+id: H.03.002
+course: hedge
+module: 3
+title: "La diversificazione"
+belt: arancione
+duration_min: 8
+prerequisites: [H.03.001]
+objectives:
+  - "Spiegare perché mescolare investimenti poco correlati riduce il rischio"
+  - "Calcolare la volatilità di un portafoglio di due titoli con correlazione data"
+  - "Riconoscere i limiti della diversificazione: pochi titoli diversi non bastano, e in crisi le correlazioni salgono"
+video:
+  provider: youtube
+  id: "p-0IaEWxMbU"
+  start: 0
+  end: 401
+  channel: "Alessio Zaccanti"
+  title: "DIVERSIFICAZIONE vs DECORRELAZIONE di portafoglio."
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-diversificazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che dieci titoli dello stesso tipo siano diversificati"
+  - "Pensare che serva correlazione negativa: basta che sia minore di +1"
+  - "Credere che la diversificazione elimini il rischio di mercato"
+commands: []
+---
+
+<Scene title="Il gelataio e l'ombrellaio">
+Su un'isola fittizia ci sono due negozi: un gelataio che va bene quando c'è il sole, e un venditore di ombrelli che va bene quando piove.
+
+Se metti **tutti** i risparmi nel gelataio, un'estate piovosa ti rovina. Se ne dividi metà e metà, qualunque tempo faccia, uno dei due va bene.
+
+La domanda del caso: **quanto rischio si toglie davvero, e quando non funziona?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. La diversificazione riduce certi rischi, non li cancella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La correlazione">
+La **correlazione** (da -1 a +1) dice quanto due investimenti si muovono insieme.
+
+- **+1**: vanno sempre nella stessa direzione.
+- **0**: nessun legame.
+- **-1**: vanno sempre in direzioni opposte.
+
+Vuoi sentirlo da un'altra voce? Questo video distingue «avere tanti titoli» da «avere titoli che non si muovono insieme»:
+
+<Video />
+
+<Callout kind="regola">
+Per ridurre il rischio basta che la correlazione sia **minore di +1**. Non serve che sia negativa.
+</Callout>
+
+<Say who="assistente">Un indizio: non conta quanti titoli hai, conta quanto sono diversi tra loro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due titoli, tre scenari">
+Due titoli fittizi hanno entrambi volatilità **10%**. Portafoglio 50/50. Convenzione: la formula per due titoli con pesi uguali e stessa volatilità σ è: volatilità = σ per la radice di (1 + ρ) / 2, dove ρ è la correlazione.
+
+<Guided
+  steps={[
+    "ρ = +1: radice di (1+1)/2 = radice di 1 = 1. Volatilità = 10%. Nessuna riduzione.",
+    "ρ = -0,5: radice di (1-0,5)/2 = radice di 0,25 = 0,5. Volatilità = 5%.",
+    "ρ = -1: radice di 0 = 0. Volatilità = 0%: il rischio sparisce (caso ideale, quasi mai reale).",
+    "Il rendimento atteso non cambia in nessuno dei tre casi: è la media pesata. Cambia solo il rischio.",
+  ]}
+/>
+
+<Say who="sensei">Meno rischio, stesso rendimento atteso. Per questo la chiamano il pasto quasi gratis. Quasi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Molti titoli, correlazione zero">
+Con **n** titoli uguali, pesi uguali e correlazioni zero, la volatilità del portafoglio è quella del singolo titolo divisa per la **radice di n**.
+
+<Log lines={[
+  "n = 4,  volatilità 20% -> 20 / 2 = 10%",
+  "n = 25, volatilità 30% -> 30 / 5 = 6%",
+]} />
+
+<Callout kind="attenzione">
+Il vantaggio rallenta: per dimezzare la volatilità servono **quattro volte** i titoli, e non si arriva mai a zero. Resta il **rischio di mercato**, quello che colpisce tutto insieme.
+</Callout>
+
+<Say who="sensei">Il rischio che riguarda una sola azienda si può togliere. Quello che riguarda tutti, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando non funziona">
+<Quiz
+  question="Un investitore compra le azioni di dieci banche della stessa nazione. Ha diversificato bene?"
+  options={[
+    "Poco: i titoli sono molto correlati perché dipendono dagli stessi fattori",
+    "Sì, dieci titoli bastano sempre",
+    "Sì, perché ogni banca ha un nome diverso",
+    "No, perché le banche hanno correlazione negativa",
+  ]}
+  answer={0}
+  explain="Dieci titoli molto correlati si comportano quasi come uno solo. E in una crisi le correlazioni tendono a salire proprio quando servirebbe più protezione."
+/>
+
+<Callout kind="curiosita">
+Nelle crisi le correlazioni tra titoli spesso aumentano: tutto scende insieme. La diversificazione protegge meno quando serve di più.
+</Callout>
+
+<Say who="assistente">Controlla da cosa dipende ogni investimento. Se dipendono dalla stessa cosa, sono uno solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli con due titoli, con n titoli e domande sui limiti. Tutti numeri fittizi.
+
+<Practice generator="h03-diversificazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai quanto vale davvero diversificare, e dove finisce la protezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La diversificazione riduce il rischio quando i titoli hanno correlazione minore di +1; il rendimento atteso non cambia.
+- Con correlazioni zero, la volatilità scende come 1 diviso la radice del numero di titoli, ma non arriva mai a zero.
+- Titoli dello stesso tipo sono molto correlati, e in crisi le correlazioni salgono: la protezione non è assoluta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Due titoli con σ 10% e ρ = -0,5, 50/50: volatilità?", a: "5%" },
+    { q: "Serve correlazione negativa per diversificare?", a: "No, basta che sia minore di +1" },
+    { q: "Quale rischio non si elimina diversificando?", a: "Il rischio di mercato" },
+    { q: "4 titoli, σ 20%, correlazioni zero: volatilità?", a: "10%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: Markowitz e la frontiera efficiente. Come si sceglie la miscela migliore.</Say>
+</Scene>

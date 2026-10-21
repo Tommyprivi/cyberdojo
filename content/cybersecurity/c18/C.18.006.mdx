@@ -1,0 +1,170 @@
+---
+id: C.18.006
+course: cybersecurity
+module: 18
+title: "Igiene del laboratorio di analisi"
+belt: marrone
+duration_min: 9
+prerequisites: [C.18.005]
+objectives:
+  - "Elencare le regole di un laboratorio isolato: macchina virtuale, rete chiusa, snapshot, niente dati reali"
+  - "Spiegare perché non si analizza mai sul computer di tutti i giorni"
+  - "Riconoscere limiti legali ed etici: proprietà del laboratorio, 615-quinquies c.p."
+video:
+  provider: youtube
+  id: "DjKr-MYIqxo"
+  start: 0
+  end: 600
+  channel: "cybercdh"
+  title: "Malware Lab Setup - Network Configuration"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-laboratorio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Collegare la macchina di analisi alla rete di casa o dell'ufficio «per comodità»"
+  - "Lasciare cartelle condivise o appunti copiati in comune tra il computer reale e quello virtuale"
+  - "Usare account o dati personali reali dentro il laboratorio"
+commands: []
+---
+
+<Scene title="La chiavetta sul portatile">
+Un tirocinante della **Biblioteca Ferrari** (fittizia) vuole fare pratica. Ha letto dei file sospetti e pensa: «Provo a casa, sul mio portatile, con la rete spenta per sicurezza.»
+
+Ma sul portatile ha le foto di famiglia, la posta, i documenti di scuola e un'unità di backup collegata. Il Wi-Fi è «spento», ma la scheda è attiva.
+
+La domanda del caso: **è un laboratorio sicuro?**
+
+<Say who="sensei">Un laboratorio non è un computer con la rete spenta. È un posto progettato perché l'errore non faccia danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un laboratorio sicuro">
+Un laboratorio di analisi ha un obiettivo: **qualunque cosa succeda, resta lì dentro**. Si regge su pochi principi.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sulla configurazione della rete di un laboratorio (in inglese):
+
+<Video />
+
+<Callout kind="attenzione">
+Nel video si parla di configurazione di rete: ripeti a te stesso la regola. Tutto resta in una macchina virtuale **tua**, su una rete **chiusa**.
+</Callout>
+
+<Say who="assistente">Quattro idee base: isolamento, ripristino, niente dati reali, lavoro registrato. Le vediamo una alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Isolamento e ripristino">
+**Isolamento.**
+
+- L'analisi gira in una **macchina virtuale** dedicata, non sul computer di uso quotidiano.
+- La rete della macchina virtuale è **chiusa** (nessun accesso alla rete reale) oppure **simulata** (collegata solo ad altre macchine del laboratorio).
+- **Niente cartelle condivise** né appunti copiati in comune tra il computer reale e la macchina virtuale: sono porte di passaggio.
+
+**Ripristino.**
+
+- Prima di cominciare si salva uno **snapshot** pulito.
+- Dopo ogni analisi si torna allo snapshot. Non si «ripulisce» a mano: non si può mai essere sicuri di avere tolto tutto.
+
+<Callout kind="trucco">
+Controllo mentale: «se questo programma fa la cosa peggiore, dove arriva?» Se la risposta non è «solo dentro la macchina virtuale», non è un laboratorio.
+</Callout>
+
+<Say who="sensei">La virtualizzazione non è magica: è una barriera solida, non perfetta. Per questo le regole attorno contano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati, account e lavoro registrato">
+**Niente di reale dentro il laboratorio.**
+
+- Nessun account personale o di lavoro: niente posta, niente social, niente accesso alle risorse aziendali.
+- Nessun documento vero: se il malware li legge, deve trovare dati inventati.
+- Il computer che ospita il laboratorio è aggiornato, e usato solo per questo scopo, se possibile.
+
+**Lavoro registrato.**
+
+- Si scrive cosa si fa, in che ordine e quando: serve a ripetere l'analisi e a spiegarla a un collega.
+- Si annotano i fatti (cosa si è visto) separati dalle ipotesi (cosa si pensa).
+- Il campione si conserva in un posto controllato, con un nome che non lo renda eseguibile per sbaglio.
+
+<Callout kind="attenzione">
+Alcuni servizi pubblici online analizzano file e ne conservano una copia visibile ad altri. Un file che contiene dati dell'azienda o di clienti non si carica, per non diffondere dati personali (GDPR).
+</Callout>
+
+<Say who="assistente">Il laboratorio è come una cucina di un ristorante: tutto ha un posto e le mani si lavano prima e dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un tirocinante analizza un file sospetto in una macchina virtuale, ma con una cartella condivisa verso il suo computer reale «per scambiare gli appunti». Qual è il problema?"
+  options={["La cartella condivisa è una porta tra il laboratorio e il computer reale: può far passare l'infezione", "La macchina virtuale è troppo lenta", "Gli appunti non servono in un'analisi", "Nessuno: una macchina virtuale è sempre isolata del tutto"]}
+  answer={0}
+  explain="Cartelle condivise e appunti copiati in comune rompono l'isolamento. La macchina virtuale è una barriera solida, ma non perfetta: gli scambi vanno ridotti al minimo e controllati."
+/>
+
+<Say who="sensei">Ogni scorciatoia comoda è una porta. Chiudi le porte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole, legge e responsabilità">
+Un laboratorio senza etica è solo un rischio. Tre punti fermi.
+
+<Guided
+  steps={[
+    "Proprietà: il laboratorio e le macchine sono tuoi (o di chi ti ha dato un permesso scritto). Non si analizza su computer altrui.",
+    "Diffusione: in Italia l'art. 615-quinquies del codice penale punisce chi diffonde o mette a disposizione programmi diretti a danneggiare o interrompere un sistema informatico. Studiare in laboratorio non è diffondere. Condividere un campione o provarlo su altri sì.",
+    "Scopo: si analizza per capire e difendere, non per copiare o migliorare un malware. Questo corso non spiega come costruirlo.",
+    "Dubbi: se non sei sicuro di cosa puoi fare, chiedi a un docente o a un legale prima, non dopo.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si analizza solo in un laboratorio isolato e di proprietà. Si prova solo ciò che è tuo o per cui hai un permesso scritto: accedere senza permesso a un sistema altrui è reato anche con le migliori intenzioni (art. 615-ter c.p.).
+</Callout>
+
+<Say who="sensei">Il bravo analista è prima di tutto un professionista affidabile. La fiducia vale più di ogni tecnica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul laboratorio isolato e sui limiti legali. Hai 3 tentativi.
+
+<Practice generator="c18-laboratorio" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi tra due risposte, scegli quella che mette più distanza tra il campione e il mondo reale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il laboratorio è una macchina virtuale tua, con rete chiusa o simulata, snapshot pulito, nessuna cartella condivisa e nessun dato reale.
+- Si lavora registrando fatti e ipotesi, e si ripristina lo snapshot dopo ogni analisi.
+- Si analizza solo in un laboratorio isolato e di proprietà; diffondere programmi dannosi è reato (art. 615-quinquies c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché non si analizza sul computer di tutti i giorni?", a: "Perché un errore potrebbe toccare dati e account reali" },
+    { q: "A cosa serve lo snapshot?", a: "A tornare allo stato pulito dopo ogni analisi" },
+    { q: "Perché evitare le cartelle condivise?", a: "Sono porte tra il laboratorio e il computer reale" },
+    { q: "Quale articolo punisce la diffusione di programmi dannosi?", a: "L'art. 615-quinquies del codice penale" },
+  ]}
+/>
+
+<Say who="sensei">Hai chiuso il modulo. Hai imparato a capire un malware senza farlo uscire dalla gabbia. Usa questa competenza solo per difendere.</Say>
+</Scene>

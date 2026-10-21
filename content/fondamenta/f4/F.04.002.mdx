@@ -1,0 +1,186 @@
+---
+id: F.04.002
+course: fondamenta
+module: 4
+title: "grep: cercare nei log"
+belt: gialla
+duration_min: 9
+prerequisites: [F.04.001]
+objectives:
+  - "Cercare un testo in un file con grep e le opzioni -i, -v, -n, -c, -r"
+  - "Usare ^ e $ per cercare all'inizio o alla fine della riga"
+  - "Combinare grep con la pipe per restringere la ricerca"
+video:
+  provider: youtube
+  id: "ZarXtUbhDmM"
+  start: 0
+  end: 391
+  channel: "Hard-Reset_it"
+  title: "Linux - Come usare il comando grep: esempi pratici (-i -n -o -v, pipe)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-grep
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "grep distingue maiuscole e minuscole: FALLITO e fallito sono parole diverse, a meno di usare -i"
+  - "-v non cerca «il contrario della parola»: stampa le righe che NON la contengono"
+  - "Il testo con simboli speciali come $ va messo tra virgolette, altrimenti lo legge la shell e non grep"
+commands: []
+---
+
+<Scene title="Cercare un ago">
+Il registro è cresciuto. Ora `accessi.log` ha migliaia di righe, ma per spiegarti il metodo continuiamo a usare le nostre otto, già viste:
+
+<Log lines={[
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "03:02 198.51.100.7 web OK -",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:07 192.168.1.66 ssh OK mario",
+  "03:09 198.51.100.7 web OK -",
+  "03:12 198.51.100.7 ssh FALLITO test",
+  "03:15 192.168.1.20 ssh OK lucia",
+]} caption="Il file accessi.log." />
+
+La domanda del caso: **quali accessi sono falliti, e quanti?** Nessuno legge ottomila righe a mano.
+
+<Say who="sensei">Un analista non scorre il log. Lo interroga. Lo strumento si chiama grep.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il grep di base">
+**`grep`** stampa solo le righe che **contengono** un certo testo. Si scrive: `grep testo file`.
+
+<Log lines={[
+  "studente@lab:~$ grep FALLITO accessi.log",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:12 198.51.100.7 ssh FALLITO test",
+]} caption="Quattro righe su otto contengono la parola FALLITO." />
+
+Il nome viene da un vecchio comando di un editor: «cerca ovunque un modello e stampa la riga».
+
+<Callout kind="attenzione">
+grep distingue **maiuscole e minuscole**. `grep fallito accessi.log` non trova niente, perché nel file c'è FALLITO.
+</Callout>
+
+<Say who="assistente">Se grep non stampa niente, non vuol dire che l'errore non c'è. Controlla di aver scritto il testo uguale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le opzioni utili">
+Le opzioni si mettono dopo `grep`:
+
+- **`-i`**: ignora maiuscole e minuscole
+- **`-v`**: stampa le righe che **non** contengono il testo
+- **`-n`**: mostra il numero di riga
+- **`-c`**: stampa **quante** righe corrispondono, non le righe
+- **`-r`**: cerca in tutti i file di una cartella
+
+<Log lines={[
+  "studente@lab:~$ grep -i fallito accessi.log | head -n 1",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "studente@lab:~$ grep -c FALLITO accessi.log",
+  "4",
+  "studente@lab:~$ grep -n 203.0.113.9 accessi.log",
+  "1:03:01 203.0.113.9 ssh FALLITO admin",
+  "2:03:02 203.0.113.9 ssh FALLITO root",
+  "4:03:05 203.0.113.9 ssh FALLITO admin",
+  "studente@lab:~$ grep -v FALLITO accessi.log | wc -l",
+  "4",
+  "studente@lab:~$ grep -rl FALLITO logs/",
+  "logs/accessi.log",
+]} caption="L'ultima riga: -r cerca nella cartella logs/, -l stampa solo i nomi dei file che contengono il testo." />
+
+Ecco la risposta al caso: **4 accessi falliti**, tutti sul servizio ssh.
+
+<Callout kind="trucco">
+Le opzioni si possono unire: `grep -in fallito accessi.log` fa ricerca senza distinzione di maiuscole **e** mostra i numeri di riga.
+</Callout>
+
+<Say who="sensei">`-c` dà la risposta in un numero. `-n` ti dice dove guardare. Scegli in base alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Inizio e fine della riga">
+Due simboli speciali rendono la ricerca più precisa:
+
+- **`^`** = «all'inizio della riga»
+- **`$`** = «alla fine della riga»
+
+<Log lines={[
+  "studente@lab:~$ grep -c \"^03:0\" accessi.log",
+  "6",
+  "studente@lab:~$ grep \"admin$\" accessi.log",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "studente@lab:~$ grep FALLITO accessi.log | grep admin",
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+]} caption="Le righe che iniziano con 03:0 sono 6: dalle 03:00 alle 03:09." />
+
+Si possono anche **concatenare due grep con la pipe**: il secondo filtra l'output del primo. Così si restringe la ricerca passo per passo.
+
+<Video />
+
+<Callout kind="curiosita">
+Questi simboli fanno parte delle **espressioni regolari**, un piccolo linguaggio per descrivere testi. Per ora ti bastano `^` e `$`: ne imparerai altri più avanti.
+</Callout>
+
+<Say who="assistente">Metti le virgolette attorno al testo quando contiene simboli speciali: così la shell non lo interpreta al posto di grep.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa il comando: grep -v FALLITO accessi.log ?"
+  options={["Le righe che NON contengono FALLITO", "Solo le righe che contengono FALLITO", "Il numero di righe con FALLITO", "Le righe con FALLITO, numerate"]}
+  answer={0}
+  explain="L'opzione -v inverte la ricerca: stampa tutto ciò che non corrisponde. Chi risponde «solo le righe con FALLITO» ha dimenticato -v. Il numero delle righe lo darebbe -c, la numerazione -n."
+/>
+
+<Say who="sensei">`-v` come «vietato»: escludi ciò che non vuoi vedere. Utile per togliere il rumore dal log.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su grep: quale opzione serve, cosa stampa, quanti risultati. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-grep" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi sa interrogare un log trova in secondi ciò che altri cercano per ore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `grep testo file` stampa le righe che contengono il testo; distingue maiuscole e minuscole.
+- Opzioni: `-i` ignora le maiuscole, `-v` inverte, `-n` numera, `-c` conta, `-r` cerca nelle cartelle.
+- `^` indica l'inizio della riga, `$` la fine; più grep in pipe restringono la ricerca.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale opzione di grep conta le righe trovate?", a: "-c" },
+    { q: "Come si cerca ignorando maiuscole e minuscole?", a: "grep -i" },
+    { q: "Cosa significa ^ in una ricerca?", a: "All'inizio della riga" },
+    { q: "Cosa stampa grep -v errore log.txt?", a: "Le righe che non contengono «errore»" },
+  ]}
+/>
+
+<Say who="sensei">Sai trovare le righe giuste. Prossima lezione: ordinarle e contarle, per rispondere a domande come «quale indirizzo insiste di più?».</Say>
+</Scene>

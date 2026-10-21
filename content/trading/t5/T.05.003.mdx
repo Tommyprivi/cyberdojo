@@ -1,0 +1,187 @@
+---
+id: T.05.003
+course: trading
+module: 5
+title: "Posizioni e rendimento della strategia"
+belt: arancione
+duration_min: 9
+prerequisites: [T.05.002]
+objectives:
+  - "Spiegare perché la posizione di domani dipende dal segnale di oggi"
+  - "Calcolare il rendimento della strategia come posizione × rendimento del mercato"
+  - "Costruire e leggere la curva del capitale"
+video:
+  provider: youtube
+  id: "oqVAtacekr0"
+  start: 0
+  end: 600
+  channel: "Roman Paolucci"
+  title: "Backtesting Quant Strats in Python | Quantitative Research"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-posizioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare il segnale di oggi per guadagnare il rendimento di oggi"
+  - "Sommare i rendimenti giornalieri invece di moltiplicare (1 + rendimento)"
+  - "Dimenticare che nei giorni «fuori» il rendimento della strategia è zero"
+commands: []
+---
+
+<Scene title="Il segnale arriva a mercato chiuso">
+Luca ha il segnale: 0, 1, 0, 1, 0, 1, 0, 1. Lo moltiplica per i rendimenti e ottiene subito un risultato. La prof. Bianchi alza un sopracciglio: **«A che ora sai che oggi il prezzo è salito?»**
+
+«A fine giornata, quando conosco la chiusura.»
+
+**«E a che ora puoi aver comprato per guadagnare quella salita?»** Silenzio.
+
+La domanda del caso: **quando entra in vigore una decisione presa guardando la chiusura di oggi?**
+
+<Say who="sensei">La chiusura la conosci quando la giornata è finita. Il mercato oggi non lo puoi più comprare. Domani sì.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Dati fittizi, nessun denaro reale.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnale e posizione">
+Distinguiamo due colonne:
+
+- **Segnale** del giorno t: la decisione, presa guardando la chiusura del giorno t.
+- **Posizione** del giorno t: quanto si è davvero «dentro» durante il giorno t (1 = dentro, 0 = fuori).
+
+La posizione di domani è il segnale di oggi. In pandas si sposta il segnale di un giorno con `shift(1)`:
+
+```python
+posizione = segnale.shift(1).fillna(0)
+print(posizione.tolist())
+```
+
+<Log lines={[
+  "[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0]",
+]} />
+
+`fillna(0)` mette 0 dove non c'è un valore: il primo giorno non si può essere dentro.
+
+<Callout kind="regola">
+Segnale di oggi, posizione di domani. Sempre.
+</Callout>
+
+<Say who="assistente">Guarda i numeri: il segnale è 1 nei giorni 1, 3, 5, 7. La posizione è 1 nei giorni 2, 4, 6. Si sposta tutto di un giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento della strategia">
+Con i rendimenti del mercato della lezione scorsa (giorno 0 non ha rendimento):
+
+<Log lines={[
+  "giorno        0     1    2       3    4       5    6       7",
+  "mercato       nan   0.02 -0.0098 0.0297 -0.0096 0.0291 -0.0094 0.0286",
+  "posizione     0     0    1       0    1       0    1       0",
+]} />
+
+Il rendimento della strategia è semplicemente **posizione × rendimento del mercato**. Se sei fuori guadagni zero (e perdi zero), se sei dentro prendi il rendimento del giorno.
+
+```python
+rend_strategia = posizione * rend
+print(rend_strategia.round(4).tolist())
+```
+
+<Log lines={[
+  "[nan, 0.0, -0.0098, 0.0, -0.0096, 0.0, -0.0094, 0.0]",
+]} />
+
+<Say who="sensei">Guarda: la strategia è dentro solo nei giorni 2, 4 e 6. In tutti e tre il prezzo è sceso. Il segnale di Luca arriva sempre troppo tardi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La curva del capitale">
+Per sapere quanto vale 1 euro investito all'inizio (cifra fittizia) non si sommano i rendimenti: si **moltiplicano** i fattori (1 + rendimento) uno dopo l'altro. Si chiama **curva del capitale** (in inglese equity curve).
+
+```python
+curva = (1 + rend_strategia.fillna(0)).cumprod()
+print(curva.round(4).tolist())
+```
+
+<Log lines={[
+  "[1.0, 1.0, 0.9902, 0.9902, 0.9807, 0.9807, 0.9714, 0.9714]",
+]} />
+
+Ricontrolliamo a mano: 0,9902 × 0,9904 (cioè 1 − 0,0096) fa circa 0,9807; × 0,9906 fa circa 0,9714. Quindi la strategia chiude a −2,9% circa, mentre «compra e tieni» chiudeva a **+8%**.
+
+<Callout kind="curiosita">
+Perdere 10% e poi guadagnare 10% non riporta a zero: 0,90 × 1,10 = 0,99. Per questo si moltiplica, non si somma.
+</Callout>
+
+<Say who="sensei">Il numero sbagliato più comune è la somma dei rendimenti. Fai i prodotti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi vedere gli stessi passaggi in un backtest di una strategia più grande? Il video è in inglese con i sottotitoli. Cerca il momento in cui il segnale viene spostato in avanti prima di essere moltiplicato per i rendimenti.
+
+<Video />
+
+<Say who="assistente">Anche se la strategia è più complicata, lo schema è lo stesso: segnale, spostamento, moltiplicazione, curva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il segnale è 1 il giorno 3. Il mercato rende +3% il giorno 3 e −1% il giorno 4. Che rendimento ottiene la strategia il giorno 4?"
+  options={[
+    "−1%, perché il giorno 4 la posizione è 1",
+    "+3%, perché il segnale è 1",
+    "0%, perché si è fuori",
+    "+2%, la somma dei due giorni"
+  ]}
+  answer={0}
+  explain="La posizione del giorno 4 è il segnale del giorno 3, cioè 1: si è dentro e si prende il rendimento di quel giorno, −1%. Il +3% del giorno 3 non si guadagna, perché la decisione arriva a chiusura già avvenuta."
+/>
+
+<Say who="assistente">Disegna una linea del tempo: chiusura del giorno 3, decisione, apertura del giorno 4, rendimento del giorno 4.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su posizione, rendimento della strategia e curva del capitale, con numeri puliti. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-posizioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Sai calcolare il risultato di una regola nel modo onesto. Ora vediamo che cosa succede quando lo si fa nel modo disonesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La posizione di domani è il segnale di oggi: in pandas `segnale.shift(1)`.
+- Rendimento della strategia = posizione × rendimento del mercato; da fuori si guadagna zero.
+- La curva del capitale si ottiene moltiplicando i fattori (1 + rendimento), non sommando.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra segnale e posizione?", a: "Il segnale è la decisione di oggi, la posizione è quanto si è dentro; la posizione di domani è il segnale di oggi" },
+    { q: "Come si calcola il rendimento della strategia?", a: "Posizione × rendimento del mercato" },
+    { q: "Perché si moltiplica (1 + rendimento) invece di sommare?", a: "Perché i rendimenti si compongono: ogni giorno parte dal valore del giorno prima" },
+    { q: "Che cosa fa shift(1)?", a: "Sposta i valori di un giorno in avanti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il look-ahead bias. Togli lo shift e vedrai un risultato bellissimo. Troppo bello.</Say>
+</Scene>

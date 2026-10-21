@@ -1,0 +1,152 @@
+---
+id: D.14.003
+course: dati
+module: 14
+title: "Batch e streaming"
+belt: blu
+duration_min: 9
+prerequisites: [D.14.002]
+objectives:
+  - "Distinguere elaborazione a blocchi (batch) e in tempo reale (streaming)"
+  - "Spiegare eventi, finestre temporali e code di messaggi"
+  - "Scegliere il metodo in base a quanto in fretta serve la risposta"
+video:
+  provider: youtube
+  id: "1xgBQTF24mU"
+  start: 0
+  end: 600
+  channel: "Andreas Kretz"
+  title: "Stream vs Batch processing explained with examples"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-streaming
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere lo streaming per moda: se il risultato serve una volta al giorno, il batch è più semplice e costa meno"
+  - "Confondere l'ora in cui l'evento è accaduto con l'ora in cui è arrivato al sistema"
+  - "Pensare che una coda di messaggi sia un database: tiene gli eventi per un po' e li distribuisce"
+commands: []
+---
+
+<Scene title="Il furto di carta alle 14:02">
+«Pasta Bianchi» vende anche online. Ogni sera alle 23 un lavoro raccoglie gli ordini del giorno e calcola le statistiche. Funziona bene.
+
+Poi la banca avvisa: una stessa carta ha fatto 30 acquisti in 4 minuti, alle 14:02. Il sistema serale se ne accorge alle 23:00. Troppo tardi.
+
+<Say who="sensei">Il metodo non è sbagliato: è lento per questo problema. Capire quanto in fretta serve la risposta è metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Batch: il bucato della domenica">
+**Batch** vuol dire elaborare **a blocchi**: si raccolgono i dati per un periodo (un'ora, un giorno) e si lavorano tutti insieme.
+
+È come il bucato: raccogli i panni per una settimana e fai una lavatrice sola. Efficiente, semplice, facile da ripetere se qualcosa va storto.
+
+<Callout kind="regola">
+Il batch va bene quando la risposta può aspettare: report del mese, bilanci, ricalcoli notturni.
+</Callout>
+
+<Say who="assistente">Il batch ha un vantaggio spesso dimenticato: se sbagli, rilanci il blocco e rifai tutto con calma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Streaming: il rubinetto aperto">
+**Streaming** vuol dire elaborare i dati **mentre arrivano**, uno a uno o in pezzettini piccolissimi. Ogni cosa che accade, come un clic o un pagamento, è un **evento**.
+
+È come controllare il contatore dell'acqua in ogni istante, per accorgerti subito di una perdita.
+
+<Callout kind="trucco">
+Domanda guida: «quanto è grave scoprirlo dopo?». Se un ritardo di ore costa soldi o sicurezza, serve lo streaming. Se no, il batch basta.
+</Callout>
+
+Un'altra voce, con esempi, sulla differenza:
+
+<Video />
+
+<Say who="sensei">Lo streaming è più veloce da scoprire, ma più difficile da costruire e da tenere in piedi. Ha un prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Finestre temporali">
+Un flusso non finisce mai, quindi per contare qualcosa serve un pezzo di tempo: la **finestra**.
+
+Esempio: «acquisti per carta negli ultimi 5 minuti». Ogni minuto la finestra scorre in avanti e ricalcola.
+
+<Log lines={["14:00  carta A  acquisto 20 euro", "14:01  carta A  acquisto 35 euro", "14:02  carta A  acquisto 18 euro", "14:02  carta B  acquisto 12 euro", "Finestra 14:00-14:05: carta A = 3 acquisti, carta B = 1"]} caption="Eventi fittizi. Se la regola dice «più di 10 acquisti in 5 minuti», scatta l'allarme." />
+
+<Callout kind="attenzione">
+Conta l'ora in cui l'evento è **accaduto**, non quella in cui è arrivato. Un evento può arrivare in ritardo, e il sistema deve gestirlo.
+</Callout>
+
+<Say who="assistente">La finestra è un cartellino con l'orario. Ma gli eventi in ritardo possono arrivare dopo che hai chiuso il cartellino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Code di messaggi">
+Chi genera eventi (il sito, i negozi) e chi li elabora non devono dipendere uno dall'altro. In mezzo si mette una **coda di messaggi**, come Kafka a livello concettuale.
+
+È una grande cassetta della posta: i produttori ci mettono eventi, i consumatori li leggono quando possono. Gli eventi restano per un po' e si possono **rileggere**.
+
+Se il consumatore si ferma mezz'ora, non si perde nulla: al riavvio riprende dal punto in cui era rimasto.
+
+<Callout kind="curiosita">
+Una coda di messaggi non sostituisce il database: conserva gli eventi per un tempo limitato e li fa leggere a più destinatari. I dati definitivi vanno poi in un archivio.
+</Callout>
+
+<Say who="sensei">Un sistema che regge i guasti è un sistema che non perde i messaggi. La cassetta della posta serve a questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un team vuole un rapporto di vendite per il consiglio, consegnato ogni lunedì mattina. Un collega propone uno streaming in tempo reale. Qual è la scelta più sensata?"
+  options={["Un lavoro batch settimanale: la risposta può aspettare ed è più semplice", "Lo streaming, perché è sempre meglio", "Una coda di messaggi al posto del database", "Una finestra temporale di un secondo"]}
+  answer={0}
+  explain="Se il risultato serve una volta a settimana, non c'è motivo di pagare la complessità dello streaming. Lo streaming conviene solo quando scoprire tardi costa davvero."
+/>
+
+<Say who="assistente">Chiediti sempre «chi guarda questo risultato, e quando?». La risposta decide il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su batch, streaming, finestre e code di messaggi.
+
+<Practice generator="d14-streaming" pass="5/5" retries={3} />
+
+<Say who="sensei">Non il più moderno: il più adatto. Questa è la regola di chi costruisce pipeline.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Batch = elaborazione a blocchi, semplice ed economica; streaming = elaborazione mentre i dati arrivano.
+- Per contare nel flusso serve una finestra temporale; conta l'ora dell'evento, non quella di arrivo.
+- Una coda di messaggi (come Kafka) separa chi produce da chi consuma e conserva gli eventi per un po'.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando basta il batch?", a: "Quando la risposta può aspettare ore o giorni" },
+    { q: "Che cos'è un evento?", a: "Qualcosa che accade e viene registrato, come un acquisto o un clic" },
+    { q: "Che cos'è una finestra temporale?", a: "Un intervallo di tempo su cui si calcola, per esempio gli ultimi 5 minuti" },
+    { q: "A che serve una coda di messaggi?", a: "A separare chi produce eventi da chi li elabora, senza perderli" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove mettere tutti questi dati in modo ordinato. Il lakehouse.</Say>
+</Scene>

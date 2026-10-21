@@ -1,0 +1,155 @@
+---
+id: D.01.001
+course: dati
+module: 1
+title: "Che cos'è un dato"
+belt: bianca
+duration_min: 7
+prerequisites: []
+objectives:
+  - "Distinguere un dato da un'informazione e da una conoscenza"
+  - "Spiegare perché un numero senza contesto non basta"
+video:
+  provider: youtube
+  id: "f0N16eBwcuM"
+  start: 0
+  end: 208
+  channel: "ScrivoCodice"
+  title: "Cos'è un Dato? Differenza tra Dato e Informazione"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-dato
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un numero sia già un'informazione: senza contesto non dice niente"
+  - "Confondere l'informazione (un dato spiegato) con la conoscenza (saper decidere)"
+  - "Pensare che i dati siano solo numeri: anche una parola o una data è un dato"
+commands: []
+---
+
+<Scene title="Il numero sul telefono">
+Giada ha un contapassi sul telefono. Stasera guarda lo schermo e vede solo questo:
+
+<Log lines={["8412"]} caption="Il numero che compare sullo schermo." />
+
+Sua sorella le chiede: «Hai camminato abbastanza oggi?». Giada non sa rispondere.
+
+Il numero è giusto, ma da solo **non dice niente**. Perché?
+
+<Say who="sensei">Benvenuto nel corso. Si comincia dalla cosa più semplice e più sottovalutata: che cos'è un dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il dato è un fatto grezzo">
+Un **dato** è un fatto registrato così com'è, senza spiegazione. Può essere un numero (8412), una parola («Torino»), una data (12 marzo), un sì o un no.
+
+Il dato è il mattone. Da solo è utile come un mattone sparso sul prato.
+
+<Callout kind="regola">
+**Dato** = un fatto registrato, grezzo, senza contesto. Non è solo un numero: anche una parola o una data è un dato.
+</Callout>
+
+<Say who="assistente">Pensa a un quaderno su cui annoti cose: quello che scrivi è dato. Non importa se ha senso, per ora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contesto lo trasforma">
+Aggiungiamo il contesto: **che cosa** misura il numero, **quando**, **rispetto a che cosa**.
+
+«Oggi, martedì, Giada ha fatto **8412 passi**. Il suo obiettivo è 8000.»
+
+Adesso la sorella ha la risposta: sì, ha superato l'obiettivo. Questa è un'**informazione**: un dato con un significato.
+
+<Callout kind="trucco">
+Davanti a un numero chiediti sempre: **di che cosa? quando? rispetto a cosa?** Se non sai rispondere, hai un dato, non ancora un'informazione.
+</Callout>
+
+<Say who="sensei">Informazione è un dato che ha risposto alle tre domande. Se manca una risposta, torna indietro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla informazione alla conoscenza">
+Giada guarda i suoi ultimi cinque giorni:
+
+| Giorno | Passi |
+| --- | --- |
+| Lunedì | 8412 |
+| Martedì | 6020 |
+| Mercoledì | 9100 |
+| Giovedì | 7500 |
+| Venerdì | 8968 |
+
+Somma: 8412 + 6020 + 9100 + 7500 + 8968 = **40000** passi. Divisi per 5 giorni: **8000 passi** al giorno. Esattamente l'obiettivo.
+
+Poi nota una cosa: martedì c'era il pomeriggio di studio, e ha camminato meno. Decide di fare una passeggiata dopo i compiti nei giorni di studio. Questa è **conoscenza**: capire come stanno le cose e usarlo per decidere.
+
+<Callout kind="attenzione">
+Dato, informazione e conoscenza sono tre gradini: **dato** (8412), **informazione** (8412 passi, sopra l'obiettivo), **conoscenza** (nei giorni di studio cammino meno, quindi mi organizzo).
+</Callout>
+
+<Say who="assistente">Tutto il lavoro di un analista è salire questi gradini: dal dato alla decisione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un altro caso: il registro del negozio">
+Nella cartoleria di Marta ogni vendita finisce nel registro: una riga per vendita, scritta a penna. Una riga dice: «quaderni, 3, 14 ottobre».
+
+Quella riga è un **dato** sulla vendita. Mille righe così sono tante cose registrate. Ma Marta scopre che a inizio ottobre vende il doppio dei quaderni solo dopo averle contate e confrontate: ecco l'informazione. Ordina il doppio dei quaderni per l'anno dopo: ecco la conoscenza in azione.
+
+<Quiz
+  question="La frase «Ieri sono stati venduti 40 quaderni, il doppio del solito» è:"
+  options={["Un'informazione", "Un dato grezzo senza contesto", "Una conoscenza completa", "Un errore di registrazione"]}
+  answer={0}
+  explain="Ha il contesto (ieri, quaderni, confronto con il solito): è un'informazione. Il numero 40 da solo sarebbe un dato. Diventa conoscenza solo quando decidi qualcosa, ad esempio quanti quaderni ordinare."
+/>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di quattro minuti:
+
+<Video />
+
+<Say who="sensei">Un dato racconta cosa è successo. Quello che significa lo decidi tu, con il contesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ora metti alla prova quello che hai capito: riconosci dati, informazioni e conoscenza, e ricontrolla qualche calcolo semplice.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-dato" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un dato mal classificato oggi è una decisione sbagliata domani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un dato è un fatto grezzo registrato: un numero, una parola, una data.
+- Il contesto (di che cosa, quando, rispetto a cosa) trasforma il dato in informazione.
+- La conoscenza è usare l'informazione per capire e decidere.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato?", a: "Un fatto registrato così com'è, senza contesto" },
+    { q: "Che cosa trasforma un dato in informazione?", a: "Il contesto: di che cosa, quando, rispetto a cosa" },
+    { q: "Che cos'è la conoscenza?", a: "Capire l'informazione e usarla per decidere" },
+    { q: "8412 è un dato o un'informazione?", a: "Un dato: manca il contesto" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: i tipi di dati. Un numero e una parola non si trattano allo stesso modo.</Say>
+</Scene>

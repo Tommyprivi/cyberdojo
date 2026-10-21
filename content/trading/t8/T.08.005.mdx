@@ -1,0 +1,147 @@
+---
+id: T.08.005
+course: trading
+module: 8
+title: "Le tasse sui guadagni finanziari, in sintesi"
+belt: arancione
+duration_min: 8
+prerequisites: [T.08.004]
+objectives:
+  - "Sapere che i guadagni finanziari sono tassati e che le minusvalenze hanno regole proprie"
+  - "Calcolare l'imposta su una plusvalenza con numeri semplici"
+  - "Distinguere regime amministrato e dichiarativo e sapere dove verificare le regole"
+video:
+  provider: youtube
+  id: "hapeWPaTv8g"
+  start: 0
+  end: 281
+  channel: "Nicolo Ingoglia"
+  title: "Le Imposte sul Capital Gain"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-tasse
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che le tasse non esistano perché il broker «non le mostra»"
+  - "Dare per valide regole di un video vecchio: le norme cambiano, si controllano le fonti ufficiali"
+  - "Credere che le regole di azioni, ETF e cripto siano tutte uguali"
+commands: []
+---
+
+<Scene title="Il guadagno e il fisco">
+Nora, in un ambiente demo, chiude un'operazione con una **plusvalenza** (un guadagno realizzato) di **1.000 euro**: soldi finti, nessuna tassa.
+
+Poi si chiede: se fosse stata un'operazione vera, quanto le sarebbe rimasto?
+
+<Say who="sensei">Attenzione, serve onestà fin dall'inizio. Questa lezione è una sintesi educativa, aggiornata a ottobre 2026. Non è consulenza fiscale. Le regole cambiano: verifica sempre le fonti ufficiali, come il sito dell'Agenzia delle Entrate, o chiedi a un professionista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di base, in sintesi">
+Per una persona che investe a titolo personale in Italia, in sintesi, valgono questi punti noti da tempo:
+
+- le **plusvalenze** di natura finanziaria (guadagno da una vendita a prezzo più alto del costo) sono tassate, di regola con aliquota **26%**;
+- per i **titoli di Stato italiani** e alcuni equivalenti l'aliquota agevolata è **12,5%**;
+- le **minusvalenze** (perdite realizzate) possono, a certe condizioni e per un periodo limitato, essere usate per ridurre le plusvalenze della stessa categoria;
+- la tassa riguarda di regola i guadagni **realizzati**, cioè dopo la vendita, non i guadagni solo «sulla carta».
+
+<Callout kind="attenzione">
+Non tutti gli strumenti sono trattati allo stesso modo: azioni, ETF, fondi e cripto-attività hanno regole diverse, e alcune sono cambiate negli ultimi anni. Qui non si entra nei dettagli: si controlla.
+</Callout>
+
+<Say who="assistente">Se non sei sicuro di una regola, è giusto dirlo. Meglio «non lo so, controllo» che una cifra sbagliata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un conto con numeri puliti">
+Esempi fittizi, con l'aliquota 26% e senza altre voci.
+
+<Log lines={[
+  "plusvalenza 1.000 euro  ->  imposta 1.000 x 26% = 260 euro",
+  "resta (netto):             1.000 - 260 = 740 euro",
+  "",
+  "plusvalenza 1.000, minusvalenza 400 (compensabile):",
+  "imponibile: 1.000 - 400 = 600",
+  "imposta:    600 x 26% = 156 euro",
+]} />
+
+Con una perdita maggiore del guadagno (per esempio −500 e +300, secondo le regole in sintesi) non si paga imposta e **200 euro** di minusvalenza residua possono essere riportati, entro i limiti di legge.
+
+Vuoi sentirlo da un'altra voce? Pochi minuti, in italiano. Il video può non essere aggiornato: usalo come introduzione e controlla le regole attuali.
+
+<Video />
+
+<Say who="sensei">Prima le tasse si calcolano, poi si giudica se la strategia rende. Non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi versa l'imposta">
+Esistono due modi principali di sistemare i conti con il fisco:
+
+- **regime amministrato**: il broker (italiano, o con rappresentante) calcola e versa l'imposta come **sostituto d'imposta**; tu la vedi già detratta;
+- **regime dichiarativo**: calcoli e dichiari tu, nella dichiarazione dei redditi, e paghi.
+
+Oltre alle imposte sui guadagni, sui prodotti finanziari esiste di regola un'imposta annua di bollo (in sintesi lo **0,2%** annuo del valore). Esempio: 10.000 euro di strumenti finanziari → 20 euro.
+
+<Callout kind="regola">
+Le tasse fanno parte dei costi reali. Ma la regola d'oro è: **si controllano le fonti ufficiali** (Agenzia delle Entrate) e, se serve, si chiede a un commercialista.
+</Callout>
+
+<Say who="assistente">Il paper trading non produce tasse perché i soldi sono finti. Ma impara il conto adesso, così non ti sorprende dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In sintesi, con aliquota 26%: hai una plusvalenza di 1.000 euro e una minusvalenza compensabile di 400 euro. Quanta imposta si paga?"
+  options={["156 euro", "260 euro", "104 euro", "600 euro"]}
+  answer={0}
+  explain="Si compensa prima: 1.000 − 400 = 600 di imponibile, poi 600 × 26% = 156 euro. Chi risponde 260 ignora la minusvalenza; chi risponde 104 tassa soltanto la minusvalenza (400 × 26%); chi risponde 600 ha confuso imponibile e imposta."
+/>
+
+<Say who="sensei">Compensa, poi tassa. Mai al contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli semplici sulle imposte e domande su dove controllare le regole.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-tasse" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. E ricorda: la fonte è l'Agenzia delle Entrate, non una lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- In sintesi (ottobre 2026): plusvalenze finanziarie di regola al 26%, titoli di Stato italiani al 12,5%; le minusvalenze hanno regole proprie.
+- Regime amministrato: versa il broker. Regime dichiarativo: dichiari tu. Strumenti diversi, regole diverse.
+- Verifica sempre le fonti ufficiali. Il corso è educativo, non è consulenza finanziaria né fiscale: nel trading si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Aliquota di regola sulle plusvalenze finanziarie, in sintesi?", a: "26%" },
+    { q: "Plusvalenza 1.000 euro: imposta al 26%?", a: "260 euro (netto 740)" },
+    { q: "Che cosa fa il sostituto d'imposta?", a: "Calcola e versa l'imposta al posto dell'investitore" },
+    { q: "Dove si verificano le regole aggiornate?", a: "Sulle fonti ufficiali, come l'Agenzia delle Entrate, o da un professionista" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: mettiamo insieme tutti i costi e calcoliamo il rendimento netto.</Say>
+</Scene>

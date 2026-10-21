@@ -1,0 +1,160 @@
+---
+id: D.06.004
+course: dati
+module: 6
+title: "Il teorema del limite centrale"
+belt: gialla
+duration_min: 9
+prerequisites: [D.06.003]
+objectives:
+  - "Spiegare perché le medie dei campioni formano una campana"
+  - "Calcolare l'errore standard della media con numeri semplici"
+  - "Capire come la dimensione del campione restringe la campana"
+video:
+  provider: youtube
+  id: "2sjNCTDsq-E"
+  start: 0
+  end: 430
+  channel: "Data Science Italia"
+  title: "Teorema del Limite Centrale: Spiegazione Semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-limite-centrale
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che sono i dati a diventare normali, invece delle medie"
+  - "Credere che raddoppiare il campione dimezzi l'errore (serve quadruplicarlo)"
+  - "Fidarsi della campana con campioni molto piccoli e dati molto asimmetrici"
+commands: []
+---
+
+<Scene title="Il paniere di Elena">
+Elena misura la durata della batteria dei telefoni di una scuola. I dati sono tutt'altro che a campana: molti telefoni durano poco, pochi durano moltissimo.
+
+Un giorno prende **un campione di 25 telefoni** e calcola la media. Un altro giorno ne prende altri 25 e calcola un'altra media. Poi un terzo campione, un quarto...
+
+Le medie sono tutte un po' diverse. Ma, messe in fila, disegnano una **campana**.
+
+La domanda del caso: **perché le medie sono ordinate come una campana, anche se i dati non lo sono?**
+
+<Say who="sensei">È uno dei risultati più belli della matematica. Lo capisci senza formule, con un dado.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il dado e la media di due dadi">
+Un dado ha sei facce, tutte ugualmente probabili. La distribuzione è **piatta**: nessuna campana.
+
+Ora lanciamo **due dadi** e calcoliamo la media. La media è 1 solo con 1 e 1: un modo su 36. La media è 3,5 con 1+6, 2+5, 3+4, 4+3, 5+2, 6+1: sei modi su 36.
+
+I valori **di mezzo** si ottengono in tanti modi, i valori **estremi** in pochi. Con 5 dadi è ancora più evidente. Il risultato è una forma che si addensa al centro.
+
+<Callout kind="trucco">
+Per fare una media estrema devi avere tutti i valori estremi insieme. Succede di rado. Per una media centrale, valori alti e bassi si compensano: succede spesso.
+</Callout>
+
+<Say who="assistente">Estremi insieme: raro. Alti e bassi che si bilanciano: comune. Ecco da dove nasce la campana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il teorema">
+Il **teorema del limite centrale** dice, in parole semplici:
+
+> Prendi molti campioni **abbastanza grandi** dalla stessa popolazione e calcola la media di ciascuno. Queste medie formano una distribuzione **quasi normale**, anche se i dati di partenza non lo sono.
+
+Due fatti da ricordare:
+- la campana delle medie è centrata sulla **media della popolazione**;
+- più i campioni sono grandi, più la campana è **stretta** e più è vicina a una normale perfetta.
+
+<Callout kind="attenzione">
+Il teorema parla delle **medie**, non dei singoli dati. I telefoni di Elena restano asimmetrici; le medie dei campioni no.
+</Callout>
+
+Vuoi sentirlo da un'altra voce? Meno di sette minuti e mezzo:
+
+<Video />
+
+<Say who="sensei">Dati qualunque, medie a campana. È questo che rende possibile l'inferenza: ci permette di usare la normale per qualsiasi media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto è stretta la campana?">
+La larghezza della campana delle medie si chiama **errore standard**. Se la popolazione ha deviazione standard **σ** e i campioni hanno **n** elementi:
+
+**errore standard = σ diviso la radice di n**
+
+Esempio con σ = 10:
+- n = 4: 10 diviso 2 = **5**;
+- n = 25: 10 diviso 5 = **2**;
+- n = 100: 10 diviso 10 = **1**.
+
+Per **dimezzare** l'errore devi **quadruplicare** il campione: da 25 a 100 elementi l'errore passa da 2 a 1.
+
+<Callout kind="regola">
+Raddoppiare il campione non dimezza l'errore. Più dati aiutano, ma con rendimenti decrescenti: il costo cresce più in fretta del beneficio.
+</Callout>
+
+<Say who="assistente">Radice di n sotto. Radice di 25 è 5, radice di 100 è 10: tieni a mente i quadrati perfetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Guided
+  steps={[
+    "I dati dei telefoni hanno deviazione standard 12 ore. Campioni da 36 telefoni: quanto vale l'errore standard?",
+    "Radice di 36 = 6.",
+    "Errore standard = 12 diviso 6 = 2 ore.",
+    "Significa che le medie dei campioni da 36 telefoni si disperdono, tipicamente, di circa 2 ore attorno alla media vera.",
+  ]}
+/>
+
+<Quiz
+  question="Per dimezzare l'errore standard della media, di quanto bisogna moltiplicare la dimensione del campione?"
+  options={["Per 4", "Per 2", "Per 8", "Per 10"]}
+  answer={0}
+  explain="L'errore è σ diviso la radice di n. Per dimezzarlo, la radice di n deve raddoppiare, cioè n deve diventare 4 volte più grande. Chi risponde per 2 pensa che l'errore sia inversamente proporzionale a n, invece lo è alla sua radice."
+/>
+
+<Say who="sensei">Radice di n. Non n. Un solo simbolo, un errore di intere campagne di raccolta dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul teorema e sull'errore standard. Hai 3 tentativi.
+
+<Practice generator="d06-limite-centrale" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Medie a campana, errore che scende con la radice di n.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le medie di molti campioni abbastanza grandi formano una campana quasi normale, anche se i dati non lo sono.
+- La campana delle medie è centrata sulla media della popolazione ed è larga quanto l'errore standard: σ diviso la radice di n.
+- Per dimezzare l'errore bisogna quadruplicare il campione. Con campioni piccolissimi e dati molto asimmetrici la campana può non valere.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A chi si applica la forma a campana, nel teorema del limite centrale?", a: "Alle medie dei campioni, non ai singoli dati" },
+    { q: "σ = 10, n = 25: errore standard?", a: "10 diviso 5 = 2" },
+    { q: "Come si dimezza l'errore standard?", a: "Quadruplicando la dimensione del campione" },
+    { q: "Attorno a quale valore si dispongono le medie dei campioni?", a: "Alla media della popolazione" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: con questa campana costruiamo gli intervalli di confidenza, e impariamo anche cosa NON dicono.</Say>
+</Scene>

@@ -1,0 +1,161 @@
+---
+id: D.01.003
+course: dati
+module: 1
+title: "Tabelle, righe e colonne"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.002]
+objectives:
+  - "Distinguere record, campo, dataset e chiave"
+  - "Leggere una tabella di sei righe e rispondere a domande"
+video:
+  provider: youtube
+  id: "6maOXQvmWtg"
+  start: 0
+  end: 280
+  channel: "Artigiani Del Web"
+  title: "Chiave primaria | Corso SQL e Database Relazionali"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-tabelle
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scambiare riga e colonna: la riga è un caso, la colonna è una caratteristica"
+  - "Usare il nome del cliente come chiave: due persone possono chiamarsi allo stesso modo o comparire due volte"
+  - "Contare le righe dell'intestazione come se fossero dati"
+commands: []
+---
+
+<Scene title="Il blocchetto della pizzeria">
+Da Gino, la pizzeria sotto casa, le ordinazioni si scrivono su un blocchetto: «Anna, 2 margherite», «Luca, una diavola»... A fine serata Gino non riesce a rispondere a una domanda semplice: **quante margherite ho venduto?**
+
+Le frasi sparse sono difficili da contare. Se invece ogni ordine avesse la stessa forma, sarebbe un attimo.
+
+Questa forma si chiama **tabella**.
+
+<Say who="sensei">I dati ordinati in tabella sono la base di tutto il mestiere. Impara i nomi, perché li userai ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Righe e colonne">
+Ecco i sei ordini di Gino, trasformati in tabella (nomi e numeri inventati):
+
+| id | cliente | pizza | quantita | prezzo_euro |
+| --- | --- | --- | --- | --- |
+| 1 | Anna | Margherita | 2 | 6 |
+| 2 | Luca | Diavola | 1 | 8 |
+| 3 | Sara | Margherita | 3 | 6 |
+| 4 | Marco | Quattro formaggi | 1 | 9 |
+| 5 | Anna | Diavola | 2 | 8 |
+| 6 | Elena | Margherita | 1 | 6 |
+
+Ogni **riga** è un ordine. Ogni **colonna** è una caratteristica che si registra per ogni ordine. Il prezzo è quello di una singola pizza.
+
+<Callout kind="trucco">
+**Riga = un caso. Colonna = una caratteristica.** Le righe vanno in orizzontale, le colonne in verticale.
+</Callout>
+
+<Say who="assistente">Se hai dubbi, ricorda: la colonna è come una colonna del tempio, sta in piedi, verticale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I nomi tecnici">
+Gli analisti usano parole precise.
+
+**Record**: una riga, cioè un caso completo (l'ordine 3: Sara, Margherita, 3, 6).
+
+**Campo**: una colonna, cioè una caratteristica (il campo «pizza»). Un singolo valore, come «Sara», sta in una **cella**.
+
+**Dataset** (insieme di dati): tutta la tabella, cioè l'insieme di record su un argomento. Il dataset di Gino ha **6 record** e **5 campi**, quindi 30 celle.
+
+<Callout kind="attenzione">
+L'intestazione (id, cliente, pizza...) non è un record: contiene i nomi dei campi. I record sono 6, non 7.
+</Callout>
+
+<Say who="sensei">Record, campo, dataset. Tre parole, tre livelli. Non confonderle nelle riunioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La chiave">
+Gino vuole trovare «l'ordine di Anna». Ma Anna compare **due volte** (ordini 1 e 5). Quale?
+
+Serve un campo che sia **diverso in ogni riga**, per riconoscere un record senza dubbi. Si chiama **chiave**. Nella tabella di Gino è il campo **id**: 1, 2, 3, 4, 5, 6, nessun valore ripetuto.
+
+<Quiz
+  question="Quale campo della tabella di Gino non può fare da chiave?"
+  options={["cliente: Anna compare due volte", "id: ogni ordine ha un numero diverso", "Un numero progressivo aggiunto a ogni ordine", "Un codice univoco stampato sullo scontrino"]}
+  answer={0}
+  explain="Una chiave deve essere diversa in ogni riga. «cliente» si ripete (Anna ha due ordini), quindi due record si confondono. L'id, il numero progressivo o il codice dello scontrino sono tutti univoci."
+/>
+
+Vuoi sentire cos'è una chiave da un'altra voce? Meno di cinque minuti:
+
+<Video />
+
+<Say who="assistente">Pensa al codice fiscale o al numero di matricola: servono proprio a questo, a non confondere due persone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere la tabella">
+Proviamo con le domande di Gino, passo per passo.
+
+<Guided
+  steps={[
+    "Quante margherite ho venduto? Cerca i record con pizza = Margherita: ordini 1, 3 e 6.",
+    "Somma il campo quantita di quei record: 2 + 3 + 1 = 6 margherite.",
+    "Quanto ho incassato con l'ordine 3? Quantità per prezzo: 3 × 6 = 18 euro.",
+    "Quanto ho incassato in tutto? 12 + 8 + 18 + 9 + 16 + 6 = 69 euro.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Una domanda sui dati si traduce quasi sempre in due mosse: **scegli le righe** (quelle che interessano) e **calcola su una colonna**.
+</Callout>
+
+<Say who="sensei">Prima filtra, poi calcola. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Leggi tabelle di sei ordini, trova record e campi, ricontrolla somme e conteggi.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-tabelle" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una riga letta male è un incasso sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una tabella ha righe (record, un caso) e colonne (campi, una caratteristica); tutta la tabella è il dataset.
+- La chiave è un campo con un valore diverso in ogni riga, per riconoscere un record senza dubbi.
+- Per rispondere a una domanda: scegli le righe e calcola su una colonna.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un record?", a: "Una riga: un caso completo" },
+    { q: "Che cos'è un campo?", a: "Una colonna: una caratteristica registrata per ogni caso" },
+    { q: "Che cos'è un dataset?", a: "L'insieme dei record su un argomento, tutta la tabella" },
+    { q: "Che cosa deve avere una chiave?", a: "Un valore diverso in ogni riga" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i dati sporchi. Una tabella può essere ordinata e comunque sbagliata.</Say>
+</Scene>

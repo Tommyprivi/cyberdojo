@@ -1,0 +1,172 @@
+---
+id: T.10.006
+course: trading
+module: 10
+title: "Il diario di bordo del bot"
+belt: verde
+duration_min: 8
+prerequisites: [T.10.005]
+objectives:
+  - "Usare il modulo logging di Python con i livelli giusti"
+  - "Scegliere che cosa registrare e che cosa non registrare mai (le chiavi)"
+  - "Descrivere un controllo semplice di monitoraggio con limiti e interruttore di emergenza"
+video:
+  provider: youtube
+  id: "b4Ms4wxJuPg"
+  start: 0
+  end: 600
+  channel: "teclado"
+  title: "Python logging tutorial: loggers, handlers, and formatters"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-log
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare print al posto del logging: senza livelli né file, il giorno dopo non resta niente"
+  - "Scrivere nei registri la chiave API o altri segreti"
+  - "Lasciare il bot senza limiti né interruttore di emergenza"
+commands: []
+---
+
+<Scene title="Che cosa è successo di notte?">
+Il bot di Marta ha lavorato tutta la notte nel conto demo. Al mattino la posizione è diversa da come se l'aspettava. Lei guarda lo schermo: non c'è scritto niente. Il programma usava solo `print`, e la finestra si è chiusa.
+
+La domanda del caso: **come fa un programma che lavora da solo a raccontare che cosa ha fatto?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: tutto il modulo lavora in ambiente demo. Un bot lasciato senza controllo può comportarsi in modo imprevisto: per questo si registra e si limita.
+</Callout>
+
+<Say who="sensei">Se non c'è scritto, per te non è successo. Un bot senza diario è un testimone muto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il modulo logging">
+Python ha un modulo per il diario: `logging`. Ogni riga ha un **livello**, che dice quanto è importante:
+
+| Livello | Quando usarlo |
+|---|---|
+| DEBUG | Dettagli per chi cerca un errore |
+| INFO | Fatti normali (ordine inviato, saldo letto) |
+| WARNING | Qualcosa di strano ma non grave (429 ricevuto) |
+| ERROR | Un'operazione è fallita |
+| CRITICAL | Il programma deve fermarsi |
+
+Un esempio:
+
+```python
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+logging.info("Ordine inviato: bot-2026-10-21-0001, 10 AAA, limite 50.00")
+logging.warning("Risposta 429, attendo 2 secondi")
+```
+
+Ogni riga esce con data e ora, livello e messaggio. Con `filename="bot.log"` in `basicConfig` finiscono in un file, che resta anche dopo la chiusura.
+
+<Say who="assistente">print è per te adesso. logging è per te domani mattina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa scrivere, che cosa mai">
+Un buon registro risponde a quattro domande: **che cosa** ho fatto, **quando**, **con quale identificativo**, **com'è andata**.
+
+<Log lines={[
+  "2026-10-21 03:12:05 INFO  Saldo letto: cash 10000.00",
+  "2026-10-21 03:12:07 INFO  Ordine bot-0001 inviato (buy 10 AAA limit 50.00)",
+  "2026-10-21 03:12:08 INFO  Ordine bot-0001 accettato, codice 200",
+  "2026-10-21 03:15:41 WARNING Risposta 429, attendo 2 secondi",
+]} />
+
+**Mai** nel registro: la chiave API, password, dati personali. I file di log si copiano e si condividono più facilmente del codice. Mascherare aiuta:
+
+<PythonTerminal code={"def maschera(chiave):\n    return chiave[:4] + '****'\n\nprint('Uso la chiave', maschera('abcd1234efgh'))"} />
+
+Risultato atteso: `Uso la chiave abcd****`.
+
+Vuoi sentire un'altra voce sul logging? Il video è in inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Scrivi abbastanza da ricostruire la notte. Non scrivere mai un segreto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Monitorare e fermarsi">
+Un bot che lavora da solo ha bisogno di **limiti** e di un **interruttore di emergenza**:
+
+- **limite di quantità** per ordine e di ordini al giorno;
+- **limite di perdita** giornaliera (anche simulata): superato, il bot smette;
+- **battito** (*heartbeat*): una riga INFO ogni minuto, che dice «sono vivo». Se le righe spariscono, qualcosa non va;
+- **interruttore**: un file o una variabile che, se presente, ferma subito l'invio di ordini.
+
+<Callout kind="regola">
+Il bot non si fida di sé stesso. Fissa i limiti **prima** di partire e li fa rispettare dal codice, non dalla memoria di chi lo guarda.
+</Callout>
+
+<Callout kind="curiosita">
+Molti incidenti dei sistemi automatici non nascono da un'idea sbagliata, ma da un programma che continua a lavorare dopo che qualcosa si è rotto. Il limite e l'interruttore servono a quello.
+</Callout>
+
+<Say who="assistente">Prima di lasciarlo solo, chiediti: se impazzisce, chi lo ferma, e quando?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Alle 03:12 il bot registra WARNING Risposta 429. Alle 03:13 non scrive più nulla fino alle 07:00. Che cosa conviene pensare?"
+  options={[
+    "Qualcosa si è fermato: il silenzio dopo il battito è un segnale da controllare",
+    "Va tutto bene: se non c'è un errore scritto, non è successo niente",
+    "Il bot sta risparmiando energia in modo normale",
+    "Il log si è riempito di chiavi, quindi è meglio cancellarlo",
+  ]}
+  answer={0}
+  explain="Un bot sano scrive il battito a intervalli regolari. Il silenzio è un'informazione: il programma potrebbe essersi bloccato o fermato per un errore non registrato. Dire «nessun errore scritto, nessun problema» è un errore tipico."
+/>
+
+<Say who="sensei">Il silenzio dopo un battito regolare è un allarme. Guardalo come tale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su registri, livelli, segreti e monitoraggio del bot demo.
+
+<Practice generator="t10-log" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un bot che racconta e si limita è un bot che puoi capire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il modulo logging ha livelli (DEBUG, INFO, WARNING, ERROR, CRITICAL) e può scrivere su file: print non basta.
+- Nel registro si scrive che cosa, quando, con quale identificativo e com'è andata; mai chiavi, password o dati personali.
+- Un bot ha limiti, battito e interruttore di emergenza: il silenzio è un segnale da controllare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché logging è meglio di print?", a: "Ha livelli, data e ora e può scrivere su file che restano" },
+    { q: "Che livello si usa per un 429 ricevuto?", a: "WARNING: è strano ma non grave" },
+    { q: "Che cosa non va mai scritto in un registro?", a: "Chiavi API, password, dati personali" },
+    { q: "A che cosa serve il battito (heartbeat)?", a: "A capire che il bot è vivo: se sparisce, qualcosa non va" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso: sai provare un bot in demo, parlare con un'API, custodire le chiavi, inviare ordini simulati, gestire gli errori e tenere il diario. Prossimo modulo: il machine learning, con tutti i suoi limiti.</Say>
+</Scene>

@@ -1,0 +1,165 @@
+---
+id: T.13.002
+course: trading
+module: 13
+title: "Segnali a pagamento, falsi broker e Ponzi"
+belt: blu
+duration_min: 9
+prerequisites: [T.13.001]
+objectives:
+  - "Riconoscere i segnali d'allarme di una truffa finanziaria"
+  - "Spiegare come funziona uno schema Ponzi con un esempio numerico"
+  - "Descrivere come si presenta un falso broker e che cosa fare se si è in dubbio"
+video:
+  provider: youtube
+  id: "InPoY-tUchk"
+  start: 0
+  end: 600
+  channel: "Geopop"
+  title: "Cos'è lo schema Ponzi e come funziona la truffa dei \"guadagni facili senza rischi\""
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-truffe
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di un rendimento «regolare» e «garantito»: nei mercati veri i rendimenti ballano"
+  - "Credere che un grafico con guadagni sulla piattaforma sia denaro vero: può essere solo un numero sullo schermo"
+  - "Pagare una «tassa» o una «commissione di sblocco» per prelevare: è quasi sempre il passo successivo della truffa"
+commands: []
+---
+
+<Scene title="Il gruppo dei segnali">
+Davide, 19 anni, entra in un gruppo social dove un «maestro di trading» manda **segnali** (cioè indicazioni su cosa comprare e vendere) a pagamento: 49 euro al mese. Vede tanti screenshot di profitti e messaggi entusiasti.
+
+Poi un utente gli scrive in privato: «Con la piattaforma del mio amico raddoppi il capitale in 30 giorni, rendimento garantito.»
+
+La domanda del caso: **quali segnali d'allarme ha davanti Davide, e che cosa dovrebbe fare?**
+
+<Callout kind="attenzione">
+Il corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Riconoscere le truffe serve a **difendersi**, non a imitarle.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Se qualcuno ti garantisce un guadagno, l'unica cosa garantita è che ha qualcosa da venderti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le bandiere rosse">
+Le truffe finanziarie cambiano vestito, ma i segnali sono quasi sempre gli stessi. Eccoli in elenco:
+
+- **Rendimento alto e garantito**, o «senza rischi». Rischio e rendimento vanno insieme: chi promette il secondo senza il primo mente.
+- **Fretta**: «l'offerta scade stasera», «ultimi posti».
+- **Contatto non richiesto**: messaggio, chiamata, finto «consulente» che ti ha trovato lui.
+- **Prove fatte di screenshot**: immagini di guadagni che chiunque può fabbricare.
+- **Nessuna autorizzazione verificabile**, o società con sede lontana e sito appena nato.
+- **Pagamenti in modi strani**: bonifici all'estero, criptovalute inviate a un indirizzo privato.
+
+<Callout kind="regola">
+Una sola bandiera rossa è un motivo per fermarsi. Due sono un motivo per non versare niente.
+</Callout>
+
+<Say who="assistente">Un trucco: scrivi su un foglio quante bandiere trovi. Se ne trovi più di una, la risposta è già lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo schema Ponzi">
+Il nome viene da Charles Ponzi, che negli anni Venti promise rendimenti enormi. Il meccanismo è semplice: **i vecchi investitori sono pagati con i soldi dei nuovi**, non con guadagni veri.
+
+Esempio con numeri fittizi. Ogni «investitore» versa 100 e gli viene promesso un +10% dopo un mese:
+
+<Log lines={[
+  "Mese 1: entrano 10 persone  -> versano 1000",
+  "Fine mese 1: servono 10 x 110 = 1100 per pagare tutti",
+  "Se nessuno nuovo entra, mancano 100",
+  "Mese 2: entrano altre 20 persone -> versano 2000",
+  "Con 2000 si pagano i primi 10 (1100) e restano 900",
+  "...ma ora i debiti verso i 20 nuovi sono 2200",
+]} />
+
+Il buco **cresce**. Per tenere in piedi il castello servono sempre più persone. Quando i nuovi arrivi rallentano o molti chiedono il rimborso insieme, tutto crolla.
+
+<Callout kind="curiosita">
+Il caso più famoso recente è quello di Bernard Madoff, scoperto nel 2008 a New York. Prometteva rendimenti regolari anno dopo anno, anche quando i mercati scendevano. Quella regolarità era il segnale che nessuno controllò.
+</Callout>
+
+<Say who="sensei">Un rendimento troppo liscio non esiste. I mercati salgono e scendono. Una linea dritta è un numero scritto a mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il falso broker">
+Un **broker** è l'intermediario che esegue i tuoi ordini. Un **falso broker** è un sito che ne imita l'aspetto: grafici, saldi, pulsanti «compra» e «vendi». Ma dietro ci sono solo numeri sullo schermo.
+
+Come si sviluppa di solito, in generale:
+
+- All'inizio i guadagni sulla piattaforma **sembrano veri** e ti spingono a versare di più.
+- Quando chiedi di **prelevare**, spuntano scuse: una «tassa», una «verifica», un «deposito di sblocco».
+- Infine qualcuno ti contatta promettendo di **recuperare i soldi** dietro un pagamento anticipato: è una seconda truffa sulla prima.
+
+<Callout kind="attenzione">
+Un saldo su una piattaforma non è denaro tuo finché non puoi prelevarlo. E nessuna autorità o studio serio chiede un pagamento anticipato per «sbloccare» i tuoi soldi.
+</Callout>
+
+Un'altra voce che spiega come funziona lo schema, in italiano, dal canale di divulgazione Geopop:
+
+<Video />
+
+<Say who="assistente">Nel video senti come si presenta la promessa del «guadagno facile senza rischi». Cerca le bandiere rosse che abbiamo appena elencato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un utente ti scrive in privato: «La mia piattaforma ti fa raddoppiare 500 euro in un mese, garantito. Versa oggi, domani scade». Che cosa fai?"
+  options={[
+    "Non versi niente: garanzia, fretta e contatto non richiesto sono tre bandiere rosse; verifichi l'autorizzazione e rifiuti",
+    "Versi 50 euro per provare, tanto la perdita sarebbe piccola",
+    "Chiedi uno screenshot dei suoi guadagni per capire se è credibile",
+    "Versi i 500 euro ma tieni d'occhio il saldo ogni giorno",
+  ]}
+  answer={0}
+  explain="Tre bandiere rosse insieme: garanzia, fretta, contatto non richiesto. La somma «di prova» è il metodo con cui si costruisce la fiducia. Uno screenshot si può fabbricare in un minuto. Se hai dubbi, non versi e verifichi chi è la società."
+/>
+
+<Say who="sensei">Non si tratta con chi ti mette fretta. La fretta serve a chi ha qualcosa da nascondere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui segnali d'allarme di segnali a pagamento, falsi broker e schemi Ponzi: scegli che cosa è più prudente fare.
+
+<Practice generator="t13-truffe" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa riconoscere la truffa non ha bisogno di una fortuna per difendersi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le bandiere rosse: rendimento garantito, fretta, contatto non richiesto, prove da screenshot, autorizzazione non verificabile.
+- Nello schema Ponzi i vecchi investitori sono pagati con i soldi dei nuovi: il buco cresce finché crolla.
+- Il falso broker mostra guadagni finti e blocca i prelievi; chi chiede soldi per «sbloccarli» o «recuperarli» sta truffando di nuovo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come funziona uno schema Ponzi?", a: "I vecchi investitori sono pagati con i versamenti dei nuovi, non con guadagni veri" },
+    { q: "Perché un rendimento garantito è una bandiera rossa?", a: "Nei mercati veri i rendimenti variano e comportano rischio" },
+    { q: "Un broker ti chiede una tassa per sbloccare un prelievo. Che cosa pensi?", a: "È probabilmente una truffa: non si paga" },
+    { q: "Perché gli screenshot di guadagni non provano niente?", a: "Si possono fabbricare in pochi minuti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le criptovalute. Opportunità o rischio? Dipende da come le guardi, e da chi ti parla.</Say>
+</Scene>

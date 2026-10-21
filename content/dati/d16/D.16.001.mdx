@@ -1,0 +1,162 @@
+---
+id: D.16.001
+course: dati
+module: 16
+title: "Le feature"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.006]
+objectives:
+  - "Scalare i numeri e codificare le categorie perché un modello li possa usare"
+  - "Creare variabili nuove da quelle che si hanno"
+  - "Riconoscere ed evitare la perdita di dati (data leakage)"
+video:
+  provider: youtube
+  id: "87C5hkTY8RI"
+  start: 0
+  end: 600
+  channel: "DataMListic"
+  title: "Normalization vs Standardization - Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-feature
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare media e minimo su tutto il dataset prima di dividere in train e test: il modello «sbircia» il test"
+  - "Codificare le città come 1, 2, 3: il modello crede che Torino valga il triplo di Roma"
+  - "Pensare che scalare serva a tutti i modelli: gli alberi non ne hanno bisogno, i modelli a distanza sì"
+commands: []
+---
+
+<Scene title="Il modello che guarda solo il reddito">
+Nora lavora per «Abbonati Verdi», una palestra fittizia. Vuole prevedere chi rinnoverà l'abbonamento. Ha tre colonne: **età** (20-60), **reddito mensile** (1000-3000) e **città**.
+
+Il suo modello, che misura distanze tra le persone, sembra guardare solo il reddito. Una differenza di 1000 euro «pesa» mille volte più di una differenza di 1 anno. Non perché sia più importante: solo perché i numeri sono più grandi.
+
+<Say who="sensei">Un modello non sa che cosa sia un euro o un anno. Vede numeri. Se non glieli prepari bene, sceglie male. Si comincia dalle feature.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scalare i numeri">
+Una **feature** è una colonna che il modello usa per imparare. **Scalare** vuol dire portare colonne diverse su scale paragonabili. Due modi comuni:
+
+- **Min-max**: il valore diventa (x − minimo) / (massimo − minimo). Il risultato sta tra 0 e 1.
+- **Standardizzazione**: il valore diventa (x − media) / deviazione standard. Il risultato è «quante deviazioni sopra o sotto la media».
+
+Esempio min-max sull'età con minimo 20 e massimo 60: l'età 30 diventa (30 − 20) / 40 = **0,25**. L'età 40 diventa **0,5**.
+
+Vuoi sentirlo spiegare da un'altra voce? Normalizzazione e standardizzazione a confronto, in inglese (puoi attivare i sottotitoli):
+
+<Video />
+
+<Say who="assistente">Pensa a due righelli: uno in centimetri, uno in chilometri. Per confrontare le lunghezze li porti nella stessa unità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La standardizzazione con numeri veri">
+Otto visite in minuti: **2, 4, 4, 4, 5, 5, 7, 9**.
+
+- Somma 40, media **5**.
+- Scarti dalla media: −3, −1, −1, −1, 0, 0, +2, +4.
+- Quadrati: 9, 1, 1, 1, 0, 0, 4, 16. Somma 32. Diviso 8 fa 4.
+- Deviazione standard: radice di 4 = **2**.
+
+Il valore 9 diventa (9 − 5) / 2 = **2**. Il valore 2 diventa (2 − 5) / 2 = **−1,5**.
+
+<Callout kind="attenzione">
+`StandardScaler` di scikit-learn divide per 8 (tutta la popolazione), non per 7. Per questo qui la deviazione standard viene proprio 2.
+</Callout>
+
+<Say who="sensei">Dopo la standardizzazione la media è 0 e la deviazione standard è 1. Controlla sempre: se non torna, hai sbagliato un passaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Categorie e variabili nuove">
+La colonna **città** contiene parole: Roma, Milano, Torino. Un modello vuole numeri. Se scrivi Roma = 1, Milano = 2, Torino = 3, il modello crede che esista un ordine e che Torino «valga» il triplo di Roma. Sbagliato.
+
+La soluzione è il **one-hot**: una colonna per città, con 1 se vale e 0 se no.
+
+| città | è_Roma | è_Milano | è_Torino |
+|---|---|---|---|
+| Milano | 0 | 1 | 0 |
+| Torino | 0 | 0 | 1 |
+
+Poi si possono **creare variabili nuove** dalle vecchie: da «data di iscrizione» ricavi i **mesi di anzianità**; da spesa e visite ricavi la **spesa per visita**. Spesso valgono più dei dati grezzi.
+
+<Callout kind="trucco">
+Se le categorie sono tantissime (migliaia di codici postali), il one-hot crea troppe colonne. Si raggruppano le rare in «altro».
+</Callout>
+
+<Say who="assistente">Una colonna per ogni risposta possibile: sì o no. Così nessuna città «sta sopra» un'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te: la perdita di dati">
+La **perdita di dati** (data leakage) è quando il modello vede, durante l'addestramento, informazioni che nella vita reale non avrebbe. Un caso tipico: calcoli minimo e massimo su **tutto** il dataset, poi dividi in train e test.
+
+Giusto: calcoli minimo e massimo **solo sul train**, poi li applichi al test. Esempio: nel train le età vanno da 20 a 40. Una persona del test ha 60 anni: il suo valore min-max è (60 − 20) / (40 − 20) = **2**. Sì, può uscire da 0-1: è normale.
+
+<Log lines={[
+  "from sklearn.compose import ColumnTransformer",
+  "from sklearn.pipeline import Pipeline",
+  "from sklearn.preprocessing import StandardScaler, OneHotEncoder",
+  "from sklearn.linear_model import LogisticRegression",
+  "prep = ColumnTransformer([",
+  "    (\"num\", StandardScaler(), [\"eta\", \"reddito\"]),",
+  "    (\"cat\", OneHotEncoder(handle_unknown=\"ignore\"), [\"citta\"]),",
+  "])",
+  "modello = Pipeline([(\"prep\", prep), (\"clf\", LogisticRegression())])",
+  "modello.fit(X_train, y_train)"
+]} caption="La Pipeline impara scaler e codifica solo dal train e li riapplica al test." />
+
+<Quiz
+  question="Nora calcola la media del reddito su tutte le righe e poi divide in train e test. Qual è il problema?"
+  options={["Il test ha influenzato la preparazione: è perdita di dati", "Nessuno: la media è sempre la stessa", "Il reddito non si può scalare", "Il train diventa troppo piccolo"]}
+  answer={0}
+  explain="La media include righe del test: il modello ha già «visto» un pezzo del test. Il voto ottenuto sarà troppo ottimista. Si calcola solo sul train e si applica al test."
+/>
+
+<Say who="sensei">Il test è l'esame. Se le domande sono entrate nel ripasso, il voto non vale niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scalatura, one-hot, variabili nuove e perdita di dati. Cinque domande, senza errori.
+
+<Practice generator="d16-feature" pass="5/5" retries={3} />
+
+<Say who="sensei">Un modello è buono quanto i dati che gli dai. Prepara bene, controlla due volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Scalare (min-max o standardizzazione) porta colonne diverse su scale paragonabili.
+- Le categorie si codificano con il one-hot, non con numeri che inventano un ordine; le variabili nuove si creano dalle vecchie.
+- Scaler e codifiche si imparano solo dal train: altrimenti c'è perdita di dati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Min-max: che valore dà a 30 con minimo 20 e massimo 60?", a: "(30 − 20) / 40 = 0,25" },
+    { q: "Dopo la standardizzazione, media e deviazione standard valgono…", a: "0 e 1" },
+    { q: "Perché non codificare le città come 1, 2, 3?", a: "Il modello crederebbe a un ordine che non esiste: si usa il one-hot" },
+    { q: "Che cos'è la perdita di dati?", a: "Il modello vede nell'addestramento informazioni del test o del futuro" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come capire se il modello funziona davvero. Si chiama validazione.</Say>
+</Scene>

@@ -2,7 +2,7 @@
  * Anteprime illustrate degli strumenti: disegni semplici, solo decorativi (aria-hidden).
  * Usano i colori dell'app tramite variabili CSS, quindi seguono chiaro e scuro.
  */
-export type PreviewKind = "calc" | "binary" | "intruder" | "terminal" | "packets" | "logs";
+export type PreviewKind = "calc" | "binary" | "intruder" | "terminal" | "packets" | "logs" | "sql";
 
 const ink = "var(--foreground)";
 const muted = "var(--foreground-muted)";
@@ -79,6 +79,18 @@ export function ToolPreview({ kind, className = "" }: { kind: PreviewKind; class
           <text x={12} y={66} fill="var(--deep-fg)" opacity={0.7}>-rw-r----- syslog</text>
           <text x={12} y={84} fill="var(--deep-fg)">$ grep Failed auth.log</text>
           <rect x={12} y={92} width={7} height={12} fill="var(--deep-fg)" />
+        </g>
+      )}
+
+      {kind === "sql" && (
+        <g fontFamily="monospace" fontSize={9}>
+          <text x={12} y={36} fill={primary} fontWeight={700}>SELECT <tspan fill={ink} fontWeight={400}>nome, citta</tspan></text>
+          <text x={12} y={49} fill={primary} fontWeight={700}>FROM <tspan fill={ink} fontWeight={400}>clienti;</tspan></text>
+          <rect x={8} y={60} width={224} height={14} fill="var(--surface-muted)" stroke={line} />
+          <text x={14} y={70} fill={ink} fontWeight={700}>nome          citta</text>
+          <text x={14} y={85} fill={ink}>Giulia        Milano</text>
+          <text x={14} y={98} fill={ink}>Marco         Roma</text>
+          <text x={14} y={111} fill={muted}>12 righe · 2 ms</text>
         </g>
       )}
 

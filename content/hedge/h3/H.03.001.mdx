@@ -1,0 +1,164 @@
+---
+id: H.03.001
+course: hedge
+module: 3
+title: "Rischio e rendimento"
+belt: arancione
+duration_min: 8
+prerequisites: [H.02.008]
+objectives:
+  - "Calcolare il rendimento atteso di un portafoglio come media pesata"
+  - "Spiegare la volatilità (deviazione standard) come misura dell'incertezza"
+  - "Dire perché più rendimento atteso vuol dire, in genere, più rischio"
+video:
+  provider: youtube
+  id: "yL7yZHJCkT8"
+  start: 0
+  end: 258
+  channel: "Moneyfarm Italia"
+  title: "La volatilità spiegata dai consulenti Moneyfarm"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-rischio-rendimento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il rendimento atteso sia un guadagno promesso"
+  - "Sommare le percentuali di perdita e di guadagno (-20% e +25% non fanno +5%)"
+  - "Credere che la volatilità sia l'unico rischio"
+commands: []
+---
+
+<Scene title="Due fondi, la stessa media">
+Siamo al fondo fittizio **Rondine Capital**. La gestrice, Marta, mostra a Luca, il nuovo analista, i rendimenti annui di due fondi inventati:
+
+| Anno | Fondo A | Fondo B |
+|------|---------|---------|
+| 1 | 3% | -5% |
+| 2 | 7% | 15% |
+| 3 | 3% | 15% |
+| 4 | 7% | -5% |
+
+Media di A: (3+7+3+7)/4 = **5%**. Media di B: (-5+15+15-5)/4 = **5%**. Stessa media.
+
+La domanda del caso: **sono due investimenti equivalenti?**
+
+<Say who="sensei">Attenzione: questo corso è educazione, non consulenza. Si può perdere denaro, anche tutto. I mercati non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento atteso">
+Il **rendimento atteso** è il rendimento che ci si aspetta *in media*. Non è una promessa: è una stima.
+
+Per un portafoglio è la **media pesata** dei rendimenti attesi dei suoi pezzi. Pesi = quanta parte dei soldi sta in ciascun pezzo.
+
+Esempio fittizio: 70% in azioni (attesi 8%) e 30% in obbligazioni (attesi 3%).
+
+<Log lines={[
+  "0,70 x 8% = 5,6%",
+  "0,30 x 3% = 0,9%",
+  "totale    = 6,5%",
+]} />
+
+<Callout kind="attenzione">
+Il rendimento atteso non è garantito. Un anno può andare molto peggio, e anche molto meglio.
+</Callout>
+
+Vuoi sentire un'altra voce? Qui si parla di volatilità, la misura del rischio che vediamo tra poco:
+
+<Video />
+
+<Say who="assistente">Un indizio: il peso è la fetta di torta. Più grande la fetta, più conta il suo rendimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare il rischio">
+Come si misura il «quanto oscilla»? Con la **volatilità**, cioè la **deviazione standard** dei rendimenti: quanto, in media, i rendimenti si allontanano dalla loro media.
+
+Convenzioni di questa lezione: rendimenti semplici annui, tutta la serie divisa per il numero di anni (n).
+
+Fondo A (media 5%): scarti -2, +2, -2, +2. Si elevano al quadrato: 4, 4, 4, 4. Media: 4. Radice: **2%**.
+
+Fondo B (media 5%): scarti -10, +10, +10, -10. Quadrati: 100 ognuno. Media: 100. Radice: **10%**.
+
+<Callout kind="regola">
+Stessa media, volatilità 2% contro 10%: B è molto più rischioso. Non sono equivalenti.
+</Callout>
+
+<Say who="sensei">La media dice dove si arriva. La volatilità dice quanto si balla per arrivarci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perdere e recuperare">
+Una trappola classica: le percentuali non si sommano.
+
+<Guided
+  steps={[
+    "Si parte da 100 euro fittizi.",
+    "Anno 1: -20%. Restano 100 x 0,80 = 80 euro.",
+    "Anno 2: +25%. Si ha 80 x 1,25 = 100 euro.",
+    "Risultato: zero, non +5%. Dopo una perdita serve un guadagno più grande per recuperare.",
+    "Caso estremo: -50% porta a 50; per tornare a 100 serve +100%.",
+  ]}
+/>
+
+<Say who="sensei">Chi perde molto deve guadagnare ancora di più. Per questo il rischio non è un dettaglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Due fondi fittizi hanno la stessa media storica del 5%. Il fondo B ha una volatilità molto più alta. Quale frase è giusta?"
+  options={[
+    "Dipende dalla tolleranza al rischio: B ha oscillato di più per lo stesso risultato medio",
+    "B è migliore, perché oscilla di più",
+    "Sono identici, perché la media dice tutto",
+    "A è sicuramente migliore, perché il passato garantisce il futuro",
+  ]}
+  answer={0}
+  explain="La media non basta: serve anche la volatilità. Ma nemmeno A è «sicuramente migliore»: il passato non garantisce nulla. Scegliere dipende da quanto rischio si può sopportare."
+/>
+
+<Say who="assistente">Chiediti sempre due cose: quanto mi aspetto di guadagnare, e quanto posso sopportare di perdere lungo la strada?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di rendimento atteso e di volatilità, con numeri fittizi e puliti.
+
+<Practice generator="h03-rischio-rendimento" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Questi calcoli sono la grammatica del mestiere: senza, non si legge nessun fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rendimento atteso di un portafoglio è la media pesata dei rendimenti attesi: una stima, non una promessa.
+- La volatilità (deviazione standard) misura quanto i rendimenti oscillano intorno alla media.
+- Di solito più rendimento atteso richiede più rischio; ma la volatilità non è l'unico rischio, e si può perdere denaro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Rendimento atteso di 50% al 10% e 50% al 4%?", a: "7%" },
+    { q: "Che cosa misura la deviazione standard?", a: "Quanto i rendimenti si allontanano dalla loro media" },
+    { q: "-20% poi +25% da 100: quanto si ha?", a: "100: si torna al punto di partenza" },
+    { q: "Il rendimento atteso è una promessa?", a: "No, è una stima media" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come mettere insieme più investimenti per ridurre il rischio. La diversificazione.</Say>
+</Scene>

@@ -1,0 +1,183 @@
+---
+id: D.18.003
+course: dati
+module: 18
+title: "I piani di esecuzione"
+belt: blu
+duration_min: 9
+prerequisites: [D.18.002]
+objectives:
+  - "Usare EXPLAIN e EXPLAIN ANALYZE e dire che cosa fanno"
+  - "Distinguere una scansione sequenziale da una scansione con indice leggendo un piano"
+  - "Spiegare perché il piano può cambiare anche per la stessa query"
+video:
+  provider: youtube
+  id: "Q8MfWUUwtZo"
+  start: 0
+  end: 600
+  channel: "ByteDistrict"
+  title: "Reading PostgreSQL EXPLAIN ANALYZE Output"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-piani
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Eseguire EXPLAIN ANALYZE su un UPDATE o DELETE: la query viene davvero eseguita e modifica i dati"
+  - "Confrontare i costi di due piani come se fossero secondi: sono unità astratte"
+  - "Credere che l'indice venga sempre usato se esiste: sulle tabelle piccole o con filtri poco selettivi il database sceglie la scansione sequenziale"
+commands: []
+---
+
+<Scene title="L'indice c'è, ma serve?">
+Marta ha creato l'indice `idx_ordini_cliente` sulla tabella da tre milioni di righe. Poi chiede al database di aiutarla con la query lenta, e il programma risponde con un blocco di testo che non capisce:
+
+<Log lines={[
+  "Seq Scan on ordini  (cost=0.00..21850.00 rows=98 width=36)",
+  "  Filter: (cliente_id = 4217)",
+]} caption="Che cosa sta dicendo il database?" />
+
+La domanda del caso: **l'indice viene usato, oppure no?**
+
+<Say who="sensei">Il database non indovina e non spiega a parole: scrive un piano. Si impara a leggerlo, riga per riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano: il database racconta il suo metodo">
+Quando scrivi una query dici **che cosa** vuoi, non **come** ottenerlo. Il **pianificatore** (*query planner*) sceglie il metodo più economico tra molti possibili. Il risultato di questa scelta si chiama **piano di esecuzione**.
+
+Per vederlo si mette `EXPLAIN` davanti alla query:
+
+<Log lines={[
+  "EXPLAIN SELECT * FROM ordini WHERE cliente_id = 4217;",
+]} caption="EXPLAIN mostra il piano senza eseguire la query." />
+
+- `EXPLAIN` mostra il piano **stimato**, senza eseguire la query.
+- `EXPLAIN ANALYZE` **esegue davvero** la query e aggiunge i tempi e le righe reali.
+
+<Callout kind="attenzione">
+`EXPLAIN ANALYZE` su un `UPDATE` o un `DELETE` **modifica i dati davvero**. Se vuoi provarlo senza conseguenze, aprilo dentro una transazione e chiudi con `ROLLBACK` (lo hai imparato nella lezione 1).
+</Callout>
+
+<Say who="assistente">EXPLAIN è come chiedere la strada senza partire. EXPLAIN ANALYZE è partire davvero e annotare i tempi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere una riga del piano">
+Torniamo al piano del caso, e scomponiamolo:
+
+<Log lines={[
+  "Seq Scan on ordini  (cost=0.00..21850.00 rows=98 width=36)",
+  "  Filter: (cliente_id = 4217)",
+]} caption="Piano senza indice utile (valori d'esempio: i tuoi saranno diversi)." />
+
+- **Seq Scan** (scansione sequenziale): legge la tabella dall'inizio alla fine.
+- **on ordini**: la tabella letta.
+- **cost=0.00..21850.00**: costo stimato, prima del primo risultato e totale. Sono **unità astratte**, non secondi: servono solo a confrontare piani della stessa query.
+- **rows=98**: quante righe il pianificatore **crede** di trovare.
+- **width=36**: grandezza media di una riga, in byte.
+- **Filter**: la condizione applicata riga per riga. Ogni riga letta viene controllata e scartata se non la soddisfa.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese e mostra come leggere un `EXPLAIN ANALYZE`:
+
+<Video />
+
+<Say who="sensei">Un Filter sotto un Seq Scan vuol dire: ho letto tutto e ho scartato quasi tutto. È il segnale che cerchi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dopo l'indice">
+Se l'indice è utile, il piano della stessa query diventa:
+
+<Log lines={[
+  "Index Scan using idx_ordini_cliente on ordini  (cost=0.43..394.18 rows=98 width=36)",
+  "  Index Cond: (cliente_id = 4217)",
+]} caption="Piano con l'indice (valori d'esempio)." />
+
+- **Index Scan using idx_ordini_cliente**: il database cerca nell'indice e va dritto alle righe.
+- **Index Cond**: la condizione è risolta **dentro l'indice**, senza leggere le altre righe.
+- Il costo totale passa da 21850 a 394: circa **55 volte meno lavoro stimato**.
+
+Altri nomi che incontrerai: **Index Only Scan** (basta l'indice), **Bitmap Index Scan** (tante righe da un indice), e per i collegamenti tra tabelle **Nested Loop**, **Hash Join**, **Merge Join**.
+
+<Callout kind="curiosita">
+Un piano con più passi si legge dal nodo **più rientrato** verso quello meno rientrato: le righe interne sono eseguite per prime e passano il risultato a quelle sopra.
+</Callout>
+
+<Say who="assistente">Seq Scan contro Index Scan. Se vedi «Seq Scan» su una tabella enorme per pochi risultati, fermati e controlla gli indici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché il piano a volte cambia">
+Il pianificatore ragiona con **statistiche** sulla tabella (quante righe, quanti valori diversi, come sono distribuiti). Per questo:
+
+- Su una tabella da **8 righe** sceglie quasi sempre la scansione sequenziale, anche se l'indice c'è: leggere otto righe costa meno che consultare l'indice.
+- Se il filtro restituisce **quasi tutta la tabella**, la scansione sequenziale è la scelta giusta.
+- Se le **statistiche sono vecchie**, le stime sono sbagliate. Sintomo: `rows=98` stimato e 250000 righe reali. Si aggiornano con `ANALYZE ordini;`.
+
+<Log lines={[
+  "ANALYZE ordini;",
+]} caption="Ricalcola le statistiche della tabella (PostgreSQL)." />
+
+<Callout kind="regola">
+Il piano dipende dai dati. Provalo sempre su una tabella grande quanto quella reale: su pochi dati di prova i piani ingannano.
+</Callout>
+
+Altri database: in MySQL `EXPLAIN` mostra una tabella di colonne (`type`, `key`, `rows`); in SQL Server si apre il piano grafico. La logica, però, è la stessa.
+
+<Say who="sensei">Il piano non è una sentenza: è una stima fatta con le informazioni che ha. Se le informazioni sono vecchie, sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Leggi questo piano: «Seq Scan on ordini (cost=0.00..21850.00 rows=98 width=36) / Filter: (cliente_id = 4217)». La tabella ha 3 milioni di righe e la query ne restituisce circa 98. Che cosa conviene fare?"
+  options={["Creare un indice su cliente_id e riprovare EXPLAIN", "Niente: la scansione sequenziale è sempre la scelta migliore", "Aggiungere LIMIT 98 per risparmiare la lettura della tabella", "Cambiare il tipo della colonna in testo"]}
+  answer={0}
+  explain="Una scansione sequenziale su 3 milioni di righe per ottenerne 98 è sprecata: un indice su cliente_id permette di andare dritti alle righe giuste. Il LIMIT non aiuta, perché il filtro obbliga comunque a leggere. Cambiare tipo in testo peggiorerebbe le cose."
+/>
+
+<Say who="sensei">Poche righe cercate in una tabella grande: l'indice è la cura. Poi si riguarda il piano per esserne sicuri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su EXPLAIN e sui piani. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-piani" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa leggere un piano smette di tirare a indovinare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- EXPLAIN mostra il piano stimato; EXPLAIN ANALYZE esegue la query e aggiunge tempi e righe reali.
+- Seq Scan legge tutta la tabella; Index Scan usa l'indice. Il costo è in unità astratte, utile solo per confrontare.
+- Il piano dipende dalle statistiche: dati pochi o statistiche vecchie possono far scegliere il metodo sbagliato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra EXPLAIN ed EXPLAIN ANALYZE?", a: "Il secondo esegue davvero la query e misura i tempi" },
+    { q: "Che cosa vuol dire Seq Scan?", a: "Il database legge la tabella dall'inizio alla fine" },
+    { q: "Come si aggiornano le statistiche in PostgreSQL?", a: "Con ANALYZE nome_tabella;" },
+    { q: "Come provare EXPLAIN ANALYZE su un UPDATE senza conseguenze?", a: "Dentro BEGIN e poi ROLLBACK" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: viste e CTE ricorsive, per riutilizzare query e percorrere gerarchie.</Say>
+</Scene>

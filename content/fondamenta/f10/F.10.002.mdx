@@ -1,0 +1,186 @@
+---
+id: F.10.002
+course: fondamenta
+module: 10
+title: "Progetto: documentare e controllare"
+belt: verde
+duration_min: 10
+prerequisites: [F.10.001]
+objectives:
+  - "Scrivere un diagramma di rete in testo e una tabella degli indirizzi"
+  - "Preparare una checklist di collaudo con prove positive e negative"
+  - "Riconoscere gli errori tipici di configurazione e dire dove cercarli"
+video:
+  provider: youtube
+  id: "cY3WuHdmFmQ"
+  start: 0
+  end: 600
+  channel: "Alex Miccichè"
+  title: "Come realizzare una rete composta da due sotto-reti e un router su Packet Tracer"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f10-documentare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Considerare finito il lavoro quando la rete «sembra» funzionare, senza collaudo scritto"
+  - "Provare solo ciò che deve funzionare, e non ciò che deve essere vietato"
+  - "Scrivere password e segreti nella documentazione condivisa"
+commands: []
+---
+
+<Scene title="Il collega del lunedì">
+Sei in ferie. Il lunedì dopo, un tuo collega deve aggiungere una stampante alla rete di Bianchi Servizi. Apre la cartella del progetto: è vuota. Nessuno schema, nessun elenco di indirizzi.
+
+Per sapere dove collegarla, **deve indovinare**. Sceglie un indirizzo che sembra libero. Era il gateway della VLAN 20. Metà reparto tecnico perde la rete.
+
+<Say who="sensei">Una rete non documentata è una rete che solo tu capisci. Quando non ci sei, è un rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il diagramma in testo">
+Ti basta un disegno semplice, anche con caratteri di testo: dispositivi, collegamenti, reti. Si può tenere dentro un file di testo, versionare e leggere ovunque.
+
+<Log
+  lines={[
+    "Internet",
+    "   |",
+    "[Router/Firewall]  gateway delle VLAN, ACL",
+    "   |  (trunk: VLAN 10, 20, 30, 40, 50)",
+    "[Switch centrale]",
+    "   |-- porta 1-12   access VLAN 10  Amministrazione",
+    "   |-- porta 13-24  access VLAN 20  Tecnico",
+    "   |-- porta 25-28  access VLAN 30  Server",
+    "   |-- porta 29-36  access VLAN 50  Telecamere",
+    "   |-- porta 37     access VLAN 40  Access point Wi-Fi ospiti",
+  ]}
+  caption="Un diagramma in testo: un solo sguardo e si capisce dove sta ogni cosa."
+/>
+
+<Callout kind="trucco">
+Scrivi **cosa è collegato a cosa**, **su quale porta** e **in quale VLAN**. Colore dei cavi e marca dei dispositivi interessano molto meno.
+</Callout>
+
+<Say who="assistente">Se riesci a spiegare lo schema a voce in un minuto, è abbastanza chiaro. Altrimenti semplificalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella degli indirizzi">
+Accanto al diagramma, una **tabella**: una riga per ogni dispositivo importante.
+
+| Dispositivo | Ruolo | Indirizzo | Maschera | Gateway | VLAN |
+|---|---|---|---|---|---|
+| router-core | gateway VLAN 10 | 10.10.10.1 | /27 | - | 10 |
+| srv-gestionale | server applicazioni | 10.10.30.2 | /28 | 10.10.30.1 | 30 |
+| srv-file | server file | 10.10.30.3 | /28 | 10.10.30.1 | 30 |
+| nvr-telecamere | registratore | 10.10.30.10 | /28 | 10.10.30.1 | 30 |
+| stampante-amm | stampante | 10.10.10.20 | /27 | 10.10.10.1 | 10 |
+
+<Callout kind="attenzione">
+In questa tabella **non si scrivono password**. Le password dei dispositivi vanno in un **gestore di password** con accesso limitato. Una documentazione condivisa che le contiene è un regalo a chi non dovrebbe averle.
+</Callout>
+
+In testa al documento metti sempre **data dell'ultimo aggiornamento** e **chi l'ha scritto**: un documento vecchio senza data è peggio di nessuno.
+
+<Say who="sensei">La documentazione è un impegno. Aggiornarla subito dopo ogni cambiamento è parte del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il collaudo">
+Una rete non è pronta perché «sembra» funzionare. Si **collauda**, con una **checklist**: un elenco di prove, ciascuna con il **risultato atteso** e quello **ottenuto**. Si procede **dal vicino al lontano**.
+
+<Log
+  lines={[
+    "1  PC amministrazione prende un indirizzo dal DHCP           atteso: 10.10.10.x   ottenuto: ______",
+    "2  ping dal PC al proprio gateway 10.10.10.1                  atteso: risposte     ottenuto: ______",
+    "3  ping dal PC al server 10.10.30.2                           atteso: risposte     ottenuto: ______",
+    "4  nslookup di un sito esterno                               atteso: indirizzo    ottenuto: ______",
+    "5  apertura di una pagina web esterna                         atteso: pagina       ottenuto: ______",
+    "6  dal Wi-Fi ospiti: ping verso 10.10.30.2                    atteso: NESSUNA risposta   ottenuto: ______",
+    "7  dal Wi-Fi ospiti: apertura di una pagina esterna           atteso: pagina       ottenuto: ______",
+  ]}
+  caption="Estratto di checklist. Le prove 6 e 7 sono diverse: la 6 deve fallire."
+/>
+
+<Callout kind="regola">
+Si provano anche le cose che **devono fallire**. Un ospite che raggiunge il server non fa comparire nessun errore: te ne accorgi solo se lo provi.
+</Callout>
+
+<Say who="sensei">Il collaudo dimostra due cose: che funziona ciò che serve, e che è vietato ciò che deve esserlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori tipici">
+Quando una prova fallisce, sai già da dove cominciare a cercare.
+
+<Guided
+  steps={[
+    "Il PC vede i colleghi ma non Internet: gateway sbagliato o mancante.",
+    "Il PC non vede nessuno: porta nella VLAN sbagliata, o cavo e porta spenti.",
+    "Problemi a intermittenza su due PC: indirizzo IP duplicato.",
+    "PC che non raggiunge i vicini della stessa VLAN: maschera sbagliata (per esempio /30 invece di /27).",
+    "Il traffico vietato passa ancora, o quello permesso non passa: ACL non applicata, interfaccia o direzione sbagliata, ordine delle regole.",
+    "Il ping verso l'esterno va, il sito non si apre: controlla il nome con nslookup e il percorso con traceroute.",
+  ]}
+/>
+
+Un video in italiano, con due sottoreti e un router costruiti passo passo, mostra proprio questo tipo di verifica:
+
+<Video />
+
+<Say who="assistente">Un sintomo, una causa probabile. Impara le coppie e guadagni mezz'ora a ogni guasto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Durante il collaudo, un PC dell'amministrazione raggiunge il server e i colleghi, ma non apre nessun sito su Internet. Il ping verso 10.10.10.1 e verso il server va bene. Dove guardi per primo?"
+  options={["Nella configurazione del PC: il gateway potrebbe mancare o essere sbagliato", "Nel cavo tra il PC e lo switch", "Nella VLAN dei server, che è danneggiata", "Nel Wi-Fi degli ospiti"]}
+  answer={0}
+  explain="Il PC parla con chi sta nella sua rete e con il gateway del progetto: il cavo e la VLAN sono a posto. Ma se ha un gateway sbagliato o assente non esce dalla rete. Controlla anche l'ACL, ma il sintomo punta prima al PC."
+/>
+
+<Say who="sensei">Il sintomo indica il tratto. Segui la logica, non l'intuito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su documentazione, collaudo ed errori tipici. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f10-documentare" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai risposto bene, puoi lasciare una rete a un collega senza temere il lunedì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Diagramma in testo e tabella degli indirizzi (dispositivo, ruolo, IP, maschera, gateway, VLAN), senza password, con data e autore.
+- Checklist di collaudo dal vicino al lontano, con prove positive e prove che devono fallire.
+- Errori tipici: gateway, maschera, VLAN della porta, IP duplicati, ACL non applicata o nel verso sbagliato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa si scrive nel diagramma di rete in testo?", a: "Dispositivi, collegamenti, porte e VLAN" },
+    { q: "Perché collaudare anche ciò che deve fallire?", a: "Per verificare che il traffico vietato sia davvero bloccato" },
+    { q: "PC che vede i vicini ma non Internet: causa probabile?", a: "Gateway sbagliato o mancante" },
+    { q: "Dove si tengono le password dei dispositivi?", a: "In un gestore di password, non nella documentazione condivisa" },
+  ]}
+/>
+
+<Say who="sensei">Progetto concluso. Ora resta l'ultima prova del corso: l'esame di cintura su tutto ciò che hai imparato.</Say>
+</Scene>

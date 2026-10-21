@@ -1,0 +1,157 @@
+---
+id: D.20.006
+course: dati
+module: 20
+title: "Privacy e consenso"
+belt: marrone
+duration_min: 8
+prerequisites: [D.20.005]
+objectives:
+  - "Spiegare a che cosa servono i cookie e quando serve il consenso"
+  - "Stimare l'effetto del consenso sui numeri misurati"
+  - "Distinguere anonimizzazione e pseudonimizzazione e applicare la minimizzazione"
+video:
+  provider: youtube
+  id: "lODHp5AUpsY"
+  start: 0
+  end: 600
+  channel: "Webitaly System"
+  title: "Cookie Banner e Privacy Policy: tutto quello che devi sapere (e come farlo in 3 click)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-privacy
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un identificativo casuale non sia un dato personale, perché non c'è il nome"
+  - "Dare per scontato che i numeri misurati con il banner siano il totale delle visite"
+  - "Chiedere un consenso preselezionato o rendere il rifiuto molto più difficile dell'accettazione"
+commands: []
+---
+
+<Scene title="Il banner che nasconde i numeri">
+**Tavola Bella** ha messo il banner dei cookie. Una settimana dopo Giulia vede che le visite misurate sono scese da 10.000 a 5.500. «Il sito è crollato!»
+
+Non è crollato: molte persone hanno cliccato «Rifiuta» e lo strumento di misura non le conta più.
+
+La domanda del caso: **che cosa si può misurare, e a che condizioni?**
+
+<Say who="sensei">Questa lezione non è una consulenza legale: per i casi veri serve un professionista. Qui impari i principi, che un analista deve avere in testa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cookie e dati personali">
+Un **cookie** è un piccolo file che il sito salva nel browser di chi lo visita. Serve per riconoscerlo da una pagina all'altra, e da una visita all'altra.
+
+- **Cookie tecnici**: servono al funzionamento (tenere il carrello, mantenere l'accesso).
+- **Cookie di misura e di profilazione**: servono a osservare e a conoscere il comportamento delle persone.
+
+Un **dato personale** è qualunque informazione che riguarda una persona identificata o **identificabile**. Anche un codice casuale associato a un browser, se permette di riconoscere una persona nel tempo, può rientrare.
+
+<Callout kind="curiosita">
+In Europa si applica il **GDPR** (il regolamento sulla protezione dei dati). In Italia vigila il **Garante per la protezione dei dati personali**. Il Garante ha dato indicazioni sui cookie: in generale, per quelli non tecnici serve il consenso preventivo della persona.
+</Callout>
+
+<Say who="assistente">Indizio: se il dato permette di riconoscere una persona, anche senza nome, va trattato con cautela.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa chiede il consenso">
+I principi del GDPR sul consenso, in parole semplici. Deve essere:
+
+- **libero**: la persona può rifiutare senza danni;
+- **specifico**: per ogni scopo diverso, non uno per tutto;
+- **informato**: si dice chi tratta i dati e a che cosa servono;
+- **inequivocabile**: un gesto chiaro, non una casella già spuntata o lo scorrere della pagina.
+
+E deve essere facile **ritirarlo** quanto è stato darlo. Un banner dove «Accetta» è grande e «Rifiuta» è nascosto non rispetta questi principi.
+
+Vuoi sentire un'altra voce su banner e informative? Il video è in italiano:
+
+<Video />
+
+<Say who="sensei">Un consenso estorto non è un consenso. Se il rifiuto costa dieci clic, quello che misuri non vale niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare con meno dati">
+Se solo una parte accetta, i numeri misurati sono incompleti. Un esempio:
+
+- visite reali del sito (stima dal server): **10.000**
+- accettano i cookie: **55%**
+- visite misurate nello strumento: 10.000 × 0,55 = **5.500**
+
+Per stimare il totale dalle visite misurate: 5.500 ÷ 0,55 = **10.000**.
+
+Attenzione: chi accetta non è un campione casuale. Potrebbe comprare più (o meno) degli altri. Perciò una stima è utile per i volumi, meno per i tassi.
+
+Ci sono modi di misurare **con meno dati personali**:
+
+- **Minimizzazione**: raccogli solo ciò che serve a una domanda concreta, e per il tempo necessario.
+- **Pseudonimizzazione**: sostituisci il nome con un codice; resta possibile risalire alla persona con altre informazioni, quindi è ancora un dato personale.
+- **Anonimizzazione**: nessuno può più risalire alla persona; solo allora il dato esce dai vincoli sui dati personali.
+
+Strumenti come Matomo o Plausible possono essere configurati per misurare senza cookie e senza tenere dati identificabili. Vanno comunque configurati con attenzione.
+
+<Say who="sensei">Meno dati raccogli, meno ne devi proteggere e meno ne rischi. Un buon analista chiede solo ciò che gli serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito ha 8.000 visite reali e il 40% accetta i cookie di misura. Quante visite vede lo strumento?"
+  options={["3.200", "4.800", "8.000", "320"]}
+  answer={0}
+  explain="8.000 × 0,40 = 3.200. Chi risponde 4.800 ha calcolato il 60% (chi rifiuta) invece del 40% (chi accetta)."
+/>
+
+<Quiz
+  question="Sostituisci il nome di ogni cliente con un codice, ma tieni la tabella che collega codice e nome. Che cosa hai fatto?"
+  options={["Pseudonimizzazione: i dati restano personali", "Anonimizzazione: i dati non sono più personali", "Cifratura irreversibile: non servono più regole", "Minimizzazione completa"]}
+  answer={0}
+  explain="Finché esiste la tabella di collegamento, si può risalire alla persona: è pseudonimizzazione. L'anonimizzazione richiede che nessuno possa risalire, nemmeno chi ha costruito i codici."
+/>
+
+<Say who="assistente">Domanda utile: «Se avessi altre informazioni, potrei riconoscere la persona?» Se sì, non è anonimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Consenso, stime e anonimizzazione: scenari e piccoli calcoli.
+
+<Practice generator="d20-privacy" pass="5/5" retries={3} />
+
+<Say who="sensei">Principi chiari, numeri ricontrollati, nessuna scorciatoia sul consenso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I cookie non tecnici richiedono, in generale, un consenso libero, specifico, informato e inequivocabile.
+- Con il banner i numeri misurati sono una parte del totale: la stima dei volumi si fa dividendo per la quota di consenso.
+- Minimizzazione prima di tutto; pseudonimizzare non è anonimizzare; per i casi veri serve una consulenza legale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quattro caratteristiche del consenso GDPR?", a: "Libero, specifico, informato, inequivocabile" },
+    { q: "10.000 visite, 55% accetta: visite misurate?", a: "5.500" },
+    { q: "Pseudonimizzazione o anonimizzazione: quale lascia dati personali?", a: "La pseudonimizzazione" },
+    { q: "Che cos'è la minimizzazione?", a: "Raccogliere solo i dati che servono a una domanda concreta" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del ramo: dashboard e rapporto di prodotto. Mettiamo insieme tutto.</Say>
+</Scene>

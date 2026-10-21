@@ -1,0 +1,159 @@
+---
+id: T.09.004
+course: trading
+module: 9
+title: "Coppie e arbitraggio statistico"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.003]
+objectives:
+  - "Spiegare l'idea di una coppia di titoli e dello spread tra i prezzi"
+  - "Calcolare lo spread e il suo z-score con numeri semplici"
+  - "Riconoscere perché «neutrale al mercato» non significa «senza rischio»"
+video:
+  provider: youtube
+  id: "XzaVMfg5TUY"
+  start: 0
+  end: 355
+  channel: "Quantpedia"
+  title: "Pairs Trading and Statistical Arbitrage Strategies - Quantpedia Explains (Trading Strategies)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-coppie
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «arbitraggio statistico» sia un guadagno sicuro come l'arbitraggio puro"
+  - "Pensare che due titoli che si muovevano insieme lo faranno per sempre"
+  - "Dimenticare i costi delle due operazioni e quelli di una vendita allo scoperto"
+commands: []
+---
+
+<Scene title="Due gemelli del mercato">
+**Davide** nota due aziende fittizie dello stesso settore: «Xenon SpA» e «Ypsilon SpA». I loro prezzi si muovono quasi insieme da anni, con Xenon di circa 10 euro sopra Ypsilon.
+
+Un giorno Xenon è 14 euro sopra Ypsilon. Davide pensa: «Il divario è troppo largo. Tornerà normale».
+
+La domanda del caso: **come si trasforma questa idea in una regola, e che cosa può andare storto?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Studiamo un'idea con numeri fittizi: il corso non è consulenza finanziaria.
+</Callout>
+
+<Say who="sensei">Un divario largo non è un regalo. Può essere l'inizio di una rottura. Vediamo come ragionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La strategia delle coppie">
+Il **pairs trading** («operare sulle coppie») sceglie due titoli che storicamente si muovono insieme e guarda il loro **spread**: la differenza tra i prezzi.
+
+- se lo spread si allarga molto, si pensa che il titolo «caro» scenderà o che quello «economico» salirà;
+- si **vende** il caro (vendita allo scoperto, cioè vendere ciò che si è preso in prestito, sperando di ricomprarlo più in basso) e si **compra** l'economico;
+- si esce quando lo spread torna normale.
+
+È una forma di mean reversion applicata al **divario**, non al prezzo. Per questo si chiama **arbitraggio statistico**: non è sicuro come un arbitraggio puro, è una scommessa basata sulle statistiche del passato.
+
+<Callout kind="regola">
+Arbitraggio **puro** = guadagno senza rischio (rarissimo e subito sfruttato). Arbitraggio **statistico** = scommessa che una relazione storica regga. Può perdere.
+</Callout>
+
+Un'altra voce, in inglese con sottotitoli:
+
+<Video />
+
+<Say who="assistente">Si guarda il divario, non il prezzo singolo. Due gambe, due operazioni, due insiemi di costi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spread e z-score">
+Dati fittizi: dalla storia, lo spread medio è **10** e la sua deviazione standard è **2**. Tre giorni:
+
+| giorno | X | Y | spread (X - Y) | z-score |
+|---|---|---|---|---|
+| 1 | 52 | 42 | 10 | 0,0 |
+| 2 | 55 | 44 | 11 | 0,5 |
+| 3 | 58 | 44 | 14 | 2,0 |
+
+Il giorno 3: (14 - 10) / 2 = 2. Regola d'esempio: «con z sopra 2 vendi X e compri Y; esci quando z torna vicino a 0».
+
+<PythonTerminal code={"media, dev = 10, 2\nfor x, y in [(52, 42), (55, 44), (58, 44)]:\n    spread = x - y\n    print(spread, (spread - media) / dev)"} />
+
+<Log lines={[
+  "10 0.0",
+  "11 0.5",
+  "14 2.0",
+]} />
+
+<Say who="sensei">Se lo spread torna da 14 a 10, hai guadagnato 4 punti sulla coppia, meno i costi. Se va a 18, ne hai persi 4.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Neutrale non vuol dire sicuro">
+Comprare uno e vendere l'altro riduce l'effetto del mercato intero: se tutto cala, il titolo comprato perde ma quello venduto guadagna. Per questo si dice **neutrale al mercato**.
+
+Ma restano rischi:
+
+- **la relazione si rompe**: Xenon annuncia un'ottima notizia, o Ypsilon un guaio; i due non si muovono più insieme. Lo spread può allargarsi per sempre;
+- **costi doppi**: due operazioni all'ingresso e due all'uscita; in più il costo del prestito del titolo venduto;
+- **scegliere la coppia a posteriori**: se cerchi tra migliaia di coppie quella che «funzionava» nel passato, probabilmente trovi un caso fortunato (overfitting);
+- **perdite illimitate sulla gamba venduta**: un titolo venduto allo scoperto può salire molto.
+
+<Callout kind="attenzione">
+Gli esempi sono numeri inventati: nessuna coppia reale è «garantita». Controlla sempre le regole del tuo intermediario su vendite allo scoperto e costi, e usa solo conti demo per esercitarti.
+</Callout>
+
+<Say who="assistente">Due gambe riducono un rischio, ma ne aggiungono altri. Nessuna copertura è gratis.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Spread medio 10, deviazione standard 2. Oggi X = 60 e Y = 46. Qual è lo z-score dello spread e che cosa suggerisce la regola «vendi X, compra Y se z > 2»?"
+  options={["Spread 14, z = 2,0: non supera 2, quindi la regola non entra", "Spread 14, z = 7: la regola entra subito", "Spread 106, z = 48: la regola entra", "Spread 14, z = 2,0: la regola entra perché è vicino a 2"]}
+  answer={0}
+  explain="Spread = 60 - 46 = 14. z = (14 - 10) / 2 = 2,0. La regola dice «sopra 2»: 2,0 non è sopra 2, quindi non entra. Chi calcola 7 ha dimenticato di dividere per la deviazione standard."
+/>
+
+<Say who="sensei">Sopra non vuol dire uguale. Le soglie si leggono con precisione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Spread, z-score e rischi delle coppie. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-coppie" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. L'arbitraggio statistico è una scommessa con la matematica, non una garanzia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una coppia usa due titoli collegati e guarda lo spread (differenza dei prezzi): quando si allarga molto si vende il caro e si compra l'economico, sperando nel ritorno.
+- Lo z-score dello spread = (spread - media) / deviazione standard.
+- Neutrale al mercato non è senza rischio: la relazione può rompersi, i costi sono doppi, la vendita allo scoperto ha perdite potenzialmente illimitate.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo spread di una coppia?", a: "La differenza tra i prezzi dei due titoli" },
+    { q: "Arbitraggio statistico: è sicuro?", a: "No, è una scommessa su una relazione storica che può rompersi" },
+    { q: "Spread medio 10, dev 2, spread oggi 14: z?", a: "2" },
+    { q: "Perché i costi pesano di più nelle coppie?", a: "Due operazioni all'ingresso e due all'uscita, più il costo della vendita allo scoperto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i breakout. Il prezzo rompe un massimo: partenza vera o falso allarme?</Say>
+</Scene>

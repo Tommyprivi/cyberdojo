@@ -1,0 +1,155 @@
+---
+id: H.01.002
+course: hedge
+module: 1
+title: "Gestore, investitori e veicolo"
+belt: bianca
+duration_min: 8
+prerequisites: [H.01.001]
+objectives:
+  - "Distinguere i tre protagonisti: gestore, investitori, veicolo"
+  - "Dire chi decide gli investimenti e chi rischia il capitale"
+  - "Spiegare perché i documenti del fondo contano"
+video:
+  provider: youtube
+  id: "u_cJ0KGTIyM"
+  start: 0
+  end: 600
+  channel: "Pillole di Finanza"
+  title: "Ray Dalio - Cos'è un hedge fund?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-struttura
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che gli investitori decidano gli acquisti: decide il gestore"
+  - "Confondere il veicolo (il contenitore) con il gestore (chi decide)"
+  - "Non leggere i documenti del fondo prima di versare i soldi"
+commands: []
+---
+
+<Scene title="Alba Capital">
+**Alba Capital** è un fondo fittizio: 100 milioni di euro raccolti da 40 investitori. Un giorno uno di loro, il signor Bruni, chiede: «Ma chi decide che cosa comprare con i miei soldi? E se perdiamo, chi paga?».
+
+La domanda del caso: **chi fa che cosa dentro un fondo?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">Prima di dare soldi a qualcuno, devi sapere chi è chi. Tre ruoli. Segnali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tre ruoli">
+Un fondo ha tre parti:
+
+- **Il gestore**: la società e le persone che **decidono come investire**. Nel caso: la società che gestisce Alba Capital.
+- **Gli investitori**: chi **mette il capitale**. In inglese, in molte strutture, si chiamano **limited partner**: partner con responsabilità limitata.
+- **Il veicolo**: la **società o struttura giuridica** che raccoglie e detiene i soldi, per esempio una società di capitali o una partnership.
+
+<Callout kind="trucco">
+Un modo per ricordarli: **il veicolo è il salvadanaio, gli investitori lo riempiono, il gestore decide come spendere**.
+</Callout>
+
+<Say who="assistente">Tre parole, tre ruoli. Se confondi il salvadanaio con chi lo gestisce, ti perdi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi decide e chi rischia">
+Gli investitori **non votano** gli acquisti: il gestore decide, **entro le regole scritte** nei documenti del fondo.
+
+Chi rischia? Gli investitori rischiano il **capitale versato**: se il fondo perde tutto, perdono la somma investita. In genere non rispondono dei debiti del gestore oltre quella somma, ma dipende dalla struttura: bisogna leggere i documenti.
+
+Molti gestori investono anche **soldi propri** nel fondo: così se va male perdono anche loro.
+
+Vuoi sentire la stessa idea da un'altra voce, con parole di un grande investitore? Un breve estratto in italiano:
+
+<Video />
+
+<Say who="sensei">Se il gestore non rischia niente di suo, chiediti perché dovresti rischiare tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove stanno le regole">
+Le regole di un fondo stanno nei **documenti**: il regolamento o il prospetto. Dicono:
+
+- quale **strategia** il fondo può seguire;
+- quanta **leva** può usare;
+- quali **commissioni** si pagano;
+- quando e come si possono **ritirare i soldi**.
+
+Molti fondi hanno sede in Paesi come Lussemburgo, Irlanda o Isole Cayman. Non è un trucco in sé: dipende da regole, fisco e abitudini del settore. Ma l'investitore deve **sapere dove e da chi** il fondo è regolato.
+
+<Callout kind="attenzione">
+Fondi in cui gestore, conti e controlli sono tutti nelle mani di una persona sola, senza soggetti esterni, sono un segnale di allarme. Ne parleremo nel modulo sui fallimenti.
+</Callout>
+
+<Say who="sensei">Chi non legge i documenti firma al buio. Leggili. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Guided
+  steps={[
+    "Scenario: Alba Capital ha 100 milioni raccolti da 40 investitori. Il gestore compra azioni di una società e vende allo scoperto quelle di un'altra.",
+    "Chi ha deciso quegli acquisti? Il gestore, secondo il regolamento.",
+    "Chi ha messo il capitale? Gli investitori, tramite il veicolo.",
+    "Se la strategia va male, chi perde il capitale? Gli investitori, fino alla somma versata. Anche il gestore, se ha soldi propri nel fondo.",
+  ]}
+/>
+
+<Quiz
+  question="Il signor Bruni vuole sapere quali regole limitano il gestore nell'uso della leva. Dove deve guardare?"
+  options={[
+    "Nei documenti del fondo, come il regolamento o il prospetto",
+    "Nei giornali, dove si legge tutto",
+    "Chiedendo a un amico che ha investito",
+    "In nessun posto: non ci sono regole",
+  ]}
+  answer={0}
+  explain="Le regole di un fondo sono scritte nei suoi documenti. Gli amici e i giornali possono sbagliare o non sapere; senza regole scritte non c'è modo di sapere che cosa il gestore può fare."
+/>
+
+<Say who="assistente">Indizio: i documenti sono la «carta d'identità» del fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su ruoli e responsabilità dentro un fondo.
+
+<Practice generator="h01-struttura" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere chi è chi è il primo controllo di sicurezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tre protagonisti: il gestore decide, gli investitori mettono il capitale, il veicolo lo raccoglie.
+- Gli investitori rischiano il capitale versato e non decidono gli acquisti.
+- Le regole del fondo stanno nei documenti: vanno letti prima di versare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa il gestore?", a: "Decide come investire, entro le regole del fondo" },
+    { q: "Che cos'è il veicolo?", a: "La società o struttura che raccoglie e detiene i soldi" },
+    { q: "Che cosa rischia l'investitore?", a: "Il capitale versato" },
+    { q: "Dove si trovano le regole del fondo?", a: "Nei documenti: regolamento o prospetto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quanto costa tutto questo. Le commissioni «2 e 20», con i numeri.</Say>
+</Scene>

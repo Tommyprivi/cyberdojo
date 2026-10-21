@@ -1,0 +1,165 @@
+---
+id: T.06.002
+course: trading
+module: 6
+title: "Quanto rischiare: la dimensione della posizione"
+belt: arancione
+duration_min: 9
+prerequisites: [T.06.001]
+objectives:
+  - "Calcolare quante unità comprare a partire dal capitale, dalla percentuale rischiata e dalla distanza dello stop"
+  - "Spiegare perché il rischio per operazione si fissa in anticipo in percentuale del capitale"
+  - "Distinguere il valore della posizione dal rischio effettivo dell'operazione"
+video:
+  provider: youtube
+  id: "HysxRiENU5s"
+  start: 0
+  end: 600
+  channel: "Traderlink - Investimenti e Trading"
+  title: "Gestione del Rischio e Money Management"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-position-sizing
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere la quantità «a occhio» o in base a quanto si spera di guadagnare"
+  - "Confondere il valore della posizione con la perdita massima prevista"
+  - "Dimenticare di arrotondare per difetto il numero di unità"
+commands: []
+---
+
+<Scene title="Lo stesso stop, due conti diversi">
+Sara e Davide usano la stessa regola di uscita su un'azione fittizia: comprano a **50 €** ed escono se il prezzo scende a **48 €**. La perdita è di 2 € per azione, per tutti e due.
+
+Sara compra **50 azioni**. Davide ne compra **500**. Se lo stop scatta, Sara perde 100 €. Davide ne perde **1.000 €**.
+
+La regola era la stessa, ma il danno è dieci volte più grande. La domanda del caso: **come si decide quante azioni comprare?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Gli esempi usano titoli e capitali inventati.
+</Callout>
+
+<Say who="sensei">La quantità non si sceglie con il cuore. Si calcola prima di entrare, a mente fredda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Si parte dalla perdita, non dal guadagno">
+Il metodo più semplice si chiama **rischio frazionario fisso**: prima di ogni operazione decidi quale **percentuale del capitale** sei disposto a perdere se va male. Spesso si parla di una cifra piccola, come l'1% o il 2%. È una scelta personale e prudente, non una regola magica.
+
+Con **10.000 €** di capitale fittizio e un rischio dell'**1%**:
+
+- Rischio massimo per operazione = 10.000 × 1% = **100 €**.
+
+Questa è la cifra che non vuoi superare, qualunque cosa succeda alla singola operazione.
+
+<Callout kind="regola">
+Il rischio per operazione si decide **in euro** (o in percentuale del capitale) **prima** di entrare. La quantità viene dopo.
+</Callout>
+
+<Say who="assistente">Parti sempre dalla domanda «quanto sono disposto a perdere?». La quantità è la risposta, non la domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La formula">
+Hai la perdita massima (100 €). Ti serve la perdita **per unità**: la distanza tra il prezzo di ingresso e quello dello stop.
+
+Quantità = rischio in euro diviso la distanza dello stop.
+
+Caso di Sara: ingresso 50 €, stop 48 €, distanza 2 €.
+
+- Quantità = 100 / 2 = **50 azioni**.
+- Valore della posizione = 50 × 50 € = **2.500 €**, cioè il 25% del capitale.
+
+Se lo stop scatta, la perdita è 50 × 2 € = 100 €, cioè l'1% del capitale. Il rischio è quello che avevi deciso.
+
+<Callout kind="attenzione">
+Il **valore** della posizione (2.500 €) non è la **perdita massima prevista** (100 €). Sono due numeri diversi. Quello che decide la prudenza è il secondo.
+</Callout>
+
+<Say who="sensei">Capitale, percentuale, distanza dello stop. Tre numeri e una divisione. Chi sbaglia la divisione sbaglia il conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un altro esempio, con arrotondamento">
+Un altro caso fittizio: capitale **20.000 €**, rischio **2%**, ingresso **80 €**, stop **76 €**.
+
+<Guided
+  steps={[
+    "Rischio massimo: 20.000 × 2% = 400 €.",
+    "Distanza dello stop: 80 − 76 = 4 € per azione.",
+    "Quantità: 400 / 4 = 100 azioni.",
+    "Valore della posizione: 100 × 80 € = 8.000 €, il 40% del capitale: grande, ma con un rischio effettivo di soli 400 €.",
+    "Se la divisione non fosse esatta, si arrotonda per difetto: meglio una azione in meno che superare il rischio deciso.",
+  ]}
+/>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano sulla gestione del rischio, da una società di formazione sui mercati: è materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">Una posizione grande con uno stop vicino può rischiare meno di una piccola con uno stop lontano. Conta la perdita, non la dimensione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Capitale 10.000 €, rischio 1% per operazione, ingresso 40 €, stop 38 €. Quante azioni si comprano?"
+  options={["50", "100", "250", "25"]}
+  answer={0}
+  explain="Il rischio massimo è 10.000 × 1% = 100 €. La distanza dello stop è 2 €. Quantità = 100 / 2 = 50. Chi risponde 250 divide il capitale per il prezzo e non guarda lo stop."
+/>
+
+<Say who="sensei">Se hai risposto 250 hai diviso il capitale per il prezzo: è quanto puoi comprare, non quanto puoi rischiare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova con il codice">
+Ecco la formula in Python. Cambia capitale, percentuale e prezzi e riesegui. Le divisioni intere (doppio slash) arrotondano per difetto.
+
+<PythonTerminal code={"capitale = 10000\nperc = 1   # percento del capitale a rischio\ningresso = 50\nstop = 48\nrischio_euro = capitale * perc // 100\nquantita = rischio_euro // (ingresso - stop)\nprint('Rischio in euro:', rischio_euro)\nprint('Quantita:', quantita)\nprint('Valore posizione:', quantita * ingresso)"} />
+
+<Say who="assistente">Dovrebbe uscire 100, 50 e 2500. Prova con lo stop a 49: la quantità raddoppia, ma il rischio resta 100.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque calcoli di quantità e di rischio, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-position-sizing" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nella prossima lezione vediamo che cosa può andare storto con lo stop.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio per operazione si fissa prima, in percentuale del capitale (per esempio 1% o 2%), e poi si calcola la quantità.
+- Quantità = rischio in euro diviso la distanza tra ingresso e stop, arrotondata per difetto.
+- Il valore della posizione e la perdita massima prevista sono due numeri diversi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Capitale 10.000 €, rischio 1%: quanti euro si rischiano?", a: "100 €" },
+    { q: "Come si calcola la quantità?", a: "Rischio in euro diviso la distanza dello stop" },
+    { q: "Si arrotonda per eccesso o per difetto?", a: "Per difetto, per non superare il rischio deciso" },
+    { q: "Il valore della posizione è la perdita massima?", a: "No: la perdita massima dipende dalla distanza dello stop" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: lo stop loss, a che cosa serve e perché non è una garanzia.</Say>
+</Scene>

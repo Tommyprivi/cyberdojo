@@ -1,0 +1,167 @@
+---
+id: D.20.003
+course: dati
+module: 20
+title: "Funnel e percorsi"
+belt: blu
+duration_min: 8
+prerequisites: [D.20.002]
+objectives:
+  - "Distinguere un funnel aperto da uno chiuso"
+  - "Calcolare perdite e tassi in un funnel di sito web"
+  - "Leggere i percorsi tra pagine per capire dove si abbandona"
+video:
+  provider: youtube
+  id: "1bK72QxzbJY"
+  start: 0
+  end: 600
+  channel: "Analytics Mania - Google Analytics & Tag Manager"
+  title: "Funnel exploration in Google Analytics 4 (2026) || Funnel report in GA4"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-funnel
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare ogni tasso sul primo passo invece che sul passo precedente"
+  - "Non sapere se il funnel è aperto o chiuso e confrontare numeri non confrontabili"
+  - "Guardare solo chi si perde e non dove va chi continua a navigare"
+commands: []
+---
+
+<Scene title="Dove se ne va la gente">
+**Tavola Bella** ha tracciato gli eventi. Giulia ora sa che in una settimana 5.000 persone entrano nel sito e 240 comprano. Ma la domanda è sempre quella: tra la prima pagina e l'acquisto, **dove si perde la gente?**
+
+Alla scheda del prodotto? Al carrello? Alla cassa? Nel modulo con l'indirizzo?
+
+<Say who="sensei">Nella lezione D.10.003 hai calcolato un imbuto su numeri già pronti. Ora li costruisci dai dati del sito, e impari le trappole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I passi del funnel web">
+Un funnel è una sequenza di **eventi in ordine**. Per Tavola Bella:
+
+| passo | evento | persone |
+|---|---|---|
+| 1 | visita_pagina | 5.000 |
+| 2 | vista_prodotto | 2.000 |
+| 3 | aggiunta_carrello | 800 |
+| 4 | inizio_pagamento | 600 |
+| 5 | acquisto | 240 |
+
+**Perdita** = persone al passo prima − persone al passo dopo.
+
+- 1→2: 5.000 − 2.000 = **3.000** perse (tasso di passaggio 40%)
+- 2→3: 2.000 − 800 = **1.200** perse (40%)
+- 3→4: 800 − 600 = **200** perse (75%)
+- 4→5: 600 − 240 = **360** perse (40%)
+
+Il tasso complessivo è 240 ÷ 5.000 = **4,8%**. Le perdite sommate: 3.000 + 1.200 + 200 + 360 = 4.760, e 5.000 − 240 = 4.760: tornano.
+
+<Callout kind="attenzione">
+Il tasso 3→4 si calcola su 800, non su 5.000. Dire «600 su 5.000 è il 12%» è il tasso sul totale, non il passaggio.
+</Callout>
+
+<Say who="assistente">Controllo utile: la somma delle perdite deve essere uguale a inizio meno fine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Funnel aperto e funnel chiuso">
+C'è una scelta che cambia i numeri.
+
+- **Funnel chiuso**: conta solo chi parte dal **primo** passo e poi segue i passi. Chi arriva direttamente al carrello (con un link salvato) non entra.
+- **Funnel aperto**: chi entra al passo 3 viene contato dal passo 3, anche se non ha fatto i passi prima.
+
+Con un funnel aperto i passi finali possono avere **più** persone di quelle attese, perché ne arrivano dall'esterno.
+
+Vuoi vederlo costruire in GA4? Il video è in inglese (sottotitoli attivabili):
+
+<Video />
+
+<Callout kind="trucco">
+Prima di confrontare due funnel, controlla che siano entrambi aperti o entrambi chiusi.
+</Callout>
+
+<Say who="sensei">Un numero senza la sua regola di conteggio non si confronta con niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I percorsi tra pagine">
+Il funnel segue passi che hai deciso tu. I **percorsi** mostrano invece dove vanno **davvero** le persone, pagina dopo pagina.
+
+Le 800 persone che hanno messo qualcosa nel carrello, al passo successivo:
+
+| dopo il carrello | persone |
+|---|---|
+| inizio pagamento | 600 |
+| tornano al catalogo | 120 |
+| escono dal sito | 80 |
+
+Controllo: 600 + 120 + 80 = 800. Dei 200 persi al passo 3→4, **120 non se ne vanno**: tornano a guardare altri prodotti. Forse confrontano. Non sono tutti «abbandoni».
+
+Un **abbandono** è un'uscita dal sito (o dal flusso) senza completare. Qui sono 80 su 800 = **10%**.
+
+<Say who="sensei">Chi torna al catalogo non è perso. Sbagliare questa lettura vuol dire correggere il carrello quando il problema sono i prezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un secondo funnel di Tavola Bella: 1.000 → 500 → 200 → 100.
+
+<Quiz
+  question="Nel funnel 1.000 → 500 → 200 → 100, quale passaggio ha il tasso più basso?"
+  options={["Da 500 a 200 (40%)", "Da 1.000 a 500 (50%)", "Da 200 a 100 (50%)", "Il tasso complessivo (10%)"]}
+  answer={0}
+  explain="500 → 200 è il 40%, il minore dei passaggi. Il tasso complessivo (100 ÷ 1.000 = 10%) non è un passaggio. Chi sceglie 1.000 → 500 guarda solo il numero assoluto di persone perse (500)."
+/>
+
+<Quiz
+  question="Su 800 persone al carrello, 600 vanno al pagamento, 120 tornano al catalogo e 80 escono. Qual è la quota di uscite dal sito?"
+  options={["10%", "25%", "15%", "75%"]}
+  answer={0}
+  explain="80 ÷ 800 = 0,10, cioè 10%. Il 25% è la quota totale di chi non va al pagamento (200 ÷ 800), che comprende anche chi torna al catalogo."
+/>
+
+<Say who="assistente">Primo controllo: ogni tasso sul passo prima. Secondo controllo: le categorie sommano al totale?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Funnel, perdite, tassi e percorsi: alcuni calcoli e scenari.
+
+<Practice generator="d20-funnel" pass="5/5" retries={3} />
+
+<Say who="sensei">Tassi sul passo precedente. Perdite che tornano. Percorsi letti con attenzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un funnel web è una sequenza di eventi in ordine; ogni tasso si calcola sul passo precedente.
+- Un funnel chiuso conta solo chi parte dal primo passo, uno aperto anche chi entra più avanti.
+- I percorsi mostrano dove vanno davvero le persone: non tutte le perdite sono abbandoni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "800 al carrello, 600 al pagamento: perdita e tasso?", a: "200 perse, tasso 75%" },
+    { q: "Differenza tra funnel aperto e chiuso?", a: "Il chiuso conta solo chi parte dal primo passo" },
+    { q: "5.000 inizio, 240 fine: tasso complessivo?", a: "4,8%" },
+    { q: "Chi torna al catalogo dopo il carrello è un abbandono?", a: "No, resta nel sito" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: tagliare gli utenti in segmenti. Perché il funnel di tutti nasconde quello dei singoli gruppi.</Say>
+</Scene>

@@ -1,0 +1,152 @@
+---
+id: T.02.007
+course: trading
+module: 2
+title: "Grafici di prezzo onesti"
+belt: gialla
+duration_min: 9
+prerequisites: [T.02.006]
+objectives:
+  - "Disegnare un grafico di prezzo con pandas e matplotlib"
+  - "Scegliere tra scala lineare e logaritmica e normalizzare a base 100"
+  - "Riconoscere un grafico ingannevole"
+video:
+  provider: youtube
+  id: "WWgzvC6VM-I"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Data e ora nei grafici - Matplotlib Python Tutorial Italiano 08"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-grafici
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Tagliare l'asse verticale per far sembrare enormi piccole variazioni"
+  - "Confrontare due titoli con prezzi molto diversi sullo stesso asse senza normalizzare"
+  - "Credere che una linea che sale dica che continuerà a salire"
+commands: []
+---
+
+<Scene title="Il grafico che spaventa">
+Due amici guardano lo stesso titolo fittizio. Un grafico parte da 0 e mostra una linea quasi piatta. L'altro parte da 99 e mostra una salita ripidissima.
+
+I numeri sono gli stessi. Cambia solo l'asse.
+
+La domanda del caso: **come si disegna un grafico che dice la verità?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. Dati fittizi.
+</Callout>
+
+<Say who="sensei">Un grafico è un'opinione disegnata. Controlla chi l'ha disegnato e come.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo grafico">
+Con pandas e matplotlib, un grafico di prezzo si fa in poche righe:
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+date = pd.to_datetime(["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06"])
+df = pd.DataFrame({"chiusura": [10.4, 10.0, 10.1, 10.9, 10.6]}, index=date)
+
+df["chiusura"].plot(title="Forno Rossi (dati fittizi)", ylabel="euro")
+plt.show()
+```
+
+`plot` disegna una linea con le date sull'asse orizzontale, perché l'indice è fatto di date. `plt.show()` mostra il grafico.
+
+Vuoi vedere come si usano date e ore nei grafici di matplotlib? Da un'altra voce, in italiano:
+
+<Video />
+
+<Say who="assistente">Titolo, etichette degli assi e unità: senza, un grafico non si capisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scala lineare e logaritmica">
+Su una **scala lineare**, distanze uguali sono differenze in euro uguali. Su una **scala logaritmica**, distanze uguali sono **variazioni percentuali uguali**.
+
+Un prezzo passa da 100 a 200 e poi a 400. In scala lineare il secondo salto sembra doppio (200 contro 100 euro). In scala logaritmica i due salti sono **uguali**: entrambi raddoppiano.
+
+Per periodi lunghi e variazioni grandi la scala logaritmica è più onesta. In matplotlib: `plt.yscale("log")`.
+
+<Say who="sensei">Se ti interessa la percentuale, usa la scala che mostra le percentuali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Confrontare due titoli">
+Un titolo vale 50 euro, un altro 5000. Sullo stesso asse il primo sembra una linea piatta. Si **normalizza a base 100**: si divide ogni prezzo per il primo e si moltiplica per 100.
+
+<PythonTerminal code={"a = [50.0, 55.0, 60.0]\nbase100 = [round(p / a[0] * 100, 1) for p in a]\nprint(base100)"} />
+
+Se il titolo passa da 50 a 60, la serie base 100 arriva a 120: +20% da dove era partito. Ora due titoli diversi si confrontano nello stesso grafico.
+
+<Callout kind="attenzione">
+Una linea che sale non dice che salirà ancora. Un grafico mostra il passato, non i rischi né il futuro. Se più linee sono sovrapposte, aggiungi sempre una **legenda**.
+</Callout>
+
+<Say who="assistente">Le candele (apertura, massimo, minimo, chiusura) si usano quando serve vedere il dettaglio di ogni periodo, come nella prima lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un asse verticale parte da 99 invece che da 0. Che effetto può avere?"
+  options={[
+    "Piccole variazioni sembrano enormi",
+    "Le variazioni sembrano nulle",
+    "Il grafico diventa più preciso e onesto",
+    "Non cambia niente nella percezione",
+  ]}
+  answer={0}
+  explain="Se l'asse parte vicino ai valori, anche una variazione dell'1% occupa tutta l'altezza e sembra drammatica. Va dichiarato, oppure si usa una scala che mostri le percentuali."
+/>
+
+<Say who="sensei">Prima di credere a un grafico, guarda da dove parte l'asse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su grafici di prezzo, scale e normalizzazione.
+
+<Practice generator="t02-grafici" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il modulo è chiuso: sai leggere, pulire e disegnare i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un grafico di prezzo si fa con `plot` e `plt.show()`; titolo, assi, unità e legenda sono obbligatori.
+- La scala logaritmica mostra variazioni percentuali uguali; la base 100 permette di confrontare titoli diversi.
+- Assi tagliati e linee che salgono possono ingannare: il grafico descrive il passato, non il futuro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa mostra una scala logaritmica?", a: "Distanze uguali per variazioni percentuali uguali" },
+    { q: "Come si normalizza a base 100?", a: "Prezzo diviso il primo prezzo, per 100" },
+    { q: "Da 50 a 60 in base 100: quanto vale?", a: "120" },
+    { q: "Perché guardare da dove parte l'asse verticale?", a: "Un asse tagliato fa sembrare grandi le piccole variazioni" },
+  ]}
+/>
+
+<Say who="sensei">Prossimo modulo: l'analisi tecnica, che cosa dice e dove sbaglia.</Say>
+</Scene>

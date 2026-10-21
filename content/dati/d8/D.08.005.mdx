@@ -1,0 +1,211 @@
+---
+id: D.08.005
+course: dati
+module: 8
+title: "Pulire il testo"
+belt: arancione
+duration_min: 9
+prerequisites: [D.08.004]
+objectives:
+  - "Riconoscere categorie scritte in modi diversi (spazi, maiuscole, accenti)"
+  - "Usare str.strip, str.lower, str.replace e replace per unificarle"
+  - "Scrivere una espressione regolare molto semplice"
+video:
+  provider: youtube
+  id: "jd75MX9MtRY"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "PYTHON Tutorial Italiano 06 - Lavorare con le Stringhe"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-testo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Per il computer 'Roma', ' roma' e 'ROMA ' sono tre città diverse"
+  - "str.replace con le espressioni regolari va chiesto con regex=True, altrimenti cerca il testo letterale"
+  - "I metodi str non modificano la colonna: serve riassegnare il risultato"
+commands: []
+---
+
+<Scene title="Tre città, una sola">
+Il modulo d'iscrizione di una palestra fittizia ha un campo libero «città». Chi compila scrive come vuole:
+
+| citta |
+|---|
+| Roma |
+| ·roma |
+| ROMA· |
+| Milano |
+| MILANO |
+| Napoli |
+
+(Il puntino · indica uno spazio, che a occhio non si vede.)
+
+Se conti le città distinte ne trovi **sei**, ma le città sono tre.
+
+La domanda del caso: **come insegni al computer che «Roma», « roma» e «ROMA » sono la stessa cosa?**
+
+<Say who="sensei">Per un umano è la stessa parola. Per un computer ogni lettera, ogni spazio e ogni maiuscola contano. Nel testo, il nemico è la differenza invisibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spazi e maiuscole">
+Con pandas i metodi per il testo stanno dopo `.str`. I due più usati:
+
+- `str.strip()`: toglie gli spazi all'inizio e alla fine.
+- `str.lower()`: mette tutto minuscolo (`str.upper()` maiuscolo, `str.title()` la prima lettera maiuscola).
+
+<Log lines={[
+  "import pandas as pd",
+  "",
+  "c = pd.DataFrame({'citta': ['Roma', ' roma', 'ROMA ', 'Milano', 'MILANO', 'Napoli']})",
+  "print(c['citta'].nunique())",
+  "6",
+  "c['citta'] = c['citta'].str.strip().str.lower()",
+  "print(c['citta'].nunique())",
+  "3",
+  "print(c['citta'].value_counts())",
+  "",
+  "citta",
+  "roma      3",
+  "milano    2",
+  "napoli    1",
+  "Name: count, dtype: int64",
+]} caption="nunique conta i valori distinti. Da 6 a 3, e ora i conteggi tornano." />
+
+Nota che i metodi si possono **concatenare**: prima strip, poi lower. E il risultato va **riassegnato** alla colonna, altrimenti la tabella originale non cambia.
+
+<Callout kind="trucco">
+La ricetta base per ogni colonna di testo: `.str.strip().str.lower()`. Poi, se vuoi una forma bella da mostrare, `.str.title()`.
+</Callout>
+
+<Say who="assistente">Fai la pulizia su una colonna alla volta e conta i valori distinti prima e dopo: se il numero non scende, qualcosa non ha funzionato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Accenti e varianti">
+Le maiuscole e gli spazi si sistemano con un metodo. Gli **accenti** e le **varianti** invece vanno decisi da te. «Caffè» e «caffe» sono la stessa bevanda, ma il computer non lo sa.
+
+Si usa un **dizionario di sostituzione**: a sinistra quello che trovi, a destra quello che vuoi. `replace` con un dizionario cambia solo le caselle che sono **esattamente** uguali a una chiave.
+
+<Log lines={[
+  "p = pd.DataFrame({'bevanda': ['Caffè', 'caffe', 'CAFFÈ ', 'tè', 'Te', 'Latte']})",
+  "p['bevanda'] = p['bevanda'].str.strip().str.lower()",
+  "p['bevanda'] = p['bevanda'].replace({'caffe': 'caffè', 'te': 'tè'})",
+  "print(p['bevanda'].value_counts())",
+  "",
+  "bevanda",
+  "caffè    3",
+  "tè       2",
+  "latte    1",
+  "Name: count, dtype: int64",
+]} caption="Prima si normalizza, poi si unificano le varianti con il dizionario." />
+
+<Callout kind="regola">
+Il dizionario di sostituzione è un **documento**: tienilo in un punto solo del codice, con un commento. Chi lo legge capisce subito quali varianti hai deciso di considerare uguali.
+</Callout>
+
+<Say who="sensei">Decidere che «te» è «tè» è una scelta tua, non del computer. Scrivila, così si può discutere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Espressioni regolari, molto semplici">
+A volte il problema non è una parola ma un **modello**: telefoni scritti con spazi, trattini e barre. Per questo servono le **espressioni regolari**: piccole formule che descrivono un modello di caratteri.
+
+Ti bastano tre pezzi:
+
+- `\D`: qualunque carattere che **non** è una cifra.
+- `\s+`: uno o più spazi di fila.
+- `\d`: una cifra.
+
+<Log lines={[
+  "t = pd.DataFrame({'telefono': ['06/1234567', '06 1234567', '06-1234567']})",
+  "t['telefono'] = t['telefono'].str.replace(r'\\D', '', regex=True)",
+  "print(t['telefono'])",
+  "",
+  "0    061234567",
+  "1    061234567",
+  "2    061234567",
+  "Name: telefono, dtype: object",
+]} caption="Si toglie ogni carattere che non è una cifra. Nota regex=True: senza, pandas cercherebbe il testo letterale \\D." />
+
+Un secondo caso: spazi doppi dentro l'indirizzo.
+
+<Log lines={[
+  "a = pd.Series(['Via  Roma   3'])",
+  "print(a.str.replace(r'\\s+', ' ', regex=True))",
+  "",
+  "0    Via Roma 3",
+  "dtype: object",
+]} />
+
+<Callout kind="attenzione">
+Nei dati veri i numeri di telefono sono dati personali: fanno parte della privacy (GDPR). Qui sono inventati. Quando li usi davvero, tieni solo quelli che ti servono.
+</Callout>
+
+Per un'altra voce, sulle stringhe e i loro metodi:
+
+<Video />
+
+<Say who="assistente">Non devi imparare tutte le espressioni regolari. Due o tre pezzi, e un posto dove ricercare il resto, bastano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una colonna contiene ' roma', 'Roma ' e 'ROMA'. Quale riga la porta a un solo valore, 'roma'?"
+  options={[
+    "s.str.strip().str.lower()",
+    "s.str.lower()",
+    "s.str.strip()",
+    "s.str.title()",
+  ]}
+  answer={0}
+  explain="Servono tutti e due i passi: strip toglie gli spazi ai bordi, lower unifica le maiuscole. Solo lower lascia ' roma' e 'roma ' con lo spazio; solo strip lascia 'Roma' e 'ROMA' diversi; title non toglie gli spazi."
+/>
+
+<Say who="sensei">Spazi e maiuscole sono due problemi, quindi due metodi. Concatenali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su testo, `str` e espressioni regolari semplici. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-testo" pass="5/5" retries={3} />
+
+<Say who="sensei">Se le categorie non sono unificate, ogni conteggio e ogni grafico è sbagliato. Qui non si perdona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per il computer spazi e maiuscole contano: `.str.strip().str.lower()` è la ricetta base, e il risultato va riassegnato.
+- Accenti e varianti si unificano con un dizionario di sostituzione, scritto in un punto solo.
+- Per i modelli di caratteri bastano pochi pezzi di espressione regolare (`\D`, `\s+`), con `regex=True`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa fa str.strip()?", a: "Toglie gli spazi all'inizio e alla fine" },
+    { q: "Come conti le categorie distinte di una colonna?", a: "Con nunique(), oppure con value_counts()" },
+    { q: "Cosa significa \\D in una espressione regolare?", a: "Un carattere che non è una cifra" },
+    { q: "Perché str.replace con una regola ha bisogno di regex=True?", a: "Altrimenti cerca il testo letterale, non il modello" },
+  ]}
+/>
+
+<Say who="sensei">Testo pulito. Prossima lezione: unire fonti diverse senza perdere righe per strada.</Say>
+</Scene>

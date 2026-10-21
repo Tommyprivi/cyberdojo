@@ -1,0 +1,166 @@
+---
+id: T.08.006
+course: trading
+module: 8
+title: "Il rendimento al netto dei costi"
+belt: arancione
+duration_min: 8
+prerequisites: [T.08.005]
+objectives:
+  - "Passare dal rendimento lordo a quello netto sottraendo costi e tasse"
+  - "Calcolare quanto costa una strategia che fa molte operazioni"
+  - "Fare un test di robustezza raddoppiando i costi"
+video:
+  provider: youtube
+  id: "OUXedFzQQGE"
+  start: 0
+  end: 161
+  channel: "Enlightened Stock Trading"
+  title: "How Much Commission Slippage Should You Allow When Backtesting A Trading System"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-netto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Presentare il rendimento lordo come se fosse quello che resta in tasca"
+  - "Sottovalutare i costi di una strategia con molte operazioni"
+  - "Fidarsi di una strategia che regge solo con costi irrealisticamente bassi"
+commands: []
+---
+
+<Scene title="Lordo e netto">
+Nora ha una strategia che, nel backtest senza costi, guadagna **1.500 euro** in un anno su un capitale fittizio di **10.000 euro**. Fa **40 operazioni** (giri completi di acquisto e vendita).
+
+Poi aggiunge i costi che ha imparato in questo modulo: spread, commissioni, slippage.
+
+La domanda del caso: **quanto le resta?**
+
+<Say who="sensei">Il rendimento lordo è quello del manifesto. Il netto è quello della vita vera. Si giudica solo il netto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sommare i costi">
+Per semplicità riuniamo spread, commissioni e slippage in un unico **costo per operazione**, qui lo **0,25%** del capitale per ogni giro completo (convenzione semplificata, numeri fittizi).
+
+<Guided
+  steps={[
+    "Costo per operazione: 10.000 × 0,25% = 25 euro.",
+    "Costo annuo: 40 operazioni × 25 euro = 1.000 euro.",
+    "Rendimento netto dei costi: 1.500 − 1.000 = 500 euro.",
+    "In percentuale sul capitale: 500 / 10.000 = 5%, contro il 15% lordo.",
+  ]}
+/>
+
+<Callout kind="regola">
+Netto = lordo − costi di esecuzione − tasse. Un terzo del guadagno, o più, può sparire in costi quando le operazioni sono tante.
+</Callout>
+
+<Say who="assistente">Con 4 operazioni invece di 40 i costi sarebbero 100 euro. Il numero di operazioni conta tanto quanto la loro qualità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiungere le tasse">
+Per le tasse (ripasso del T.08.005, aliquota 26% e semplificazione: si tassa il risultato dopo i costi):
+
+<Log lines={[
+  "guadagno dopo i costi: 500 euro",
+  "imposta 26%:           500 x 26% = 130 euro",
+  "netto finale:          500 - 130 = 370 euro  (3,7% di 10.000)",
+]} />
+
+Dal 15% lordo al 3,7% netto, con numeri fittizi e senza nessuna promessa: è un esempio di quanto pesino i costi. Le regole fiscali reali vanno controllate sulle fonti ufficiali.
+
+Vuoi sentire un'altra voce sui costi nel backtest? Meno di tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Un backtest onesto parte dal netto, non dal lordo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+Il conto di Nora in Python. Prova a cambiare il numero di operazioni e a rieseguire:
+
+<PythonTerminal code={"capitale = 10000\nlordo = 1500\noperazioni = 40\ncosto_per_operazione = capitale * 25 / 10000\ncosti = operazioni * costo_per_operazione\nnetto = lordo - costi\nprint(costi)\nprint(netto)\nprint(netto * 100 / capitale)"} />
+
+L'output atteso è `1000.0`, `500.0` e `5.0`. Il costo per operazione è scritto come `capitale * 25 / 10000` per evitare piccoli errori dei numeri decimali.
+
+<Say who="assistente">Cambia le operazioni da 40 a 100 e guarda cosa succede al netto: diventa negativo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il test dei costi doppi">
+Un buon modo per diffidare di un backtest: **raddoppiare i costi** e rifare il calcolo.
+
+Esempio: lordo 8% all'anno, 20 operazioni, costo 0,3% per operazione.
+
+<Log lines={[
+  "costi normali:  20 x 0,3% = 6%   -> netto 8% - 6% = 2%",
+  "costi doppi:    20 x 0,6% = 12%  -> netto 8% - 12% = -4%",
+]} />
+
+La strategia, con costi normali, era sul filo. Con costi doppi perde. Un risultato che sopravvive solo con costi irrealisticamente bassi **non è affidabile**.
+
+<Callout kind="attenzione">
+Non esiste un valore «giusto» dei costi valido per tutti. Per questo si prova un intervallo e si guarda se la strategia regge nel caso peggiore.
+</Callout>
+
+<Say who="sensei">Se basta un piccolo aumento di costi per ucciderla, non è una strategia: è una coincidenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia ha rendimento lordo 10% annuo, 100 operazioni all'anno e costo 0,2% per operazione. Qual è il rendimento al netto dei costi (prima delle tasse)?"
+  options={["−10%", "10%", "−20%", "8%"]}
+  answer={0}
+  explain="Costi: 100 × 0,2% = 20%. Netto: 10% − 20% = −10%. Chi risponde 8% ha contato un solo costo da 0,2%; chi risponde −20% ha dimenticato il guadagno lordo."
+/>
+
+<Say who="sensei">Moltiplica i costi per le operazioni. Poi sottrai. Quasi sempre è lì che si nasconde la sorpresa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di rendimento netto, costi totali e test dei costi doppi.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-netto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con questo modulo hai chiuso il conto: dal backtest ideale alla realtà dell'esecuzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Netto = lordo − costi di esecuzione (spread, commissioni, slippage) − tasse.
+- Più operazioni si fanno, più i costi si sommano: moltiplica il costo per il numero di giri.
+- Si prova sempre con costi doppi. Il corso è educativo, non è consulenza finanziaria: nel trading si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si passa dal rendimento lordo al netto?", a: "Si sottraggono i costi di esecuzione e le tasse" },
+    { q: "40 operazioni a 25 euro ciascuna: costo annuo?", a: "1.000 euro" },
+    { q: "Lordo 8%, 20 operazioni con costo 0,3%: netto prima delle tasse?", a: "8% − 6% = 2%" },
+    { q: "Che cosa mostra il test dei costi doppi?", a: "Se la strategia regge anche con costi più alti del previsto" },
+  ]}
+/>
+
+<Say who="sensei">Modulo finito. Prossimo passo: le strategie classiche, ora che sai quanto costa eseguirle.</Say>
+</Scene>

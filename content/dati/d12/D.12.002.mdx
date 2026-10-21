@@ -1,0 +1,156 @@
+---
+id: D.12.002
+course: dati
+module: 12
+title: "Bias e correttezza"
+belt: verde
+duration_min: 9
+prerequisites: [D.12.001]
+objectives:
+  - "Indicare da dove può nascere un bias nei dati"
+  - "Calcolare e confrontare le percentuali di esiti positivi tra due gruppi"
+  - "Distinguere parità degli esiti e parità delle opportunità"
+video:
+  provider: youtube
+  id: "UG_X_7g63rY"
+  start: 0
+  end: 480
+  channel: "TED"
+  title: "How I'm fighting bias in algorithms | Joy Buolamwini"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-bias
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che i numeri siano neutrali per definizione"
+  - "Pensare che togliere la colonna sensibile elimini il bias: altre colonne possono farne le veci"
+  - "Fidarsi solo dell'accuratezza complessiva, senza guardare i gruppi"
+commands: []
+---
+
+<Scene title="Il selezionatore automatico">
+Un'azienda fittizia, «Nordtech», prova un programma che ordina i curriculum. Lo ha allenato sulle assunzioni di dieci anni: in quel periodo sono stati assunti quasi solo uomini.
+
+Dopo un mese, Elena, l'analista, nota che tra i curriculum messi in alto ci sono pochissime donne, anche con esperienze uguali.
+
+Nessuno ha scritto «preferisci gli uomini». Eppure succede.
+
+La domanda del caso: **da dove nasce il pregiudizio, e come si misura?**
+
+<Say who="sensei">Un modello impara da ciò che gli mostri. Se gli mostri il passato, impara il passato, difetti compresi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove nasce il bias">
+Un **bias** è una distorsione sistematica: il risultato sbaglia sempre nella stessa direzione per certi gruppi. Può nascere in più punti:
+
+- **Campione**: i dati non rappresentano tutti (un'app provata solo su persone giovani).
+- **Storia**: i dati registrano decisioni passate già ingiuste.
+- **Misure**: si misura male, o si misura qualcosa che non è ciò che conta (le ore in ufficio al posto della qualità del lavoro).
+- **Sostituti**: una colonna innocua, come il CAP, può far le veci di una colonna sensibile.
+- **Circolo vizioso**: un sistema controlla di più un quartiere, trova più casi, e il modello si convince che lì serva controllare ancora di più.
+
+Vuoi sentirlo raccontare da una ricercatrice che lo ha scoperto sul campo? Otto minuti, in inglese:
+
+<Video />
+
+<Say who="assistente">Il bias non vuole per forza fare male. Spesso è una conseguenza di come abbiamo raccolto i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempi reali, con cautela">
+Alcuni casi sono stati raccontati dalla stampa e dalla ricerca:
+
+- Nel 2018 notizie di stampa riferirono che un grande gruppo aveva abbandonato un programma di selezione dei curriculum, perché tendeva a penalizzare le candidate donne.
+- Uno studio del 2018 sul riconoscimento facciale trovò errori molto più frequenti sulle donne con la pelle scura che sugli uomini con la pelle chiara.
+- Un software usato nei tribunali statunitensi per stimare il rischio di recidiva fu al centro di un dibattito: secondo un'inchiesta giornalistica sbagliava in modo diverso a seconda del gruppo, e gli esperti discussero a lungo su come misurare l'equità.
+
+<Callout kind="attenzione">
+Sono esempi riportati da fonti pubbliche e ancora discussi. Servono a capire il meccanismo, non a dare un giudizio definitivo su aziende o persone.
+</Callout>
+
+<Say who="sensei">Impara il meccanismo, non lo scandalo. Il meccanismo lo ritroverai nei tuoi dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare l'equità">
+Torniamo a Nordtech. Elena guarda due gruppi di 100 candidati ciascuno e confronta i risultati.
+
+| Gruppo | Candidati | Approvati | Percentuale |
+|---|---|---|---|
+| A | 100 | 50 | 50% |
+| B | 100 | 30 | 30% |
+
+Prima idea: **parità degli esiti**. Il gruppo B è approvato nel 30% dei casi contro il 50% di A. Il rapporto è 30 su 50, cioè 0,6. Più si è lontani da 1, più c'è uno squilibrio da spiegare.
+
+Ma gli esiti diversi possono avere cause diverse. Allora guarda solo chi è davvero qualificato: 40 persone per gruppo.
+
+| Gruppo | Qualificati | Qualificati approvati | Percentuale |
+|---|---|---|---|
+| A | 40 | 36 | 90% |
+| B | 40 | 24 | 60% |
+
+Seconda idea: **parità delle opportunità**. A parità di qualifica, A ha il 90% di probabilità e B il 60%. Il programma sbaglia di più con B.
+
+<Callout kind="curiosita">
+Le metriche di equità non sempre vanno d'accordo: in generale non si possono soddisfare tutte insieme. Scegliere quale conta di più è una decisione da prendere con chi risponde del processo, non solo una scelta tecnica.
+</Callout>
+
+<Say who="assistente">Tre passi: dividi per gruppo, calcola le percentuali, confrontale. Poi chiediti perché sono diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello ha il 95% di accuratezza complessiva, ma per un gruppo piccolo sbaglia nel 40% dei casi. Che cosa è corretto concludere?"
+  options={["Va indagato: la media nasconde un problema per quel gruppo", "Va bene, perché il 95% è molto alto", "Il gruppo piccolo si può ignorare perché pesa poco", "Basta togliere la colonna del gruppo dai dati"]}
+  answer={0}
+  explain="La media è dominata dai gruppi grandi e può nascondere errori pesanti su un gruppo piccolo. Ignorarlo o togliere la colonna non risolve: il problema resta e diventa solo più difficile da vedere."
+/>
+
+<Say who="sensei">Guarda sempre i dati per gruppo. La media è comoda, e a volte mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su bias e correttezza. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-bias" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Se vedi uno squilibrio, il tuo lavoro è segnalarlo, non nasconderlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il bias nasce da campione, storia, misure, sostituti e circoli viziosi: i numeri non sono neutrali per natura.
+- Parità degli esiti: stessa percentuale di esiti positivi tra gruppi. Parità delle opportunità: stessa probabilità, a parità di qualifica.
+- Guarda sempre i risultati per gruppo, segnala le differenze e discuti con chi decide.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un bias nei dati?", a: "Una distorsione sistematica che svantaggia certi gruppi" },
+    { q: "Perché togliere la colonna sensibile non basta?", a: "Altre colonne, come il CAP, possono farne le veci" },
+    { q: "Che cos'è la parità delle opportunità?", a: "Stessa probabilità di esito positivo a parità di qualifica" },
+    { q: "Perché l'accuratezza complessiva non basta?", a: "Può nascondere errori alti su un gruppo piccolo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si tolgono i nomi dai dati, e perché togliere i nomi non basta quasi mai.</Say>
+</Scene>

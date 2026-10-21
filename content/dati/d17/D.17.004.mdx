@@ -1,0 +1,173 @@
+---
+id: D.17.004
+course: dati
+module: 17
+title: "Sport: rumore o segnale?"
+belt: marrone
+duration_min: 10
+prerequisites: [D.17.003]
+objectives:
+  - "Calcolare una statistica avanzata semplice (percentuale effettiva di tiro)"
+  - "Capire perché i piccoli campioni ingannano e distinguere rumore da segnale"
+  - "Valutare a livello concettuale le metriche di valore del giocatore"
+video:
+  provider: youtube
+  id: "6mypJipJyWQ"
+  start: 0
+  end: 600
+  channel: "BucknellU"
+  title: "Bucknell Analytics Professor Breaks Down Moneyball Math"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-sport
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di una percentuale ottenuta su pochissimi tentativi"
+  - "Scambiare una striscia fortunata (rumore) per un miglioramento vero (segnale)"
+  - "Credere che una metrica di valore del giocatore sia indipendente dai compagni e dall'allenatore"
+commands: []
+---
+
+<Scene title="Il cecchino della panchina">
+Le «Rondini» sono una squadra di basket fittizia. In due partite il giocatore Aldo ha tirato da tre punti **6 volte** e ne ha segnati **3**. Il suo allenatore dice: «Aldo è il nostro cecchino: lo metto in quintetto».
+
+Marta, l'analista, ha un dubbio. La domanda del caso: **3 su 6 è un segnale, o solo fortuna?**
+
+<Say who="sensei">Un numero spettacolare su pochi tentativi è un invito alla prudenza, non alla festa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Piccoli campioni">
+Confronta due giocatori nel tiro da tre:
+
+| Giocatore | Tiri | Canestri | Percentuale |
+|---|---|---|---|
+| Aldo | 6 | 3 | 50% |
+| Bruno | 250 | 90 | 36% |
+
+Aldo ha il 50%, Bruno il 36%. Ma Bruno ha tirato **più di 40 volte** quanto Aldo. Con 6 tiri bastano 1 o 2 canestri in più o in meno per cambiare molto la percentuale: 2 su 6 sono il 33%, 4 su 6 il 67%.
+
+Con 250 tiri, un canestro in più sposta la percentuale di molto poco. Per questo la percentuale di Bruno è molto più **affidabile**.
+
+Un docente universitario spiega come la matematica ha cambiato la scelta dei giocatori nel baseball (è in inglese, ma il filo è lo stesso: usare i numeri per decidere):
+
+<Video />
+
+<Say who="assistente">Più dati ci sono, meno una singola serata fortunata pesa. È la regola dei grandi numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rumore contro segnale">
+Il **segnale** è ciò che dura e dipende dalla bravura. Il **rumore** è la fortuna, che cambia da una partita all'altra.
+
+I punti di Carlo nelle ultime 5 partite: 8, 22, 10, 18, 12. La media è 70 / 5 = **14**. Ma la partita da 22 è nel suo normale: tra 8 e 22 la variazione è naturale.
+
+<Callout kind="regola">
+Una striscia di buoni risultati non è un miglioramento finché non si ripete con abbastanza partite. Spesso il giorno dopo i numeri **tornano verso la media**: è la regressione verso la media.
+</Callout>
+
+<Say who="sensei">Se ogni partita «cambia» il giudizio su un giocatore, stai leggendo il rumore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Statistiche avanzate: stessa idea, numeri più giusti">
+Un canestro da tre vale più di uno da due. La **percentuale effettiva di tiro** (eFG%) lo tiene in conto:
+
+eFG% = (canestri + 0,5 × canestri da tre) / tiri tentati.
+
+| Giocatore | Tiri | Canestri | Di cui da tre | eFG% |
+|---|---|---|---|---|
+| Dora | 40 | 18 | 6 | (18 + 3) / 40 = 52,5% |
+| Enzo | 40 | 20 | 2 | (20 + 1) / 40 = 52,5% |
+
+Enzo ha segnato più canestri, ma Dora ha segnato più canestri da tre: **rendono uguale**.
+
+<Callout kind="trucco">
+Una buona metrica avanzata fa confrontare giocatori con stili diversi sullo stesso metro.
+</Callout>
+
+<Say who="assistente">20 canestri contro 18 sembra una vittoria di Enzo. I tiri da tre ribaltano il confronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metriche di valore del giocatore">
+Esistono numeri unici che cercano di dire «quanto vale un giocatore». Un esempio a livello concettuale è il **più/meno**: quanto cambia il punteggio quando il giocatore è in campo.
+
+Il limite: se Franco gioca quasi sempre con i quattro titolari più forti, il suo più/meno sarà alto anche se lui è nella media. Il numero **misura anche i compagni**.
+
+<Callout kind="attenzione">
+Nessun numero riassume tutto: contano ruolo, avversari, compagni e allenatore. Un indicatore di valore è un indizio, non un verdetto.
+</Callout>
+
+<Say who="sensei">Prima di dire «vale tanto», chiedi: con chi giocava, contro chi, per quanto tempo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Aldo ha segnato 3 tiri da tre su 6 (50%), Bruno 90 su 250 (36%). Chi è più probabile che sia davvero il miglior tiratore?"
+  options={["Non si può dire: 6 tiri sono troppo pochi per fidarsi del 50%", "Aldo, perché ha la percentuale più alta", "Bruno, perché ha segnato più canestri in totale", "Sono per forza uguali"]}
+  answer={0}
+  explain="Con 6 tiri la percentuale oscilla moltissimo: è rumore, non segnale. Bruno ha più dati, ma non si può nemmeno dire con certezza che sia migliore: serve più campione per Aldo. Chi sceglie Aldo si fida dei piccoli numeri."
+/>
+
+<Say who="sensei">La percentuale più alta non vince da sola. Vince quella che hai visto abbastanza a lungo.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: Aldo va in quintetto perché è il cecchino?",
+    "Dati: Aldo 3 su 6 (50%); Bruno 90 su 250 (36%).",
+    "Il campione di Aldo è piccolissimo: 50% può essere fortuna.",
+    "Prudenza: dargli più minuti da tiratore per qualche partita e raccogliere altri tiri, senza cambiare tutto subito.",
+    "Se dopo 100 tiri è ancora sopra il 40%, il segnale diventa credibile.",
+    "Decisione: provarlo in panchina con ruolo da tiratore, rivedere i numeri dopo un campione più grande.",
+  ]}
+/>
+
+<Say who="assistente">Non dire «è fortuna» e non dire «è bravissimo»: dì «ne so ancora troppo poco». È onesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi su eFG%, campioni piccoli, rumore e metriche di valore. Hai 3 tentativi.
+
+<Practice generator="d17-sport" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nello sport la fortuna imita il talento: impara a distinguerli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Poche osservazioni, tanto rumore: una percentuale su 6 tiri non è un segnale.
+- eFG% = (canestri + 0,5 × canestri da tre) / tiri: mette sullo stesso metro stili diversi.
+- Le metriche di valore del giocatore dipendono anche da compagni e contesto: sono indizi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il rumore?", a: "La variazione dovuta alla fortuna, che non dipende dalla bravura" },
+    { q: "eFG% di 18 canestri (6 da tre) su 40 tiri?", a: "(18 + 3) / 40 = 52,5%" },
+    { q: "Che cos'è la regressione verso la media?", a: "I valori estremi tendono a tornare verso la media" },
+    { q: "Limite del più/meno?", a: "Misura anche l'effetto dei compagni con cui si gioca" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la logistica, dove un ritardo si paga in scorte e in camion.</Say>
+</Scene>

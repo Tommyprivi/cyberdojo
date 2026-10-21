@@ -1,0 +1,178 @@
+---
+id: D.09.003
+course: dati
+module: 9
+title: "Le pipeline"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.002]
+objectives:
+  - "Descrivere una pipeline come una catena di passi con un ordine"
+  - "Spiegare l'idempotenza e perché permette di rilanciare senza guai"
+  - "Ragionare su che cosa fare quando un passo fallisce"
+video:
+  provider: youtube
+  id: "pKZ5n-y3ug4"
+  start: 0
+  end: 600
+  channel: "PracticalGCP"
+  title: "The Importance of Idempotency in Designing Data Pipelines"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-pipeline
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Rilanciare una pipeline che aggiunge righe senza cancellare le vecchie: i numeri si raddoppiano"
+  - "Ripartire sempre dall'inizio quando basterebbe ripartire dal passo fallito"
+  - "Non accorgersi di un errore perché la pipeline «finisce» comunque"
+commands: []
+---
+
+<Scene title="Il totale raddoppiato">
+Lunedì mattina il capo di **Tavola Bella** guarda il report: vendite di sabato, **240 euro**. Strano: ne risultavano 120.
+
+Giulia scopre che sabato notte la pipeline si era fermata a metà. Un collega l'ha **rilanciata**. Ma il report ora mostra il doppio.
+
+La domanda del caso: **come si rilancia una pipeline senza rovinare i dati?**
+
+<Say who="sensei">Rilanciare è normale. Quello che non è normale è che il risultato cambi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una catena di passi">
+Una **pipeline** (tubatura) è una **catena di passi** che porta i dati da un punto A a un punto B. Ogni passo riceve l'uscita del precedente.
+
+Per Tavola Bella:
+
+<Log lines={[
+  "1. estrai    -> legge gli ordini del giorno dal database del sito",
+  "2. trasforma -> toglie i duplicati, corregge le città",
+  "3. carica    -> scrive il risultato nel magazzino dati",
+  "4. report    -> aggiorna la tabella delle vendite",
+]} />
+
+Come una catena di montaggio: se un posto si ferma, gli altri dopo non possono lavorare.
+
+<Callout kind="trucco">
+Disegna sempre la pipeline su carta: scatole e frecce. Se non sai dire che cosa entra e che cosa esce da ogni scatola, non la stai ancora capendo.
+</Callout>
+
+<Say who="assistente">Il passo 3 ha fallito sabato notte. Quindi i passi 1 e 2 erano già fatti. Tienilo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Idempotenza: rilanciare senza paura">
+Una parola difficile per un'idea semplice. Un passo è **idempotente** se eseguirlo **una o dieci volte dà lo stesso risultato**.
+
+Esempio quotidiano: il pulsante di chiamata dell'ascensore. Premilo una volta o dieci: l'ascensore arriva una volta sola.
+
+Il caso di Giulia è un passo **non idempotente**: ogni esecuzione aggiunge le righe, senza togliere le vecchie.
+
+Ecco i due modi, in Python:
+
+<Log lines={[
+  "righe = []",
+  "def carica_aggiungi(giorno, dati):",
+  "    righe.extend((giorno, x) for x in dati)",
+  "",
+  "carica_aggiungi('sab', [100, 20])",
+  "carica_aggiungi('sab', [100, 20])",
+  "print(sum(x for g, x in righe))",
+  "240",
+]} />
+
+<Log lines={[
+  "righe = []",
+  "def carica_sostituisci(giorno, dati):",
+  "    righe[:] = [r for r in righe if r[0] != giorno]",
+  "    righe.extend((giorno, x) for x in dati)",
+  "",
+  "carica_sostituisci('sab', [100, 20])",
+  "carica_sostituisci('sab', [100, 20])",
+  "print(sum(x for g, x in righe))",
+  "120",
+]} />
+
+Il secondo prima **toglie** il giorno e poi lo **riscrive**: si può rilanciare quante volte si vuole.
+
+Un'altra voce spiega perché è così importante:
+
+<Video />
+
+<Say who="sensei">Ogni passo che scrive deve poter essere ripetuto. Se non può, non è pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando un passo si rompe">
+Nessuna pipeline funziona sempre: un server è spento, un file non è arrivato. Si progetta pensando all'errore.
+
+- **Fermarsi con un messaggio chiaro**, non andare avanti con dati a metà.
+- **Riprovare** automaticamente per errori passeggeri (la rete che salta un attimo).
+- **Ripartire dal passo fallito**, non dall'inizio, se i passi prima sono già completi e salvati.
+- **Rilanciare un giorno vecchio** (recupero) senza toccare gli altri: serve l'idempotenza.
+
+<Callout kind="attenzione">
+La pipeline peggiore è quella che fallisce **in silenzio**: sembra a posto, ma i dati sono incompleti. Meglio un errore rumoroso che un numero sbagliato.
+</Callout>
+
+<Say who="assistente">Fermati, avvisa, riparti dal punto giusto. Tre verbi da ricordare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una pipeline giornaliera inserisce le righe del giorno con INSERT, senza cancellare. Si ferma al 90% e viene rilanciata. Che cosa trovi nella tabella?"
+  options={[
+    "Righe duplicate: quelle già scritte più tutte quelle del rilancio",
+    "Nessuna riga: il rilancio cancella tutto da solo",
+    "Le righe giuste, perché INSERT controlla i doppioni",
+    "Solo il 10% mancante",
+  ]}
+  answer={0}
+  explain="INSERT aggiunge e basta: non sa nulla di ciò che c'era. Il rilancio riscrive anche il 90% già presente. Serve sostituire il giorno oppure un caricamento idempotente."
+/>
+
+<Say who="sensei">Se il rilancio cambia i numeri, il passo non è idempotente. Correggi il passo, non il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di pipeline guaste: capisci che cosa è andato storto e come ripartire.
+
+<Practice generator="d09-pipeline" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Le pipeline si giudicano da come si comportano quando le cose vanno male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pipeline è una catena di passi: ogni uscita è l'ingresso del passo successivo.
+- Un passo idempotente dà lo stesso risultato se ripetuto: rende sicuri i rilanci.
+- In caso di errore: fermarsi con un messaggio, riprovare se è passeggero, ripartire dal passo fallito.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire idempotente?", a: "Ripetere il passo non cambia il risultato dopo la prima volta" },
+    { q: "Perché i totali si sono raddoppiati nel caso?", a: "Il caricamento aggiungeva righe senza togliere le vecchie" },
+    { q: "Da dove si riparte dopo un errore?", a: "Dal passo fallito, se i precedenti sono completi" },
+    { q: "Qual è l'errore peggiore di una pipeline?", a: "Fallire in silenzio, con dati incompleti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove arrivano i dati, il data warehouse.</Say>
+</Scene>

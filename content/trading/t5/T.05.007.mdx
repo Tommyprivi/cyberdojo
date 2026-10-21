@@ -1,0 +1,166 @@
+---
+id: T.05.007
+course: trading
+module: 5
+title: "Il walk-forward"
+belt: arancione
+duration_min: 8
+prerequisites: [T.05.006]
+objectives:
+  - "Descrivere il walk-forward: costruire, provare, avanzare nel tempo e ripetere"
+  - "Contare le finestre di un walk-forward con numeri semplici"
+  - "Leggere i risultati di più finestre invece di una sola prova"
+video:
+  provider: youtube
+  id: "bfwhXTnQgMI"
+  start: 0
+  end: 413
+  channel: "Unbiased Trading"
+  title: "Walk Forward Testing Explained: Everything You Need to Know"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-walk-forward
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il walk-forward elimini l'overfitting: lo rende solo più onesto"
+  - "Far sovrapporre i periodi di prova con quelli di costruzione"
+  - "Guardare una sola finestra fortunata invece di tutte"
+commands: []
+---
+
+<Scene title="Una prova sola non basta">
+Sara ha diviso i dati: 7 anni per costruire, 3 per provare. La regola è andata così così sul periodo di prova. Il prof. Neri chiede: **«Il periodo di prova era tranquillo o agitato? E se avessi scelto un altro taglio?»**
+
+Sara non lo sa. Una sola prova può essere fortunata o sfortunata.
+
+La domanda del caso: **come si prova una regola più volte, senza barare e senza usare il futuro?**
+
+<Say who="sensei">Una sola prova è un lancio di moneta. Per capire se la moneta è truccata, la lanci più volte.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Numeri fittizi, nessun denaro reale.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'idea del walk-forward">
+Il **walk-forward** («camminare in avanti») ripete la separazione costruzione/prova **più volte**, spostando la finestra nel tempo:
+
+1. Si costruisce la regola (si scelgono i parametri) su una **finestra di costruzione**.
+2. Si prova sull'**anno successivo**, mai visto.
+3. Si fa avanzare tutto di un anno e si ripete.
+
+Come nella vita reale: ogni anno ricalibri con ciò che sai, e poi vivi l'anno dopo.
+
+<Callout kind="regola">
+Ogni periodo di prova viene dopo la sua finestra di costruzione. Mai prima, mai dentro.
+</Callout>
+
+<Say who="assistente">È come studiare per un esame: ogni volta ti prepari sul passato e ti metti alla prova su una domanda nuova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contiamo le finestre">
+Hai otto anni di dati fittizi (anni 1-8). Finestra di costruzione di **3 anni**, prova su **1 anno**, avanzamento di 1 anno. Premi Esegui per vedere tutte le finestre:
+
+<PythonTerminal code={"anni = list(range(1, 9))\nfor i in range(len(anni) - 3):\n    print(\"costruisco\", anni[i:i+3], \"provo\", anni[i+3])"} />
+
+Si ottengono **5 finestre**: costruzione 1-3 → prova 4; 2-4 → 5; 3-5 → 6; 4-6 → 7; 5-7 → 8. Il conto è: 8 anni − 3 di costruzione = 5 anni di prova.
+
+<Log lines={[
+  "costruisco [1, 2, 3] provo 4",
+  "costruisco [2, 3, 4] provo 5",
+  "costruisco [3, 4, 5] provo 6",
+  "costruisco [4, 5, 6] provo 7",
+  "costruisco [5, 6, 7] provo 8",
+]} />
+
+<Say who="sensei">Cinque prove, cinque anni mai visti dalla regola che le precede. Ora puoi guardare il quadro, non il singolo scatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere i cinque risultati">
+Risultati fittizi dei cinque anni di prova, in percentuale: **+2, −1, +3, 0, −2**.
+
+- Positive: 2 su 5 (+2 e +3).
+- Negative: 2 su 5 (−1 e −2).
+- Pari: 1 su 5.
+- Media: (2 − 1 + 3 + 0 − 2) ÷ 5 = 2 ÷ 5 = **0,4 punti** all'anno, praticamente zero.
+
+Messaggio onesto: in questi dati la regola **non ha mostrato un vantaggio chiaro**. Meglio scoprirlo ora, con dati storici, che con denaro vero.
+
+<Callout kind="attenzione">
+Il walk-forward **non elimina** l'overfitting: se provi mille regole e scegli quella con il miglior walk-forward, ci ricaschi. Lo rende più onesto, non infallibile.
+</Callout>
+
+<Say who="assistente">Un risultato «niente di che» non è un fallimento: è un'informazione. L'errore è fingere che sia un successo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi vedere il walk-forward spiegato da un'altra voce? Il video è in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Mentre guardi, segna una differenza tra una divisione unica e le finestre successive. Ti servirà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai 10 anni di dati, finestra di costruzione di 4 anni, prova su 1 anno, avanzamento di 1 anno. Quante finestre di prova ottieni?"
+  options={[
+    "6",
+    "10",
+    "4",
+    "7"
+  ]}
+  answer={0}
+  explain="I primi 4 anni servono solo a costruire la prima volta: restano 10 − 4 = 6 anni di prova, uno per finestra. Chi risponde 10 conta anche gli anni che servono per costruire; chi risponde 4 confonde la lunghezza della finestra con il numero di finestre."
+/>
+
+<Say who="assistente">Prima finestra: costruzione anni 1-4, prova anno 5. Ultima: costruzione 6-9, prova anno 10. Conta gli anni di prova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su finestre, ordine dei dati e lettura dei risultati. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-walk-forward" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Ripetere la prova ti toglie la fortuna dal conto, o almeno la riduce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Walk-forward: costruire su una finestra, provare sul periodo dopo, avanzare e ripetere.
+- Numero di finestre di prova = anni totali − anni di costruzione (con prova e avanzamento di un anno).
+- Rende la valutazione più onesta ma non elimina l'overfitting.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il walk-forward?", a: "Ripetere costruzione e prova su finestre che avanzano nel tempo" },
+    { q: "Dove si trova ogni periodo di prova rispetto alla costruzione?", a: "Sempre dopo, mai prima né dentro" },
+    { q: "Quante finestre con 8 anni, costruzione di 3 e prova di 1?", a: "5 (8 − 3)" },
+    { q: "Il walk-forward elimina l'overfitting?", a: "No, lo rende solo più onesto" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: come si legge un backtest con spirito critico, tutto insieme.</Say>
+</Scene>

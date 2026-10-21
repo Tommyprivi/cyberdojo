@@ -1,0 +1,156 @@
+---
+id: T.05.001
+course: trading
+module: 5
+title: "Che cos'è una strategia"
+belt: arancione
+duration_min: 8
+prerequisites: [T.04.006]
+objectives:
+  - "Dire perché «compro quando sale» non è ancora una strategia"
+  - "Elencare gli elementi di una regola completa: dati, segnale, posizione, uscita"
+  - "Trasformare una regola in un segnale fatto di 1 (dentro) e 0 (fuori)"
+video:
+  provider: youtube
+  id: "T3PT4eV8xFU"
+  start: 0
+  end: 600
+  channel: "Part Time Larry"
+  title: "Backtesting.py (1/2) - Backtest Trading Strategies in Python"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-strategia
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un'idea vaga («compro quando va bene») sia già una strategia"
+  - "Dimenticare la regola di uscita: sapere quando entrare non basta"
+  - "Confondere il segnale (la decisione) con il rendimento (il risultato)"
+commands: []
+---
+
+<Scene title="L'idea di Luca">
+Luca ha 16 anni e ha appena imparato a usare pandas. Scrive nella chat del club di programmazione: **«Ho una strategia: compro quando il prezzo sale e vendo quando scende!»**
+
+Tutti applaudono. Poi la prof. Bianchi chiede: **«Sale rispetto a quando? Compri subito o domani? Quanto compri? Quando esci?»** Luca resta zitto.
+
+La domanda del caso: **che cosa manca a un'idea per diventare una strategia che un computer può provare?**
+
+<Say who="sensei">Un computer non capisce «più o meno». Ogni parola vaga va trasformata in una regola precisa. Si comincia da qui.</Say>
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. Nei mercati si può perdere denaro, anche tutto. Qui lavoriamo solo con dati storici e numeri fittizi: **nessun denaro reale**. I mercati non regalano niente.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le quattro parti di una regola">
+Una **strategia** è un insieme di regole scritte prima, che dicono che cosa fare in ogni situazione. Una regola completa ha quattro parti:
+
+1. **Dati**: su quale strumento e con quali prezzi (per esempio i prezzi di chiusura giornalieri).
+2. **Segnale**: la condizione che si controlla (per esempio «oggi il prezzo è più alto di ieri»).
+3. **Posizione**: che cosa si fa quando il segnale è acceso (dentro o fuori) e quanto.
+4. **Uscita**: quando si smette (anche solo «quando il segnale si spegne»).
+
+<Callout kind="regola">
+Se due persone leggono la regola e ottengono due risultati diversi, non è una regola: è un'opinione.
+</Callout>
+
+<Say who="assistente">Pensa a una ricetta. «Cuoci finché è buono» non è una ricetta. «Cuoci 12 minuti a 180 gradi» sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal segnale ai numeri">
+Il segnale si scrive come un numero: **1** se la condizione è vera (il segnale è acceso), **0** se è falsa.
+
+Prendiamo otto prezzi di chiusura **fittizi**, un giorno dopo l'altro (giorno 0 è il primo):
+
+| giorno | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|---|
+| prezzo | 100 | 102 | 101 | 104 | 103 | 106 | 105 | 108 |
+
+La regola di Luca, scritta bene: **«segnale = 1 se il prezzo di oggi è maggiore di quello di ieri, altrimenti 0»**. Il giorno 0 non ha un «ieri»: il segnale è 0.
+
+<Log lines={[
+  "giorno   0  1  2  3  4  5  6  7",
+  "prezzo   100 102 101 104 103 106 105 108",
+  "segnale  0  1  0  1  0  1  0  1",
+]} />
+
+<Callout kind="trucco">
+Il giorno 1 il prezzo passa da 100 a 102: sale, segnale 1. Il giorno 2 passa da 102 a 101: scende, segnale 0.
+</Callout>
+
+<Say who="sensei">Il segnale dice che cosa è vero oggi. Non dice ancora che cosa si guadagna. Tieni separate le due cose.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo stesso segnale in Python">
+Vuoi sentire un'altra voce che mostra come si descrive una strategia in codice? Il video è in inglese con i sottotitoli: guarda la parte in cui la strategia viene definita come una classe con le sue regole.
+
+<Video />
+
+Ora prova tu. In Python puro il segnale si scrive con un ciclo semplice. Premi Esegui, poi cambia un prezzo e riesegui:
+
+<PythonTerminal code={"prezzi = [100, 102, 101, 104, 103, 106, 105, 108]\nsegnale = [0]\nfor i in range(1, len(prezzi)):\n    segnale.append(1 if prezzi[i] > prezzi[i-1] else 0)\nprint(segnale)"} />
+
+<Say who="assistente">Il primo elemento è 0 perché non c'è un giorno prima. Cambia il 101 in 103: quale segnale si spegne?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale di queste frasi è una regola abbastanza precisa da essere provata da un computer?"
+  options={[
+    "Segnale = 1 se la chiusura di oggi supera la chiusura di ieri; altrimenti 0",
+    "Compro quando il mercato mi sembra forte",
+    "Vendo quando ho una brutta sensazione",
+    "Entro quando le notizie sono buone"
+  ]}
+  answer={0}
+  explain="Solo la prima dice quali dati usare, quale confronto fare e che cosa vale 1 o 0. «Mi sembra forte», «brutta sensazione» e «notizie buone» dipendono da chi li legge: due persone darebbero risposte diverse."
+/>
+
+<Say who="sensei">Se non sai scriverla in una riga con numeri e confronti, non la sai ancora. Torna indietro e precisa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su regole, segnali e uscite. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-strategia" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una strategia comincia sempre da una regola che non lascia dubbi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una strategia è un insieme di regole scritte prima: dati, segnale, posizione, uscita.
+- Il segnale si scrive come 1 (acceso) o 0 (spento) e non è ancora un risultato.
+- Una regola vaga («quando sembra forte») non si può provare: va resa precisa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le quattro parti di una regola completa?", a: "Dati, segnale, posizione, uscita" },
+    { q: "Che valori ha un segnale?", a: "1 se la condizione è vera, 0 se è falsa" },
+    { q: "Perché «compro quando sale» non basta?", a: "Non dice rispetto a cosa sale, quanto comprare né quando uscire" },
+    { q: "Segnale e rendimento sono la stessa cosa?", a: "No: il segnale è la decisione, il rendimento è il risultato" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il primo backtest. Prendiamo questo segnale e lo mettiamo alla prova sui prezzi del passato.</Say>
+</Scene>

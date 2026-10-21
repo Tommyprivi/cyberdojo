@@ -1,0 +1,200 @@
+---
+id: D.04.001
+course: dati
+module: 4
+title: "Il notebook"
+belt: gialla
+duration_min: 8
+prerequisites: [D.03.009]
+objectives:
+  - "Spiegare cos'è un notebook e distinguere celle di codice e celle di testo"
+  - "Scegliere dove aprirne uno gratis (Google Colab, Jupyter, Kaggle)"
+  - "Riconoscere l'errore tipico dell'ordine di esecuzione e rimediare"
+video:
+  provider: youtube
+  id: "ExAX5cLtSu4"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Corso introduttivo a Jupyter Notebook Python Italiano"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-notebook
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Eseguire le celle in disordine: il notebook ricorda tutto ciò che è stato eseguito, non ciò che vedi scritto"
+  - "Dimenticare di rieseguire una cella dopo averla modificata: l'output sotto resta quello vecchio"
+  - "Caricare su un servizio online dati di persone vere senza averne il diritto"
+commands: []
+---
+
+<Scene title="Il file da diecimila righe">
+Sei il nuovo analista di **Pedalà**, un negozio online di accessori per biciclette. La titolare, Giulia, ti gira un file di vendite: diecimila righe.
+
+«Ogni lunedì voglio sapere quanto abbiamo venduto per città. Fino a oggi lo fa Marco a mano, ci mette un'ora e ogni volta sbaglia qualcosa.»
+
+Fare i conti a mano non va bene. Scrivere ogni volta le stesse istruzioni nemmeno. Ti serve un posto dove **scrivere il procedimento una volta sola**, rileggerlo, rifarlo partire quando arrivano dati nuovi e spiegarlo a Giulia.
+
+Quel posto si chiama **notebook**. La domanda del caso: **come funziona, e dove lo si apre gratis?**
+
+<Say who="sensei">Un analista bravo non ripete il lavoro: lo scrive. Oggi impari dove si scrive.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un quaderno che esegue">
+Un **notebook** è un documento fatto a **celle**, una sotto l'altra, come i paragrafi di un quaderno. Ci sono due tipi di cella:
+
+- **cella di codice**: contiene istruzioni Python. Quando la esegui, il risultato compare subito sotto;
+- **cella di testo**: contiene parole, titoli ed elenchi (in un formato semplice chiamato **Markdown**). Serve a spiegare cosa stai facendo.
+
+Così un solo documento contiene la domanda, i calcoli, i risultati e le spiegazioni. Giulia può leggerlo dall'alto in basso come una relazione.
+
+<Callout kind="trucco">
+Una cella di testo che dice **perché** fai un calcolo vale quanto il calcolo. Fra tre mesi, il primo a non ricordarlo sarai tu.
+</Callout>
+
+<Callout kind="curiosita">
+Il nome «Jupyter» è un omaggio a tre linguaggi: **Ju**lia, **Pyt**hon e **R**. Oggi il formato dei notebook (file con estensione .ipynb) lo usano quasi tutti i servizi.
+</Callout>
+
+<Say who="assistente">Pensa a una cella come a un biglietto: scrivi, premi esegui, sotto compare la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove si apre, gratis">
+Per usare un notebook non devi spendere niente. Le strade principali:
+
+- **Google Colab**: si apre nel browser con un account Google, senza installare nulla. I notebook stanno nel tuo Google Drive. È il punto di partenza più semplice.
+- **Jupyter (JupyterLab)**: lo installi sul tuo computer, di solito con `pip install jupyterlab`, e lo avvii con `jupyter lab`. I dati restano sul tuo computer.
+- **Kaggle Notebooks**: come Colab, ma dentro il sito Kaggle, con tanti dati di esempio già pronti.
+- **Visual Studio Code**: l'editor gratuito, con l'estensione per i notebook, apre gli stessi file.
+
+<Callout kind="attenzione">
+Colab e Kaggle girano su computer di altri, via Internet. Per esercitarti usa dati fittizi o pubblici. I dati di persone vere (clienti, pazienti, studenti) non si caricano senza il permesso di chi ne è responsabile: è una questione di privacy e di GDPR.
+</Callout>
+
+Vuoi vedere come si presenta un notebook? Ecco una guida con un'altra voce, solo i primi dieci minuti:
+
+<Video />
+
+<Say who="sensei">Per cominciare scegli Colab: niente installazioni, niente scuse. Il computer di casa puoi sistemarlo dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eseguire una cella">
+Una cella di codice si esegue con **Maiusc + Invio** (in inglese Shift + Enter), oppure con il pulsante di avvio a sinistra della cella. Poi il cursore passa alla cella successiva.
+
+Esempio di una cella e del suo risultato:
+
+```python
+prezzo = 40
+quantita = 3
+print(prezzo * quantita)
+```
+
+```text
+120
+```
+
+Se l'ultima riga di una cella è un'espressione, il notebook ne mostra il valore anche senza `print`. Nelle lezioni useremo quasi sempre `print`, perché il risultato è identico in tutti gli strumenti.
+
+Dietro le quinte c'è un programma che lavora per te, chiamato **kernel**. È come un assistente con una **memoria**: ricorda ogni variabile creata dalle celle che hai eseguito, finché non lo riavvii.
+
+<Callout kind="regola">
+Il kernel ricorda ciò che hai **eseguito**, non ciò che vedi **scritto**. È la frase più importante della lezione.
+</Callout>
+
+<Say who="assistente">Accanto a ogni cella eseguita compare un numero, per esempio [3]. Dice in quale ordine l'hai eseguita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'errore del lunedì mattina">
+Marco ti chiama: «Il notebook mi dà un errore, ma il codice è giusto!». Guardi lo schermo. Le celle sono due:
+
+```python
+# cella A
+prezzo = 10
+```
+
+```python
+# cella B
+print(prezzo * 3)
+```
+
+Marco ha eseguito la **cella B prima della A**. Il kernel non conosce ancora `prezzo`:
+
+```text
+NameError: name 'prezzo' is not defined
+```
+
+L'errore dice: «il nome `prezzo` non esiste». Non perché sia scritto male, ma perché nessuna cella eseguita l'ha ancora creato.
+
+<Callout kind="attenzione">
+Il problema opposto è peggio, perché non dà errori. Modifichi la cella A (`prezzo = 20`) ma non la riesegui: la cella B continua a usare il vecchio valore, e i numeri sullo schermo sono sbagliati.
+</Callout>
+
+<Callout kind="trucco">
+Rimedio: dal menu **Runtime** di Colab (o **Kernel** di Jupyter) scegli «Riavvia ed esegui tutto». Il notebook riparte da zero ed esegue le celle dall'alto in basso. Se funziona così, funziona sempre.
+</Callout>
+
+<Say who="sensei">Un notebook che funziona solo se premi i pulsanti in un certo ordine è un trucco di magia, non un'analisi. Prima di consegnare: riavvia ed esegui tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Esegui la cella A (x = 1), poi la cella B (x = x + 1) due volte di fila. Quanto vale x alla fine?"
+  options={["3", "2", "1", "Errore: x non può cambiare"]}
+  answer={0}
+  explain="Il kernel ricorda x tra una cella e l'altra. Dopo A vale 1, dopo la prima B vale 2, dopo la seconda B vale 3. Chi risponde 2 ha pensato che B 'si ricominci da capo' ogni volta: no, il valore si accumula."
+/>
+
+Ora prova una cella vera. Cambia i numeri e premi Esegui:
+
+<PythonTerminal code={"# una cella di codice\nprezzo = 40\nquantita = 3\nprint(prezzo * quantita)"} />
+
+<Say who="assistente">Cambia una cosa sola, riesegui, guarda il risultato. È il ritmo giusto del lavoro in un notebook.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui notebook: cosa succede se si eseguono le celle in disordine, quale rimedio usare, dove aprirne uno. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-notebook" pass="4/5" retries={3} />
+
+<Say who="sensei">Ragiona sul kernel: ricorda ciò che hai eseguito. Con questo in mente, quasi tutte le risposte sono ovvie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un notebook è un documento a celle: celle di codice (con il risultato sotto) e celle di testo (Markdown) per spiegare.
+- Si apre gratis con Google Colab, Jupyter sul tuo computer o Kaggle. Con i servizi online niente dati di persone vere senza permesso.
+- Il kernel ricorda ciò che hai eseguito, non ciò che vedi: se i conti non tornano, «Riavvia ed esegui tutto».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si esegue una cella e si passa alla successiva?", a: "Maiusc + Invio" },
+    { q: "Che cosa ricorda il kernel?", a: "Le variabili create dalle celle eseguite, finché non lo si riavvia" },
+    { q: "NameError: name 'prezzo' is not defined. Causa tipica?", a: "La cella che crea prezzo non è stata ancora eseguita" },
+    { q: "Come controlli che un notebook funzioni da solo?", a: "Riavvia ed esegui tutto, dall'alto in basso" },
+  ]}
+/>
+
+<Say who="sensei">Il banco di lavoro è pronto. Prossima lezione: Python in cinque minuti. Le parole che serviranno, una sola volta.</Say>
+</Scene>

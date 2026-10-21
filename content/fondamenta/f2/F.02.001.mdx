@@ -1,0 +1,182 @@
+---
+id: F.02.001
+course: fondamenta
+module: 2
+title: "Il terminale e il prompt"
+belt: bianca
+duration_min: 8
+prerequisites: [F.01.008]
+objectives:
+  - "Spiegare che cosa sono terminale e shell"
+  - "Leggere le parti del prompt: utente, computer, cartella, simbolo"
+  - "Eseguire whoami, date ed echo"
+video:
+  provider: youtube
+  id: "GVTIjlFdHVY"
+  start: 0
+  end: 600
+  channel: "alternativalinux"
+  title: "Introduzione al terminale e alla shell Linux"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-terminale
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere il comando e aspettarsi che parta senza premere Invio"
+  - "Dimenticare che Linux distingue maiuscole e minuscole: Date non è date"
+  - "Copiare anche il simbolo $ del prompt insieme al comando"
+commands: [whoami, date, echo]
+---
+
+<Scene title="Il bigliettino sul monitor">
+Primo giorno nel **SOC**. Un collega ti lascia un bigliettino giallo sul monitor:
+
+«Accedi al computer di laboratorio. Dimmi chi sei e che ora segna. Niente mouse.»
+
+Sullo schermo c'è una finestra nera con una sola riga che lampeggia. Nessun menu, nessuna icona.
+
+<Log lines={["studente@lab:~$ _"]} caption="Questa riga si chiama prompt. Aspetta che tu scriva qualcosa." />
+
+La domanda del caso: **come si parla a un computer che non ha pulsanti?**
+
+<Say who="sensei">Niente pulsanti. Si scrive, e il computer risponde. Impari questo e ogni server del mondo diventa familiare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Terminale e shell">
+Due parole che sembrano la stessa cosa, ma non lo sono.
+
+- Il **terminale** è la finestra in cui scrivi e leggi testo.
+- La **shell** è il programma che sta dentro la finestra: legge ciò che scrivi, lo capisce e lo fa eseguire al sistema.
+
+Quello che scrivi si chiama **comando**. Quasi tutti i server del mondo funzionano con **Linux**, e di solito li gestisci da qui, perché è veloce e si può automatizzare.
+
+<Callout kind="trucco">
+Pensa a un ristorante. Il terminale è il tavolo con il menu, la shell è il cameriere che porta l'ordine in cucina.
+</Callout>
+
+<Callout kind="curiosita">
+La shell più diffusa su Linux si chiama **bash**. Ce ne sono altre, ma i comandi di base che impari qui valgono quasi ovunque.
+</Callout>
+
+<Say who="assistente">Non devi rompere niente per imparare. In questo corso lavori in un laboratorio fatto apposta: gli errori sono permessi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le quattro parti del prompt">
+Il prompt non è decorazione: ti dice **chi sei, dove sei e che cosa puoi fare**. Prendiamo questo:
+
+<Log lines={["studente@lab:~$"]} />
+
+- **studente**: il nome dell'utente con cui stai lavorando
+- **@lab**: il nome del computer (qui si chiama «lab»)
+- **~**: la cartella in cui ti trovi. La tilde ~ indica la tua cartella personale, la «home»
+- **$**: la shell è pronta e sei un utente normale. Un amministratore vede di solito **#**
+
+<Callout kind="attenzione">
+Quando in una guida vedi `$ date`, il simbolo `$` è solo il prompt: **non si scrive**. Si scrive solo `date`.
+</Callout>
+
+<Say who="sensei">Prima di scrivere qualsiasi cosa, leggi il prompt. Utente, computer, cartella. Tre secondi che evitano molti disastri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo comando">
+Per far partire un comando: **scrivi, poi premi Invio**. Senza Invio non succede niente. Il formato è sempre: nome del comando, poi (se serve) uno spazio e qualcosa su cui lavorare.
+
+<Log lines={[
+  "studente@lab:~$ whoami",
+  "studente",
+  "studente@lab:~$ date",
+  "Tue Oct 20 09:12:40 UTC 2026",
+  "studente@lab:~$ echo ciao mondo",
+  "ciao mondo",
+]} caption="Tre comandi, tre risposte. La riga con il prompt è ciò che scrivi, le altre sono la risposta." />
+
+- **whoami** («chi sono io?») stampa il nome dell'utente
+- **date** stampa data e ora del sistema
+- **echo** ripete a schermo ciò che scrivi dopo
+
+<Callout kind="regola">
+Linux distingue **maiuscole e minuscole**. `date` funziona, `Date` e `DATE` no: per la shell sono comandi diversi, e inesistenti.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Guarda i primi minuti:
+
+<Video />
+
+<Say who="assistente">Ecco la risposta al bigliettino: sei «studente» e l'ora è quella che stampa date. Due comandi e il caso è chiuso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il prompt è «anna@server:/var/log$». Che cosa ti dice?"
+  options={[
+    "Sei l'utente anna, il computer si chiama server e ti trovi nella cartella /var/log",
+    "Sei sul computer anna e l'utente si chiama server",
+    "Sei nella cartella personale di anna",
+    "Sei amministratore perché c'è la parola log",
+  ]}
+  answer={0}
+  explain="L'ordine è sempre utente@computer:cartella. Prima della @ c'è chi sei, dopo la @ il nome della macchina, dopo i due punti dove ti trovi. Il ~ sarebbe la home: qui invece c'è /var/log."
+/>
+
+<Say who="sensei">Prima della chiocciola, chi sei. Dopo, dove sei. Non invertirle: nei log di un incidente conta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova nel terminale">
+Ora tocca scrivere davvero. Nel terminale qui sotto ti basta poco: scrivi un comando, premi Invio, leggi la risposta.
+
+<LinuxTerminal goal="Scopri con quale utente stai lavorando e stampa a schermo la parola ciao con echo." />
+
+<Callout kind="trucco">
+Se sbagli a scrivere non si rompe niente: la shell risponde con un errore e puoi riprovare.
+</Callout>
+
+<Say who="assistente">Se non ricordi il nome del comando, rileggi la schermata «Il primo comando». Il suo nome è un indizio: chi sono io?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul terminale, sul prompt e sui primi comandi. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-terminale" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi legge bene il prompt sa sempre dove si trova. Qui non si tira a indovinare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il terminale è la finestra, la shell è il programma che capisce i comandi. Si scrive e si preme Invio.
+- Il prompt dice utente@computer:cartella e termina con $ (utente normale).
+- whoami dice chi sei, date dà l'ora, echo ripete il testo. Maiuscole e minuscole contano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Terminale e shell: qual è la differenza?", a: "Il terminale è la finestra, la shell è il programma che interpreta i comandi" },
+    { q: "Nel prompt studente@lab:~$ che cos'è lab?", a: "Il nome del computer" },
+    { q: "Che cosa indica la tilde ~?", a: "La tua cartella personale (home)" },
+    { q: "Perché «Date» non funziona?", a: "Perché Linux distingue maiuscole e minuscole: il comando è date" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: pwd, ls e cd. Impari a muoverti dentro il computer, una cartella alla volta.</Say>
+</Scene>

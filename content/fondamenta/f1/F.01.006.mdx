@@ -1,0 +1,162 @@
+---
+id: F.01.006
+course: fondamenta
+module: 1
+title: "Il tuo laboratorio"
+belt: bianca
+duration_min: 9
+prerequisites: [F.01.005]
+objectives:
+  - "Elencare i requisiti minimi per un laboratorio in macchina virtuale"
+  - "Distinguere rete NAT e rete solo-host"
+  - "Spiegare perché non si tocca mai il disco reale"
+video:
+  provider: youtube
+  id: "WERGXrxEWEs"
+  start: 0
+  end: 600
+  channel: "LucaSacchiNet"
+  title: "Virtualbox - I tipi di rete di Virtualbox Spiegati per bene"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-laboratorio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare alla VM quasi tutta la RAM del computer vero"
+  - "Scegliere la rete bridge senza sapere che espone la VM alla rete reale"
+  - "Toccare partizioni del disco vero «per fare spazio»"
+commands: []
+---
+
+<Scene title="Che cosa serve davvero">
+Hai capito che cos'è una VM. Adesso va costruito il **laboratorio**: il posto in cui, da qui in avanti, proverai tutto.
+
+Un laboratorio ha regole. La prima: **dentro è tuo, fuori non è tuo**.
+
+<Callout kind="attenzione">
+La domanda del caso: **che cosa serve per cominciare, e che cosa non va mai fatto?**
+</Callout>
+
+<Say who="sensei">Un laboratorio serio ha un confine chiaro. Senza confine, è solo disordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I requisiti minimi">
+Per far girare comodamente una VM con Kali, il computer vero dovrebbe avere:
+
+- **RAM**: almeno 8 GB (con 16 GB si sta più larghi). Alla VM ne darai 2 o 4.
+- **Processore**: almeno 4 core, con la **virtualizzazione** attiva. Si chiama VT-x (Intel) o AMD-V (AMD) e a volte va accesa nelle impostazioni **BIOS/UEFI**, cioè le impostazioni di base del computer all'avvio.
+- **Spazio su disco**: almeno **40-60 GB liberi**.
+
+<Callout kind="attenzione">
+Mai dare alla VM **tutta** la RAM del computer vero: l'host resterebbe senza e si bloccherebbe.
+</Callout>
+
+<Callout kind="curiosita">
+I Mac con processore Apple (M1, M2 e successivi) hanno architettura diversa: servono immagini e programmi adatti. La lezione 7 è pensata per PC con Windows o Linux.
+</Callout>
+
+<Say who="assistente">Se il tuo computer è giusto al limite, puoi cominciare comunque con meno risorse. Sarà solo più lento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="VirtualBox o VMware">
+Due programmi di virtualizzazione, entrambi gratuiti per uso personale (controlla sempre le condizioni sui siti ufficiali, perché possono cambiare):
+
+- **VirtualBox**: libero, semplice, il più usato per cominciare. Lo useremo nelle lezioni.
+- **VMware Workstation**: molto diffuso anche in azienda; scarica solo dal sito ufficiale del produttore.
+
+<Callout kind="regola">
+Scarica i programmi solo dal **sito ufficiale**. Un installer preso da un sito qualsiasi può contenere altro.
+</Callout>
+
+<Say who="sensei">Uno basta. Scegli VirtualBox, imparalo bene, poi sperimenta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La rete della VM: NAT o solo-host">
+La VM ha una **scheda di rete virtuale**. Le due modalità che ti servono:
+
+- **NAT**: la VM esce su Internet **attraverso** il computer vero, ma da fuori nessuno può raggiungerla. Ideale per **aggiornare e scaricare**.
+- **Solo host**: la VM parla **solo** con il computer vero (e con altre VM), **senza Internet**. Ideale per esperimenti isolati.
+
+<Callout kind="attenzione">
+C'è anche la modalità **bridge**: la VM appare sulla tua rete di casa come un dispositivo vero. Per ora **non usarla**: espone la VM a tutta la rete.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Dieci minuti sui tipi di rete:
+
+<Video />
+
+<Say who="assistente">Parti con NAT. Quando ti servirà un esperimento isolato, passerai a solo-host.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dual boot e VM a confronto">
+Esiste un'alternativa: il **dual boot**, cioè installare Linux accanto a Windows sul disco vero, e scegliere all'avvio quale usare.
+
+- **Dual boot**: usa tutta la potenza del computer, ma richiede di **modificare le partizioni** del disco. Un errore può cancellare i dati.
+- **VM**: un po' più lenta, ma **non tocca il disco vero**. Con gli snapshot torni indietro.
+- **VM integrate nel sito** (arriveranno più avanti): non installi niente, ma hanno meno libertà di una VM tua.
+
+<Callout kind="regola">
+Per cominciare, scegli la **VM**. Il dual boot, se mai, lo farai dopo, con le copie di sicurezza fatte.
+</Callout>
+
+<Say who="sensei">Non toccare mai le partizioni del disco vero per «fare spazio» a Kali. Un errore e perdi tutto, senza ritorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi provare Kali ma non vuoi rischiare i tuoi dati. Quale scelta ha senso?"
+  options={["Una VM con rete NAT, senza toccare le partizioni", "Cancellare Windows e installare Kali al suo posto", "Partizionare il disco vero senza fare copie", "Usare la rete bridge e lasciare tutto aperto"]}
+  answer={0}
+  explain="La VM vive in un file e non tocca il disco vero. La rete NAT esce su Internet senza esporre la VM. Le altre scelte mettono a rischio i dati o la rete."
+/>
+
+<Say who="sensei">Il laboratorio è tuo, ma non è fuori dal mondo. Dentro: libertà. Fuori: regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul laboratorio. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-laboratorio" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi prepara bene il laboratorio, perde meno tempo a ripararlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Requisiti utili: 8 GB di RAM (meglio 16), processore con virtualizzazione attiva, 40-60 GB liberi.
+- NAT per aggiornare e uscire su Internet in sicurezza; solo-host per esperimenti isolati; il bridge, per ora, no.
+- Meglio una VM che il dual boot: non si toccano mai le partizioni del disco vero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa la rete NAT?", a: "Fa uscire la VM su Internet, ma da fuori non si raggiunge" },
+    { q: "Che cosa fa la rete solo-host?", a: "La VM parla solo con il computer vero, senza Internet" },
+    { q: "Perché una VM è più sicura del dual boot?", a: "Non tocca le partizioni del disco vero" },
+    { q: "Quale regola vale sempre in laboratorio?", a: "Si prova solo ciò che è tuo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: installiamo Kali Linux nella tua macchina virtuale. Passo dopo passo.</Say>
+</Scene>

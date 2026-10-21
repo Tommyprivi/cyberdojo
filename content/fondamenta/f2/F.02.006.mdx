@@ -1,0 +1,170 @@
+---
+id: F.02.006
+course: fondamenta
+module: 2
+title: "Gli editor: nano e vim"
+belt: bianca
+duration_min: 8
+prerequisites: [F.02.005]
+objectives:
+  - "Aprire, modificare, salvare e chiudere un file con nano"
+  - "Riconoscere vim e saperne uscire con :q! o :wq"
+  - "Spiegare perché vim ha le modalità e nano no"
+video:
+  provider: youtube
+  id: "_PZgLcokMd8"
+  start: 0
+  end: 600
+  channel: "il gatto Cyber"
+  title: "Corso Linux: Editor, vi e nano - Tutorial Italiano"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-editor
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Premere Ctrl+X in nano e chiudere senza salvare: prima Ctrl+O, oppure rispondere sì alla domanda"
+  - "Aprire vim e scrivere subito: all'inizio i tasti sono comandi, non lettere"
+  - "Provare a uscire da vim con :q dopo aver modificato: serve :wq oppure :q!"
+commands: [nano, vim]
+---
+
+<Scene title="Le note del caso">
+Il collega del SOC ti dà un compito semplice, ma con un ostacolo:
+
+«Scrivi le tue note sul caso in un file, così le leggo domani. Ricorda: niente mouse.»
+
+Per **scrivere** in un file dal terminale serve un **editor di testo**. Hai già visto che cat e less leggono soltanto. Gli editor invece permettono di **modificare**.
+
+C'è un secondo problema, che trovi in tutti i corsi Linux: **a volte un editor parte da solo** (per esempio quando una guida ti dice di cambiare un file) e se non sai come si esce, resti bloccato.
+
+La domanda del caso: **come si scrive un file dal terminale, e come si esce da un editor senza panico?**
+
+<Say who="sensei">Ogni tecnico Linux è rimasto almeno una volta bloccato in un editor. Oggi impari a uscirne con dignità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="nano: l'editor per iniziare">
+**nano** è l'editor più semplice: scrivi come in un normale programma di testo. In fondo allo schermo mostra sempre le **scorciatoie**. Il simbolo **^** vuol dire **Ctrl**: ^X è Ctrl+X.
+
+<Log lines={[
+  "studente@lab:~/indagine$ nano note.txt",
+]} caption="Se note.txt non esiste, nano lo crea quando salvi." />
+
+I tre comandi da sapere:
+
+- **Ctrl+O**: salva (nano chiede il nome del file: conferma con Invio)
+- **Ctrl+X**: esci
+- **Ctrl+G**: aiuto
+
+<Callout kind="regola">
+Si usa **solo la tastiera**: le frecce muovono il cursore, il mouse non serve.
+</Callout>
+
+<Say who="assistente">Se premi Ctrl+X dopo aver cambiato qualcosa, nano ti chiede se vuoi salvare. Rispondi sì, poi Invio per confermare il nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nano passo per passo">
+Ecco la sequenza completa, dalla prima riga alla chiusura.
+
+<Guided
+  steps={[
+    "Scrivi nano note.txt e premi Invio: si apre l'editor, vuoto.",
+    "Scrivi il testo: per esempio «Tre accessi falliti per admin alle 09:12-09:13».",
+    "Premi Ctrl+O: in basso compare il nome del file. Premi Invio per confermare.",
+    "Premi Ctrl+X: l'editor si chiude e torni al prompt.",
+    "Scrivi cat note.txt: il testo che hai scritto è nel file.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Se nano parla italiano, la domanda «Save modified buffer?» diventa «Salvare il buffer modificato?» e il tasto per dire sì è **S**, non Y. Il resto non cambia.
+</Callout>
+
+<Say who="sensei">Salva, esci, verifica con cat. Tre gesti. Non fidarti mai di un salvataggio che non hai controllato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="vim: come uscirne">
+**vim** è un altro editor, potentissimo ma strano al primo incontro. Lo troverai su moltissimi server. Funziona per **modalità**:
+
+- all'avvio sei in **modalità normale**: i tasti sono **comandi**, non lettere. Se scrivi subito, succedono cose strane
+- premi **i** per passare alla **modalità inserimento** e scrivere
+- premi **Esc** per tornare alla modalità normale
+- da lì, i **due punti** (:) aprono la riga dei comandi
+
+I comandi minimi per uscire:
+
+- **:wq** e Invio: salva ed esci
+- **:q!** e Invio: esci **senza salvare**
+- **:w** e Invio: salva senza uscire
+
+<Callout kind="attenzione">
+Se hai modificato qualcosa, **:q** da solo non funziona: vim risponde che ci sono modifiche non salvate. Scegli: **:wq** per tenerle oppure **:q!** per buttarle.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Eccolo, nano e vi:
+
+<Video />
+
+<Say who="assistente">Sei bloccato? Premi Esc più volte, poi scrivi :q! e Invio. Funziona quasi sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai aperto vim per sbaglio, hai premuto qualche tasto e non vuoi salvare niente. Che cosa fai?"
+  options={[
+    "Premi Esc, poi scrivi :q! e premi Invio",
+    "Premi Ctrl+X",
+    "Scrivi :wq e premi Invio",
+    "Premi Ctrl+O",
+  ]}
+  answer={0}
+  explain="Esc ti riporta alla modalità normale, e :q! esce buttando le modifiche. Ctrl+X e Ctrl+O sono i comandi di nano, non di vim. :wq esce ma salva anche ciò che hai premuto per sbaglio."
+/>
+
+<Say who="sensei">Ctrl+X è di nano. Esc e due punti sono di vim. Non mescolare i due editor.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su nano e vim. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-editor" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi sa uscire da vim non resta mai bloccato davanti a un server. Qui si dimostra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- nano è l'editor più semplice: Ctrl+O salva, Ctrl+X esce, in basso vedi le scorciatoie.
+- vim ha le modalità: i per scrivere, Esc per tornare ai comandi.
+- Per uscire da vim: :wq salva ed esce, :q! esce senza salvare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si salva in nano?", a: "Ctrl+O, poi Invio" },
+    { q: "Come si esce da nano?", a: "Ctrl+X" },
+    { q: "Come si esce da vim senza salvare?", a: "Esc, poi :q! e Invio" },
+    { q: "Che cosa fa il tasto i in vim?", a: "Passa alla modalità inserimento, per scrivere" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: come chiedere aiuto al computer stesso, e come leggere un errore senza spaventarsi.</Say>
+</Scene>

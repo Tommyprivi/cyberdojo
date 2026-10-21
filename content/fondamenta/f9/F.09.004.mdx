@@ -1,0 +1,259 @@
+---
+id: F.09.004
+course: fondamenta
+module: 9
+title: "Decisioni"
+belt: arancione
+duration_min: 9
+prerequisites: [F.09.003]
+objectives:
+  - "Scrivere if, elif ed else con il rientro corretto"
+  - "Usare i confronti e gli operatori and, or, not"
+  - "Classificare una porta o un livello di allarme con una catena di condizioni"
+video:
+  provider: youtube
+  id: "DiiXMcfPgdQ"
+  start: 0
+  end: 314
+  channel: "CodiceFacile"
+  title: "Corso Python #4 – Le decisioni: if, elif ed else"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-decisioni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere = (assegna) con == (confronta)"
+  - "Dimenticare i due punti alla fine di if, elif ed else"
+  - "Mettere le condizioni nell'ordine sbagliato: elif parte dal primo vero e si ferma"
+commands: []
+---
+
+<Scene title="Che porta è?">
+Nel log di stanotte compaiono porte diverse: 22, 80, 443, 3389, 8080. Marta vuole un rapporto che dica, per ognuna, di cosa si tratta.
+
+«Se è la 22, scrivi accesso remoto. Se è la 80 o la 443, web. Tutto il resto, da controllare.»
+
+Finora lo script eseguiva le righe una dopo l'altra, sempre uguali. Ora deve **scegliere** cosa fare in base a un valore.
+
+La domanda del caso: **come si dice a Python «se questo, allora fai quello»?**
+
+<Say who="sensei">Un programma che non decide è solo una lista della spesa. Le decisioni lo rendono utile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="if e else">
+L'istruzione `if` esegue un blocco di righe **solo se la condizione è vera**. Le regole sono due: la riga finisce con i **due punti**, e il blocco va **rientrato** di 4 spazi.
+
+```python
+tentativi = 7
+if tentativi > 5:
+    print("ALLARME")
+print("fine controllo")
+```
+
+Output:
+
+```text
+ALLARME
+fine controllo
+```
+
+La seconda `print` non è rientrata, quindi non fa parte dell'`if`: viene eseguita sempre. Con `else` si aggiunge ciò che accade quando la condizione è falsa:
+
+```python
+tentativi = 3
+if tentativi > 5:
+    print("ALLARME")
+else:
+    print("tutto nella norma")
+```
+
+Output:
+
+```text
+tutto nella norma
+```
+
+<Callout kind="regola">
+In Python il **rientro** non è estetica: è la sintassi. Le righe rientrate allo stesso modo formano un blocco. Convenzione: 4 spazi.
+</Callout>
+
+<Say who="assistente">Se Python protesta con IndentationError, guarda gli spazi a inizio riga: quasi sempre è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I confronti">
+La condizione è un'espressione che dà **True** o **False**. Si ottiene con i confronti:
+
+- `==` uguale
+- `!=` diverso
+- `>` maggiore, `>=` maggiore o uguale
+- `<` minore, `<=` minore o uguale
+
+```python
+print(22 == 22)
+print(22 != 80)
+print(5 >= 5)
+print("22" == 22)
+```
+
+Output:
+
+```text
+True
+True
+True
+False
+```
+
+L'ultimo è falso: il testo `"22"` e il numero `22` sono tipi diversi, quindi non sono uguali. Ricordi la lezione sui tipi?
+
+<Callout kind="attenzione">
+`=` **assegna**, `==` **confronta**. Scrivere `if porta = 22:` è un `SyntaxError`: Python capisce che volevi confrontare e te lo segnala.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti.
+
+<Video />
+
+<Say who="sensei">Due uguali per chiedere, uno per dare. Scrivilo cinquanta volte, se serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="elif: più strade">
+Quando le strade sono più di due si aggiunge `elif` («altrimenti se»). Python controlla le condizioni **dall'alto verso il basso**, esegue il primo blocco vero e salta tutti gli altri.
+
+```python
+porta = 443
+if porta == 22:
+    print("accesso remoto (SSH)")
+elif porta == 80 or porta == 443:
+    print("web")
+else:
+    print("da controllare")
+```
+
+Output:
+
+```text
+web
+```
+
+Ecco il rapporto di Marta, risolto. Con `porta = 3389` stamperebbe `da controllare`.
+
+<Callout kind="trucco">
+`else` non ha condizione: è la strada di tutto il resto. Mettilo sempre per ultimo.
+</Callout>
+
+<Say who="assistente">Un'idea per ricordare: elif è un «se invece», e viene letto solo se il se precedente era falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="and, or, not">
+Le condizioni si combinano con tre parole:
+
+- `and`: **tutte** e due devono essere vere
+- `or`: **almeno una** deve essere vera
+- `not`: **capovolge** il risultato
+
+```python
+tentativi = 12
+ip_noto = False
+if tentativi > 10 and not ip_noto:
+    print("blocca")
+else:
+    print("osserva")
+```
+
+Output:
+
+```text
+blocca
+```
+
+Più di 10 tentativi **e** indirizzo non noto: si blocca. Se l'indirizzo fosse noto, `not ip_noto` sarebbe falso e si stamperebbe `osserva`.
+
+**L'ordine conta.** Livello di allarme in base ai tentativi: si parte sempre dalla soglia più alta.
+
+```python
+tentativi = 25
+if tentativi >= 50:
+    livello = "critico"
+elif tentativi >= 20:
+    livello = "alto"
+elif tentativi >= 5:
+    livello = "medio"
+else:
+    livello = "basso"
+print(livello)
+```
+
+Output:
+
+```text
+alto
+```
+
+Se avessi messo prima `>= 5`, 25 sarebbe finito subito in «medio» e gli altri `elif` non sarebbero mai stati letti.
+
+<Say who="sensei">Dalla soglia più alta alla più bassa. Il primo vero vince, il resto non si guarda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="porta = 80 e poi la condizione if porta == 22 or porta == 80: stampa 'sì', altrimenti stampa 'no'. Cosa appare?"
+  options={["sì", "no", "sì e no", "Errore"]}
+  answer={0}
+  explain="Con or basta che una delle due condizioni sia vera. porta == 80 è vera, quindi si esegue il blocco dell'if e l'else viene saltato."
+/>
+
+Prova a modificare il codice: cambia la porta e aggiungi la 3389 come «rischiosa».
+
+<PythonTerminal code={"porta = 22\nif porta == 22:\n    print('accesso remoto')\nelif porta in [80, 443]:\n    print('web')\nelse:\n    print('da controllare')"} />
+
+<Say who="assistente">Cambia porta in 80, poi in 3389, e guarda quale ramo si accende ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: nel testo il codice è su una riga, con il simbolo ↵ al posto dell'a capo. Dove serve, la riga dopo i due punti è rientrata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-decisioni" pass="4/5" retries={3} />
+
+<Say who="sensei">Ricostruisci il programma nella testa. Se la prima condizione è vera, le altre non esistono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `if`, `elif` ed `else` scelgono un blocco: due punti in fondo alla riga e rientro di 4 spazi.
+- `==` confronta, `=` assegna; `and`, `or`, `not` combinano le condizioni.
+- Il primo ramo vero vince: metti le soglie dalla più alta alla più bassa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si confrontano due valori?", a: "Con ==, non con =" },
+    { q: "Cosa stampa print('22' == 22)?", a: "False (testo e numero sono diversi)" },
+    { q: "Quando si esegue il ramo else?", a: "Quando nessuna condizione precedente è vera" },
+    { q: "Cosa serve alla fine di una riga if?", a: "I due punti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i cicli. Lo script leggerà cento righe di log con le stesse tre istruzioni.</Say>
+</Scene>

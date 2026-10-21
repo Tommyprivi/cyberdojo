@@ -1,0 +1,151 @@
+---
+id: D.16.002
+course: dati
+module: 16
+title: "La validazione"
+belt: blu
+duration_min: 9
+prerequisites: [D.16.001]
+objectives:
+  - "Spiegare la validazione incrociata e calcolarne il risultato medio"
+  - "Scegliere gli iperparametri senza toccare il test set"
+  - "Spiegare perché il test set si usa una volta sola"
+video:
+  provider: youtube
+  id: "fSytzGwwBVw"
+  start: 0
+  end: 600
+  channel: "StatQuest with Josh Starmer"
+  title: "Machine Learning Fundamentals: Cross Validation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-validazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Giudicare il modello dal voto sui dati con cui è stato addestrato"
+  - "Scegliere tra tanti modelli guardando il voto sul test set: così il test diventa parte dell'addestramento"
+  - "Credere che la validazione incrociata sia un modello: è un modo per misurare"
+commands: []
+---
+
+<Scene title="Il 99 per cento che non vale">
+Ivo allena un modello per prevedere i rinnovi della palestra «Abbonati Verdi». Sui dati con cui l'ha addestrato indovina il **99 per cento**. Esulta.
+
+Il mese dopo lo prova su clienti nuovi: indovina il **72 per cento**. Che cosa è successo? Il modello ha **imparato a memoria** i vecchi clienti, invece di capire la regola.
+
+<Say who="sensei">Un voto sul ripasso non è un voto d'esame. La domanda è sempre: come va su dati che non ha mai visto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Train, validazione e test">
+Si dividono i dati in tre parti:
+
+- **train**: il modello impara qui;
+- **validazione**: si confrontano modelli e impostazioni;
+- **test**: l'esame finale, da guardare **una sola volta**.
+
+Quando un modello va bene sul train e male sui dati nuovi, si dice **overfitting** (sovradattamento). Qui il divario è 0,99 − 0,72 = **0,27**: enorme.
+
+Vuoi sentirlo spiegare da un'altra voce? La validazione incrociata in pochi minuti, in inglese (con sottotitoli):
+
+<Video />
+
+<Say who="assistente">Pensa a un ripasso con le domande dell'anno scorso e poi un esame con domande nuove. Il voto vero è quello dell'esame.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La validazione incrociata">
+Con pochi dati, tenere da parte un pezzo solo è un azzardo: forse hai scelto un pezzo fortunato. La **validazione incrociata a k parti** (k-fold) risolve così:
+
+1. Dividi il train in **k parti** uguali (qui k = 5; con 100 righe, 20 per parte).
+2. Per cinque volte: addestri su 4 parti (80 righe) e valuti sulla parte rimasta (20 righe).
+3. Fai la **media** dei cinque voti.
+
+Esempio di cinque voti: 0,80 · 0,75 · 0,85 · 0,70 · 0,90. Somma 4,00. Media 4,00 / 5 = **0,80**.
+
+<Log lines={[
+  "from sklearn.model_selection import cross_val_score",
+  "punteggi = cross_val_score(modello, X_train, y_train, cv=5)",
+  "print(punteggi.mean())"
+]} caption="Cinque addestramenti, cinque voti, una media. Solo sul train." />
+
+<Callout kind="trucco">
+Guarda anche quanto i voti variano: da 0,70 a 0,90 vuol dire che la stima è poco stabile.
+</Callout>
+
+<Say who="sensei">Ogni riga serve una volta come esame e quattro come studio. Nessuna fortuna: la media la livella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli iperparametri e il test una volta sola">
+Un **iperparametro** è un'impostazione che scegli tu prima di addestrare, per esempio la profondità massima di un albero. Si sceglie con la validazione incrociata, non a occhio.
+
+Esempio, con 5 parti: profondità 2 dà media 0,78, profondità 4 dà 0,82, profondità 6 dà 0,80. Si sceglie **4**. Con 3 valori e 5 parti sono 3 × 5 = **15 addestramenti** di prova.
+
+Solo ora, **una volta**, si guarda il test. Se provassi 20 modelli sul test e tenessi il migliore, il suo voto sarebbe gonfiato dalla fortuna: il test sarebbe diventato parte dell'addestramento.
+
+<Log lines={[
+  "from sklearn.model_selection import GridSearchCV",
+  "from sklearn.tree import DecisionTreeClassifier",
+  "griglia = GridSearchCV(DecisionTreeClassifier(random_state=0),",
+  "                       {\"max_depth\": [2, 4, 6]}, cv=5)",
+  "griglia.fit(X_train, y_train)",
+  "print(griglia.best_params_)"
+]} caption="Si prova ogni valore con la validazione incrociata sul train." />
+
+<Say who="assistente">Scegli con la validazione, giudica con il test. Due compiti diversi, due insiemi diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai provato 15 modelli e il migliore ha 0,91 sul test set. Perché non puoi fidarti ciecamente di quel 0,91?"
+  options={["Hai usato il test per scegliere, quindi il voto è gonfiato dalla scelta", "Il test set è sempre troppo piccolo", "0,91 è un voto troppo alto per essere vero", "La validazione incrociata lo vieta per legge"]}
+  answer={0}
+  explain="Scegliere il migliore tra tanti sul test fa entrare il test nel processo di scelta: il voto è ottimista. Si sceglie con la validazione incrociata sul train e si guarda il test una volta sola."
+/>
+
+<Say who="sensei">Chi guarda il test dieci volte non ha più un test. Ha un secondo set di addestramento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Overfitting, k-fold, iperparametri e uso del test. Cinque domande, senza errori.
+
+<Practice generator="d16-validazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Un buon analista diffida del proprio risultato più bello. Controlla prima di crederci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il voto sul train inganna: conta il voto su dati mai visti. Un grande divario è overfitting.
+- La validazione incrociata a k parti fa k addestramenti e ne media i voti, solo sul train.
+- Gli iperparametri si scelgono con la validazione; il test set si guarda una volta sola, alla fine.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'overfitting?", a: "Il modello va benissimo sul train e male sui dati nuovi" },
+    { q: "Voti 0,80 · 0,75 · 0,85 · 0,70 · 0,90: la media?", a: "0,80" },
+    { q: "Quanti addestramenti con 3 valori e 5 parti?", a: "3 × 5 = 15" },
+    { q: "Quante volte si usa il test set?", a: "Una sola, alla fine" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli alberi e le foreste, modelli che sanno anche spiegarsi.</Say>
+</Scene>

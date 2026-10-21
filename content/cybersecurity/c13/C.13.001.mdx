@@ -1,0 +1,179 @@
+---
+id: C.13.001
+course: cybersecurity
+module: 13
+title: "Wireshark a fondo: dalla cattura alla storia"
+belt: blu
+duration_min: 10
+prerequisites: [C.04.006]
+objectives:
+  - "Usare le statistiche di Wireshark (gerarchia dei protocolli, conversazioni) per orientarsi in una cattura grande"
+  - "Impostare colonne, formato dell'ora e profili per lavorare in modo ordinato e ripetibile"
+  - "Salvare e conservare una cattura in modo corretto, nel rispetto di legge e privacy"
+video:
+  provider: youtube
+  id: "WNarfORVwWE"
+  start: 0
+  end: 600
+  channel: "IlSoftware.it"
+  title: "Wireshark: come funziona e come utilizzarlo per capire come viene usata la banda"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-wireshark
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scorrere una cattura da diecimila pacchetti riga per riga invece di partire dalle statistiche"
+  - "Fidarsi dell'ora locale del computer: nei rapporti si usa un'ora unica (UTC) e si annota il fuso"
+  - "Salvare la cattura e perdere la prova che non è stata modificata: serve l'impronta (hash) del file"
+commands: []
+---
+
+<Scene title="Diecimila righe, un solo sospetto">
+Sei nel laboratorio di prova di **Officina Verdi**, una piccola azienda fittizia. Il responsabile ti consegna un file di cattura, `lab-mattina.pcapng`, fatto sul **computer di prova dell'azienda**, con il suo permesso scritto. Contiene **dieci minuti** di traffico: 10 412 pacchetti.
+
+Dentro, dice, «c'è una cosa strana». Non sa dire quale.
+
+Nel corso Fondamenta hai imparato ad aprire Wireshark e a leggere pochi pacchetti. Qui il problema è diverso: **come ci si orienta in una cattura grande** senza leggere tutto?
+
+<Say who="sensei">Nessun analista legge diecimila righe. Si guarda dall'alto, poi si scende dove serve. Cominciamo dall'alto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima la regola">
+Wireshark è uno strumento normale per chi lavora in rete. Ma una cattura può contenere **dati di altre persone**: siti visitati, nomi, a volte password.
+
+<Callout kind="regola">
+Si cattura **solo sul proprio computer**, o in una rete **di cui si è responsabili**, o con **permesso scritto**. Ascoltare il traffico altrui senza permesso può essere reato: in Italia l'**intercettazione abusiva di comunicazioni** (art. 617-quater del codice penale) e l'**accesso abusivo a sistema informatico** (art. 615-ter). Per esercitarti usa il tuo laboratorio o file di cattura di esempio pubblicati proprio per imparare.
+</Callout>
+
+Anche con il permesso, una cattura resta un file **sensibile**: si tiene al sicuro, si condivide solo con chi serve, si cancella quando non serve più.
+
+<Say who="sensei">Si prova solo ciò che è tuo, o per cui hai un permesso scritto. Una cattura non è un souvenir: è un documento riservato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dall'alto: la gerarchia dei protocolli">
+Il primo strumento è nel menu **Statistiche**: la **Gerarchia dei protocolli**. Mostra quanta parte della cattura è fatta di ogni protocollo, come un grafico a torta in forma di tabella.
+
+<Log
+  lines={[
+    "Protocollo            % pacchetti   % byte",
+    "Ethernet / IP / TCP   88,0          96,4",
+    "  TLS                 41,0          71,2",
+    "  HTTP                 6,5           8,1",
+    "DNS                   10,2           1,3",
+    "ARP                    1,8           0,2",
+  ]}
+  caption="Esempio inventato di lab-mattina.pcapng"
+/>
+
+Che cosa ti dice? Che il traffico è soprattutto **cifrato** (TLS) e che il DNS pesa poco in byte. Se invece il DNS fosse il 60% dei byte, sarebbe già una domanda da fare.
+
+<Callout kind="trucco">
+Leggi sempre **due colonne**: pacchetti e byte. Un protocollo con tanti pacchetti ma pochi byte (DNS) è normale. Uno con **pochi pacchetti e tantissimi byte** sposta molti dati: guarda chi li sposta.
+</Callout>
+
+<Say who="assistente">È la mappa dall'alto. Non cerchi ancora il colpevole: cerchi dove sembra strano il paesaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi parla con chi: le conversazioni">
+Secondo strumento, sempre in **Statistiche**: **Conversazioni**. Ogni riga è una coppia di indirizzi che si sono parlati, con quanti pacchetti e byte si sono scambiati e per quanto tempo.
+
+<Log
+  lines={[
+    "Indirizzo A       Indirizzo B       Pacchetti  Byte      Durata",
+    "192.168.1.20      203.0.113.80        4 210    5,2 MB    312 s",
+    "192.168.1.20      198.51.100.7        1 905    1,1 MB    598 s",
+    "192.168.1.20      192.168.1.1           980    94 KB     600 s",
+    "192.168.1.20      198.51.100.250         61    38 MB     44 s",
+  ]}
+  caption="Conversazioni IPv4, ordinate per byte (esempio inventato)"
+/>
+
+Ordina per **Byte** e guarda in alto. L'ultima riga ha **soltanto 61 pacchetti** ma **38 MB** in 44 secondi: pochi pacchetti molto grossi, verso un indirizzo mai visto. Il computer 192.168.1.20 sta mandando o ricevendo un file grande.
+
+<Callout kind="attenzione">
+Non è ancora una prova di nulla. Può essere un aggiornamento scaricato. Ma è la **prima pista**: hai passato da 10 412 pacchetti a una riga.
+</Callout>
+
+<Say who="sensei">Una pista non è una conclusione. Scrivila e verificala. Sei passato da diecimila righe a una: bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lavorare in ordine">
+Prima di scendere nei pacchetti, prepara l'ambiente. Sono abitudini piccole che separano chi improvvisa da chi lavora da professionista.
+
+- **Formato dell'ora**: imposta l'ora **UTC** (quella universale). Così il tuo rapporto e i log degli altri sistemi si confrontano senza errori di fuso.
+- **Colonne personalizzate**: aggiungi per esempio la porta di destinazione, o il nome richiesto dal DNS. Meno clic, meno errori.
+- **Profili**: un profilo salva colonne, colori e filtri. Ne crei uno per «analisi sospetta» e lo ritrovi uguale ogni volta.
+- **Informazioni esperte**: una finestra che raccoglie i problemi che Wireshark nota da solo (ritrasmissioni, reset, errori).
+
+Vuoi vedere l'interfaccia usata per capire dove va la banda, da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Ordine, ordine, ordine. Se il tuo schermo è sempre uguale, noti subito quando qualcosa cambia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In una cattura vedi, nelle conversazioni, una coppia di indirizzi con 40 pacchetti ma 30 MB di dati, e un'altra con 3 000 pacchetti ma 90 KB. Quale conviene guardare per prima, se cerchi un possibile trasferimento di file?"
+  options={[
+    "Quella da 40 pacchetti e 30 MB: pochi pacchetti molto grossi spostano un file",
+    "Quella da 3 000 pacchetti: più pacchetti vuol dire più dati",
+    "Nessuna delle due: si guardano solo i pacchetti ARP",
+    "Quella con meno byte, perché è più discreta",
+  ]}
+  answer={0}
+  explain="I byte dicono quanti dati si muovono. 30 MB in 40 pacchetti significa pacchetti grandi: tipico di un trasferimento di file. 3 000 pacchetti da 90 KB sono tanti messaggi minuscoli, come un controllo periodico o un DNS."
+/>
+
+<Say who="sensei">Pacchetti e byte non sono la stessa cosa. Chi li confonde guarda la pista sbagliata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su statistiche, conversazioni e buone abitudini di lavoro. Tre tentativi, domande diverse a ogni tentativo.
+
+<Practice generator="c13-wireshark" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Poi, prima di chiudere, salva la cattura nel modo giusto: te lo mostro nel rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+Prima di chiudere il laboratorio, salva e **proteggi** la prova: salva il file in formato **pcapng**, annota data e ora e il computer da cui viene, e calcola la sua **impronta** (hash, per esempio SHA-256). Se qualcuno la modifica, l'impronta cambia: è la tua garanzia che i pacchetti sono quelli originali.
+
+<Recap xp={20}>
+- Si parte dall'alto: gerarchia dei protocolli e conversazioni, ordinate per byte, indicano dove guardare.
+- Ora in UTC, colonne e profili ordinati: lavorare sempre nello stesso modo rende visibili le anomalie.
+- Una cattura è un documento sensibile: solo con permesso, conservata con cura e protetta da un'impronta (hash).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa mostra la gerarchia dei protocolli?", a: "Quanta parte della cattura (in pacchetti e in byte) è fatta di ogni protocollo" },
+    { q: "Pochi pacchetti ma molti byte: che cosa suggerisce?", a: "Pacchetti grandi, cioè un trasferimento di dati: da guardare" },
+    { q: "Perché usare l'ora UTC nei rapporti?", a: "Per confrontare cattura e log di altri sistemi senza errori di fuso orario" },
+    { q: "A che cosa serve l'hash del file di cattura?", a: "A dimostrare che il file non è stato modificato dopo il salvataggio" },
+  ]}
+/>
+
+<Say who="sensei">Sai orientarti. Prossima lezione: i filtri, per tagliare il rumore e tenere solo ciò che conta.</Say>
+</Scene>

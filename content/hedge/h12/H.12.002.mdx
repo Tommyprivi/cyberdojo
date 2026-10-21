@@ -1,0 +1,159 @@
+---
+id: H.12.002
+course: hedge
+module: 12
+title: "Il business plan di un fondo"
+belt: marrone
+duration_min: 9
+prerequisites: [H.12.001]
+objectives:
+  - "Elencare le parti di un business plan di un fondo"
+  - "Calcolare ricavi, costi e risultato di un piano a tre anni con numeri fittizi"
+  - "Spiegare perché le ipotesi sulla raccolta di capitale vanno trattate con prudenza"
+video:
+  provider: youtube
+  id: "O09SuMFb8Og"
+  start: 0
+  end: 600
+  channel: "Young Entrepreneurs Forum"
+  title: "How to Write an Effective Business Plan in 8 Simple Steps"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h12-business-plan
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Costruire il piano su una raccolta di capitale ottimistica e senza scenari peggiori"
+  - "Contare solo i ricavi e dimenticare i costi fissi che si pagano comunque"
+  - "Non calcolare quanto capitale dei fondatori serve per resistere finché il fondo non si mantiene da solo"
+commands: []
+---
+
+<Scene title="Il documento che manca">
+Marco ed Elena hanno un edge: studiare piccole aziende italiane poco seguite. Un possibile socio, la signora Rinaldi, chiede: «Mostratemi il business plan».
+
+Marco risponde: «Ce l'abbiamo in testa». La signora sorride e chiude il taccuino.
+
+La domanda del caso: **che cosa contiene un business plan di un fondo, e come si leggono i suoi numeri?**
+
+Ricorda: il corso è educazione, non consulenza. I numeri sono fittizi e non sono previsioni. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">Un piano scritto si può criticare. Uno che hai in testa si può solo sperare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti del piano">
+Un business plan di un fondo risponde, in poche pagine, a queste domande:
+
+- **Idea e vantaggio**: che cosa fate e perché dovrebbe funzionare (la lezione scorsa).
+- **Mercato e investitori**: chi sono i possibili investitori e perché dovrebbero scegliere voi.
+- **Team e ruoli**: chi fa che cosa.
+- **Rischio e regole**: limiti, controlli, che cosa succede se le cose vanno male.
+- **Struttura e autorizzazioni**: come è organizzato il fondo, che permessi servono.
+- **Numeri**: costi, ricavi, capitale necessario.
+
+<Callout kind="regola">
+Un buon piano non nasconde i punti deboli: li dichiara e dice come li gestirà.
+</Callout>
+
+<Say who="assistente">Il piano non serve solo a convincere gli altri. Serve a capire se stessi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di Aurora">
+La parte dei numeri è la più semplice da controllare. Aurora fa questa ipotesi, **fittizia**:
+
+| Anno | Capitale raccolto | Ricavi (2% di gestione) | Costi | Risultato |
+|------|------------------|-------------------------|-------|-----------|
+| 1 | 5 milioni | 100.000 | 300.000 | -200.000 |
+| 2 | 10 milioni | 200.000 | 320.000 | -120.000 |
+| 3 | 20 milioni | 400.000 | 340.000 | +60.000 |
+
+Ricavi = 2% del capitale raccolto (convenzione semplice: solo commissione di gestione, nessuna performance). Risultato = ricavi meno costi.
+
+<Callout kind="attenzione">
+Nei primi due anni il fondo **perde** soldi, anche se tutto va secondo il piano. Chi paga? I fondatori.
+</Callout>
+
+<Say who="sensei">Un fondo piccolo non si mantiene da solo. All'inizio pagano i fondatori, con i loro risparmi o con quelli di chi li sostiene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto capitale serve ai fondatori">
+Le perdite dei primi due anni si sommano.
+
+<Guided
+  steps={[
+    "Anno 1: 100.000 meno 300.000 = meno 200.000.",
+    "Anno 2: 200.000 meno 320.000 = meno 120.000.",
+    "Perdite cumulate nei due anni: 200.000 + 120.000 = 320.000 euro.",
+    "I fondatori devono avere almeno 320.000 euro pronti per arrivare al terzo anno, e il piano funziona solo se la raccolta va come previsto.",
+  ]}
+/>
+
+Se invece la raccolta si ferma a **5 milioni** per tre anni, i ricavi restano 100.000 all'anno contro costi di 300.000 o più: il buco continua a crescere.
+
+Per vedere come si imposta un piano, un video in inglese (sottotitoli) lo spiega in generale, per ogni tipo di attività:
+
+<Video />
+
+<Say who="assistente">Fai sempre due piani: uno in cui va bene e uno in cui la raccolta va peggio. Il secondo è quello che ti salva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un piano mostra ricavi di 150.000 euro e costi di 280.000 euro nel primo anno. Che cosa significa?"
+  options={[
+    "Il fondo ha un risultato di meno 130.000 euro, che i fondatori devono coprire",
+    "Il fondo guadagna 130.000 euro",
+    "Il fondo è in pareggio",
+    "Il risultato è 430.000 euro, perché si sommano le due cifre",
+  ]}
+  answer={0}
+  explain="Il risultato è ricavi meno costi: 150.000 meno 280.000 = meno 130.000. Chi somma le due cifre confonde un bilancio con un totale di movimenti."
+/>
+
+<Say who="sensei">Prima i costi, poi i ricavi. I costi arrivano sempre, i ricavi forse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Parti del piano, calcoli di risultato e di capitale necessario, ipotesi prudenti.
+
+<Practice generator="h12-business-plan" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con un piano scritto, almeno sai quanto rischi di spendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un business plan copre idea, mercato, team, rischio, struttura, autorizzazioni e numeri.
+- Risultato = ricavi meno costi. I costi fissi si pagano anche quando il fondo è piccolo.
+- Le perdite iniziali sono a carico dei fondatori: servono capitale proprio e uno scenario prudente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola il risultato annuo di un fondo (in modo semplice)?", a: "Ricavi meno costi" },
+    { q: "Chi copre le perdite dei primi anni?", a: "Di solito i fondatori, con capitale proprio" },
+    { q: "Perché fare due scenari?", a: "Perché la raccolta potrebbe andare peggio del previsto" },
+    { q: "Un buon piano nasconde i punti deboli?", a: "No: li dichiara e dice come li gestirà" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi lavora nel fondo. Team e ruoli, e perché il gestore non deve fare tutto da solo.</Say>
+</Scene>

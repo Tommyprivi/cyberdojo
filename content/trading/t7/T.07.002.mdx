@@ -1,0 +1,173 @@
+---
+id: T.07.002
+course: trading
+module: 7
+title: "La volatilità annualizzata"
+belt: arancione
+duration_min: 8
+prerequisites: [T.07.001]
+objectives:
+  - "Calcolare la deviazione standard dei rendimenti giornalieri"
+  - "Annualizzare la volatilità moltiplicando per la radice di 252"
+  - "Leggere la volatilità come ampiezza delle oscillazioni, non come perdita"
+video:
+  provider: youtube
+  id: "T-DImxMAhWk"
+  start: 0
+  end: 600
+  channel: "conTEmplata più che informazione"
+  title: "Volatilità: cos'è e come si calcola."
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-volatilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Moltiplicare la volatilità giornaliera per 252 invece che per la radice di 252"
+  - "Confondere volatilità e perdita: sale anche quando il prezzo sale a strappi"
+  - "Dimenticare che la volatilità stimata cambia da un periodo all'altro"
+commands: []
+---
+
+<Scene title="Due strategie, stesso risultato">
+Luca ha due strategie fittizie. In un anno di dati storici inventati, **entrambe** hanno chiuso con lo stesso CAGR.
+
+Ma guardando i grafici sono molto diverse: la A sale piano, la B fa su e giù con onde ampie.
+
+La domanda del caso: **come si misura quanto un capitale «balla»?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: si può perdere denaro, anche tutto. Qui lavoriamo solo con dati storici fittizi. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Il rendimento dice dove sei arrivato. Non dice che strada hai fatto. Per la strada serve un altro numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La deviazione standard">
+La **volatilità** è la **deviazione standard dei rendimenti**: dice di quanto, in media, i rendimenti si allontanano dalla loro media.
+
+Esempio con cinque rendimenti giornalieri fittizi:
+
+<Log lines={[
+  "giorno   rendimento",
+  "1        -1%",
+  "2        +1%",
+  "3         0%",
+  "4        -1%",
+  "5        +1%",
+]} />
+
+Media: 0%. Gli scarti dalla media sono −1, +1, 0, −1, +1. Elevati al quadrato: 1, 1, 0, 1, 1. Somma 4.
+
+Convenzione: divido per **n − 1 = 4** (deviazione standard «campionaria», quella di pandas): 4 / 4 = 1. Radice di 1 = **1%** al giorno.
+
+<Callout kind="regola">
+Volatilità alta = oscillazioni ampie. Non vuol dire «perde»: vuol dire «incerto». Una strategia che sale del 2% ogni giorno ha volatilità vicino a zero ma è anche irreale.
+</Callout>
+
+<Say who="assistente">Piccolo indizio: la media serve solo come punto di riferimento, la volatilità guarda gli scarti da quella media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal giorno all'anno">
+La volatilità giornaliera è comoda ma si confronta male. Si **annualizza**.
+
+Se i rendimenti giorno per giorno si possono considerare indipendenti, le **varianze si sommano** (la varianza è il quadrato della deviazione standard). In 252 giorni di borsa:
+
+varianza annua = 252 × varianza giornaliera
+volatilità annua = volatilità giornaliera × **√252**
+
+Con √252 ≈ 15,87 e volatilità giornaliera 1%:
+
+**1% × 15,87 ≈ 15,87% all'anno**
+
+Altri passaggi puliti: volatilità trimestrale 5% → × √4 = **10%** annua. Volatilità mensile → × √12.
+
+<Callout kind="attenzione">
+Si moltiplica per la **radice** del numero di periodi, non per il numero. 1% × 252 = 252% sarebbe un errore enorme.
+</Callout>
+
+Vuoi sentirla spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="sensei">La radice nasce da un'ipotesi: rendimenti indipendenti. Nella realtà è solo un'approssimazione. Fidati, ma controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+Stessi cinque rendimenti in Python con numpy:
+
+```python
+import numpy as np
+
+rend = np.array([-0.01, 0.01, 0.0, -0.01, 0.01])
+vol_giorno = rend.std(ddof=1)
+vol_anno = vol_giorno * np.sqrt(252)
+print(round(vol_giorno, 4), round(vol_anno, 4))
+```
+
+Output: `0.01 0.1587`
+
+`ddof=1` è la divisione per n − 1. Senza, numpy userebbe n (deviazione standard «della popolazione») e darebbe un numero un po' più piccolo.
+
+Prova con Python puro: modifica un rendimento e rifai il conto.
+
+<PythonTerminal code={"import math\nrend = [-0.01, 0.01, 0.0, -0.01, 0.01]\nmedia = sum(rend) / len(rend)\nvar = sum((r - media) ** 2 for r in rend) / (len(rend) - 1)\nprint(round(math.sqrt(var), 4))"} />
+
+<Say who="assistente">Cambia 0.0 in 0.02: la volatilità sale perché c'è un valore più lontano dalla media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia fittizia ha volatilità trimestrale del 5%. Qual è la volatilità annua, assumendo rendimenti indipendenti?"
+  options={["10%", "20%", "5%", "25%"]}
+  answer={0}
+  explain="Un anno ha 4 trimestri: 5% × √4 = 5% × 2 = 10%. Chi risponde 20% ha moltiplicato per 4 invece che per la radice di 4."
+/>
+
+<Say who="sensei">La radice, sempre la radice. Chi dimentica la radice gonfia la paura o la sicurezza di un fattore enorme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su deviazione standard, annualizzazione e significato della volatilità. Servono tutte e cinque. Hai 3 tentativi.
+
+<Practice generator="t07-volatilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. La volatilità è metà della domanda sul rischio. Prossimo passo: metterla in rapporto col rendimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La volatilità è la deviazione standard dei rendimenti: misura l'ampiezza delle oscillazioni, non la perdita.
+- Si annualizza moltiplicando per la radice dei periodi: giornaliera × √252, trimestrale × √4, mensile × √12.
+- Vale come approssimazione (rendimenti indipendenti) e cambia da un periodo all'altro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la volatilità?", a: "La deviazione standard dei rendimenti" },
+    { q: "Come si passa da volatilità giornaliera ad annua?", a: "Si moltiplica per la radice di 252" },
+    { q: "Volatilità trimestrale 5%: annua?", a: "10% (5% × √4)" },
+    { q: "Volatilità alta significa perdita?", a: "No, significa oscillazioni ampie" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: Sharpe e Sortino. Quanto rendimento hai ottenuto per ogni unità di rischio.</Say>
+</Scene>

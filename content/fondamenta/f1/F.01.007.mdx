@@ -1,0 +1,179 @@
+---
+id: F.01.007
+course: fondamenta
+module: 1
+title: "Installare Kali Linux in una VM"
+belt: bianca
+duration_min: 10
+prerequisites: [F.01.006]
+objectives:
+  - "Scaricare l'ISO ufficiale di Kali e verificarne il checksum"
+  - "Creare una VM con impostazioni ragionevoli e installare Kali"
+  - "Fare lo snapshot iniziale"
+video:
+  provider: youtube
+  id: "GD_EFqnOi-U"
+  start: 0
+  end: 600
+  channel: "Prime Radiant Security"
+  title: "Come Installare Kali Linux 2024.2 in VirtualBox e iniziare con l'Ethical Hacking"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-kali-install
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scaricare l'ISO da un sito non ufficiale"
+  - "Saltare la verifica del checksum"
+  - "Dare alla VM troppa o troppo poca RAM e disco"
+commands:
+  - "sha256sum"
+  - "certutil -hashfile"
+---
+
+<Scene title="Un file di cui fidarsi">
+Per installare Kali serve un file: l'**ISO**, cioè una copia in un solo file del contenuto di un disco di installazione.
+
+Nel mondo reale, i siti falsi che distribuiscono «Kali gratis» con dentro altro esistono. Il file giusto lo ha solo una fonte.
+
+<Callout kind="attenzione">
+La domanda del caso: **come sei certo che il file scaricato sia quello vero e non sia stato alterato?**
+</Callout>
+
+<Say who="sensei">Prima di fidarti di un programma, verifichi. Non perché tutti mentano, ma perché basta uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scaricare dal sito ufficiale">
+Vai su **kali.org**, sezione per scaricare Kali, e scegli **Installer Images** (le immagini di installazione), versione **a 64 bit**.
+
+Accanto a ogni file, la pagina pubblica una lunga stringa di lettere e numeri: il **checksum SHA-256**. È l'**impronta digitale** del file: se anche un solo bit cambia, l'impronta cambia del tutto.
+
+<Callout kind="regola">
+Il file giusto si scarica **solo** dal sito ufficiale. Non da video, gruppi di messaggi o siti che «regalano» Kali.
+</Callout>
+
+<Say who="assistente">L'impronta serve a un solo scopo: confrontare ciò che hai con ciò che il sito dichiara.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verificare il checksum">
+Calcola l'impronta del file scaricato e confrontala con quella del sito.
+
+Su **Windows**, in un terminale, nella cartella del file:
+
+<Log lines={["certutil -hashfile nome-del-file.iso SHA256"]} />
+
+Su **Linux**:
+
+<Log lines={["sha256sum nome-del-file.iso"]} />
+
+Il risultato deve essere **identico** a quello pubblicato sul sito. Anche una sola lettera diversa vuol dire: **non usare quel file**, scaricalo di nuovo.
+
+<Callout kind="trucco">
+`nome-del-file.iso` è un segnaposto: scrivi il nome vero del file che hai scaricato.
+</Callout>
+
+<Say who="sensei">Uguale: vai avanti. Diverso: scarichi da capo. Nessuna eccezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Creare la macchina virtuale">
+In **VirtualBox** scegli «Nuova» e inserisci:
+
+- **Nome**: Kali. Seleziona il file ISO scaricato.
+- **Tipo**: Linux, versione **Debian (64-bit)**.
+- **RAM**: circa **4 GB** (2 GB come minimo).
+- **Processori**: **2**.
+- **Disco virtuale**: **40 GB**, allocato dinamicamente (cresce solo quando serve).
+- **Rete**: **NAT** (come nella lezione precedente).
+
+<Callout kind="attenzione">
+Se VirtualBox propone l'installazione automatica («unattended»), per imparare conviene **disattivarla** e fare i passaggi a mano.
+</Callout>
+
+<Say who="assistente">Il disco da 40 GB è un file nel tuo computer. Non è il tuo disco vero: non ti preoccupare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'installazione">
+Avvia la VM e scegli l'installazione grafica. Le scelte principali:
+
+<Guided
+  steps={[
+    "Lingua, paese e tastiera: scegli italiano.",
+    "Nome della macchina: uno qualsiasi, per esempio kali-lab. Il dominio puoi lasciarlo vuoto.",
+    "Utente e password: scegli una password che ricordi e che non usi altrove.",
+    "Partizionamento: «Guidato, usa l'intero disco». Il disco in questione è quello virtuale da 40 GB, non il tuo disco vero.",
+    "Software: lascia le scelte predefinite. Poi installa il caricatore di avvio e riavvia, togliendo l'ISO.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Qui «intero disco» è sicuro **solo perché sei dentro una VM**. Su un computer vero, la stessa scelta cancellerebbe tutto.
+</Callout>
+
+Vuoi sentirlo fare da un'altra voce? Il video mostra tutti i passaggi (guarda i primi dieci minuti):
+
+<Video />
+
+<Say who="sensei">Un laboratorio è tuo solo se l'hai costruito tu, su un computer tuo. Su quello della scuola o di un amico, non si installa nulla senza permesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo snapshot iniziale">
+Dopo il riavvio, accedi con l'utente creato. Se si apre il desktop, l'installazione è riuscita.
+
+A questo punto **spegni la VM** dal menu del sistema e, in VirtualBox, crea uno **snapshot** chiamato «Dopo installazione». Sarà il tuo punto sicuro di partenza.
+
+<Quiz
+  question="Il checksum del file scaricato è diverso da quello pubblicato sul sito. Che cosa fai?"
+  options={["Non lo uso e lo scarico di nuovo dal sito ufficiale", "Lo installo lo stesso, tanto parte", "Cambio il checksum sul sito", "Lo rinomino e riprovo"]}
+  answer={0}
+  explain="Un checksum diverso significa che il file non è identico all'originale: può essere danneggiato o alterato. Il file giusto si riscarica dal sito ufficiale."
+/>
+
+<Say who="assistente">Se l'installazione non parte, nessun problema: cancella la VM e ricomincia. È proprio per questo che è una VM.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'installazione. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-kali-install" pass="5/5" retries={3} />
+
+<Say who="sensei">Un'installazione fatta con ordine ti accompagna per tutto il corso. Una fatta in fretta, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'ISO di Kali si scarica solo da kali.org e se ne verifica il checksum SHA-256.
+- La VM: Linux Debian a 64 bit, circa 4 GB di RAM, 2 processori, 40 GB di disco, rete NAT.
+- Dopo l'installazione si fa lo snapshot iniziale: sarà il punto sicuro di partenza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si scarica l'ISO di Kali?", a: "Solo dal sito ufficiale, kali.org" },
+    { q: "A che cosa serve il checksum?", a: "A verificare che il file sia identico all'originale" },
+    { q: "Checksum diverso: che cosa si fa?", a: "Non si usa il file e si riscarica" },
+    { q: "Che cos'è «l'intero disco» nell'installazione in VM?", a: "Il disco virtuale, non quello vero" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il primo avvio, l'aggiornamento e le regole del laboratorio.</Say>
+</Scene>

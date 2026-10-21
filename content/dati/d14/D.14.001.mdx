@@ -1,0 +1,154 @@
+---
+id: D.14.001
+course: dati
+module: 14
+title: "Dati nel cloud"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.006]
+objectives:
+  - "Spiegare che cos'è lo storage a oggetti e il calcolo elastico"
+  - "Capire perché contano regioni e costi a consumo"
+  - "Confrontare i grandi fornitori in modo neutro, per bisogni e non per marca"
+video:
+  provider: youtube
+  id: "da3NOtH3PXM"
+  start: 0
+  end: 600
+  channel: "Datapizza"
+  title: "Amazon AWS, Azure e Google Cloud: Come funziona davvero il CLOUD?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-cloud
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il cloud sia «il computer di qualcun altro» senza costi: si paga ciò che si usa, e dimenticare risorse accese costa"
+  - "Credere che un fornitore sia sempre migliore degli altri: la scelta dipende da bisogni, competenze e vincoli"
+  - "Ignorare la regione: dove stanno i dati conta per velocità, costo e leggi sulla privacy"
+commands: []
+---
+
+<Scene title="Il portatile che non basta più">
+Nora lavora per «Pasta Bianchi», un'azienda fittizia con 40 negozi. Ogni sera esporta le vendite in un file e lo analizza sul suo portatile.
+
+Un giorno il file ha 200 milioni di righe. Il portatile si blocca. Il collega Ivo propone: «Mettiamo tutto nel cloud». Nora chiede: «Ma che cosa cambia, davvero?»
+
+<Say who="sensei">Il cloud non è magia. È un modo diverso di avere spazio e potenza. Si comincia dalle parole giuste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il cloud come un affitto">
+Il **cloud** è l'uso di computer e archivi di un fornitore, collegati via Internet. Tu non compri la macchina: la **affitti** per il tempo che serve.
+
+Pensa all'acqua di casa. Non scavi un pozzo: apri il rubinetto e paghi i litri consumati.
+
+<Callout kind="regola">
+**Costi a consumo**: paghi quanto usi (spazio, ore di calcolo, dati trasferiti). Se non usi, paghi poco. Se dimentichi qualcosa acceso, paghi lo stesso.
+</Callout>
+
+<Say who="assistente">Pensa a un contatore. Il rubinetto aperto di notte fa girare il contatore anche se dormi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Storage a oggetti: l'armadio infinito">
+Per i dati il cloud offre lo **storage a oggetti**: un grande armadio dove ogni file («oggetto») ha un nome e un'etichetta, e si trova per nome. Non ci sono cartelle vere: i nomi con la barra, come `vendite/2025/gennaio.csv`, sono solo un'abitudine di scrittura.
+
+Va bene per file grandi che si scrivono una volta e si leggono tante volte: archivi, esportazioni, immagini, tabelle in formato compatto.
+
+<Log lines={["vendite/2025/01/negozio-03.csv", "vendite/2025/01/negozio-04.csv", "vendite/2025/02/negozio-03.csv"]} caption="Tre oggetti con il loro nome. Esempio fittizio." />
+
+<Callout kind="attenzione">
+Lo storage a oggetti non è un database: non fa «aggiorna la riga 7». Un oggetto si sostituisce intero, non si ritocca in un punto.
+</Callout>
+
+<Say who="sensei">Un armadio con etichette, non un registro da correggere riga per riga. Ricordalo quando scegli dove mettere cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Calcolo elastico">
+Lo spazio sta nell'armadio. Per **elaborare** i dati serve il calcolo: macchine virtuali o servizi che eseguono il lavoro.
+
+**Elastico** vuol dire che si allarga e si restringe. Per il report di fine mese accendi 20 macchine per un'ora, poi le spegni. Con macchine tue dovresti comprarne 20 e tenerle ferme il resto del mese.
+
+<Callout kind="trucco">
+Separare **spazio** e **calcolo** è l'idea chiave: i dati restano nell'armadio, e il calcolo si accende solo quando serve.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Una panoramica dei tre grandi fornitori:
+
+<Video />
+
+<Say who="assistente">Costo = spazio occupato tutto il mese, più ore di calcolo realmente usate. Sono due contatori diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regioni e fornitori">
+I fornitori hanno **regioni**: gruppi di centri dati in una zona geografica (per esempio Europa occidentale). Scegliere la regione conta per tre motivi:
+
+- **velocità**: più vicino ai tuoi utenti, meno attesa;
+- **costo**: i prezzi cambiano da regione a regione e spostare dati tra regioni si paga;
+- **legge**: per i dati delle persone il GDPR chiede attenzione a dove vanno. Tenerli in una regione europea è spesso la scelta più semplice.
+
+I grandi fornitori (per esempio Amazon Web Services, Microsoft Azure, Google Cloud) offrono servizi molto simili sotto nomi diversi. Lo storage a oggetti ha un nome diverso per ciascuno, ma l'idea è la stessa.
+
+<Callout kind="curiosita">
+Non esiste «il migliore in assoluto». Contano gli strumenti che il tuo team conosce già, i prezzi per il tuo caso, i servizi che servono e i vincoli dei contratti.
+</Callout>
+
+<Say who="sensei">Chi ti dice «questo è il migliore» senza chiederti che cosa devi fare, vende. Non ragiona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Pasta Bianchi deve fare un grande ricalcolo una volta al mese, che richiede molta potenza per due ore. Che cosa conviene del cloud?"
+  options={["Accendere molte macchine solo per quelle due ore e poi spegnerle", "Comprare molte macchine e tenerle sempre accese", "Spostare tutto sul portatile di Nora", "Scegliere una regione lontana per risparmiare sempre"]}
+  answer={0}
+  explain="Il calcolo elastico serve proprio a questo: potenza per poco tempo, pagata a consumo. Tenere le macchine accese tutto il mese sprecherebbe soldi. La regione lontana invece non fa risparmiare «sempre»: può costare di più e rallentare."
+/>
+
+<Say who="assistente">Se il lavoro è breve e raro, l'elasticità è la tua amica. Se è costante tutto il giorno, il conto cambia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di cloud: storage a oggetti, calcolo elastico, regioni e costi. Cinque domande, senza errori.
+
+<Practice generator="d14-cloud" pass="5/5" retries={3} />
+
+<Say who="sensei">Il cloud si paga a ogni ora che passa. Chi ragiona sui costi prima, dorme meglio dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il cloud è un affitto a consumo: paghi spazio, calcolo e trasferimenti, e dimenticare risorse accese costa.
+- Lo storage a oggetti conserva file con un nome; il calcolo elastico si accende e si spegne secondo il bisogno.
+- Regione e fornitore si scelgono per velocità, costo, legge e competenze, non per moda.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo storage a oggetti?", a: "Un archivio di file con un nome, da sostituire interi, non da ritoccare" },
+    { q: "Che cosa vuol dire calcolo elastico?", a: "Potenza che si allarga e si restringe secondo il bisogno" },
+    { q: "Perché conta la regione?", a: "Velocità, costi e leggi sulla privacy dei dati" },
+    { q: "Qual è il fornitore migliore in assoluto?", a: "Non esiste: dipende da bisogni, competenze e costi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando anche una macchina grande non basta, e il lavoro va diviso tra tante. Si chiama Spark.</Say>
+</Scene>

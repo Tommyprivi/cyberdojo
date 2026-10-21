@@ -1,0 +1,140 @@
+---
+id: D.14.002
+course: dati
+module: 14
+title: "Spark e il big data"
+belt: blu
+duration_min: 9
+prerequisites: [D.14.001]
+objectives:
+  - "Capire quando un solo computer non basta e perché si divide il lavoro"
+  - "Spiegare partizioni e calcolo distribuito con un'analogia"
+  - "Distinguere trasformazioni pigre e azioni che avviano il calcolo"
+video:
+  provider: youtube
+  id: "T8yi7oByYX4"
+  start: 0
+  end: 600
+  channel: "DevDreams"
+  title: "Introduzione ad Apache Spark - Parte I"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-spark
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare Spark per dati piccoli: la fatica di coordinare tante macchine supera il vantaggio"
+  - "Pensare che una trasformazione esegua subito il lavoro: parte solo quando arriva un'azione"
+  - "Dimenticare che spostare dati tra macchine (lo «shuffle») è la parte più lenta"
+commands: []
+---
+
+<Scene title="Il file che non entra">
+Nora ha messo le vendite di «Pasta Bianchi» nel cloud: 3 anni, 600 milioni di righe, circa 400 GB. Un calcolo semplice, il totale per negozio, sul suo strumento di sempre impiega **sei ore** e a volte si ferma per mancanza di memoria.
+
+Ivo dice: «Non serve una macchina più grossa. Serve **dividere il lavoro**».
+
+<Say who="sensei">Un solo computer ha un limite di memoria e di velocità. Quando lo raggiungi, si cambia metodo, non si insiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando un computer non basta">
+Si parla di **big data** quando i dati sono troppi, troppo veloci o troppo vari per essere gestiti comodamente da un solo computer. Non c'è una soglia magica: dipende da cosa devi fare.
+
+<Callout kind="attenzione">
+Per un file da 50 MB **non serve Spark**. Coordinare tante macchine ha un costo di fatica e di denaro. Prima si prova con strumenti semplici.
+</Callout>
+
+L'idea è antica: se hai 10 000 pagine da controllare, non le leggi da solo. Le dividi tra 20 colleghi e poi metti insieme i risultati.
+
+<Say who="assistente">Più persone non vuol dire sempre più veloce: se il lavoro è una pagina sola, i 20 colleghi si pestano i piedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Partizioni e calcolo distribuito">
+**Apache Spark** è un programma che divide i dati in pezzi, le **partizioni**, e li assegna a tante macchine (i «lavoratori») che lavorano **insieme**. Questo si chiama **calcolo distribuito**.
+
+Esempio fittizio: 400 GB divisi in 200 partizioni da circa 2 GB. Con 20 lavoratori, ognuno ne gestisce circa 10 alla volta, un pezzo per volta.
+
+Ogni lavoratore calcola il totale per negozio **sul suo pezzo**. Poi un passo finale unisce i totali parziali.
+
+<Callout kind="trucco">
+Partizioni piccole e numerose si distribuiscono bene. Ma troppe partizioni minuscole creano burocrazia: l'equilibrio si trova misurando.
+</Callout>
+
+Vuoi sentirlo da un'altra voce? Una introduzione a Spark:
+
+<Video />
+
+<Say who="sensei">Dividi, calcola in parallelo, riunisci. Ogni sistema di big data è una variante di questa frase.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il modello pigro">
+Spark è **pigro**: quando gli dai un ordine di tipo «filtra» o «raggruppa», non lavora subito. Annota solo un **piano**.
+
+Quando chiedi un risultato (mostrare, contare, salvare), allora parte. Le prime istruzioni si chiamano **trasformazioni**, le seconde **azioni**.
+
+<Log lines={["df = spark.read.csv('vendite/', header=True, inferSchema=True)", "grandi = df.filter(df.importo > 100)", "totali = grandi.groupBy('negozio').sum('importo')", "totali.show()"]} caption="Le prime tre righe preparano il piano. Solo show() fa partire il lavoro. Esempio didattico, non serve un account per leggerlo." />
+
+Perché essere pigri? Perché guardando tutto il piano, Spark può ottimizzarlo: per esempio filtrare **prima**, così gli altri passaggi lavorano su meno dati.
+
+<Callout kind="regola">
+**Trasformazione** = prepara il piano (filter, groupBy). **Azione** = chiede il risultato e avvia il calcolo (show, count, scrittura).
+</Callout>
+
+<Say who="assistente">Come una lista della spesa: finché non vai al negozio non hai comprato nulla. Ma scrivere bene la lista fa risparmiare passi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai scritto tre righe che filtrano e raggruppano un grande insieme di dati con Spark, ma nessuna riga che mostra o salva il risultato. Il programma finisce in un attimo. Perché?"
+  options={["Perché sono solo trasformazioni: senza un'azione il calcolo non parte", "Perché Spark ha già calcolato tutto e ha perso il risultato", "Perché il filtro ha cancellato i dati di origine", "Perché le partizioni erano troppo grandi"]}
+  answer={0}
+  explain="Spark è pigro: le trasformazioni preparano soltanto il piano. Serve un'azione, come mostrare o salvare, per far partire il lavoro. I dati di origine non vengono mai modificati da un filtro."
+/>
+
+<Say who="sensei">Se tutto sembra troppo veloce, controlla se hai chiesto un risultato. Il silenzio non è efficienza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su big data, partizioni e pigrizia di Spark. Cinque domande.
+
+<Practice generator="d14-spark" pass="5/5" retries={3} />
+
+<Say who="sensei">Prima di usare uno strumento grande chiediti: il problema è davvero grande? Poi chiedi come dividerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il big data nasce quando un solo computer non basta più; per dati piccoli Spark è esagerato.
+- Spark divide i dati in partizioni e le elabora in parallelo su più macchine, poi riunisce i risultati.
+- Le trasformazioni sono pigre: il calcolo parte solo con un'azione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una partizione?", a: "Un pezzo dei dati assegnato a un lavoratore" },
+    { q: "Che cos'è il calcolo distribuito?", a: "Più macchine che lavorano insieme su pezzi diversi" },
+    { q: "Differenza tra trasformazione e azione?", a: "La prima prepara il piano, la seconda avvia il calcolo" },
+    { q: "Quando NON serve Spark?", a: "Quando i dati sono piccoli e uno strumento semplice basta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i dati non arrivano tutti insieme, ma continuano ad arrivare. Batch e streaming.</Say>
+</Scene>

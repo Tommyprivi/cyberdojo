@@ -1,0 +1,158 @@
+---
+id: F.08.001
+course: fondamenta
+module: 8
+title: "Wireshark: catturare e leggere"
+belt: arancione
+duration_min: 9
+prerequisites: [F.07.008]
+objectives:
+  - "Descrivere le parti dell'interfaccia di Wireshark e avviare una cattura sulla propria macchina"
+  - "Distinguere il filtro di cattura dal filtro di visualizzazione e scriverne di semplici"
+video:
+  provider: youtube
+  id: "vf2UbArV1bk"
+  start: 0
+  end: 600
+  channel: "Diario di Tecnologia"
+  title: "Wireshark per principianti - tool per sniffare e analizzare traffico di rete"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-wireshark
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere filtro di cattura (cosa si salva) e filtro di visualizzazione (cosa si mostra)"
+  - "Pensare di vedere tutto il traffico della rete: su uno switch si vede soprattutto il proprio"
+  - "Dimenticare che si cattura solo sulla propria macchina o con un permesso scritto"
+commands: []
+---
+
+<Scene title="Una riga non basta">
+Il caso della postazione .66 è chiuso, ma il capo del SOC non è soddisfatto. «Nel log c'è scritto *che cosa* è successo. Io voglio vedere i pacchetti, con i miei occhi.»
+
+Per questo esiste **Wireshark**: un programma gratuito che **cattura** i pacchetti che passano da una scheda di rete e li mostra uno per uno, con tutte le loro buste (Ethernet, IP, TCP) aperte. Le buste le hai viste nel modulo F5: adesso le guardi dal vivo.
+
+<Say who="sensei">Un log è il riassunto di un testimone. Una cattura è la registrazione della scena. Impara a leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima la regola">
+Wireshark è uno strumento legale e normale per chi lavora in rete. Ma una cattura può contenere dati di altre persone.
+
+<Callout kind="regola">
+Si cattura **solo sulla propria macchina**, in una rete **di cui si è responsabili**, oppure con un **permesso scritto**. Catturare il traffico altrui senza permesso può essere reato (in Italia, accesso abusivo a sistema informatico: art. 615-ter del codice penale).
+</Callout>
+
+Per esercitarti hai due strade sicure: catturi **il traffico del tuo computer** mentre apri un sito, oppure scarichi da Internet un **file di esempio** (estensione `.pcap` o `.pcapng`) pensato per imparare.
+
+<Say who="sensei">Si prova solo ciò che è tuo, o per cui hai un permesso scritto. Wireshark non fa eccezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre finestre">
+Quando apri una cattura, Wireshark mostra tre pannelli uno sopra l'altro:
+
+1. **Elenco pacchetti**: una riga per pacchetto, con numero, tempo, sorgente, destinazione, protocollo e un riassunto.
+2. **Dettagli**: le buste del pacchetto selezionato, che si aprono come una matrioska (Ethernet, IP, TCP, poi il protocollo dell'applicazione).
+3. **Byte**: il contenuto grezzo, in esadecimale. Di solito basta guardarlo di sfuggita.
+
+<Callout kind="trucco">
+Ti serve un pacchetto? Clicca sulla riga nell'elenco e leggi **dall'alto in basso** il pannello dei dettagli: è lo stesso ordine delle buste, dal collegamento locale fino all'applicazione.
+</Callout>
+
+Vuoi vedere l'interfaccia in azione, spiegata da un'altra voce? I primi minuti bastano:
+
+<Video />
+
+<Say who="assistente">Non devi capire ogni riga. Cerca la sorgente, la destinazione e il protocollo: sono le tre colonne che raccontano la storia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Avviare una cattura">
+All'apertura Wireshark mostra l'elenco delle **interfacce**: la scheda Wi-Fi, quella Ethernet, e altre virtuali. Accanto a quelle attive c'è un piccolo grafico che si muove.
+
+<Guided
+  steps={[
+    "Scegli l'interfaccia che sta davvero usando la rete (Wi-Fi o Ethernet): quella con il grafico che si muove.",
+    "Premi il pulsante di avvio (la pinna blu): i pacchetti iniziano a scorrere.",
+    "Fai qualcosa di semplice sul tuo computer, per esempio apri una pagina web o fai un ping.",
+    "Premi il pulsante di stop (il quadrato rosso). Una cattura lunga si riempie in fretta: fermala appena hai quello che serve.",
+    "Salva con File, Salva: avrai un file .pcapng da riaprire e da conservare come prova.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Su una rete con **switch** vedi soprattutto il traffico che parte o arriva al tuo computer, più i messaggi mandati a tutti (broadcast). Lo switch non gira il traffico degli altri verso di te: per questo catturare «tutto» richiede un punto speciale della rete, deciso da chi la gestisce.
+</Callout>
+
+<Say who="sensei">Interfaccia giusta, cattura breve, file salvato. Tre abitudini che ti salvano dal caos.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due filtri, due mestieri">
+Dopo pochi secondi hai migliaia di righe. Ti servono i **filtri**, e sono di due tipi che si confondono spesso.
+
+- **Filtro di cattura**: si imposta **prima** di avviare. Decide che cosa **salvare**. Esempio: `host 192.168.1.66`. Quello che non passa il filtro è perso.
+- **Filtro di visualizzazione**: si scrive nella barra in alto **dopo**. Decide che cosa **mostrare** di ciò che hai già. Esempi: `dns`, `http`, `ip.addr == 192.168.1.66`. Cancelli il filtro e i pacchetti nascosti ricompaiono.
+
+<Callout kind="attenzione">
+Le due sintassi sono diverse. `host 192.168.1.66` va nel filtro di cattura; `ip.addr == 192.168.1.66` (con i due uguali) va nella barra di visualizzazione.
+</Callout>
+
+<Say who="assistente">Regola semplice: se non sei sicuro, cattura tutto e filtra dopo. Un pacchetto che non hai salvato non lo recuperi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai catturato un quarto d'ora di traffico. Vuoi vedere solo i pacchetti DNS, senza perdere gli altri. Che cosa fai?"
+  options={["Scrivo dns nella barra del filtro di visualizzazione", "Riavvio la cattura con il filtro di cattura dns", "Cancello il file e ricomincio", "Chiudo Wireshark e lo riapro"]}
+  answer={0}
+  explain="Il filtro di visualizzazione nasconde soltanto: i pacchetti restano nella cattura e tornano quando lo cancelli. Il filtro di cattura, invece, avrebbe buttato via tutto il resto per sempre."
+/>
+
+<Say who="sensei">Mostrare non è cancellare. Chi mischia i due filtri perde le prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cattura, interfaccia e filtri. Cinque su cinque, con 3 tentativi: a ogni tentativo le domande cambiano.
+
+<Practice generator="f08-wireshark" pass="5/5" retries={3} />
+
+<Say who="sensei">Un analista che non sa filtrare annega nei pacchetti. Chi sa filtrare trova l'ago.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Wireshark cattura i pacchetti e ne mostra le buste: elenco, dettagli, byte.
+- Si cattura solo sulla propria macchina o con un permesso scritto.
+- Filtro di cattura: cosa si salva (prima). Filtro di visualizzazione: cosa si mostra (dopo).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa Wireshark?", a: "Cattura i pacchetti di un'interfaccia e li mostra uno per uno" },
+    { q: "Dove si scrive il filtro di visualizzazione?", a: "Nella barra in alto, dopo la cattura (esempio: dns)" },
+    { q: "Un filtro di cattura può essere annullato dopo?", a: "No: i pacchetti non salvati sono persi" },
+    { q: "Che cos'è un file .pcap?", a: "Una cattura salvata, da riaprire in Wireshark" },
+  ]}
+/>
+
+<Say who="sensei">Hai gli occhi aperti. Prossima lezione: seguire una conversazione intera, dal nome del sito alla pagina.</Say>
+</Scene>

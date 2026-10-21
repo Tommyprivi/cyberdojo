@@ -1,0 +1,159 @@
+---
+id: T.13.004
+course: trading
+module: 13
+title: "Pump and dump e manipolazione"
+belt: blu
+duration_min: 8
+prerequisites: [T.13.003]
+objectives:
+  - "Spiegare come funziona un pump and dump e chi ci perde"
+  - "Riconoscere altre forme di manipolazione del mercato in sintesi"
+  - "Dire perché la manipolazione è vietata e che cosa fare se la si incontra"
+video:
+  provider: youtube
+  id: "CakdQBB5QnQ"
+  start: 0
+  end: 600
+  channel: "CoinGecko"
+  title: "Crypto Pump and Dump EXPLAINED: How to Spot and Avoid It"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-manipolazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che entrare «presto» in un gruppo di segnali dia un vantaggio: spesso i primi vendono ai nuovi arrivati"
+  - "Credere che diffondere voci per far salire un prezzo sia solo «parlare»: è manipolazione, anche tra amici"
+  - "Fidarsi di un prezzo che sale solo per il passaparola, senza notizie né dati"
+commands: []
+---
+
+<Scene title="Il gruppo che urla «alla luna»">
+Un gruppo con 40.000 iscritti annuncia: «Domani alle 18:00 compriamo tutti la moneta ZETA. Alla luna!». Alle 18:00 il prezzo di ZETA schizza su di un +300% in dieci minuti. Poi, in pochi minuti, ritorna giù.
+
+Elio ha comprato al picco. Ora ha perso il 70%.
+
+La domanda del caso: **chi ha guadagnato, e come?**
+
+<Callout kind="attenzione">
+Il corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Spieghiamo la manipolazione per **riconoscerla e difendersi**, mai per praticarla.
+</Callout>
+
+<Say who="sensei">Quando un prezzo sale solo perché tutti lo sanno in anticipo, qualcuno sta già vendendo. Domandati chi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pump, poi dump">
+Il **pump and dump** («gonfia e scarica») ha due tempi:
+
+- **Pump**: chi organizza compra prima, poi spinge gli altri a comprare con annunci, voci e promesse. Il prezzo sale.
+- **Dump**: appena il prezzo è alto, gli organizzatori **vendono tutto**. Il prezzo crolla. Chi ha comprato per ultimo resta con il valore perso.
+
+Più il mercato è piccolo e poco scambiato, più è facile gonfiarlo.
+
+Con numeri fittizi: chi organizza compra a 1,00 e vende a 4,00. Chi compra a 4,00 e il prezzo torna a 1,00 perde il 75% (da 4,00 a 1,00, cioè -3,00 su 4,00).
+
+<Callout kind="regola">
+Nel pump and dump i soldi di chi arriva **dopo** vanno a chi è entrato **prima**. Non nasce nessun valore nuovo.
+</Callout>
+
+<Say who="assistente">Fai il calcolo con calma: se compri a 4 e scende a 1, perdi tre quarti. Per tornare a 4 dovrebbe quadruplicare. Le perdite pesano più dei guadagni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altre forme di manipolazione">
+Il pump and dump è solo una forma. In sintesi, ottobre 2026, il quadro europeo sugli **abusi di mercato** (regolamento UE sugli abusi di mercato, in sigla MAR) vieta di manipolare il mercato. Esempi, descritti solo a livello concettuale:
+
+- **diffondere notizie false o fuorvianti** per muovere il prezzo;
+- **ordini finti**: inserire ordini che non si vogliono eseguire per dare l'idea di un interesse inesistente;
+- **accordi per fissare il prezzo** a un livello artificiale.
+
+In Italia, la Consob vigila su questi comportamenti, che possono portare a **sanzioni amministrative** e, nei casi più gravi, a **sanzioni penali**.
+
+<Callout kind="attenzione">
+Anche un piccolo gruppo social che si mette d'accordo per «spingere» un titolo poco scambiato può commettere un illecito. Non conta quanti sono, conta lo scopo: alterare il prezzo.
+</Callout>
+
+Vuoi ascoltare una spiegazione da un'altra voce? Il video è in inglese, con i sottotitoli attivabili dall'icona del player, e parla di pump and dump nelle cripto:
+
+<Video />
+
+<Say who="sensei">Se il tuo programma di trading un giorno scrivesse ordini solo per «muovere» il prezzo, sarebbe un illecito. Ricordalo quando scrivi regole per un algoritmo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come ti difendi">
+Alcuni segnali che aiutano a riconoscere un pump:
+
+- **annuncio con data e ora** di un acquisto collettivo;
+- moneta o titolo **poco conosciuto, poco scambiato**;
+- **nessuna notizia** né dato che giustifichi il rialzo;
+- toni da festa: «ultimi minuti», «non perdere il treno».
+
+Se ti accorgi di un pump, non partecipi, non lo diffondi. Se ti sembra un illecito, puoi **segnalarlo alla Consob** dal suo sito.
+
+<Callout kind="regola">
+Il treno che parte per la luna lascia a terra chi sale ultimo. Se la ragione per comprare è «lo fanno tutti», non è una ragione.
+</Callout>
+
+<Say who="assistente">Una domanda semplice da farti: che cosa è cambiato, nei fatti, tra ieri e oggi? Se la risposta è «solo il prezzo», prudenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un gruppo annuncia: «Alle 20:00 comprate tutti la moneta KIRA, la facciamo salire». KIRA è scambiata pochissimo e non ci sono notizie. Qual è la scelta più prudente?"
+  options={[
+    "Non partecipare e, se vuoi, segnalare il gruppo alla Consob: è un tipico pump and dump",
+    "Comprare con pochi euro subito prima delle 20:00 e vendere al primo rialzo",
+    "Comprare dopo il rialzo, quando sembra che «il mercato abbia confermato»",
+    "Condividere l'annuncio con gli amici: più compratori, più guadagni per tutti",
+  ]}
+  answer={0}
+  explain="Un acquisto coordinato su un titolo poco scambiato e senza notizie è la firma del pump. Chi compra poco prima partecipa a una manipolazione; chi compra dopo il rialzo è proprio quello che paga il dump. Condividere l'annuncio aiuta chi manipola."
+/>
+
+<Say who="sensei">Se ti accorgi che stai per essere la liquidità di qualcun altro, ti fermi. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su pump and dump e manipolazione del mercato: scegli che cosa è più prudente e corretto fare.
+
+<Practice generator="t13-manipolazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Riconoscere la manipolazione è il primo passo per non diventarne la vittima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Pump and dump: gli organizzatori comprano, gonfiano il prezzo con annunci e poi vendono; chi compra dopo ci perde.
+- La manipolazione (notizie false, ordini finti, accordi sul prezzo) è vietata dalle regole sugli abusi di mercato.
+- Un rialzo senza notizie, su un titolo poco scambiato, con toni da festa: prudenza e, se serve, segnalazione alla Consob.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un pump and dump?", a: "Si gonfia il prezzo con annunci e voci, poi chi ha comprato prima vende e il prezzo crolla" },
+    { q: "Perché ci perde chi compra dopo?", a: "Compra a prezzo gonfiato e resta con il valore che crolla" },
+    { q: "Un ordine inserito solo per dare un'idea falsa di interesse è lecito?", a: "No: è una forma di manipolazione" },
+    { q: "Dove puoi segnalare una sospetta manipolazione?", a: "Alla Consob, dal suo sito ufficiale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'insider trading. Quando sapere una cosa in anticipo diventa un reato.</Say>
+</Scene>

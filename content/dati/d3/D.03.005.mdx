@@ -1,0 +1,294 @@
+---
+id: D.03.005
+course: dati
+module: 3
+title: "I JOIN: unire le tabelle"
+belt: gialla
+duration_min: 10
+prerequisites: [D.03.004]
+objectives:
+  - "Unire due o più tabelle con INNER JOIN e LEFT JOIN usando le chiavi esterne"
+  - "Trovare con un LEFT JOIN le righe che non hanno corrispondenza"
+  - "Riconoscere gli errori tipici: righe moltiplicate, ON dimenticato, condizione nel posto sbagliato"
+video:
+  provider: youtube
+  id: "lM70DQ39I1w"
+  start: 0
+  end: 600
+  channel: "Mirco Miglietta"
+  title: "I TIPI DI JOIN | SQL per DATA ANALYST LEZIONE 6"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-join
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Contare le righe dopo un JOIN uno-a-molti come se fossero i clienti: i clienti con più ordini compaiono più volte"
+  - "Dimenticare la condizione ON: ogni riga si abbina a tutte le altre (prodotto cartesiano)"
+  - "Mettere nel WHERE una condizione sulla tabella di destra di un LEFT JOIN: le righe senza corrispondenza spariscono"
+commands: []
+---
+
+<Scene title="Numeri, non nomi">
+Marta guarda la tabella `ordini` e sbuffa: «Cliente 4, prodotto 2... io voglio i **nomi**!».
+
+I nomi stanno in altre tabelle (`clienti`, `prodotti`). Gli ordini li richiamano con le chiavi esterne. Per avere tutto in un unico risultato bisogna **unire** le tabelle, seguendo quelle chiavi. In SQL si fa con il `JOIN`.
+
+La domanda del caso: **come si uniscono le tabelle senza perdere righe o inventarne?**
+
+<Say who="sensei">Il JOIN è lo strumento più potente e più pericoloso di SQL. Usato bene unisce. Usato male inventa dati. Attenzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="INNER JOIN: le righe che si incontrano">
+`JOIN` (cioè `INNER JOIN`) abbina le righe di due tabelle quando la condizione dopo `ON` è vera. Qui: l'`id` del cliente deve coincidere con il `cliente_id` dell'ordine. Le lettere `c` e `o` sono alias di tabella, per scrivere meno.
+
+<Log lines={[
+  "SELECT o.id AS ordine, c.nome AS cliente, o.totale",
+  "FROM ordini o",
+  "INNER JOIN clienti c ON c.id = o.cliente_id",
+  "ORDER BY o.id;",
+  "",
+  "ordine | cliente      | totale",
+  "1      | Giulia Ferri | 25.00",
+  "2      | Marco Bassi  | 18.00",
+  "3      | Giulia Ferri | 18.00",
+  "4      | Sara Neri    | 12.50",
+  "5      | Marco Bassi  | 24.00",
+  "6      | Luca Riva    | 30.00",
+  "7      | Giulia Ferri | 15.00",
+  "8      | Sara Neri    | 12.00",
+]} caption="Ogni ordine con il nome del cliente." />
+
+Con più JOIN si uniscono più tabelle. Ecco gli ordini con cliente **e** prodotto:
+
+<Log lines={[
+  "SELECT o.id AS ordine, c.nome AS cliente, p.nome AS prodotto, o.quantita",
+  "FROM ordini o",
+  "JOIN clienti c ON c.id = o.cliente_id",
+  "JOIN prodotti p ON p.id = o.prodotto_id",
+  "ORDER BY o.id;",
+  "",
+  "ordine | cliente      | prodotto         | quantita",
+  "1      | Giulia Ferri | candela vaniglia | 2",
+  "2      | Marco Bassi  | sapone lavanda   | 3",
+  "3      | Giulia Ferri | candela cedro    | 1",
+  "4      | Sara Neri    | candela vaniglia | 1",
+  "5      | Marco Bassi  | profumatore      | 1",
+  "6      | Luca Riva    | sapone lavanda   | 5",
+  "7      | Giulia Ferri | sapone argilla   | 2",
+  "8      | Sara Neri    | sapone lavanda   | 2",
+]} caption="Tre tabelle unite: ordini, clienti, prodotti." />
+
+<Callout kind="regola">
+`INNER JOIN` tiene **solo** le righe che hanno una corrispondenza da entrambi i lati. Una riga senza partner sparisce.
+</Callout>
+
+<Say who="assistente">ON dice quali righe si abbinano. Di solito è «chiave esterna uguale a chiave primaria».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="LEFT JOIN: tenere anche chi non c'è">
+Anna e Paolo non hanno mai ordinato. Con un `INNER JOIN` non comparirebbero. Il `LEFT JOIN` tiene **tutte** le righe della tabella di sinistra (quella dopo `FROM`) e, dove non c'è corrispondenza, mette **NULL** nelle colonne della destra.
+
+<Log lines={[
+  "SELECT c.nome AS cliente, o.id AS ordine",
+  "FROM clienti c",
+  "LEFT JOIN ordini o ON o.cliente_id = c.id",
+  "ORDER BY c.id, o.id;",
+  "",
+  "cliente      | ordine",
+  "Giulia Ferri | 1",
+  "Giulia Ferri | 3",
+  "Giulia Ferri | 7",
+  "Marco Bassi  | 2",
+  "Marco Bassi  | 5",
+  "Sara Neri    | 4",
+  "Sara Neri    | 8",
+  "Luca Riva    | 6",
+  "Anna Conti   | NULL",
+  "Paolo Gallo  | NULL",
+]} caption="Tutti i clienti, con i loro ordini (se ci sono)." />
+
+Questo permette una domanda preziosa: **chi non ha mai ordinato?** Si cercano le righe con NULL a destra.
+
+<Log lines={[
+  "SELECT c.nome AS cliente",
+  "FROM clienti c",
+  "LEFT JOIN ordini o ON o.cliente_id = c.id",
+  "WHERE o.id IS NULL",
+  "ORDER BY c.id;",
+  "",
+  "cliente",
+  "Anna Conti",
+  "Paolo Gallo",
+]} caption="I clienti senza ordini." />
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sui tipi di JOIN:
+
+<Video />
+
+<Say who="sensei">Sinistra e destra sono la posizione nella query: prima del JOIN e dopo. Non c'entra l'ordine delle colonne.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori tipici">
+Tre trappole. La prima è la più comune e la più silenziosa.
+
+**1. Le righe si moltiplicano.** Un cliente con tre ordini, dopo il JOIN, compare tre volte.
+
+<Log lines={[
+  "SELECT COUNT(*) AS righe,",
+  "       COUNT(DISTINCT c.id) AS clienti_diversi",
+  "FROM clienti c",
+  "JOIN ordini o ON o.cliente_id = c.id;",
+  "",
+  "righe | clienti_diversi",
+  "8     | 4",
+]} caption="Righe dopo il JOIN: sono gli ordini, non i clienti." />
+
+I clienti sono sei, i clienti che hanno ordinato quattro, le righe otto. Per contare i clienti serve `COUNT(DISTINCT c.id)`.
+
+**2. Manca la condizione ON.** Senza condizione ogni cliente si abbina a ogni ordine: è il **prodotto cartesiano**.
+
+<Log lines={[
+  "SELECT COUNT(*) AS righe",
+  "FROM clienti",
+  "CROSS JOIN ordini;",
+  "",
+  "righe",
+  "48",
+]} caption="CROSS JOIN: sei clienti per otto ordini." />
+
+**3. La condizione nel posto sbagliato.** Con un `LEFT JOIN`, un filtro sulla tabella di destra scritto nel `WHERE` scarta anche le righe con NULL, e il LEFT JOIN diventa un INNER JOIN.
+
+<Log lines={[
+  "SELECT c.nome AS cliente, o.totale",
+  "FROM clienti c",
+  "LEFT JOIN ordini o ON o.cliente_id = c.id",
+  "WHERE o.totale > 20",
+  "ORDER BY c.id;",
+  "",
+  "cliente      | totale",
+  "Giulia Ferri | 25.00",
+  "Marco Bassi  | 24.00",
+  "Luca Riva    | 30.00",
+]} caption="Nel WHERE: Anna, Paolo e Sara spariscono." />
+
+<Log lines={[
+  "SELECT c.nome AS cliente, o.totale",
+  "FROM clienti c",
+  "LEFT JOIN ordini o ON o.cliente_id = c.id AND o.totale > 20",
+  "ORDER BY c.id, o.id;",
+  "",
+  "cliente      | totale",
+  "Giulia Ferri | 25.00",
+  "Marco Bassi  | 24.00",
+  "Sara Neri    | NULL",
+  "Luca Riva    | 30.00",
+  "Anna Conti   | NULL",
+  "Paolo Gallo  | NULL",
+]} caption="Nella condizione ON: tutti i clienti restano." />
+
+<Say who="assistente">Dopo ogni JOIN, controlla il numero di righe. Se è cambiato in un modo che non ti aspetti, c'è un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="JOIN e aggregazioni insieme">
+La vera forza arriva unendo JOIN e GROUP BY. Ecco due domande da analista.
+
+<Log lines={[
+  "SELECT c.citta, SUM(o.totale) AS spesa",
+  "FROM clienti c",
+  "JOIN ordini o ON o.cliente_id = c.id",
+  "GROUP BY c.citta",
+  "ORDER BY spesa DESC;",
+  "",
+  "citta  | spesa",
+  "Torino | 82.50",
+  "Milano | 42.00",
+  "Roma   | 30.00",
+]} caption="Quanto ha speso ogni città?" />
+
+<Log lines={[
+  "SELECT p.categoria, SUM(o.totale) AS incasso",
+  "FROM ordini o",
+  "JOIN prodotti p ON p.id = o.prodotto_id",
+  "GROUP BY p.categoria",
+  "ORDER BY incasso DESC;",
+  "",
+  "categoria | incasso",
+  "saponi    | 75.00",
+  "candele   | 55.50",
+  "profumi   | 24.00",
+]} caption="Quanto si incassa per categoria di prodotto?" />
+
+Sono risposte che nessuna tabella contiene da sola: nascono **unendo** informazioni sparse e **riassumendole**.
+
+<Callout kind="curiosita">
+Esistono anche `RIGHT JOIN` (come il LEFT, ma tiene la destra) e `FULL JOIN` (tiene entrambe). Si usano di rado: di solito basta scambiare l'ordine delle tabelle e usare il LEFT JOIN. SQLite li supporta solo nelle versioni più recenti.
+</Callout>
+
+<Say who="sensei">Nessuna delle due tabelle conosceva la risposta. L'hanno trovata insieme. È questo il database relazionale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marta vuole l'elenco dei prodotti che **non** sono mai stati ordinati.
+
+<Quiz
+  question="Quale query restituisce i prodotti mai ordinati?"
+  options={[
+    "SELECT p.nome FROM prodotti p LEFT JOIN ordini o ON o.prodotto_id = p.id WHERE o.id IS NULL;",
+    "SELECT p.nome FROM prodotti p INNER JOIN ordini o ON o.prodotto_id = p.id WHERE o.id IS NULL;",
+    "SELECT p.nome FROM prodotti p LEFT JOIN ordini o ON o.prodotto_id = p.id WHERE o.id = NULL;",
+    "SELECT p.nome FROM ordini o LEFT JOIN prodotti p ON o.prodotto_id = p.id WHERE p.id IS NULL;",
+  ]}
+  answer={0}
+  explain="Serve un LEFT JOIN partendo dai prodotti, poi si tengono le righe senza ordine (o.id IS NULL). L'INNER JOIN scarta proprio i prodotti senza ordini: non restituirebbe niente. = NULL non trova mai niente. E nell'ultima i prodotti sono a destra: sparirebbero."
+/>
+
+<Say who="sensei">Risultato: solo la candela mirra non è mai stata ordinata. Cerchi chi manca? Parti da chi deve esserci e usa LEFT JOIN.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui JOIN: cosa restituisce una query, quale scrivere, perché dà un risultato sbagliato. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-join" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un JOIN sbagliato produce numeri che sembrano veri. Controlla sempre le righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- JOIN ... ON abbina le righe seguendo la chiave esterna; INNER JOIN tiene solo le righe con corrispondenza.
+- LEFT JOIN tiene tutta la tabella di sinistra, con NULL a destra dove manca il partner: ottimo per trovare chi «non ha mai fatto qualcosa».
+- Dopo un JOIN le righe possono moltiplicarsi: usa COUNT(DISTINCT) e controlla il conteggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa tiene un INNER JOIN?", a: "Solo le righe con corrispondenza in entrambe le tabelle" },
+    { q: "Come si trovano i clienti senza ordini?", a: "LEFT JOIN, poi WHERE ordini.id IS NULL" },
+    { q: "Perché dopo un JOIN le righe possono aumentare?", a: "Una riga con più partner compare più volte (relazione uno a molti)" },
+    { q: "Che succede se si dimentica ON?", a: "Prodotto cartesiano: ogni riga con ogni altra" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: query dentro le query, e come spezzare un problema difficile in pezzi facili.</Say>
+</Scene>

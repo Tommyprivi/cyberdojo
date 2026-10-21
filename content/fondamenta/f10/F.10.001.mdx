@@ -1,0 +1,191 @@
+---
+id: F.10.001
+course: fondamenta
+module: 10
+title: "Progetto: la rete di un'azienda"
+belt: verde
+duration_min: 10
+prerequisites: [F.09.009]
+objectives:
+  - "Ricavare da un elenco di esigenze i reparti, le VLAN e le sottoreti di una piccola azienda"
+  - "Assegnare indirizzi, gateway e dimensioni di sottorete, con spazio per crescere"
+  - "Scrivere le regole minime di filtro tra le reti"
+video:
+  provider: youtube
+  id: "mmhJdYo_tbA"
+  start: 0
+  end: 543
+  channel: "L'Informatica Che Appassiona"
+  title: "Creiamo una rete LAN su Packet Tracer"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f10-progetto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cominciare dagli indirizzi senza aver elencato prima reparti e flussi"
+  - "Dimensionare le sottoreti al numero esatto di dispositivi, senza spazio per crescere"
+  - "Dimenticare che la rete degli ospiti e quella dei server non devono vedersi"
+commands: []
+---
+
+<Scene title="Il cliente">
+Dopo mesi di SOC, è il momento di progettare. Una piccola azienda, **Bianchi Servizi** (nome inventato), sta per trasferirsi in un nuovo ufficio e chiede a te la rete.
+
+Questi sono i fatti, raccolti in un colloquio:
+
+- **Amministrazione**: 12 postazioni.
+- **Reparto tecnico**: 20 postazioni.
+- **Server**: 4 macchine (gestionale, file, stampa, registratore delle telecamere).
+- **Telecamere**: 8.
+- **Wi-Fi ospiti**: fino a 40 dispositivi contemporanei.
+- Una sola connessione a Internet, tramite un router.
+
+La domanda del progetto: **come si organizza la rete, e quali regole mettiamo?**
+
+<Say who="sensei">Un progetto non comincia da un comando. Comincia da una lista: chi c'è, e chi deve parlare con chi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Primo passo: chi parla con chi">
+Prima degli indirizzi, i **flussi**. Per ogni reparto, che cosa deve raggiungere?
+
+<Log
+  lines={[
+    "Amministrazione -> server: gestionale e file (HTTPS)   -> Internet",
+    "Tecnico         -> server: file e accesso tecnico      -> Internet",
+    "Telecamere      -> solo il registratore (nel gruppo server)",
+    "Ospiti          -> solo Internet",
+    "Server          -> aggiornamenti da Internet",
+  ]}
+  caption="La mappa dei flussi: tutto ciò che non è scritto qui, per default, è vietato."
+/>
+
+Da qui nasce l'idea: **una VLAN per ogni gruppo**. Cinque gruppi, cinque VLAN: amministrazione, tecnico, server, ospiti, telecamere.
+
+<Callout kind="regola">
+**Una VLAN, una sottorete.** Mai due VLAN con la stessa sottorete IP: i pacchetti non saprebbero dove andare.
+</Callout>
+
+<Say who="assistente">Cinque gruppi, cinque VLAN, cinque sottoreti. Il conto è facile: per ora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Secondo passo: la dimensione">
+Per ogni gruppo scegli una **maschera** che dia abbastanza indirizzi, con **spazio per crescere**. Ricorda il conto: gli indirizzi utilizzabili sono quelli totali meno 2 (l'indirizzo di rete e quello di broadcast), e uno è già preso dal **gateway**.
+
+<Guided
+  steps={[
+    "Amministrazione: 12 postazioni. Un /27 dà 30 indirizzi utilizzabili: bastano e avanzano.",
+    "Tecnico: 20 postazioni, con la prospettiva di assumere. Un /26 dà 62 indirizzi: spazio per più del doppio.",
+    "Server: 4 macchine. Un /28 dà 14 indirizzi: più che sufficiente, e una rete piccola è più facile da controllare.",
+    "Telecamere: 8 oggi, magari 16 domani. Un /27 (30 indirizzi) va bene.",
+    "Ospiti: 40 dispositivi contemporanei. Un /26 (62 indirizzi) è la scelta giusta: con un /27 (30) finirebbero gli indirizzi.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Tabellina da ricordare: **/24 = 254**, **/25 = 126**, **/26 = 62**, **/27 = 30**, **/28 = 14**. Ogni bit in più dimezza gli indirizzi utilizzabili circa a metà.
+</Callout>
+
+<Say who="sensei">Troppo piccolo, e tra un anno rifai tutto. Troppo grande, e sprechi. Qui sta il mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Terzo passo: il piano degli indirizzi">
+Usi una rete **privata** (10.x.x.x), mettendo un numero di VLAN riconoscibile nel terzo ottetto. Gateway sempre al **primo indirizzo utilizzabile**: è una convenzione che fa risparmiare tempo a chi arriva dopo.
+
+<Log
+  lines={[
+    "VLAN 10  Amministrazione  10.10.10.0/27    gateway 10.10.10.1",
+    "VLAN 20  Tecnico          10.10.20.0/26    gateway 10.10.20.1",
+    "VLAN 30  Server           10.10.30.0/28    gateway 10.10.30.1",
+    "VLAN 40  Ospiti           10.10.40.0/26    gateway 10.10.40.1",
+    "VLAN 50  Telecamere       10.10.50.0/27    gateway 10.10.50.1",
+  ]}
+  caption="Il piano degli indirizzi. Per le VLAN 10 e 30, per esempio, le maschere sono 255.255.255.224 e 255.255.255.240."
+/>
+
+Per i **server** (e le stampanti) si usano indirizzi **fissi**, così non cambiano: per esempio, gestionale 10.10.30.2, file 10.10.30.3, stampa 10.10.30.4, registratore 10.10.30.10. Per i PC si usa il **DHCP**, che assegna indirizzo, gateway e DNS in automatico.
+
+Vuoi vedere come si costruisce una rete LAN su Packet Tracer, da un'altra voce?
+
+<Video />
+
+<Say who="assistente">Una regola gentile per chi verrà dopo: gateway sempre .1, server sempre in un blocco basso e riconoscibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quarto passo: le regole minime">
+Le VLAN separano. Ora scrivi le **regole sul router**, partendo dal principio del **minimo privilegio**: si vieta tutto, e si permette solo ciò che serve.
+
+<Guided
+  steps={[
+    "Ospiti (VLAN 40): possono uscire su Internet. Verso tutte le altre VLAN: vietato.",
+    "Telecamere (VLAN 50): possono parlare solo con il registratore 10.10.30.10. Niente Internet diretto, niente altre VLAN.",
+    "Amministrazione (VLAN 10): verso i server, solo HTTPS (porta 443) e i servizi di file e stampa necessari; poi Internet.",
+    "Tecnico (VLAN 20): verso i server HTTPS e l'accesso tecnico (SSH, porta 22); poi Internet.",
+    "Tutto il resto: deny. Il deny implicito di una ACL fa già questo lavoro, ma meglio scriverlo in chiaro nel progetto.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Il deny implicito vale per chi ha già scritto ogni permit necessario. Se dimentichi un servizio, qualcuno non lavora. Per questo servono la documentazione e il collaudo: la prossima lezione.
+</Callout>
+
+<Say who="sensei">Poche regole, tutte motivate. Ogni permit deve avere un motivo scritto accanto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il capo dice: «Gli ospiti sono 40, ma di solito se ne collegano 25. Diamo loro un /27 e risparmiamo indirizzi.» Che cosa rispondi?"
+  options={["Un /27 dà 30 indirizzi: con 40 dispositivi contemporanei finirebbero. Serve un /26 (62 indirizzi)", "Va bene, perché 25 è meno di 30 e non ci saranno mai picchi", "Meglio un /30, così gli ospiti non possono collegarsi in massa", "Un /27 va bene perché i dispositivi ospiti non usano indirizzi IP"]}
+  answer={0}
+  explain="Si dimensiona sul massimo previsto, non sulla media, e con un margine. 40 dispositivi contemporanei non entrano in 30 indirizzi: il quarantunesimo ospite resta senza rete. Un /26 ne dà 62."
+/>
+
+<Say who="sensei">Si progetta per il giorno peggiore, non per il giorno medio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul progetto: sottoreti, indirizzi, gateway e regole. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f10-progetto" pass="5/5" retries={3} />
+
+<Say who="sensei">Se i conti tornano sulla carta, torneranno anche sui cavi. Sbaglia sulla carta, e sbagli in produzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si parte dai flussi (chi parla con chi), poi una VLAN e una sottorete per gruppo.
+- Si dimensiona sul massimo con margine: /24 = 254, /26 = 62, /27 = 30, /28 = 14 indirizzi utilizzabili.
+- Regole minime: vietare tutto e permettere solo ciò che serve, con un motivo scritto per ogni permit.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti indirizzi utilizzabili ha un /26?", a: "62" },
+    { q: "Due VLAN possono avere la stessa sottorete?", a: "No: una VLAN, una sottorete" },
+    { q: "Di solito, qual è l'indirizzo del gateway?", a: "Il primo utilizzabile della rete (esempio .1)" },
+    { q: "Che cosa si fa tra ospiti e server?", a: "Si vieta tutto: gli ospiti escono solo su Internet" },
+  ]}
+/>
+
+<Say who="sensei">Il progetto è pronto sulla carta. Ma un progetto non documentato e non collaudato è un'opinione. Prossima lezione.</Say>
+</Scene>

@@ -1,0 +1,167 @@
+---
+id: C.20.002
+course: cybersecurity
+module: 20
+title: "Comunicare durante la crisi"
+belt: marrone
+duration_min: 10
+prerequisites: [C.20.001]
+objectives:
+  - "Individuare i destinatari di una crisi e cosa serve a ciascuno"
+  - "Scrivere un comunicato con quattro blocchi: cosa sappiamo, cosa non sappiamo, cosa facciamo, cosa devi fare"
+  - "Evitare le frasi che si ritorcono contro l'azienda (promesse non verificate, scuse generiche, colpe)"
+video:
+  provider: youtube
+  id: "yKLUStf_Y98"
+  start: 0
+  end: 600
+  channel: "Security Weekly - A CRA Resource"
+  title: "Effective Communications During & After a Cyber Attack - Ann Marie van den Hurk - BSW 249"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-comunicazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dire «nessun dato è stato rubato» prima di averlo verificato"
+  - "Lasciare che ognuno parli con clienti e giornalisti a modo suo"
+  - "Tacere finché non si sa tutto: il silenzio lascia spazio alle voci"
+commands: []
+---
+
+<Scene title="Due comunicati">
+Bianchi Logistica (azienda fittizia) ha subìto un accesso non autorizzato a un archivio di ordini. Alle 11:00 un cliente chiede sul sito: «È vero che avete avuto un attacco?». Due dipendenti rispondono in modo diverso:
+
+<Log lines={[
+  "Dipendente A (chat clienti): 'Tutto a posto, nessun dato e' stato rubato, non preoccupatevi.'",
+  "Dipendente B (telefono): 'Si', hanno rubato tutto, e' colpa del reparto IT che e' un disastro.'",
+]} caption="Due risposte improvvisate, nello stesso minuto." />
+
+Entrambe sono dannose. La A promette ciò che non si sa. La B diffonde panico e punta il dito.
+
+La domanda del caso: **come si comunica quando i fatti non sono ancora chiari?**
+
+<Say who="sensei">In una crisi si parla comunque. Il silenzio è una comunicazione, e la peggiore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="A chi parli">
+Non esiste «la comunicazione»: esistono **destinatari diversi**, con bisogni diversi.
+
+| Destinatario | Cosa gli serve |
+|---|---|
+| Dipendenti | Cosa devono fare, cosa non dire all'esterno, chi è il portavoce |
+| Direzione | Impatto, decisioni da prendere, tempi |
+| Clienti | Se sono coinvolti, cosa fare per proteggersi |
+| Autorità | Le informazioni richieste dalla legge (lezione 5) |
+| Fornitori e partner | Cosa è cambiato negli accessi e nei collegamenti |
+| Stampa | Una dichiarazione sola, uguale per tutti |
+
+<Callout kind="regola">
+**Una sola voce.** Si nomina un **portavoce** (e un sostituto). Gli altri rimandano a lui: «Un comunicato ufficiale arriverà a breve».
+</Callout>
+
+<Say who="assistente">Anche tra colleghi serve una regola: se non sei il portavoce, non rispondi tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro blocchi">
+Un buon messaggio di crisi, interno o esterno, ha **quattro blocchi**, nell'ordine:
+
+1. **Cosa sappiamo**: i fatti **verificati**, con l'ora.
+2. **Cosa non sappiamo ancora**: detto in modo onesto.
+3. **Cosa stiamo facendo**: contenimento, indagine, avviso alle autorità.
+4. **Cosa devi fare tu**: cambiare la password, controllare i movimenti, non rispondere a messaggi sospetti.
+
+Un esempio **fittizio** per i clienti di Bianchi Logistica:
+
+<Log lines={[
+  "Oggetto: Comunicazione su un accesso non autorizzato",
+  "SAPPIAMO: il 14 ottobre, alle 03:20, un accesso non autorizzato ha raggiunto un archivio ordini.",
+  "NON SAPPIAMO ANCORA: quali clienti siano coinvolti. L'analisi e' in corso.",
+  "FACCIAMO: accesso bloccato, indagine con un esperto esterno, autorita' avvisate.",
+  "TU PUOI: diffidare di email che citano ordini non fatti; scrivere a sicurezza@bianchi.example.",
+  "Prossimo aggiornamento: domani alle 12:00.",
+]} caption="Breve, onesto, con un prossimo appuntamento." />
+
+<Say who="sensei">Dire «non lo sappiamo ancora» non è debolezza. Dire una cosa falsa e doverla correggere, sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Frasi da evitare">
+Alcune frasi tornano indietro come un boomerang:
+
+- **«Nessun dato è stato compromesso»** detto troppo presto. Se poi si scopre il contrario, perdi la fiducia di tutti. Dì invece: «Al momento non abbiamo evidenza di…».
+- **«Era un attacco sofisticatissimo»** come scusa. Spesso non è vero, e chi legge se ne accorge.
+- **Dare la colpa** a un dipendente o a un fornitore prima della fine dell'indagine.
+- **Dettagli tecnici di come ci si difende ora**: possono aiutare chi attacca.
+- **Promesse sui tempi** («ripartiamo entro stasera») senza una base.
+
+<Callout kind="attenzione">
+Ogni messaggio esterno passa da **chi si occupa della parte legale** e da chi dirige la crisi. Poche righe, ma controllate.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? I primi minuti bastano, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Quando sei incerto, scrivi cosa sai oggi e quando aggiornerai. Mai una promessa su ciò che non controlli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sono passate tre ore dall'incidente. Un giornalista chiede se i dati dei clienti sono stati rubati. L'indagine non ha ancora una risposta. Qual è la risposta migliore del portavoce?"
+  options={[
+    "«Stiamo indagando: al momento non possiamo confermare quali dati siano coinvolti. Aggiorneremo domani alle 12:00 con un comunicato.»",
+    "«No comment» e riattaccare",
+    "«Nessun dato è stato rubato, può stare tranquillo»",
+    "«Sì, è stato rubato tutto, ma la colpa è di un fornitore»",
+  ]}
+  answer={0}
+  explain="Si dice ciò che è vero (si sta indagando), si ammette ciò che non si sa e si fissa un prossimo aggiornamento. «No comment» alimenta le voci; la rassicurazione senza prove e l'attribuzione di colpe si ritorcono contro l'azienda."
+/>
+
+<Say who="sensei">Verità, limite, prossimo appuntamento. Tre cose, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di comunicazione: destinatari, portavoce, frasi giuste e frasi da evitare.
+
+<Practice generator="c20-comunicazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una crisi si vince anche con le parole giuste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- In una crisi si parla a destinatari diversi con una voce sola: un portavoce e un sostituto.
+- Il messaggio ha quattro blocchi: cosa sappiamo, cosa non sappiamo, cosa facciamo, cosa devi fare, con un prossimo aggiornamento.
+- Niente promesse non verificate, niente colpe, niente dettagli che aiutano chi attacca; i messaggi esterni passano dalla parte legale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché serve un solo portavoce?", a: "Per evitare messaggi contraddittori e frasi improvvisate" },
+    { q: "Quali sono i quattro blocchi di un messaggio di crisi?", a: "Cosa sappiamo, cosa non sappiamo, cosa facciamo, cosa devi fare" },
+    { q: "Come si riformula «nessun dato rubato» se non è verificato?", a: "«Al momento non abbiamo evidenza di…»" },
+    { q: "Cosa si aggiunge sempre in fondo al comunicato?", a: "L'ora del prossimo aggiornamento" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il ransomware. Tecnica, comunicazione e decisioni, tutte insieme.</Say>
+</Scene>

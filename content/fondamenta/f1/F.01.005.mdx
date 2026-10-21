@@ -1,0 +1,145 @@
+---
+id: F.01.005
+course: fondamenta
+module: 1
+title: "Le macchine virtuali"
+belt: bianca
+duration_min: 8
+prerequisites: [F.01.004]
+objectives:
+  - "Spiegare che cos'è una macchina virtuale e distinguere host e ospite"
+  - "Dire perché in sicurezza si prova nelle macchine virtuali"
+  - "Spiegare a che cosa serve uno snapshot e che non è un backup"
+video:
+  provider: youtube
+  id: "pW1uhjlWdA8"
+  start: 0
+  end: 600
+  channel: "YoungTech"
+  title: "Cosa sono e come si usano le MACCHINE VIRTUALI?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-macchine-virtuali
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la macchina virtuale sia un computer in più, senza costi di RAM e CPU"
+  - "Confondere host (computer vero) e ospite (sistema dentro la VM)"
+  - "Considerare lo snapshot un backup dei dati"
+commands: []
+---
+
+<Scene title="Provare senza rompere">
+Vuoi provare un programma che non conosci, forse pericoloso. Se lo provi sul tuo computer e va storto, rischi i tuoi dati.
+
+Esiste un modo per avere **un computer usa e getta**, dentro il tuo computer vero?
+
+<Callout kind="attenzione">
+La domanda del caso: **come si sperimenta in sicurezza?** La risposta si chiama macchina virtuale.
+</Callout>
+
+<Say who="sensei">Chi lavora in sicurezza informatica sbaglia spesso. La differenza è dove sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un computer dentro un programma">
+Una **macchina virtuale** (spesso **VM**, dall'inglese *virtual machine*) è un computer **simulato** da un programma. Ha una finta CPU, una finta RAM, un disco finto, e un suo sistema operativo.
+
+Il disco finto, in realtà, è **un grande file** sul tuo disco vero. Cancellare la VM significa cancellare quel file.
+
+<Callout kind="trucco">
+La VM vive dentro un file e dentro una finestra. Chiudi la finestra, spegni la VM; cancelli il file, scompare.
+</Callout>
+
+<Say who="assistente">Un computer in una scatola: se si rompe, butti la scatola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Host e ospite">
+Due parole da imparare:
+
+- **host** (ospitante): il computer **vero**, con il suo sistema operativo, che fa girare la VM
+- **ospite** (in inglese *guest*): il sistema operativo che gira **dentro** la VM
+
+Il programma che crea e gestisce le VM si chiama **hypervisor**. Ne vedremo due: VirtualBox e VMware.
+
+<Callout kind="attenzione">
+La VM **usa le risorse dell'host**: CPU, RAM, spazio su disco. Se le dai troppa RAM, il computer vero rallenta.
+</Callout>
+
+<Say who="sensei">L'ospite crede di essere un computer vero. Ma ogni cosa che usa, la presta l'host.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché si usano in sicurezza">
+In una VM puoi:
+
+- provare **sistemi operativi** senza toccare il tuo
+- fare **esperimenti rischiosi** sapendo che, se qualcosa va storto, butti la VM
+- tornare indietro con gli **snapshot**
+
+Uno **snapshot** (istantanea) è una **fotografia** dello stato della VM in un momento preciso. Se poi rompi qualcosa, **ripristini** lo snapshot e torni com'eri.
+
+<Callout kind="attenzione">
+Uno snapshot **non è un backup**. Vive accanto alla VM: se si rompe il disco vero, si perde tutto insieme. I dati importanti vanno copiati altrove.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Dodici minuti, guarda i primi dieci:
+
+<Video />
+
+<Say who="assistente">Fai uno snapshot prima di ogni esperimento. È come salvare la partita prima del capo finale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai fatto uno snapshot della VM. Poi hai rovinato la configurazione. Che cosa fai?"
+  options={["Ripristino lo snapshot e torno allo stato di prima", "Reinstallo il computer vero", "Cancello l'host", "Spengo la corrente e spero"]}
+  answer={0}
+  explain="Lo snapshot serve proprio a questo: tornare a uno stato che funzionava. Non serve toccare il computer vero. Chi risponde «reinstallo il computer vero» ha dimenticato che il problema è dentro la VM."
+/>
+
+<Say who="sensei">Se hai uno snapshot, l'errore costa pochi minuti. Senza, può costare un giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su macchine virtuali. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-macchine-virtuali" pass="5/5" retries={3} />
+
+<Say who="sensei">Dove sbagli è già una scelta di sicurezza. Scegli sempre la scatola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una VM è un computer simulato: il suo disco è un file sul computer vero.
+- L'host è il computer vero; l'ospite è il sistema dentro la VM; la VM usa CPU, RAM e disco dell'host.
+- Lo snapshot fotografa lo stato e permette di tornare indietro, ma non è un backup.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una macchina virtuale?", a: "Un computer simulato da un programma, con un suo sistema operativo" },
+    { q: "Che cos'è l'host?", a: "Il computer vero che fa girare la VM" },
+    { q: "A che cosa serve uno snapshot?", a: "A tornare a uno stato precedente della VM" },
+    { q: "Lo snapshot è un backup?", a: "No: vive accanto alla VM e si perde con lei" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: prepariamo il tuo laboratorio. Che cosa serve, che cosa non toccare mai.</Say>
+</Scene>

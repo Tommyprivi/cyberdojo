@@ -1,0 +1,158 @@
+---
+id: C.18.004
+course: cybersecurity
+module: 18
+title: "Analisi dinamica in una sandbox isolata"
+belt: marrone
+duration_min: 9
+prerequisites: [C.18.003]
+objectives:
+  - "Spiegare cos'è una sandbox e perché l'analisi dinamica va fatta in un ambiente isolato"
+  - "Elencare cosa si osserva durante l'esecuzione: file, processi, registro di sistema, rete"
+  - "Riconoscere perché «non ha fatto niente» non vuol dire «è innocuo»"
+video:
+  provider: youtube
+  id: "EQykk44oKYk"
+  start: 0
+  end: 600
+  channel: "Bare Metal Cyber"
+  title: "Episode 35: Dynamic Malware Analysis Platforms (Sandboxing)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-dinamica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la sandbox sia infallibile: un malware può accorgersi di essere osservato"
+  - "Concludere «innocuo» perché nei pochi minuti di prova non è successo nulla"
+  - "Lasciare la sandbox collegata alla rete vera, rischiando che l'infezione esca"
+commands: []
+---
+
+<Scene title="Il file che non parla">
+Torniamo alla Biblioteca Ferrari. L'analisi statica del file della chiavetta si è fermata: nome sospetto, hash sconosciuto, quasi nessuna stringa leggibile.
+
+La responsabile IT dice: «Se vogliamo sapere cosa fa, dobbiamo vederlo agire.» Ma lo dice con un avvertimento: «Solo dove non può far danni.»
+
+La domanda del caso: **come si osserva un programma sospetto mentre agisce, senza rischiare nulla?**
+
+<Say who="sensei">Per vedere un animale in azione serve una gabbia solida. Per un programma si chiama sandbox.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La sandbox: una scatola di sabbia">
+Una **sandbox** (in inglese «recinto di sabbia», dove i bambini giocano in sicurezza) è un ambiente **isolato** dove si fa partire il programma sospetto e si **osserva** cosa fa. Di solito è una **macchina virtuale**: un computer simulato dentro il tuo, che si può riportare a com'era prima con un clic (uno **snapshot**, una «fotografia» dello stato pulito).
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sulle piattaforme che automatizzano questa osservazione:
+
+<Video />
+
+<Say who="assistente">Due parole da fissare: isolata, perché non esca nulla; ripristinabile, perché dopo si torna pulito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa si osserva">
+Mentre il programma gira, gli strumenti della sandbox **registrano** quattro cose:
+
+- **File**: ne crea, ne modifica, ne cancella? Dove?
+- **Processi**: ne avvia altri? Si nasconde dentro un programma normale?
+- **Registro e configurazione**: cerca di restare installato dopo il riavvio?
+- **Rete**: prova a contattare indirizzi esterni? A che ritmo? Quali nomi di dominio cerca?
+
+La rete della sandbox è **finta o chiusa**: il programma crede di parlare con Internet, ma le richieste vengono registrate e non escono.
+
+<Callout kind="trucco">
+Il risultato è un **rapporto di comportamento**, come una pagella: ha scritto in cartelle di avvio, ha cercato questo dominio, ha avviato quel processo. Da qui si ricavano gli indicatori di compromissione (la prossima lezione).
+</Callout>
+
+<Say who="sensei">Non devi indovinare le intenzioni. Guarda i fatti, scrivili in ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando la sandbox viene ingannata">
+Un malware ben fatto può accorgersi di essere in una macchina virtuale (la scheda grafica strana, pochi file personali, nessuna attività dell'utente) e **comportarsi in modo innocuo**. Oppure può **aspettare** per giorni prima di fare qualcosa, o partire solo in certe condizioni.
+
+<Callout kind="attenzione">
+«In dieci minuti non ha fatto niente» non vuol dire «è innocuo». Vuol dire **«in dieci minuti, in questa scatola, non ha fatto niente»**. L'analista lo scrive nel rapporto con questa precisione.
+</Callout>
+
+Per questo si usano più prove diverse: statica e dinamica insieme, ambienti più realistici, tempi più lunghi. Nessuna delle due da sola dà certezza.
+
+<Say who="assistente">La sandbox mostra ciò che il malware decide di mostrare. Tienine conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In una sandbox un file sospetto, in dieci minuti, non fa nulla di anomalo. Quale conclusione è corretta?"
+  options={["Non si può dire che sia innocuo: può aspettare o riconoscere l'ambiente di analisi", "È sicuramente innocuo e si può aprire sul PC normale", "La sandbox non funziona e va buttata", "Il file è corrotto e va cancellato senza altri controlli"]}
+  answer={0}
+  explain="Il comportamento osservato vale solo per quell'ambiente e quel tempo. Un malware può ritardare le sue azioni o riconoscere la sandbox. Aprire il file sul PC normale sarebbe l'errore più grave."
+/>
+
+<Say who="sensei">Un buon analista scrive «non osservato», mai «non esiste».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'analisi, passo per passo">
+Il file della chiavetta, in laboratorio. Ragiona nell'ordine.
+
+<Guided
+  steps={[
+    "Prima: lo snapshot pulito della macchina virtuale è salvato. La rete è chiusa.",
+    "Si avvia il file nella macchina virtuale; gli strumenti registrano file, processi, registro, rete.",
+    "Rapporto: il programma crea una copia di sé in una cartella di avvio automatico e prova a risolvere un nome di dominio mai visto.",
+    "Valutazione: due comportamenti tipici di un malware che vuole restare e contattare chi lo guida.",
+    "Si annotano i fatti (cartella, dominio), poi si ripristina lo snapshot: la macchina torna pulita.",
+    "Si passa alla difesa: bloccare quel dominio e cercare altre copie dello stesso file in azienda.",
+  ]}
+/>
+
+<Callout kind="regola">
+Il laboratorio è di tua proprietà e isolato dalla rete reale. Fuori da lì non si fa partire nulla di sospetto, e non si regala un campione a nessuno: diffondere programmi dannosi è reato (art. 615-quinquies c.p.).
+</Callout>
+
+<Say who="sensei">Lo snapshot è la tua rete di sicurezza. Senza, non si comincia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sandbox, snapshot, cosa si osserva e i limiti dell'osservazione. Hai 3 tentativi.
+
+<Practice generator="c18-dinamica" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi sulla rete della sandbox: chiusa o finta, mai quella vera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'analisi dinamica fa partire il programma in una sandbox isolata e ripristinabile (snapshot) e ne registra file, processi, registro e rete.
+- La rete della sandbox è chiusa o simulata: nulla deve uscire verso la rete vera.
+- Un'osservazione breve non prova l'innocuità: il malware può aspettare o riconoscere l'ambiente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è una sandbox?", a: "Un ambiente isolato dove si fa girare un programma sospetto per osservarlo" },
+    { q: "A cosa serve lo snapshot?", a: "A riportare la macchina virtuale allo stato pulito dopo l'analisi" },
+    { q: "Cosa si osserva in analisi dinamica?", a: "File, processi, registro di sistema e comunicazioni di rete" },
+    { q: "«Non ha fatto niente» vuol dire innocuo?", a: "No: può aspettare o aver riconosciuto la sandbox" },
+  ]}
+/>
+
+<Say who="sensei">I fatti raccolti diventano indicatori che anche altri possono usare. Se ne parla nella prossima lezione.</Say>
+</Scene>

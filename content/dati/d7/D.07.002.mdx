@@ -1,0 +1,152 @@
+---
+id: D.07.002
+course: dati
+module: 7
+title: "Barre, linee e torte"
+belt: arancione
+duration_min: 8
+prerequisites: [D.07.001]
+objectives:
+  - "Dire quando barre, linee e torte funzionano e quando no"
+  - "Ordinare le barre e partire da zero sull'asse"
+  - "Sostituire una torta confusa con barre ordinate"
+video:
+  provider: youtube
+  id: "A_nNJhtpFzQ"
+  start: 0
+  end: 600
+  channel: "Enzo Exposyto"
+  title: "STATISTICA - 5 TIPI di GRAFICI: ISTOGRAMMA, con BARRE ORIZZONTALI, a TORTA, ad ANELLO, a DISPERSIONE"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-barre-linee-torte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Far partire l'asse delle barre da un valore diverso da zero"
+  - "Lasciare le barre in ordine casuale invece di ordinarle per valore"
+  - "Mettere in una torta troppe fette o fette quasi uguali"
+commands: []
+---
+
+<Scene title="La torta che non si capisce">
+Marta porta al titolare della Bottega Verde la quota di vendite per marca di vasi. Ha fatto una torta con quattro fette e tre colori simili.
+
+Il titolare strizza gli occhi: «Quale marca è prima?». Marta non sa rispondere guardando il grafico. I numeri sono questi:
+
+| Marca | Quota |
+| --- | --- |
+| Terra | 27% |
+| Sole | 25% |
+| Luna | 24% |
+| Vento | 24% |
+
+La domanda della lezione: **perché il grafico più famoso è spesso il meno chiaro, e cosa lo sostituisce?**
+
+<Say who="sensei">Le torte piacciono perché sembrano semplici. Spesso non lo sono. Vediamo quando sì e quando no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le barre: lunghezza uguale a valore">
+Una barra funziona perché l'occhio confronta **lunghezze** su una base comune. È la cosa che gli esseri umani fanno meglio.
+
+Per questo vale una regola ferrea: **le barre partono da zero**. Se tagli la base, il rapporto tra le barre cambia.
+
+Esempio: due barre valgono 98 e 100. Con l'asse da zero, sono quasi uguali. Con l'asse che parte da 96, le altezze visibili sono 2 e 4: la seconda sembra il **doppio**, ma la differenza vera è circa il 2%.
+
+<Callout kind="regola">
+Barre: base a zero, sempre. Se la differenza è piccola, è giusto che si veda piccola.
+</Callout>
+
+<Say who="assistente">Se ti sembra che le barre «non si vedano abbastanza», non tagliare l'asse. Cambia grafico o scrivi i numeri accanto alle barre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordinare, orientare">
+Due piccoli accorgimenti rendono le barre molto più leggibili.
+
+**Ordina per valore**, dal più alto al più basso. Le categorie senza un ordine naturale (negozi, prodotti, marche) si mettono in classifica. L'occhio trova subito il primo e l'ultimo.
+
+**Eccezione:** categorie con un ordine proprio, come mesi, giorni o fasce di età, restano nel loro ordine.
+
+**Barre orizzontali** quando i nomi sono lunghi: le etichette si leggono da sinistra a destra senza girare la testa.
+
+<Callout kind="trucco">
+Riordina e rendi grigie tutte le barre tranne quella da mostrare. In dieci secondi un grafico anonimo diventa un messaggio.
+</Callout>
+
+Vuoi vedere i tipi di grafico a confronto con un'altra voce? Una decina di minuti, la parte iniziale basta:
+
+<Video />
+
+<Say who="sensei">Ordine e zero. Due gesti che separano un grafico professionale da uno improvvisato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Linee e torte: i limiti">
+**Linee.** Servono per il tempo, perché collegano punti **ordinati**. Qui l'asse può non partire da zero, se conta la variazione (una temperatura tra 36 e 40 gradi non ha uno zero utile). L'asse va però ben etichettato. Con più di quattro o cinque linee nasce un groviglio: evidenziane una e metti le altre in grigio.
+
+**Torte.** Funzionano solo se:
+- le parti sommano a un intero (100%);
+- sono poche, di solito non più di cinque o sei;
+- una è chiaramente diversa dalle altre.
+
+La torta di Marta ha quattro fette quasi uguali: 27, 25, 24, 24. Con quattro **barre ordinate** (Terra 27, Sole 25, Luna 24, Vento 24) si vede subito che Terra è prima e le altre tre sono quasi alla pari.
+
+<Say who="assistente">Quando le fette sono simili, la torta mente per omissione: non fa vedere che quasi non c'è differenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un grafico a barre mostra tre reparti con valori 98, 100 e 99, ma l'asse verticale parte da 96. Cosa succede?"
+  options={["Le differenze sembrano enormi, anche se sono di circa il 2%", "Il grafico mostra le differenze reali", "Le barre diventano più precise", "I valori vengono arrotondati dal programma"]}
+  answer={0}
+  explain="Tagliando la base si vedono solo le parti sopra 96: le altezze diventano 2, 4 e 3. Chi guarda crede che il secondo reparto valga il doppio del primo. Nelle barre la base è sempre zero."
+/>
+
+<Say who="sensei">Se vuoi far vedere piccole differenze, usa i numeri accanto alle barre. Mai un asse tagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Altre torte, altre barre, altri assi da controllare. Cinque risposte giuste su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-barre-linee-torte" pass="5/5" retries={3} />
+
+<Say who="sensei">Se esiti, ricordati le due regole: barre da zero e torte con poche fette.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le barre confrontano lunghezze: base a zero, ordine per valore, orizzontali con nomi lunghi.
+- Le linee seguono il tempo: l'asse può non partire da zero, ma poche linee e una evidenziata.
+- La torta serve per poche parti di un intero; con fette simili o numerose meglio le barre.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove partono le barre?", a: "Da zero, sempre" },
+    { q: "Quante fette al massimo in una torta?", a: "Di solito cinque o sei" },
+    { q: "Barre con mesi o fasce di età: si riordinano per valore?", a: "No, hanno un ordine naturale" },
+    { q: "Quando conviene le barre orizzontali?", a: "Quando i nomi delle categorie sono lunghi" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: i colori, e come usarli per guidare l'occhio.</Say>
+</Scene>

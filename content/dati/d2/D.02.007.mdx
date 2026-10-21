@@ -1,0 +1,147 @@
+---
+id: D.02.007
+course: dati
+module: 2
+title: "I grafici"
+belt: gialla
+duration_min: 8
+prerequisites: [D.02.006]
+objectives:
+  - "Scegliere il tipo di grafico adatto alla domanda (confronto, andamento, parti di un tutto)"
+  - "Creare un grafico da una tabella pivot"
+  - "Rendere un grafico leggibile ed evitare i trucchi che ingannano"
+video:
+  provider: youtube
+  id: "Kz6Sik3km_k"
+  start: 0
+  end: 326
+  channel: "Edoardo Midali"
+  title: "Grafici Pivot - EXCEL TUTORIAL ITALIANO 51"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-grafici
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare una torta con molte fette: non si confrontano più"
+  - "Far partire l'asse verticale di un grafico a barre da un numero diverso da zero: le differenze sembrano enormi"
+  - "Lasciare il titolo predefinito («Totale») che non dice nulla"
+commands: []
+---
+
+<Scene title="Il grafico che nessuno capisce">
+La titolare del negozio ha chiesto un grafico dei reparti. Sara ne ha fatto uno con effetto tridimensionale, sette colori, nessun titolo. Bello da vedere, ma nessuno capisce quale reparto vende di più.
+
+La domanda del caso: **come si fa un grafico che risponde alla domanda in cinque secondi?**
+
+<Say who="sensei">Un grafico non è una decorazione. È una risposta disegnata. Se serve spiegarlo a voce, è sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla pivot al grafico">
+Partiamo dalla pivot della lezione scorsa, solo i totali:
+
+| Reparto | Totale (euro) |
+|---|---|
+| Libri | 50 |
+| Penne | 15 |
+| Zaini | 90 |
+
+In Excel basta selezionare una cella della pivot e scegliere Inserisci > **Grafico pivot** (PivotChart): il grafico segue la pivot, e se cambi un filtro cambia da solo. In Fogli Google e LibreOffice Calc si seleziona la tabella e si sceglie Inserisci > Grafico.
+
+<Callout kind="regola">
+Prima la domanda, poi il tipo di grafico. La domanda dice quale scegliere.
+</Callout>
+
+<Say who="assistente">Parti sempre da una tabellina pulita, pochi numeri. Un grafico da cento righe è un grafico che si perde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tipo giusto">
+- **Confrontare** categorie (Libri, Penne, Zaini): grafico a **barre o colonne** (in inglese bar o column chart).
+- Vedere un **andamento nel tempo** (gennaio 75, febbraio 80): grafico a **linee**.
+- Mostrare le **parti di un tutto**, solo con poche categorie (due o tre, al massimo cinque): **torta** o ciambella.
+
+<Callout kind="attenzione">
+La torta con quindici fette è illeggibile: l'occhio non confronta bene gli angoli. Con tante categorie usa le barre, ordinate dalla più grande alla più piccola.
+</Callout>
+
+Per i nostri reparti la domanda è «chi vende di più?»: barre ordinate. Zaini (90), poi Libri (50), poi Penne (15).
+
+<Say who="sensei">Barre per confrontare, linee per il tempo, torta rarissima. Con queste tre regole eviti il novanta per cento degli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rendere leggibile">
+Cinque abitudini:
+1. **Titolo che dice il messaggio**: «Gli zaini portano 90 euro su 155» è meglio di «Grafico 1».
+2. **Assi con nome e unità**: che cosa misurano? In euro? In pezzi?
+3. **Asse da zero** nelle barre: se parte da un numero più alto, le differenze si gonfiano.
+4. **Pochi colori**: uno solo, e un colore diverso per evidenziare ciò che conta.
+5. **Niente 3D**: lo spessore falsa le altezze.
+
+<Callout kind="curiosita">
+Un esempio di trucco: due barre da 75 e 80 sono quasi uguali (la seconda è più alta del 7% circa). Se l'asse parte da 70, la prima sembra alta 5 e la seconda 10: sembra il doppio.
+</Callout>
+
+<Say who="assistente">Quando ti chiedi «ho cambiato il grafico per rendere più chiaro il dato, o per fare colpo?», sai già la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi mostrare come sono andate le vendite mese per mese lungo un anno. Quale grafico scegli?"
+  options={["Linee", "Torta con dodici fette", "Barre 3D di sette colori", "Nessun grafico: solo la tabella"]}
+  answer={0}
+  explain="Per un andamento nel tempo si usano le linee: l'occhio segue la salita e la discesa. Una torta con dodici fette si legge male, e il 3D falsa le altezze."
+/>
+
+Un video mostra come nasce un grafico da una pivot, passo passo:
+
+<Video />
+
+<Say who="sensei">Un grafico buono dice una cosa sola. Se ne dice tre, ne servono tre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: scegliere il grafico giusto, leggere e correggere grafici fuorvianti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-grafici" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un grafico onesto è un grafico che il lettore non deve decifrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Dalla pivot si crea un grafico pivot, che segue i filtri; dalla tabella, in Fogli Google o LibreOffice, un grafico normale.
+- Barre per confrontare, linee per l'andamento nel tempo, torta solo per poche parti di un tutto.
+- Titolo chiaro, assi con unità, barre da zero, pochi colori, niente 3D.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale grafico per confrontare tanti reparti?", a: "Barre (o colonne), ordinate" },
+    { q: "Quale grafico per un andamento nel tempo?", a: "Linee" },
+    { q: "Perché l'asse delle barre parte da zero?", a: "Altrimenti le differenze sembrano più grandi di quelle vere" },
+    { q: "Come deve essere il titolo di un buon grafico?", a: "Deve dire il messaggio, non solo l'argomento" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Ultima lezione del modulo: le buone pratiche, per fogli che non si rompono.</Say>
+</Scene>

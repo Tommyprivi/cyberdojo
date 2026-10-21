@@ -1,0 +1,155 @@
+---
+id: D.06.007
+course: dati
+module: 6
+title: "Il p-value"
+belt: arancione
+duration_min: 10
+prerequisites: [D.06.006]
+objectives:
+  - "Dare la definizione corretta di p-value"
+  - "Riconoscere gli errori di interpretazione più diffusi"
+  - "Spiegare perché provare molti test fa crescere il rischio di falsi risultati (p-hacking)"
+video:
+  provider: youtube
+  id: "lEBSOnETN34"
+  start: 0
+  end: 435
+  channel: "Datapizza"
+  title: "TEST STATISTICI e P-VALUE in poche parole 📒"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-pvalue
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il p-value sia la probabilità che H0 sia vera"
+  - "Concludere da p = 0,30 che «non c'è alcun effetto»"
+  - "Provare tanti test e riportare solo quello con p piccolo"
+commands: []
+---
+
+<Scene title="Il p-value del giornale">
+Un titolo: «Scoperto: chi beve caffè prima delle verifiche prende voti migliori. Risultato significativo, p = 0,03».
+
+Un lettore commenta: «Quindi c'è solo il 3% di probabilità che sia un caso!»
+
+Un altro risponde: «No, non è così che funziona.»
+
+La domanda del caso: **che cosa vuol dire davvero p = 0,03?**
+
+<Say who="sensei">È il numero più citato della scienza e uno dei più fraintesi. Imparalo bene e sarai già avanti a molti laureati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La definizione">
+Il **p-value** è:
+
+> la probabilità, **supponendo che H0 sia vera**, di ottenere un risultato **almeno così estremo** come quello che abbiamo osservato.
+
+Esempio dell'ultima lezione: test sulla differenza tra due gruppi con z = 2 (due code). Se H0 fosse vera, uno scarto di 2 errori standard o più, in un senso o nell'altro, capiterebbe circa **4,6 volte su 100**: p ≈ **0,046** (valore approssimato).
+
+Il p-value è un numero tra **0 e 1**. Piccolo vuol dire: «se H0 fosse vera, questi dati sarebbero sorprendenti».
+
+<Callout kind="regola">
+Il p-value parte da una **supposizione**: H0 vera. Risponde a «quanto sono strani i dati, se fosse tutto un caso?». Non risponde a «quanto è probabile H0?».
+</Callout>
+
+<Say who="assistente">Prima si suppone H0, poi si misura quanto sono strani i dati. L'ordine è tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori più diffusi">
+Con p = 0,03, ecco che cosa **non** si può dire:
+
+- **«H0 ha il 3% di probabilità di essere vera.»** No: il p-value presuppone H0 vera, non ne calcola la probabilità.
+- **«C'è il 97% di probabilità che l'effetto sia reale.»** Anche qui no.
+- **«L'effetto è grande.»** No: il p-value non misura la grandezza dell'effetto. Con campioni enormi anche differenze minuscole danno p piccolissimi.
+- **p = 0,30 allora «non c'è alcun effetto».** No: significa solo che i dati sono compatibili con H0. Può esserci un effetto che il campione non vede.
+
+<Callout kind="attenzione">
+Il p-value risponde a una domanda stretta. Pretendere di più è l'errore più comune.
+</Callout>
+
+Vuoi sentire un'altra voce su test e p-value? Poco più di sette minuti, in italiano:
+
+<Video />
+
+<Say who="sensei">Se un titolo dice «il 3% di probabilità che sia un caso», quel titolo ha sbagliato. Sapendolo, sai leggere meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le soglie">
+La soglia più usata è **α = 0,05**: se p è minore di 0,05, il risultato è detto **statisticamente significativo**. Altre soglie comuni: 0,01 (più severa), 0,10 (più larga).
+
+<Callout kind="curiosita">
+0,05 è una **convenzione**, non una legge di natura. Un risultato con p = 0,049 e uno con p = 0,051 sono praticamente la stessa evidenza, anche se uno «passa» e l'altro no.
+</Callout>
+
+Che cosa accade se H0 è sempre vera e si fanno molti test? Con α = 0,05, circa **5 test su 100** risultano «significativi» per puro caso. È il prezzo della soglia.
+
+<Say who="assistente">Cinque per cento è il rischio che accetti. Su cento test, cinque falsi allarmi sono previsti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il p-hacking">
+Ora immagina un ricercatore che raccoglie dati dove **non c'è alcun effetto** e prova **20 confronti diversi**: giorni della settimana, colore dei capelli, ore di sonno, e così via. Ognuno con α = 0,05.
+
+Probabilità che **tutti** i 20 test siano «non significativi»: 0,95 moltiplicato 20 volte, circa **0,36**.
+
+Probabilità che **almeno uno** risulti significativo: 1 - 0,36 = circa **0,64**, cioè il **64%**.
+
+Se poi il ricercatore scrive solo del test fortunato, e non dice degli altri 19, sta facendo **p-hacking**: provare finché esce qualcosa, e raccontare solo quello.
+
+<Callout kind="trucco">
+Difesa: dichiarare **prima** ipotesi, soglia e numero di confronti; riportare tutti i test fatti; correggere la soglia quando i confronti sono molti (per esempio dividendola per il numero di confronti).
+</Callout>
+
+<Say who="sensei">Se torturi i dati abbastanza a lungo, confesseranno qualunque cosa. Un analista onesto dichiara tutto quello che ha provato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un test dà p = 0,03. Quale frase è corretta?"
+  options={["Se H0 fosse vera, risultati così estremi capiterebbero circa 3 volte su 100", "H0 ha il 3% di probabilità di essere vera", "C'è il 97% di probabilità che l'effetto sia reale", "L'effetto vale il 3%"]}
+  answer={0}
+  explain="Il p-value è calcolato supponendo H0 vera: dice quanto sarebbero rari i dati in quel mondo. Non è la probabilità di H0, né misura la grandezza dell'effetto."
+/>
+
+<Practice generator="d06-pvalue" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai la definizione, hai le trappole e hai la difesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il p-value è la probabilità, supponendo H0 vera, di un risultato almeno così estremo. Va da 0 a 1.
+- Non è la probabilità di H0, non misura la grandezza dell'effetto e p grande non dimostra l'assenza di effetto.
+- Il p-hacking (molti test, uno solo riportato) fa crescere i falsi risultati: con 20 test su dati senza effetto, circa il 64% di averne almeno uno «significativo».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il p-value?", a: "Probabilità di un risultato almeno così estremo, se H0 è vera" },
+    { q: "p = 0,03: H0 ha il 3% di probabilità di essere vera?", a: "No, il p-value non è la probabilità di H0" },
+    { q: "20 test su dati senza effetto, α = 0,05: quanto è probabile almeno un test significativo?", a: "Circa 64%" },
+    { q: "Come ci si difende dal p-hacking?", a: "Dichiarare in anticipo ipotesi e numero di confronti, e riportare tutto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli errori di tipo I e II, e la differenza tra «significativo» e «importante».</Say>
+</Scene>

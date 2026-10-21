@@ -1,0 +1,169 @@
+---
+id: C.18.003
+course: cybersecurity
+module: 18
+title: "Analisi statica: guardare senza eseguire"
+belt: marrone
+duration_min: 9
+prerequisites: [C.18.002]
+objectives:
+  - "Spiegare cos'è l'analisi statica e perché il file non viene mai eseguito"
+  - "Descrivere a cosa servono hash, stringhe leggibili e informazioni sul tipo di file"
+  - "Riconoscere i limiti dell'analisi statica (file offuscati o compressi)"
+video:
+  provider: youtube
+  id: "HMgqRp6r3xU"
+  start: 0
+  end: 600
+  channel: "TekDefense"
+  title: "TekTip Episode 4 - Basic Static Malware Analysis"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-statica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aprire il file «solo per vedere cosa fa»: l'analisi statica non esegue mai nulla"
+  - "Credere che un hash sconosciuto voglia dire file sicuro: potrebbe essere solo nuovo o modificato"
+  - "Fidarsi del nome o dell'estensione del file invece del suo vero contenuto"
+commands: []
+---
+
+<Scene title="Il file della chiavetta">
+Alla **Biblioteca Ferrari** (fittizia) qualcuno trova una chiavetta nel parcheggio e la porta in ufficio. Sopra c'è un solo file: **«Stipendi_2026.pdf.exe»**.
+
+Il bibliotecario vorrebbe aprirlo «per capire di chi è». La responsabile IT lo ferma e lo porta nel laboratorio di analisi, un computer isolato e di proprietà dell'azienda.
+
+La domanda del caso: **come si capisce cosa è un file senza aprirlo?**
+
+<Say who="sensei">Mai la curiosità prima del metodo. Si guarda tutto ciò che si può senza far partire niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Guardare un oggetto sigillato">
+L'**analisi statica** esamina un file **senza eseguirlo**. Pensa a una scatola sigillata: la pesi, la misuri, leggi le etichette, la guardi in controluce. Non la apri.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video che mostra i primi passi dell'analisi di base:
+
+<Video />
+
+<Callout kind="attenzione">
+Il video è in inglese. Nella tua pratica, anche solo guardare un file sospetto si fa in un laboratorio isolato (lo vediamo nell'ultima lezione), non sul computer di tutti i giorni.
+</Callout>
+
+<Say who="assistente">Statica vuol dire «ferma»: il programma non parte, quindi non può fare danni mentre lo guardi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'impronta e il tipo di file">
+Primo passo: l'**hash**. È un'impronta digitale del file: una stringa di lettere e numeri calcolata dal contenuto. Se cambia anche un solo bit, l'hash cambia del tutto.
+
+Cosa se ne fa:
+
+- si confronta con le impronte di file già noti come dannosi, nei database dei ricercatori;
+- si usa come «nome» sicuro per parlarne con i colleghi.
+
+Secondo passo: il **tipo vero** del file. Il nome dice «.pdf.exe», ma la prima estensione è solo un'etichetta: l'ultima, «.exe», dice che è un programma eseguibile, non un documento. Il contenuto interno conferma il tipo reale.
+
+<Callout kind="attenzione">
+Un hash **sconosciuto** non vuol dire «sicuro». Può essere un file nuovo, o modificato di poco. L'hash conferma solo ciò che è già noto.
+</Callout>
+
+<Say who="sensei">L'estensione è un cartellino appeso. Il contenuto è la merce. Controlla la merce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parole nascoste nel file">
+Terzo passo: le **stringhe**, cioè le parti di testo leggibile dentro il file. Anche un programma ha parole al suo interno: indirizzi, nomi di file, messaggi.
+
+Cosa possono rivelare, in modo del tutto concettuale:
+
+- un indirizzo di Internet, che fa pensare a una comunicazione con l'esterno;
+- il nome di cartelle di sistema o di chiavi di configurazione, che fanno pensare a un tentativo di restare installato;
+- un messaggio per la vittima.
+
+Altre informazioni utili: la data in cui il file è stato costruito, le funzioni di sistema che dichiara di voler usare, le dimensioni.
+
+<Log lines={[
+  "Fatto 1: il file si chiama «Stipendi_2026.pdf.exe» (programma, non documento)",
+  "Fatto 2: l'hash non risulta tra quelli noti",
+  "Fatto 3: dentro compare un indirizzo web mai visto",
+  "Fatto 4: dichiara di voler scrivere nella cartella dell'avvio automatico",
+]} />
+
+<Say who="assistente">Quattro fatti, nessuno è una prova da solo. Insieme formano un'ipotesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="L'hash di un file sospetto non compare in nessun elenco di malware noti. Cosa si può concludere?"
+  options={["Niente di certo: potrebbe essere nuovo o modificato, serve altra analisi", "Che il file è sicuro", "Che il file è sicuramente dannoso", "Che l'hash è stato calcolato male"]}
+  answer={0}
+  explain="Un hash sconosciuto dice solo che quel file preciso non è in elenco. Un malware nuovo o appena modificato ha un hash nuovo. Chi risponde «è sicuro» scambia l'assenza di prove per prova di innocenza."
+/>
+
+<Say who="sensei">L'assenza di prova non è prova di assenza. Ricordalo ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove la statica si ferma">
+L'analisi statica è veloce e sicura, ma ha limiti. Chi scrive malware sa che qualcuno lo guarderà e può **offuscare** il contenuto (renderlo illeggibile) o **comprimerlo** in una forma che nasconde le stringhe. In quel caso il file «statico» sembra quasi vuoto.
+
+<Guided
+  steps={[
+    "Guardo il file: nome e tipo non coincidono. Primo sospetto.",
+    "Calcolo l'hash: non è in elenco. Non concludo nulla, annoto.",
+    "Cerco le stringhe: quasi nessuna leggibile. Questo è sospetto in sé: un programma normale ha parole leggibili.",
+    "Ipotesi: contenuto nascosto. La statica non basta. Passo all'analisi dinamica, in sandbox, la prossima lezione.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si analizza solo in un laboratorio isolato e di proprietà. Studiare un campione è lecito per difendersi, ma diffondere programmi diretti a danneggiare un sistema è reato (art. 615-quinquies c.p.): un campione non si manda a colleghi, amici o forum, e non si carica su servizi pubblici se contiene dati dell'azienda.
+</Callout>
+
+<Say who="sensei">Un'analisi che si ferma al primo limite è un'analisi incompleta. Quando la statica tace, cambia strumento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cosa fa l'analisi statica, cosa dicono hash e stringhe e quali sono i limiti. Hai 3 tentativi.
+
+<Practice generator="c18-statica" pass="5/5" retries={3} />
+
+<Say who="sensei">Ricorda: statica significa file fermo. Se la risposta richiede di farlo partire, non è statica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'analisi statica esamina il file senza eseguirlo: hash, tipo vero del file, stringhe leggibili, funzioni dichiarate.
+- Un hash sconosciuto non dimostra che il file sia sicuro; le stringhe danno indizi, non prove.
+- Offuscamento e compressione limitano la statica: allora si passa all'analisi dinamica, sempre in laboratorio isolato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa vuol dire analisi statica?", a: "Esaminare un file senza eseguirlo" },
+    { q: "Cos'è un hash?", a: "Un'impronta del contenuto: cambia del tutto se cambia anche un solo bit" },
+    { q: "Cosa sono le stringhe?", a: "Le parti di testo leggibile dentro il file: indirizzi, nomi, messaggi" },
+    { q: "Quale limite ha la statica?", a: "Il contenuto offuscato o compresso nasconde le informazioni" },
+  ]}
+/>
+
+<Say who="sensei">Se il file tace, lo si osserva mentre agisce. Ma in una scatola chiusa a doppia mandata. È la sandbox.</Say>
+</Scene>

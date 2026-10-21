@@ -1,0 +1,160 @@
+---
+id: T.09.007
+course: trading
+module: 9
+title: "Perché le strategie smettono di funzionare"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.006]
+objectives:
+  - "Elencare le cause tipiche del decadimento di una strategia: affollamento, cambio di regime, overfitting, costi"
+  - "Calcolare il rendimento netto di un esempio quando il vantaggio si riduce e i costi restano"
+  - "Fissare in anticipo regole per accorgersi che una strategia non funziona più"
+video:
+  provider: youtube
+  id: "j88-K-gyuvs"
+  start: 0
+  end: 600
+  channel: "TC Trading"
+  title: "Alpha Decay: Why Your Trading Strategy Stops Working"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-decadimento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una strategia, se ha funzionato per anni, funzionerà per sempre"
+  - "Cambiare i parametri a ogni perdita, ricadendo nell'overfitting"
+  - "Non decidere in anticipo quando fermarsi e farsi guidare dall'emozione"
+commands: []
+---
+
+<Scene title="Il backtest che non regge">
+**Irene** ha un backtest fittizio bellissimo: una regola che per dieci anni di dati storici dava un buon rendimento. La prova per un anno in demo: il risultato è molto più basso, poi negativo.
+
+«Ho sbagliato qualcosa?» si chiede. Forse. O forse **la strategia ha smesso di funzionare**: succede spesso.
+
+La domanda del caso: **perché le strategie perdono il loro vantaggio, e come ce ne accorgiamo in tempo?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Il corso non è consulenza finanziaria: nessuna strategia di questo modulo è una ricetta sicura.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. E quello che regalavano ieri, domani lo regalano a meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cause del decadimento">
+Il vantaggio di una strategia può ridursi, e si parla di **decadimento** (in inglese *alpha decay*). Cause tipiche:
+
+- **Affollamento**: se molti scoprono e applicano la stessa regola, i prezzi si adeguano in fretta e il vantaggio si assottiglia.
+- **Cambio di regime**: il mercato cambia (tassi, crisi, regole, tecnologia) e la relazione di prima non vale più.
+- **Overfitting**: la regola era tagliata sul passato, con troppi parametri scelti guardando i dati: era fortuna, non vantaggio (modulo T5).
+- **Costi e capacità**: più capitale si usa, più si muove il prezzo; con costi alti il margine sparisce (modulo T8).
+- **Le strategie viste in questo modulo**: trend, mean reversion, momentum, coppie, breakout, volatilità. Ognuna ha periodi buoni e periodi cattivi, e nessuna vince sempre.
+
+<Callout kind="regola">
+Un vantaggio vero ha una **ragione economica** che puoi spiegare a parole, e la ragione può sparire. Se non la sai spiegare, sospetta overfitting.
+</Callout>
+
+Un'altra voce, in inglese con sottotitoli:
+
+<Video />
+
+<Say who="assistente">Una regola che funziona attira altra gente. Quando arriva troppa gente, smette di funzionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il margine che si assottiglia">
+Esempio **fittizio** per anno, in punti percentuali:
+
+| situazione | vantaggio lordo | costi | netto |
+|---|---|---|---|
+| Backtest | 6 | 0 | 6 |
+| Realtà iniziale | 6 | 2 | 4 |
+| Con affollamento | 3 | 2 | 1 |
+| Con costi più alti | 3 | 4 | -1 |
+
+Il vantaggio lordo passa da 6 a 3 (arrivano altri partecipanti) e i costi restano: il netto crolla da 4 a 1. Se i costi salgono a 4, il netto è -1.
+
+<PythonTerminal code={"lordo = [6, 6, 3, 3]\ncosti = [0, 2, 2, 4]\nfor l, c in zip(lordo, costi):\n    print(l, c, l - c)"} />
+
+<Log lines={[
+  "6 0 6",
+  "6 2 4",
+  "3 2 1",
+  "3 4 -1",
+]} />
+
+<Say who="sensei">Un margine piccolo è fragile. Basta poco, e il segno diventa negativo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Accorgersene in tempo">
+Non si può evitare che una strategia decada. Si può **accorgersene presto**, con regole decise **prima**:
+
+- confronta i risultati **reali (o in demo)** con quelli attesi dal backtest: una distanza grande è un campanello;
+- fissa in anticipo un **limite di perdita massima** per la strategia: oltre, si ferma e si rivede tutto;
+- registra ogni operazione nel **diario** (modulo T12);
+- non cambiare i parametri a ogni perdita: sarebbe overfitting a posteriori;
+- ricorda che la fortuna esiste: anche una buona strategia ha periodi cattivi, quindi serve una soglia scritta, non l'umore del momento.
+
+<Callout kind="attenzione">
+Fermarsi troppo presto e non fermarsi mai sono entrambi errori. Per questo la soglia va scritta **prima**, a mente fredda.
+</Callout>
+
+<Say who="assistente">Decidere quando fermarti è la parte più difficile. Per questo la fai prima, non durante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia aveva un vantaggio lordo di 5 punti all'anno e costi di 2. Con l'affollamento il vantaggio scende a 2 e i costi restano 2. Qual è il netto?"
+  options={["0 punti: 2 - 2", "3 punti: 5 - 2", "-2 punti: il vantaggio è negativo", "2 punti: i costi non contano"]}
+  answer={0}
+  explain="Il netto ora è 2 - 2 = 0: la strategia non rende più. Prima era 5 - 2 = 3: chi risponde 3 non ha aggiornato il vantaggio. I costi contano sempre."
+/>
+
+<Say who="sensei">Se il margine arriva a zero, hai solo rischio e fatica. Controlla il netto, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cause del decadimento, calcoli sui margini e regole per accorgersene. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-decadimento" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Rispetta il mercato: cambia più in fretta di te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una strategia può perdere il vantaggio per affollamento, cambio di regime, overfitting, costi e capacità.
+- Un margine piccolo è fragile: netto = vantaggio lordo - costi, e basta poco per renderlo zero o negativo.
+- Si decide in anticipo come accorgersene: confronto con il backtest, limite di perdita scritto, diario, niente ritocchi a ogni perdita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il decadimento di una strategia?", a: "La perdita progressiva del suo vantaggio nel tempo" },
+    { q: "Vantaggio lordo 3, costi 2: netto?", a: "1 punto" },
+    { q: "Perché l'affollamento riduce il vantaggio?", a: "Molti applicano la stessa regola e i prezzi si adeguano in fretta" },
+    { q: "Quando si fissa il limite di perdita di una strategia?", a: "Prima, a mente fredda, non durante le perdite" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai visto sei idee classiche e i loro limiti. Prossimo passo: il paper trading, per provarle senza rischiare denaro vero.</Say>
+</Scene>

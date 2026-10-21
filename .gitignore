@@ -46,3 +46,7 @@ next-env.d.ts
 
 # Schermate di prova
 /anteprima-schermate
+
+# Skill di terze parti vendutate (non fanno parte del progetto)
+/.agents/
+/.claude/

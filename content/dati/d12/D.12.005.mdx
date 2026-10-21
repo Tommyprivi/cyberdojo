@@ -1,0 +1,151 @@
+---
+id: D.12.005
+course: dati
+module: 12
+title: "Governance dei dati"
+belt: verde
+duration_min: 9
+prerequisites: [D.12.004]
+objectives:
+  - "Distinguere data owner e data steward"
+  - "Spiegare a che cosa servono catalogo e glossario"
+  - "Descrivere il ciclo di vita di un dato, con conservazione e cancellazione"
+video:
+  provider: youtube
+  id: "u6WnXfksv7I"
+  start: 0
+  end: 398
+  channel: "Collate"
+  title: "The Data Steward Explained: Guardian, Translator, and Detective"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-governance
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere chi decide sui dati (owner) con chi li cura nella pratica (steward)"
+  - "Cancellare i dati dal database principale e dimenticare copie, esportazioni e backup"
+  - "Tenere i dati «per sempre» perché nessuno ricorda perché esistono"
+commands: []
+---
+
+<Scene title="Due report, due numeri">
+In una catena di palestre fittizia, il report di marketing dice che i «clienti attivi» sono 8 400. Quello dell'amministrazione dice 6 900. Nessuno ha sbagliato i calcoli.
+
+Marketing conta chi ha aperto l'app negli ultimi 90 giorni. L'amministrazione conta chi ha un abbonamento in corso. Sono due definizioni diverse dello stesso nome.
+
+Intanto, in una cartella, ci sono i dati di una campagna di tre anni fa. Nessuno ricorda perché ci siano ancora.
+
+La domanda del caso: **chi decide che cosa vuol dire un dato, chi lo cura e quando va cancellato?**
+
+<Say who="sensei">Senza regole condivise, i dati litigano tra loro. La governance è l'insieme di quelle regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Owner e steward">
+La **governance dei dati** è l'insieme di ruoli, regole e processi che dicono chi può fare che cosa con i dati, e con quali responsabilità.
+
+Due ruoli da conoscere (i nomi possono cambiare da azienda ad azienda):
+
+- **Data owner**: il responsabile di un'area di dati (per esempio i dati dei clienti). Decide a che cosa servono e chi può accedervi, e ne risponde.
+- **Data steward**: chi, nel lavoro di ogni giorno, cura qualità, definizioni e documentazione di quei dati. Fa applicare le regole.
+
+In sintesi: l'owner decide, lo steward cura. Vicino a loro ci sono i tecnici che gestiscono i sistemi, e chi si occupa di privacy.
+
+Vuoi sentire descrivere il ruolo dello steward da un'altra voce? Meno di sette minuti, in inglese:
+
+<Video />
+
+<Say who="assistente">Se non sai chi è l'owner di un dataset, già questo è un problema da segnalare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Catalogo e glossario">
+Un **catalogo dei dati** è un inventario dei dataset: che cosa contengono, da dove vengono, chi è l'owner, quanto sono sensibili, quando sono stati aggiornati. Esistono strumenti gratuiti e open source (per esempio DataHub o OpenMetadata), ma anche un foglio ben tenuto è un inizio.
+
+Un **glossario** dà una definizione unica ai termini di business: che cosa vuol dire «cliente attivo»? Una volta scelta e scritta, tutti i report usano la stessa.
+
+<Callout kind="trucco">
+Per ogni colonna importante scrivi: nome, significato, unità di misura, origine. Una colonna chiamata «val» che nessuno sa spiegare è un debito che qualcuno pagherà.
+</Callout>
+
+<Say who="sensei">I dati non documentati si usano a caso. I dati documentati si usano bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ciclo di vita, conservazione, cancellazione">
+Un dato ha una vita. Le fasi tipiche:
+
+<Guided
+  steps={[
+    "Raccolta: si raccoglie solo ciò che serve, con uno scopo chiaro.",
+    "Uso: si analizza, nel rispetto dello scopo e degli accessi.",
+    "Condivisione: solo a chi serve, con le protezioni giuste.",
+    "Archiviazione: se serve ancora per obblighi o storico, in un posto protetto e con un periodo definito.",
+    "Cancellazione: quando lo scopo finisce, il dato si elimina, anche da copie, esportazioni e backup, secondo i tempi previsti.",
+  ]}
+/>
+
+Il **periodo di conservazione** dice per quanto tempo si tiene un dato prima di cancellarlo o archiviarlo. Dipende dallo scopo e dalle regole applicabili: per esempio, alcuni documenti contabili vanno conservati per legge, altri dati no.
+
+<Callout kind="attenzione">
+Cancellare solo dal database principale non basta, se restano vecchi file esportati o copie. Per i dati personali, verifica con chi si occupa di privacy come gestire anche i backup.
+</Callout>
+
+<Say who="assistente">Quando nasce un dato, decidi già quando morirà. Altrimenti non morirà mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Due report danno numeri diversi per i «clienti attivi». Che cosa è corretto fare?"
+  options={["Chiedere all'owner dei dati clienti di fissare e scrivere nel glossario una definizione condivisa", "Scegliere il numero più alto, perché è più bello", "Mediare i due numeri", "Togliere il report che dà il numero più basso"]}
+  answer={0}
+  explain="Il problema non è il calcolo ma la definizione: serve una scelta condivisa, presa da chi risponde di quei dati e scritta nel glossario. Fare la media o scegliere il numero che piace nasconde il problema."
+/>
+
+<Say who="sensei">Prima si decide che cosa significa, poi si conta. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su ruoli, catalogo, glossario e ciclo di vita dei dati. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-governance" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Governare i dati è lavoro di ogni giorno, non di un convegno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Data owner: decide a che cosa servono i dati e chi li usa, e ne risponde. Data steward: cura qualità, definizioni e documentazione ogni giorno.
+- Catalogo: inventario dei dataset. Glossario: definizioni uniche dei termini. Insieme evitano numeri che litigano.
+- Ciclo di vita: raccolta, uso, condivisione, archiviazione, cancellazione, con un periodo di conservazione deciso fin dall'inizio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Owner o steward: chi decide a che cosa servono i dati?", a: "L'owner" },
+    { q: "A che cosa serve un glossario?", a: "A dare una definizione unica ai termini, come «cliente attivo»" },
+    { q: "Che cosa contiene un catalogo dei dati?", a: "Origine, significato, proprietario, sensibilità e aggiornamento dei dataset" },
+    { q: "Dove va cancellato un dato personale a fine scopo?", a: "Ovunque: anche copie, esportazioni e backup, secondo i tempi previsti" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: dire la verità con i numeri, anche quando non piace.</Say>
+</Scene>

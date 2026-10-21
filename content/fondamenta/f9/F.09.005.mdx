@@ -1,0 +1,240 @@
+---
+id: F.09.005
+course: fondamenta
+module: 9
+title: "Cicli"
+belt: arancione
+duration_min: 9
+prerequisites: [F.09.004]
+objectives:
+  - "Ripetere istruzioni con for e range()"
+  - "Usare while e riconoscere un ciclo infinito"
+  - "Controllare un ciclo con break e continue e contare righe di log"
+video:
+  provider: youtube
+  id: "ggU5-ARJSRY"
+  start: 0
+  end: 289
+  channel: "CodiceFacile"
+  title: "Corso Python #5 – I cicli: for, while e range()"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-cicli
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "range(3) dà 0, 1, 2: il numero finale è escluso"
+  - "In un while, dimenticare di cambiare la variabile crea un ciclo infinito"
+  - "continue salta solo il giro corrente, break esce del tutto dal ciclo"
+commands: []
+---
+
+<Scene title="Cento righe, tre istruzioni">
+Il log di stanotte ha **cento righe**. Marta vuole sapere quante contengono la parola `FAILED`.
+
+«Non scrivere cento volte lo stesso controllo, per favore.»
+
+Hai già la decisione (`if`). Ti serve un modo per **ripetere** la stessa operazione su ogni riga. Si chiama **ciclo**.
+
+La domanda del caso: **come si ripete un blocco di istruzioni, e come lo si ferma al momento giusto?**
+
+<Say who="sensei">Il computer non si stanca e non si annoia. Per questo si fa ripetere a lui, non a te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="for e range">
+Il ciclo `for` ripete un blocco **una volta per ogni elemento** di una sequenza. La funzione `range(n)` produce i numeri da 0 fino a **n meno 1**.
+
+```python
+for i in range(3):
+    print("riga", i)
+```
+
+Output:
+
+```text
+riga 0
+riga 1
+riga 2
+```
+
+Anche qui: due punti in fondo e blocco rientrato. Con due numeri `range(a, b)` si parte da `a`; con tre `range(a, b, passo)` si salta di `passo` in `passo`:
+
+```python
+for porta in range(2, 10, 3):
+    print(porta)
+```
+
+Output:
+
+```text
+2
+5
+8
+```
+
+<Callout kind="attenzione">
+`range(3)` dà 0, 1 e 2, **non** 3. Il numero finale è sempre escluso: lo stesso principio delle slice delle stringhe.
+</Callout>
+
+<Say who="assistente">Se vuoi i numeri da 1 a 10 scrivi range(1, 11). Il 11 serve per fermarsi dopo il 10.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="for sulle righe di un log">
+Il `for` funziona su qualsiasi sequenza, anche un elenco di testi. Un elenco si scrive tra parentesi quadre (lo studieremo meglio nella prossima lezione). Ecco come si contano le righe sbagliate:
+
+```python
+righe = ["03:10 OK", "03:11 FAILED", "03:12 FAILED"]
+falliti = 0
+for riga in righe:
+    if "FAILED" in riga:
+        falliti = falliti + 1
+print("Falliti:", falliti)
+```
+
+Output:
+
+```text
+Falliti: 2
+```
+
+Il ciclo prende una riga alla volta, e per ognuna controlla la condizione. La variabile `falliti` fa da **contatore**: parte da 0 e sale di uno ogni volta che serve. Si può scrivere in breve `falliti += 1`.
+
+Vuoi vederlo spiegato da un'altra voce? Meno di cinque minuti.
+
+<Video />
+
+<Say who="sensei">Contatore a zero, ciclo, condizione, più uno. È il disegno di quasi ogni script che conta qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="while: finché la condizione è vera">
+Il `while` ripete finché una condizione resta vera. Si usa quando non sai in anticipo quanti giri servono.
+
+```python
+tentativi = 0
+while tentativi < 3:
+    print("Tentativo", tentativi + 1)
+    tentativi += 1
+print("Stop")
+```
+
+Output:
+
+```text
+Tentativo 1
+Tentativo 2
+Tentativo 3
+Stop
+```
+
+<Callout kind="attenzione">
+Se dentro il `while` nessuno cambia la variabile della condizione, il ciclo non finisce mai: è un **ciclo infinito**. Se succede nel terminale, si ferma con **Ctrl+C**.
+</Callout>
+
+Regola pratica: se hai una sequenza da scorrere, usa `for`; se aspetti che succeda qualcosa, usa `while`.
+
+<Say who="assistente">Prima di lanciare un while, chiediti: quale riga dentro il ciclo avvicina la condizione alla fine?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="break e continue">
+Due istruzioni per controllare il ciclo da dentro:
+
+- `break` esce **subito e del tutto** dal ciclo
+- `continue` **salta il giro corrente** e passa al successivo
+
+```python
+for porta in range(20, 30):
+    if porta == 22:
+        print("trovata la 22")
+        break
+```
+
+Output:
+
+```text
+trovata la 22
+```
+
+Il ciclo si ferma alla 22: le porte da 23 a 29 non vengono guardate. Con `continue`:
+
+```python
+for n in range(1, 6):
+    if n == 3:
+        continue
+    print(n)
+```
+
+Output:
+
+```text
+1
+2
+4
+5
+```
+
+Il 3 viene saltato, ma il ciclo prosegue fino alla fine.
+
+<Say who="sensei">Break: ho trovato, basta. Continue: questo no, avanti il prossimo. Non confonderli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quante volte viene stampato 'x' da: for i in range(5): print('x')"
+  options={["5 volte", "4 volte", "6 volte", "1 volta"]}
+  answer={0}
+  explain="range(5) produce 0, 1, 2, 3, 4: cinque numeri, quindi cinque giri. Chi risponde 6 ha incluso anche il 5, che invece è escluso."
+/>
+
+Ora scrivi un ciclo tuo: conta le righe con `FAILED` e prova ad aggiungerne una.
+
+<PythonTerminal code={"righe = ['03:10 OK', '03:11 FAILED', '03:12 FAILED']\nfalliti = 0\nfor riga in righe:\n    if 'FAILED' in riga:\n        falliti += 1\nprint('Falliti:', falliti)"} />
+
+<Say who="assistente">Aggiungi '03:13 FAILED' all'elenco e riesegui: il contatore deve salire a 3 senza toccare il ciclo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il ciclo, quale istruzione serve. Nel testo il codice è su una riga, con il simbolo ↵ al posto dell'a capo, e le righe dentro il ciclo sono rientrate. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-cicli" pass="4/5" retries={3} />
+
+<Say who="sensei">Esegui il ciclo giro per giro, scrivendo su un foglio il valore delle variabili. Funziona sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `for` ripete per ogni elemento; `range(n)` dà da 0 a n meno 1.
+- `while` ripete finché la condizione è vera: se la variabile non cambia, il ciclo è infinito.
+- `break` esce dal ciclo, `continue` salta il giro; un contatore conta le righe che ti interessano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa produce range(3)?", a: "0, 1, 2" },
+    { q: "Come si ferma un ciclo infinito nel terminale?", a: "Con Ctrl+C" },
+    { q: "Cosa fa continue?", a: "Salta il giro corrente e passa al successivo" },
+    { q: "Quale ciclo si usa per scorrere un elenco?", a: "for" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: liste e dizionari. Metteremo gli indirizzi in un elenco e li conteremo uno per uno.</Say>
+</Scene>

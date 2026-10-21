@@ -1,0 +1,173 @@
+---
+id: D.17.005
+course: dati
+module: 17
+title: "Logistica: consegne, scorte, percorsi"
+belt: marrone
+duration_min: 10
+prerequisites: [D.17.004]
+objectives:
+  - "Descrivere i tempi di consegna con mediana e ritardi, non solo con la media"
+  - "Calcolare un punto di riordino con scorta di sicurezza e una previsione a media mobile"
+  - "Spiegare a livello concettuale che cosa fa l'ottimizzazione dei percorsi"
+video:
+  provider: youtube
+  id: "sJD6X_w_SZo"
+  start: 0
+  end: 600
+  channel: "MC26 Academy"
+  title: "Gestione del magazzino e delle scorte capitolo 2: Indici di performance delle scorte"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-logistica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Riassumere i tempi di consegna con la sola media: pochi ritardi enormi la gonfiano"
+  - "Calcolare le scorte sulla domanda media e dimenticare scorta di sicurezza e tempo di rifornimento"
+  - "Credere che il percorso più corto a occhio sia quello ottimo: le combinazioni crescono in fretta"
+commands: []
+---
+
+<Scene title="Il pacco in ritardo">
+«Corrieri Rapido» è un'azienda fittizia di consegne. Una cliente si lamenta: «Mi avevate promesso 2 giorni, ne sono passati 9». Il direttore guarda il cruscotto: tempo medio di consegna **2,9 giorni**. «Va bene», dice. Ma la cliente aspetta ancora.
+
+La domanda del caso: **come si misura davvero un servizio di consegne?**
+
+<Say who="sensei">Una media può essere vera e inutile nello stesso momento. Vediamo perché.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tempi di consegna: media, mediana, ritardi">
+Sette consegne, tempi in giorni: **1, 1, 2, 2, 2, 3, 9**.
+
+- **Media**: somma 20, divisa per 7 = **circa 2,9**.
+- **Mediana**: il valore in mezzo, in ordine: **2**.
+- **Quota di ritardi**: se la promessa è 3 giorni, 1 consegna su 7 è in ritardo (circa 14%).
+
+La consegna da 9 giorni tira su la media. La mediana racconta il caso tipico, la quota di ritardi racconta chi resta deluso.
+
+Un video spiega gli indici di performance delle scorte, un altro lato della stessa misurazione:
+
+<Video />
+
+<Say who="assistente">Media 2,9, mediana 2. La differenza è il segnale che c'è un caso estremo da guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scorte e punto di riordino">
+Il magazzino vende in media **40 pezzi al giorno**. Il fornitore impiega **5 giorni** a consegnare.
+
+- Durante l'attesa si vendono 40 × 5 = **200 pezzi**.
+- Si aggiunge una **scorta di sicurezza** di **60 pezzi** per le giornate in cui si vende di più o il fornitore ritarda.
+- **Punto di riordino** = 200 + 60 = **260 pezzi**: quando la giacenza scende a 260, si ordina.
+
+<Callout kind="regola">
+Punto di riordino = domanda media al giorno × giorni di attesa + scorta di sicurezza.
+</Callout>
+
+<Say who="sensei">Troppo poca scorta: clienti a mani vuote. Troppa scorta: soldi fermi sugli scaffali. Si cerca il giusto mezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Previsione della domanda">
+Per ordinare serve sapere quanto si venderà. La previsione più semplice è la **media mobile**: la media delle ultime settimane.
+
+Vendite settimanali: 120, 130, 140, 150. Previsione per la settimana 5 con la media mobile a 3 settimane: (130 + 140 + 150) / 3 = **140**.
+
+Si nota che le vendite crescono di 10 a settimana, quindi la media mobile **resta indietro**: prevede 140 mentre il trend suggerisce 160.
+
+<Callout kind="attenzione">
+Ogni previsione ha limiti: non vede promozioni, festività o scioperi se non glielo dici. Si controlla sempre l'errore rispetto a ciò che poi è accaduto.
+</Callout>
+
+<Say who="assistente">La media mobile è semplice e stabile, ma lenta a reagire. Con un trend chiaro conviene un metodo che lo segua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ottimizzare i percorsi (a grandi linee)">
+Un furgone parte dal deposito D e deve passare da tre clienti A, B, C e tornare. Distanze in km: D–A 10, A–B 5, B–C 8, D–B 12, D–C 6, A–C 9.
+
+| Giro | Calcolo | Km |
+|---|---|---|
+| D–A–B–C–D | 10 + 5 + 8 + 6 | **29** |
+| D–B–A–C–D | 12 + 5 + 9 + 6 | 32 |
+| D–A–C–B–D | 10 + 9 + 8 + 12 | 39 |
+
+Con 3 clienti i giri sono pochi. Con 20 clienti le combinazioni superano **il miliardo di miliardi**: nessuno le prova tutte. Si usano metodi che trovano una soluzione **molto buona** in poco tempo, senza garantire la perfetta.
+
+<Callout kind="curiosita">
+Il percorso reale deve tener conto anche di orari di consegna, traffico e capienza del furgone: per questo si parla di ottimizzazione con vincoli.
+</Callout>
+
+<Say who="sensei">Il percorso più corto sulla carta non è sempre quello più utile. Il vincolo conta quanto la distanza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Domanda media 40 pezzi al giorno, rifornimento in 5 giorni, scorta di sicurezza 60. A quanti pezzi si riordina?"
+  options={["260", "200", "100", "300"]}
+  answer={0}
+  explain="Durante l'attesa si vendono 40 × 5 = 200 pezzi, più 60 di scorta di sicurezza: 260. Chi risponde 200 dimentica la scorta di sicurezza."
+/>
+
+<Say who="sensei">Si ordina prima di finire, non quando si è finiti. Per questo c'è il punto di riordino.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: il servizio di Corrieri Rapido va bene?",
+    "Dati: tempi 1, 1, 2, 2, 2, 3, 9 giorni; media 2,9, mediana 2.",
+    "Il cruscotto mostra solo la media: nasconde la consegna da 9 giorni e il 14% di ritardi oltre i 3 giorni.",
+    "Metriche migliori: mediana, quota di ritardi, e il caso peggiore con la sua causa.",
+    "Indagare la consegna da 9 giorni: pacco smarrito? indirizzo sbagliato? magazzino fermo?",
+    "Decisione: affiancare alla media la quota di ritardi, e analizzare i casi più lunghi prima di dire che il servizio va bene.",
+  ]}
+/>
+
+<Say who="assistente">I clienti ricordano il pacco che non arriva, non la media. Misura anche quello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi su tempi di consegna, scorte, previsioni e percorsi. Hai 3 tentativi.
+
+<Practice generator="d17-logistica" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. In logistica ogni errore di conto diventa un camion fermo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Per i tempi di consegna guarda mediana e quota di ritardi, non solo la media.
+- Punto di riordino = domanda al giorno × giorni di attesa + scorta di sicurezza.
+- La media mobile è una previsione semplice ma lenta; i percorsi si ottimizzano con metodi che trovano soluzioni molto buone.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Mediana dei tempi 1, 1, 2, 2, 2, 3, 9?", a: "2 giorni" },
+    { q: "A che serve la scorta di sicurezza?", a: "A coprire giorni di vendita alta o ritardi del fornitore" },
+    { q: "Media mobile a 3 settimane di 130, 140, 150?", a: "140" },
+    { q: "Perché non si provano tutti i percorsi?", a: "Le combinazioni crescono troppo in fretta con molti clienti" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del ramo: che cosa fare quando ti danno un settore che non conosci.</Say>
+</Scene>

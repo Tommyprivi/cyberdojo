@@ -1,0 +1,165 @@
+---
+id: D.05.005
+course: dati
+module: 5
+title: "Correlazione"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.004]
+objectives:
+  - "Leggere un grafico a dispersione e il coefficiente di correlazione da −1 a 1"
+  - "Spiegare perché correlazione non significa causalità"
+  - "Riconoscere i limiti del coefficiente (solo relazioni lineari, sensibile agli outlier)"
+video:
+  provider: youtube
+  id: "74TJ2e7MLwE"
+  start: 0
+  end: 289
+  channel: "Sprouts Italia"
+  title: "Perché il tuo cervello ti inganna: Correlazione vs Causalità"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-correlazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Concludere che A causa B solo perché i due numeri salgono insieme"
+  - "Pensare che r = 0 significhi nessuna relazione: significa nessuna relazione lineare"
+  - "Credere che r = −0,9 sia una relazione debole perché è negativo"
+commands: []
+---
+
+<Scene title="Studio e voti">
+Hai chiesto a tre compagni quante **ore** hanno studiato per l'ultima verifica e che **voto** hanno preso.
+
+| Compagno | Ore di studio | Voto |
+| --- | --- | --- |
+| Ada | 1 | 6 |
+| Bea | 2 | 8 |
+| Carlo | 3 | 7 |
+
+Sembra che chi studia di più prenda voti più alti. Ma quanto è forte il legame? E basta per dire che lo studio *causa* i voti alti?
+
+<Say who="sensei">Due serie di numeri possono muoversi insieme. Misurare quanto è un conto. Capire perché è un altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il grafico a dispersione">
+Per vedere il legame si usa il **grafico a dispersione** (in inglese scatter plot): ogni persona è un **puntino**, con le ore sull'asse orizzontale e il voto su quello verticale.
+
+- Puntini che **salgono** da sinistra a destra: relazione **positiva** (se uno cresce, anche l'altro tende a crescere).
+- Puntini che **scendono**: relazione **negativa** (ore davanti allo schermo e ore di sonno, per esempio).
+- Puntini sparsi come una nuvola senza direzione: **nessuna relazione**.
+
+<Say who="assistente">Prima guarda il grafico. I numeri vengono dopo, per misurare quello che l'occhio ha già visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il coefficiente r">
+Il **coefficiente di correlazione**, indicato con **r**, è un numero da **−1** a **+1**.
+
+- **+1**: tutti i puntini stanno esattamente su una retta che sale.
+- **−1**: tutti su una retta che scende.
+- **0**: nessuna relazione lineare.
+- Più è lontano da 0 (in valore assoluto), più il legame è forte: **−0,9 è forte** quanto +0,9, ma in discesa.
+
+<Callout kind="regola">
+Regola pratica approssimativa: da 0 a 0,3 legame debole, da 0,3 a 0,7 moderato, oltre 0,7 forte. Il segno dice solo la direzione, non la forza.
+</Callout>
+
+<Callout kind="curiosita">
+Cambiare l'unità di misura (ore in minuti, euro in centesimi) **non cambia r**.
+</Callout>
+
+<Say who="sensei">Il segno è la direzione. La distanza da zero è la forza. Non confonderli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Calcolo guidato su tre amici">
+Con ore 1, 2, 3 e voti 6, 8, 7 si può calcolare r a mano. Si usano gli scarti dalla media, come per la varianza.
+
+<Guided
+  steps={[
+    "Media delle ore: 2. Media dei voti: 7. Scarti delle ore: −1, 0, +1. Scarti dei voti: −1, +1, 0.",
+    "Moltiplica gli scarti a coppie: (−1)·(−1) = 1, 0·(+1) = 0, (+1)·0 = 0. Somma dei prodotti: 1.",
+    "Somma dei quadrati degli scarti delle ore: 1 + 0 + 1 = 2. Dei voti: 1 + 1 + 0 = 2.",
+    "r = somma dei prodotti diviso la radice del prodotto delle due somme di quadrati: 1 / √(2 · 2) = 1 / 2 = 0,5.",
+    "r = 0,5: relazione positiva moderata. Con soli tre amici non puoi dire molto di più.",
+  ]}
+/>
+
+Se invece i voti fossero 5, 6, 7 i puntini starebbero su una retta perfetta: r = **1**.
+
+<Say who="assistente">Nei programmi lo fa la funzione CORRELAZIONE (Fogli Google e LibreOffice). Tu devi capire cosa significa il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Correlazione non è causalità">
+<Callout kind="attenzione">
+Se due cose crescono insieme, **non** vuol dire che una causi l'altra. Ci sono tre trappole.
+</Callout>
+
+- **Terza causa nascosta.** In estate si vendono più gelati *e* ci sono più annegamenti. Il gelato non fa annegare: a spingere entrambi è il **caldo**.
+- **Causa al contrario.** Più pompieri arrivano a un incendio, più danni ci sono. Non sono i pompieri a causare i danni: gli incendi grandi richiedono più pompieri.
+- **Coincidenza.** Con tanti dati, qualche coppia di numeri sale insieme per puro caso.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di cinque minuti:
+
+<Video />
+
+<Say who="sensei">Per dimostrare una causa servono esperimenti, non solo un coefficiente. Fai sempre la domanda: c'è un terzo fattore?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un coefficiente di correlazione tra due serie vale r = 0, ma il grafico a dispersione disegna chiaramente una U. Come si spiega?"
+  options={["r misura solo relazioni lineari, e la U non è una retta", "Le due serie sono scollegate", "Il coefficiente è sbagliato", "Serve più campione perché r sia diverso da zero"]}
+  answer={0}
+  explain="Il coefficiente r misura quanto i puntini stanno su una retta. In una U i lati si compensano e r viene attorno a 0, anche se il legame c'è. Per questo guarda sempre il grafico prima di fidarti del numero."
+/>
+
+<Say who="assistente">Un numero solo non dice tutto. Il grafico serve proprio a questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su correlazione, grafici a dispersione e cause nascoste. Hai 3 tentativi.
+
+<Practice generator="d05-correlazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Un legame forte non è una causa. Ricordalo ogni volta che leggi un titolo di giornale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il grafico a dispersione mostra il legame tra due numeri; r va da −1 a +1.
+- Il segno di r è la direzione, la distanza da zero è la forza. r = 0 vuol dire nessuna relazione lineare.
+- Correlazione non è causalità: pensa sempre a una terza causa, alla causa al contrario e al caso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa significa r = −0,9?", a: "Relazione lineare forte e in discesa" },
+    { q: "Valori possibili di r?", a: "Da −1 a +1" },
+    { q: "Gelati e annegamenti: qual è la terza causa?", a: "Il caldo" },
+    { q: "Cosa non può misurare r?", a: "Le relazioni non lineari, come una U" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli outlier, i valori strani che rovinano medie e correlazioni se non li guardi bene.</Say>
+</Scene>

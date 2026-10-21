@@ -1,0 +1,177 @@
+---
+id: D.16.006
+course: dati
+module: 16
+title: "Dal testo ai numeri"
+belt: marrone
+duration_min: 9
+prerequisites: [D.16.005]
+objectives:
+  - "Trasformare un testo in conteggi di parole e in punteggi TF-IDF"
+  - "Spiegare a livello concettuale che cos'è un embedding"
+  - "Conoscere i limiti dei modelli di linguaggio e usarli in modo responsabile"
+video:
+  provider: youtube
+  id: "viZrOnJclY0"
+  start: 0
+  end: 600
+  channel: "StatQuest with Josh Starmer"
+  title: "Word Embedding and Word2Vec, Clearly Explained!!!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-testo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che le parole più frequenti siano le più importanti: «il» e «di» compaiono ovunque e non dicono niente"
+  - "Credere che un modello di linguaggio «capisca» e dica sempre il vero: produce testo plausibile, anche sbagliato"
+  - "Incollare dati personali di clienti in strumenti pubblici: è un problema di privacy e di GDPR"
+commands: []
+---
+
+<Scene title="Mille recensioni da leggere">
+Il negozio online «Libri Blu» (fittizio) riceve mille recensioni al giorno. Nora non può leggerle tutte. Vuole che un modello capisca quali parlano di spedizione in ritardo.
+
+Ma un modello lavora con **numeri**, non con frasi. Come si trasforma un testo in numeri senza perdere il senso?
+
+<Say who="sensei">Prima si conta. Poi si pesa. Poi si arriva a metodi più raffinati. Passo per passo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare le parole">
+Tre mini-recensioni:
+
+1. «il gatto dorme»
+2. «il gatto mangia»
+3. «il cane abbaia»
+
+Si fa un elenco di tutte le parole (il **vocabolario**): abbaia, cane, dorme, gatto, il, mangia. Per ogni testo si conta quante volte compare ciascuna. È il «sacco di parole» (**bag of words**).
+
+| testo | abbaia | cane | dorme | gatto | il | mangia |
+|---|---|---|---|---|---|---|
+| 1 | 0 | 0 | 1 | 1 | 1 | 0 |
+| 2 | 0 | 0 | 0 | 1 | 1 | 1 |
+| 3 | 1 | 1 | 0 | 0 | 1 | 0 |
+
+Ogni testo è ora una riga di numeri. L'ordine delle parole si perde.
+
+Vuoi sentirlo spiegare da un'altra voce? Come le parole diventano numeri (embedding), in inglese con sottotitoli:
+
+<Video />
+
+<Say who="assistente">Una riga di conteggi per ogni testo. Il modello legge i numeri, non le parole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="TF-IDF: pesare le parole">
+La parola «il» compare in tutti i testi: non distingue niente. «dorme» compare in uno solo: dice molto. Il **TF-IDF** premia le parole frequenti in un testo ma rare negli altri.
+
+Versione semplice: TF = quante volte compare diviso le parole del testo; IDF = logaritmo naturale di (testi totali / testi che la contengono).
+
+Testo 1 (3 parole):
+
+- «il»: IDF = ln(3/3) = ln 1 = 0, quindi punteggio **0**.
+- «gatto» (in 2 testi su 3): IDF = ln(3/2) ≈ 0,405; TF = 1/3; punteggio ≈ **0,14**.
+- «dorme» (in 1 testo su 3): IDF = ln 3 ≈ 1,099; TF = 1/3; punteggio ≈ **0,37**.
+
+<Callout kind="attenzione">
+`TfidfVectorizer` di scikit-learn usa una variante con smussamento: i numeri esatti cambiano, ma l'idea è la stessa.
+</Callout>
+
+<Log lines={[
+  "from sklearn.feature_extraction.text import CountVectorizer",
+  "testi = [\"il gatto dorme\", \"il gatto mangia\", \"il cane abbaia\"]",
+  "cv = CountVectorizer()",
+  "X = cv.fit_transform(testi)",
+  "print(cv.get_feature_names_out())",
+  "print(X.toarray())"
+]} caption="Stampa il vocabolario in ordine alfabetico e la tabella dei conteggi vista sopra." />
+
+<Say who="sensei">Le parole che stanno ovunque non servono. Quelle che distinguono un testo dagli altri sono oro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli embedding">
+Il conteggio non sa che «gatto» e «micio» sono vicini. Un **embedding** dà a ogni parola (o frase) un elenco di numeri, un punto in uno spazio, in modo che parole con significato simile stiano **vicine**.
+
+Esempio ridotto a 2 numeri (inventati): gatto (2, 1), micio (2, 2), automobile (−3, 4). Gatto e micio sono vicini; automobile è lontana.
+
+I numeri non si scrivono a mano: li impara un modello leggendo moltissimi testi. I modelli di linguaggio moderni costruiscono embedding di frasi intere e generano testo prevedendo la parola successiva.
+
+<Callout kind="curiosita">
+Gli embedding hanno spesso centinaia di numeri, non due. Il principio è lo stesso: vicino nello spazio, simile nel significato.
+</Callout>
+
+<Say who="assistente">Una mappa delle parole: i sinonimi abitano nello stesso quartiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Limiti e uso responsabile">
+I modelli di linguaggio scrivono bene, ma:
+
+- **non sanno se dicono il vero**: possono inventare dati, fonti o citazioni con tono sicuro;
+- **ereditano i pregiudizi** dei testi su cui sono stati addestrati;
+- **possono sbagliare con sarcasmo, dialetti, negazioni**.
+
+Uso responsabile:
+
+- controlla i fatti importanti su fonti affidabili;
+- non incollare **dati personali** (nomi, indirizzi, dati di salute) in strumenti pubblici: serve una base legale e il GDPR chiede minimizzazione;
+- misura il modello con esempi etichettati a mano, come per qualsiasi altro modello.
+
+<Say who="sensei">Il modello ti serve da assistente, non da giudice. La responsabilità del risultato resta tua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In 3 recensioni, la parola «spedizione» compare in 1 recensione e «libro» in tutte e 3. Quale ha l'IDF più alto?"
+  options={["spedizione, perché compare in meno recensioni", "libro, perché compare ovunque", "Hanno lo stesso IDF", "Non si può calcolare senza leggere le frasi"]}
+  answer={0}
+  explain="IDF = ln(testi totali / testi che la contengono). Per «spedizione» è ln(3/1) ≈ 1,10; per «libro» è ln(3/3) = 0. Più una parola è rara, più dice di un testo."
+/>
+
+<Say who="assistente">Rara nel gruppo, ricca di informazione. Presente ovunque, quasi muta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Conteggi, TF-IDF, embedding e uso responsabile. Cinque domande, senza errori.
+
+<Practice generator="d16-testo" pass="5/5" retries={3} />
+
+<Say who="sensei">Un testo diventa numeri. I numeri non diventano verità. Controlla sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un testo diventa numeri contando le parole (bag of words) e pesandole con il TF-IDF, che premia le parole rare e utili.
+- Un embedding dà a ogni parola un punto in uno spazio: significato simile, punti vicini.
+- I modelli di linguaggio possono sbagliare e ereditano pregiudizi: si controllano i fatti e non si incollano dati personali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il bag of words?", a: "Un elenco di conteggi delle parole di un testo, senza ordine" },
+    { q: "IDF di una parola presente in tutti i testi?", a: "ln(1) = 0: non distingue niente" },
+    { q: "Che cos'è un embedding?", a: "Un elenco di numeri che colloca una parola in uno spazio: significato simile, vicinanza" },
+    { q: "Un modello di linguaggio dice sempre il vero?", a: "No: produce testo plausibile che può essere sbagliato" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del ramo: dal notebook alla produzione. Un modello vale solo se funziona anche domani.</Say>
+</Scene>

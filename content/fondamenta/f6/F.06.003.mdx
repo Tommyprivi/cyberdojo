@@ -1,0 +1,162 @@
+---
+id: F.06.003
+course: fondamenta
+module: 6
+title: "Quanti indirizzi ci sono?"
+belt: gialla
+duration_min: 9
+prerequisites: [F.06.002]
+objectives:
+  - "Calcolare gli host utilizzabili di una rete con 2^n − 2"
+  - "Trovare indirizzo di rete, broadcast, primo e ultimo host"
+video:
+  provider: youtube
+  id: "WADey37P_VE"
+  start: 0
+  end: 468
+  channel: "Fabio Biscaro"
+  title: "Subnetting For Dummies - Calcolo Indirizzo di rete e di broadcast"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-indirizzi-host
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Gli host utilizzabili sono 2^n − 2, non 2^n: rete e broadcast non si assegnano"
+  - "L'ultimo host è il broadcast meno uno, non il broadcast"
+  - "Il numero dopo la barra conta i bit di rete: i bit per i dispositivi sono 32 meno il prefisso"
+commands: []
+---
+
+<Scene title="Quaranta scrivanie">
+Il reparto commerciale si trasferisce in un nuovo ufficio con **40 scrivanie**, ognuna con un computer. Un collega propone di dare loro una rete **/27**: «Costa poco, basta e avanza».
+
+Ha ragione? Per saperlo bisogna capire **quanti dispositivi ci stanno** in una rete, e non è ovvio: due indirizzi su ogni rete non si possono dare a nessun computer.
+
+<Say who="sensei">Prima di dire sì a una rete, si conta. Una rete troppo piccola si accorge di esserlo il lunedì mattina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I bit per i dispositivi">
+Un indirizzo ha 32 bit. Il prefisso ne usa alcuni per la rete. Quelli che restano sono per i dispositivi:
+
+**bit per i dispositivi = 32 − prefisso**
+
+In una /24 restano 8 bit. Ogni bit può essere 0 o 1: con 8 bit ci sono 2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = **256** combinazioni, cioè 2^8 indirizzi in totale.
+
+<Callout kind="trucco">
+Ogni bit in più **raddoppia** gli indirizzi: 1, 2, 4, 8, 16, 32, 64, 128, 256. Lo conosci già: sono i pesi dei bit.
+</Callout>
+
+<Say who="assistente">Quanti bit restano? Trentadue meno il prefisso. Poi raddoppi quella quantità di volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due indirizzi riservati">
+Su 256 indirizzi, due hanno un compito speciale:
+
+- **indirizzo di rete**: tutti i bit dei dispositivi a **0**. È il «nome» della rete, quello che trovi con l'AND. Nessun computer può usarlo.
+- **indirizzo di broadcast**: tutti i bit dei dispositivi a **1**. Un messaggio inviato qui arriva a **tutti** i dispositivi della rete (come nell'ARP). Nessun computer può usarlo.
+
+Restano **2^n − 2** indirizzi per i dispositivi, gli **host utilizzabili**.
+
+<Callout kind="attenzione">
+Gli host sono 2^n **meno due**. Chi risponde 256 per una /24 assegnerebbe al primo computer proprio l'indirizzo di rete.
+</Callout>
+
+<Say who="sensei">Duecentocinquantasei indirizzi, duecentocinquantaquattro computer. Il primo e l'ultimo sono di servizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella da conoscere">
+Per i prefissi più usati in un ufficio:
+
+| Prefisso | Bit per i dispositivi | Indirizzi totali | Host utilizzabili |
+|---|---|---|---|
+| /24 | 8 | 256 | 254 |
+| /25 | 7 | 128 | 126 |
+| /26 | 6 | 64 | 62 |
+| /27 | 5 | 32 | 30 |
+| /28 | 4 | 16 | 14 |
+| /29 | 3 | 8 | 6 |
+| /30 | 2 | 4 | 2 |
+
+E tornando ai 40 computer del reparto commerciale: una /27 offre solo **30** host. **Non basta.** Serve almeno una /26, che ne offre 62.
+
+<Say who="assistente">Il collega diceva «basta e avanza». Trenta contro quaranta: non basta nemmeno per cominciare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rete, broadcast e host: un caso completo">
+Prendiamo l'indirizzo **192.168.10.77/26** e troviamo tutto, usando la **dimensione del blocco**: in una /26 gli indirizzi stanno in blocchi da 64.
+
+<Guided
+  steps={[
+    "Una /26 ha 6 bit per i dispositivi: blocchi da 64 indirizzi. I blocchi nell'ultimo ottetto partono da 0, 64, 128, 192.",
+    "77 sta tra 64 e 127: il suo blocco parte da 64. Indirizzo di rete: 192.168.10.64.",
+    "L'ultimo indirizzo del blocco è 64 + 64 − 1 = 127. Broadcast: 192.168.10.127.",
+    "Primo host: rete + 1 = 192.168.10.65. Ultimo host: broadcast − 1 = 192.168.10.126.",
+    "Host utilizzabili: da 65 a 126, cioè 62. Coincide con 2^6 − 2.",
+  ]}
+/>
+
+Un'altra voce che mostra gli stessi passaggi, con altri numeri:
+
+<Video />
+
+<Say who="sensei">Blocco, inizio, fine, meno uno ai bordi. È sempre lo stesso ritmo, qualsiasi rete.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai 40 computer da collegare. Qual è il prefisso della rete più piccola che li contiene tutti?"
+  options={["/26", "/27", "/28", "/30"]}
+  answer={0}
+  explain="/26 offre 62 host utilizzabili: bastano per 40. /27 ne offre solo 30, /28 solo 14, /30 solo 2. Chi sceglie /27 conta gli indirizzi totali (32) e dimentica che quelli utilizzabili sono 30, e comunque meno di 40."
+/>
+
+<Say who="assistente">Parti dalla più piccola e sali. Quando gli host utilizzabili superano 40, ti fermi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su indirizzi di rete, broadcast e host. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-indirizzi-host" pass="5/5" retries={3} />
+
+<Say who="sensei">Trova il blocco, poi tutto il resto segue. Chi salta il blocco indovina, e indovinare non è un mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I bit per i dispositivi sono 32 meno il prefisso; gli indirizzi totali sono 2 elevato a quel numero.
+- Il primo indirizzo (rete) e l'ultimo (broadcast) non si assegnano: gli host utilizzabili sono 2^n − 2.
+- Con il blocco si trova tutto: rete = inizio, broadcast = fine, primo host = rete + 1, ultimo host = broadcast − 1.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Host utilizzabili di una /24?", a: "254 (256 − 2)" },
+    { q: "Host utilizzabili di una /27?", a: "30 (32 − 2)" },
+    { q: "Rete e broadcast di 192.168.10.77/26?", a: "Rete 192.168.10.64, broadcast 192.168.10.127" },
+    { q: "Perché si tolgono due indirizzi?", a: "Perché rete e broadcast non si assegnano ai dispositivi" },
+  ]}
+/>
+
+<Say who="sensei">Sai contare una rete. Domani impari a spezzarne una grande in tante piccole: il subnetting.</Say>
+</Scene>

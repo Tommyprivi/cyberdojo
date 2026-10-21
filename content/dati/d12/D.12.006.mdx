@@ -1,0 +1,153 @@
+---
+id: D.12.006
+course: dati
+module: 12
+title: "Comunicare con onestà"
+belt: verde
+duration_min: 9
+prerequisites: [D.12.005]
+objectives:
+  - "Presentare un risultato con la sua incertezza e i suoi limiti"
+  - "Evitare conclusioni forzate: causa, selezione dei dati, grafici ingannevoli"
+  - "Citare le fonti e correggere un errore con trasparenza"
+video:
+  provider: youtube
+  id: "74TJ2e7MLwE"
+  start: 0
+  end: 289
+  channel: "Sprouts Italia"
+  title: "Perché il tuo cervello ti inganna: Correlazione vs Causalità"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-onesta
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Presentare una stima come un valore esatto"
+  - "Scegliere solo i dati o il periodo che confermano ciò che ci si aspetta"
+  - "Non dire di aver fatto molte prove e mostrarne una sola"
+commands: []
+---
+
+<Scene title="Il risultato che il capo vuole">
+Luca, analista in un'azienda fittizia di servizi, ha provato una nuova funzione dell'app. Il capo spera che abbia aumentato gli acquisti. I dati dicono: un piccolo aumento, ma con pochi utenti e molta incertezza.
+
+Il capo gli scrive: «Puoi mostrare solo le settimane in cui è andata bene?».
+
+La domanda del caso: **come si comunica un risultato quando la verità è meno comoda di una bella conclusione?**
+
+<Say who="sensei">Il tuo lavoro non è dare ragione a chi ti paga. È dire che cosa mostrano i dati, e quanto sei sicuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dire quanto sei sicuro">
+Un risultato su un campione è una **stima**, non un valore esatto. Un esempio: un sondaggio su 200 persone dice che il 56% è soddisfatto.
+
+Non vuol dire che il 56% di tutti i clienti sia soddisfatto. Con 200 risposte, in sintesi, l'incertezza è di circa 7 punti percentuali in più o in meno: il valore vero potrebbe essere tra circa il 49% e il 63%.
+
+Quindi non si può dire con sicurezza che «più della metà» sia soddisfatta.
+
+<Callout kind="regola">
+Accanto a un numero scrivi sempre: quante persone o osservazioni, in che periodo, e quanta incertezza. Un numero senza contesto sembra più sicuro di quanto sia.
+</Callout>
+
+Vuoi sentire parlare di uno degli errori più comuni, causa e correlazione? Meno di cinque minuti:
+
+<Video />
+
+<Say who="assistente">Una stima onesta ha due parti: il valore e il margine. Se ne vedi una sola, chiedi l'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Limiti e conclusioni forzate">
+Ogni analisi ha dei limiti. Dichiararli non toglie credibilità: la dà.
+
+- **Causa e correlazione**: due cose che salgono insieme non per forza si causano a vicenda (gelati e scottature salgono in estate, per una causa comune).
+- **Campione che non rappresenta**: se rispondono solo gli insoddisfatti, la media non parla di tutti.
+- **Periodo breve**: tre mesi non dicono come andrà in un anno.
+- **Molte prove, una sola mostrata**: se provi 20 confronti, uno può sembrare interessante per puro caso. Dillo.
+- **Selezione**: mostrare solo i mesi favorevoli falsa il quadro.
+- **Grafici**: un asse che non parte da zero può far sembrare enorme una differenza piccola.
+
+<Callout kind="attenzione">
+Forzare una conclusione non vuol dire per forza barare con i numeri: spesso è omettere. Ciò che non scrivi può ingannare quanto ciò che scrivi.
+</Callout>
+
+<Say who="sensei">Se un dato non ti dà ragione, non cambiare il dato. Cambia la domanda, o cambia la tua idea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fonti e responsabilità">
+Un rapporto onesto permette a un altro di ricontrollare il tuo lavoro. Per questo si indicano:
+
+<Guided
+  steps={[
+    "La fonte dei dati: chi li ha raccolti, dove si trovano, in che periodo.",
+    "La data di estrazione e la versione del dataset.",
+    "Come sono stati trattati: filtri, dati esclusi, correzioni.",
+    "I limiti e le incertezze, vicino alle conclusioni, non in fondo in piccolo.",
+    "Se scopri un errore dopo l'invio: avvisi subito chi lo ha ricevuto e mandi la correzione.",
+  ]}
+/>
+
+Per i dati altrui si **cita la fonte**: anno, autore o ente, dove trovarla. Per i dati sulle persone valgono ancora privacy e minimizzazione: un buon grafico non deve esporre nessuno.
+
+La **responsabilità professionale** è questa: rispondi della correttezza del tuo lavoro e non usi i numeri per ingannare, nemmeno quando te lo chiede un cliente o un capo. Se la richiesta è scorretta, spieghi perché e proponi un'alternativa onesta.
+
+<Say who="assistente">Correggere un errore dopo averlo scoperto è un segno di serietà, non di debolezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai provato 20 confronti diversi e solo uno dà un risultato interessante. Che cosa è onesto scrivere nel rapporto?"
+  options={["Che hai fatto 20 confronti, e che un risultato su 20 può essere dovuto al caso", "Solo il confronto interessante, perché è quello che conta", "Nulla: le prove scartate non servono", "Che il risultato è certo, perché è sopra la soglia"]}
+  answer={0}
+  explain="Con molte prove, qualcosa sembra interessante per caso. Dire quante ne hai fatte permette a chi legge di valutare quanto fidarsi. Nascondere le altre 19 prove falsa il quadro senza scrivere nessuna bugia esplicita."
+/>
+
+<Say who="sensei">Mostra il percorso, non solo l'arrivo. Chi legge ha il diritto di sapere come ci sei arrivato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su incertezza, limiti, fonti e responsabilità. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-onesta" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: i dati sono persone, e le conclusioni sono promesse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un risultato su un campione è una stima: va dato con quantità di dati, periodo e margine di incertezza.
+- Dichiara i limiti e non forzare le conclusioni: causa e correlazione, campione, selezione dei dati, molte prove, assi dei grafici.
+- Cita fonti e versione dei dati, correggi gli errori con trasparenza, e rispondi del tuo lavoro anche quando è scomodo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Un sondaggio dà il 56% su 200 persone: è un valore esatto?", a: "No: è una stima, con circa 7 punti di incertezza in più o in meno" },
+    { q: "Correlazione e causalità sono la stessa cosa?", a: "No: due cose che salgono insieme non per forza si causano" },
+    { q: "Che cosa fai se scopri un errore dopo l'invio del rapporto?", a: "Avvisi subito chi lo ha ricevuto e mandi la correzione" },
+    { q: "Che cosa serve per citare bene una fonte?", a: "Autore o ente, anno e dove trovarla" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai imparato a trattare i dati con rispetto per le persone e con onestà verso chi ti legge.</Say>
+</Scene>

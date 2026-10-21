@@ -1,0 +1,166 @@
+---
+id: D.02.006
+course: dati
+module: 2
+title: "Le tabelle pivot"
+belt: gialla
+duration_min: 9
+prerequisites: [D.02.005]
+objectives:
+  - "Costruire una tabella pivot scegliendo righe, colonne, valori e filtri"
+  - "Scegliere la domanda a cui una pivot sa rispondere"
+  - "Ricordare che la pivot va aggiornata quando cambiano i dati di partenza"
+video:
+  provider: youtube
+  id: "2svN2mGdbT0"
+  start: 0
+  end: 600
+  channel: "MasterExcel"
+  title: "MasterExcel.it | Pivot Excel: Tutorial Come Creare una Tabella Pivot + Panoramica Strumenti Pivot"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-pivot
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dati di partenza con righe vuote, celle unite o titoli mancanti: la pivot sbaglia o non parte"
+  - "Credere che la pivot si aggiorni da sola: dopo aver cambiato i dati si usa Aggiorna"
+  - "Mettere nei Valori un campo di testo: il foglio lo conta invece di sommarlo"
+commands: []
+---
+
+<Scene title="Mille righe, una domanda">
+Il negozio scolastico ha un foglio con ogni singola vendita: mese, reparto, importo. Mille righe a fine anno. La titolare chiede: **«Quanto ha venduto ogni reparto, mese per mese?»**
+
+Con CONTA.SE e SOMMA.SE si potrebbe fare, ma con venti formule e il rischio di errori.
+
+La domanda del caso: **c'è uno strumento che riassume mille righe in una tabellina, trascinando i campi?**
+
+<Say who="sensei">Un analista non legge mille righe. Le riassume. La tabella pivot è il riassunto più veloce che hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I dati di partenza">
+Ecco un piccolo esempio (sei righe al posto di mille):
+
+| | A | B | C |
+|---|---|---|---|
+| **1** | Mese | Reparto | Importo |
+| **2** | Gen | Libri | 30 |
+| **3** | Gen | Penne | 5 |
+| **4** | Feb | Libri | 20 |
+| **5** | Feb | Zaini | 50 |
+| **6** | Gen | Zaini | 40 |
+| **7** | Feb | Penne | 10 |
+
+È il formato giusto: **una riga per ogni vendita**, i titoli sopra, nessuna riga vuota, nessuna cella unita.
+
+<Callout kind="regola">
+La pivot funziona bene con dati «lunghi»: una riga per record e un titolo per colonna. Non toccare mai i dati originali: la pivot li legge e basta.
+</Callout>
+
+<Say who="assistente">Se i dati sono ordinati come una lista della spesa, la pivot li capisce subito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le quattro aree">
+Si crea con Inserisci > Tabella pivot (Excel e Fogli Google); in LibreOffice Calc si usa Dati > Tabella pivot. Compaiono quattro aree dove trascinare i campi (le colonne dei dati):
+
+- **Righe**: ciò che vuoi elencare in verticale (qui: Reparto).
+- **Colonne**: ciò che vuoi mettere in orizzontale (qui: Mese).
+- **Valori**: ciò che il foglio calcola, per esempio la **somma** di Importo. Si può cambiare in conteggio o media.
+- **Filtri**: per guardare solo una parte dei dati (per esempio un solo mese).
+
+In inglese: Rows, Columns, Values, Filters.
+
+<Callout kind="trucco">
+Pensa a una tabella: i campi nelle Righe e nelle Colonne sono i titoli, i Valori sono i numeri che compaiono nelle celle.
+</Callout>
+
+<Say who="sensei">Prima di trascinare, scrivi la domanda. Poi scegli i campi che la risolvono. Non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il risultato">
+Righe = Reparto, Colonne = Mese, Valori = Somma di Importo:
+
+| Reparto | Gen | Feb | Totale |
+|---|---|---|---|
+| Libri | 30 | 20 | 50 |
+| Penne | 5 | 10 | 15 |
+| Zaini | 40 | 50 | 90 |
+| **Totale** | **75** | **80** | **155** |
+
+Controllo a mano: per Gen 30 + 5 + 40 = 75, per Feb 20 + 50 + 10 = 80, e 75 + 80 = 155, come 50 + 15 + 90.
+
+Ora la domanda si legge subito: **Zaini** è il reparto migliore (90), e **Feb** è il mese migliore (80).
+
+Se cambi il Valore in **Conteggio** (COUNT) ogni cella dice quante vendite ci sono: Libri 2, Penne 2, Zaini 2. Se lo cambi in **Media**, Libri dà 25 (50 diviso 2), Penne 7,5 (15 diviso 2) e Zaini 45 (90 diviso 2).
+
+<Say who="assistente">Stessi dati, tre domande diverse: quanto, quante volte, in media quanto. Cambi solo il Valore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Filtri e aggiornamento">
+Se metti il campo Mese nei **Filtri** e scegli «Feb», la pivot mostra solo le vendite di febbraio: il totale generale diventa 80.
+
+<Callout kind="attenzione">
+La pivot **non si aggiorna da sola**. Se correggi un importo nei dati, devi usare «Aggiorna» (in Excel: clic destro sulla pivot, poi Aggiorna; in Fogli Google si aggiorna da sola; in LibreOffice Calc: Dati > Tabella pivot > Aggiorna). Altrimenti guardi numeri vecchi.
+</Callout>
+
+<Quiz
+  question="Hai una pivot con Righe = Reparto e Valori = Somma di Importo. Correggi un importo nei dati di partenza. Cosa devi fare in Excel perché la pivot lo mostri?"
+  options={["Aggiornare la pivot", "Rifare tutta la pivot da zero", "Niente: si aggiorna sempre da sola", "Ordinare i dati"]}
+  answer={0}
+  explain="In Excel la pivot non si ricalcola da sola: basta aggiornarla, non rifarla. Chi dimentica di aggiornare finisce per presentare numeri vecchi."
+/>
+
+Un video mostra come si costruisce una pivot dal vivo:
+
+<Video />
+
+<Say who="sensei">Una pivot è una domanda messa in tabella. Se la domanda è sbagliata, la pivot ti risponde bene a una cosa che non ti serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su pivot e sui dati di vendita del negozio. Alcuni numeri li dovrai leggere dalla tabella dell'esempio.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-pivot" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con una pivot rispondi in un minuto a domande che a mano richiedono un'ora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La pivot riassume molte righe: Righe e Colonne sono i titoli, Valori il calcolo (somma, conteggio, media), Filtri la parte da guardare.
+- I dati di partenza devono avere una riga per record, titoli sopra, niente buchi né celle unite.
+- In Excel la pivot si aggiorna con «Aggiorna»; non cambia mai i dati originali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le quattro aree di una pivot?", a: "Righe, Colonne, Valori, Filtri" },
+    { q: "Con i dati dell'esempio, quanto fa il totale generale?", a: "155 (75 a gennaio + 80 a febbraio)" },
+    { q: "Che cosa cambia scegliendo «Media» al posto di «Somma»?", a: "La cella mostra la media dei valori, non il totale" },
+    { q: "La pivot modifica i dati originali?", a: "No: li legge soltanto" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: trasformare una pivot in un grafico che si legge in cinque secondi.</Say>
+</Scene>

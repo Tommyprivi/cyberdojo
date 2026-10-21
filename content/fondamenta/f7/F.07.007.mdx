@@ -1,0 +1,172 @@
+---
+id: F.07.007
+course: fondamenta
+module: 7
+title: "DHCP: l'indirizzo in prestito"
+belt: arancione
+duration_min: 8
+prerequisites: [F.07.006]
+objectives:
+  - "Descrivere i quattro passi DORA con cui un dispositivo ottiene un indirizzo"
+  - "Spiegare che cos'è il lease e che cosa il DHCP assegna oltre all'indirizzo"
+  - "Capire il rischio di un server DHCP non autorizzato e come ci si difende"
+video:
+  provider: youtube
+  id: "TM0JAU31TzQ"
+  start: 0
+  end: 233
+  channel: "Small Bytes"
+  title: "DHCP: come fa il tuo computer ad avere un indirizzo IP"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-dhcp
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Discover e Request partono dal client, Offer e Acknowledge dal server"
+  - "Il lease non è per sempre: scade e va rinnovato"
+  - "Il DHCP dà anche gateway e DNS, non solo l'indirizzo"
+commands: []
+---
+
+<Scene title="Il portatile appena acceso">
+Una nuova collega accende il portatile in ufficio. Non ha mai visto la rete. Dopo pochi secondi naviga.
+
+Nessuno le ha detto un indirizzo IP, né il gateway, né il DNS. Chi ha deciso tutto questo?
+
+<Say who="sensei">In rete niente succede da solo. Qualcuno ha assegnato l'indirizzo. Si chiama DHCP.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un server che assegna indirizzi">
+Il **DHCP** (Dynamic Host Configuration Protocol) è un servizio, di solito nel router o in un server, che dà in automatico a chi si collega:
+
+- un **indirizzo IP** libero;
+- la **subnet mask**;
+- il **gateway**, cioè il router verso l'esterno;
+- il **server DNS** da usare.
+
+L'indirizzo è dato **in prestito** per un tempo limitato, il **lease** (in italiano «concessione»). Quando sta per scadere, il dispositivo lo rinnova.
+
+<Callout kind="regola">
+DHCP = indirizzo e impostazioni di rete **automatici** e **in prestito**.
+</Callout>
+
+<Say who="assistente">Senza DHCP un tecnico dovrebbe configurare a mano ogni telefono e ogni portatile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="DORA">
+Il dispositivo non ha ancora un indirizzo, quindi chiama **a tutti** (broadcast, un messaggio per tutta la rete locale), con UDP. I quattro passi si ricordano con **DORA**:
+
+1. **D**iscover: il client: «C'è un server DHCP?»
+2. **O**ffer: il server: «Ti propongo questo indirizzo.»
+3. **R**equest: il client: «Va bene, lo voglio.»
+4. **A**cknowledge: il server: «Confermato, è tuo fino alla scadenza.»
+
+<Callout kind="trucco">
+Il client parla per primo e per terzo (Discover, Request). Il server per secondo e quarto (Offer, Acknowledge).
+</Callout>
+
+Un'altra voce, in meno di quattro minuti:
+
+<Video />
+
+<Say who="sensei">Chiedi, ricevi un'offerta, accetti, il server conferma. Quattro battute.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggi la cattura">
+<Log lines={[
+  "10:15:02  0.0.0.0 -> broadcast        DHCP Discover",
+  "10:15:02  192.168.1.1 -> client       DHCP Offer    192.168.1.50  lease=8h",
+  "10:15:02  0.0.0.0 -> broadcast        DHCP Request  192.168.1.50",
+  "10:15:02  192.168.1.1 -> client       DHCP Ack      192.168.1.50  gw=192.168.1.1  dns=192.168.1.1"
+]} caption="Cattura fittizia: il portatile ottiene 192.168.1.50 per otto ore." />
+
+<Guided
+  steps={[
+    "Il client parte da 0.0.0.0: significa «non ho ancora un indirizzo».",
+    "Il server 192.168.1.1 propone 192.168.1.50 e dichiara la durata del lease: otto ore.",
+    "Il client lo richiede e il server conferma, aggiungendo gateway e DNS.",
+  ]}
+/>
+
+<Say who="assistente">Una cosa da ricordare: l'ultimo messaggio dà anche gateway e DNS, non solo l'indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se il server DHCP è falso">
+Il client si fida della **prima offerta** che riceve. Se in una rete compare un **server DHCP non autorizzato** (per esempio un piccolo router collegato per errore alla presa dell'ufficio), potrebbe dare indirizzi sbagliati o indicare un gateway o un DNS falsi. Il traffico degli utenti passerebbe per un punto che nessuno controlla.
+
+Come ci si difende:
+
+- sugli switch aziendali si attiva il **DHCP snooping**: si accettano offerte solo dalle porte dove è collegato il server vero;
+- si controllano i log e si cerca chi offre indirizzi;
+- si vieta di collegare apparecchi non autorizzati.
+
+<Callout kind="attenzione">
+Mettere un server DHCP falso in una rete altrui è un'intrusione (art. 615-ter c.p.). Le prove si fanno solo in un laboratorio isolato, di tua proprietà.
+</Callout>
+
+<Say who="sensei">Chi dà l'indirizzo decide anche da dove passa il traffico. Per questo il DHCP si sorveglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In ufficio diversi PC ricevono un gateway diverso da quello aziendale, e non navigano bene. Che ipotesi fai per prima?"
+  options={[
+    "Un server DHCP non autorizzato sta rispondendo alle richieste con impostazioni sbagliate",
+    "Il lease è troppo lungo, quindi l'indirizzo non si rinnova mai",
+    "Il DNS ha cancellato il record A di tutti i PC",
+    "Le porte 80 e 443 sono chiuse su tutti i PC"
+  ]}
+  answer={0}
+  explain="Il gateway lo assegna il DHCP. Se alcuni PC ricevono un gateway che non è quello aziendale, probabilmente c'è un secondo server DHCP che offre impostazioni sbagliate. Il lease o i record A non decidono il gateway."
+/>
+
+<Say who="assistente">Chi ha dato l'indirizzo, ha dato anche il gateway. Parti da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+DORA, lease e casi di rete. Hai 3 tentativi.
+
+<Practice generator="f07-dhcp" pass="5/5" retries={3} />
+
+<Say who="sensei">Quattro passi, in ordine. Poi ragiona su chi li ha mandati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il DHCP assegna in automatico indirizzo, subnet mask, gateway e DNS, in prestito per un tempo (lease).
+- DORA: Discover, Offer, Request, Acknowledge.
+- Un server DHCP non autorizzato può deviare il traffico: si previene con il DHCP snooping e il controllo dei dispositivi collegati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le quattro lettere di DORA?", a: "Discover, Offer, Request, Acknowledge" },
+    { q: "Che cos'è il lease?", a: "Il tempo per cui l'indirizzo è dato in prestito" },
+    { q: "Oltre all'indirizzo, che cosa dà il DHCP?", a: "Subnet mask, gateway e server DNS" },
+    { q: "Come si limita un server DHCP falso su uno switch?", a: "Con il DHCP snooping" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: il NAT. Come tanti indirizzi privati escono su Internet con uno solo.</Say>
+</Scene>

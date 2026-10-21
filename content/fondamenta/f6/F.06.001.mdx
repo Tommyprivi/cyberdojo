@@ -1,0 +1,170 @@
+---
+id: F.06.001
+course: fondamenta
+module: 6
+title: "La maschera che taglia l'indirizzo"
+belt: gialla
+duration_min: 8
+prerequisites: [F.05.009]
+objectives:
+  - "Spiegare a cosa serve la subnet mask"
+  - "Scrivere una maschera in binario e riconoscere quella valida"
+  - "Trovare la rete di un indirizzo con l'AND bit a bit"
+video:
+  provider: youtube
+  id: "TdtQfXrrNrM"
+  start: 0
+  end: 316
+  channel: "L'Informatica Che Appassiona"
+  title: "Cos'è la subnet mask"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-subnet-mask
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "La maschera non è un indirizzo: non appartiene a nessun dispositivo, serve solo a tagliare un indirizzo"
+  - "L'AND si fa bit per bit, non sui numeri decimali: 77 e 192 vanno prima scritti in binario"
+  - "I bit a 1 della maschera stanno tutti a sinistra, di seguito: 255.255.0.255 non è una maschera"
+commands: []
+---
+
+<Scene title="Vicino o lontano?">
+Il caso del turno di notte non è chiuso. Nel registro compare una nuova riga: la postazione **192.168.1.66** (contabilità) ha scambiato dati con la **192.168.1.70**, un altro PC dello stesso reparto.
+
+Una domanda semplice, che ogni computer si pone migliaia di volte al giorno: **il destinatario è nella mia rete, o è fuori?**
+
+<Say who="sensei">Il computer non ha occhi. Non vede chi gli siede accanto. Ha solo numeri e una regola per leggerli. La regola si chiama maschera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Via e numero civico">
+Un indirizzo IP ha due pezzi, come un indirizzo di casa:
+
+- una parte che dice **in quale rete** sei (la «via»);
+- una parte che dice **quale dispositivo** sei (il «numero civico»).
+
+In 192.168.1.66 la rete è 192.168.1 e il dispositivo è il numero 66. Ma da qualche parte deve essere scritto **dove finisce la via e dove comincia il civico**. Nell'indirizzo non c'è un trattino che lo dica.
+
+<Callout kind="attenzione">
+Il taglio non è sempre dopo il terzo numero. Dipende dalla rete: per questo serve un dato in più, scritto a parte.
+</Callout>
+
+<Say who="assistente">L'indirizzo da solo non basta. Serve una seconda informazione che dica dove tagliarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La subnet mask">
+Quel dato in più è la **subnet mask** (maschera di sottorete). È un numero lungo 32 bit come l'indirizzo, scritto negli stessi quattro ottetti.
+
+La regola è una sola:
+
+- bit a **1** nella maschera: quel bit dell'indirizzo appartiene alla **rete**;
+- bit a **0** nella maschera: quel bit appartiene al **dispositivo**.
+
+La maschera più comune è 255.255.255.0. Il primo ottetto, 255, in bit è:
+
+<BitGrid bits="11111111" />
+
+Tre ottetti da 255 sono **24 bit a 1**: i primi tre numeri sono la rete, l'ultimo è il dispositivo.
+
+<Callout kind="regola">
+Nella maschera i bit a 1 stanno **tutti a sinistra, di seguito**, poi tutti gli zeri. Mai un uno dopo uno zero.
+</Callout>
+
+<Say who="sensei">Uno è rete, zero è dispositivo. Ricordala così e non la dimentichi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'AND: il filtro dei bit">
+Come si usa la maschera? Con un'operazione che hai già incontrato senza saperlo: l'**AND bit a bit**. Si confrontano i bit uno alla volta e il risultato è 1 **solo se entrambi sono 1**:
+
+- 1 AND 1 = **1**
+- 1 AND 0 = **0**
+- 0 AND 1 = **0**
+- 0 AND 0 = **0**
+
+Dove la maschera ha 1, il bit dell'indirizzo passa. Dove ha 0, il bit viene azzerato. Il risultato è l'**indirizzo di rete**: l'indirizzo senza la parte del dispositivo.
+
+<Log lines={[
+  "indirizzo  192.168.1.66",
+  "maschera  255.255.255.0",
+  "rete  192.168.1.0",
+]} caption="Ultimo ottetto: 66 AND 0 = 0. I primi tre passano intatti perché 255 è tutto a 1." />
+
+<Say who="assistente">La .66 e la .70 hanno la stessa rete, 192.168.1.0. Quindi sono vicine di casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando il taglio è a metà ottetto">
+Con 255.255.255.0 il conto è facile: o passa tutto o si azzera tutto. Ma una maschera può tagliare **dentro** un ottetto. Prendiamo **192.168.10.77** con maschera **255.255.255.192**. Conta solo l'ultimo ottetto: 77 e 192.
+
+<Guided
+  steps={[
+    { text: "77 in binario: 64 + 8 + 4 + 1 = 01001101.", bits: "01001101" },
+    { text: "192 in binario: 128 + 64 = 11000000. Sono due bit a 1: la rete prende due bit anche dall'ultimo ottetto.", bits: "11000000" },
+    { text: "AND bit per bit: 01001101 AND 11000000 = 01000000.", bits: "01000000" },
+    "01000000 = 64. La rete è 192.168.10.64.",
+  ]}
+/>
+
+Vuoi sentirlo spiegare da un'altra voce? Cinque minuti, tutto il concetto:
+
+<Video />
+
+<Say who="sensei">Il numero 77 non è sparito: è il dispositivo. Dentro la rete .64 è il tredicesimo ospite. La rete è un'altra cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il PC 10.20.30.40 ha maschera 255.255.0.0. Qual è la sua rete?"
+  options={["10.20.0.0", "10.0.0.0", "10.20.30.0", "0.0.30.40"]}
+  answer={0}
+  explain="255.255.0.0 sono 16 bit a 1: passano i primi due numeri (10 e 20), gli altri due si azzerano. Chi risponde 10.20.30.0 ha usato la maschera /24 per abitudine. La maschera dice dove tagliare: si legge ogni volta."
+/>
+
+<Say who="assistente">Conta gli ottetti da 255: quelli passano. Gli ottetti da 0 si azzerano. Per i valori in mezzo serve il binario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su maschere e indirizzi di rete. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-subnet-mask" pass="5/5" retries={3} />
+
+<Say who="sensei">Se un calcolo non torna, scrivi i bit. Tre righe di binario costano meno di un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La subnet mask dice dove tagliare l'indirizzo: bit a 1 = rete, bit a 0 = dispositivo.
+- Una maschera valida ha tutti gli uno a sinistra, poi tutti gli zeri.
+- Indirizzo AND maschera, bit per bit, dà l'indirizzo di rete: due computer sono vicini se hanno la stessa rete.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa indicano i bit a 1 della maschera?", a: "La parte di rete dell'indirizzo" },
+    { q: "Quanto fa 1 AND 0?", a: "0: il risultato è 1 solo se entrambi i bit sono 1" },
+    { q: "Rete di 192.168.10.77 con maschera 255.255.255.192?", a: "192.168.10.64 (01001101 AND 11000000 = 01000000)" },
+    { q: "255.255.0.255 è una maschera valida?", a: "No: i bit a 1 devono stare tutti di seguito a sinistra" },
+  ]}
+/>
+
+<Say who="sensei">Le maschere si scrivono lunghe, ma gli analisti le abbreviano. Domani impari a farlo con una barra e un numero.</Say>
+</Scene>

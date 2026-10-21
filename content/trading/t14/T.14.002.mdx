@@ -1,0 +1,188 @@
+---
+id: T.14.002
+course: trading
+module: 14
+title: "Ipotesi, regole e criteri prima del test"
+belt: marrone
+duration_min: 9
+prerequisites: [T.14.001]
+objectives:
+  - "Scrivere un'ipotesi che può essere smentita dai dati"
+  - "Definire regole di ingresso e uscita senza guardare il futuro"
+  - "Fissare in anticipo i criteri di successo e la divisione dei dati"
+video:
+  provider: youtube
+  id: "5uiCuzc6BqE"
+  start: 0
+  end: 600
+  channel: "Trading Steady"
+  title: "How to Backtest a Trading Strategy in Python | Stop Loss, Take Profit & Position Sizing Tutorial"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t14-regole
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Decidere i criteri di successo dopo aver visto i risultati"
+  - "Usare il segnale di oggi per ottenere il rendimento di oggi (look-ahead bias)"
+  - "Scrivere regole vaghe, come «entro quando il prezzo sembra forte»"
+commands: []
+---
+
+<Scene title="La regola cambiata a metà">
+Livia lancia il suo primo test. Il risultato è deludente. Allora cambia la media da 3 a 5 giorni, poi a 4, poi sposta la data di inizio. Alla quinta prova il risultato è bellissimo.
+
+Il Sensei le chiede: «Quale delle cinque prove racconti nella relazione?»
+
+La domanda del caso: **come si scrivono le regole in modo che il test non possa essere truccato, nemmeno da te?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Qui si lavora con dati fittizi.
+</Callout>
+
+<Say who="sensei">Le regole si scrivono prima. Chi le cambia dopo aver visto il risultato non sta testando: sta cercando una scusa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ipotesi che può perdere">
+Un'ipotesi ben scritta ha quattro pezzi:
+
+- **Se** accade una condizione,
+- **allora** ci aspettiamo un effetto,
+- **perché** c'è un motivo plausibile,
+- **e sarà falsa se** i dati mostrano questo.
+
+Per il nostro progetto:
+
+> Se il prezzo di chiusura sta sopra la media degli ultimi 3 giorni, allora il giorno dopo il fondo tende a salire più della media dei giorni, perché i movimenti hanno una certa inerzia (trend). L'ipotesi è falsa se, al netto dei costi, la strategia non batte il buy and hold.
+
+<Callout kind="regola">
+Il pezzo «sarà falsa se» è il più importante: senza di lui l'ipotesi non si può mai smentire.
+</Callout>
+
+<Say who="assistente">Se qualunque risultato ti darebbe ragione, non hai un'ipotesi: hai un'opinione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole in forma di codice">
+Le regole del progetto, scritte in modo che nessuno possa interpretarle:
+
+- **Dati:** 10 prezzi di chiusura fittizi: 100, 102, 101, 104, 106, 105, 103, 101, 104, 107.
+- **Segnale del giorno:** 1 se la chiusura è **maggiore** della media degli ultimi 3 giorni (oggi compreso), altrimenti 0.
+- **Posizione:** si usa il segnale **del giorno prima**. Se ieri il segnale era 1, oggi si è investiti.
+- **Costi:** 0,2% a ogni acquisto o vendita (ipotesi fittizia).
+
+Calcola i segnali con Python puro:
+
+<PythonTerminal code={"prezzi = [100, 102, 101, 104, 106, 105, 103, 101, 104, 107]\nfor i in range(2, len(prezzi)):\n    media = (prezzi[i] + prezzi[i-1] + prezzi[i-2]) / 3\n    segnale = 1 if prezzi[i] > media else 0\n    print(i, prezzi[i], round(media, 2), segnale)"} />
+
+Risultato atteso, riga per riga (giorno, prezzo, media, segnale): `2 101 101.0 0`, `3 104 102.33 1`, `4 106 103.67 1`, `5 105 105.0 0`, `6 103 104.67 0`, `7 101 103.0 0`, `8 104 102.67 1`, `9 107 104.0 1`.
+
+Nota il giorno 2: 101 non è maggiore di 101, quindi il segnale è 0. E il giorno 5: 105 non è maggiore di 105.
+
+<Say who="sensei">Maggiore, non maggiore o uguale. Una regola precisa decide anche i casi di parità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il giorno dopo">
+Il segnale nasce a fine giornata, quando la chiusura è nota. Non si può usare per guadagnare **quella stessa giornata**: sarebbe guardare il futuro (look-ahead bias, modulo 5).
+
+Per questo la posizione è il segnale **spostato di un giorno**: in pandas si scrive `segnale.shift(1)`.
+
+<Log lines={[
+  "giorno  segnale  posizione",
+  "3       1        0",
+  "4       1        1",
+  "5       0        1",
+  "6       0        0",
+  "8       1        0",
+  "9       1        1",
+]} />
+
+Il giorno 3 il segnale è 1, ma si entra solo il giorno 4. Il giorno 5 il segnale è 0, ma si esce solo il giorno 6.
+
+Vuoi sentire un'altra voce su regole, stop e dimensione della posizione? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il segnale di stasera lavora domani. Mai oggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Livia calcola la posizione di oggi usando il segnale di oggi, senza spostarlo di un giorno. Il backtest risulta molto migliore. Che cosa è successo?"
+  options={[
+    "La strategia usa informazioni non ancora note al momento della decisione: il risultato è gonfiato dal look-ahead bias",
+    "La strategia è diventata più prudente grazie ai costi più bassi",
+    "Il backtest ha scoperto un segnale che funziona sempre",
+    "Il risultato è migliore perché ha usato più dati storici",
+  ]}
+  answer={0}
+  explain="Il segnale di oggi si conosce solo a chiusura avvenuta: usarlo per il rendimento di oggi vuol dire decidere con una informazione del futuro. Il risultato migliora per costruzione, non perché la strategia sia buona."
+/>
+
+<Say who="sensei">Un backtest troppo bello va cercato con la lente. Di solito il difetto è nelle date.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La scheda delle regole">
+Prima di guardare qualsiasi numero, Livia compila la sua scheda. Seguila.
+
+<Guided
+  steps={[
+    "Domanda: stare investiti solo sopra la media a 3 giorni batte il buy and hold, al netto dei costi?",
+    "Dati e periodo: 10 chiusure fittizie, dal giorno 0 al giorno 9. Se i dati fossero di più, si decide ora la parte per mettere a punto le regole e la parte, mai toccata, per la prova finale.",
+    "Segnale e posizione: maggiore della media a 3 giorni, posizione spostata di un giorno.",
+    "Costi: 0,2% a ogni acquisto o vendita.",
+    "Criterio di successo, scritto ora: il rendimento netto della strategia deve superare quello del buy and hold. Se non succede, l'ipotesi è smentita e lo scriviamo nella relazione.",
+    "Regola finale: dopo aver visto i risultati non si cambia nulla della scheda. Se vuoi provare altro, è un nuovo esperimento, da dichiarare come tale.",
+  ]}
+/>
+
+<Say who="sensei">Una scheda firmata prima del test. Questo la distingue da una scusa scritta dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari: ipotesi che possono essere smentite, regole precise, segnali e posizioni, criteri decisi in anticipo.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t14-regole" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi scrive bene le regole non ha bisogno di difendere i risultati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'ipotesi ha un «se», un «allora», un «perché» e un «sarà falsa se».
+- Il segnale si calcola a fine giornata e la posizione lo usa il giorno dopo (shift di un giorno).
+- Criteri di successo, costi e divisione dei dati si fissano prima di guardare i risultati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire «sarà falsa se»?", a: "Dire in anticipo quale risultato smentirebbe l'ipotesi" },
+    { q: "Perché si sposta il segnale di un giorno?", a: "Perché il segnale si conosce a fine giornata: usarlo lo stesso giorno è look-ahead bias" },
+    { q: "Il 5 ottobre il segnale è 1. Quando entri?", a: "Il giorno di borsa dopo, secondo le regole del progetto" },
+    { q: "Quando si decidono i criteri di successo?", a: "Prima di guardare i risultati del test" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il backtest con i costi. I numeri veri, uno alla volta.</Say>
+</Scene>

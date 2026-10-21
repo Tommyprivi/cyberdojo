@@ -1,0 +1,161 @@
+---
+id: D.16.003
+course: dati
+module: 16
+title: "Alberi e foreste"
+belt: blu
+duration_min: 9
+prerequisites: [D.16.002]
+objectives:
+  - "Spiegare come un albero di decisione sceglie le domande"
+  - "Spiegare perché una foresta casuale batte spesso un albero solo"
+  - "Leggere l'importanza delle variabili senza cadere nelle sue trappole"
+video:
+  provider: youtube
+  id: "J4Wdy0Wc_xQ"
+  start: 0
+  end: 600
+  channel: "StatQuest with Josh Starmer"
+  title: "StatQuest: Random Forests Part 1 - Building, Using and Evaluating"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-alberi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare crescere un albero senza limiti: impara a memoria i dati del train"
+  - "Leggere l'importanza di una variabile come «causa» del risultato"
+  - "Credere che due variabili molto simili abbiano ciascuna tutta l'importanza: se la dividono"
+commands: []
+---
+
+<Scene title="Venti domande per indovinare">
+Sai il gioco in cui indovini un personaggio con domande sì/no? Un **albero di decisione** fa lo stesso: pone domande a una colonna alla volta («ha rinnovato l'anno scorso?») e arriva a una risposta.
+
+Alla palestra «Abbonati Verdi» ci sono 10 clienti: 6 rinnovano, 4 no. Quale domanda conviene porre per prima?
+
+<Say who="sensei">Un albero è una lista di domande in ordine. La difficoltà è una sola: scegliere bene quale chiedere per prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come sceglie la domanda">
+L'albero cerca la domanda che rende i gruppi più **puri**, cioè con quasi tutti uguali. Una misura di impurità è l'**indice di Gini**: 1 meno la somma dei quadrati delle percentuali.
+
+- Gruppo di partenza: 6 sì, 4 no. Percentuali 0,6 e 0,4. Gini = 1 − 0,36 − 0,16 = **0,48**.
+- Domanda «ha rinnovato l'anno scorso?»: a sinistra 4 clienti tutti sì (Gini **0**), a destra 6 clienti con 2 sì e 4 no: Gini = 1 − 1/9 − 4/9 = **4/9, circa 0,444**.
+- Media pesata: (4/10) × 0 + (6/10) × (4/9) = **circa 0,267**.
+
+Da 0,48 a 0,267: il gruppo è diventato più puro. L'albero prova tutte le domande possibili e tiene la migliore.
+
+Vuoi sentirlo spiegare da un'altra voce? Alberi e foreste casuali, in inglese (con sottotitoli):
+
+<Video />
+
+<Say who="assistente">Un gruppo con tutti uguali ha Gini 0: è perfetto. Più si avvicina a 0, meglio la domanda ha diviso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il problema dell'albero solo">
+Se lo lasci crescere senza limiti, l'albero fa una foglia per ogni cliente e indovina il 100 per cento del train. È **overfitting**, come hai visto nella lezione precedente.
+
+Si frena con un limite alla profondità, per esempio `max_depth=3`, o chiedendo almeno qualche riga per foglia.
+
+Un'idea migliore: non fidarti di un albero solo. Chiedi a **molti**.
+
+<Callout kind="attenzione">
+Un albero solo è instabile: cambiando pochi dati può cambiare tutte le domande. Per questo ne servono molti.
+</Callout>
+
+<Say who="sensei">Un solo consulente può sbagliare. Cento consulenti che ragionano in modo un po' diverso sbagliano meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La foresta casuale">
+Una **foresta casuale** (random forest) costruisce tanti alberi diversi:
+
+- ogni albero impara da un campione del train estratto **con ripetizione** (circa il 63 per cento delle righe diverse; le altre restano fuori);
+- a ogni domanda guarda solo un **sottoinsieme casuale** di colonne.
+
+Per decidere, gli alberi **votano**. Esempio con 100 alberi: 63 dicono «rinnova», 37 «non rinnova». Vince il sì, con una probabilità stimata di **0,63**.
+
+<Log lines={[
+  "from sklearn.ensemble import RandomForestClassifier",
+  "foresta = RandomForestClassifier(n_estimators=200, max_depth=6, random_state=42)",
+  "foresta.fit(X_train, y_train)",
+  "print(foresta.feature_importances_.round(2))"
+]} caption="200 alberi, ciascuno limitato a profondità 6." />
+
+<Callout kind="trucco">
+Se dentro la foresta gli alberi sbagliano in modi diversi, i loro errori si compensano nel voto.
+</Callout>
+
+<Say who="assistente">Il voto della maggioranza è più stabile del parere di uno solo. Per questo la foresta batte spesso il singolo albero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Importanza delle variabili e trappole">
+`feature_importances_` dice quanto ogni colonna ha aiutato a rendere i gruppi più puri. La somma fa 1. Esempio: anni di iscrizione 0,50 · visite al mese 0,30 · età 0,20.
+
+Attenzione alle trappole:
+
+- **Non è causa.** Dice che la colonna è utile per prevedere, non che provochi il risultato.
+- **Variabili simili si dividono l'importanza.** Se due colonne dicono quasi la stessa cosa, ciascuna ne mostra una parte.
+- **Le colonne con tanti valori diversi** (come un codice cliente) possono sembrare più importanti di quanto siano.
+- Meglio controllare con l'**importanza per permutazione** calcolata su dati non usati per addestrare.
+
+<Say who="sensei">L'importanza è un indizio, non una sentenza. Chi dice «questa variabile fa rinnovare» ha già sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella foresta, «visite al mese» ha importanza 0,30 e «visite negli ultimi 30 giorni» (quasi identica) ha 0,05. Che cosa conviene pensare?"
+  options={["Le due colonne dicono quasi la stessa cosa e si sono divise l'importanza", "La seconda colonna è inutile e va sempre eliminata", "La prima colonna causa i rinnovi", "La foresta ha un errore di calcolo"]}
+  answer={0}
+  explain="Quando due variabili sono molto simili, l'importanza si distribuisce tra loro: non dice che una sia inutile né che causi qualcosa. Per decidere si prova a toglierne una e si guarda il voto sulla validazione."
+/>
+
+<Say who="assistente">Se due colonne sono quasi gemelle, leggile insieme: la loro importanza vera è la somma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Alberi, Gini, foreste e importanza delle variabili. Cinque domande, senza errori.
+
+<Practice generator="d16-alberi" pass="5/5" retries={3} />
+
+<Say who="sensei">Un modello che si spiega è prezioso. Un modello che si spiega male è pericoloso. Leggi con cautela.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un albero pone domande che rendono i gruppi più puri (Gini più basso); senza limiti va in overfitting.
+- Una foresta casuale fa votare tanti alberi diversi e di solito è più stabile di uno solo.
+- L'importanza delle variabili è un indizio: non è causa, si divide tra variabili simili e va controllata.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Gini di un gruppo con 6 sì e 4 no?", a: "1 − 0,36 − 0,16 = 0,48" },
+    { q: "Gini di un gruppo con tutti uguali?", a: "0" },
+    { q: "Come decide una foresta di 100 alberi con 63 sì e 37 no?", a: "Vince il sì: voto di maggioranza, probabilità 0,63" },
+    { q: "L'importanza di una variabile indica una causa?", a: "No, solo che è utile per prevedere" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il boosting. Alberi che non votano: imparano dagli errori uno dopo l'altro.</Say>
+</Scene>

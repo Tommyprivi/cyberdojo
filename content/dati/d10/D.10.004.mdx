@@ -1,0 +1,143 @@
+---
+id: D.10.004
+course: dati
+module: 10
+title: "L'analisi di coorte"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.003]
+objectives:
+  - "Spiegare che cos'è una coorte e perché si raggruppa per mese di iscrizione"
+  - "Leggere una tabella di coorte e calcolare le percentuali di ritenzione"
+  - "Confrontare coorti diverse senza farsi ingannare dalla media"
+video:
+  provider: youtube
+  id: "A0DYBHbJ_js"
+  start: 0
+  end: 140
+  channel: "Adobe Analytics"
+  title: "Understand Your Data — Cohort Tables"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-coorte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confrontare coorti di mesi diversi alla stessa data invece che alla stessa «età»"
+  - "Usare la media di tutti i clienti e nascondere un peggioramento recente"
+  - "Calcolare la percentuale sul mese precedente invece che sul mese 0"
+commands: []
+---
+
+<Scene title="La media che inganna">
+**Tavola Bella** ha un dato che rassicura: «Il 38% dei clienti torna a comprare». Ma Giulia ha un sospetto: da quando a marzo c'è stata una campagna di sconti, i clienti nuovi sembrano meno affezionati.
+
+La media di tutti i clienti mescola chi è arrivato un anno fa con chi è arrivato ieri. La domanda del caso: **come si vede se i clienti di oggi si comportano come quelli di prima?**
+
+<Say who="sensei">Una media è una minestra. Per assaggiare un ingrediente alla volta si separano i gruppi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una coorte">
+Una **coorte** è un gruppo di persone che hanno in comune un momento d'inizio. Il caso più usato: **i clienti che si sono iscritti nello stesso mese**.
+
+Si segue ogni gruppo nel tempo e si guarda quanti ne restano attivi. Poi si **confrontano i gruppi tra loro**.
+
+Vuoi vedere una tabella di coorte da un'altra voce? Poco più di due minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Come le classi di una scuola: la prima A, la prima B. Si confrontano le classi, non tutta la scuola insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella">
+Ecco la tabella di Tavola Bella. Ogni riga è una coorte. «Mese 0» è il mese di iscrizione. Le colonne dicono **quanti clienti della coorte hanno comprato** in quel mese.
+
+| Coorte | Mese 0 | Mese 1 | Mese 2 | Mese 3 |
+|---|---|---|---|---|
+| Gennaio | 200 | 80 | 60 | 50 |
+| Febbraio | 250 | 100 | 75 | |
+| Marzo | 300 | 105 | | |
+| Aprile | 400 | | | |
+
+Le celle vuote non sono zeri: sono mesi che **non sono ancora arrivati**. Per questo la tabella è un triangolo.
+
+<Callout kind="attenzione">
+Cella vuota ≠ zero clienti. Significa «non lo sappiamo ancora».
+</Callout>
+
+<Say who="sensei">Le righe sono i gruppi. Le colonne sono il tempo passato dall'iscrizione. Leggi sempre così.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da numeri a percentuali">
+Per confrontare coorti di grandezza diversa servono le **percentuali**, sempre sul **mese 0** della stessa riga.
+
+- Gennaio, mese 1: 80 ÷ 200 = **40%**. Mese 2: 60 ÷ 200 = **30%**. Mese 3: 50 ÷ 200 = **25%**.
+- Febbraio, mese 1: 100 ÷ 250 = **40%**. Mese 2: 75 ÷ 250 = **30%**.
+- Marzo, mese 1: 105 ÷ 300 = **35%**.
+
+<Quiz
+  question="Quale coorte ha la ritenzione più bassa al mese 1?"
+  options={["Marzo (35%)", "Gennaio (40%)", "Febbraio (40%)", "Aprile (non si può dire, nessun dato)"]}
+  answer={0}
+  explain="Gennaio e febbraio tengono il 40% al mese 1, marzo solo il 35%. Aprile non ha ancora il mese 1, quindi non si può confrontare: non vale 0."
+/>
+
+<Say who="assistente">Confronta sempre la stessa colonna: il mese 1 con il mese 1. Stessa «età», altrimenti il confronto non è giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa significa">
+Gennaio e febbraio: 40% al primo mese, 30% al secondo. Marzo: 35% al primo mese. **Il peggioramento è reale e comincia con la coorte di marzo**, cioè con quella della campagna di sconti.
+
+Attenzione però: la tabella mostra *che cosa* è cambiato, non *perché*. Gli sconti sono un sospetto da verificare, magari con un esperimento (lo vediamo nelle prossime lezioni).
+
+<Callout kind="regola">
+L'analisi di coorte risponde a «i clienti nuovi si comportano come i vecchi?». Le cause si cercano dopo, con altri dati.
+</Callout>
+
+<Say who="sensei">Il numero ti dice dove guardare. Il perché lo trovi tu, con prudenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Altre tabelle di coorte, numeri nuovi. Leggi e calcola con attenzione.
+
+<Practice generator="d10-coorte" pass="5/5" retries={3} />
+
+<Say who="sensei">Riga per riga, colonna per colonna. La coorte non mente, se la leggi giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una coorte è un gruppo con un inizio in comune, per esempio il mese di iscrizione.
+- Nella tabella le righe sono coorti, le colonne il tempo; le celle vuote sono mesi non ancora arrivati.
+- Le percentuali si calcolano sul mese 0 e si confronta la stessa colonna tra coorti diverse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una coorte?", a: "Un gruppo di persone con un momento d'inizio in comune" },
+    { q: "Coorte di 250, al mese 1 ne restano 100: ritenzione?", a: "40%" },
+    { q: "Una cella vuota nel triangolo vale 0?", a: "No: quel mese non è ancora arrivato" },
+    { q: "Perché non basta la media di tutti i clienti?", a: "Mescola gruppi diversi e nasconde i cambiamenti recenti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli esperimenti A/B. Così si passa dal «sospetto» alla prova.</Say>
+</Scene>

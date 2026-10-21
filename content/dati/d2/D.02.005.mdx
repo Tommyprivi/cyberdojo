@@ -1,0 +1,183 @@
+---
+id: D.02.005
+course: dati
+module: 2
+title: "Cercare nei dati"
+belt: gialla
+duration_min: 10
+prerequisites: [D.02.004]
+objectives:
+  - "Cercare un valore in un'altra tabella con CERCA.VERT e CERCA.X"
+  - "Gestire il valore non trovato con SE.ERRORE"
+  - "Contare e sommare con una condizione usando CONTA.SE e SOMMA.SE"
+video:
+  provider: youtube
+  id: "hodtndoGWiw"
+  start: 0
+  end: 283
+  channel: "ISimplyExcel"
+  title: "CERCA VERTICALE SPIEGATO FACILE! EXCEL TUTORIAL"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-cercare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare FALSO come ultimo argomento di CERCA.VERT: senza, cerca una corrispondenza approssimativa e può restituire il dato sbagliato"
+  - "Contare le colonne partendo dal foglio invece che dall'intervallo scelto: il numero di colonna è relativo all'intervallo"
+  - "Invertire l'ordine in SOMMA.SE: prima l'intervallo dei criteri, poi il criterio, poi l'intervallo da sommare"
+commands: []
+---
+
+<Scene title="Il listino e l'ordine">
+Nel negozio scolastico, il listino ha i codici degli articoli. L'ordine di un cliente riporta solo il codice: «C3». Quanto costa? Bisogna andare a guardare nel listino.
+
+Con cento articoli e cento ordini, scorrere a occhio non si può.
+
+La domanda del caso: **come chiedo al foglio «trova questo codice nel listino e dammi il prezzo»?**
+
+<Say who="sensei">Cercare a occhio è un errore che costa. Il foglio cerca meglio di te: devi solo dirgli dove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CERCA.VERT">
+Il listino sta in **A1:C5**:
+
+| | A | B | C |
+|---|---|---|---|
+| **1** | Codice | Prodotto | Prezzo |
+| **2** | A1 | Zaino | 50 |
+| **3** | B2 | Astuccio | 20 |
+| **4** | C3 | Agenda | 80 |
+| **5** | D4 | Penna | 2 |
+
+**CERCA.VERT** (VLOOKUP) cerca un valore nella **prima colonna** di un intervallo e restituisce un dato della **stessa riga**. Ha quattro parti:
+
+<Log lines={[
+  "=CERCA.VERT(cosa cerco; intervallo; numero colonna; FALSO)",
+  "=CERCA.VERT(\"C3\"; A2:C5; 3; FALSO)   ->  80",
+  "=CERCA.VERT(\"C3\"; A2:C5; 2; FALSO)   ->  Agenda",
+]} />
+
+Il numero di colonna conta dentro l'intervallo: A è la 1, B la 2, C la 3. L'ultimo argomento, **FALSO**, chiede la corrispondenza **esatta**.
+
+<Callout kind="attenzione">
+Se dimentichi FALSO, il foglio cerca il valore «più vicino» e può restituire un risultato sbagliato senza avvisarti. Scrivilo sempre.
+</Callout>
+
+<Say who="assistente">Due limiti: il codice da cercare deve stare nella prima colonna dell'intervallo, e il dato da restituire deve stare alla sua destra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CERCA.X, il fratello nuovo">
+**CERCA.X** (XLOOKUP) fa lo stesso lavoro, ma è più semplice: dici dove cercare e da dove prendere il risultato, senza contare le colonne.
+
+<Log lines={[
+  "=CERCA.X(cosa cerco; dove cerco; da dove prendo il risultato)",
+  "=CERCA.X(\"C3\"; A2:A5; C2:C5)   ->  80",
+  "=CERCA.X(\"C3\"; A2:A5; B2:B5)   ->  Agenda",
+]} />
+
+Cerca esatto per impostazione predefinita, e può prendere il risultato anche **a sinistra** della colonna cercata. Esiste in Excel recente (365 e 2021), in Fogli Google e nelle versioni recenti di LibreOffice Calc. Nelle versioni vecchie si usa CERCA.VERT.
+
+<Say who="sensei">CERCA.VERT lo troverai ovunque, anche nei fogli di altri. Impara tutti e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando non lo trova">
+Un cliente ordina il codice «Z9», che nel listino non c'è. La funzione risponde **#N/D** («non disponibile», in inglese #N/A): significa «valore non trovato».
+
+Non è per forza un guaio: spesso è l'informazione giusta. Ma una tabella piena di #N/D è brutta, e rompe le somme. **SE.ERRORE** (IFERROR) sostituisce l'errore con un testo.
+
+<Log lines={[
+  "=CERCA.VERT(\"Z9\"; A2:C5; 3; FALSO)                         ->  #N/D",
+  "=SE.ERRORE(CERCA.VERT(\"Z9\"; A2:C5; 3; FALSO); \"non trovato\")  ->  non trovato",
+]} />
+
+<Callout kind="attenzione">
+SE.ERRORE nasconde **tutti** gli errori, anche quelli veri (una formula scritta male). Usalo solo dopo aver controllato la formula, e con un messaggio chiaro.
+</Callout>
+
+<Say who="assistente">Un errore che spiega «non trovato» è utile. Un errore nascosto per sbaglio è un dato falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare e sommare con una condizione">
+Le vendite di una settimana:
+
+| | A | B |
+|---|---|---|
+| **1** | Reparto | Importo |
+| **2** | Libri | 30 |
+| **3** | Penne | 5 |
+| **4** | Libri | 20 |
+| **5** | Zaini | 50 |
+| **6** | Penne | 10 |
+| **7** | Libri | 15 |
+
+**CONTA.SE** (COUNTIF) conta le righe che rispettano una condizione. **SOMMA.SE** (SUMIF) le somma. Attenzione all'ordine: prima l'intervallo dove controllare, poi la condizione, poi l'intervallo da sommare.
+
+<Log lines={[
+  "=CONTA.SE(A2:A7; \"Libri\")             ->  3",
+  "=SOMMA.SE(A2:A7; \"Libri\"; B2:B7)       ->  65   (30 + 20 + 15)",
+  "=SOMMA.SE(A2:A7; \"Penne\"; B2:B7)       ->  15   (5 + 10)",
+  "=CONTA.SE(B2:B7; \">=20\")               ->  3    (30, 20, 50)",
+  "=SOMMA.SE(B2:B7; \">=20\")               ->  100  (30 + 20 + 50)",
+]} caption="Controllo: 65 (Libri) + 15 (Penne) + 50 (Zaini) = 130, il totale di tutta la colonna." />
+
+<Quiz
+  question="Quale formula dà la somma degli importi dei Libri, con i dati sopra?"
+  options={["=SOMMA.SE(A2:A7; \"Libri\"; B2:B7)", "=CONTA.SE(A2:A7; \"Libri\")", "=SOMMA.SE(B2:B7; \"Libri\"; A2:A7)", "=CERCA.VERT(\"Libri\"; A2:B7; 2)"]}
+  answer={0}
+  explain="Per sommare serve SOMMA.SE, con l'intervallo da controllare (A2:A7), la condizione e l'intervallo da sommare (B2:B7). La seconda conta soltanto le righe (3), la terza ha gli intervalli invertiti, l'ultima cerca solo il primo Libri."
+/>
+
+Un video spiega bene CERCA.VERT con un esempio passo passo:
+
+<Video />
+
+<Say who="sensei">Cercare un valore, contare con una condizione, sommare con una condizione: con queste tre mosse risolvi metà dei problemi di un foglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ricerche, errori e conteggi. Con le tabelle in mano, calcola a mano il risultato.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-cercare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Cercare nei dati è il mestiere dell'analista: ricordalo ogni volta che apri un foglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- CERCA.VERT cerca nella prima colonna di un intervallo e restituisce un dato della stessa riga: scrivi sempre FALSO. CERCA.X fa lo stesso senza contare le colonne.
+- #N/D vuol dire «non trovato»; SE.ERRORE lo sostituisce con un messaggio, ma nasconde anche gli errori veri.
+- CONTA.SE conta le righe che rispettano una condizione, SOMMA.SE le somma (prima il criterio, poi l'intervallo da sommare).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i nomi inglesi di CERCA.VERT, CERCA.X, SE.ERRORE?", a: "VLOOKUP, XLOOKUP, IFERROR" },
+    { q: "A cosa serve FALSO in CERCA.VERT?", a: "A chiedere la corrispondenza esatta" },
+    { q: "Che cosa vuol dire #N/D?", a: "Valore non trovato (non disponibile)" },
+    { q: "Qual è l'ordine degli argomenti di SOMMA.SE?", a: "Intervallo dei criteri, criterio, intervallo da sommare" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: le tabelle pivot, per rispondere a domande su migliaia di righe in pochi clic.</Say>
+</Scene>

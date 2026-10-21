@@ -1,0 +1,183 @@
+---
+id: T.14.001
+course: trading
+module: 14
+title: "Un'idea piccola e onesta"
+belt: marrone
+duration_min: 8
+prerequisites: [T.13.006]
+objectives:
+  - "Scegliere tra più idee quella semplice, testabile e con pochi parametri"
+  - "Dire a che cosa serve un progetto finale e che cosa non deve promettere"
+  - "Descrivere in una frase l'idea del progetto, senza promesse di guadagno"
+video:
+  provider: youtube
+  id: "f2gxz8JbrlQ"
+  start: 0
+  end: 600
+  channel: "NeuralNine"
+  title: "Backtesting Stock Trading Strategies in Python"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t14-idea
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere l'idea più complicata perché sembra più «professionale»"
+  - "Mettere nel progetto troppi indicatori e troppi parametri da regolare"
+  - "Partire dal risultato che si vorrebbe ottenere invece che da una domanda a cui rispondere"
+commands: []
+---
+
+<Scene title="Cinque idee e un solo progetto">
+Livia ha finito tutti i moduli del corso. Ora tocca al **progetto finale**, e lei ha una lista lunga: una rete neurale con quaranta indicatori, un sistema che unisce RSI, MACD e bande di Bollinger, un incrocio di due medie mobili, una strategia sulle notizie, una sui cicli della luna.
+
+Vorrebbe farle tutte. Il Sensei prende la lista e ne cancella quattro.
+
+La domanda del caso: **come si sceglie un'idea per un progetto che deve essere finito, capito e difeso?**
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Il progetto lavora solo con dati fittizi e simulazioni: nessun denaro reale.
+</Callout>
+
+<Say who="sensei">Un progetto piccolo e finito vale più di dieci progetti enormi lasciati a metà. I mercati non regalano niente, e non regalano nemmeno i progetti facili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cinque domande per scegliere">
+Un'idea buona per un progetto passa **cinque controlli**:
+
+1. **Una sola domanda.** Si può scrivere in una frase.
+2. **Regole chiare.** Due persone che le leggono fanno gli stessi calcoli.
+3. **Pochi parametri.** Ogni numero da regolare è una manopola con cui ingannare se stessi (overfitting, lo hai visto nel modulo 5).
+4. **Dati disponibili.** Servono dati che hai davvero e che puoi usare senza violare licenze.
+5. **Può avere torto.** Si deve poter dire in anticipo che cosa smentirebbe l'idea.
+
+<Callout kind="regola">
+Se non sai dire che cosa ti convincerebbe che l'idea è sbagliata, non è un'idea da testare: è una speranza.
+</Callout>
+
+<Say who="assistente">Cinque controlli, cinque sì. Un solo no, e l'idea torna nella lista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare le manopole">
+Ogni numero che puoi cambiare (lunghezza di una media, soglia di un indicatore, giorni di attesa) è un **parametro**. Più parametri hai, più è facile trovare una combinazione che «funziona» per caso sul passato.
+
+Prova questo piccolo conteggio:
+
+<PythonTerminal code={"idee = [\n    ('Media mobile a 3 giorni', 1),\n    ('Incrocio di due medie', 2),\n    ('RSI, MACD e Bollinger insieme', 9),\n    ('Rete neurale con 40 indicatori', 40),\n]\nfor nome, parametri in idee:\n    giudizio = 'ok' if parametri <= 3 else 'troppo complessa'\n    print(nome, '->', parametri, 'parametri:', giudizio)"} />
+
+Risultato atteso: le prime due idee sono «ok», le ultime due «troppo complessa». La soglia di tre parametri è una regola pratica di questo corso, non una legge.
+
+Vuoi sentire un'altra voce sul backtest in Python? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Chi ha quaranta manopole trova sempre una combinazione vincente. Sul passato. Sul futuro, quasi mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'idea del nostro progetto">
+Per tutto il modulo seguiremo un progetto di esempio, con **dati fittizi**:
+
+> «Stare investiti in un fondo indicizzato solo quando il prezzo di chiusura è sopra la sua media mobile a 3 giorni, e fuori altrimenti. Rende di più, al netto dei costi, che tenere il fondo e basta?»
+
+Controlli: una domanda sola, regole chiare, **un solo parametro** (i 3 giorni), dati che scriviamo noi, e può avere torto, perché si confronta con il semplice «compra e tieni» (buy and hold).
+
+Il piano delle cinque lezioni:
+
+- **T.14.001** scegli l'idea (questa);
+- **T.14.002** scrivi ipotesi e regole;
+- **T.14.003** fai il backtest con i costi;
+- **T.14.004** scrivi la relazione onesta;
+- **T.14.005** presenti e decidi i prossimi passi.
+
+<Callout kind="curiosita">
+Il periodo di 10 giorni dell'esempio è volutamente minuscolo: serve a controllare i calcoli a mano. Nel tuo progetto vero ne servono molti di più, e ne parleremo nella relazione.
+</Callout>
+
+<Say who="sensei">Un'idea noiosa che sai spiegare batte un'idea brillante che non sai difendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marco propone: «Uso 12 indicatori e regolo ognuno finché il backtest mi dà il risultato migliore». Qual è il problema principale?"
+  options={[
+    "Con tanti parametri regolati sul passato si trova per caso una combinazione che sul futuro non funzionerà (overfitting)",
+    "Dodici indicatori sono troppo pochi per un progetto serio",
+    "Il backtest non può usare più di un indicatore alla volta",
+    "Regolare i parametri è vietato dalla legge",
+  ]}
+  answer={0}
+  explain="Più manopole si girano, più è facile adattare la strategia al rumore del passato. Il risultato sembra splendido, ma non dice nulla sul futuro. Non esiste un numero minimo di indicatori, e regolare parametri non è vietato: è pericoloso per l'onestà dei risultati."
+/>
+
+<Say who="assistente">Quando un risultato sembra troppo bello, chiediti quante manopole hai girato per ottenerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla lista all'idea">
+Rifacciamo il lavoro del Sensei sulla lista di Livia, un controllo alla volta.
+
+<Guided
+  steps={[
+    "Rete neurale con 40 indicatori: tante manopole, regole difficili da spiegare. Fuori.",
+    "Strategia sui cicli della luna: non ha un motivo che si possa verificare. Fuori.",
+    "Strategia sulle notizie: servono dati di testo che Livia non ha e non può usare liberamente. Fuori.",
+    "RSI, MACD e Bollinger insieme: nove parametri da regolare. Troppi per un primo progetto.",
+    "Incrocio di due medie, o una media sola: pochi parametri, regole chiare, dati disponibili. Può avere torto, perché la si confronta con il buy and hold. Resta.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Scrivi la tua idea in una frase che finisce con un punto interrogativo: una domanda a cui i dati possono rispondere no.
+</Callout>
+
+<Say who="sensei">Livia ha tenuto un'idea sola. È così che si comincia a lavorare sul serio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di scelta: idee di progetto, parametri, domande che possono avere torto. Cinque su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t14-idea" pass="5/5" retries={3} />
+
+<Say who="sensei">Scegliere bene l'idea è metà del lavoro. L'altra metà è non innamorarsene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'idea per il progetto ha una domanda sola, regole chiare, pochi parametri, dati disponibili e può avere torto.
+- Più parametri si regolano sul passato, più cresce il rischio di overfitting.
+- Il progetto è educazione: dati fittizi, nessuna promessa di guadagno, nessun denaro reale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i cinque controlli per un'idea di progetto?", a: "Una sola domanda, regole chiare, pochi parametri, dati disponibili, può avere torto" },
+    { q: "Che cos'è un parametro?", a: "Un numero che puoi cambiare nella strategia, per esempio la lunghezza di una media" },
+    { q: "Perché troppi parametri sono un rischio?", a: "Si trova per caso una combinazione che funziona sul passato ma non sul futuro (overfitting)" },
+    { q: "Con che cosa si confronta una strategia semplice?", a: "Con il buy and hold, cioè comprare e tenere" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dall'idea alle regole scritte. Ipotesi, segnali e criteri di successo, decisi prima di guardare i risultati.</Say>
+</Scene>

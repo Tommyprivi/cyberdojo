@@ -1,0 +1,155 @@
+---
+id: H.12.001
+course: hedge
+module: 12
+title: "L'idea e il vantaggio competitivo"
+belt: marrone
+duration_min: 8
+prerequisites: [H.10.005]
+objectives:
+  - "Spiegare che cos'è un vantaggio competitivo («edge») in un fondo"
+  - "Distinguere un'idea di investimento da una strategia con un vantaggio vero"
+  - "Valutare se un'idea ha un limite di dimensione (capacità) e perché conta"
+video:
+  provider: youtube
+  id: "5daXfre6sxE"
+  start: 0
+  end: 600
+  channel: "Christina Qi"
+  title: "How to Start a Hedge Fund - A CEO's Guide"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h12-idea-vantaggio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere un'idea che sembra buona con un vantaggio che gli altri non hanno"
+  - "Fidarsi di un backtest bellissimo senza chiedersi chi perde dall'altra parte"
+  - "Dimenticare che ogni strategia ha un limite di capitale oltre il quale smette di funzionare"
+commands: []
+---
+
+<Scene title="«Compriamo ciò che sale»">
+Marco ed Elena, due colleghi fittizi di una società di analisi, vogliono aprire un fondo. Hanno già un nome, «Aurora Capital», e un'idea: **comprare le azioni che stanno salendo e vendere quelle che scendono**.
+
+Un amico chiede: «Perché dovrebbe funzionare proprio a voi?». Marco non sa rispondere.
+
+La domanda del caso: **che cosa rende un'idea un vero fondo, e non solo una speranza?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. I mercati non regalano niente.
+
+<Say who="sensei">Tutti hanno idee. Pochi hanno un motivo per cui l'idea dovrebbe funzionare proprio per loro. Quel motivo si chiama vantaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'edge">
+Nei mercati, per ogni acquisto c'è qualcuno che vende. Se compri, qualcuno ha deciso di venderti. **Chi ha ragione?**
+
+Il **vantaggio competitivo**, in inglese **edge**, è la risposta onesta: *perché io dovrei vincere più spesso, o perdere meno, di chi sta dall'altra parte?*
+
+Alcune fonti possibili di edge:
+
+- **Analisi migliore**: studiare a fondo aziende che pochi studiano.
+- **Metodo**: un modello ben costruito e disciplinato.
+- **Struttura**: poter aspettare più a lungo di altri (capitale paziente), o poter comprare ciò che le grandi istituzioni non possono.
+- **Disciplina sul rischio**: sopravvivere agli errori meglio degli altri.
+
+<Callout kind="regola">
+Un'idea dice **che cosa** fare. L'edge dice **perché dovrebbe funzionare** e **perché gli altri non lo hanno già sfruttato**.
+</Callout>
+
+<Say who="assistente">Se non sai spiegare chi perde dall'altra parte, forse sei tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'idea di Aurora, messa alla prova">
+Torniamo ad Aurora. «Comprare ciò che sale» è un'idea nota a tutti: tantissimi fondi e programmi la usano già. Senza una ragione in più, non è un vantaggio.
+
+Elena allora cerca una nicchia: **piccole aziende italiane poco seguite dagli analisti**. Pochi le studiano, quindi il prezzo può essere meno attento ai fatti.
+
+<Guided
+  steps={[
+    "Idea generica: «comprare ciò che sale». Edge: nessuno dichiarato.",
+    "Idea con una nicchia: studiare a fondo aziende piccole che pochi analisti coprono.",
+    "Domanda: perché gli altri non lo fanno? Risposta possibile: i grandi fondi sono troppo grossi per quelle azioni.",
+    "Nuova domanda: se io sono piccolo e loro grandi, quanto capitale posso mettere prima di muovere il prezzo?",
+  ]}
+/>
+
+<Say who="sensei">Un edge nasce spesso dove i grandi non possono o non vogliono andare. Ma ha un prezzo: lo spazio è stretto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il limite di dimensione">
+Le azioni piccole si scambiano poco ogni giorno. Se il fondo compra troppo, **fa salire il prezzo con i propri acquisti** e il vantaggio sparisce. Il limite di capitale oltre il quale una strategia smette di funzionare si chiama **capacità**.
+
+Esempio fittizio: se una strategia funziona bene fino a 20 milioni di euro e Aurora ne raccoglie 100, otto euro su dieci non possono essere investiti come previsto.
+
+<Callout kind="attenzione">
+Più soldi non vuol dire più guadagni. Per molte strategie, oltre un certo punto, vuol dire **rendimenti peggiori**.
+</Callout>
+
+Vuoi sentire come lo racconta chi ha lanciato davvero un fondo? Un video in inglese, usa i sottotitoli. È un'esperienza personale, non una ricetta:
+
+<Video />
+
+<Say who="assistente">Anche un buon edge ha un tetto. Chiediti sempre quanto è alto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un backtest su dati storici mostra risultati ottimi per la strategia di Aurora. Qual è la prima domanda seria da farsi?"
+  options={[
+    "Perché dovrebbe funzionare anche in futuro, e chi perde dall'altra parte?",
+    "Quanto posso raccogliere subito dai miei amici?",
+    "Posso togliere gli anni andati male dal grafico?",
+    "Come spiegarlo bene in una presentazione?",
+  ]}
+  answer={0}
+  explain="Un backtest descrive il passato e tende a essere ottimista (look-ahead, sopravvivenza, overfitting, costi). Serve una ragione economica per cui il vantaggio dovrebbe durare. Togliere gli anni brutti falsa i dati."
+/>
+
+<Say who="sensei">Un grafico bello non è una ragione. Una ragione si può spiegare in due frasi, senza il grafico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su idee, vantaggi, capacità e limiti dei backtest.
+
+<Practice generator="h12-idea-vantaggio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di costruire il fondo, sai chiedere perché dovrebbe esistere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'idea dice che cosa fare; l'edge spiega perché dovrebbe funzionare per te e non per tutti.
+- Per ogni acquisto c'è qualcuno che vende: chiediti chi sta dall'altra parte.
+- Ogni strategia ha una capacità: oltre quel capitale i rendimenti peggiorano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'edge?", a: "Il motivo per cui si dovrebbe vincere più spesso, o perdere meno, degli altri" },
+    { q: "Che cos'è la capacità di una strategia?", a: "Il capitale massimo oltre il quale la strategia smette di funzionare bene" },
+    { q: "Un backtest bello basta come prova?", a: "No: descrive il passato e va unito a una ragione economica" },
+    { q: "Dove nasce spesso un edge?", a: "Dove i grandi non possono o non vogliono andare, ma lo spazio è stretto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dall'idea al documento. Il business plan di Aurora, con i numeri.</Say>
+</Scene>

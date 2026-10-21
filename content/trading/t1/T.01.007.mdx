@@ -1,0 +1,152 @@
+---
+id: T.01.007
+course: trading
+module: 1
+title: "Gli ordini: mercato, limite, stop"
+belt: bianca
+duration_min: 9
+prerequisites: [T.01.006]
+objectives:
+  - "Distinguere ordine a mercato, ordine limite e ordine stop"
+  - "Prevedere se un ordine viene eseguito e a quale prezzo"
+  - "Capire che uno stop non garantisce il prezzo di uscita"
+video:
+  provider: youtube
+  id: "Zf37t7njppg"
+  start: 0
+  end: 600
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "Order Types Explained: Market, Limit & Stop Orders for Beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-ordini
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'ordine a mercato garantisca il prezzo: garantisce solo l'esecuzione"
+  - "Pensare che l'ordine limite garantisca l'esecuzione: garantisce solo il prezzo"
+  - "Credere che lo stop venda esattamente al prezzo di stop"
+commands: []
+---
+
+<Scene title="Tre modi di dire «compro»">
+Marta vuole comprare 100 azioni di ALFA, un titolo inventato. L'app le mostra: **denaro 49,90, lettera 50,00**.
+
+Può dire tre cose diverse:
+1. «Compra subito, a qualunque prezzo ci sia.»
+2. «Compra solo se il prezzo è 49,50 o meno.»
+3. «Se il prezzo scende a 45, vendi tutto.»
+
+Sono tre tipi di **ordine**, cioè istruzioni al broker. La domanda del caso: **che differenza c'è, e che cosa rischi con ciascuno?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza. Gli esempi usano prezzi inventati e nessun denaro reale. Con gli ordini, come con tutto il trading, si può perdere denaro.
+</Callout>
+
+<Say who="sensei">Un ordine è un'istruzione precisa. Se ne scrivi una vaga, il mercato la interpreta a modo suo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordine a mercato">
+L'**ordine a mercato** dice: «Compra (o vendi) **subito**, al miglior prezzo disponibile».
+
+- Garantisce l'**esecuzione** (quasi sempre, se il mercato è aperto e ci sono scambi).
+- **Non** garantisce il prezzo.
+
+Con ALFA a denaro 49,90 e lettera 50,00, comprare a mercato significa pagare **50,00** (la lettera): 100 azioni, 5.000 euro. Se il titolo è poco scambiato, il prezzo può essere peggiore di quello visto: si chiama **slippage**, cioè lo scarto tra prezzo atteso e prezzo ottenuto.
+
+<Say who="assistente">A mercato scegli la fretta: la certezza di comprare, non quella del prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordine limite">
+L'**ordine limite** dice: «Compra solo a **questo prezzo o meglio**» (per vendere: «o più alto»).
+
+- Garantisce il **prezzo** (o uno migliore).
+- **Non** garantisce l'esecuzione: se il mercato non arriva a quel prezzo, l'ordine resta in attesa.
+
+Marta mette un limite d'acquisto a **49,50**. La lettera è 50,00: non c'è nessuno disposto a vendere a 49,50, quindi l'ordine **aspetta**. Se il prezzo scende a 49,50, viene eseguito. Se il prezzo sale e non torna mai a 49,50, Marta non compra mai.
+
+<Callout kind="regola">
+A mercato: sicuro di essere eseguito, incerto sul prezzo. Limite: sicuro sul prezzo, incerto sull'esecuzione.
+</Callout>
+
+<Say who="sensei">Non puoi avere entrambe le certezze. Scegli quale ti serve di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordine stop">
+Un **ordine stop** resta dormiente finché il prezzo non raggiunge un livello detto **prezzo di stop**; a quel punto diventa un **ordine a mercato**.
+
+Marta possiede 100 azioni ALFA, comprate a 50. Mette uno **stop di vendita a 45**, per limitare la perdita. Se il prezzo scende a 45, parte un ordine di vendita a mercato.
+
+Il punto delicato: dopo l'attivazione, si vende al **miglior prezzo disponibile**, che può essere inferiore a 45. Se una notizia fa aprire il titolo il giorno dopo a 40, l'ordine viene eseguito intorno a 40, non a 45: è un **gap**, un salto di prezzo.
+
+<Callout kind="attenzione">
+Lo stop **non garantisce** il prezzo di uscita. Protegge, ma non è una rete di sicurezza assoluta.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese (attiva i sottotitoli):
+
+<Video />
+
+<Say who="assistente">Lo stop è un allarme che fa partire un ordine a mercato. L'allarme suona al prezzo di stop, ma l'ordine che segue vende al prezzo che trova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="ALFA ha denaro 49,90 e lettera 50,00. Metti un ordine limite di acquisto a 49,00. Che cosa succede?"
+  options={[
+    "L'ordine aspetta: viene eseguito solo se il prezzo scende a 49,00 o meno",
+    "L'ordine viene eseguito subito a 50,00",
+    "L'ordine viene eseguito subito a 49,00",
+    "L'ordine viene annullato perché il prezzo è sotto il mercato",
+  ]}
+  answer={0}
+  explain="Il limite d'acquisto dice «pago al massimo 49,00». Nessuno vende a quel prezzo ora, quindi l'ordine resta in attesa. A mercato, invece, avresti pagato 50,00 subito."
+/>
+
+<Say who="sensei">Limite vuol dire «non oltre». Se il mercato è oltre, aspetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Tre tipi di ordine, tre situazioni da riconoscere.
+
+<Practice generator="t01-ordini" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il primo modulo: ora conosci il campo di gioco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ordine a mercato: esecuzione immediata, prezzo non garantito (può esserci slippage).
+- Ordine limite: prezzo garantito (o migliore), esecuzione non garantita.
+- Ordine stop: si attiva a un livello e diventa ordine a mercato; il prezzo di uscita può essere peggiore dello stop.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa garantisce un ordine a mercato?", a: "L'esecuzione, non il prezzo" },
+    { q: "Che cosa garantisce un ordine limite?", a: "Il prezzo (o uno migliore), non l'esecuzione" },
+    { q: "Che cosa succede quando il prezzo tocca lo stop?", a: "L'ordine si attiva e diventa un ordine a mercato" },
+    { q: "Che cos'è lo slippage?", a: "La differenza tra il prezzo atteso e quello ottenuto" },
+  ]}
+/>
+
+<Say who="sensei">Modulo finito. Prossimo passo: i dati di mercato con Python. Si comincia a lavorare con i numeri.</Say>
+</Scene>

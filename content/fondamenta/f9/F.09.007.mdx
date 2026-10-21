@@ -1,0 +1,250 @@
+---
+id: F.09.007
+course: fondamenta
+module: 9
+title: "Funzioni"
+belt: verde
+duration_min: 9
+prerequisites: [F.09.006]
+objectives:
+  - "Definire e chiamare funzioni con parametri e return"
+  - "Distinguere print() da return e capire cosa significa None"
+  - "Spiegare l'ambito delle variabili e scrivere funzioni piccole da provare con assert"
+video:
+  provider: youtube
+  id: "sT-kDrJWQig"
+  start: 0
+  end: 332
+  channel: "CodiceFacile"
+  title: "Corso Python #7 – Funzioni e moduli: def, return e import"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-funzioni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Definire una funzione non la esegue: bisogna chiamarla"
+  - "print() mostra un valore, return lo restituisce: una funzione senza return dà None"
+  - "Una variabile creata dentro una funzione non esiste fuori"
+commands: []
+---
+
+<Scene title="Lo stesso controllo, tre volte">
+Il tuo script di Marta ormai funziona. Rileggendolo, però, vedi che il controllo «questa porta è pericolosa?» è scritto **tre volte**, con piccole differenze. Un giorno cambierà la regola e dovrai ricordarti di correggerle tutte e tre.
+
+«Scrivilo una volta sola e richiamalo ogni volta che serve» dice Marta.
+
+Si può: si chiama **funzione**. È un blocco di istruzioni con un nome, che puoi richiamare quando vuoi, anche con dati diversi.
+
+La domanda del caso: **come si scrive una funzione e come si fa a restituire un risultato?**
+
+<Say who="sensei">Chi copia e incolla il codice moltiplica gli errori. Chi scrive una funzione li corregge in un punto solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="def: definire e chiamare">
+Si definisce con `def`, il nome, le parentesi e i due punti. Il corpo è rientrato. I valori che la funzione riceve si chiamano **parametri**.
+
+```python
+def classifica(porta):
+    if porta == 22:
+        return "remoto"
+    elif porta in [80, 443]:
+        return "web"
+    return "altro"
+
+print(classifica(443))
+print(classifica(3389))
+```
+
+Output:
+
+```text
+web
+altro
+```
+
+`classifica(443)` è la **chiamata**: il valore 443 finisce nel parametro `porta`. La funzione parte solo quando la chiami; la sola definizione non stampa niente.
+
+Un parametro può avere un **valore predefinito**: se chi chiama non lo dà, si usa quello.
+
+```python
+def avvisa(messaggio, livello="info"):
+    return f"[{livello}] {messaggio}"
+
+print(avvisa("disco quasi pieno"))
+print(avvisa("login fallito", "alto"))
+```
+
+Output:
+
+```text
+[info] disco quasi pieno
+[alto] login fallito
+```
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti.
+
+<Video />
+
+<Say who="assistente">Il nome del parametro lo scegli tu: porta, p, numero. Scegli quello che si legge meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="return o print?">
+Sono due cose diverse. `print()` **mostra** un valore a chi guarda lo schermo. `return` **restituisce** un valore a chi ha chiamato la funzione, che può usarlo per altri calcoli.
+
+```python
+def somma(a, b):
+    print(a + b)
+
+x = somma(2, 3)
+print(x)
+```
+
+Output:
+
+```text
+5
+None
+```
+
+La funzione ha stampato 5, ma non ha restituito niente: `x` contiene `None`, il valore speciale che significa «nulla». Una funzione senza `return` restituisce sempre `None`.
+
+<Callout kind="regola">
+Quando la funzione deve **calcolare** qualcosa, usa `return`. Lascia il `print()` a chi chiama: così puoi riusare il risultato dove ti serve.
+</Callout>
+
+Dopo un `return` la funzione **finisce subito**: le righe sotto non vengono eseguite.
+
+<Say who="sensei">Print è per gli occhi. Return è per il programma. Se ti serve il valore dopo, è return.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ambito delle variabili">
+Una variabile creata dentro una funzione vive **solo lì dentro**. Fuori non esiste.
+
+```python
+def conta():
+    totale = 10
+    return totale
+
+conta()
+print(totale)
+```
+
+Python risponde:
+
+```text
+NameError: name 'totale' is not defined
+```
+
+Il contrario funziona: una funzione può **leggere** una variabile creata fuori.
+
+```python
+limite = 5
+
+def sopra_limite(n):
+    return n > limite
+
+print(sopra_limite(7))
+```
+
+Output:
+
+```text
+True
+```
+
+<Callout kind="trucco">
+Buona abitudine: i dati entrano dai **parametri** ed escono dal **return**. Una funzione che non dipende da variabili esterne si capisce e si prova più facilmente.
+</Callout>
+
+<Say who="assistente">Pensa a una stanza chiusa: dentro puoi guardare fuori dalla finestra, ma ciò che costruisci dentro resta lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Piccole e testabili">
+Una buona funzione fa **una cosa sola** ed è abbastanza piccola da stare in poche righe. Il vantaggio è che la puoi **provare da sola**, con la parola `assert`: se la condizione è falsa Python si ferma con `AssertionError`, se è vera non succede niente.
+
+```python
+def e_porta_valida(n):
+    return 1 <= n <= 65535
+
+assert e_porta_valida(22)
+assert not e_porta_valida(70000)
+print("test ok")
+```
+
+Output:
+
+```text
+test ok
+```
+
+Una porta valida va da 1 a 65535, e il confronto `1 <= n <= 65535` si legge come in matematica. Se domani cambi la funzione e sbagli, gli `assert` ti avvisano subito.
+
+<Callout kind="curiosita">
+Nei progetti seri le prove si scrivono **prima** o insieme alla funzione. Non serve un programma speciale per cominciare: bastano due o tre `assert`.
+</Callout>
+
+<Say who="sensei">Se non riesci a descrivere la funzione in una frase, è troppo grande. Spezzala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa questo codice? def f(x): return x * 2 e poi print(f(4))"
+  options={["8", "None", "4", "Errore"]}
+  answer={0}
+  explain="La funzione restituisce x * 2, cioè 8, e print lo mostra. Se al posto di return ci fosse print(x * 2), apparirebbe 8 ma il valore restituito sarebbe None."
+/>
+
+Ora scrivi una funzione tua e provala con un paio di `assert`.
+
+<PythonTerminal code={"def doppio(n):\n    return n * 2\n\nassert doppio(4) == 8\nprint(doppio(21))"} />
+
+<Say who="assistente">Prova a rompere un assert: cambia 8 in 9 e guarda come reagisce Python.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, quale riga contiene l'errore. Nel testo il codice è su una riga, con il simbolo ↵ al posto dell'a capo. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-funzioni" pass="4/5" retries={3} />
+
+<Say who="sensei">Segui la chiamata: quali valori entrano, cosa esce. Una funzione è una macchina con un ingresso e un'uscita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `def nome(parametri):` definisce la funzione, che parte solo quando la chiami; i parametri possono avere un valore predefinito.
+- `return` restituisce un valore e chiude la funzione; senza `return` si ottiene `None`.
+- Le variabili create dentro una funzione non esistono fuori; funzioni piccole si provano con `assert`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale parola definisce una funzione?", a: "def" },
+    { q: "Cosa restituisce una funzione senza return?", a: "None" },
+    { q: "Una variabile creata dentro la funzione esiste fuori?", a: "No: NameError" },
+    { q: "A cosa serve assert?", a: "A provare che una condizione sia vera, altrimenti AssertionError" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i file. Il tuo script smetterà di lavorare su esempi e leggerà un vero log.</Say>
+</Scene>

@@ -1,0 +1,169 @@
+---
+id: C.18.005
+course: cybersecurity
+module: 18
+title: "Indicatori di compromissione e regole YARA"
+belt: marrone
+duration_min: 9
+prerequisites: [C.18.004]
+objectives:
+  - "Spiegare cos'è un indicatore di compromissione (IoC) e farne esempi"
+  - "Distinguere gli indicatori facili da cambiare da quelli difficili (piramide del dolore)"
+  - "Descrivere a livello concettuale cos'è una regola YARA e come ne nasce un falso allarme"
+video:
+  provider: youtube
+  id: "BM23_H2GGMA"
+  start: 0
+  end: 600
+  channel: "Simply Cyber - Gerald Auger, PhD"
+  title: "What are Yara Rules (and How Cybersecurity Analysts Use Them)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-indicatori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi solo degli hash: basta modificare un bit e l'impronta cambia"
+  - "Scrivere regole troppo generiche che bloccano anche file legittimi (falsi positivi)"
+  - "Credere che un elenco di indicatori sia per sempre: invecchia presto"
+commands: []
+---
+
+<Scene title="Lo stesso nemico, due sedi">
+Il laboratorio della Biblioteca Ferrari ha finito l'analisi: il file della chiavetta crea una copia in una cartella di avvio automatico e cerca un certo nome di dominio. La responsabile IT scrive tre righe e le manda alla **Ferramenta Moretti**, un'azienda amica: «Controllate se vi risultano queste cose.»
+
+Alla Moretti, in un'ora, trovano due computer che cercano proprio quel dominio.
+
+La domanda del caso: **come si trasforma ciò che hai scoperto in un modo per cercare lo stesso nemico anche altrove?**
+
+<Say who="sensei">Un'analisi che resta nel cassetto serve a uno solo. Condivisa nel modo giusto, serve a tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli indicatori di compromissione">
+Un **indicatore di compromissione** (in inglese **IoC**) è un segno osservabile che dice «qui è passato quel malware». Esempi:
+
+- l'**hash** di un file;
+- un **nome di dominio** o un **indirizzo IP** contattato;
+- il **nome** di un file o di una cartella insolita;
+- una **chiave di configurazione** creata all'avvio.
+
+Gli IoC si scambiano tra team di difesa, si caricano nei sistemi di monitoraggio (come il SIEM della lezione C.07) e fanno scattare un allarme se compaiono.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video parla di regole YARA, uno strumento che usa gli indicatori contenuti nei file:
+
+<Video />
+
+<Say who="assistente">Un IoC è un'impronta lasciata sulla scena. Non dice chi, dice che qualcuno è passato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Facili o difficili da cambiare">
+Non tutti gli indicatori valgono uguale. Un esperto di difesa ha disegnato la **piramide del dolore**: più sali, più è difficile per chi attacca cambiare quel segno.
+
+- **Hash**: banale da cambiare, basta modificare un po' il file. Vale poco.
+- **Indirizzi IP**: facili da cambiare.
+- **Nomi di dominio**: un po' più noiosi da cambiare.
+- **Tracce nella rete e nel computer** (come un certo modo di comunicare): più difficili.
+- **Strumenti**: chi attacca deve sostituire il programma.
+- **Comportamenti**: il modo di operare. Cambiarlo costa molto.
+
+<Callout kind="trucco">
+Gli indicatori in basso si trovano subito e durano poco. Quelli in alto si trovano con più lavoro ma **danno fastidio davvero** a chi attacca.
+</Callout>
+
+<Say who="sensei">Inseguire solo gli hash è come fermare un ladro guardando il colore del cappello. Basta che lo cambi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole YARA, a parole">
+**YARA** è uno strumento che permette di scrivere **regole** per riconoscere file in base al loro contenuto. Una regola è come un identikit. Ha tre parti, che qui descriviamo solo a parole:
+
+1. **Descrizione**: nome della regola, autore, a cosa serve.
+2. **Elementi da cercare**: per esempio due frasi che compaiono solo in quella famiglia di malware.
+3. **Condizione**: quando la regola scatta. Per esempio: «se il file contiene la frase A **e** la frase B, ed è piccolo».
+
+Esempio fittizio di identikit: «file di piccole dimensioni che contiene un messaggio di riscatto con questa formula e un certo nome di cartella». Uno strumento di difesa passa in rassegna una cartella e segnala i file che corrispondono.
+
+<Callout kind="attenzione">
+Una regola troppo **generica** scatta anche su file innocui: è un **falso positivo**. Una troppo **precisa** (per esempio su un solo hash) lascia passare le varianti: è un **falso negativo**. L'arte è trovare un equilibrio.
+</Callout>
+
+<Say who="assistente">Una regola ha bisogno di test su file innocui, non solo su file cattivi. Altrimenti ti sommerge di falsi allarmi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una regola scatta su un file solo se il suo hash è identico a quello di un campione noto. Quale limite ha?"
+  options={["Basta modificare un po' il file perché l'hash cambi e la regola non lo veda", "Scatta troppo spesso su file legittimi", "Non può essere condivisa con altri team", "Funziona solo su file molto grandi"]}
+  answer={0}
+  explain="L'hash cambia completamente con una modifica minima: chi attacca lo sa e produce varianti. Per questo si cercano elementi più stabili, come frasi o comportamenti ricorrenti nella famiglia."
+/>
+
+<Say who="sensei">Più l'indicatore è stabile, più la regola dura. Ma la stabilità va guadagnata con l'analisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal campione alla difesa">
+Ripercorriamo il caso, con il ragionamento di un analista.
+
+<Guided
+  steps={[
+    "Dal laboratorio: cartella di avvio, dominio contattato, hash del file.",
+    "Scelta: l'hash va annotato, ma da solo vale poco. Il dominio e la cartella valgono di più.",
+    "Si condividono gli IoC con i colleghi di altre aziende, senza condividere il file e senza dati personali.",
+    "Si caricano nel monitoraggio: allarme se un computer cerca quel dominio.",
+    "Si valuta una regola sul contenuto dei file: si prova su file innocui per controllare i falsi positivi.",
+    "Si fissa una scadenza: gli indicatori invecchiano, vanno ricontrollati.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si condividono gli **indicatori**, non il programma dannoso. Mandare in giro il malware stesso, anche a fin di bene, può configurare la diffusione di programmi dannosi (art. 615-quinquies c.p.). Si analizza solo in un laboratorio isolato e di proprietà.
+</Callout>
+
+<Say who="sensei">Condividi l'impronta, non l'arma. È la differenza tra un avviso e un pericolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su indicatori, piramide del dolore e regole. Hai 3 tentativi.
+
+<Practice generator="c18-indicatori" pass="5/5" retries={3} />
+
+<Say who="sensei">Se esiti, chiediti: questo indicatore costa poco o tanto a chi attacca cambiarlo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un indicatore di compromissione (IoC) è un segno osservabile di un malware: hash, dominio, indirizzo, nome di file, chiave di configurazione.
+- Hash e indirizzi sono facili da cambiare; strumenti e comportamenti sono difficili: la piramide del dolore.
+- Una regola YARA descrive un file con elementi e condizione: troppo generica dà falsi positivi, troppo precisa lascia passare le varianti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è un indicatore di compromissione?", a: "Un segno osservabile che indica il passaggio di un malware" },
+    { q: "Perché l'hash è un indicatore debole?", a: "Basta modificare un po' il file per cambiarlo" },
+    { q: "Cos'è un falso positivo in una regola?", a: "Un file innocuo segnalato per errore" },
+    { q: "Cosa si condivide con altri team: indicatori o campione?", a: "Gli indicatori, non il programma dannoso" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione: dove si fa tutto questo. Un laboratorio sbagliato è il primo modo di farsi male da soli.</Say>
+</Scene>

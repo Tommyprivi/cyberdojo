@@ -1,0 +1,167 @@
+---
+id: D.02.002
+course: dati
+module: 2
+title: "Le funzioni di base"
+belt: bianca
+duration_min: 9
+prerequisites: [D.02.001]
+objectives:
+  - "Usare SOMMA, MEDIA, MIN, MAX e CONTA.NUMERI su un intervallo di celle"
+  - "Scrivere una condizione con la funzione SE"
+  - "Riconoscere le funzioni equivalenti in Excel, Fogli Google e LibreOffice Calc"
+video:
+  provider: youtube
+  id: "iTJYDDqI-4w"
+  start: 0
+  end: 600
+  channel: "Daniele Sommatino"
+  title: "Video tutorial Excel funzioni somma, media, max e min"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-funzioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere =B2+B3+B4+B5+B6 invece di =SOMMA(B2:B6): lento e, se aggiungi una riga, la formula la ignora"
+  - "Credere che MEDIA conti anche le celle vuote o con testo: le ignora"
+  - "In SE, confondere maggiore (>) con maggiore o uguale (>=) quando il valore è esattamente sul limite"
+commands: []
+---
+
+<Scene title="Cento celle, una parola">
+Marco vende gelati in un chiosco. Per la prima settimana ha segnato i coni venduti, giorno per giorno. Vuole sapere il totale, la media, il giorno peggiore e quello migliore.
+
+Con le formule della lezione scorsa dovrebbe scrivere `=B2+B3+B4+B5+B6`. E se i giorni fossero cento? Non è pensabile.
+
+La domanda del caso: **come si dice al foglio «sommami tutte queste celle» in una parola sola?**
+
+<Say who="sensei">Una formula lunga è una formula che prima o poi si rompe. Per questo esistono le funzioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una funzione">
+Una **funzione** è un calcolo già pronto, con un nome. Si scrive così: nome, parentesi aperta, ciò su cui lavora, parentesi chiusa.
+
+Ecco i coni di Marco:
+
+| | A | B |
+|---|---|---|
+| **1** | Giorno | Coni |
+| **2** | Lun | 12 |
+| **3** | Mar | 18 |
+| **4** | Mer | 9 |
+| **5** | Gio | 15 |
+| **6** | Ven | 21 |
+
+**B2:B6** si legge «da B2 a B6»: è un **intervallo**, cioè un gruppo di celle vicine. I due punti vogliono dire «fino a».
+
+<Callout kind="regola">
+I nomi sono in italiano nell'Excel italiano. Eccoli con il nome inglese, che serve nelle guide e in Fogli Google se l'hai impostato in inglese: **SOMMA** (SUM), **MEDIA** (AVERAGE), **MIN** (MIN), **MAX** (MAX), **CONTA.NUMERI** (COUNT), **SE** (IF).
+</Callout>
+
+<Say who="assistente">Il nome della funzione è la parte facile. Dopo di lui metti sempre le parentesi, e dentro l'intervallo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cinque funzioni per i numeri">
+Su B2:B6 (12, 18, 9, 15, 21):
+
+<Log lines={[
+  "=SOMMA(B2:B6)         ->  75",
+  "=MEDIA(B2:B6)         ->  15",
+  "=MIN(B2:B6)           ->  9",
+  "=MAX(B2:B6)           ->  21",
+  "=CONTA.NUMERI(B2:B6)  ->  5",
+]} caption="Somma 12+18+9+15+21 = 75. Media 75 diviso 5 = 15." />
+
+- **SOMMA** addiziona tutto.
+- **MEDIA** è la somma divisa per quante celle hanno un numero.
+- **MIN** e **MAX** danno il valore più piccolo e il più grande.
+- **CONTA.NUMERI** dice **quante celle contengono un numero**.
+
+<Callout kind="curiosita">
+Esiste anche **CONTA.VALORI** (COUNTA): conta tutte le celle non vuote, anche quelle con testo. Funziona uguale in Excel, Fogli Google e LibreOffice Calc.
+</Callout>
+
+<Say who="sensei">Se una cella è vuota o contiene testo, SOMMA e MEDIA la saltano. Il foglio non protesta: lo sai tu o non lo sa nessuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il caso del giorno chiuso">
+Il mercoledì il chiosco era chiuso. Marco scrive nella cella B4 il testo «chiuso» al posto del numero.
+
+<Quiz
+  question="Le celle B2, B3, B4 contengono 12, il testo «chiuso», 9. Che cosa dà =MEDIA(B2:B4)?"
+  options={["10,5", "7", "21", "10"]}
+  answer={0}
+  explain="MEDIA ignora il testo: usa solo 12 e 9, che sommano 21, diviso 2 celle con un numero. Fa 10,5. Chi risponde 7 ha diviso per 3, contando anche la cella con il testo."
+/>
+
+<Say who="assistente">Se hai dubbi sul divisore, conta le celle con un numero. Il testo non ne fa parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Decidere con SE">
+**SE** (IF) fa scegliere al foglio tra due risultati, a seconda di una condizione. Ha tre parti, separate da punto e virgola nell'Excel italiano (con la virgola in quello inglese):
+
+<Log lines={[
+  "=SE(condizione; risultato se vera; risultato se falsa)",
+  "=SE(B2>=15; \"Buono\"; \"Basso\")",
+]} />
+
+Per lunedì B2 vale 12: la condizione «12 è maggiore o uguale a 15» è falsa, quindi il risultato è **Basso**. Per martedì B3 vale 18: risultato **Buono**.
+
+<Callout kind="attenzione">
+Occhio al limite. Se B2 valesse esattamente 15, con `>=` il risultato sarebbe «Buono». Con `>` (solo maggiore) sarebbe «Basso», perché 15 non è maggiore di 15.
+</Callout>
+
+Un video mostra queste funzioni su un foglio vero. Il testo è chiaro, ma sentirlo da un'altra voce aiuta:
+
+<Video />
+
+<Say who="sensei">Il testo va tra virgolette. I numeri e gli indirizzi no. Se sbagli questo, il foglio ti risponde con un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: risultati da calcolare, funzioni da scegliere. Fai i conti con le tabelle davanti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-funzioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai far lavorare il foglio: tu decidi la domanda, lui fa il conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una funzione è un calcolo con un nome: SOMMA, MEDIA, MIN, MAX, CONTA.NUMERI lavorano su un intervallo come B2:B6.
+- MEDIA e SOMMA ignorano celle vuote e testo; CONTA.NUMERI conta solo i numeri, CONTA.VALORI tutte le celle non vuote.
+- SE sceglie tra due risultati: SE(condizione; se vera; se falsa), con attenzione a > e >=.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire B2:B6?", a: "L'intervallo da B2 a B6, cioè cinque celle" },
+    { q: "Come si chiamano in inglese SOMMA, MEDIA, SE?", a: "SUM, AVERAGE, IF" },
+    { q: "Cosa dà MEDIA su 4, 6, una cella vuota, 8?", a: "6: la cella vuota è ignorata (18 diviso 3)" },
+    { q: "Cosa dà =SE(A1>10; \"alto\"; \"basso\") se A1 vale 10?", a: "basso, perché 10 non è maggiore di 10" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: cosa succede quando copi una formula, e come si ferma un riferimento con il dollaro.</Say>
+</Scene>

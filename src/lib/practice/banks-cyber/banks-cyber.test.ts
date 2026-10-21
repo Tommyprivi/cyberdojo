@@ -22,7 +22,7 @@ describe("banche del corso Cybersecurity", () => {
   for (const [id, items] of Object.entries(CYBER_BANK_ITEMS)) {
     describe(id, () => {
       it("l'identificatore segue il formato cNN-argomento", () => {
-        expect(id).toMatch(/^c(0[1-9]|1[01])-[a-z0-9-]+$/);
+        expect(id).toMatch(/^c(0[1-9]|[12][0-9]|30)-[a-z0-9-]+$/);
       });
       it("ha almeno 10 domande, tutte diverse", () => {
         expect(items.length).toBeGreaterThanOrEqual(10);

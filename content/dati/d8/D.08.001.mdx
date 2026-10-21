@@ -1,0 +1,230 @@
+---
+id: D.08.001
+course: dati
+module: 8
+title: "Valori mancanti"
+belt: arancione
+duration_min: 9
+prerequisites: [D.07.007]
+objectives:
+  - "Riconoscere i valori mancanti in una tabella e capire perché mancano"
+  - "Scegliere tra togliere e riempire, conoscendo i rischi di ogni scelta"
+  - "Usare isna, dropna e fillna di pandas"
+video:
+  provider: youtube
+  id: "plWA9oRo9kU"
+  start: 0
+  end: 407
+  channel: "Claudio Cama"
+  title: "Corso completo di pandas (Lezione 7): Gestire i valori mancanti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-mancanti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Riempire un buco con la media sembra innocuo, ma nasconde che il dato non c'era"
+  - "dropna() senza argomenti toglie ogni riga con anche un solo buco: a volte resta mezza tabella"
+  - "Lo zero e il valore mancante non sono la stessa cosa"
+commands: []
+---
+
+<Scene title="Le caselle vuote">
+Hai finito i grafici, ora arriva la parte meno glamour del lavoro: **preparare i dati**. Gli analisti dicono che è circa metà del mestiere.
+
+Ti arriva l'elenco dei clienti di una cartoleria fittizia. Alcune caselle sono vuote:
+
+| cliente | eta | citta |
+|---|---|---|
+| Anna | 25 | Roma |
+| Bruno | (vuota) | Milano |
+| Carla | 31 | (vuota) |
+| Dario | 47 | Torino |
+| Elisa | (vuota) | Roma |
+| Fabio | 52 | Napoli |
+
+La domanda del caso: **ti serve l'età media dei clienti. Come tratti i buchi?**
+
+<Say who="sensei">Un buco non è un errore da nascondere. È un'informazione: qualcosa non è stato registrato. Prima si capisce perché, poi si decide.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché mancano">
+Un **valore mancante** è una casella in cui il dato non c'è. In pandas si chiama **NaN** (da «not a number», cioè «non è un numero»); per il testo spesso compare come `None`.
+
+Non tutti i buchi nascono allo stesso modo:
+
+- **A caso**: il cliente ha saltato la domanda per distrazione. Il buco non dice niente.
+- **Per un motivo che conosci**: i clienti più giovani non compilano il campo città. Il buco dipende da un'altra colonna.
+- **Per un motivo che riguarda il dato stesso**: chi ha stipendi alti non lo scrive. Qui il buco è il segnale più importante, e il più pericoloso da riempire.
+
+<Callout kind="attenzione">
+Occhio ai buchi **travestiti**. Un `0`, un `-999`, un «N/D» o un «non so» sono caselle vuote scritte in un altro modo. Se li lasci, la media dell'età diventa assurda.
+</Callout>
+
+<Say who="assistente">Prima di toccare i dati chiediti: chi o che cosa ha lasciato la casella vuota? La risposta guida tutto il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trovarli con pandas">
+Costruiamo la tabella in pandas e contiamo i buchi.
+
+<Log lines={[
+  "import pandas as pd",
+  "import numpy as np",
+  "",
+  "df = pd.DataFrame({",
+  "    'cliente': ['Anna', 'Bruno', 'Carla', 'Dario', 'Elisa', 'Fabio'],",
+  "    'eta': [25, np.nan, 31, 47, np.nan, 52],",
+  "    'citta': ['Roma', 'Milano', None, 'Torino', 'Roma', 'Napoli'],",
+  "})",
+  "print(df)",
+  "",
+  "   cliente   eta   citta",
+  "0     Anna  25.0    Roma",
+  "1    Bruno   NaN  Milano",
+  "2    Carla  31.0    None",
+  "3    Dario  47.0  Torino",
+  "4    Elisa   NaN    Roma",
+  "5    Fabio  52.0  Napoli",
+]} caption="L'età è in decimali (25.0) perché NaN è un numero decimale: succede in automatico." />
+
+`isna()` risponde vero/falso per ogni casella. Con `sum()` si contano i veri:
+
+<Log lines={[
+  "print(df.isna().sum())",
+  "",
+  "cliente    0",
+  "eta        2",
+  "citta      1",
+  "dtype: int64",
+]} />
+
+<Callout kind="trucco">
+Il primo comando su una tabella nuova è sempre `df.isna().sum()`: in una riga sai dove sono i buchi e quanti.
+</Callout>
+
+<Say who="sensei">Contare è il primo passo. Non si toglie e non si riempie niente prima di aver contato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Togliere o riempire">
+Hai due strade.
+
+**Togliere** le righe con buchi: `dropna()`.
+
+<Log lines={[
+  "print(df.dropna())",
+  "",
+  "   cliente   eta   citta",
+  "0     Anna  25.0    Roma",
+  "3    Dario  47.0  Torino",
+  "5    Fabio  52.0  Napoli",
+]} caption="Da 6 righe ne restano 3: abbiamo buttato metà dei clienti." />
+
+Meglio togliere solo se manca la colonna che ti serve: `df.dropna(subset=['eta'])` toglie solo le righe senza età (Bruno ed Elisa) e tiene Carla, che ha l'età ma non la città.
+
+**Riempire** con un valore: `fillna()`. Per un numero si usa spesso la **mediana** (il valore centrale, meno sensibile agli estremi della media). Le età presenti sono 25, 31, 47 e 52: la mediana è (31 + 47) / 2 = 39.
+
+<Log lines={[
+  "print(df['eta'].fillna(df['eta'].median()))",
+  "",
+  "0    25.0",
+  "1    39.0",
+  "2    31.0",
+  "3    47.0",
+  "4    39.0",
+  "5    52.0",
+  "Name: eta, dtype: float64",
+]} />
+
+<Callout kind="regola">
+Togliere perde informazione. Riempire **inventa** informazione. Nessuna delle due è neutra: scegli sapendo cosa stai rischiando.
+</Callout>
+
+<Say who="sensei">Se ti manca poco e a caso, riempire con la mediana va bene. Se ti manca molto, o non a caso, riempire è raccontare una storia che non conosci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi di ogni scelta">
+Cosa cambia davvero? Le età presenti hanno media **38,75** (155 diviso 4). Riempiendo i due buchi con la mediana 39, la media resta quasi uguale, ma ora hai **sei** numeri dove prima ne avevi quattro veri: la tabella sembra più sicura di quanto sia.
+
+- Togliere le righe: la media si calcola su pochi clienti, forse non rappresentativi.
+- Riempire con un numero unico: tutti i buchi diventano uguali e i dati sembrano meno vari di quello che sono.
+- Riempire il testo con «sconosciuta»: onesto, perché dichiara che il dato non c'era. `df['citta'].fillna('sconosciuta')`.
+
+Un trucco per non perdere traccia: prima di riempire, **segna** dove c'era il buco.
+
+<Log lines={[
+  "df['eta_mancante'] = df['eta'].isna()",
+  "print(df)",
+  "",
+  "   cliente   eta   citta  eta_mancante",
+  "0     Anna  25.0    Roma         False",
+  "1    Bruno   NaN  Milano          True",
+  "2    Carla  31.0    None         False",
+  "3    Dario  47.0  Torino         False",
+  "4    Elisa   NaN    Roma          True",
+  "5    Fabio  52.0  Napoli         False",
+]} />
+
+Vuoi sentirlo spiegare da un'altra voce? Poco più di sei minuti sui valori mancanti in pandas:
+
+<Video />
+
+<Say who="assistente">La colonna eta_mancante è il tuo diario: chi leggerà l'analisi saprà quali numeri sono veri e quali sono stati stimati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella tabella dei clienti, quale riga restituisce SOLO i clienti con l'età nota (anche se manca la città)?"
+  options={["df.dropna(subset=['eta'])", "df.dropna()", "df.fillna(0)", "df.isna()"]}
+  answer={0}
+  explain="Con subset=['eta'] si controlla solo la colonna età: restano Anna, Carla, Dario e Fabio. df.dropna() senza argomenti toglie ogni riga con un buco qualsiasi, quindi perde anche Carla. fillna(0) inventerebbe età pari a zero, e isna() restituisce vero/falso, non toglie niente."
+/>
+
+<Say who="assistente">Leggi che colonna interessa alla tua domanda: i buchi che stanno altrove, per ora, non ti riguardano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su buchi, `isna`, `dropna` e `fillna`. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-mancanti" pass="5/5" retries={3} />
+
+<Say who="sensei">Un analista che riempie senza sapere perché manca il dato non pulisce: trucca. Qui si ragiona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un buco è un'informazione: capisci perché manca (a caso, per un motivo noto, per il dato stesso) prima di decidere.
+- `isna().sum()` conta i buchi, `dropna()` toglie le righe, `fillna()` riempie: ognuna ha un costo.
+- Segna dove riempi, e dichiara nel report cosa hai fatto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa conta df.isna().sum()?", a: "I valori mancanti di ogni colonna" },
+    { q: "Come togli solo le righe senza età?", a: "df.dropna(subset=['eta'])" },
+    { q: "Perché la mediana è spesso meglio della media per riempire?", a: "È meno influenzata dai valori estremi" },
+    { q: "Cosa sono i buchi travestiti?", a: "Codici come 0, -999 o N/D usati al posto di una casella vuota" },
+  ]}
+/>
+
+<Say who="sensei">Buchi sistemati. Prossima lezione: le righe che compaiono due volte, i duplicati.</Say>
+</Scene>

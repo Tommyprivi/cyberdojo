@@ -1,0 +1,203 @@
+---
+id: D.08.004
+course: dati
+module: 8
+title: "Gli outlier in pratica"
+belt: arancione
+duration_min: 9
+prerequisites: [D.08.003]
+objectives:
+  - "Trovare i valori fuori dal gruppo con la regola dell'IQR e con regole di buon senso"
+  - "Distinguere un errore da un valore vero ma raro"
+  - "Decidere cosa farne e documentare la scelta"
+video:
+  provider: youtube
+  id: "t1SgIs69D5o"
+  start: 0
+  end: 247
+  channel: "Yimp - La scuola dei dati"
+  title: "Individuare gli OUTLIER e calcolare il COEFFICIENTE DI VARIAZIONE"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-outlier
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Togliere un outlier solo perché è lontano dagli altri: potrebbe essere il dato più importante"
+  - "Dimenticare che la media si sposta moltissimo per un solo valore estremo, mentre la mediana no"
+  - "Cambiare i dati senza scrivere cosa è stato fatto e perché"
+commands: []
+---
+
+<Scene title="Il pacco da quattro ore">
+Una piccola azienda fittizia di consegne registra i **minuti** che servono per ogni consegna in città:
+
+<Log lines={[
+  "22, 23, 24, 25, 26, 28, 240",
+]} caption="Sette consegne. Una è molto diversa dalle altre." />
+
+Il numero 240 sono quattro ore. Il tuo capo vuole il «tempo medio di consegna» per il sito.
+
+La domanda del caso: **240 è un errore da togliere o una consegna davvero lunghissima?**
+
+<Say who="sensei">Un outlier non è un nemico e non è un errore. È un valore che esce dal gruppo. Il tuo lavoro è capire **perché**.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto pesa un solo valore">
+Un **outlier** (in italiano «valore anomalo») è un dato molto lontano dagli altri. Guarda cosa fa alla media:
+
+<Log lines={[
+  "import pandas as pd",
+  "",
+  "s = pd.Series([22, 23, 24, 25, 26, 28, 240], name='minuti')",
+  "print(round(s.mean(), 1))",
+  "55.4",
+  "print(s.median())",
+  "25.0",
+]} caption="Sei consegne su sette durano circa 25 minuti. La media dice 55." />
+
+La **media** (somma divisa per quanti sono) viene trascinata dal 240. La **mediana** (il valore centrale, 25) resta dove sta la maggioranza.
+
+<Callout kind="regola">
+Con un outlier, una media da sola mente. Guarda sempre anche la mediana: se sono molto diverse, c'è qualcosa da capire.
+</Callout>
+
+<Say who="assistente">Media 55 e mediana 25: la distanza tra le due è già il primo indizio che qualcosa non va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trovarli: la regola dell'IQR">
+Per trovarli in modo ripetibile si usano i **quartili**: il primo quartile (Q1) lascia sotto di sé un quarto dei dati, il terzo (Q3) ne lascia sotto tre quarti. La distanza tra i due si chiama **IQR**.
+
+La regola più usata: è un possibile outlier ciò che sta sotto **Q1 − 1,5 × IQR** o sopra **Q3 + 1,5 × IQR**.
+
+<Log lines={[
+  "q1 = s.quantile(0.25)",
+  "q3 = s.quantile(0.75)",
+  "iqr = q3 - q1",
+  "print(q1, q3, iqr)",
+  "23.5 27.0 3.5",
+  "basso = q1 - 1.5 * iqr",
+  "alto = q3 + 1.5 * iqr",
+  "print(basso, alto)",
+  "18.25 32.25",
+  "print(s[(s < basso) | (s > alto)])",
+  "",
+  "6    240",
+  "Name: minuti, dtype: int64",
+]} caption="Il limite alto è 32,25 minuti: solo il 240 lo supera." />
+
+La regola ti dà un **sospetto**, non una condanna: l'IQR non sa niente di consegne.
+
+<Callout kind="attenzione">
+Su pochissimi dati, o su dati che per natura hanno code lunghe (stipendi, prezzi delle case), l'IQR segnala come «anomali» anche valori normali. Non applicarla alla cieca.
+</Callout>
+
+<Say who="sensei">Il numero ti dice chi guardare. La spiegazione, invece, devi andare a cercarla fuori dalla tabella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore o valore vero?">
+Per decidere servono **domande**, non formule:
+
+1. **È possibile?** Un'età di 230 anni no. Una consegna di quattro ore forse sì.
+2. **Si spiega?** Controlla la fonte: sciopero, neve, indirizzo sbagliato, o un 2 e 40 digitato come 240?
+3. **Ci sono altri valori come lui?** Se molte consegne tardano nello stesso giorno, non è un errore: è un fatto.
+
+Le **regole di buon senso** si scrivono nel codice e sono più sicure dell'IQR quando il dato ha limiti fisici:
+
+<Log lines={[
+  "c = pd.DataFrame({'eta': [34, 29, 41, 230, 38, -5]})",
+  "impossibili = c[(c['eta'] < 0) | (c['eta'] > 110)]",
+  "print(impossibili)",
+  "",
+  "   eta",
+  "3  230",
+  "5   -5",
+]} caption="Nessuna età è negativa e nessuno ne ha 230: sono errori sicuri." />
+
+Le tue opzioni per ogni outlier:
+
+- **Correggere**, solo se la fonte conferma il valore giusto.
+- **Tenere**, se è vero. Magari analizzi i dati con e senza.
+- **Limitare** (chiamato anche winsorizing): portarlo al limite con `s.clip(upper=alto)`.
+- **Togliere** o mettere a NaN, se è un errore sicuro e non recuperabile.
+
+<Log lines={[
+  "print(s.clip(upper=32.25))",
+  "",
+  "0    22.00",
+  "1    23.00",
+  "2    24.00",
+  "3    25.00",
+  "4    26.00",
+  "5    28.00",
+  "6    32.25",
+  "Name: minuti, dtype: float64",
+]} caption="clip tiene l'ordine di grandezza della consegna lunga, ma non lascia che comandi la media." />
+
+Un'altra voce sugli outlier e sul modo di individuarli:
+
+<Video />
+
+<Say who="assistente">Se non puoi chiedere alla fonte e il valore è possibile, di solito è più prudente tenerlo e dirlo, che toglierlo in silenzio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In una tabella di età dei clienti compare 230. Qual è la scelta più prudente?"
+  options={[
+    "Considerarlo un errore sicuro (nessuno ha 230 anni), metterlo a NaN e scriverlo nel registro",
+    "Tenerlo perché i dati non si toccano mai",
+    "Sostituirlo con 23, perché sembra un 0 di troppo",
+    "Togliere anche tutti i valori sopra la media",
+  ]}
+  answer={0}
+  explain="230 anni è impossibile: è un errore certo, e metterlo a NaN lo tratta come un buco. Il punto è scriverlo nel registro. Indovinare che fosse 23 è inventare un dato. Togliere tutto ciò che sta sopra la media butta dati veri, e dire che i dati non si toccano mai ti lascia con un errore evidente nella media."
+/>
+
+<Say who="sensei">Impossibile non è lo stesso di strano. Il primo si toglie, il secondo si indaga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su outlier, IQR e decisioni. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-outlier" pass="5/5" retries={3} />
+
+<Say who="sensei">Un buon analista dice sempre cosa ha fatto agli outlier. Perché chi legge il report ha diritto di saperlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un outlier non è per forza un errore: confronta media e mediana, applica regole di buon senso e usa l'IQR come sospetto.
+- Per decidere: è possibile? si spiega con la fonte? ci sono altri valori simili? Poi correggi, tieni, limita o togli.
+- Qualunque scelta va scritta: quanti valori, quale regola, quale motivo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la regola dell'IQR per il limite alto?", a: "Q3 + 1,5 × IQR" },
+    { q: "Perché la mediana è più robusta della media?", a: "Un valore estremo non la sposta" },
+    { q: "Quando un outlier va tolto subito?", a: "Quando è impossibile, per esempio un'età di 230 anni" },
+    { q: "Cosa fa s.clip(upper=limite)?", a: "Porta al limite i valori che lo superano" },
+  ]}
+/>
+
+<Say who="sensei">Numeri a posto. Prossima lezione: il testo, dove «Roma», «roma » e «ROMA» sono tre cose diverse.</Say>
+</Scene>

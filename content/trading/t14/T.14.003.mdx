@@ -1,0 +1,213 @@
+---
+id: T.14.003
+course: trading
+module: 14
+title: "Il backtest con i costi"
+belt: marrone
+duration_min: 9
+prerequisites: [T.14.002]
+objectives:
+  - "Calcolare passo per passo rendimento lordo e netto di una strategia semplice"
+  - "Confrontare la strategia con il buy and hold"
+  - "Capire come i costi cambiano il risultato"
+video:
+  provider: youtube
+  id: "rGEWOFsnkD8"
+  start: 0
+  end: 600
+  channel: "Trading Steady"
+  title: "How to Backtest a Trading Strategy in Python (Step-by-Step Beginner Tutorial)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t14-backtest
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare i costi, o applicarli solo agli acquisti e non alle vendite"
+  - "Sommare i rendimenti giornalieri invece di comporli (moltiplicare 1 + rendimento)"
+  - "Dedurre che una strategia funzioni da un test su pochissimi giorni"
+commands: []
+---
+
+<Scene title="Il numero che sembra bello">
+Livia applica le regole della scheda ai 10 prezzi fittizi. Senza costi, la strategia guadagna il **3,87%**. Lei esulta.
+
+Il Sensei le fa notare due cose: i costi non ci sono ancora, e il buy and hold, nello stesso periodo, ha fatto di più.
+
+La domanda del caso: **quanto resta davvero, al netto dei costi, e come si confronta con il semplice «compra e tieni»?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. I prezzi di questa lezione sono inventati.
+</Callout>
+
+<Say who="sensei">Un rendimento senza costi è un rendimento che non esiste. Sul serio, ogni acquisto e ogni vendita si pagano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il codice, passo per passo">
+Ecco il backtest completo con pandas (Python 3.11+, pandas 2.x). Ogni riga fa una sola cosa.
+
+```python
+import pandas as pd
+
+prezzi = pd.Series([100, 102, 101, 104, 106, 105, 103, 101, 104, 107])
+rend = prezzi.pct_change().fillna(0)          # rendimento semplice giornaliero
+media = prezzi.rolling(3).mean()              # media mobile a 3 giorni
+segnale = (prezzi > media).astype(int)        # 1 se sopra la media
+posizione = segnale.shift(1).fillna(0)        # si usa il segnale di ieri
+scambi = posizione.diff().abs().fillna(0)     # 1 quando si compra o si vende
+lordo = posizione * rend                      # rendimento senza costi
+netto = lordo - scambi * 0.002                # costo 0,2% a ogni scambio
+
+print(f"Strategia lorda: {(1 + lordo).prod() - 1:.2%}")
+print(f"Strategia netta: {(1 + netto).prod() - 1:.2%}")
+print(f"Buy and hold:    {(1 + rend).prod() - 1:.2%}")
+print(f"Scambi: {int(scambi.sum())}")
+```
+
+Convenzioni: rendimenti **semplici**, composti con `(1 + r).prod() - 1`.
+
+<Log lines={[
+  "Strategia lorda: 3.87%",
+  "Strategia netta: 3.26%",
+  "Buy and hold:    7.00%",
+  "Scambi: 3",
+]} />
+
+<Say who="assistente">Leggi le righe una alla volta. Ogni riga risponde a una domanda: che rendimento, che segnale, che posizione, quanto costa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controlliamo a mano">
+Mai fidarsi di un numero che non sai rifare a mano.
+
+Con la posizione spostata, la strategia è investita solo in tre giorni: giorno 4 (da 104 a 106, **+1,92%**), giorno 5 (da 106 a 105, **-0,94%**) e giorno 9 (da 104 a 107, **+2,88%**).
+
+- Lordo: 1,0192 × 0,9906 × 1,0288 = circa 1,0387, cioè **+3,87%**.
+- Scambi: compra il giorno 4, vende il giorno 6, compra il giorno 9. Sono **3**, a 0,2% ciascuno: 0,6% di costi in totale, applicati ai giorni in cui avvengono.
+- Netto: **+3,26%**. I costi hanno tolto circa 0,6 punti percentuali.
+- Buy and hold: da 100 a 107, cioè **+7,00%**.
+
+<Callout kind="attenzione">
+I rendimenti giornalieri si **compongono**, non si sommano: 1,92 - 0,94 + 2,88 darebbe 3,86, un numero diverso e, sui periodi lunghi, molto più sbagliato.
+</Callout>
+
+Vuoi sentire un'altra voce su un backtest passo per passo? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Tre scambi, tre conti. Se non ti tornano a mano, non tornano nemmeno al computer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa ci dice, e che cosa no">
+Il risultato: strategia netta **+3,26%**, buy and hold **+7,00%**. Secondo il criterio scritto ieri, l'ipotesi è **smentita**: la strategia non ha battuto il buy and hold.
+
+Provare altri costi mostra quanto contano. Con gli stessi segnali:
+
+<Log lines={[
+  "costo per scambio   rendimento netto",
+  "0,0%                3,87%",
+  "0,2%                3,26%",
+  "0,4%                2,65%",
+  "1,0%                0,84%",
+]} />
+
+Più scambi fai, più i costi pesano. Con il costo all'1% per scambio, di quel 3,87% resta meno di un punto.
+
+<Callout kind="regola">
+Il test non dice che «la media mobile non funziona». Dice che **in questi 10 giorni fittizi** quella regola, con quei costi, non ha battuto il buy and hold. Dieci giorni sono troppo pochi per concludere altro.
+</Callout>
+
+<Say who="sensei">Il criterio era scritto prima. Il risultato lo smentisce. Si accetta, si scrive, si va avanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia rende +5,0% lordo e fa 10 scambi, con un costo di 0,3% per scambio. Il costo totale approssimato è 3,0 punti. Quanto resta, grosso modo, al netto?"
+  options={[
+    "Circa 2 punti percentuali: i costi si pagano a ogni scambio e si sottraggono dal lordo",
+    "Circa 5 punti: i costi di 0,3% sono troppo piccoli per contare",
+    "Circa 8 punti: i costi aumentano il guadagno quando si fanno molti scambi",
+    "Circa 3 punti: i costi si applicano una sola volta alla fine",
+  ]}
+  answer={0}
+  explain="10 scambi × 0,3% = 3,0 punti di costi: 5,0 - 3,0 = circa 2,0 punti netti (è un calcolo approssimato, che basta per capire l'ordine di grandezza). Piccoli costi ripetuti diventano grandi. Chi li ignora vede una strategia migliore di quella reale."
+/>
+
+<Say who="assistente">Piccolo per volta, ma ogni volta. Conta gli scambi prima di fidarti del lordo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riproduci il calcolo">
+Rifai il conto con Python puro, senza pandas, per vedere dove nasce ogni numero. Ci sono quattro giorni con un movimento: i tre giorni investiti (4, 5 e 9) e il giorno 6, in cui si vende e si paga il costo senza guadagnare nulla.
+
+<PythonTerminal code={"rend = [0.0192, -0.0094, 0.0, 0.0288]
+costi = [0.002, 0.0, 0.002, 0.002]
+lordo = 1.0
+netto = 1.0
+for r, c in zip(rend, costi):
+    lordo = lordo * (1 + r)
+    netto = netto * (1 + r - c)
+print(round(lordo - 1, 4))
+print(round(netto - 1, 4))"} />
+
+Risultato atteso: `0.0387` e `0.0326`, cioè +3,87% e +3,26%, come nel calcolo con pandas.
+
+<Guided
+  steps={[
+    "Giorno 4: si compra. Rendimento +1,92%, costo 0,2%.",
+    "Giorno 5: si resta investiti. Rendimento -0,94%, nessun costo.",
+    "Giorno 6: si vende. Nessun rendimento (si è fuori), ma si paga il costo di 0,2%.",
+    "Giorno 9: si ricompra. Rendimento +2,88%, costo 0,2%.",
+    "Lezione: nei costi si contano tutti gli scambi, anche le uscite.",
+  ]}
+/>
+
+<Say who="sensei">Un conto che dimentica una vendita è un conto sbagliato. Succede più spesso di quanto credi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di backtest: lordo e netto, costi per scambio, confronto con il buy and hold, errori di codice.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t14-backtest" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con i numeri non si discute: si rifanno i conti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il backtest segue la scheda: segnale, posizione spostata di un giorno, rendimenti composti, costi a ogni scambio.
+- Nel nostro esempio: lordo +3,87%, netto +3,26%, buy and hold +7,00%. L'ipotesi è smentita.
+- Dieci giorni fittizi non dimostrano nulla: servono molti più dati e prove fuori campione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si compongono i rendimenti semplici?", a: "Si moltiplicano i fattori (1 + r) e poi si sottrae 1" },
+    { q: "Quanti costi paga chi compra e poi vende?", a: "Due: uno per l'acquisto e uno per la vendita" },
+    { q: "Che cosa succede al netto se aumentano gli scambi?", a: "I costi crescono e il rendimento netto scende" },
+    { q: "Se il criterio scritto prima è smentito, che cosa si fa?", a: "Si accetta il risultato e lo si scrive nella relazione" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la relazione. Raccontare un risultato deludente senza abbellirlo.</Say>
+</Scene>

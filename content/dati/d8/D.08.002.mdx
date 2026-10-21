@@ -1,0 +1,192 @@
+---
+id: D.08.002
+course: dati
+module: 8
+title: "Duplicati"
+belt: arancione
+duration_min: 8
+prerequisites: [D.08.001]
+objectives:
+  - "Capire come nascono i duplicati e distinguere quelli identici da quelli in conflitto"
+  - "Scegliere la chiave che identifica una riga"
+  - "Usare duplicated e drop_duplicates, controllando prima e dopo"
+video:
+  provider: youtube
+  id: "PuKWgFVp6Z4"
+  start: 0
+  end: 159
+  channel: "Yimp - La scuola dei dati"
+  title: "Eliminare i duplicati in un DataFrame di Pandas"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-duplicati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "drop_duplicates() senza subset guarda tutte le colonne: due righe quasi uguali non vengono viste come duplicate"
+  - "Togliere i duplicati senza chiedersi quale riga tenere può buttare il dato giusto"
+  - "Non contare le righe prima e dopo: non si sa cosa è stato tolto"
+commands: []
+---
+
+<Scene title="Ordini doppi">
+Il negozio online fittizio «Cartoleria Rossi» ti manda il registro degli ordini. Il totale delle vendite sembra troppo alto.
+
+| id_ordine | cliente | importo |
+|---|---|---|
+| 101 | Anna | 20 |
+| 102 | Bruno | 35 |
+| 102 | Bruno | 35 |
+| 103 | Carla | 12 |
+| 104 | Dario | 50 |
+| 104 | Dario | 55 |
+| 105 | Elisa | 18 |
+
+Il 102 compare due volte. Il 104 anche, ma con importi diversi.
+
+La domanda del caso: **sono la stessa cosa? Quale riga tieni?**
+
+<Say who="sensei">Due righe uguali non sono due vendite. Ma due righe quasi uguali sono un problema più serio: una delle due è sbagliata, e va capito quale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come nascono">
+I duplicati non compaiono per magia. Le cause più comuni:
+
+- **Doppio invio**: il cliente preme due volte «Ordina» e il sistema registra due righe.
+- **File caricato due volte**: un'esportazione viene unita a se stessa.
+- **Unione di fonti**: la stessa persona è presente in due elenchi.
+- **Correzione mal fatta**: l'ordine viene corretto aggiungendo una riga nuova invece di modificare la vecchia (è il caso del 104).
+
+Per decidere cosa è «lo stesso», serve una **chiave**: la colonna (o le colonne) che identifica una riga in modo unico. Qui è `id_ordine`. Si chiama **chiave naturale** quando esiste già nel mondo reale (un numero d'ordine, un codice prodotto) e non l'hai inventata tu.
+
+<Callout kind="regola">
+Prima di cercare i duplicati scrivi la frase: «Una riga è unica quando ___ è diverso». Se non sai completarla, non sai cosa stai togliendo.
+</Callout>
+
+<Say who="assistente">Non tutte le colonne sono buone chiavi. Il nome «Anna» non lo è: due clienti si possono chiamare Anna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trovarli, senza toccarli">
+Costruiamo la tabella e controlliamo, **senza ancora togliere niente**.
+
+<Log lines={[
+  "import pandas as pd",
+  "",
+  "ordini = pd.DataFrame({",
+  "    'id_ordine': [101, 102, 102, 103, 104, 104, 105],",
+  "    'cliente': ['Anna', 'Bruno', 'Bruno', 'Carla', 'Dario', 'Dario', 'Elisa'],",
+  "    'importo': [20, 35, 35, 12, 50, 55, 18],",
+  "})",
+  "",
+  "print(ordini.duplicated().sum())",
+  "1",
+  "print(ordini.duplicated(subset='id_ordine').sum())",
+  "2",
+]} caption="duplicated() mette vero sulle righe che ripetono una riga già vista." />
+
+Leggi bene: guardando **tutte** le colonne c'è un solo duplicato (la seconda riga del 102, identica alla prima). Guardando solo la chiave `id_ordine` ce ne sono due, perché il 104 ha importi diversi.
+
+Per vedere **tutte** le righe coinvolte, anche la prima copia, si usa `keep=False`:
+
+<Log lines={[
+  "print(ordini[ordini.duplicated(subset='id_ordine', keep=False)])",
+  "",
+  "   id_ordine cliente  importo",
+  "1        102   Bruno       35",
+  "2        102   Bruno       35",
+  "4        104   Dario       50",
+  "5        104   Dario       55",
+]} />
+
+<Say who="sensei">Prima guardi, poi decidi. Un conflitto come il 104 non si risolve con un comando: si risolve chiedendo alla fonte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Toglierli">
+`drop_duplicates()` toglie le righe ripetute. Di default **tiene la prima** copia (`keep='first'`) e guarda tutte le colonne.
+
+<Log lines={[
+  "print(len(ordini))",
+  "7",
+  "print(len(ordini.drop_duplicates()))",
+  "6",
+  "pulito = ordini.drop_duplicates(subset='id_ordine', keep='last')",
+  "print(len(pulito))",
+  "5",
+  "print(pulito)",
+  "",
+  "   id_ordine cliente  importo",
+  "0        101    Anna       20",
+  "2        102   Bruno       35",
+  "3        103    Carla       12",
+  "5        104   Dario       55",
+  "6        105   Elisa       18",
+]} caption="Con keep='last' del 104 resta la riga più recente (55). Con keep='first' sarebbe rimasta quella da 50." />
+
+Nota i numeri a sinistra: l'indice non si rinumera, ricorda da quale riga viene ogni dato.
+
+<Callout kind="attenzione">
+`keep='last'` ha senso solo se l'ultima riga è la più recente e quindi la corretta. Se non lo sai, **non scegliere a caso**: segnala il conflitto.
+</Callout>
+
+Un'altra voce, per vederlo in azione:
+
+<Video />
+
+<Say who="assistente">Sempre due numeri: righe prima e righe dopo. Se la differenza non è quella che ti aspetti, fermati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con la tabella degli ordini, cosa stampa print(ordini.duplicated().sum())?"
+  options={["1", "2", "4", "7"]}
+  answer={0}
+  explain="duplicated() senza argomenti confronta tutte le colonne. Solo la seconda riga del 102 è uguale a una riga già vista: totale 1. Il 104 ha importi diversi (50 e 55), quindi per pandas sono righe diverse. Chi risponde 2 ha guardato solo la chiave id_ordine."
+/>
+
+<Say who="sensei">Quante colonne guardi cambia la risposta. Decidi la chiave, poi chiedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su duplicati, chiavi e `drop_duplicates`. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-duplicati" pass="5/5" retries={3} />
+
+<Say who="sensei">Togliere una riga di troppo costa meno che togliere la riga giusta. Controlla prima e dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I duplicati nascono da doppi invii, file caricati due volte, unioni di fonti e correzioni mal fatte.
+- La chiave dice cosa rende unica una riga: `duplicated()` e `drop_duplicates()` guardano tutte le colonne, a meno che tu non scriva `subset`.
+- Conta le righe prima e dopo; se due righe con la stessa chiave hanno valori diversi, è un conflitto da risolvere, non un duplicato da togliere.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cos'è una chiave naturale?", a: "Una colonna che identifica una riga e che esiste già nel mondo reale, come un numero d'ordine" },
+    { q: "Cosa fa keep=False in duplicated?", a: "Segna tutte le righe ripetute, anche la prima copia" },
+    { q: "Quale riga tiene drop_duplicates di default?", a: "La prima" },
+    { q: "Due righe con la stessa chiave e importi diversi: duplicato o conflitto?", a: "Conflitto: va chiesto alla fonte quale è giusta" },
+  ]}
+/>
+
+<Say who="sensei">Righe pulite. Prossima lezione: le date scritte in dieci modi e i numeri travestiti da testo.</Say>
+</Scene>

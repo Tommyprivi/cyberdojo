@@ -1,0 +1,152 @@
+---
+id: D.11.003
+course: dati
+module: 11
+title: "La classificazione"
+belt: verde
+duration_min: 9
+prerequisites: [D.11.002]
+objectives:
+  - "Riconoscere un problema di classificazione"
+  - "Usare una soglia e capire che cosa cambia spostandola"
+  - "Leggere un albero di decisione semplice"
+video:
+  provider: youtube
+  id: "RffJBAnjXb8"
+  start: 0
+  end: 568
+  channel: "Piero Savastano"
+  title: "Machine Learning - Regressore vs Classificatore"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-classificazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la soglia giusta sia sempre 0,5"
+  - "Dimenticare il caso al limite (con la soglia «almeno 3», il valore 3 è già spam)"
+  - "Credere che un albero più profondo sia sempre migliore"
+commands: []
+---
+
+<Scene title="Spam o non spam">
+Marta ha sei email già controllate. Per ognuna ha contato le **parole sospette** («premio», «urgente», «gratis»...) e sa se era spam.
+
+| email | parole sospette | era spam? |
+|---|---|---|
+| A | 0 | no |
+| B | 1 | no |
+| C | 2 | no |
+| D | 4 | sì |
+| E | 5 | sì |
+| F | 7 | sì |
+
+Arriva una settima email con 6 parole sospette. **Spam o no?** Questa non è una regressione: la risposta non è un numero, è una **categoria**.
+
+<Say who="sensei">Una categoria da scegliere tra poche. Si chiama classificazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una soglia">
+La **classificazione** prevede una **classe**: spam o non spam, concedere o no un prestito, quale specie di fiore. Con due classi si dice **binaria**, con più classi **multi-classe**.
+
+Il modo più semplice è una **soglia**: **spam se le parole sospette sono almeno 3**.
+
+- email A, B, C (0, 1, 2): sotto la soglia, non spam. Giusto.
+- email D, E, F (4, 5, 7): sopra la soglia, spam. Giusto.
+
+Sei su sei. E la settima, con 6? Spam.
+
+<Callout kind="attenzione">
+Il caso al limite: con la regola «almeno 3», un'email con esattamente 3 parole è spam. Controlla sempre se la soglia include il valore o no.
+</Callout>
+
+<Say who="assistente">Le soglie 1, 5 o 6 avrebbero sbagliato qualche email. La 3 le separa tutte. Provale a mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spostare la soglia">
+Spesso un modello dà un **punteggio** da 0 a 1, e la soglia decide: sopra 0,5 è spam.
+
+Se **abbassi** la soglia (0,3), più email diventano spam: ne prendi di più, ma sbagli anche su qualche email normale. Se la **alzi** (0,8), segni spam solo i casi quasi certi, ma ne lasci passare.
+
+<Callout kind="regola">
+La soglia non è un dettaglio: spostarla cambia **quanti errori di un tipo e quanti dell'altro** si fanno. Per un filtro antispam è meglio non perdere le email vere; per un esame medico è meglio non perdere i malati.
+</Callout>
+
+Vuoi sentire la differenza tra regressione e classificazione da un'altra voce? Meno di dieci minuti:
+
+<Video />
+
+<Say who="sensei">Non esiste la soglia giusta in assoluto. Esiste quella giusta per quello che costa sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'albero di decisione">
+Un **albero di decisione** è una serie di domande sì/no, una dopo l'altra, che porta alla risposta.
+
+<Log lines={["parole sospette >= 3 ?", "  sì -> contiene un link strano ?", "          sì -> SPAM", "          no -> SPAM (ma da guardare)", "  no -> NON SPAM"]} caption="Un albero minuscolo. Si legge dall'alto verso il basso." />
+
+Il suo punto di forza: **si legge**. Puoi dire a una persona perché un'email è stata segnata spam, seguendo il percorso.
+
+Il computer **costruisce l'albero** scegliendo le domande che separano meglio gli esempi. Se l'albero diventa troppo profondo, però, memorizza i casi invece di imparare: ne parleremo.
+
+<Say who="assistente">Un albero è come il gioco «indovina chi?»: ogni domanda scarta una parte delle possibilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un albero minuscolo con scikit-learn sui dati di Marta (0 = non spam, 1 = spam):
+
+<Log lines={["from sklearn.tree import DecisionTreeClassifier", "X = [[0], [1], [2], [4], [5], [7]]", "y = [0, 0, 0, 1, 1, 1]", "albero = DecisionTreeClassifier(max_depth=1, random_state=0).fit(X, y)", "print(albero.predict([[1], [6]]))", "# [0 1]"]} caption="Python 3.11+, scikit-learn 1.4+. Una sola domanda: sceglie lui la soglia (3,0)." />
+
+<Quiz
+  question="Con la regola «spam se le parole sospette sono almeno 3», come viene classificata un'email con esattamente 3 parole sospette?"
+  options={["Spam", "Non spam", "Metà e metà", "Dipende dalla lunghezza"]}
+  answer={0}
+  explain="«Almeno 3» include il 3: l'email è spam. Chi risponde «non spam» ha letto la soglia come «più di 3»."
+/>
+
+<Say who="sensei">Leggi bene la soglia: «almeno» e «più di» non sono la stessa cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su categorie, soglie e alberi. Hai 3 tentativi.
+
+<Practice generator="d11-classificazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Con le soglie ogni caso al limite conta. Non farti fregare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La classificazione prevede una categoria (binaria o con più classi).
+- La soglia decide quando il punteggio diventa «sì»: spostarla cambia gli errori di un tipo e dell'altro.
+- Un albero di decisione è una serie di domande sì/no, facile da leggere; se è troppo profondo memorizza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa prevede una classificazione?", a: "Una categoria (classe)" },
+    { q: "Che cos'è la soglia?", a: "Il valore sopra cui il punteggio diventa «sì»" },
+    { q: "Abbasso la soglia dello spam: che succede?", a: "Più spam preso, ma più falsi allarmi" },
+    { q: "Perché un albero è facile da spiegare?", a: "Si legge il percorso di domande che porta alla risposta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il clustering. E se non avessimo nessuna etichetta?</Say>
+</Scene>

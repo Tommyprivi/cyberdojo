@@ -1,0 +1,166 @@
+---
+id: D.21.001
+course: dati
+module: 21
+title: "Che cos'è l'analytics engineering"
+belt: blu
+duration_min: 8
+prerequisites: [D.13.006]
+objectives:
+  - "Descrivere il ruolo dell'analytics engineer tra data engineer e analista"
+  - "Spiegare perché un calcolo scritto in un foglio sparso è fragile e uno scritto come codice versionato no"
+  - "Collocare l'ELT moderno: caricare il dato grezzo e trasformarlo dentro il magazzino dati"
+video:
+  provider: youtube
+  id: "8FZZivIfJVo"
+  start: 0
+  end: 600
+  channel: "Seattle Data Guy"
+  title: "What Is DBT and Why Is It So Popular - Intro To Data Infrastructure Part 3"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-ruolo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'analytics engineer sia solo un analista che scrive più SQL: il suo lavoro è rendere il calcolo ripetibile, controllato e condiviso"
+  - "Confonderlo con il data engineer: il data engineer porta i dati nel magazzino, l'analytics engineer li modella per le domande dell'azienda"
+  - "Credere che ELT significhi non trasformare mai: la trasformazione c'è, ma avviene dopo il caricamento"
+commands: []
+---
+
+<Scene title="Due analisti, due ricavi">
+«Il Cesto di Marta» vende candele e saponi online. Lunedì Marta chiede: **quanto abbiamo incassato a marzo?**
+
+Giulia risponde 90,00 euro. Paolo risponde 82,50 euro. Hanno guardato gli stessi ordini:
+
+| id_ordine | importo | stato |
+|---|---|---|
+| 101 | 12,50 | pagato |
+| 102 | 18,00 | pagato |
+| 103 | 7,50 | annullato |
+| 104 | 30,00 | pagato |
+| 105 | 22,00 | pagato |
+
+Giulia ha sommato tutti gli ordini: 12,50 + 18,00 + 7,50 + 30,00 + 22,00 = 90,00. Paolo ha escluso l'ordine annullato: 12,50 + 18,00 + 30,00 + 22,00 = 82,50.
+
+Nessuno dei due ha sbagliato un calcolo. Ognuno ha usato **una regola diversa**, scritta solo nel proprio foglio. La domanda del caso: **chi decide che cosa vuol dire «incasso», e dove sta scritta la regola?**
+
+<Say who="sensei">Due numeri diversi per la stessa domanda sono peggio di un numero sbagliato: nessuno sa più di chi fidarsi. Questo modulo parla di come evitarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ruolo in mezzo">
+Nei team di dati ci sono tre mestieri vicini.
+
+- Il **data engineer** porta i dati nel magazzino dati (il *data warehouse*, l'archivio centrale per le analisi) e fa funzionare le pipeline.
+- L'**analista** risponde alle domande e costruisce grafici e report.
+- L'**analytics engineer** sta in mezzo: prende i dati arrivati nel magazzino e li trasforma in tabelle **pulite, documentate e testate**, con le regole dell'azienda scritte una volta sola.
+
+Un'immagine: il data engineer porta la farina al magazzino, l'analista serve la pizza al cliente, l'analytics engineer prepara l'impasto in modo che ogni pizza venga uguale.
+
+<Callout kind="regola">
+L'analytics engineer applica all'analisi i metodi dei programmatori: codice scritto, versionato, testato e rivisto da un collega.
+</Callout>
+
+<Say who="assistente">Non è un titolo rigido: in un team piccolo la stessa persona fa due mestieri. Conta il lavoro, non l'etichetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal foglio sparso al codice">
+Perché il caso di Marta succede? Perché le regole stanno in **fogli sparsi**: ognuno ha la sua copia, nessuno vede il calcolo di un altro, nessuno sa chi l'ha cambiato né quando.
+
+Il rimedio è scrivere la regola una volta, come una query SQL salvata in un file:
+
+<Log lines={[
+  "-- file: ordini_pagati.sql",
+  "select id_ordine, importo",
+  "from ordini",
+  "where stato = 'pagato'",
+]} caption="La regola «incasso = solo ordini pagati» scritta in un posto solo." />
+
+Messo in **Git** (il sistema che ricorda ogni versione di un file), questo file ha una storia: chi l'ha scritto, quando è cambiato, perché. Un collega può **rivedere** la modifica prima che arrivi a tutti.
+
+<Callout kind="trucco">
+Domanda-test per una regola di calcolo: «se Giulia è in ferie, il collega può trovarla, leggerla e cambiarla in modo controllato?» Se la risposta è no, la regola è ancora in un foglio sparso.
+</Callout>
+
+<Say who="sensei">Una regola nascosta in un foglio è una scommessa. Una regola in un file con la sua storia è un impegno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ELT: il contesto moderno">
+Oggi il magazzino dati (BigQuery, Snowflake, PostgreSQL, DuckDB) è abbastanza potente da trasformare i dati **al suo interno**. Per questo si è diffuso l'**ELT** (se vuoi ripassarlo, c'è D.09.002):
+
+<Log lines={[
+  "E  Extract   estrai i dati dalle sorgenti (sito, cassa, fogli)",
+  "L  Load      caricali grezzi nel magazzino, senza cambiarli",
+  "T  Transform trasformali dentro il magazzino, con SQL",
+]} caption="Il dato grezzo resta intatto: se la regola cambia, si rifà la T." />
+
+La **T** è il pezzo dell'analytics engineer. Se la regola «incasso» cambia (ad esempio si escludono anche i rimborsi), si modifica il file SQL e si ricalcola tutto dal dato grezzo, senza ricaricare niente.
+
+Un'altra voce racconta come uno strumento chiamato **dbt** ha reso questa T un lavoro di squadra. Il video è in inglese; attiva i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il video spiega dbt in generale. Nelle prossime lezioni lo guardiamo da vicino, file per file.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il tuo team ha il calcolo dei «clienti attivi» copiato in quattro fogli di calcolo diversi, e ognuno dà un numero un po' diverso. Quale mossa va nella direzione dell'analytics engineering?"
+  options={[
+    "Scrivere la definizione una sola volta come query in un file versionato e farla usare a tutti",
+    "Chiedere a ognuno di controllare meglio il proprio foglio",
+    "Tenere solo il foglio del collega più esperto e cancellare gli altri",
+    "Aspettare che i numeri tornino uguali da soli",
+  ]}
+  answer={0}
+  explain="Il problema non è un calcolo sbagliato, è la regola ripetuta in più posti. Scriverla una volta, in un file con storia e revisione, elimina la causa. Chiedere di controllare meglio non risolve: ognuno continua a avere la sua regola."
+/>
+
+<Say who="sensei">Si cura la causa, non il sintomo. Qui la causa è la regola copiata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di team di dati: capisci chi fa che cosa e perché una regola va scritta una volta sola.
+
+<Practice generator="d21-ruolo" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il ruolo si capisce dai problemi che risolve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'analytics engineer sta tra il data engineer (porta i dati) e l'analista (risponde alle domande): trasforma i dati in tabelle pulite, testate e documentate.
+- Due numeri diversi per la stessa domanda nascono da regole sparse in fogli diversi: la cura è una regola sola, scritta come codice e versionata.
+- Nell'ELT il dato grezzo si carica subito e si trasforma dentro il magazzino con SQL: se la regola cambia, si rifà solo la trasformazione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa l'analytics engineer?", a: "Trasforma i dati del magazzino in tabelle pulite, testate e documentate, con regole scritte una volta" },
+    { q: "Perché Giulia e Paolo avevano numeri diversi?", a: "Usavano regole diverse (con o senza ordini annullati), scritte solo nei loro fogli" },
+    { q: "Che cosa aggiunge Git a un file SQL?", a: "La storia delle modifiche e la possibilità di farle rivedere" },
+    { q: "In ELT, dove avviene la T?", a: "Dentro il magazzino dati, dopo aver caricato il dato grezzo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dbt, lo strumento che trasforma file SQL in tabelle. Un progetto minuscolo, file per file.</Say>
+</Scene>

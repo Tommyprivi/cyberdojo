@@ -1,0 +1,182 @@
+---
+id: D.15.001
+course: dati
+module: 15
+title: "Il modello a stella in pratica"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.006]
+objectives:
+  - "Distinguere una tabella dei fatti da una tabella delle dimensioni"
+  - "Stabilire la granularità di una tabella dei fatti"
+  - "Spiegare a che cosa servono le chiavi surrogate"
+video:
+  provider: youtube
+  id: "vZndrBBPiQc"
+  start: 0
+  end: 600
+  channel: "Guy in a Cube"
+  title: "Why Power BI loves a Star Schema"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d15-stella
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere tutto in una sola tabella gigante: i testi si ripetono, i filtri si complicano e gli errori si moltiplicano"
+  - "Non decidere la granularità: se una riga a volte è un ordine e a volte una riga d'ordine, i totali sono sbagliati"
+  - "Usare il codice del gestionale come chiave: se il codice cambia, la storia si rompe"
+commands: []
+---
+
+<Scene title="Due totali che non tornano">
+Bottega Rossi è un'azienda fittizia che vende caffè e tazze in due negozi. Marta, l'analista, riceve un file unico con una riga per ogni vendita e, in ogni riga, il nome del prodotto, la categoria, la città e il mese scritti per esteso.
+
+Lo apre in due report. Il primo dice che la categoria «Caffè» vale 92. Il secondo, costruito da un collega con lo stesso file, dice 100. Nessuno ha toccato i dati.
+
+<Say who="sensei">Un file piatto sembra comodo. Poi cresce, e ognuno lo filtra a modo suo. Oggi impari a dargli una forma che regge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fatti e dimensioni">
+Il **modello a stella** divide i dati in due tipi di tabelle.
+
+- La **tabella dei fatti** contiene gli **eventi** misurabili: ogni vendita, con quantità e importo. Cresce di continuo.
+- Le **tabelle delle dimensioni** contengono le **descrizioni**: chi, che cosa, dove, quando. Prodotti, negozi, date. Cambiano poco.
+
+Pensa a un registratore di cassa. Lo scontrino è il fatto. Il listino prezzi, l'elenco dei negozi e il calendario sono le dimensioni a cui lo scontrino rimanda con un codice.
+
+<Callout kind="regola">
+Il fatto risponde a «quanto?». Le dimensioni rispondono a «per che cosa, dove, quando?». Si taglia il numero con le dimensioni.
+</Callout>
+
+<Say who="assistente">Se in una colonna c'è un numero da sommare, è quasi sempre un fatto. Se c'è un nome o una categoria, è una dimensione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La stella disegnata">
+Ecco le tabelle di Bottega Rossi, piccole e fittizie. La tabella dei fatti ha una riga per ogni riga di scontrino.
+
+| id_vendita | data | id_prodotto | id_negozio | quantita | importo |
+|---|---|---|---|---|---|
+| V1 | 2025-01-03 | 1 | 1 | 2 | 12 |
+| V2 | 2025-01-03 | 2 | 1 | 1 | 8 |
+| V3 | 2025-01-04 | 3 | 2 | 3 | 30 |
+| V4 | 2025-01-04 | 1 | 2 | 1 | 6 |
+| V5 | 2025-02-01 | 1 | 1 | 4 | 24 |
+| V6 | 2025-02-02 | 3 | 1 | 2 | 20 |
+
+E le due dimensioni principali.
+
+| id_prodotto | nome | categoria |
+|---|---|---|
+| 1 | Caffè in grani 250 g | Caffè |
+| 2 | Tazza in ceramica | Accessori |
+| 3 | Cialde 50 pezzi | Caffè |
+
+| id_negozio | città |
+|---|---|
+| 1 | Milano |
+| 2 | Torino |
+
+Al centro i fatti, intorno le dimensioni, collegate dai codici: la forma ricorda una stella.
+
+<Callout kind="curiosita">
+Il totale di tutti gli importi è **100**. La categoria «Caffè» vale **92** (12 + 30 + 6 + 24 + 20), «Accessori» vale **8**. Il report che diceva 100 per «Caffè» contava anche la tazza.
+</Callout>
+
+<Say who="sensei">Il nome della categoria sta in un posto solo. Se cambia, lo correggi una volta e tutti i report lo vedono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La granularità">
+La **granularità** dice che cosa rappresenta **una riga** della tabella dei fatti. Nel nostro esempio: una riga di scontrino, per un prodotto, in un negozio, in un giorno.
+
+Si decide **prima** di costruire il resto, e si scrive in una frase. Se non lo fai, nascono errori silenziosi.
+
+<Log lines={["Granularità: una riga = un prodotto venduto in uno scontrino", "Se aggiungi una riga di «spese di spedizione» per ordine,", "la granularità si mescola: alcune righe sono prodotti, altre ordini."]} caption="Una frase sola, scritta all'inizio." />
+
+<Callout kind="attenzione">
+Mescolare livelli diversi nella stessa tabella fa sommare due volte la stessa cosa. Se una spesa di spedizione di 5 euro viene ripetuta su ogni prodotto di un ordine con 3 prodotti, il report ne conta 15.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, e racconta perché gli strumenti di report amano questa forma:
+
+<Video />
+
+<Say who="assistente">Una riga, una cosa. Se non sai dire quale, la tabella non è pronta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le chiavi surrogate">
+Il gestionale dà ai prodotti un codice, per esempio CAF-250. Usarlo come collegamento sembra ovvio. Ma i codici cambiano: un prodotto viene riclassificato, un codice viene riusato.
+
+Una **chiave surrogata** è un numero progressivo creato da te, senza significato, che identifica **una versione** della riga della dimensione.
+
+| id_prodotto (surrogata) | codice | nome | categoria |
+|---|---|---|---|
+| 1 | CAF-250 | Caffè in grani 250 g | Caffè |
+| 4 | CAF-250 | Caffè in grani 250 g | Caffè speciali |
+
+Le vendite di gennaio puntano a 1, quelle fatte dopo la riclassificazione puntano a 4. Il passato resta com'era.
+
+<Callout kind="trucco">
+Chiave **naturale** = il codice che arriva dal gestionale. Chiave **surrogata** = il numero tuo. Il fatto punta alla surrogata, il codice naturale resta come colonna di controllo.
+</Callout>
+
+<Say who="sensei">Una chiave non deve voler dire niente. Quando vuole dire qualcosa, prima o poi qualcuno la cambia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella tabella dei fatti di Bottega Rossi, qual è il totale degli importi del negozio di Milano (id_negozio = 1)?"
+  options={["64", "36", "100", "92"]}
+  answer={0}
+  explain="Le righe di Milano sono V1 (12), V2 (8), V5 (24) e V6 (20): 12 + 8 + 24 + 20 = 64. Torino ha V3 (30) e V4 (6) = 36. Insieme fanno 100. Chi risponde 36 ha preso Torino, chi risponde 92 ha preso la categoria Caffè."
+/>
+
+<Say who="assistente">Prima filtra le righe con la dimensione, poi somma il fatto. Sempre in questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su fatti, dimensioni, granularità e chiavi, con piccoli calcoli sulle tabelle di Bottega Rossi. Cinque domande, senza errori.
+
+<Practice generator="d15-stella" pass="5/5" retries={3} />
+
+<Say who="sensei">Sapere quale tabella è il fatto, e che cosa vuol dire una sua riga: da lì comincia ogni modello sano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I fatti sono gli eventi con i numeri; le dimensioni sono le descrizioni con cui si taglia il numero.
+- La granularità dice che cosa è una riga dei fatti: si decide prima e si scrive in una frase.
+- Le chiavi surrogate sono numeri senza significato, che proteggono la storia quando i codici cambiano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene la tabella dei fatti?", a: "Gli eventi misurabili, come vendite con quantità e importo" },
+    { q: "Che cos'è la granularità?", a: "Che cosa rappresenta una riga della tabella dei fatti" },
+    { q: "Perché una chiave surrogata?", a: "Perché non cambia di significato e conserva la storia delle versioni" },
+    { q: "Perché il nome della categoria sta nella dimensione?", a: "Così si corregge in un posto solo e tutti i report lo vedono" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le misure. Come calcolare margini e percentuali senza sbagliare i totali.</Say>
+</Scene>

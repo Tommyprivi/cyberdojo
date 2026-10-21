@@ -1,0 +1,154 @@
+---
+id: D.15.006
+course: dati
+module: 15
+title: "Rilascio e aggiornamento"
+belt: marrone
+duration_min: 9
+prerequisites: [D.15.005]
+objectives:
+  - "Pianificare gli aggiornamenti dei dati in ordine corretto"
+  - "Confrontare i numeri prima e dopo una modifica con un test di regressione"
+  - "Comunicare i cambiamenti e misurare l'adozione"
+video:
+  provider: youtube
+  id: "UnAKj8e3aPg"
+  start: 0
+  end: 600
+  channel: "Artis Consulting"
+  title: "Power BI Deployment Pipelines Tutorial (2022)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d15-rilascio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Programmare l'aggiornamento del report prima che i dati di origine siano pronti: si mostrano i numeri di ieri come se fossero di oggi"
+  - "Modificare un report direttamente in produzione, senza provarlo prima"
+  - "Cambiare una definizione senza avvisare: gli utenti vedono numeri diversi e perdono fiducia"
+commands: []
+---
+
+<Scene title="Il lunedì dei numeri cambiati">
+Marta migliora la misura dei ricavi di Bottega Rossi e pubblica il report corretto il venerdì sera. Lunedì la direttrice apre la dashboard: i ricavi di gennaio, che sapeva essere 920, ora sono 935. Nessuno l'ha avvisata. Pensa a un errore e smette di fidarsi.
+
+<Say who="sensei">Un cambiamento giusto, non spiegato, sembra un errore. Rilasciare vuol dire anche far capire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiornamenti pianificati">
+I report non leggono i dati in diretta: di solito **si aggiornano a orari fissi**. L'**aggiornamento pianificato** è un compito automatico che ricarica i dati, per esempio ogni giorno alle 06:00.
+
+Il punto delicato è l'**ordine**. Prima si caricano i dati di origine, poi si aggiorna il report.
+
+<Log lines={["05:30  il magazzino dati finisce di caricare le vendite di ieri", "06:00  il report si aggiorna  ->  mostra le vendite di ieri: giusto", "", "Se il caricamento finisce alle 06:20:", "06:00  il report si aggiorna  ->  mostra ancora quelle di ieri l'altro: sbagliato"]} caption="L'aggiornamento del report deve partire dopo la fine del caricamento." />
+
+Si lascia un margine di sicurezza, si controlla l'esito (riuscito o fallito) e si riceve un avviso se fallisce. Sul report si mostra sempre la data dell'ultimo aggiornamento.
+
+<Say who="assistente">Come servire la cena: se il forno non ha finito, non porti il piatto in tavola. Aspetti il segnale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare prima di pubblicare">
+Si lavora con più ambienti separati: **sviluppo** (si prova), **test** (si controlla con altri) e **produzione** (la usano tutti). Un cambiamento passa per ordine, e solo alla fine arriva a chi decide.
+
+Molti strumenti hanno un percorso di rilascio per questo. Power BI ha le «pipeline di distribuzione», e si può ottenere lo stesso risultato con cartelle e regole nei servizi gratuiti, come Metabase o Looker Studio, dove si lavora su una copia di prova.
+
+<Callout kind="regola">
+Mai modificare direttamente in produzione. Si cambia in sviluppo, si controlla in test, si pubblica con calma.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, e mostra il passaggio tra gli ambienti:
+
+<Video />
+
+<Say who="sensei">La produzione è il palcoscenico con il pubblico in sala. Le prove si fanno prima, a sipario chiuso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Test di regressione sui numeri">
+Un **test di regressione** controlla che, dopo una modifica, i numeri che **dovevano restare uguali** siano rimasti uguali.
+
+Si fissa un elenco di numeri di riferimento e si confrontano prima e dopo, con una tolleranza decisa in anticipo (per esempio 0,5%).
+
+| controllo | prima | dopo | esito |
+|---|---|---|---|
+| Ricavi gennaio | 920 | 920 | uguale: passa |
+| Ricavi febbraio | 800 | 800 | uguale: passa |
+| Clienti attivi | 4 | 4 | uguale: passa |
+
+Se un numero cambia, si decide: è un effetto voluto (la definizione è cambiata) o un errore? Nel caso di Marta, 935 contro 920 è una differenza di 15, cioè 15 / 920, circa **1,63%**. Supera la tolleranza dello 0,5%: si ferma il rilascio e si cerca la causa.
+
+<Callout kind="attenzione">
+Un numero che cambia **non è mai** un dettaglio da scoprire dopo la pubblicazione. Si scopre prima, con il confronto.
+</Callout>
+
+<Say who="assistente">Il confronto è la rete sotto il trapezio. Non la vedi finché non servirebbe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Comunicare e far adottare">
+Quando un cambiamento è voluto, si **comunica prima** a chi usa il report: che cosa cambia, perché, da quando, di quanto cambiano i numeri.
+
+<Log lines={["Novità dal 3 febbraio", "Ricavi ora senza IVA e con i resi sottratti (definizione unica di Finanza).", "Effetto: i ricavi di gennaio passano da 1220 a 920.", "Dubbi? Scrivi a marta@esempio.it"]} caption="Una nota di rilascio breve. Indirizzo fittizio." />
+
+L'**adozione** dice se il lavoro serve davvero. Si misura: tra gli invitati, quanti hanno aperto il report negli ultimi 30 giorni? Se gli invitati sono 80 e 52 hanno aperto il report, l'adozione è 52 / 80 = **65%**.
+
+Un'adozione bassa non è colpa degli utenti: si chiede perché (non lo trovano, non si fidano, non risponde alle loro domande) e si migliora.
+
+<Say who="sensei">Un report che nessuno apre è costato lavoro e non ha dato niente. Ascolta chi non lo usa, più di chi lo usa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il caricamento dei dati termina di solito alle 06:20. Quando conviene pianificare l'aggiornamento del report?"
+  options={["Dopo le 06:20, con un margine di sicurezza, per esempio alle 06:45", "Alle 06:00, così è pronto presto", "Alle 05:00, per essere sicuri", "Ogni minuto, senza orari"]}
+  answer={0}
+  explain="Il report deve aggiornarsi dopo che i dati di origine sono pronti. Alle 06:00 o alle 05:00 mostrerebbe i dati vecchi come fossero nuovi. Aggiornare ogni minuto spreca risorse e non risolve l'ordine."
+/>
+
+<Say who="assistente">Prima la fonte, poi il report. Aggiungi un margine: i ritardi capitano proprio quando hai fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su aggiornamenti pianificati, regressione dei numeri, comunicazione e adozione, con piccoli calcoli. Cinque domande, senza errori.
+
+<Practice generator="d15-rilascio" pass="5/5" retries={3} />
+
+<Say who="sensei">Rilasciare bene è far arrivare ai dirigenti numeri affidabili, senza sorprese e senza paura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'aggiornamento pianificato parte dopo la fine del caricamento dei dati, con un margine di sicurezza e un avviso se fallisce.
+- Si prova in sviluppo e in test; un test di regressione confronta i numeri di riferimento prima e dopo, con una tolleranza decisa in anticipo.
+- Ogni cambiamento si comunica prima, e l'adozione si misura per capire se il lavoro serve.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando deve partire l'aggiornamento del report?", a: "Dopo la fine del caricamento dei dati di origine, con un margine" },
+    { q: "Che cos'è un test di regressione sui numeri?", a: "Il confronto dei numeri di riferimento prima e dopo una modifica" },
+    { q: "Che cosa si comunica prima di un cambiamento?", a: "Che cosa cambia, perché, da quando e di quanto cambiano i numeri" },
+    { q: "Come si calcola l'adozione?", a: "Utenti che hanno aperto il report diviso utenti invitati, in un periodo" },
+  ]}
+/>
+
+<Say who="sensei">Il ramo è finito. Sai modellare, calcolare, definire, mostrare, governare e rilasciare. Sono le sei cose che distinguono un report da un sistema di fiducia.</Say>
+</Scene>

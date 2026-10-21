@@ -1,0 +1,149 @@
+---
+id: D.10.007
+course: dati
+module: 10
+title: "Il report per chi decide"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.006]
+objectives:
+  - "Scrivere un report di una pagina che comincia dalla raccomandazione"
+  - "Scegliere i numeri essenziali e tradurli in effetto concreto"
+  - "Dire che cosa non dire e comunicare l'incertezza in modo onesto"
+video:
+  provider: youtube
+  id: "7ZTB7UDZgUc"
+  start: 0
+  end: 586
+  channel: "Dr. Whitney Kosters"
+  title: "How to Write an Executive Summary That Gets Decisions Made"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-report
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cominciare dal metodo e dai dettagli invece che dalla raccomandazione"
+  - "Presentare una stima come una certezza"
+  - "Usare gergo statistico con chi deve decidere"
+commands: []
+---
+
+<Scene title="Il capo ha due minuti">
+Il test sul bottone di **Tavola Bella** è chiuso e letto. Giulia ha 14 tabelle, 6 grafici e tre pagine di appunti. La direttrice, Marta, ha **due minuti** prima di una riunione.
+
+Marta non deve capire come si calcola un intervallo. Deve **decidere**: attivare il bottone verde per tutti, sì o no?
+
+La domanda del caso: **che cosa serve scrivere, e in che ordine?**
+
+<Say who="sensei">Chi decide ha poco tempo e molte responsabilità. Il tuo lavoro è togliergli tutto ciò che non serve alla decisione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una pagina, prima la raccomandazione">
+La regola: **una pagina**, e in cima la **raccomandazione**. Il lettore che si ferma alla prima frase deve già sapere che cosa fare.
+
+Poi, in ordine:
+1. **Raccomandazione**: «Attivare il bottone verde per tutti.»
+2. **Perché**: due o tre numeri essenziali.
+3. **Quanto siamo sicuri** e che cosa non sappiamo.
+4. **Prossimo passo**.
+
+Vuoi sentire un'altra voce? In inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Non è un giallo: l'assassino si dice a pagina uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri essenziali">
+Dal test: conversione 5,0% contro 6,0%, differenza **+1 punto**, intervallo **da +0,1 a +1,9 punti**.
+
+Per chi decide, i punti percentuali sono astratti. Si traducono in **effetto concreto**. Con 10.000 visite al mese, e un valore medio dell'ordine di 40 €:
+
+- +1 punto → 100 ordini in più → **4.000 € al mese**
+- +0,1 punto → 10 ordini in più → **400 € al mese**
+- +1,9 punti → 190 ordini in più → **7.600 € al mese**
+
+<Callout kind="trucco">
+Tre numeri bastano: **il risultato**, **la fascia di incertezza** e **che cosa vale in euro** (o in persone, o in tempo).
+</Callout>
+
+<Say who="sensei">Un numero senza il suo significato pratico è solo rumore. Traducilo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa non dire">
+Alcune frasi sembrano forti ma sono sbagliate o inutili:
+
+- «**Il verde fa vendere il 20% in più, sicuro.**» Il +20% è una stima, non una certezza. E il «sicuro» non esiste.
+- «Il test è significativo con una confidenza del 95%.» Gergo che il capo non può usare per decidere.
+- «Il verde piace alle persone.» Il test misura acquisti, non gusti.
+- Tutte le 14 tabelle «per completezza». Se non serve alla decisione, sta in allegato.
+
+<Quiz
+  question="Quale frase è la migliore, in cima al report?"
+  options={["Consiglio di attivare il bottone verde per tutti: l'effetto stimato è +4.000 € al mese, tra +400 e +7.600", "Il test A/B, condotto per due settimane, ha mostrato risultati interessanti", "Il bottone verde ha dimostrato di vendere il 20% in più", "Ecco tutti i dati del test, a voi la decisione"]}
+  answer={0}
+  explain="La prima dà raccomandazione, numero concreto e fascia di incertezza. La terza trasforma una stima in certezza; la seconda e la quarta non dicono che cosa fare."
+/>
+
+<Say who="assistente">Se la frase non aiuta a decidere, probabilmente non serve alla pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'incertezza onesta">
+Dire «non siamo certi» non è debolezza. È **rispetto**. Si scrive in parole semplici:
+
+- Che cosa sappiamo: «B ha comprato di più di A in modo chiaro».
+- Che cosa **non** sappiamo: «Non sappiamo se l'effetto durerà dopo le prime settimane, né se vale per i clienti che arrivano dai social».
+- Come ridurre il dubbio: «Controlliamo i numeri di nuovo tra un mese».
+
+<Callout kind="regola">
+Raccomanda con decisione, ma **dai sempre la fascia** e **un limite noto**. Se i dati non bastano, la raccomandazione è «aspettiamo e raccogliamo altri dati».
+</Callout>
+
+<Say who="sensei">Meglio una fascia onesta che un numero esatto e falso. Chi decide ricorda chi gli ha mentito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Metti in ordine il report e scegli le frasi giuste. Calcola gli effetti con i numeri della lezione.
+
+<Practice generator="d10-report" pass="5/5" retries={3} />
+
+<Say who="sensei">Raccomandazione, numeri, incertezza, prossimo passo. Una pagina e basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pagina, con la raccomandazione in cima, poi i perché e il prossimo passo.
+- Tre numeri essenziali: risultato, fascia di incertezza, valore concreto (euro, persone, tempo).
+- Niente certezze finte e niente gergo: si dice che cosa si sa, che cosa non si sa e come ridurre il dubbio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa va in cima a un report per chi decide?", a: "La raccomandazione" },
+    { q: "Perché tradurre i punti percentuali in euro?", a: "Perché chi decide ragiona in effetti concreti" },
+    { q: "+1 punto con 10.000 visite e ordine medio 40 €: valore al mese?", a: "4.000 € (100 ordini in più)" },
+    { q: "Si può scrivere «sicuramente +20%»?", a: "No: è una stima, va data con la sua fascia" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai misurato, confrontato, sperimentato e comunicato: è il mestiere dell'analista. Ora avanti.</Say>
+</Scene>

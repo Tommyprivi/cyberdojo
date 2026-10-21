@@ -1,0 +1,151 @@
+---
+id: D.01.005
+course: dati
+module: 1
+title: "Le domande giuste"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.004]
+objectives:
+  - "Trasformare una domanda di business in una domanda sui dati"
+  - "Riconoscere una domanda precisa, misurabile e con un confronto"
+video:
+  provider: youtube
+  id: "wFhbl6oSsuA"
+  start: 0
+  end: 407
+  channel: "Data venerdì"
+  title: "Cosa fa davvero un Data Analyst? Esempio pratico"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-domande
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Partire dai dati invece che dal problema"
+  - "Fare domande vaghe («va bene?») a cui nessun numero può rispondere"
+  - "Dimenticare il confronto: 900 coni sono tanti o pochi? Rispetto a che cosa?"
+commands: []
+---
+
+<Scene title="«Vendiamo poco»">
+La gelateria Luna è di Rosa. Un giorno di ottobre dice al suo analista: **«Vendiamo poco. Che cosa facciamo?»**
+
+È una domanda vera, ma nessun numero può rispondere. «Poco» rispetto a quando? Quanto? Per quale gelato?
+
+Il primo lavoro di un analista non è calcolare: è **capire che cosa si vuole sapere**.
+
+<Say who="sensei">Una domanda vaga dà un'analisi vaga. Spesso il lavoro più utile è fare domande a chi ti chiede qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal problema alla domanda sui dati">
+Passaggi per trasformare la richiesta:
+
+1. **Problema di business**: «Vendiamo poco.»
+2. **Che cosa significa «poco»?** Poco rispetto al passato? Rispetto ai costi?
+3. **Domanda sui dati**: «Di quanto sono calati i coni venduti ogni mese rispetto al mese prima?»
+4. **Quali dati servono?** Il numero di coni venduti ogni mese.
+
+<Callout kind="regola">
+Una buona domanda sui dati è **precisa** (cosa), **misurabile** (con un numero), ha un **periodo** (quando) e un **confronto** (rispetto a cosa).
+</Callout>
+
+<Say who="assistente">Se non riesci a dire con quale numero risponderesti, la domanda non è ancora pronta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rispondiamo con i dati">
+L'analista ha i coni venduti da maggio a ottobre (numeri inventati):
+
+| mese | coni |
+| --- | --- |
+| Maggio | 1200 |
+| Giugno | 1500 |
+| Luglio | 1800 |
+| Agosto | 1350 |
+| Settembre | 900 |
+| Ottobre | 600 |
+
+Da luglio ad agosto: 1800 → 1350, cioè **−450** coni. In percentuale: 450 diviso 1800 fa 0,25, quindi **−25%**.
+
+Da agosto a settembre: 1350 → 900, cioè −450, in percentuale 450 diviso 1350 = 0,333, quindi circa **−33%**.
+
+<Callout kind="attenzione">
+Stesso calo in numero (−450) ma percentuali diverse (−25% e −33%): il punto di partenza cambia. Scegli subito se confrontare numeri o percentuali.
+</Callout>
+
+<Say who="sensei">Il confronto scelto cambia la risposta. Decidilo prima, non dopo aver visto i numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quello che i dati non dicono">
+Il totale da maggio a ottobre è 1200 + 1500 + 1800 + 1350 + 900 + 600 = **7350** coni, cioè 1225 al mese.
+
+Ma i dati mostrano un calo da agosto: non spiegano **perché**. Fa più freddo? C'è un nuovo concorrente? Per rispondere servono altri dati (le temperature, i prezzi della concorrenza) e altre domande.
+
+<Callout kind="curiosita">
+I dati rispondono a «quanto» e «quando». Per «perché» servono altre domande, e a volte altre fonti.
+</Callout>
+
+<Say who="assistente">Un calo di vendite in autunno per un gelato è normale. Il contesto fa parte dell'analisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale tra queste è la domanda migliore da fare ai dati della gelateria?"
+  options={["Quanti coni sono stati venduti a settembre rispetto ad agosto?", "I clienti sono contenti?", "Come va il negozio?", "Vendiamo abbastanza?"]}
+  answer={0}
+  explain="È l'unica con un oggetto preciso (coni), un periodo (settembre) e un confronto (agosto). Le altre sono vaghe: nessun numero potrebbe rispondere in modo diretto."
+/>
+
+Vuoi vedere come lavora un analista davvero? Un altro punto di vista, in meno di sette minuti:
+
+<Video />
+
+<Say who="sensei">Prima la domanda, poi i dati. Chi fa il contrario trova numeri che non servono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scegli le domande ben fatte e ricontrolla i conti sulle vendite della gelateria.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-domande" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai già fare la cosa più difficile: chiedere bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si parte dal problema di business, non dai dati: poi si traduce in una domanda precisa, misurabile, con periodo e confronto.
+- Lo stesso calo può essere −450 coni o −25% o −33%: scegli il confronto prima di guardare i numeri.
+- I dati dicono «quanto» e «quando»; per «perché» servono altre domande.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si parte in un'analisi?", a: "Dal problema di business, non dai dati" },
+    { q: "Che cos'ha una buona domanda sui dati?", a: "Oggetto preciso, numero, periodo e confronto" },
+    { q: "Da 1800 a 1350 coni, quale calo percentuale?", a: "−25%" },
+    { q: "I dati spiegano il «perché»?", a: "Non da soli: servono altre domande e fonti" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: chi fa questo lavoro, e quanti mestieri diversi ci sono intorno ai dati.</Say>
+</Scene>

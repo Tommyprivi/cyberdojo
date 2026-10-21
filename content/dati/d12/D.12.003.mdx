@@ -1,0 +1,158 @@
+---
+id: D.12.003
+course: dati
+module: 12
+title: "Anonimizzare e pseudonimizzare"
+belt: verde
+duration_min: 9
+prerequisites: [D.12.002]
+objectives:
+  - "Distinguere pseudonimizzazione e anonimizzazione"
+  - "Spiegare perché togliere il nome non basta e che cos'è la re-identificazione"
+  - "Calcolare il k di una piccola tabella generalizzata"
+video:
+  provider: youtube
+  id: "puQvpyf0W-M"
+  start: 0
+  end: 600
+  channel: "Computerphile"
+  title: "The Anonymisation Problem - Computerphile"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-anonimizzazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un hash o un codice al posto del nome renda i dati anonimi"
+  - "Valutare ogni file da solo, senza pensare a cosa succede incrociandolo con altri"
+  - "Dimenticare che un gruppo di k persone con lo stesso valore sensibile svela quel valore"
+commands: []
+---
+
+<Scene title="La tabella «anonima»">
+Un ospedale fittizio vuole condividere con l'università una tabella per uno studio. Ha tolto nome e cognome e l'ha chiamata «dati anonimi».
+
+Restano età, CAP e diagnosi. In un piccolo paese c'è una sola persona di 45 anni con quel CAP. Il giornalista del paese lo sa.
+
+La domanda del caso: **i dati sono davvero anonimi?**
+
+<Say who="sensei">Togliere il nome è il primo passo, non l'ultimo. Chi crede di aver finito qui fa il danno più grande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pseudonimizzare e anonimizzare">
+Sono due cose diverse.
+
+- **Pseudonimizzare**: al posto dei dati che identificano si mettono codici (non più «Mario Rossi» ma «paziente 4821»). La tabella che collega codice e persona si conserva separata e protetta. I dati restano **personali**, perché con quella tabella si risale alla persona.
+- **Anonimizzare**: si fa in modo che non si possa più risalire a una persona con mezzi ragionevoli. Solo allora, in sintesi, il GDPR non si applica più a quei dati.
+
+<Callout kind="regola">
+Pseudonimizzare riduce i rischi ma non cancella gli obblighi. Anonimizzare davvero è più difficile di quanto sembri.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sul perché è difficile:
+
+<Video />
+
+<Say who="assistente">Se esiste una tabella per tornare indietro, non è anonimo. È pseudonimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tecniche di base">
+Le principali, con un esempio:
+
+- **Togliere** le colonne che identificano direttamente (nome, codice fiscale, email).
+- **Sostituire con un codice** (pseudonimo): lo stesso codice per la stessa persona permette analisi nel tempo.
+- **Generalizzare**: l'età 34 diventa «30-39», il CAP 20121 diventa `201**`.
+- **Aggregare**: si pubblicano solo conteggi per gruppo («120 clienti a Torino»).
+- **Mascherare o aggiungere rumore**: si alterano un po' i valori, quando l'analisi lo tollera.
+
+<Callout kind="attenzione">
+Un hash semplice di un'email, senza altri accorgimenti, non è una protezione sicura: chi prova molti indirizzi probabili può calcolare gli stessi hash e ritrovare le email. È pseudonimizzazione debole, non anonimizzazione.
+</Callout>
+
+<Say who="sensei">Ogni tecnica toglie dettaglio. Più ne togli, più i dati sono sicuri e meno servono: è un compromesso da pesare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Re-identificazione e k-anonimato">
+La **re-identificazione** è ritrovare una persona incrociando dati «anonimi» con altre fonti (elenchi pubblici, social, altri file). Pochi attributi come età, CAP e sesso, insieme, bastano spesso a isolare qualcuno.
+
+Per misurare il rischio c'è il **k-anonimato**: ogni persona non si distingue da almeno altre k-1 persone, guardando gli attributi che potrebbero identificarla. Un esempio fittizio, già generalizzato:
+
+| Età | CAP | Diagnosi |
+|---|---|---|
+| 30-39 | `201**` | gastrite |
+| 30-39 | `201**` | asma |
+| 30-39 | `201**` | asma |
+| 40-49 | `201**` | diabete |
+| 40-49 | `201**` | gastrite |
+| 40-49 | `201**` | asma |
+
+Ci sono due gruppi, da 3 righe ciascuno: ogni combinazione età-CAP compare 3 volte. Quindi **k = 3**.
+
+<Callout kind="curiosita">
+Il k-anonimato non basta da solo. Se tutte e tre le persone di un gruppo avessero «asma», chi sa che Marta è in quel gruppo scoprirebbe comunque la sua diagnosi.
+</Callout>
+
+<Say who="assistente">Conta le righe uguali nei gruppi. Il gruppo più piccolo ti dà il k.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'università pubblica i voti degli studenti con anno di nascita, corso e città. In un corso c'è una sola studentessa nata nel 2004. Che cosa è corretto concludere?"
+  options={["Il suo voto può essere ritrovato da chi la conosce: va generalizzato o tolto", "Va bene, perché manca il nome", "Va bene, perché i voti non sono dati personali", "Basta cambiare il nome del file"]}
+  answer={0}
+  explain="Quella riga è unica: il k è 1. Anche senza nome, chi conosce la studentessa la riconosce. Si generalizza (fascia di anni, corsi raggruppati) o si toglie la riga. Chi risponde «manca il nome» è caduto nell'errore del primo passo."
+/>
+
+<Callout kind="attenzione">
+Questa è una guida per capire, non una consulenza legale. Prima di pubblicare dati «anonimi», verifica con chi si occupa di privacy.
+</Callout>
+
+<Say who="sensei">Se una riga è unica, è una persona. Non farti ingannare dalla mancanza del nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su anonimizzazione e pseudonimizzazione. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-anonimizzazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di dire «anonimo», prova tu stesso a ritrovare una persona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Pseudonimizzare sostituisce con codici ma i dati restano personali; anonimizzare vuol dire non poter più risalire a una persona con mezzi ragionevoli.
+- Tecniche: togliere, sostituire con codici, generalizzare, aggregare, mascherare. Togliere il nome non basta: si incrocia con altre fonti.
+- k-anonimato: ogni persona indistinguibile da altre k-1. Controlla anche che i valori sensibili in un gruppo non siano tutti uguali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Pseudonimo o anonimo: un codice al posto del nome con tabella di corrispondenza?", a: "Pseudonimo: i dati restano personali" },
+    { q: "Che cos'è la re-identificazione?", a: "Ritrovare una persona incrociando dati «anonimi» con altre fonti" },
+    { q: "Che cosa vuol dire k = 3?", a: "Ogni persona è indistinguibile da almeno altre 2" },
+    { q: "Esempio di generalizzazione?", a: "Età 34 diventa fascia 30-39" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si custodiscono i dati, e gli errori che si fanno ogni giorno con un foglio mandato per email.</Say>
+</Scene>

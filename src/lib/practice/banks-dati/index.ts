@@ -16,6 +16,10 @@ import { D14_ITEMS } from "./d14";
 import { D15_ITEMS } from "./d15";
 import { D16_ITEMS } from "./d16";
 import { D17_ITEMS } from "./d17";
+import { D18_ITEMS } from "./d18";
+import { D19_ITEMS } from "./d19";
+import { D20_ITEMS } from "./d20";
+import { D21_ITEMS } from "./d21";
 
 /** Tutte le banche del corso Analista di dati, per identificatore (d01-..., d02-...). */
 export const DATI_BANK_ITEMS: Record<string, BankItem[]> = {
@@ -36,6 +40,10 @@ export const DATI_BANK_ITEMS: Record<string, BankItem[]> = {
   ...D15_ITEMS,
   ...D16_ITEMS,
   ...D17_ITEMS,
+  ...D18_ITEMS,
+  ...D19_ITEMS,
+  ...D20_ITEMS,
+  ...D21_ITEMS,
 };
 
 export const DATI_BANKS = Object.fromEntries(

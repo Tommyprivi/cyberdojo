@@ -1,0 +1,148 @@
+---
+id: D.01.004
+course: dati
+module: 1
+title: "La qualità dei dati"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.003]
+objectives:
+  - "Riconoscere dati incompleti, scorretti, incoerenti e non aggiornati"
+  - "Spiegare come i dati sporchi falsano un risultato"
+video:
+  provider: youtube
+  id: "1vNGDnLSzvY"
+  start: 0
+  end: 208
+  channel: "DataMuscle"
+  title: "What is Data Quality? Why is it important?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-qualita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di una tabella solo perché è ordinata e piena di numeri"
+  - "Confondere valore mancante (completezza) con valore impossibile (correttezza)"
+  - "Pensare che «Torino» e «torino» siano la stessa cosa per il computer: per lui sono due valori diversi"
+commands: []
+---
+
+<Scene title="L'età media di 74 anni">
+La palestra «Fit» ha una tabella dei suoi iscritti (tutti nomi inventati). La segretaria calcola l'età media e scrive nel volantino: **«Siamo la palestra per tutti: età media 74 anni!»**
+
+Il titolare ride: i suoi iscritti sono ragazzi e adulti. Come può uscire 74?
+
+Il calcolo era giusto. Erano sbagliati **i dati**.
+
+<Say who="sensei">Calcolare bene dati sbagliati dà risposte sbagliate scritte in modo preciso. Questa lezione serve a non farti ingannare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Guardiamo la tabella">
+Ecco i sei iscritti:
+
+| id | nome | eta | citta | iscrizione |
+| --- | --- | --- | --- | --- |
+| 1 | Giulia | 24 | Torino | 2025-03-10 |
+| 2 | Marco |  | Torino | 2025-03-12 |
+| 3 | Sara | 250 | Milano | 2025-04-01 |
+| 4 | Luca | 31 | torino | 2025-04-05 |
+| 5 | Elena | 40 | Milano | 2025-04-09 |
+| 6 | Anna | 27 | Mi | 2025-04-11 |
+
+A prima vista è ordinata. Ma ci sono quattro problemi di quattro tipi diversi. Li troviamo uno alla volta.
+
+<Say who="assistente">Non è colpa di nessuno in particolare: i dati sporchi nascono quando si scrive di fretta, a mano o da fonti diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Completi e corretti">
+**Completezza**: ci sono tutti i valori che servono? A Marco manca l'età: su 6 record l'età è presente 5 volte, cioè nell'**83%** dei casi (5 su 6).
+
+**Correttezza**: i valori sono veri e possibili? Sara ha 250 anni: impossibile, probabilmente un 25 scritto male. Il dato è presente ma sbagliato.
+
+<Callout kind="regola">
+**Completezza** = c'è tutto? **Correttezza** = è vero? Un dato può essere presente e sbagliato, oppure mancare.
+</Callout>
+
+<Say who="sensei">Vuoto e sbagliato sono due malattie diverse. La seconda è peggiore: il vuoto si vede, l'errore si nasconde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Coerenti e tempestivi">
+**Coerenza**: lo stesso fatto è scritto sempre allo stesso modo? Torino compare come «Torino» e come «torino». Milano come «Milano» e come «Mi». Per il computer sono quattro valori diversi, anche se le città sono due.
+
+**Tempestività**: i dati sono aggiornati quando servono? Se il listino prezzi è di ottobre dell'anno scorso, i prezzi non valgono più. Lo stesso per un elenco di iscritti che nessuno aggiorna da due anni.
+
+<Callout kind="trucco">
+Le quattro domande: **c'è tutto? è vero? è scritto sempre uguale? è aggiornato?** Se rispondi no, il dato è sporco.
+</Callout>
+
+<Say who="assistente">Usa le quattro domande come una lista di controllo, ogni volta che ricevi una tabella nuova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa cambia nei risultati">
+Torniamo all'età media del volantino.
+
+Con i dati sporchi, ignorando il vuoto di Marco: 24 + 250 + 31 + 40 + 27 = 372. Diviso per 5 fa **74,4**.
+
+Senza l'errore di Sara (che non sappiamo correggere, quindi la togliamo): 24 + 31 + 40 + 27 = 122. Diviso per 4 fa **30,5**.
+
+<Quiz
+  question="Nel conteggio degli iscritti per città, la tabella dice «Torino» 2, «torino» 1, «Milano» 2, «Mi» 1. Qual è il problema?"
+  options={["Incoerenza: la stessa città è scritta in modi diversi", "Mancano dei valori", "Le date sono vecchie", "Ci sono numeri impossibili"]}
+  answer={0}
+  explain="Il problema è la coerenza: le città vere sono due (3 iscritti a Torino, 3 a Milano) ma il computer ne vede quattro. Non mancano valori e non ci sono numeri impossibili."
+/>
+
+Vuoi sentire un'altra voce sul perché la qualità conta? Poco più di tre minuti:
+
+<Video />
+
+<Say who="sensei">Un solo 250 ha spostato la media di oltre quaranta anni. Un errore, un risultato falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Riconosci il tipo di problema in tabelle di iscritti e ricontrolla qualche calcolo.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-qualita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima di fidarti, controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Quattro controlli: completezza (c'è tutto?), correttezza (è vero?), coerenza (è scritto sempre uguale?), tempestività (è aggiornato?).
+- Un solo valore impossibile può falsare una media: 74,4 invece di 30,5.
+- Prima di calcolare, guarda la tabella: i dati sporchi danno risultati sbagliati ma precisi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la completezza?", a: "Ci sono tutti i valori che servono" },
+    { q: "Un'età di 250 anni: quale problema?", a: "Correttezza: valore impossibile" },
+    { q: "«Torino» e «torino» insieme: quale problema?", a: "Coerenza: scritto in modi diversi" },
+    { q: "Un listino di due anni fa: quale problema?", a: "Tempestività: dati non aggiornati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le domande giuste. Anche dati perfetti servono a poco se non sai cosa chiedere.</Say>
+</Scene>

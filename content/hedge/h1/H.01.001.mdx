@@ -1,0 +1,150 @@
+---
+id: H.01.001
+course: hedge
+module: 1
+title: "Hedge fund: miti e realtà"
+belt: bianca
+duration_min: 8
+prerequisites: []
+objectives:
+  - "Spiegare che cosa significa «hedge» e come nacque il primo fondo di questo tipo"
+  - "Descrivere un hedge fund con parole semplici"
+  - "Smontare tre miti comuni: guadagnano sempre, sono segreti, sono tutti uguali"
+video:
+  provider: youtube
+  id: "YY2N0R0ftSc"
+  start: 0
+  end: 600
+  channel: "Pictet AM Italia"
+  title: "Hedge fund: cos'è e come funziona | Investire oggi | Focus Pictet"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-definizione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «hedge fund» voglia dire guadagno sicuro: il nome indica una copertura, non una garanzia"
+  - "Pensare che tutti gli hedge fund facciano la stessa cosa: è un contenitore di strategie diverse"
+  - "Giudicare un fondo da un solo anno di risultati"
+commands: []
+---
+
+<Scene title="La parola che si sente nelle serie TV">
+Marta ha 15 anni. Guardando una serie TV sente un personaggio dire: «Il mio **hedge fund** ha fatto il colpo dell'anno». Chiede al fratello: «Che cos'è?». Lui risponde: «Gente ricchissima che non perde mai».
+
+Marta non è convinta. Vuole sapere com'è davvero.
+
+La domanda del caso: **che cos'è un hedge fund, e vince sempre?**
+
+Una nota importante: questo corso è **educazione, non consulenza finanziaria**. Nessuna lezione dice che cosa comprare o vendere. In finanza si può perdere denaro, anche tutto.
+
+<Say who="sensei">I mercati non regalano niente. Chi te lo promette ti sta vendendo qualcosa. Cominciamo dalle parole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="«Hedge» vuol dire siepe">
+In inglese **hedge** significa «siepe», e come verbo «coprirsi, proteggersi». Un **fondo** è un contenitore dove più persone mettono i soldi, e qualcuno li investe per loro.
+
+Il primo fondo di questo tipo nacque nel **1949**: lo creò **Alfred Winslow Jones**, un giornalista e sociologo americano. Idea: comprare alcuni titoli che pensava sarebbero saliti e, nello stesso tempo, **vendere allo scoperto** altri che pensava sarebbero scesi, per ridurre l'effetto di un mercato che va male.
+
+<Callout kind="curiosita">
+**Vendere allo scoperto** (in inglese «short») vuol dire prendere un titolo in prestito, venderlo subito e **ricomprarlo più tardi**. Se nel frattempo il prezzo è sceso, si guadagna la differenza. Se è salito, si perde, e la perdita può essere molto grande.
+</Callout>
+
+<Say who="assistente">La siepe protegge, ma non rende invulnerabili. Anche una siepe può essere superata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una definizione semplice">
+Oggi il nome ha un significato più largo. Un **hedge fund** è, in sintesi:
+
+- un fondo **privato**, non venduto a tutti allo sportello;
+- gestito in modo **flessibile**: può usare vendite allo scoperto, derivati (contratti legati al prezzo di altri strumenti) e la **leva** (investire più dei soldi che si hanno, prendendo denaro a prestito);
+- aperto a **investitori selezionati**, che sanno valutare i rischi;
+- con **commissioni** più alte dei fondi tradizionali.
+
+<Callout kind="regola">
+«Hedge fund» è il nome di un **tipo di contenitore**, non di una strategia. Dentro ci sono mestieri molto diversi: li vedremo nel modulo successivo.
+</Callout>
+
+<Say who="sensei">Flessibile non vuol dire sicuro. Più libertà, più modi di sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre miti da smontare">
+Vuoi sentirlo spiegare da un'altra voce, in italiano? Ecco un video che ricostruisce le origini e il funzionamento:
+
+<Video />
+
+Intanto, i tre miti:
+
+- **«Guadagnano sempre.»** Falso. Alcuni perdono molto e ogni anno diversi fondi chiudono.
+- **«Sono segreti.»** Falso: sono regolati e devono informare gli investitori. Ma non fanno pubblicità aperta e i loro dati sono meno visibili.
+- **«Sono tutti uguali.»** Falso: le strategie sono moltissime.
+
+<Callout kind="attenzione">
+Un anno brillante non dimostra l'abilità del gestore: può essere stata fortuna. Un fondo si giudica su molti anni, al netto dei costi e guardando il rischio corso.
+</Callout>
+
+<Say who="sensei">Un titolo di giornale non è un bilancio. Guarda i numeri, tutti, non solo il più bello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo si chiama «hedge fund» ma compra solo azioni e le tiene, senza coperture. Che cosa si può concludere?"
+  options={[
+    "Il nome non garantisce niente: bisogna leggere che cosa fa davvero il fondo",
+    "È impossibile: un hedge fund si copre sempre",
+    "Allora è sicuramente senza rischi",
+    "È illegale chiamarlo così",
+  ]}
+  answer={0}
+  explain="«Hedge fund» è un'etichetta di settore, non una garanzia di copertura. Chi la prende per una promessa di sicurezza sbaglia: il documento del fondo dice che cosa può fare davvero."
+/>
+
+<Say who="assistente">Un indizio: l'etichetta descrive la categoria, i documenti descrivono il fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Alcuni scenari sul significato di hedge fund e sui suoi miti. Rispondi con prudenza.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h01-definizione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa le parole non si fa vendere sogni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- «Hedge» vuol dire coprirsi: il primo fondo nacque nel 1949 con Alfred Winslow Jones.
+- Un hedge fund è un fondo privato e flessibile, per investitori selezionati, con commissioni alte.
+- Non guadagna sempre, non è segreto e non è tutto uguale: si può perdere anche l'intero capitale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire «hedge»?", a: "Siepe, e come verbo coprirsi dai rischi" },
+    { q: "Che cos'è una vendita allo scoperto?", a: "Vendere un titolo preso in prestito, sperando di ricomprarlo più in basso" },
+    { q: "«Hedge fund» è una strategia?", a: "No: è un tipo di contenitore, dentro ci sono strategie diverse" },
+    { q: "Un anno di buoni risultati basta a fidarsi?", a: "No: serve un periodo lungo, al netto dei costi e del rischio" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi sta dentro il fondo. Gestore, investitori e veicolo.</Say>
+</Scene>

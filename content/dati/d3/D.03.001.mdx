@@ -1,0 +1,200 @@
+---
+id: D.03.001
+course: dati
+module: 3
+title: "Database relazionali e tabelle"
+belt: bianca
+duration_min: 8
+prerequisites: [D.02.008]
+objectives:
+  - "Descrivere una tabella come righe (record) e colonne (campi)"
+  - "Spiegare a che cosa servono la chiave primaria e la chiave esterna"
+  - "Seguire il collegamento tra clienti, ordini e prodotti nel database del negozio"
+video:
+  provider: youtube
+  id: "ZsdxqKwTzyM"
+  start: 0
+  end: 600
+  channel: "Alberto Olla"
+  title: "Cos'è il Database e differenza tra Relazionali (SQL) e Non Relazionali (NoSQL)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-tabelle
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare il nome di una persona come chiave primaria: due persone possono chiamarsi allo stesso modo"
+  - "Ripetere la stessa informazione in molte righe invece di scriverla una volta sola"
+  - "Pensare che un database sia solo un grande foglio di calcolo: le tabelle sono collegate tra loro"
+commands: []
+---
+
+<Scene title="Il foglio di Marta">
+Marta gestisce «Il Cesto di Marta», un piccolo negozio online di candele e saponi. Fin qui ha tenuto tutto in un unico foglio di calcolo, una riga per ogni vendita:
+
+<Log lines={[
+  "ordine | cliente      | città  | prodotto         | prezzo",
+  "1      | Giulia Ferri | Torino | candela vaniglia | 12.50",
+  "3      | Giulia Ferri | Torino | candela cedro    | 18.00",
+  "7      | Giulia Ferri | Torino | sapone argilla   | 7.50",
+]} caption="Tre righe del foglio. Dati inventati." />
+
+Il nome e la città di Giulia sono scritti tre volte. Con 3000 ordini sarebbero decine di volte. Se Giulia si trasferisce, Marta deve correggere ogni riga, e basta dimenticarne una per avere due città per la stessa persona.
+
+La domanda del caso: **come si organizzano i dati perché ogni cosa sia scritta una volta sola?**
+
+<Say who="sensei">Un analista che usa dati sbagliati fa analisi sbagliate. Prima di fare domande ai dati, bisogna sapere come sono ordinati. Cominciamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tabelle, righe e colonne">
+Un **database** è un archivio di dati organizzato, gestito da un programma che si chiama **DBMS** (sistema di gestione di database). PostgreSQL, MySQL e SQLite sono tre DBMS gratuiti.
+
+I dati stanno in **tabelle**. Ogni **colonna** (o *campo*) è un tipo di informazione, ogni **riga** (o *record*) è una cosa concreta. Ecco la tabella `clienti` del negozio:
+
+<Log lines={[
+  "id | nome         | citta",
+  "1  | Giulia Ferri | Torino",
+  "2  | Marco Bassi  | Milano",
+  "3  | Sara Neri    | Torino",
+  "4  | Luca Riva    | Roma",
+  "5  | Anna Conti   | Milano",
+  "6  | Paolo Gallo  | NULL",
+]} caption="Sei righe, tre colonne. NULL significa «valore mancante»: di Paolo non conosciamo la città." />
+
+<Callout kind="trucco">
+Se sai leggere un foglio di calcolo, sai leggere una tabella. La differenza è che in un database le regole sono più rigide: ogni colonna ha un **tipo** (numero, testo, data) e i dati devono rispettarlo.
+</Callout>
+
+<Callout kind="attenzione">
+Nome e città di una persona sono **dati personali**. Anche in un database di prova si raccoglie solo ciò che serve davvero (è il principio di *minimizzazione* del GDPR). Nelle lezioni useremo solo dati inventati.
+</Callout>
+
+<Say who="assistente">Tre colonne: id, nome, città. Sei righe: sei clienti. Per ora è tutto qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La chiave primaria">
+Guarda la colonna `id` dei clienti. Ogni cliente ha un numero diverso, che non cambia mai e non manca mai. È la **chiave primaria**: ciò che identifica una riga in modo unico.
+
+Perché non usare il nome? Perché due clienti possono chiamarsi «Giulia Ferri». Con l'id, invece, «il cliente 1» è sempre una persona sola.
+
+Anche i prodotti hanno la loro tabella e la loro chiave:
+
+<Log lines={[
+  "id | nome             | categoria | prezzo | giacenza",
+  "1  | candela vaniglia | candele   | 12.50  | 40",
+  "2  | sapone lavanda   | saponi    | 6.00   | 85",
+  "3  | candela cedro    | candele   | 18.00  | 12",
+  "4  | profumatore      | profumi   | 24.00  | 0",
+  "5  | sapone argilla   | saponi    | 7.50   | 30",
+  "6  | candela mirra    | candele   | 19.00  | 25",
+]} caption="La tabella prodotti. La chiave primaria è id." />
+
+<Callout kind="regola">
+Chiave primaria: **unica** (nessun valore ripetuto) e **mai vuota**. Di solito è un numero progressivo, senza significato proprio.
+</Callout>
+
+<Say who="sensei">Una riga senza chiave è una riga che non puoi indicare con certezza. In un database non si indovina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le relazioni">
+Ora la tabella `ordini`. Ogni riga è un ordine di un cliente per un prodotto. Ma il nome del cliente non è scritto: c'è soltanto il suo **numero**.
+
+<Log lines={[
+  "id | cliente_id | prodotto_id | quantita | totale | data",
+  "1  | 1          | 1           | 2        | 25.00  | 2025-03-02",
+  "2  | 2          | 2           | 3        | 18.00  | 2025-03-05",
+  "3  | 1          | 3           | 1        | 18.00  | 2025-03-09",
+  "4  | 3          | 1           | 1        | 12.50  | 2025-04-01",
+  "5  | 2          | 4           | 1        | 24.00  | 2025-04-03",
+  "6  | 4          | 2           | 5        | 30.00  | 2025-04-10",
+  "7  | 1          | 5           | 2        | 15.00  | 2025-04-15",
+  "8  | 3          | 2           | 2        | 12.00  | 2025-05-02",
+]} caption="La tabella ordini. cliente_id e prodotto_id sono numeri che puntano alle altre due tabelle." />
+
+La colonna `cliente_id` contiene valori che esistono come `id` nella tabella `clienti`. Si chiama **chiave esterna**: una colonna che richiama la chiave primaria di un'altra tabella. Così le tabelle sono **collegate**: è questo che rende il database *relazionale*.
+
+La relazione è **uno a molti**: un cliente può fare molti ordini, ma ogni ordine appartiene a un solo cliente.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sulle basi dei database relazionali:
+
+<Video />
+
+<Say who="assistente">Il nome di Giulia è scritto una sola volta, nella tabella clienti. Gli ordini dicono soltanto «il cliente 1».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segui le frecce">
+Prendi l'ordine numero 6 e ricostruisci chi ha comprato che cosa, passando da una tabella all'altra.
+
+<Guided
+  steps={[
+    "Nella tabella ordini, la riga con id 6 ha cliente_id = 4, prodotto_id = 2, quantita = 5, totale = 30.00.",
+    "Cerca id = 4 nella tabella clienti: è Luca Riva, di Roma.",
+    "Cerca id = 2 nella tabella prodotti: è il sapone lavanda, che costa 6.00.",
+    "Controllo finale: 5 pezzi per 6.00 fanno 30.00, come dice il totale. Conclusione: Luca Riva ha comprato 5 saponi alla lavanda.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Quando in SQL scriverai un **JOIN** (lo vedrai nella lezione 5), farai fare al database proprio questo lavoro: seguire le frecce da una tabella all'altra.
+</Callout>
+
+<Say who="sensei">Ogni numero in una chiave esterna è un indirizzo. Segui l'indirizzo e trovi la riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giulia Ferri ha 40 ordini e si trasferisce a Roma. In un database organizzato come quello di Marta, quante righe va a modificare Marta?"
+  options={["Una sola, nella tabella clienti", "Quaranta, una per ogni ordine", "Due: una in clienti e una in ordini", "Nessuna: la città non si può cambiare"]}
+  answer={0}
+  explain="La città è scritta una sola volta, nella riga di Giulia in clienti. Gli ordini contengono solo cliente_id, che non cambia. Nel foglio piatto di prima avrebbe dovuto correggere quaranta righe."
+/>
+
+<Say who="sensei">Un dato, un posto. È la regola più importante di tutto il modulo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tabelle, chiavi e relazioni. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-tabelle" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi non capisce com'è fatta una tabella non saprà mai perché una query sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un database è fatto di tabelle: le colonne sono i tipi di informazione, le righe sono le cose.
+- La chiave primaria identifica ogni riga in modo unico; la chiave esterna richiama la chiave primaria di un'altra tabella.
+- Le tabelle collegate permettono di scrivere ogni dato una volta sola.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una chiave primaria?", a: "La colonna che identifica ogni riga in modo unico" },
+    { q: "Che cos'è una chiave esterna?", a: "Una colonna che contiene la chiave primaria di un'altra tabella" },
+    { q: "Relazione tra clienti e ordini?", a: "Uno a molti: un cliente ha molti ordini, un ordine ha un solo cliente" },
+    { q: "Perché non si scrive il nome del cliente in ogni ordine?", a: "Perché ogni dato va scritto una volta sola, per evitare ripetizioni ed errori" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: SELECT, FROM e WHERE. Imparerai a fare le prime domande a queste tabelle.</Say>
+</Scene>

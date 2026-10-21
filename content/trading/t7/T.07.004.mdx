@@ -1,0 +1,190 @@
+---
+id: T.07.004
+course: trading
+module: 7
+title: "Massimo drawdown e Calmar"
+belt: arancione
+duration_min: 8
+prerequisites: [T.07.003]
+objectives:
+  - "Calcolare il drawdown e il massimo drawdown di una serie di valori"
+  - "Calcolare quanto serve guadagnare per recuperare una perdita"
+  - "Calcolare il rapporto di Calmar (CAGR diviso massimo drawdown)"
+video:
+  provider: youtube
+  id: "sgqQWb3tT6U"
+  start: 0
+  end: 600
+  channel: "letYourMoneyGrow.com"
+  title: "The Maximum Drawdown explained in 3 minutes: briefly & comprehensively"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-drawdown
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare il drawdown dal valore iniziale invece che dal massimo precedente"
+  - "Credere che dopo una perdita del 50% basti guadagnare il 50% per recuperare"
+  - "Pensare che il massimo drawdown storico sia il peggio che può accadere"
+commands: []
+---
+
+<Scene title="La discesa che nessuno racconta">
+Giulia guarda il grafico del suo backtest fittizio e vede una bella salita. Poi scopre che a metà strada il capitale era sceso di un quarto prima di risalire.
+
+La domanda del caso: **come si misura la peggiore discesa che una strategia ha attraversato, e perché conta più del rendimento medio?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: si può perdere denaro, anche tutto. Dati fittizi. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Il rendimento si festeggia alla fine. La discesa si vive in mezzo, e in mezzo molti mollano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il drawdown">
+Il **drawdown** è di quanto il valore è sceso rispetto al suo **massimo precedente**:
+
+drawdown = valore / massimo fino a quel momento − 1
+
+Il **massimo drawdown** (in inglese *maximum drawdown*) è il più profondo di tutti.
+
+Valori fittizi di un capitale a fine anno: **100, 120, 96, 108, 90, 126**.
+
+<Log lines={[
+  "valore  massimo  drawdown",
+  "100     100       0%",
+  "120     120       0%",
+  "96      120     -20%",
+  "108     120     -10%",
+  "90      120     -25%",
+  "126     126       0%",
+]} />
+
+Il massimo drawdown è **−25%**: da 120 a 90. Non da 100 a 90, perché si parte sempre dal **massimo precedente**.
+
+<Say who="assistente">Indizio: il massimo si aggiorna solo quando il valore lo supera. Dopo 120, il riferimento resta 120 finché non vedi un valore più alto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perdere e recuperare">
+Perdere e recuperare **non sono simmetrici**.
+
+- Perdi **−25%** (da 120 a 90): per tornare a 120 serve 120 / 90 = 1,333, cioè **+33,3%**.
+- Perdi **−50%**: serve **+100%**.
+- Perdi **−20%**: serve **+25%**.
+
+Formula: guadagno necessario = 1 / (1 − perdita) − 1.
+
+<Callout kind="regola">
+Più la discesa è profonda, più la salita per recuperare diventa ripida. Per questo il corso insegna a limitare il drawdown prima ancora di cercare rendimento.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Tre minuti, in inglese con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Con un −50% hai bisogno di raddoppiare. Nessuno promette di raddoppiare. Pensaci prima di rischiare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rapporto di Calmar">
+Il **rapporto di Calmar** mette in rapporto il rendimento con la discesa peggiore:
+
+Calmar = CAGR / |massimo drawdown|
+
+Convenzione: CAGR calcolato su tutto il periodo, massimo drawdown sullo stesso periodo.
+
+- Strategia A: CAGR 12%, massimo drawdown −30% → Calmar 12 / 30 = **0,4**
+- Strategia B: CAGR 6%, massimo drawdown −10% → Calmar 6 / 10 = **0,6**
+
+Per Calmar, **B è meglio**: rende meno ma costa meno discesa.
+
+<Callout kind="attenzione">
+Il massimo drawdown storico è solo il peggio **già visto**. Con più dati, o in un altro periodo, può essere peggiore. Nei backtest, poi, è sempre ottimistico: costi e slippage lo peggiorano.
+</Callout>
+
+<Say who="assistente">Calmar usa un solo evento: la discesa peggiore. È utile ma fragile, perché dipende da una sola data.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+```python
+import pandas as pd
+
+valore = pd.Series([100, 120, 96, 108, 90, 126])
+massimo = valore.cummax()
+dd = valore / massimo - 1
+print(dd.round(3).tolist())
+print(round(dd.min(), 3))
+```
+
+Output:
+
+```
+[0.0, 0.0, -0.2, -0.1, -0.25, 0.0]
+-0.25
+```
+
+`cummax()` dà il massimo «fino a quel momento»: è proprio il riferimento giusto.
+
+Prova con Python puro il guadagno necessario per recuperare:
+
+<PythonTerminal code={"perdita = 0.25\nprint(round(1 / (1 - perdita) - 1, 4))"} />
+
+<Say who="sensei">Cambia la perdita in 0.5 e guarda cosa serve per recuperare. Poi pensa a come ti sentiresti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un capitale fittizio passa da 200 a 150. Poi risale a 180. Qual è il drawdown nel punto in cui vale 180, rispetto al massimo precedente di 200?"
+  options={["−10%", "+20%", "−25%", "−17%"]}
+  answer={0}
+  explain="180 / 200 − 1 = −10%. Il massimo precedente resta 200 finché il valore non lo supera. −25% era il drawdown nel punto più basso (150 / 200 − 1), non nel punto in cui vale 180."
+/>
+
+<Say who="sensei">Il drawdown cambia a ogni punto. Il massimo drawdown è il più profondo di tutti i punti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su drawdown, recupero e Calmar. Servono tutte e cinque. Hai 3 tentativi.
+
+<Practice generator="t07-drawdown" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Il drawdown è il numero che più spesso fa abbandonare una strategia. Conoscilo prima che ti sorprenda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Drawdown = valore / massimo precedente − 1; il massimo drawdown è il più profondo.
+- Recuperare costa più di quanto si è perso: −50% richiede +100%.
+- Calmar = CAGR / |massimo drawdown|, ma il massimo drawdown storico non è il peggio possibile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si misura il drawdown?", a: "Dal massimo precedente del valore" },
+    { q: "Dopo −20%, quanto serve per recuperare?", a: "+25%" },
+    { q: "CAGR 6%, massimo drawdown −10%: Calmar?", a: "0,6" },
+    { q: "Il massimo drawdown storico è il peggio possibile?", a: "No, è solo il peggio già visto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: confrontiamo la strategia con il buy and hold e con un benchmark. Spesso è lì che le strategie crollano.</Say>
+</Scene>

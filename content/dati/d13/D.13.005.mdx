@@ -1,0 +1,176 @@
+---
+id: D.13.005
+course: dati
+module: 13
+title: "Il portfolio"
+belt: blu
+duration_min: 9
+prerequisites: [D.13.004]
+objectives:
+  - "Organizzare un progetto su GitHub con un README chiaro"
+  - "Scegliere cosa mostrare: pochi progetti curati invece di tanti mediocri"
+  - "Evitare di pubblicare dati personali e segreti"
+video:
+  provider: youtube
+  id: "R8Z-01qtMJo"
+  start: 0
+  end: 600
+  channel: "Isioma Andrew"
+  title: "How to Document Your Data Analyst Portfolio Project in Github (Step-by-Step + Free Template)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-portfolio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Caricare file e notebook senza un README che spieghi domanda, dati e risultati"
+  - "Riempire il profilo di piccoli esercizi copiati dai tutorial"
+  - "Pubblicare file con dati personali, password o chiavi di accesso"
+commands: []
+---
+
+<Scene title="Venti repository, nessun colloquio">
+Luca ha 19 anni e ha caricato su GitHub venti cartelle: esercizi dei corsi, notebook copiati da tutorial, un file «prova_finale_def2». Nessuna ha una descrizione.
+
+Una persona che seleziona candidati apre il suo profilo, guarda per trenta secondi e passa oltre. Non per cattiveria: non capisce cosa Luca sa fare.
+
+La domanda del caso: **come si costruisce un portfolio che si capisce in un minuto?**
+
+<Say who="sensei">Chi ti guarda non ha tempo di indovinare. Il tuo portfolio deve spiegarsi da solo, in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cos'è un portfolio e dove sta">
+Un **portfolio** è una raccolta di tuoi progetti, che mostra come lavori. Per l'analisi dei dati il luogo più usato è **GitHub** (github.com): un sito gratuito dove si conservano file e codice, con la storia di tutte le modifiche. Ogni progetto sta in un **repository**, una cartella online.
+
+Si può aggiungere una pagina web semplice con **GitHub Pages** (pages.github.com), sempre gratuita, per presentare i progetti migliori. Non è obbligatoria: un profilo ordinato basta.
+
+Un video che mostra come documentare un progetto in modo chiaro, in inglese (puoi attivare i sottotitoli):
+
+<Video />
+
+<Say who="assistente">Il portfolio non è una vetrina di tutto quello che hai fatto. È una scelta di ciò che vuoi che si ricordi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il README: la porta d'ingresso">
+Il **README** è il file di testo che GitHub mostra per primo in ogni repository. Se è chiaro, il progetto si capisce senza aprire altro. Struttura consigliata:
+
+1. **Titolo** che dice la risposta o il tema.
+2. **Domanda** a cui rispondi, in due righe.
+3. **Dati**: fonte, licenza, data di scarico.
+4. **Metodo**: gli strumenti e i passi principali.
+5. **Risultati**: un grafico chiave e la conclusione.
+6. **Come rifare l'analisi**: quali file lanciare e in quale ordine.
+7. **Limiti** e idee per il futuro.
+
+Una cartella ordinata aiuta: `dati/grezzi`, `notebook`, `report`, e un file con l'elenco delle librerie usate.
+
+<Callout kind="trucco">
+Prova il **test del vicino**: dai il README a qualcuno che non conosce il progetto. Se in un minuto sa dirti domanda e conclusione, funziona.
+</Callout>
+
+<Say who="sensei">Il codice più brillante, senza README, è una stanza chiusa a chiave. Apri la porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pochi progetti, ben fatti">
+**Meglio un progetto buono che dieci mediocri.** Due o tre progetti completi, ognuno con una domanda vera, dati con fonte, un report e un README, dicono molto di più di venti esercizi sparsi.
+
+Cosa mostrare:
+
+- un progetto **dal dato al report** (come quello del modulo);
+- uno che mostri **SQL** o un database;
+- uno che mostri un **cruscotto** o una visualizzazione chiara.
+
+Cosa lasciare fuori:
+
+- esercizi copiati dai tutorial senza modifiche;
+- progetti a metà senza spiegazione (o segnali che sono in corso);
+- tutto ciò che non sapresti spiegare a voce.
+
+<Callout kind="regola">
+Per ogni progetto prepara **una spiegazione di due minuti**: domanda, dati, cosa hai scoperto, cosa faresti ora. È la stessa che ti chiederanno al colloquio.
+</Callout>
+
+<Say who="assistente">Se in un progetto hai usato aiuti (tutorial, strumenti di IA, esempi altrui), dillo nel README. Dichiararlo è una forza, non una debolezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa non pubblicare mai">
+Su un repository pubblico **chiunque** può leggere tutto, anche la storia delle vecchie versioni.
+
+Non si pubblicano mai:
+
+- **dati personali** di persone reali: nomi, email, telefoni, indirizzi. Se un dataset li contiene, non va pubblicato (GDPR);
+- **dati riservati** di un'azienda o di una scuola, anche se «li hai solo guardati»;
+- **password, chiavi di accesso e token**: se finiscono online per sbaglio, vanno considerate bruciate e sostituite;
+- informazioni su di te che non vuoi diffondere: se hai meno di 18 anni, parlane con un genitore o con chi ti segue prima di pubblicare nome, scuola o foto.
+
+<Callout kind="attenzione">
+Cancellare un file da GitHub non lo cancella dalla storia. La regola è: **se non l'hai pubblicato, non può uscire**. Controlla prima di fare «push».
+</Callout>
+
+<Say who="sensei">Una chiave caricata per errore è un incidente di sicurezza. Il portfolio non vale questo rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai tre progetti: uno completo con domanda, dati con fonte e report; uno copiato da un tutorial; uno a metà senza spiegazione. Cosa metti nel portfolio?"
+  options={[
+    "Solo il progetto completo, con un README chiaro, e tieni gli altri fuori o in una sezione di studio",
+    "Tutti e tre, perché più progetti sembrano più lavoro",
+    "Solo quello copiato, perché è sicuramente corretto",
+    "Nessuno: un portfolio non serve se non hai esperienza lavorativa",
+  ]}
+  answer={0}
+  explain="Un progetto completo e spiegato vale più di molti progetti deboli. Gli esercizi copiati e le cose a metà non mostrano ciò che sai fare. Il portfolio serve proprio a chi non ha ancora esperienza lavorativa."
+/>
+
+<Say who="sensei">Meno, ma meglio. Chi seleziona ti ricorda per il tuo progetto migliore, non per il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su portfolio, README e cosa pubblicare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-portfolio" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Un portfolio curato apre porte che un curriculum da solo non apre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il portfolio sta su GitHub: un repository per progetto, con un README che dice domanda, dati, metodo, risultati, limiti e come rifarlo.
+- Meglio due o tre progetti completi che molti esercizi sparsi; ogni progetto va saputo spiegare in due minuti.
+- Mai pubblicare dati personali, dati riservati, password o chiavi; cancellare un file non lo toglie dalla storia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa contiene un buon README?", a: "Domanda, dati e fonte, metodo, risultati, come rifare, limiti" },
+    { q: "Quanti progetti conviene mostrare?", a: "Pochi ma completi: due o tre" },
+    { q: "Cosa non pubblichi mai?", a: "Dati personali, dati riservati, password e chiavi" },
+    { q: "Hai caricato una chiave per errore: cosa fai?", a: "La consideri compromessa e la sostituisci" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del tronco principale: ruoli e colloqui. Dove puoi andare con quello che hai imparato.</Say>
+</Scene>

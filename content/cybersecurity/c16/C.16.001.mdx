@@ -1,0 +1,184 @@
+---
+id: C.16.001
+course: cybersecurity
+module: 16
+title: "OAuth 2.0 e OpenID Connect"
+belt: blu
+duration_min: 10
+prerequisites: [C.05.008]
+objectives:
+  - "Spiegare che OAuth 2.0 serve a delegare un accesso, non a dimostrare chi sei"
+  - "Descrivere il flusso con codice di autorizzazione e il ruolo di PKCE, scope e redirect_uri"
+  - "Dire che cosa aggiunge OpenID Connect e riconoscere gli errori tipici di configurazione"
+video:
+  provider: youtube
+  id: "996OiexHze0"
+  start: 0
+  end: 600
+  channel: "OktaDev"
+  title: "OAuth 2.0 and OpenID Connect (in plain English)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-oauth
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che OAuth 2.0 serva a fare il login: da solo delega un accesso, l'identità la dice OpenID Connect"
+  - "Accettare qualunque redirect_uri: il codice o il token finisce nelle mani sbagliate"
+  - "Dare all'app più permessi (scope) di quelli che servono davvero"
+commands: []
+---
+
+<Scene title="«Consenti a FotoStampa di vedere le tue foto»">
+**FotoStampa** è un servizio fittizio che stampa album. Per creare il tuo album ti chiede di accedere alle foto che hai su **CloudAlbum**, un altro servizio.
+
+Una volta si faceva così: dai a FotoStampa la tua password di CloudAlbum. Ora compare invece un pulsante: **«Consenti l'accesso alle foto»**. Non hai scritto nessuna password a FotoStampa.
+
+La domanda del caso: **come fa FotoStampa a vedere le foto senza conoscere la tua password, e che cosa può andare storto?**
+
+<Say who="sensei">Chi ti chiede la password di un altro servizio ti chiede le chiavi di casa. Esiste un modo migliore: la delega.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Delegare, non consegnare le chiavi">
+**OAuth 2.0** è un protocollo (un insieme di regole condivise) per **delegare un accesso**. Pensa al **parcheggiatore dell'hotel**: gli dai una chiave speciale che apre l'auto e la mette in moto, ma non apre il bagagliaio e non vale domani.
+
+Quattro ruoli:
+
+- **Proprietario della risorsa**: tu, che possiedi le foto.
+- **Client**: l'app che vuole accedere (FotoStampa).
+- **Server di autorizzazione**: chi ti chiede il consenso e rilascia i token (CloudAlbum, la parte «login»).
+- **Server delle risorse**: l'API che custodisce le foto.
+
+Il «gettone» che l'app riceve si chiama **access token**: vale poco tempo e solo per certe cose.
+
+<Callout kind="regola">
+OAuth 2.0 risponde a «**che cosa può fare** questa app al posto mio?», non a «**chi sei**».
+</Callout>
+
+<Say who="assistente">Il token non contiene la tua password. Se l'app lo perde, revochi quel token e la password resta al sicuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il flusso con codice di autorizzazione">
+Il percorso più usato si chiama **authorization code**. Ecco la storia, in sei mosse, con richieste fittizie:
+
+<Log lines={[
+  "1. FotoStampa manda il browser a CloudAlbum: «voglio scope=foto:lettura, redirect_uri=https://fotostampa.example/ritorno, state=k82f»",
+  "2. CloudAlbum ti chiede login e consenso: «FotoStampa vuole LEGGERE le foto. Consenti?»",
+  "3. Dici di sì. CloudAlbum rimanda il browser al redirect_uri con un CODICE monouso e lo stesso state=k82f",
+  "4. FotoStampa controlla che lo state sia quello che aveva mandato",
+  "5. FotoStampa (dal suo server) scambia il codice con un access token",
+  "6. FotoStampa chiama l'API con il token e riceve le foto",
+]} />
+
+Tre dettagli che fanno la sicurezza:
+
+- Il **codice** passa dal browser, ma è monouso e inutile da solo. Il **token** viaggia da server a server.
+- Lo **state** è un numero casuale: se al ritorno non coincide, la risposta non l'hai chiesta tu (difesa da richieste false inviate al tuo posto).
+- Gli **scope** sono i permessi chiesti: «foto:lettura» non permette di cancellare.
+
+<Say who="sensei">Un passaggio alla volta. Nessun passaggio fa fidare l'altro: ognuno si controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="PKCE, redirect_uri e il resto">
+**PKCE** («pixi») protegge il codice quando l'app non può tenere un segreto, come un'app sul telefono o una pagina nel browser. L'app inventa un segreto casuale, manda al server solo la sua **impronta** all'inizio, e al momento dello scambio mostra il segreto vero. Chi ha rubato solo il codice non ha il segreto e non ottiene il token.
+
+Il **redirect_uri** è l'indirizzo dove tornare dopo il consenso. Il server deve accettare **solo indirizzi registrati in anticipo, scritti identici**. Se accettasse «qualunque indirizzo», il codice potrebbe finire a un sito che non c'entra.
+
+Altre regole di igiene:
+
+- **Access token a vita breve** (minuti), **refresh token** (più durevole, da custodire con cura) per ottenerne di nuovi.
+- **Scope minimi**: chiedi solo ciò che serve.
+- Il vecchio flusso «implicit», che dava il token direttamente nel browser, oggi si evita: si usa il codice con PKCE.
+
+<Callout kind="attenzione">
+Provare a forzare un'app o un provider reale che non è tuo è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Queste cose si studiano su un laboratorio tuo o con permesso scritto.
+</Callout>
+
+<Say who="assistente">Per ricordare: stato contro richieste false, PKCE contro codici rubati, indirizzo registrato contro dirottamenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Allora OpenID Connect a cosa serve?">
+Se OAuth non dice chi sei, come fa «Accedi con Google» a identificarti? Con **OpenID Connect (OIDC)**: uno strato costruito **sopra** OAuth 2.0.
+
+Quando l'app chiede lo scope speciale **openid**, oltre all'access token riceve un **ID token**: un documento firmato che dice chi ha fatto il login, quando, e per quale app.
+
+<Log lines={[
+  "ID token (contenuto descritto, dati fittizi):",
+  "  iss (emesso da)    : https://login.cloudalbum.example",
+  "  sub (chi è)        : utente-48213",
+  "  aud (per chi)      : fotostampa-app",
+  "  exp (scade)        : tra 5 minuti",
+  "  nonce              : valore casuale scelto dall'app",
+]} />
+
+L'app deve controllare **firma, emittente (iss), destinatario (aud), scadenza (exp) e nonce**. Se salta uno di questi controlli, può accettare l'identità di qualcun altro.
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">OAuth: che cosa puoi fare. OIDC: chi sei. Due domande diverse, due risposte diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app prende l'access token di un utente e dice: «l'access token è valido, quindi l'utente è Maria». Qual è l'errore?"
+  options={[
+    "L'access token dice che cosa si può fare, non chi è l'utente: l'identità va letta dall'ID token di OpenID Connect e verificata",
+    "Nessun errore: un token valido è la prova che l'utente è Maria",
+    "L'errore è usare HTTPS, perché i token vanno mandati in chiaro",
+    "L'errore è chiedere lo scope, perché gli scope non servono mai"
+  ]}
+  answer={0}
+  explain="Un access token è un permesso per l'API, non una carta d'identità: potrebbe essere stato emesso per un'altra app o un altro scopo. L'identità la dichiara l'ID token di OIDC, e l'app deve verificarne firma, iss, aud, exp e nonce."
+/>
+
+<Say who="assistente">Indizio: il parcheggiatore ha la chiave dell'auto. Questo dimostra chi è il proprietario?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su flussi, scope, redirect e identità: scegli la scelta giusta.
+
+<Practice generator="c16-oauth" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi configura male un login delegato regala a un estraneo le chiavi dell'utente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- OAuth 2.0 delega un accesso con token a tempo e a permessi limitati (scope); non dice chi sei.
+- Il flusso sicuro è il codice di autorizzazione con PKCE, state e redirect_uri registrato in anticipo.
+- OpenID Connect aggiunge l'ID token: l'app ne verifica firma, iss, aud, exp e nonce prima di fidarsi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve OAuth 2.0?", a: "A delegare a un'app un accesso limitato, senza dare la password" },
+    { q: "Che cosa fa PKCE?", a: "Impedisce che un codice rubato sia scambiato in un token da chi non ha il segreto dell'app" },
+    { q: "Perché il redirect_uri deve essere registrato?", a: "Così il codice non può essere mandato a un indirizzo scelto da un estraneo" },
+    { q: "Che cosa aggiunge OpenID Connect?", a: "L'ID token firmato, che dice chi ha fatto il login" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il formato in cui viaggiano molti di questi token, il JWT, e gli errori che si fanno con lui.</Say>
+</Scene>

@@ -1,0 +1,176 @@
+---
+id: D.17.001
+course: dati
+module: 17
+title: "Marketing: quale canale conviene?"
+belt: blu
+duration_min: 10
+prerequisites: [D.13.006]
+objectives:
+  - "Calcolare costo di acquisizione (CAC) e ritorno sulla spesa (ROAS) di un canale"
+  - "Capire perché un ROAS alto non basta: serve il margine"
+  - "Riconoscere le trappole di attribuzione e di segmentazione"
+video:
+  provider: youtube
+  id: "4qhr52AXUfc"
+  start: 0
+  end: 600
+  channel: "Massimiliano Bellini - Marketing per PMI"
+  title: "Le KPI del Marketing: a che servono e come calcolarle (ROI, ROAS, CLTV, CPR, CTR…)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-marketing
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo il ROAS: con un margine basso un ROAS di 3 può comunque far perdere soldi"
+  - "Dare tutto il merito all'ultimo clic prima dell'acquisto e ignorare gli annunci visti prima"
+  - "Usare la media di tutti i clienti quando i segmenti (per esempio le età) hanno costi molto diversi"
+commands: []
+---
+
+<Scene title="Due canali, un solo budget">
+«Sapori Pronti» è un'azienda fittizia che vende kit per cene pronte online. Il mese scorso ha speso in pubblicità su due canali: **social** e **ricerca** (gli annunci che compaiono quando si cerca qualcosa su un motore di ricerca).
+
+Il direttore ha un solo budget in più e una domanda: **a quale canale lo diamo?**
+
+<Say who="sensei">Due canali, due tabelle, un solo euro in più da spendere. Prima i numeri, poi le opinioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I dati e le due metriche">
+Ecco i dati del mese (tutti fittizi):
+
+| Canale | Spesa | Nuovi clienti | Ricavi da questi clienti |
+|---|---|---|---|
+| Social | 6.000 € | 150 | 18.000 € |
+| Ricerca | 4.000 € | 80 | 16.000 € |
+
+Due metriche da conoscere:
+
+- **CAC** (costo di acquisizione del cliente): spesa divisa per i nuovi clienti.
+- **ROAS** (ritorno sulla spesa pubblicitaria): ricavi divisi per la spesa.
+
+Social: CAC = 6.000 / 150 = **40 €**, ROAS = 18.000 / 6.000 = **3,0**.
+Ricerca: CAC = 4.000 / 80 = **50 €**, ROAS = 16.000 / 4.000 = **4,0**.
+
+Vuoi sentirle spiegare da un'altra voce? Ecco i principali indicatori del marketing:
+
+<Video />
+
+<Say who="assistente">Attenzione: il social ha il CAC più basso, la ricerca ha il ROAS più alto. Le due metriche non dicono la stessa cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ROAS non è il guadagno">
+Il ROAS parla di **ricavi**, non di **guadagno**. Ogni kit costa all'azienda il 70% del prezzo (ingredienti, confezione, spedizione). Il **margine lordo** è quindi il **30%** dei ricavi.
+
+- Social: 18.000 × 0,30 = 5.400 € di margine, meno 6.000 € di spesa = **−600 €**.
+- Ricerca: 16.000 × 0,30 = 4.800 € di margine, meno 4.000 € di spesa = **+800 €**.
+
+<Callout kind="regola">
+**ROAS di pareggio** = 1 diviso il margine. Con il 30% di margine è 1 / 0,30 ≈ 3,33. Sotto questa soglia, ogni euro di pubblicità fa perdere soldi.
+</Callout>
+
+<Say who="sensei">Un ROAS di 3 sembra bello. Con un margine del 30% è una perdita. Il margine decide, non il numero da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Attribuzione: chi ha convinto il cliente?">
+Il cliente non compra al primo annuncio. Spesso vede un post sui social, poi cerca il nome del marchio e **clicca sull'annuncio di ricerca**. La **attribuzione** è la regola con cui si decide a quale canale dare il merito della vendita.
+
+Con la regola dell'**ultimo clic** il merito va tutto alla ricerca. Ma l'analista scopre che **30 degli 80** clienti «della ricerca» avevano visto prima un annuncio social.
+
+<Callout kind="attenzione">
+Nessuna regola di attribuzione è «vera». Ogni regola è una scelta. Se cambi regola, cambiano i numeri dei canali. Dichiara sempre quale usi.
+</Callout>
+
+<Say who="assistente">Se il social prepara il terreno e la ricerca raccoglie, tagliare il social può far crollare anche la ricerca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segmentazione: la media nasconde">
+**Segmentare** vuol dire dividere i clienti in gruppi simili. Nel social l'analista divide per età:
+
+| Segmento social | Spesa | Nuovi clienti | CAC |
+|---|---|---|---|
+| Under 30 | 3.000 € | 100 | 30 € |
+| Over 30 | 3.000 € | 50 | 60 € |
+
+La somma torna: 6.000 € e 150 clienti, cioè il CAC medio di 40 €. Ma dentro la media c'è un gruppo molto conveniente e uno costoso.
+
+<Callout kind="trucco">
+Prima di decidere, chiediti: «la media è uguale per tutti, o nasconde gruppi diversi?»
+</Callout>
+
+<Say who="sensei">Una media è un riassunto. Un riassunto lascia fuori dei dettagli. Vai a cercarli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Un canale ha ROAS 3,0 e il margine lordo è 30%. Che cosa si può dire?"
+  options={["Perde soldi: il ROAS di pareggio è circa 3,33", "Guadagna, perché il ROAS è maggiore di 1", "Va in pareggio esatto", "Non si può dire nulla senza il CAC"]}
+  answer={0}
+  explain="Il pareggio si ha quando ROAS × margine = 1. Qui 3,0 × 0,30 = 0,9, cioè meno di 1: per ogni euro speso se ne recuperano 0,90 di margine. Chi risponde «guadagna» confonde ricavi e guadagno."
+/>
+
+<Say who="sensei">Ricavi non sono guadagno. Ripetilo finché non diventa un riflesso.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: a quale canale va il budget in più? Dati: spesa, clienti, ricavi, margine al 30%.",
+    "CAC: social 40 €, ricerca 50 €. ROAS: social 3,0, ricerca 4,0.",
+    "Con il margine: social −600 €, ricerca +800 €. La ricerca è l'unica sopra il pareggio.",
+    "Trappola 1: 30 clienti della ricerca erano stati attivati anche dal social (ultimo clic). Il vantaggio della ricerca è in parte merito del social.",
+    "Trappola 2: nel social gli under 30 costano 30 €, gli over 30 60 €. Si può puntare solo sugli under 30.",
+    "Decisione prudente: budget in più alla ricerca; nel social concentrare la spesa sugli under 30; poi misurare di nuovo dopo un mese.",
+  ]}
+/>
+
+<Say who="assistente">Non c'è una risposta «matematica» sola. C'è una decisione spiegata, con i suoi limiti dichiarati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque piccoli casi di marketing: calcola, ragiona, scegli. Hai 3 tentativi.
+
+<Practice generator="d17-marketing" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una campagna sbagliata costa soldi veri, anche se i dati sono fittizi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- CAC = spesa / nuovi clienti. ROAS = ricavi / spesa. Nessuno dei due, da solo, dice se si guadagna.
+- ROAS di pareggio = 1 / margine. Con margine 30% serve oltre 3,33.
+- L'attribuzione è una scelta dichiarata; la segmentazione mostra ciò che la media nasconde.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola il CAC?", a: "Spesa pubblicitaria divisa per i nuovi clienti" },
+    { q: "ROAS di pareggio con margine del 25%?", a: "1 / 0,25 = 4" },
+    { q: "Che cos'è l'attribuzione dell'ultimo clic?", a: "Tutto il merito al canale cliccato per ultimo prima dell'acquisto" },
+    { q: "Perché segmentare i clienti?", a: "Perché la media può nascondere gruppi con costi molto diversi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la finanza, dove un'azienda può avere utile e restare senza soldi in cassa.</Say>
+</Scene>

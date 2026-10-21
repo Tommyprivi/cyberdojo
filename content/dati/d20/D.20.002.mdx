@@ -1,0 +1,156 @@
+---
+id: D.20.002
+course: dati
+module: 20
+title: "Google Analytics in pratica"
+belt: blu
+duration_min: 8
+prerequisites: [D.20.001]
+objectives:
+  - "Leggere eventi, parametri ed eventi chiave (conversioni) in GA4"
+  - "Conoscere i limiti: campionamento, soglie e conservazione dei dati"
+  - "Citare alternative rispettose della privacy, come Matomo e Plausible"
+video:
+  provider: youtube
+  id: "2GjuAYYfzYk"
+  start: 0
+  end: 600
+  channel: "Andrea Arditi"
+  title: "Come tracciare le Conversioni con Google Analytics 4 | GA4"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-ga4
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di un numero senza sapere se è un conteggio di eventi, di sessioni o di utenti"
+  - "Segnare come conversione troppi eventi, così il tasso non misura più l'obiettivo"
+  - "Dimenticare che i dati di GA4 dipendono dal consenso e possono essere campionati"
+commands: []
+---
+
+<Scene title="Il pannello pieno di numeri">
+Giulia ha installato **Google Analytics 4** (GA4), lo strumento gratuito di Google per misurare i siti. Dopo una settimana apre il pannello: decine di tabelle, sigle e grafici.
+
+Un numero la colpisce: «Eventi: 48.000». «Quindi 48.000 persone hanno comprato?», chiede. No.
+
+La domanda del caso: **che cosa dice davvero ogni numero di GA4?**
+
+<Say who="sensei">Prima si capisce l'unità di misura, poi si legge il numero. 48.000 eventi non sono 48.000 persone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eventi e parametri in GA4">
+In GA4 **tutto è un evento**. Alcuni li registra da solo (eventi automatici): `page_view` (pagina vista), `session_start` (inizio sessione), `first_visit` (prima visita). Altri li definisci tu, come `add_to_cart` o `purchase`.
+
+Ogni evento porta dei **parametri**: i dettagli, come in D.20.001.
+
+| evento | parametri |
+|---|---|
+| page_view | page_location, page_title |
+| add_to_cart | item_name, price |
+| purchase | value, currency, transaction_id |
+
+<Callout kind="curiosita">
+Gli eventi con nome **raccomandato** (`purchase`, `add_to_cart`…) vengono riconosciuti da GA4 nei rapporti di e-commerce. Con nomi inventati dovresti configurare tutto a mano.
+</Callout>
+
+<Say who="assistente">Indizio: il parametro `transaction_id` serve a non contare due volte lo stesso ordine se la pagina si ricarica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eventi chiave e conversioni">
+Tra tutti gli eventi, alcuni sono il **risultato che vuoi ottenere**: l'acquisto, l'iscrizione alla newsletter. In GA4 si segnano come **eventi chiave** (in passato si chiamavano **conversioni**; se trovi vecchi tutorial, è lo stesso concetto).
+
+Il **tasso di conversione** si calcola così:
+
+- sessioni in una settimana: **2.000**
+- sessioni con almeno un acquisto: **60**
+- tasso = 60 ÷ 2.000 = **3%**
+
+<Callout kind="attenzione">
+Segna come evento chiave solo ciò che davvero misura l'obiettivo. Se segni anche «ha visto una pagina», il tasso sale al 90% e non dice più nulla.
+</Callout>
+
+Vuoi vedere come si imposta in pratica? Un video in italiano, solo i primi minuti:
+
+<Video />
+
+<Say who="sensei">Un evento chiave è un risultato, non un'abitudine. Ne bastano pochi, scelti bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le esplorazioni e i limiti">
+Oltre ai rapporti pronti, GA4 offre le **esplorazioni**: pagine dove costruisci da solo tabelle, imbuti e percorsi (li useremo nelle prossime lezioni).
+
+Ma ci sono limiti da conoscere:
+
+- **Campionamento**: quando i dati sono molti, in alcune esplorazioni GA4 calcola il risultato su una parte dei dati e stima il resto. Il numero è una stima, non un conteggio esatto.
+- **Soglie**: se un gruppo è molto piccolo, GA4 può nascondere i dati per tutelare la privacy delle persone.
+- **Conservazione**: i dati dettagliati nelle esplorazioni si tengono per un tempo limitato (nelle impostazioni standard, 2 o 14 mesi).
+- **Consenso**: chi rifiuta i cookie può non comparire nei dati (lo vedremo nella lezione 6).
+
+<Say who="sensei">Uno strumento gratuito ha sempre un prezzo. Qui il prezzo sono i limiti, e i tuoi dati nelle mani di un'altra azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Alternative e tocca a te">
+Se non vuoi dipendere da Google esistono alternative che si concentrano sulla privacy, ad esempio **Matomo** e **Plausible**. Matomo si può installare sui tuoi server e tenere i dati da te; Plausible è leggero e misura senza cookie. Sono solo esempi: ognuno ha costi e funzioni diverse.
+
+<Quiz
+  question="Nel pannello GA4 leggi: 2.000 sessioni, 60 con acquisto. Qual è il tasso di conversione per sessione?"
+  options={["3%", "30%", "0,3%", "33%"]}
+  answer={0}
+  explain="60 ÷ 2.000 = 0,03, cioè 3%. Chi risponde 30% ha spostato la virgola di un posto di troppo."
+/>
+
+<Quiz
+  question="GA4 mostra «48.000 eventi» in una settimana. Che cosa significa?"
+  options={["Sono azioni registrate, non persone", "Sono 48.000 acquisti", "Sono 48.000 visitatori diversi", "Sono 48.000 sessioni"]}
+  answer={0}
+  explain="Un evento è una singola azione registrata (anche una pagina vista). Una persona genera molti eventi in una sola sessione."
+/>
+
+<Say who="assistente">Prima di leggere un numero, chiediti sempre: di che cosa è il conteggio?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Qualche scenario su GA4: unità di misura, tassi e limiti.
+
+<Practice generator="d20-ga4" pass="5/5" retries={3} />
+
+<Say who="sensei">Unità, formula, limiti. Se li hai in testa, il pannello non ti inganna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- In GA4 tutto è un evento con parametri; gli eventi chiave (ex conversioni) segnano i risultati.
+- Il tasso di conversione per sessione è sessioni con risultato ÷ sessioni totali.
+- Campionamento, soglie, conservazione e consenso limitano i dati; Matomo e Plausible sono alternative attente alla privacy.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un evento chiave in GA4?", a: "Un evento che segna un risultato voluto, come l'acquisto" },
+    { q: "2.000 sessioni, 60 acquisti: tasso?", a: "3%" },
+    { q: "Che cos'è il campionamento?", a: "Un risultato stimato su una parte dei dati, non contato su tutti" },
+    { q: "Due alternative a GA4 attente alla privacy?", a: "Matomo e Plausible" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i funnel. Dove, passo dopo passo, la gente si perde.</Say>
+</Scene>

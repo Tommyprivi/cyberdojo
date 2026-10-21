@@ -1,0 +1,268 @@
+---
+id: D.04.008
+course: dati
+module: 4
+title: "Unire le tabelle"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.007]
+objectives:
+  - "Unire due tabelle con merge e scegliere il tipo di join (inner, left, right, outer)"
+  - "Impilare tabelle con la stessa struttura usando concat"
+  - "Controllare il numero di righe dopo un'unione e riconoscere duplicati e valori mancanti"
+video:
+  provider: youtube
+  id: "x63T5f12WPs"
+  start: 0
+  end: 600
+  channel: "Datagnolo"
+  title: "Dominare Pandas in Python: Merge, Concat e Join Spiegati Facilmente!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-unire
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare un inner join e perdere senza accorgersene i clienti senza ordini"
+  - "Unire su una chiave con duplicati: le righe si moltiplicano e i totali si gonfiano"
+  - "Usare concat per unire colonne di tabelle diverse, o merge per impilare righe"
+commands: []
+---
+
+<Scene title="I clienti qui, gli ordini là">
+Giulia vuole sapere **chi non ha mai comprato**. Ma i nomi dei clienti stanno in una tabella, gli ordini in un'altra. In ogni ordine c'è solo un numero, `id_cliente`, che rimanda al cliente.
+
+Per rispondere devi **unire** le due tabelle. In SQL si chiama **JOIN**: se hai già visto i database, in pandas è la stessa idea con altri nomi.
+
+Ecco le due tabelle, minuscole:
+
+```python
+clienti = pd.DataFrame({
+    "id_cliente": [1, 2, 3, 4],
+    "nome": ["Anna", "Bruno", "Carla", "Dario"],
+})
+ordini = pd.DataFrame({
+    "id_cliente": [1, 1, 2, 5],
+    "importo": [40.0, 30.0, 20.0, 15.0],
+})
+```
+
+```text
+   id_cliente   nome
+0           1   Anna
+1           2  Bruno
+2           3  Carla
+3           4  Dario
+   id_cliente  importo
+0           1     40.0
+1           1     30.0
+2           2     20.0
+3           5     15.0
+```
+
+Osserva: Anna ha **due** ordini, Carla e Dario nessuno, e c'è un ordine del cliente **5**, che nella tabella dei clienti non esiste.
+
+<Say who="sensei">Due tabelle, una chiave in comune. Prima di unire, guarda chi non ha corrispondenza: lì si nascondono i problemi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="merge: l'unione di base">
+`merge` unisce le righe che hanno **lo stesso valore nella colonna chiave**. Con `on` si dice quale.
+
+```python
+unito = clienti.merge(ordini, on="id_cliente")
+print(unito)
+```
+
+```text
+   id_cliente   nome  importo
+0           1   Anna     40.0
+1           1   Anna     30.0
+2           2  Bruno     20.0
+```
+
+Per impostazione predefinita è un **inner join**: restano solo le chiavi presenti in **entrambe** le tabelle. Carla e Dario (senza ordini) e l'ordine del cliente 5 (senza cliente) sono spariti. Anna compare due volte, una per ordine: è corretto.
+
+Se la colonna chiave ha **nomi diversi** nelle due tabelle si scrive `left_on="id"` e `right_on="id_cliente"`; nel risultato restano entrambe le colonne.
+
+<Callout kind="attenzione">
+Il silenzio dell'inner join è pericoloso: se vuoi sapere chi **non** ha comprato, un inner join ti nasconde proprio quelle righe. Scegli il tipo di join in base alla domanda.
+</Callout>
+
+<Say who="assistente">Chiediti: voglio solo ciò che ha corrispondenza, o voglio tenere tutto di una tabella? La risposta sceglie il join.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tipi di join, come in SQL">
+Con `how` scegli quali righe tenere:
+
+| how | in SQL | tiene |
+|---|---|---|
+| inner | INNER JOIN | solo le chiavi in entrambe |
+| left | LEFT JOIN | tutte le righe della tabella a sinistra |
+| right | RIGHT JOIN | tutte le righe della tabella a destra |
+| outer | FULL OUTER JOIN | tutte le righe di entrambe |
+
+La tabella «a sinistra» è quella su cui chiami `merge`, cioè `clienti`. Ecco `left` e `right`:
+
+```python
+print(clienti.merge(ordini, on="id_cliente", how="left"))
+print(clienti.merge(ordini, on="id_cliente", how="right"))
+```
+
+```text
+   id_cliente   nome  importo
+0           1   Anna     40.0
+1           1   Anna     30.0
+2           2  Bruno     20.0
+3           3  Carla      NaN
+4           4  Dario      NaN
+   id_cliente   nome  importo
+0           1   Anna     40.0
+1           1   Anna     30.0
+2           2  Bruno     20.0
+3           5    NaN     15.0
+```
+
+Il `left` tiene Carla e Dario con importo `NaN`: **nessun ordine**. Il `right` tiene l'ordine del cliente 5 con nome `NaN`: **ordine di un cliente sconosciuto**, un problema di qualità dei dati da segnalare. L'`outer` tiene tutto, le due cose insieme.
+
+<Callout kind="trucco">
+Per trovare i clienti senza ordini: `left` join, poi tieni le righe dove `importo` è `NaN`. Con la tabella di esempio sono Carla e Dario.
+</Callout>
+
+<Say who="sensei">Un NaN dopo un join non è un guasto: è una risposta. Dice «qui non c'è corrispondenza». Imparerai a leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controllare le righe">
+Dopo ogni unione fai due controlli: **quante righe** ho e **perché**. Con le tabelle di esempio: 4 clienti, 4 ordini.
+
+- inner: 3 righe (Anna x2, Bruno);
+- left: 5 righe = 4 clienti + 1 riga in più, perché Anna ha due ordini;
+- right: 4 righe, una per ordine;
+- outer: 6 righe, tutto quello che c'è.
+
+Due strumenti aiutano. `indicator=True` aggiunge una colonna `_merge` che dice da dove viene ogni riga:
+
+```python
+unito = clienti.merge(ordini, on="id_cliente", how="outer", indicator=True)
+print(unito)
+```
+
+```text
+   id_cliente   nome  importo      _merge
+0           1   Anna     40.0        both
+1           1   Anna     30.0        both
+2           2  Bruno     20.0        both
+3           3  Carla      NaN   left_only
+4           4  Dario      NaN   left_only
+5           5    NaN     15.0  right_only
+```
+
+E `validate` dichiara **che relazione ti aspetti** tra le tabelle: pandas si ferma se i dati non la rispettano.
+
+```python
+clienti.merge(ordini, on="id_cliente", validate="one_to_one")
+```
+
+```text
+MergeError: Merge keys are not unique in right dataset; not a one-to-one merge
+```
+
+Un cliente può avere più ordini: la relazione giusta è `"one_to_many"` (uno a molti), e con quella l'unione passa. L'errore ha fatto il suo mestiere.
+
+<Callout kind="regola">
+Se le righe dopo il join sono **più** di quelle di partenza, c'è una chiave con duplicati dal lato «molti». Se la tabella unita è usata per sommare, controlla di non contare due volte la stessa cosa.
+</Callout>
+
+<Say who="assistente">Conta le righe prima e dopo. Se il numero non te lo sai spiegare, non fidarti del risultato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="concat: impilare tabelle uguali">
+`merge` affianca tabelle diverse tramite una chiave. `concat` serve per un altro caso: **impilare** tabelle con le **stesse colonne**, come gli ordini di gennaio e di febbraio.
+
+```python
+gen = pd.DataFrame({"citta": ["Roma", "Milano"], "vendite": [100, 80]})
+feb = pd.DataFrame({"citta": ["Roma", "Torino"], "vendite": [90, 60]})
+print(pd.concat([gen, feb]))
+print(pd.concat([gen.assign(mese="gen"), feb.assign(mese="feb")], ignore_index=True))
+```
+
+```text
+    citta  vendite
+0    Roma      100
+1  Milano       80
+0    Roma       90
+1  Torino       60
+    citta  vendite  mese
+0    Roma      100   gen
+1  Milano       80   gen
+2    Roma       90   feb
+3  Torino       60   feb
+```
+
+Nella prima uscita l'indice **si ripete** (0, 1, 0, 1): non è un errore, ma può dare guai. `ignore_index=True` rinumera da capo. Con `assign(mese=...)` si aggiunge una colonna che ricorda l'origine di ogni riga: quando impili, spesso serve.
+
+Per ricordare la differenza: **merge** = stesse persone, colonne diverse (si aggiungono colonne); **concat** = persone diverse, stesse colonne (si aggiungono righe).
+
+Una spiegazione completa di merge, concat e join, con un'altra voce:
+
+<Video />
+
+<Say who="sensei">Colonne in più o righe in più. Se non sai quale dei due ti serve, disegna le tabelle su un foglio prima di scrivere codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con le tabelle clienti (ids 1, 2, 3, 4) e ordini (id_cliente 1, 1, 2, 5), quante righe ha clienti.merge(ordini, on='id_cliente', how='left')?"
+  options={["5", "4", "3", "6"]}
+  answer={0}
+  explain="Il left join tiene tutti i 4 clienti. Anna ha due ordini, quindi compare due volte: 4 clienti + 1 riga in più fanno 5. Chi risponde 4 ha dimenticato che il join moltiplica le righe quando un cliente ha più ordini."
+/>
+
+<Say who="assistente">Parti dai clienti a sinistra: tutti presenti. Poi aggiungi una riga per ogni ordine in più. Conta a dita se serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su `merge` e `concat`: quale join serve, quante righe restano, perché c'è un NaN. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-unire" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima conta a mano il risultato atteso, poi guarda quale join lo produce. È lo stesso metodo che userai con diecimila righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `a.merge(b, on="chiave", how=...)` unisce per chiave: inner (solo corrispondenze), left, right, outer, come INNER, LEFT, RIGHT e FULL OUTER JOIN di SQL.
+- Dopo ogni unione controlla le righe: i duplicati sulla chiave le moltiplicano, i NaN indicano assenza di corrispondenza. Aiutano `indicator=True` e `validate`.
+- `pd.concat([a, b], ignore_index=True)` impila tabelle con le stesse colonne.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale join tiene tutte le righe della tabella di sinistra?", a: "how='left' (LEFT JOIN)" },
+    { q: "Come trovi i clienti senza ordini?", a: "Left join dei clienti sugli ordini, poi le righe con importo NaN" },
+    { q: "Cosa fa indicator=True?", a: "Aggiunge la colonna _merge: both, left_only o right_only" },
+    { q: "Merge o concat per unire gennaio e febbraio con le stesse colonne?", a: "concat, perché si aggiungono righe" },
+  ]}
+/>
+
+<Say who="sensei">Le tabelle sono unite e controllate. Ultima lezione del modulo: salvare il lavoro e fare i primi grafici.</Say>
+</Scene>

@@ -1,0 +1,174 @@
+---
+id: T.11.005
+course: trading
+module: 11
+title: "Un modello semplice di classificazione"
+belt: blu
+duration_min: 9
+prerequisites: [T.11.004]
+objectives:
+  - "Impostare una classificazione «domani sale / non sale» con regressione logistica e baseline"
+  - "Leggere una matrice di confusione e calcolare l'accuratezza"
+  - "Confrontare il modello con la baseline prima di crederci"
+video:
+  provider: youtube
+  id: "a_KIglKyfcg"
+  start: 0
+  end: 600
+  channel: "Datapizza"
+  title: "Basi di Machine Learning - La REGRESSIONE LOGISTICA in 10 Minuti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-classificazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Giudicare l'accuratezza senza confrontarla con la baseline"
+  - "Normalizzare le feature con fit sui dati di test"
+  - "Credere che 55% di giorni indovinati sia un buon risultato in sé"
+commands: []
+---
+
+<Scene title="55% suona bene">
+Sara prova il suo primo modello su dati fittizi. Sul test (gli ultimi 100 giorni) dichiara: **«Indovino il 55% dei giorni!»**
+
+Il Sensei le chiede una sola cosa: «Quanti di quei 100 giorni sono davvero saliti?». Lei controlla: **42**.
+
+La domanda del caso: **55% è un buon risultato o no?**
+
+<Say who="sensei">Un numero da solo non dice niente. Dillo con la baseline accanto. Ricorda: educazione, non consulenza; si può perdere denaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la classificazione">
+Prevedere se domani il prezzo sale (1) o no (0) è una **classificazione binaria**: la risposta è una categoria tra due.
+
+Il modello più semplice è la **regressione logistica**. Nonostante il nome, **classifica**: dà una **probabilità** (da 0 a 1) che domani salga. Se è sopra la **soglia** (di solito 0,5) dice «sale», altrimenti «non sale».
+
+È un modello **semplice**, con pochissima libertà di adattarsi al rumore: in finanza è una qualità. Un modello con migliaia di parametri impara il passato a memoria.
+
+<Callout kind="curiosita">
+Se la probabilità è 0,51 e la soglia 0,5, il modello dice «sale», ma con pochissima sicurezza. Alzare la soglia a 0,7 significa dire «sale» meno spesso, solo quando è più convinto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Una decina di minuti, in italiano:
+
+<Video />
+
+<Say who="assistente">Il video non parla di borsa: usa esempi di tutti i giorni. Serve per capire come nasce la probabilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il codice, con ordine">
+Supponiamo di avere la tabella `df` già pronta (feature e target, in ordine di data, senza NaN, come nelle lezioni precedenti).
+
+```python
+from sklearn.dummy import DummyClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+
+X = df[["r", "media2", "vol5"]]        # feature
+y = df["target"]                        # 1 = domani sale, 0 = no
+
+taglio = int(len(df) * 0.8)             # 80% più vecchio per addestrare
+X_tr, X_te = X.iloc[:taglio], X.iloc[taglio:]
+y_tr, y_te = y.iloc[:taglio], y.iloc[taglio:]
+
+scaler = StandardScaler().fit(X_tr)     # solo dal passato
+modello = LogisticRegression().fit(scaler.transform(X_tr), y_tr)
+baseline = DummyClassifier(strategy="most_frequent").fit(X_tr, y_tr)
+
+print("modello :", modello.score(scaler.transform(X_te), y_te))
+print("baseline:", baseline.score(X_te, y_te))
+```
+
+Il codice stampa due accuratezze: quella del modello e quella della baseline «dire sempre la classe più frequente». I numeri dipendono dai dati: qui lo scopo è l'ordine, non il risultato.
+
+<Callout kind="regola">
+Tre regole nel codice: divisione per tempo, `fit` dello scaler solo sull'addestramento, e **sempre una baseline** accanto al modello.
+</Callout>
+
+<Say who="sensei">Se il modello non batte la baseline, non c'è niente da festeggiare. Torna alle feature.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La matrice di confusione">
+Sui 100 giorni di Sara, la **matrice di confusione** conta i casi:
+
+| | previsto «sale» | previsto «non sale» |
+|---|---|---|
+| è salito davvero | 20 | 22 |
+| non è salito | 23 | 35 |
+
+Calcoli, uno alla volta:
+
+- giorni saliti davvero: 20 + 22 = **42**; non saliti: 23 + 35 = **58**; totale 100;
+- giorni indovinati: 20 + 35 = **55**, quindi accuratezza **55%**;
+- baseline «dico sempre non sale»: 58 giorni su 100, quindi **58%**.
+
+Il modello di Sara fa **peggio** della risposta più banale: 55% contro 58%.
+
+<Callout kind="attenzione">
+Questo succede spesso con classi sbilanciate: dire sempre la classe più frequente dà già un buon risultato. L'accuratezza non dice quanto si guadagna o si perde nei giorni sbagliati, né i costi.
+</Callout>
+
+<Say who="assistente">55% batte la moneta, ma non batte il «non faccio niente». E non facendo niente non paghi commissioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Matrice di confusione su 100 giorni: veri positivi 30, falsi negativi 20, falsi positivi 30, veri negativi 20. Qual è l'accuratezza e che cosa si può dire?"
+  options={[
+    "50%: come una moneta, il modello non ha dimostrato niente",
+    "30%: il modello è molto peggiore di una moneta",
+    "60%: il modello batte il mercato",
+    "80%: il modello è ottimo",
+  ]}
+  answer={0}
+  explain="Giorni indovinati: 30 + 20 = 50 su 100, quindi 50%. È il livello della moneta. Chi risponde 60% conta solo i veri positivi e i falsi positivi insieme, che non sono i giorni indovinati."
+/>
+
+<Say who="sensei">Somma la diagonale, cioè i casi giusti. Poi dividi per il totale. Lento e preciso batte veloce e sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sulla matrice di confusione e scenari su soglia, baseline e normalizzazione.
+
+<Practice generator="t11-classificazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un modello che non sa dire quanto vale rispetto alla baseline non vale niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Prevedere «domani sale o no» è una classificazione binaria; la regressione logistica dà una probabilità e una soglia decide.
+- L'accuratezza è la diagonale della matrice di confusione divisa per il totale, e va sempre confrontata con la baseline.
+- Un 55% può essere peggio della baseline (58%): il confronto onesto viene prima di tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa dà la regressione logistica?", a: "Una probabilità che domani salga; la soglia decide la classe" },
+    { q: "Come si calcola l'accuratezza?", a: "Casi giusti (la diagonale) divisi per il totale" },
+    { q: "Che cos'è la baseline più semplice?", a: "Dire sempre la classe più frequente" },
+    { q: "Dove si fa il fit dello scaler?", a: "Solo sui dati di addestramento" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: perché quasi tutti questi modelli smettono di funzionare quando li metti alla prova vera.</Say>
+</Scene>

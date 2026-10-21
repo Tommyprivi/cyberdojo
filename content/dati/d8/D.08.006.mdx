@@ -1,0 +1,221 @@
+---
+id: D.08.006
+course: dati
+module: 8
+title: "Unire fonti diverse"
+belt: arancione
+duration_min: 9
+prerequisites: [D.08.005]
+objectives:
+  - "Scegliere la chiave e il tipo di unione (inner, left, outer)"
+  - "Trovare le righe orfane e controllare quante righe ci si aspetta"
+  - "Usare merge con indicator e validate"
+video:
+  provider: youtube
+  id: "NT9qbLVBpCc"
+  start: 0
+  end: 600
+  channel: "Yimp - La scuola dei dati"
+  title: "Tutorial merge pandas: come combinare due DataFrame con Python"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-unire
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Un'unione how='inner' butta in silenzio le righe senza corrispondenza"
+  - "Se la chiave si ripete nell'altra tabella, le righe si moltiplicano senza errore"
+  - "Unire su una colonna di tipo diverso (numero da una parte, testo dall'altra) non funziona"
+commands: []
+---
+
+<Scene title="Gli ordini senza cliente">
+La «Cartoleria Rossi» tiene i clienti in un file e gli ordini in un altro. Vuoi sapere **chi** ha fatto ogni ordine.
+
+**clienti**
+
+| id_cliente | nome |
+|---|---|
+| 1 | Anna |
+| 2 | Bruno |
+| 3 | Carla |
+| 4 | Dario |
+
+**ordini**
+
+| id_ordine | id_cliente | importo |
+|---|---|---|
+| 10 | 1 | 20 |
+| 11 | 1 | 35 |
+| 12 | 2 | 12 |
+| 13 | 5 | 40 |
+| 14 | 3 | 18 |
+
+L'ordine 13 è del cliente 5, che nell'elenco non esiste. E Dario non ha ordini.
+
+La domanda del caso: **quando unisci le due tabelle, cosa succede alle righe che non trovano la coppia?**
+
+<Say who="sensei">Unire è il momento in cui si perdono più dati senza accorgersene. Si conta prima, si conta dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La chiave e i tipi di unione">
+Per unire due tabelle serve una **chiave**: la colonna che le collega. Qui `id_cliente`, che compare in entrambe.
+
+Poi decidi quali righe tenere. I tipi di unione (`how`):
+
+- **inner**: solo le righe che hanno una coppia in entrambe le tabelle.
+- **left**: tutte le righe della tabella di sinistra, anche senza coppia (i campi che mancano diventano NaN).
+- **outer**: tutte le righe di entrambe.
+
+Una riga che non trova la sua coppia si chiama **orfana**. Nel nostro caso l'ordine 13 è orfano.
+
+<Callout kind="regola">
+Parti dalla tabella che vuoi **mantenere intera** e mettila a sinistra con `how='left'`. Se non sai perché useresti inner, non usarla.
+</Callout>
+
+<Say who="assistente">Pensa a quale tabella è la tua «principale»: gli ordini. Il cliente è il dato in più che vuoi aggiungere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="merge in azione">
+<Log lines={[
+  "import pandas as pd",
+  "",
+  "clienti = pd.DataFrame({'id_cliente': [1, 2, 3, 4], 'nome': ['Anna', 'Bruno', 'Carla', 'Dario']})",
+  "ordini = pd.DataFrame({",
+  "    'id_ordine': [10, 11, 12, 13, 14],",
+  "    'id_cliente': [1, 1, 2, 5, 3],",
+  "    'importo': [20, 35, 12, 40, 18],",
+  "})",
+  "",
+  "m = ordini.merge(clienti, on='id_cliente', how='left')",
+  "print(m)",
+  "",
+  "   id_ordine  id_cliente  importo   nome",
+  "0         10           1       20   Anna",
+  "1         11           1       35   Anna",
+  "2         12           2       12  Bruno",
+  "3         13           5       40    NaN",
+  "4         14           3       18  Carla",
+]} caption="Con left tutte e cinque le righe restano. L'ordine 13 ha nome NaN." />
+
+Con `how='inner'` l'ordine 13 sparirebbe, e con lui 40 euro di vendite: nessun errore, nessun avviso.
+
+<Log lines={[
+  "print(len(ordini.merge(clienti, on='id_cliente', how='inner')))",
+  "4",
+]} caption="Da 5 a 4 righe, senza avvisi." />
+
+Per trovare gli orfani senza indovinare, chiedi a pandas di segnare la provenienza con `indicator=True`:
+
+<Log lines={[
+  "m = ordini.merge(clienti, on='id_cliente', how='left', indicator=True)",
+  "print(m)",
+  "",
+  "   id_ordine  id_cliente  importo   nome     _merge",
+  "0         10           1       20   Anna       both",
+  "1         11           1       35   Anna       both",
+  "2         12           2       12  Bruno       both",
+  "3         13           5       40    NaN  left_only",
+  "4         14           3       18  Carla       both",
+  "",
+  "print(m[m['_merge'] == 'left_only']['id_ordine'].tolist())",
+  "[13]",
+]} caption="left_only vuol dire: c'era solo a sinistra, nessuna coppia a destra." />
+
+<Say who="sensei">Gli orfani sono un'informazione. Magari manca un cliente nell'elenco, o c'è un errore di digitazione nella chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controllare la cardinalità">
+La **cardinalità** dice quante righe di una tabella possono corrispondere a una riga dell'altra:
+
+- **molti a uno** (many_to_one): molti ordini per ogni cliente. È il nostro caso.
+- **uno a uno**: una riga per parte.
+- **molti a molti**: spesso un errore, perché le righe esplodono.
+
+Succede quando la chiave si ripete anche nella tabella «uno». Per esempio, se per sbaglio Anna comparisse due volte in `clienti`, ognuno dei suoi due ordini verrebbe accoppiato due volte: **7 righe invece di 5**, senza alcun errore.
+
+Per proteggerti usa **validate**: se la regola non è rispettata, pandas si ferma con un `MergeError`.
+
+<Log lines={[
+  "m = ordini.merge(clienti, on='id_cliente', how='left', validate='many_to_one')",
+  "print(len(m))",
+  "5",
+]} caption="Se in clienti la chiave si ripetesse, pandas solleverebbe un MergeError invece di moltiplicare le righe." />
+
+E un controllo semplice, sempre: **conta le righe prima e dopo**. Con una unione left da molti a uno, le righe dopo devono essere uguali alle righe della tabella di sinistra.
+
+<Callout kind="trucco">
+Tre controlli in fila: righe prima e dopo, orfani con `indicator=True`, `validate` nella chiamata. Costano tre righe di codice.
+</Callout>
+
+<Callout kind="attenzione">
+Le chiavi devono avere lo stesso tipo: un `id_cliente` numerico da una parte e testo (`'1'`) dall'altra non si uniscono. Controlla con `dtypes` prima.
+</Callout>
+
+Un'altra voce che mostra merge passo per passo:
+
+<Video />
+
+<Say who="assistente">Se le righe dopo sono più di quelle prima in una unione left, hai una chiave ripetuta. Fermati e cerca i duplicati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Unisci ordini (5 righe, chiave id_cliente) con clienti usando how='inner'. L'ordine 13 ha un cliente inesistente. Cosa succede?"
+  options={[
+    "L'ordine 13 sparisce dal risultato, senza errore né avviso",
+    "pandas segnala un errore e si ferma",
+    "L'ordine 13 resta, con nome NaN",
+    "L'ordine 13 viene unito a un cliente a caso",
+  ]}
+  answer={0}
+  explain="Con inner restano solo le righe che hanno una coppia in entrambe le tabelle: l'ordine 13 viene scartato in silenzio, e con lui il suo importo. Resterebbe con nome NaN se usassi how='left'."
+/>
+
+<Say who="sensei">Il silenzio è il pericolo. Se unisci e non conti, non sai cosa hai perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su chiavi, righe orfane, `merge` e `validate`. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-unire" pass="5/5" retries={3} />
+
+<Say who="sensei">Un'unione sbagliata fa sembrare i numeri più ricchi o più poveri di quello che sono. Non si improvvisa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per unire due tabelle serve una chiave; `how` decide quali righe restano (inner, left, outer).
+- Una riga senza coppia è orfana: trovala con `indicator=True`, non la lasciare sparire in silenzio.
+- Controlla la cardinalità con `validate` e conta le righe prima e dopo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa tiene how='left'?", a: "Tutte le righe della tabella di sinistra, anche senza coppia" },
+    { q: "Cosa vuol dire left_only nella colonna _merge?", a: "La riga c'è solo nella tabella di sinistra: è orfana" },
+    { q: "A cosa serve validate='many_to_one'?", a: "A fermarsi se la chiave si ripete nella tabella di destra" },
+    { q: "Perché le righe possono aumentare dopo un merge?", a: "Perché la chiave si ripete nell'altra tabella e ogni riga viene accoppiata più volte" },
+  ]}
+/>
+
+<Say who="sensei">Fonti unite. Ultima lezione del modulo: una checklist e il registro di tutto ciò che hai fatto.</Say>
+</Scene>

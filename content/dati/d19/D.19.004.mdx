@@ -1,0 +1,276 @@
+---
+id: D.19.004
+course: dati
+module: 19
+title: "Leggere, pulire e unire"
+belt: blu
+duration_min: 10
+prerequisites: [D.19.003]
+objectives:
+  - "Leggere un file CSV con readr scegliendo la funzione giusta per separatore e decimali"
+  - "Gestire i valori mancanti e pulire il testo con tidyr e stringr"
+  - "Unire due tabelle con left_join, inner_join e anti_join e capire quali righe restano"
+video:
+  provider: youtube
+  id: "tBxGVfvx-Gc"
+  start: 0
+  end: 600
+  channel: "Riffomonas Project"
+  title: "Cleaning and manipulating data with the tidyverse: dplyr, readr, and stringr in action (CC121)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-leggere-pulire
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare read_csv() su un file con punto e virgola e virgola decimale: serve read_csv2()"
+  - "Fare la media senza na.rm = TRUE: un solo NA rende NA tutto il risultato"
+  - "Unire due tabelle senza controllare le chiavi: città scritte in modo diverso non si abbinano"
+commands: []
+---
+
+<Scene title="Il file che arriva da Excel">
+Giulia ti manda i dati di quattro ordini, esportati da un foglio di calcolo. Li guardi e noti subito tre problemi: una città è scritta in minuscolo con uno spazio davanti (` milano`), un'altra è in maiuscolo con uno spazio dietro (`ROMA `), e per Carla l'importo è **vuoto**.
+
+In più, la regione di ogni città sta in un **altro file**.
+
+Prima di analizzare, si **legge**, si **pulisce** e si **unisce**. Di solito è la parte più lunga del lavoro di un analista, e quella che più spesso nasconde errori.
+
+La domanda del caso: **come si prepara una tabella sporca senza barare con i numeri?**
+
+<Say who="sensei">Un'analisi giusta su dati sporchi è un'analisi sbagliata con buone maniere. Si pulisce prima, e si annota cosa è stato fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere con readr">
+Il pacchetto **readr**, incluso nel tidyverse, legge i file di testo in tabelle tibble. La funzione dipende dal formato:
+
+- `read_csv()`: valori separati da **virgola**, decimali con il **punto**;
+- `read_csv2()`: valori separati da **punto e virgola**, decimali con la **virgola** (il formato che molti programmi usano in Italia);
+- `read_delim()`: un separatore a scelta.
+
+```r
+testo <- "cliente;importo
+Anna;40,5
+Bruno;20,5"
+
+read_csv2(I(testo), show_col_types = FALSE)
+```
+
+```text
+# A tibble: 2 × 2
+  cliente importo
+  <chr>     <dbl>
+1 Anna       40.5
+2 Bruno      20.5
+```
+
+Qui il testo è scritto dentro il codice, con `I()`. Per un file vero si scrive il percorso relativo, per esempio `read_csv2("dati/ordini.csv")`. Senza `show_col_types = FALSE`, readr stampa un messaggio che elenca i tipi di colonna scelti: **leggilo**, può rivelare una colonna letta come testo per colpa di un simbolo strano.
+
+<Callout kind="attenzione">
+Se usi `read_csv()` su un file con punto e virgola, ottieni **una sola colonna** con tutto dentro. È il segnale: hai sbagliato funzione.
+</Callout>
+
+Vuoi vedere un esempio completo di pulizia fatto da un'altra persona? Il video usa readr, dplyr e stringr su dati veri; è in inglese, con sottotitoli:
+
+<Video />
+
+<Say who="assistente">Excel per i file con le virgole decimali usa il punto e virgola. È la causa numero uno dei file letti male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Valori mancanti e dati ordinati">
+In R il valore mancante si chiama `NA`. Non è zero: significa «non lo so». Per questo ogni calcolo che lo incontra restituisce `NA`, finché non decidi che cosa farne.
+
+```r
+grezzi <- tibble(
+  cliente = c("Anna", "Bruno", "Carla", "Dario"),
+  citta   = c("Roma", " milano", "ROMA ", "Torino"),
+  importo = c(40, 20, NA, 10)
+)
+
+sum(is.na(grezzi$importo))
+mean(grezzi$importo)
+mean(grezzi$importo, na.rm = TRUE)
+```
+
+```text
+[1] 1
+[1] NA
+[1] 23.33333
+```
+
+Con `na.rm = TRUE` la media ignora Carla: (40 + 20 + 10) / 3 = 23,33. Ma è una scelta, non un automatismo: per ogni `NA` chiediti **perché manca**.
+
+Il pacchetto **tidyr** ha due strumenti per i mancanti: `drop_na(importo)` toglie le righe con `NA` in quella colonna, `replace_na(list(importo = 0))` li sostituisce con un valore. Sostituire con 0 va bene solo se «vuoto» vuol davvero dire «zero euro».
+
+tidyr serve anche a rendere i dati **ordinati**: una riga per osservazione. Una tabella «larga» con una colonna per mese diventa «lunga» con `pivot_longer()`:
+
+```r
+larga <- tibble(cliente = c("Anna", "Bruno"), gen = c(40, 20), feb = c(30, 25))
+larga |> pivot_longer(c(gen, feb), names_to = "mese", values_to = "importo")
+```
+
+```text
+# A tibble: 4 × 3
+  cliente mese  importo
+  <chr>   <chr>   <dbl>
+1 Anna    gen        40
+2 Anna    feb        30
+3 Bruno   gen        20
+4 Bruno   feb        25
+```
+
+<Say who="sensei">Un NA non è un nemico, è una domanda. Perché manca? Chi lo ha lasciato vuoto? Rispondi prima di calcolare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pulire il testo con stringr">
+Il pacchetto **stringr** lavora sul testo. Tutte le sue funzioni cominciano con `str_`. Le più usate:
+
+```r
+grezzi$citta
+str_to_title(str_trim(grezzi$citta))
+str_detect(c("Roma", "Milano"), "ma")
+str_replace("Via Roma 12", "[0-9]+", "N")
+str_sub("Milano", 1, 3)
+```
+
+```text
+[1] "Roma"    " milano" "ROMA "   "Torino" 
+[1] "Roma"   "Milano" "Roma"   "Torino"
+[1]  TRUE FALSE
+[1] "Via Roma N"
+[1] "Mil"
+```
+
+- `str_trim()` toglie gli spazi all'inizio e alla fine;
+- `str_to_title()` mette la maiuscola iniziale (`str_to_lower` e `str_to_upper` fanno minuscolo e maiuscolo);
+- `str_detect()` dice se un testo contiene un pezzo: è utile dentro `filter()`;
+- `str_replace()` sostituisce, e `"[0-9]+"` significa «una o più cifre»;
+- `str_sub()` taglia dalla posizione 1 alla 3.
+
+Mettiamo tutto in una pipeline: togli spazi, sistema le maiuscole, scarta gli importi mancanti.
+
+```r
+puliti <- grezzi |>
+  mutate(citta = str_to_title(str_trim(citta))) |>
+  drop_na(importo)
+puliti
+```
+
+```text
+# A tibble: 3 × 3
+  cliente citta  importo
+  <chr>   <chr>    <dbl>
+1 Anna    Roma        40
+2 Bruno   Milano      20
+3 Dario   Torino      10
+```
+
+<Callout kind="trucco">
+Non modificare mai a mano il file originale. Scrivi la pulizia in uno **script**: sarà documentata e ripetibile quando arriverà il file aggiornato.
+</Callout>
+
+<Say who="assistente">Prima trim, poi title: l'ordine conta. Se metti le maiuscole prima, lo spazio resta dov'era.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Unire due tabelle">
+La regione sta in un'altra tabella. Per portarla accanto agli ordini si fa un **join**: si abbinano le righe che hanno lo stesso valore nella **chiave**, qui `citta`.
+
+```r
+regioni <- tibble(
+  citta   = c("Roma", "Milano", "Napoli"),
+  regione = c("Lazio", "Lombardia", "Campania")
+)
+
+puliti |> left_join(regioni, by = "citta")
+```
+
+```text
+# A tibble: 3 × 4
+  cliente citta  importo regione  
+  <chr>   <chr>    <dbl> <chr>    
+1 Anna    Roma        40 Lazio    
+2 Bruno   Milano      20 Lombardia
+3 Dario   Torino      10 NA       
+```
+
+`left_join()` **tiene tutte le righe della tabella di sinistra**. Torino non è nella tabella delle regioni, quindi Dario resta, con `NA`. Gli altri join:
+
+- `inner_join()` tiene **solo le righe che si abbinano**: qui restano Anna e Bruno;
+- `anti_join()` tiene le righe di sinistra **senza abbinamento**: qui solo Dario;
+- `full_join()` tiene tutto da entrambe le parti.
+
+```r
+puliti |> anti_join(regioni, by = "citta")
+```
+
+```text
+# A tibble: 1 × 3
+  cliente citta  importo
+  <chr>   <chr>    <dbl>
+1 Dario   Torino      10
+```
+
+<Callout kind="attenzione">
+Se `Milano` e `milano` fossero rimaste diverse, il join non le avrebbe abbinate. **Pulisci le chiavi prima di unire**, e dopo il join conta le righe: se sono aumentate o diminuite, capisci perché.
+</Callout>
+
+<Say who="sensei">Dopo ogni join: conta le righe e cerca gli NA. Se non puoi spiegare la differenza, il join è sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai le tabelle puliti (Anna, Bruno, Dario) e regioni (Roma, Milano, Napoli). Quante righe restituisce puliti |> inner_join(regioni, by = 'citta')?"
+  options={["2, perché Torino non compare in regioni", "3, perché la tabella di sinistra ha tre righe", "4, perché le città sono 4 in totale", "0, perché le chiavi sono testo"]}
+  answer={0}
+  explain="inner_join tiene solo le righe che si abbinano in entrambe le tabelle. Roma e Milano ci sono in tutte e due, quindi restano Anna e Bruno. Dario (Torino) non ha abbinamento e sparisce. Le tre righe sarebbero il risultato di left_join, che tiene tutta la tabella di sinistra."
+/>
+
+<Say who="assistente">Disegna due cerchi che si sovrappongono. Inner è solo la zona in comune.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su lettura, valori mancanti, stringhe e join. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-leggere-pulire" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi pulisce bene non lo nota nessuno. Chi pulisce male lo nota tutto il report.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `read_csv()` per virgole e punto decimale, `read_csv2()` per punto e virgola e virgola decimale: la funzione sbagliata dà una colonna sola o numeri letti come testo.
+- `NA` vuol dire «non lo so»: `na.rm = TRUE`, `drop_na()` e `replace_na()` sono scelte da motivare.
+- `left_join` tiene la sinistra, `inner_join` solo gli abbinamenti, `anti_join` i non abbinati: pulisci le chiavi con `str_trim` e `str_to_title` prima di unire.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale funzione legge un CSV con punto e virgola e virgola decimale?", a: "read_csv2()" },
+    { q: "Che cosa restituisce mean(c(10, NA, 30))?", a: "NA" },
+    { q: "Quale join tiene solo le righe senza abbinamento?", a: "anti_join()" },
+    { q: "A che cosa serve str_trim()?", a: "Toglie gli spazi all'inizio e alla fine del testo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i dati sono puliti, ora si disegnano. ggplot2 e la grammatica dei grafici.</Say>
+</Scene>

@@ -1,0 +1,169 @@
+---
+id: F.03.007
+course: fondamenta
+module: 3
+title: "I pacchetti: da dove arrivano i programmi"
+belt: gialla
+duration_min: 8
+prerequisites: [F.03.006]
+objectives:
+  - "Usare apt update, upgrade, install e remove"
+  - "Spiegare cos'è un repository e perché si installa da fonti fidate"
+  - "Spiegare perché gli aggiornamenti di sicurezza sono importanti"
+video:
+  provider: youtube
+  id: "1kicKTbK768"
+  start: 0
+  end: 600
+  channel: "Learn Linux TV"
+  title: "Linux Crash Course - The apt Command"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-pacchetti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere apt update (aggiorna l'elenco) con apt upgrade (aggiorna i programmi)"
+  - "Aggiungere una fonte di pacchetti trovata online senza verificare chi la gestisce"
+  - "Rimandare per mesi gli aggiornamenti di sicurezza"
+commands: []
+---
+
+<Scene title="Serve un programma">
+Per controllare i log in modo più comodo, al SOC serve un programma che sul server non c'è. Luca propone: «Lo scarico dal sito del programmatore, lo copio qui e lo lancio».
+
+Il Sensei alza un sopracciglio. «Esiste un modo più sicuro. E più ordinato.»
+
+<Say who="sensei">Su Linux i programmi non si cercano in giro per il web. Si chiedono al gestore dei pacchetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pacchetti e repository">
+Un **pacchetto** è un programma già impacchettato, pronto da installare, con l'elenco di ciò che gli serve per funzionare (le sue **dipendenze**).
+
+I pacchetti stanno in archivi online chiamati **repository**. Su Debian e Ubuntu il programma che li gestisce si chiama `apt`.
+
+<Callout kind="regola">
+Repository = il magazzino. Pacchetto = la scatola. apt = il magazziniere che va a prendere la scatola giusta e anche quelle che servono insieme.
+</Callout>
+
+<Say who="assistente">Come lo store del telefono, ma da terminale. E con regole di controllo più severe di quanto pensi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="update e upgrade">
+Due comandi che si confondono sempre:
+
+- `sudo apt update`: **aggiorna l'elenco** dei pacchetti disponibili. Non installa nulla.
+- `sudo apt upgrade`: **aggiorna i programmi** già installati alle versioni nuove.
+
+<Log lines={[
+  "studente@lab:~$ sudo apt update",
+  "Hit:1 http://deb.debian.org/debian bookworm InRelease",
+  "Reading package lists... Done",
+  "studente@lab:~$ sudo apt upgrade",
+  "The following packages will be upgraded: openssl libssl3",
+]} caption="Output semplificato. Prima si aggiorna l'elenco, poi i programmi." />
+
+<Callout kind="trucco">
+L'ordine è sempre lo stesso: **update** (guardo il catalogo), poi **upgrade** (compro le novità).
+</Callout>
+
+<Say who="sensei">Update non cambia il tuo sistema. Upgrade sì. Non scambiarli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="install e remove">
+Per aggiungere un programma, `install`. Per toglierlo, `remove`. Per cercarne uno, `search`.
+
+<Log lines={[
+  "studente@lab:~$ apt search htop",
+  "htop/stable 3.2.2-2 amd64 - interactive processes viewer",
+  "studente@lab:~$ sudo apt install htop",
+  "studente@lab:~$ sudo apt remove htop",
+]} caption="htop è un visualizzatore di processi, simile a top ma più comodo. install e remove richiedono sudo." />
+
+apt installa anche le dipendenze e, quando serve, ti chiede conferma prima di procedere: leggi cosa sta per fare.
+
+<Video />
+
+<Say who="assistente">Leggi sempre la lista che apt ti mostra prima di rispondere sì. Se vedi cose inattese, fermati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fidarsi delle fonti">
+I repository ufficiali della distribuzione sono controllati: i pacchetti sono **firmati** da chi li mantiene, e apt verifica la firma. È quello che ti protegge da un programma manomesso.
+
+Cosa succede se aggiungi una fonte trovata in un forum?
+
+<Guided
+  steps={[
+    "Un tutorial dice: aggiungi questa fonte e installa il pacchetto.",
+    "Da quel momento apt si fida di quella fonte per qualsiasi pacchetto.",
+    "Se chi la gestisce è malintenzionato (o viene attaccato), può distribuire programmi ostili.",
+    "L'installazione gira con sudo: il programma ostile avrebbe i poteri di amministratore.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Prima di aggiungere una fonte esterna chiediti: chi la gestisce? È il sito ufficiale del programma? Qualcuno di serio la consiglia? Se non sai rispondere, non aggiungerla.
+</Callout>
+
+<Say who="sensei">Un pacchetto è codice che eseguirai con i poteri più alti. Fidarsi a caso è come dare le chiavi al primo che passa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiornare è difendersi">
+Quasi tutti gli attacchi riusciti sfruttano **vulnerabilità già note**: difetti per cui esiste da tempo la correzione, ma che qualcuno non ha installato.
+
+<Quiz
+  question="Perché è importante fare con regolarità gli aggiornamenti di sicurezza?"
+  options={["Correggono vulnerabilità note che altrimenti restano sfruttabili", "Rendono il computer più veloce", "Cancellano i log vecchi", "Servono solo a cambiare l'aspetto dei programmi"]}
+  answer={0}
+  explain="Un aggiornamento di sicurezza chiude un difetto noto. Chi non aggiorna lascia aperta una porta che tutti conoscono. Il resto (velocità, grafica) è un effetto collaterale, non lo scopo."
+/>
+
+<Say who="assistente">Update e upgrade ogni tanto, in un orario tranquillo. Una piccola abitudine che evita guai grossi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su apt, repository e fiducia nelle fonti. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-pacchetti" pass="5/5" retries={3} />
+
+<Say who="sensei">Luca ha installato con apt, dal repository ufficiale. Più lento? Un minuto. Più sicuro? Molto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- apt installa pacchetti dai repository: update aggiorna l'elenco, upgrade aggiorna i programmi, install e remove aggiungono e tolgono.
+- I repository ufficiali sono controllati e firmati: aggiungere fonti sconosciute significa fidarsi di chi non conosci.
+- Gli aggiornamenti di sicurezza chiudono vulnerabilità note: vanno fatti con regolarità.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa fa apt update?", a: "Aggiorna l'elenco dei pacchetti disponibili, senza installare" },
+    { q: "Cosa fa apt upgrade?", a: "Aggiorna i programmi già installati" },
+    { q: "Cos'è un repository?", a: "Un archivio online da cui apt scarica i pacchetti" },
+    { q: "Perché non fidarsi di una fonte trovata in un forum?", a: "Potrebbe distribuire pacchetti ostili, installati con i poteri di root" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: il registro del sistema. È dove Linux scrive tutto ciò che succede. E dove si scoprono i guai.</Say>
+</Scene>

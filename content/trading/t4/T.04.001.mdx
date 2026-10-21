@@ -1,0 +1,193 @@
+---
+id: T.04.001
+course: trading
+module: 4
+title: "Rendimenti e distribuzione"
+belt: gialla
+duration_min: 8
+prerequisites: [T.03.007]
+objectives:
+  - "Calcolare un rendimento semplice e capire perché -50% e +50% non si annullano"
+  - "Calcolare media e mediana di una serie di rendimenti giornalieri"
+  - "Leggere un istogramma: la distribuzione dice quanto spesso accade ogni risultato"
+video:
+  provider: youtube
+  id: "sBx8RSvttmM"
+  start: 0
+  end: 389
+  channel: "Paola Minopoli"
+  title: "Distribuzione NORMALE o GAUSSIANA"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-rendimenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Sommare -50% e +50% e pensare di essere tornati in pari"
+  - "Guardare solo la media e ignorare come i rendimenti sono sparsi"
+  - "Confondere il prezzo con il rendimento: la statistica si fa sui rendimenti"
+commands: []
+---
+
+<Scene title="Il grafico che inganna">
+Lucia studia il trading algoritmico. Le mostrano il grafico del prezzo di un'azione **fittizia**, la «Azienda Alfa»: sale, scende, sale ancora. Un compagno dice: «Questo titolo è impazzito».
+
+Lucia vuole un metodo per **descrivere** i movimenti con i numeri, non a occhio. Ma che numeri? Il prezzo? La differenza tra un giorno e l'altro?
+
+La domanda del caso: **che cosa si misura, e come si riassumono tanti giorni in poche cifre?**
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. Nei mercati si può perdere denaro, anche tutto. Gli esempi usano dati inventati, e nel corso non si usano soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima di cercare un vantaggio, impara a misurare. Cominciamo dal rendimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento">
+Un prezzo da solo dice poco: 5 euro in più su un titolo da 10 euro sono tanti, su un titolo da 1.000 sono pochi. Per questo si misura il **rendimento**: di quanto è cambiato il prezzo **rispetto a prima**.
+
+Il **rendimento semplice** è: (prezzo di oggi − prezzo di ieri) diviso prezzo di ieri.
+
+Esempio con numeri puliti: ieri 100, oggi 110.
+
+<Log lines={[
+  "rendimento = (110 - 100) / 100",
+  "rendimento = 10 / 100 = 0,10 = +10%",
+]} />
+
+<Callout kind="regola">
+Convenzione del corso: **rendimento semplice**, giornaliero, scritto in percentuale. La statistica si fa sui rendimenti, non sui prezzi.
+</Callout>
+
+<Say who="assistente">Se non sai da dove partire, chiediti: rispetto a quanto? Il rendimento è sempre un rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perdere e recuperare">
+Il rendimento ha un tranello. Parti da 100 euro fittizi.
+
+- Giorno 1: **−50%**. Hai 50.
+- Giorno 2: **+50%**. Hai 50 + 25 = **75**.
+
+Non sei tornato a 100. Per recuperare da −50% serve **+100%**: il 50 deve raddoppiare.
+
+<Log lines={[
+  "100 -> -50% -> 50",
+  "50  -> +50% -> 75   (non 100!)",
+  "50  -> +100% -> 100",
+]} />
+
+<Callout kind="trucco">
+Le perdite pesano più dei guadagni: una perdita grande richiede un recupero più grande. Più sono profonde, più sale in fretta il conto del recupero.
+</Callout>
+
+Per ottenere il risultato di più giorni di fila si **moltiplicano** i fattori (1 + rendimento), non si sommano i rendimenti. Con +10% e poi −10%: 1,10 × 0,90 = 0,99, cioè **−1%**.
+
+<Say who="sensei">Meno cinquanta e più cinquanta fa meno venticinque. Scrivilo sul quaderno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Otto giorni, una distribuzione">
+Ecco gli otto rendimenti giornalieri dell'Azienda Alfa (dati **fittizi**), in percentuale:
+
+| giorno | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|--------|---|---|---|---|---|---|---|---|
+| rendimento % | +2 | −1 | +3 | 0 | −2 | +1 | +2 | −1 |
+
+Per riassumere si usano due numeri.
+
+- **Media**: somma diviso quanti sono. (2 − 1 + 3 + 0 − 2 + 1 + 2 − 1) = 4, diviso 8 = **+0,5%**.
+- **Mediana**: il valore al centro dopo aver messo i dati in ordine. Ordinati: −2, −1, −1, 0, 1, 2, 2, 3. I due centrali sono 0 e 1: mediana = **0,5%**.
+
+Prova tu: cambia un numero e guarda come si muovono media e mediana.
+
+<PythonTerminal code={"import statistics\n\nrend = [2, -1, 3, 0, -2, 1, 2, -1]\nprint(statistics.mean(rend))\nprint(statistics.median(rend))"} />
+
+<Say who="assistente">Una media sola può nascondere un giorno estremo. Cambia il 3 in 30 e guarda quanto salta la media, mentre la mediana quasi non si muove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'istogramma">
+Per vedere **come sono distribuiti** i rendimenti, si contano quante volte compare ciascun valore. Il risultato è un **istogramma**: una fila di barre, una per ogni intervallo.
+
+<Log lines={[
+  "-2%  #",
+  "-1%  ##",
+  " 0%  #",
+  "+1%  #",
+  "+2%  ##",
+  "+3%  #",
+]} />
+
+Quella fila di barre è la **distribuzione** dei rendimenti: dice **quanto spesso** succede ogni cosa. Con tanti giorni, nei mercati le barre formano spesso una forma a campana, alta al centro e bassa ai lati: tanti giorni tranquilli, pochi giorni estremi.
+
+Vuoi sentire la campana spiegata da un'altra voce? Meno di sette minuti, in italiano:
+
+<Video />
+
+<Callout kind="curiosita">
+La forma a campana si chiama **distribuzione normale** (o gaussiana). È un modello comodo, ma i mercati non la rispettano sempre: ne parleremo nella lezione sulle code grasse.
+</Callout>
+
+<Say who="sensei">Non guardare il singolo giorno. Guarda la forma di tutti i giorni insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un titolo fittizio perde il 20% il lunedì. Quale rendimento serve il martedì per tornare esattamente al prezzo di partenza?"
+  options={[
+    "+25%",
+    "+20%",
+    "+30%",
+    "+10%",
+  ]}
+  answer={0}
+  explain="Partendo da 100, dopo -20% si ha 80. Per tornare a 100 servono 20 su 80, cioè 25%. Chi risponde +20% applica la percentuale alla base sbagliata: il +20% si calcola su 80, e fa solo 96."
+/>
+
+<Say who="sensei">La base cambia ogni giorno. Il rendimento si calcola sempre sul prezzo di ieri, mai su quello di partenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su rendimenti, media, mediana e istogrammi. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-rendimenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il rendimento semplice è la lingua comune di tutto il corso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rendimento semplice è (prezzo oggi − prezzo ieri) / prezzo ieri: un rapporto, non una differenza.
+- Per più giorni si moltiplicano i fattori (1 + rendimento); −50% richiede +100% per rientrare.
+- La distribuzione (istogramma) dice quanto spesso accade ogni rendimento; media e mediana la riassumono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Rendimento semplice con prezzo di ieri 100 e di oggi 110?", a: "+10%" },
+    { q: "Dopo -50%, quale rendimento serve per tornare al punto di partenza?", a: "+100%" },
+    { q: "Che cos'è la mediana?", a: "Il valore al centro dei dati messi in ordine" },
+    { q: "Che cosa mostra un istogramma dei rendimenti?", a: "Quanto spesso compare ciascun rendimento" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quanto sono sparsi i rendimenti. Si chiama volatilità, ed è il primo numero del rischio.</Say>
+</Scene>

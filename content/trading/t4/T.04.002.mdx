@@ -1,0 +1,162 @@
+---
+id: T.04.002
+course: trading
+module: 4
+title: "La volatilità"
+belt: gialla
+duration_min: 8
+prerequisites: [T.04.001]
+objectives:
+  - "Calcolare la deviazione standard di cinque rendimenti giornalieri"
+  - "Annualizzare la volatilità con la radice di 252"
+  - "Spiegare perché due titoli con la stessa media possono avere rischi molto diversi"
+video:
+  provider: youtube
+  id: "I4ACMmGhMNw"
+  start: 0
+  end: 600
+  channel: "Percorso Finanza"
+  title: "Il rischio finanziario e la volatilità"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-volatilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che volatilità alta voglia dire sempre «titolo cattivo»: misura l'ampiezza, non la direzione"
+  - "Moltiplicare per 252 invece che per la radice di 252 quando si annualizza"
+  - "Dimenticare di dividere per n − 1 nella deviazione standard di un campione"
+commands: []
+---
+
+<Scene title="Stessa media, notti diverse">
+Due aziende fittizie, **Beta** e **Gamma**, hanno avuto in cinque giorni lo stesso rendimento medio: **+1% al giorno**. Un compagno di Lucia dice: «Allora sono uguali».
+
+Lucia guarda i giorni uno per uno. Beta si muove pochissimo. Gamma balza su e giù come una palla.
+
+La domanda del caso: **come si misura quanto un titolo balla, con un solo numero?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. I dati qui sono inventati.
+</Callout>
+
+<Say who="sensei">La media dice dove si va. Non dice quanto si ondeggia lungo la strada. Per questo serve un secondo numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La deviazione standard">
+Il numero che misura quanto i rendimenti si allontanano dalla media si chiama **deviazione standard**. Nei mercati la chiamano **volatilità**.
+
+Cinque rendimenti giornalieri di Gamma, in percentuale: **+3, −1, +3, −1, +1**. La media è 1.
+
+Si procede in quattro passi:
+
+<Guided
+  steps={[
+    "Scarti dalla media (1): +2, −2, +2, −2, 0.",
+    "Si elevano al quadrato: 4, 4, 4, 4, 0. Somma = 16.",
+    "Varianza del campione: si divide per n − 1 = 4. Fa 16 / 4 = 4.",
+    "Deviazione standard: radice quadrata della varianza. Radice di 4 = 2%.",
+  ]}
+/>
+
+<Callout kind="regola">
+Convenzione: dividiamo per **n − 1** (deviazione standard campionaria, quella di pandas e di `statistics.stdev`). La volatilità giornaliera di Gamma è **2%**.
+</Callout>
+
+<Say who="assistente">Il quadrato serve a non far annullare i salti verso l'alto con quelli verso il basso. Poi la radice riporta tutto in percentuale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Beta contro Gamma">
+Beta, nei cinque giorni, ha rendimenti **+1,5, +0,5, +1,5, +0,5, +1**. Media 1 anche qui. Scarti: +0,5, −0,5, +0,5, −0,5, 0. Quadrati: 0,25 ×4 = 1. Varianza = 1/4 = 0,25. Deviazione standard = **0,5%**.
+
+Provalo con Python:
+
+<PythonTerminal code={"import statistics\n\ngamma = [3, -1, 3, -1, 1]\nbeta = [1.5, 0.5, 1.5, 0.5, 1]\nprint(statistics.mean(gamma), statistics.mean(beta))\nprint(statistics.stdev(gamma))\nprint(statistics.stdev(beta))"} />
+
+Stessa media (1%), ma Gamma balla **quattro volte** più di Beta: 2% contro 0,5%.
+
+Vuoi sentirlo spiegare da un'altra voce? Circa quindici minuti, ma ne mostriamo solo i primi dieci, in italiano:
+
+<Video />
+
+<Say who="sensei">La volatilità non è né buona né cattiva. È l'ampiezza dell'ondeggiare. Chi la ignora si fa sorprendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Annualizzare">
+Le volatilità si confrontano quasi sempre **per anno**. Convenzione: **252 giorni di borsa** in un anno. Se i giorni sono indipendenti, la volatilità cresce con la **radice** del tempo:
+
+volatilità annua = volatilità giornaliera × √252
+
+<Log lines={[
+  "√252 = 15,87 (circa)",
+  "Gamma: 2% × 15,87 = 31,75% annuo",
+  "Beta:  0,5% × 15,87 = 7,94% annuo",
+]} />
+
+<Callout kind="attenzione">
+Si moltiplica per la **radice** di 252, non per 252. E la regola vale se i giorni sono indipendenti: nei mercati reali è solo un'approssimazione, perché la volatilità viene a ondate (lo vedremo nella lezione sull'autocorrelazione).
+</Callout>
+
+<Say who="assistente">Se nel conto vedi volatilità annua 600%, hai moltiplicato per 252 invece che per la sua radice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un titolo fittizio ha volatilità giornaliera 1%. Qual è la volatilità annua approssimata, con 252 giorni di borsa?"
+  options={[
+    "Circa 15,9%",
+    "252%",
+    "Circa 12,6%",
+    "Circa 1%",
+  ]}
+  answer={0}
+  explain="La volatilità annua è 1% × √252, che fa circa 15,87%. Chi risponde 252% moltiplica per 252 invece che per la sua radice. Chi risponde 12,6% usa la radice di 160 al posto di quella di 252."
+/>
+
+<Say who="sensei">Radice di duecentocinquantadue: circa sedici. Ricordala a memoria, ti servirà in tutto il corso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di deviazione standard, annualizzazione e confronti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-volatilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La volatilità è il rischio nella sua forma più semplice: il resto del corso la userà ovunque.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La volatilità è la deviazione standard dei rendimenti: dice quanto balla il titolo, non dove va.
+- Campione: scarti, quadrati, divisione per n − 1, radice quadrata. Giornaliera 2% su rendimenti +3, −1, +3, −1, +1.
+- Annua = giornaliera × √252 (circa 15,87), convenzione di 252 giorni di borsa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa misura la volatilità?", a: "Quanto i rendimenti si allontanano dalla loro media" },
+    { q: "Rendimenti +3, −1, +3, −1, +1: deviazione standard?", a: "2% (varianza 16/4 = 4)" },
+    { q: "Come si annualizza la volatilità giornaliera?", a: "Si moltiplica per la radice di 252" },
+    { q: "Due titoli con la stessa media hanno lo stesso rischio?", a: "No: può cambiare molto la volatilità" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: che cosa succede quando metti due titoli insieme. Correlazione e diversificazione.</Say>
+</Scene>

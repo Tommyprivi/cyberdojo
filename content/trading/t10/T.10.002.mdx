@@ -1,0 +1,168 @@
+---
+id: T.10.002
+course: trading
+module: 10
+title: "La porta del broker: le API"
+belt: verde
+duration_min: 9
+prerequisites: [T.10.001]
+objectives:
+  - "Spiegare che cos'è un'API e leggere una richiesta con il suo codice di risposta"
+  - "Distinguere l'ambiente demo da quello reale guardando l'indirizzo"
+  - "Leggere una risposta JSON in Python"
+video:
+  provider: youtube
+  id: "PfujVETI-i4"
+  start: 0
+  end: 600
+  channel: "Postman"
+  title: "REST API Fundamentals: Learn to Use GET, POST, PUT, & DELETE"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-api
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere l'indirizzo dell'ambiente demo con quello reale"
+  - "Pensare che 200 voglia dire «ordine eseguito bene» in ogni caso: dipende da che cosa si è chiesto"
+  - "Leggere un numero JSON scritto come testo senza convertirlo"
+commands: []
+---
+
+<Scene title="Il programma bussa">
+Marta vuole che il suo programma legga il saldo del conto demo. Non c'è un pulsante da cliccare: il programma deve **parlare con il computer del broker**.
+
+Il broker mette a disposizione una «porta di servizio» per i programmi. Si chiama **API**.
+
+La domanda del caso: **come si chiede un dato a un broker, e come si capisce se la risposta è quella giusta?**
+
+<Say who="sensei">Un programma non ha occhi né mani. Ha richieste e risposte. Impariamo a leggerle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Richiesta e risposta">
+Un'**API** è un modo con cui un programma chiede qualcosa a un altro programma. Funziona come al ristorante: tu ordini al cameriere (la richiesta), la cucina prepara, il cameriere porta il piatto (la risposta).
+
+Ogni richiesta ha:
+
+- un **indirizzo** (l'*endpoint*), per esempio `https://api.example-broker.test/paper/v1/account`;
+- un **metodo**: `GET` per leggere, `POST` per creare, `DELETE` per cancellare;
+- degli **header**, informazioni extra, tra cui l'identità di chi chiede.
+
+<Callout kind="curiosita">
+Gli indirizzi in questo corso, come `example-broker.test`, sono **inventati**: non esistono. Servono a mostrare la forma, senza toccare nessun servizio vero.
+</Callout>
+
+<Say who="assistente">Leggere è GET, creare è POST. Se non cambi niente, usa GET: è più sicuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il codice di risposta">
+Ogni risposta arriva con un **codice di stato**: un numero che dice com'è andata.
+
+| Codice | Significato |
+|---|---|
+| 200 | Va bene, ecco il dato |
+| 401 | Non so chi sei (identità mancante o sbagliata) |
+| 403 | So chi sei, ma non puoi farlo |
+| 404 | Non esiste |
+| 429 | Troppe richieste |
+| 500 | Problema sul server |
+
+Vuoi vedere un'altra voce spiegare i metodi e i codici? Il video è in inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Il numero conta più della frase. Un programma legge il codice, non indovina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Demo o reale: guarda l'indirizzo">
+Molti broker hanno **due indirizzi**: uno per l'ambiente demo e uno per quello reale. Un errore di indirizzo può far finire un ordine nel posto sbagliato.
+
+In questo corso usiamo **solo** l'ambiente demo. Il programma deve rifiutarsi di partire se l'indirizzo non è quello di prova:
+
+```python
+BASE_URL = "https://api.example-broker.test/paper/v1"
+
+if "/paper/" not in BASE_URL:
+    raise SystemExit("Indirizzo non demo: mi fermo.")
+```
+
+<Callout kind="regola">
+Controlla l'ambiente **nel codice**, non a memoria. Una riga di controllo costa nulla; un errore di ambiente può costare molto.
+</Callout>
+
+<Say who="sensei">Il tuo programma deve sapere dove si trova. Se ha dubbi, si ferma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere il JSON">
+Il broker risponde di solito in **JSON**: testo con coppie «nome: valore». Eccone una, finta, per il conto demo:
+
+<Log lines={[
+  "GET /paper/v1/account  ->  200",
+  "{\"mode\": \"paper\", \"cash\": \"10000.00\", \"currency\": \"EUR\"}",
+]} />
+
+In Python si trasforma in un dizionario. Attenzione: `cash` è scritto tra virgolette, quindi è **testo**: va convertito.
+
+<PythonTerminal code={"import json\nrisposta = '{\"mode\": \"paper\", \"cash\": \"10000.00\", \"currency\": \"EUR\"}'\ndati = json.loads(risposta)\nprint(dati['mode'])\nprint(float(dati['cash']))"} />
+
+Risultato atteso: `paper` e poi `10000.0`.
+
+<Quiz
+  question="La risposta contiene mode: «paper». Perché conviene leggere questo campo prima di inviare qualunque ordine?"
+  options={[
+    "Per essere certi di lavorare nell'ambiente demo e fermarsi se non lo è",
+    "Perché senza quel campo l'API non risponde mai",
+    "Perché il campo mode aumenta la velocità delle richieste",
+    "Perché in ambiente demo i prezzi sono sempre più alti",
+  ]}
+  answer={0}
+  explain="Il campo mode è un secondo controllo, oltre all'indirizzo: se non dice paper, il programma si ferma. Non influisce su velocità o prezzi."
+/>
+
+<Say who="assistente">Due controlli sono meglio di uno: indirizzo e campo mode. Se uno dei due non torna, stop.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su richieste, codici di stato, JSON e ambiente demo.
+
+<Practice generator="t10-api" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi legge bene la risposta evita metà dei guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'API è la porta con cui un programma chiede dati o azioni a un altro: richiesta (indirizzo, metodo, header) e risposta (codice e JSON).
+- 200 va bene, 401 identità, 403 permesso, 404 non esiste, 429 troppe richieste, 500 problema del server.
+- Il programma controlla da solo di essere nell'ambiente demo (indirizzo e campo mode) prima di fare altro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'API?", a: "Un modo con cui un programma chiede dati o azioni a un altro programma" },
+    { q: "Quale metodo serve solo per leggere?", a: "GET" },
+    { q: "Che differenza c'è tra 401 e 403?", a: "401: non so chi sei. 403: so chi sei, ma non hai il permesso" },
+    { q: "Come si evita di lavorare nell'ambiente sbagliato?", a: "Controllando indirizzo e campo mode nel codice, e fermandosi se non è demo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'identità. Come si dimostra chi sei al broker senza lasciare la chiave in giro.</Say>
+</Scene>

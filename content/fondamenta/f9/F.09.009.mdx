@@ -1,0 +1,269 @@
+---
+id: F.09.009
+course: fondamenta
+module: 9
+title: "Socket e automazione"
+belt: verde
+duration_min: 10
+prerequisites: [F.09.008]
+objectives:
+  - "Scrivere un mini server e un mini client TCP che si parlano su 127.0.0.1"
+  - "Convertire tra testo e byte con encode() e decode()"
+  - "Automatizzare compiti (rinominare file, riassumere un log) e pianificarli con cron"
+video:
+  provider: youtube
+  id: "8ZnuRSrIePk"
+  start: 0
+  end: 547
+  channel: "PyMike"
+  title: "Python Socket: Server - Client TCP - Parte Prima"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-socket
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "La rete trasporta byte, non testo: serve encode() prima di inviare e decode() dopo aver ricevuto"
+  - "Se il client parte prima del server si ottiene ConnectionRefusedError"
+  - "Cron non parte dalla cartella dello script: servono percorsi assoluti"
+commands: []
+---
+
+<Scene title="Due programmi che si parlano">
+Alla fine del turno Marta ti fa una domanda diversa: «Quando un servizio ascolta su una porta, che cosa fa davvero? Voglio che lo vedi con i tuoi occhi, non sulle slide.»
+
+Nel modulo sulle reti hai imparato che un servizio ascolta su una **porta** di un indirizzo IP. Oggi lo costruisci tu: un mini **server** che ascolta e un mini **client** che gli scrive, entrambi sul **tuo computer**.
+
+Poi, nella seconda parte, automatizzi due compiti noiosi del SOC: rinominare file e riassumere un log.
+
+La domanda del caso: **come si scrive un programma che ascolta su una porta, e come si fa lavorare lo script senza di te?**
+
+<Callout kind="regola">
+In questa lezione ti colleghi **solo** a `127.0.0.1`, l'indirizzo del tuo stesso computer. Provare le porte di computer altrui senza un permesso scritto è una scansione non autorizzata, e in Italia l'accesso abusivo a un sistema informatico è un reato (art. 615-ter del codice penale). Si prova solo ciò che è tuo.
+</Callout>
+
+<Say who="sensei">Il laboratorio è il tuo computer. Il bersaglio sei tu. Mai nient'altro, nemmeno per curiosità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un socket">
+Un **socket** è la «presa» attraverso cui un programma manda e riceve dati in rete: un indirizzo IP più una porta. Il modulo `socket` di Python ti permette di crearne uno.
+
+- Il **server** crea una presa, la lega a una porta (`bind`), si mette in attesa (`listen`) e accetta chi arriva (`accept`).
+- Il **client** crea una presa e si collega al server (`connect`).
+
+C'è un dettaglio: la rete trasporta **byte**, non testo. Perciò il testo va convertito: `encode()` lo trasforma in byte prima dell'invio, `decode()` lo riporta a testo dopo la ricezione.
+
+```python
+dati = "ciao".encode("utf-8")
+print(dati)
+print(dati.decode("utf-8"))
+print(len(dati))
+```
+
+Output:
+
+```text
+b'ciao'
+ciao
+4
+```
+
+La `b` davanti indica che sono byte e non una stringa. Quattro lettere, quattro byte.
+
+Vuoi vedere server e client spiegati da un'altra voce? Qui sono costruiti con lo stesso modulo.
+
+<Video />
+
+<Say who="assistente">Bind, listen, accept per il server. Connect per il client. Quattro parole: tienile a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il server">
+Salva questo programma in un file `server.py` e lancialo con `python3 server.py`. Resta in attesa di **un** messaggio, lo mostra e risponde.
+
+```python
+import socket
+
+HOST = "127.0.0.1"
+PORT = 5050
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind((HOST, PORT))
+    server.listen(1)
+    print("In ascolto su", HOST, PORT)
+    conn, indirizzo = server.accept()
+    with conn:
+        dati = conn.recv(1024)
+        testo = dati.decode("utf-8")
+        print("Ricevuto:", testo)
+        conn.sendall(("ECO: " + testo).encode("utf-8"))
+```
+
+`AF_INET` significa indirizzi IPv4 e `SOCK_STREAM` significa **TCP**, il protocollo affidabile che hai incontrato nelle reti. `recv(1024)` legge **al massimo** 1024 byte. `accept()` si ferma finché non arriva un client, quindi all'inizio il programma sembra «bloccato»: è normale.
+
+<Callout kind="curiosita">
+La riga con `SO_REUSEADDR` evita l'errore «Address already in use» se rilanci il server subito dopo averlo fermato.
+</Callout>
+
+<Say who="sensei">Il server aspetta. Non va a cercare nessuno. Chi vuole parlargli deve bussare alla sua porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il client">
+Apri un **secondo terminale**, salva `client.py` e lancialo **dopo** che il server è in ascolto.
+
+```python
+import socket
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+    client.connect(("127.0.0.1", 5050))
+    client.sendall("ciao SOC".encode("utf-8"))
+    risposta = client.recv(1024).decode("utf-8")
+    print("Risposta:", risposta)
+```
+
+Nel terminale del **server** vedrai:
+
+```text
+In ascolto su 127.0.0.1 5050
+Ricevuto: ciao SOC
+```
+
+E nel terminale del **client**:
+
+```text
+Risposta: ECO: ciao SOC
+```
+
+<Callout kind="attenzione">
+Se lanci il client **prima** del server, nessuno ascolta sulla porta 5050 e Python dà `ConnectionRefusedError`: connessione rifiutata. Non è un guasto: ricordati l'ordine, prima il server.
+</Callout>
+
+Hai appena visto con i tuoi occhi cosa significa «porta aperta»: è un programma in ascolto. Se lo fermi, la porta si chiude.
+
+<Say who="assistente">Fai anche una prova di errore: avvia il client senza il server, e leggi il messaggio. Capire gli errori è metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Automatizzare: rinominare e riassumere">
+Il secondo compito di Marta è noioso, e per questo perfetto da automatizzare. Primo: rinominare dei file. Lo script crea una cartella di prova con tre file e li rinomina aggiungendo un prefisso.
+
+```python
+from pathlib import Path
+
+cartella = Path("prova")
+cartella.mkdir(exist_ok=True)
+for numero in range(1, 4):
+    (cartella / f"log{numero}.txt").write_text("OK\n", encoding="utf-8")
+
+for file in sorted(cartella.glob("log*.txt")):
+    nuovo = file.with_name("vecchio_" + file.name)
+    file.rename(nuovo)
+    print(file.name, "->", nuovo.name)
+```
+
+Output:
+
+```text
+log1.txt -> vecchio_log1.txt
+log2.txt -> vecchio_log2.txt
+log3.txt -> vecchio_log3.txt
+```
+
+Eseguilo **una volta sola**, nella cartella di prova: se lo ripeti, cancella prima la cartella `prova` creata da lui.
+
+Secondo: riassumere un log. Questa funzione conta quante righe hanno esito `OK` e quante `FAILED`, usando il file `accessi.log` della lezione precedente.
+
+```python
+def riassumi(percorso):
+    conteggio = {"OK": 0, "FAILED": 0}
+    with open(percorso, encoding="utf-8") as f:
+        for riga in f:
+            parti = riga.split()
+            if len(parti) > 1 and parti[1] in conteggio:
+                conteggio[parti[1]] += 1
+    return conteggio
+
+print(riassumi("accessi.log"))
+```
+
+Output:
+
+```text
+{'OK': 2, 'FAILED': 2}
+```
+
+<Say who="sensei">Funzione piccola, file in ingresso, dizionario in uscita. Funziona oggi, e funzionerà tra un anno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, e poi cron">
+Uno script utile gira **da solo**. Nel modulo sul terminale Linux hai conosciuto **cron**, il programma che esegue comandi a orari fissi. Una riga di `crontab -e` che lancia il riassunto ogni giorno alle 06:30:
+
+```text
+30 6 * * * /usr/bin/python3 /home/ada/riassunto.py >> /home/ada/riassunto.out 2>&1
+```
+
+I cinque campi sono, nell'ordine: minuto, ora, giorno del mese, mese, giorno della settimana. Con `30 6` significa le 06:30; gli asterischi significano «sempre».
+
+<Callout kind="attenzione">
+Cron non parte dalla cartella dello script: usa sempre **percorsi assoluti**, sia per Python sia per il file, e anche dentro lo script. E scrivi l'output in un file, altrimenti non sai se è andato bene.
+</Callout>
+
+<Quiz
+  question="Cosa succede se avvii il client prima del server?"
+  options={["ConnectionRefusedError: nessuno ascolta sulla porta", "Il client crea il server da solo", "Il client riceve una stringa vuota", "Python avvia il server in automatico"]}
+  answer={0}
+  explain="La connessione ha bisogno di qualcuno in ascolto. Senza server la porta è chiusa e il sistema rifiuta la connessione: Python lo segnala con ConnectionRefusedError."
+/>
+
+Prova la conversione tra testo e byte:
+
+<PythonTerminal code={"messaggio = 'ciao SOC'\ndati = messaggio.encode('utf-8')\nprint(dati)\nprint(dati.decode('utf-8'))"} />
+
+<Say who="assistente">Il crontab si può provare con una scadenza vicina, come ogni minuto, e poi sistemarlo. Ma ricorda di rimetterlo a posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, quale chiamata fa il server o il client, come si scrive una riga di cron. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-socket" pass="4/5" retries={3} />
+
+<Say who="sensei">Capire che cosa fa un server ti rende un analista migliore. Provarlo contro altri senza permesso ti rende un imputato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il server fa `bind`, `listen`, `accept`; il client fa `connect`; il testo si converte in byte con `encode()` e si riconverte con `decode()`.
+- Si prova solo su `127.0.0.1`: le scansioni di computer altrui senza permesso scritto non si fanno.
+- Gli script si automatizzano con `pathlib` e funzioni piccole, e si pianificano con cron usando percorsi assoluti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A quale indirizzo ti colleghi per provare un server sul tuo computer?", a: "127.0.0.1" },
+    { q: "Quale chiamata del server aspetta un client?", a: "accept()" },
+    { q: "Perché si usa encode() prima di inviare?", a: "La rete trasporta byte, non testo" },
+    { q: "Cosa significa la riga cron 30 6 * * *?", a: "Ogni giorno alle 06:30" },
+  ]}
+/>
+
+<Say who="sensei">Hai finito il modulo Python. Ora leggi i log, scrivi script e capisci cosa fa un servizio. Nel prossimo modulo metterai tutto insieme.</Say>
+</Scene>

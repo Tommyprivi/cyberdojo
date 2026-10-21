@@ -1,0 +1,174 @@
+---
+id: D.17.006
+course: dati
+module: 17
+title: "Un settore nuovo: scegliere le metriche"
+belt: marrone
+duration_min: 10
+prerequisites: [D.17.005]
+objectives:
+  - "Elencare le domande da fare, i dati da cercare e gli esperti da consultare in un settore nuovo"
+  - "Riconoscere quando una metrica importata da un altro settore non vale"
+  - "Scegliere metriche adatte partendo dalla decisione da prendere"
+video:
+  provider: youtube
+  id: "DVPLa1HizNY"
+  start: 0
+  end: 600
+  channel: "Cassie Kozyrkov"
+  title: "The importance of domain expertise in data science"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-nuovo-settore
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Importare metriche da un altro settore senza chiedersi se hanno senso (per esempio la fedeltà mensile dove si compra una volta l'anno)"
+  - "Cominciare dai dati disponibili invece che dalla decisione da prendere"
+  - "Non parlare con chi lavora nel settore e interpretare i dati da soli"
+commands: []
+---
+
+<Scene title="Il primo giorno alla cooperativa">
+Sei appena arrivato come analista alla «Cooperativa Olivi del Sole», fittizia. Produce olio. Hai lavorato per anni su abbonamenti online. Il tuo primo cruscotto mostra la **fedeltà mensile dei clienti**, una metrica che conosci bene.
+
+Il responsabile ti guarda e dice: «Qui ogni socio porta le olive una volta l'anno». La domanda del caso: **come si scelgono le metriche in un settore che non conosci?**
+
+<Say who="sensei">Il primo errore dell'analista nuovo è portare con sé la cassetta degli attrezzi sbagliata. Si comincia ascoltando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metriche importate che non valgono">
+Nella tua azienda precedente la **fedeltà mensile** (quanti clienti tornano ogni mese) era chiara. Qui i 120 soci portano le olive **una volta l'anno**. Quindi in 11 mesi su 12 la fedeltà mensile fa 0%: sembra un disastro, ma è il normale ciclo della raccolta.
+
+Una voce autorevole spiega perché la conoscenza del settore conta:
+
+<Video />
+
+<Callout kind="attenzione">
+Una metrica ha senso solo se il comportamento che misura **esiste** nel settore. Importarla per abitudine dà numeri veri e conclusioni sbagliate.
+</Callout>
+
+<Say who="assistente">0% di fedeltà mensile qui non è una crisi: significa solo che nessuno raccoglie olive a febbraio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le domande da fare">
+Prima dei dati, le domande. Una lista da portare con te:
+
+1. **Quale decisione** dobbiamo prendere con questi numeri?
+2. **Chi** userà la risposta e ogni quanto?
+3. **Come funziona** il lavoro: quando si compra, quando si vende, quanto dura un ciclo?
+4. **Che cosa è un buon risultato** per chi lavora qui?
+5. **Che cosa è già stato provato** e perché non ha funzionato?
+
+<Callout kind="regola">
+Si parte dalla **decisione**, poi si sceglie la metrica, infine si cercano i dati. Non il contrario.
+</Callout>
+
+<Say who="sensei">Chi parte dai dati trova dei numeri. Chi parte dalla decisione trova una risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati da cercare ed esperti da ascoltare">
+**Dati**: che cosa si registra già (conferimenti, rese, costi)? In quale formato? Con quale qualità? Che cosa **manca** (per esempio meteo, età degli alberi)?
+
+**Esperti** con cui parlare:
+
+- chi lavora sul campo (agronomo, frantoiano): sa che cosa significa un numero;
+- chi vende (commerciale): sa che cosa chiedono i clienti;
+- chi tiene i conti (amministrazione): sa come si registrano i costi.
+
+<Callout kind="trucco">
+Una mezz'ora con chi fa il lavoro vale più di una settimana di analisi al buio. Porta tre domande precise e prendi appunti.
+</Callout>
+
+<Say who="assistente">Gli esperti non ti giudicano se chiedi. Ti giudicano se sbagli perché non hai chiesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una metrica che vale nel settore">
+Dopo la chiacchierata, la metrica giusta è la **resa per ettaro**, non la fedeltà mensile. Dati fittizi:
+
+| Socio | Ettari | Olive (kg) | Resa per ettaro |
+|---|---|---|---|
+| Anna | 2 | 4.800 | 2.400 kg/ha |
+| Bruno | 5 | 9.000 | 1.800 kg/ha |
+
+Bruno porta più olive in totale (9.000 contro 4.800), ma Anna rende di più **per ettaro**: 4.800 / 2 = 2.400, contro 9.000 / 5 = 1.800. Se la resa di olio è del 15%, Anna ottiene 2.400 × 0,15 = **360 kg di olio per ettaro**.
+
+<Callout kind="curiosita">
+Prima di confrontare, si chiede: «a parità di che cosa?». Qui, a parità di terreno.
+</Callout>
+
+<Say who="sensei">Il totale premia chi è grande. La resa per ettaro premia chi lavora bene. Scegli in base alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Sei in un settore nuovo e ti chiedono un cruscotto. Qual è il primo passo più sensato?"
+  options={["Capire quale decisione serve e parlare con chi lavora nel settore", "Copiare il cruscotto della tua azienda precedente", "Calcolare tutte le metriche possibili con i dati disponibili", "Aspettare che qualcuno scelga le metriche al posto tuo"]}
+  answer={0}
+  explain="Si parte dalla decisione e dalle persone del settore. Copiare un cruscotto o calcolare tutto produce numeri senza domanda. Aspettare non è un metodo."
+/>
+
+<Say who="sensei">Un cruscotto pieno di numeri non è un cruscotto buono. Uno buono risponde a una domanda.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: quale metrica mostrare al consiglio della cooperativa?",
+    "Decisione da prendere: a quali soci offrire assistenza per migliorare la resa.",
+    "Metrica importata: fedeltà mensile. Non vale: i soci portano olive una volta l'anno.",
+    "Metrica adatta: resa per ettaro (Anna 2.400 kg/ha, Bruno 1.800 kg/ha).",
+    "Esperti da sentire: l'agronomo (che cosa causa rese basse) e il frantoiano (qualità delle olive).",
+    "Decisione: proporre assistenza ai soci con resa più bassa, dopo aver verificato con l'agronomo che il confronto sia equo (terreno, annata).",
+  ]}
+/>
+
+<Say who="assistente">Anche una buona metrica va controllata con chi conosce il campo: forse Bruno ha terreni più difficili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque casi su domande, dati, esperti e metriche non adatte. Hai 3 tentativi.
+
+<Practice generator="d17-nuovo-settore" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un settore nuovo si impara con le orecchie prima che con i fogli di calcolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Si parte dalla decisione, poi la metrica, poi i dati: mai il contrario.
+- Una metrica importata da un altro settore può non valere: controlla che il comportamento esista.
+- Parla con chi lavora nel settore: ti dice che cosa significano davvero i numeri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la prima domanda in un settore nuovo?", a: "Quale decisione dobbiamo prendere?" },
+    { q: "Perché la fedeltà mensile non vale per chi compra una volta l'anno?", a: "Perché in 11 mesi su 12 darebbe 0% anche se va tutto bene" },
+    { q: "Resa per ettaro di 9.000 kg su 5 ettari?", a: "1.800 kg per ettaro" },
+    { q: "Chi ascoltare prima di scegliere una metrica?", a: "Chi lavora sul campo, chi vende, chi tiene i conti" },
+  ]}
+/>
+
+<Say who="sensei">Ramo concluso. Hai visto cinque settori: in ognuno la domanda viene prima dei numeri.</Say>
+</Scene>

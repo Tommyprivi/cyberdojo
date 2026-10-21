@@ -1,0 +1,174 @@
+---
+id: C.12.002
+course: cybersecurity
+module: 12
+title: "Hardening: togliere ciò che non serve"
+belt: blu
+duration_min: 10
+prerequisites: [C.12.001]
+objectives:
+  - "Spiegare l'idea di hardening e di superficie d'attacco"
+  - "Applicare le idee tipiche dei benchmark CIS: servizi, SSH, montaggi, aggiornamenti, account"
+  - "Mettere in pratica un hardening prudente: provare, annotare, poter tornare indietro"
+video:
+  provider: youtube
+  id: "TVTQcEWMQa0"
+  start: 0
+  end: 600
+  channel: "Red Hat Enterprise Linux"
+  title: "How to Achieve CIS Benchmark Compliance to Harden Linux Systems | Into the Terminal 120"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-hardening
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Applicare una lista di regole alla cieca su un server in produzione, senza prova e senza copia"
+  - "Pensare che hardening voglia dire «aggiungere» strumenti: spesso vuol dire togliere"
+  - "Considerare l'hardening un lavoro fatto una volta sola: la configurazione deriva nel tempo"
+commands: [systemctl, ss, sshd]
+---
+
+<Scene title="Il server con troppe porte aperte">
+La «Verdi Assicurazioni» installa un nuovo server per il portale dei clienti. Lo fa con l'installazione di default. Una settimana dopo, un controllo interno trova:
+
+<Log lines={[
+  "$ ss -tlnp",
+  "LISTEN 0.0.0.0:22     sshd      (accessi remoti)",
+  "LISTEN 0.0.0.0:80     nginx     (portale)",
+  "LISTEN 0.0.0.0:631    cupsd     (stampa)",
+  "LISTEN 0.0.0.0:111    rpcbind   (servizi di rete vecchio stile)",
+  "LISTEN 0.0.0.0:25     postfix   (posta in uscita)",
+]} caption="Il server fa il portale web. Gli altri servizi chi li ha chiesti?" />
+
+La domanda del caso: **quali di queste porte servono davvero, e che cosa si fa delle altre?**
+
+<Say who="sensei">Ogni servizio acceso è una porta che qualcuno deve aggiornare e sorvegliare. Se nessuno la usa, nessuno la sorveglia. È lì che si entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'hardening">
+**Hardening** vuol dire «indurire»: ridurre la **superficie d'attacco** di un sistema, cioè l'insieme di punti da cui si potrebbe entrare. Si fa togliendo, chiudendo e restringendo.
+
+Pensa a una casa: se tolgo le finestre che non servono, rinforzo la porta e levo la chiave da sotto lo zerbino, ci sono meno modi per entrare.
+
+Nessuno sa a memoria cento regole. Per questo esistono i **benchmark CIS**: liste di configurazioni sicure, gratuite e scritte da una comunità di esperti, una per ogni sistema (Ubuntu, Red Hat, Debian e altri). Hanno due livelli:
+
+- **Livello 1**: regole di buon senso, con poco rischio di rompere qualcosa;
+- **Livello 2**: regole più severe, per ambienti dove la sicurezza pesa di più, con più possibilità di effetti collaterali.
+
+<Callout kind="regola">
+Un benchmark è una **lista di controllo, non un ordine**: ogni regola va capita e confrontata con ciò che il server deve fare.
+</Callout>
+
+Vuoi ascoltare un esperto spiegare come si lavora con i benchmark CIS? Il video è in inglese, attiva i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Non devi imparare le regole a memoria. Devi imparare il ragionamento che c'è sotto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le idee di base, una per una">
+Le famiglie di regole che trovi quasi in ogni benchmark:
+
+- **Servizi**: spegni e disattiva ciò che non serve (`systemctl disable --now nome`, dopo aver capito chi lo usa).
+- **Aggiornamenti**: sistema aggiornato, con aggiornamenti di sicurezza automatici o pianificati.
+- **Account e password**: niente account inutili, niente password vuote, scadenze sensate; l'accesso come root da remoto vietato.
+- **File system**: la cartella `/tmp` montata con `nodev`, `nosuid`, `noexec` (niente file di dispositivo, niente setuid, niente programmi eseguiti da lì).
+- **Rete**: firewall attivo e solo le porte necessarie (lezione 6).
+- **Log e controlli**: log attivi, protetti e conservati (lezione 4).
+
+<Callout kind="curiosita">
+Lo vedi ripetuto quasi ovunque: **nega per impostazione predefinita, consenti solo ciò che serve**. È lo stesso principio del minimo privilegio della lezione 1, applicato a tutto il sistema.
+</Callout>
+
+<Say who="sensei">Prima di spegnere qualcosa, chiedi: chi lo usa? Se nessuno risponde, spegnilo. Se qualcuno risponde, spiegagli perché e trova un'alternativa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="SSH: la porta più provata">
+SSH è la porta da cui gli amministratori entrano da remoto, e per questo è provata di continuo da programmi automatici. Il file di configurazione è `/etc/ssh/sshd_config`. Le tre impostazioni più comuni nei benchmark:
+
+<Log lines={[
+  "PermitRootLogin no",
+  "PasswordAuthentication no",
+  "MaxAuthTries 3",
+]} caption="Niente accesso diretto come root; solo chiavi, non password; pochi tentativi." />
+
+Un esempio svolto, con la prudenza necessaria:
+
+<Guided
+  steps={[
+    "Prima di tutto verifica che esista **già** una chiave SSH funzionante per un utente normale con sudo. Senza, ti chiuderesti fuori.",
+    "Apri una **seconda sessione** SSH e lasciala aperta: sarà la tua scialuppa.",
+    "Modifica `sshd_config` e controlla la sintassi con `sudo sshd -t`: se non stampa errori, il file è corretto.",
+    "Ricarica il servizio (`sudo systemctl reload ssh`, o `sshd` su altre distribuzioni) e prova ad accedere da una **terza** finestra.",
+    "Solo se funziona chiudi la sessione di sicurezza. Se non funziona, la seconda sessione ti permette di rimettere il file com'era.",
+  ]}
+/>
+
+<Say who="assistente">La regola d'oro: mai chiudere la porta di dietro prima di aver provato che quella davanti funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo al caso. L'amministratore ha capito che il server deve solo servire il portale e permettere l'accesso agli amministratori.
+
+<Quiz
+  question="Nel caso del server di Verdi Assicurazioni, che cosa è corretto fare per cupsd (stampa) e rpcbind, che nessuno usa?"
+  options={[
+    "Confermare che nessuno li usa, poi disattivarli e fermarli, annotando la modifica",
+    "Lasciarli: tanto sono nel firewall dell'ufficio",
+    "Cancellare a mano i loro file di sistema per sicurezza",
+    "Cambiare il numero di porta così nessuno li trova",
+  ]}
+  answer={0}
+  explain="Si verifica, si disattiva con il gestore dei servizi e si annota, così la modifica si può spiegare e annullare. Il firewall non sostituisce il togliere ciò che non serve. Cancellare file a mano è rischioso, e cambiare porta non ripara un servizio inutile."
+/>
+
+<LinuxTerminal goal="Controlla con systemctl status un servizio qualsiasi del sistema di prova." scenario="base" />
+
+<Say who="sensei">Spegnere un servizio si annulla in una riga. Un servizio compromesso, no. Fai la scelta facile da annullare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di hardening: scegli la misura più sensata e più prudente.
+
+<Practice generator="c12-hardening" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai togliere ciò che non serve. Ora impara a farlo senza rompere il lavoro degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Hardening = ridurre la superficie d'attacco: spegnere servizi, restringere account, SSH, file system e rete.
+- I benchmark CIS sono liste di controllo (livello 1 più prudente, livello 2 più severo): si capiscono e si adattano, non si applicano alla cieca.
+- Si indurisce con prudenza: prova su una copia, seconda sessione aperta, `sshd -t`, modifiche annotate e annullabili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la superficie d'attacco?", a: "L'insieme dei punti da cui si potrebbe entrare nel sistema" },
+    { q: "Quali sono le tre impostazioni SSH tipiche dei benchmark?", a: "PermitRootLogin no, PasswordAuthentication no (solo chiavi), MaxAuthTries basso" },
+    { q: "Come si controlla la sintassi di sshd_config prima di ricaricare?", a: "sudo sshd -t" },
+    { q: "Perché montare /tmp con noexec?", a: "Per impedire di eseguire programmi lasciati lì" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: AppArmor e SELinux. Anche se un servizio viene compromesso, gli impediamo di fare danni oltre il suo compito.</Say>
+</Scene>

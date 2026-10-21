@@ -1,0 +1,177 @@
+---
+id: T.02.002
+course: trading
+module: 2
+title: "Da dove arrivano i dati"
+belt: bianca
+duration_min: 8
+prerequisites: [T.02.001]
+objectives:
+  - "Elencare le fonti gratuite di dati di mercato e i loro limiti"
+  - "Spiegare perché gratis non vuol dire libero di ridistribuire"
+  - "Leggere un file CSV con pandas e salvarne una copia locale"
+video:
+  provider: youtube
+  id: "NdQfrq6rGCY"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Leggere e selezionare i dati - Pandas Python Tutorial Italiano 05"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-fonti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «gratis» voglia dire «posso fare quello che voglio con i dati»"
+  - "Fidarsi di una sola fonte senza controllare come tratta split e dividendi"
+  - "Scrivere una chiave di accesso (API key) dentro il codice"
+commands: []
+---
+
+<Scene title="Il sito che cambia">
+Luca ha scritto un programma che scarica ogni mattina i prezzi di un titolo da un sito gratuito. Per un mese tutto funziona. Poi, un lunedì, il programma si ferma: il sito ha cambiato le sue pagine.
+
+Peggio: i numeri vecchi che aveva scaricato un mese prima non coincidono più con quelli nuovi.
+
+La domanda del caso: **come si usano i dati di mercato in modo affidabile e onesto?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. Usiamo solo dati storici o fittizi.
+</Callout>
+
+<Say who="sensei">Un dato non è vero perché è gratis. Si controlla da dove viene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le fonti gratuite">
+Alcune fonti che si trovano senza pagare:
+
+- **siti di borse e istituzioni**: pubblicano dati e statistiche ufficiali;
+- **istituti statistici e banche centrali**: tassi, inflazione, dati dell'economia (dati «macro»);
+- **portali finanziari**: prezzi storici da scaricare in CSV, spesso con ritardo;
+- **librerie non ufficiali** che leggono questi portali con un programma.
+
+Il **CSV** è un file di testo: una riga per ogni record, i valori separati da una virgola o un punto e virgola. È semplice da scambiare, ma non controlla niente: non sa se una data è una data.
+
+<Say who="assistente">Una libreria non ufficiale funziona finché il sito resta com'è. Quando cambia, si rompe, e nessuno ti avvisa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gratis non vuol dire libero">
+Ogni fonte ha **termini d'uso**, cioè regole su che cosa puoi farne. In sintesi (ottobre 2026, verifica sempre le fonti ufficiali):
+
+- molti portali gratuiti permettono l'uso **personale e di studio**;
+- **ridistribuire** i dati (metterli online, venderli, includerli in un prodotto) di solito richiede una licenza apposita;
+- i dati gratuiti possono essere **ritardati**, incompleti o con errori, senza alcuna garanzia;
+- molte fonti limitano il numero di richieste: si rispetta il limite.
+
+<Callout kind="regola">
+Per studiare: leggi i termini, scarica una volta, salva una copia con la data. Non pubblicare i dati altrui e non aggirare i limiti.
+</Callout>
+
+<Say who="sensei">Per questo nel corso mostriamo numeri inventati. I dati veri hanno un proprietario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere un CSV con pandas">
+**pandas** è la libreria di Python per lavorare con le tabelle. Il suo comando per leggere un CSV è `read_csv`. Per non dipendere da un file, qui il testo del CSV è scritto nel codice:
+
+```python
+import io
+import pandas as pd
+
+testo = """data,chiusura
+2026-03-02,10.4
+2026-03-03,10.0
+2026-03-04,10.1"""
+
+df = pd.read_csv(io.StringIO(testo))
+print(df)
+```
+
+<Log lines={[
+  "         data  chiusura",
+  "0  2026-03-02      10.4",
+  "1  2026-03-03      10.0",
+  "2  2026-03-04      10.1",
+]} />
+
+Con un file vero basta scrivere `pd.read_csv("prezzi.csv")`. Vuoi vedere come si leggono e si selezionano i dati da un'altra voce?
+
+<Video />
+
+<Say who="assistente">Dopo aver letto un file, guarda sempre le prime righe e i tipi. Non fidarti al buio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai scaricato per studio i prezzi di un titolo da un portale gratuito. Che cosa è corretto fare?"
+  options={[
+    "Leggere i termini d'uso e tenere i dati per il tuo studio, senza pubblicarli",
+    "Metterli online su un sito per condividerli con tutti",
+    "Venderli ai compagni di classe come «dati esclusivi»",
+    "Lanciare mille richieste insieme per scaricarli prima",
+  ]}
+  answer={0}
+  explain="Per lo studio personale di solito si può, ma i termini vanno letti. Ridistribuire o vendere richiede una licenza, e aggirare i limiti di richieste viola le regole del servizio."
+/>
+
+<Say who="sensei">Se non sai se puoi farlo, non lo fai. Leggi le regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiavi e copie">
+Alcune fonti chiedono una **chiave di accesso** (API key): è come una password per il tuo programma.
+
+<Callout kind="attenzione">
+La chiave non va mai scritta nel codice che condividi. Si tiene in una variabile d'ambiente o in un file fuori dal progetto. Se la pubblichi per sbaglio, la fonte può bloccarla e altri possono usarla al posto tuo.
+</Callout>
+
+E salva sempre una **copia locale** con la data di scarico: così la tua analisi si può ripetere, anche se il sito cambia.
+
+<Say who="assistente">Una copia salvata oggi ti permette di ripetere domani lo stesso esperimento. Senza, non puoi dimostrare niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Dodici scenari di cui cinque a ogni tentativo: fonti, licenze, chiavi e copie.
+
+<Practice generator="t02-fonti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Dati onesti, risultati onesti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le fonti gratuite hanno limiti: ritardi, errori, regole d'uso e librerie che si possono rompere.
+- Gratis non vuol dire libero: si leggono i termini e non si ridistribuiscono i dati altrui.
+- Si legge un CSV con `pd.read_csv`, si tiene una copia locale con data e le chiavi non stanno nel codice.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un file CSV?", a: "Un file di testo con una riga per record e valori separati" },
+    { q: "Gratis vuol dire libero di ridistribuire?", a: "No: contano i termini d'uso e la licenza" },
+    { q: "Dove si tiene una API key?", a: "Fuori dal codice condiviso, ad esempio in una variabile d'ambiente" },
+    { q: "Perché salvare una copia locale con la data?", a: "Per poter ripetere l'analisi con gli stessi dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i dati si mettono in ordine nel tempo con pandas.</Say>
+</Scene>

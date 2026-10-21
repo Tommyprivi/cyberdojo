@@ -1,0 +1,180 @@
+---
+id: C.15.003
+course: cybersecurity
+module: 15
+title: "Le chiavi: dove vivono e chi le tocca"
+belt: blu
+duration_min: 10
+prerequisites: [C.15.002]
+objectives:
+  - "Descrivere il ciclo di vita di una chiave: creazione, uso, rotazione, revoca, distruzione"
+  - "Spiegare la differenza tra KMS e HSM e la cifratura a busta (envelope encryption)"
+  - "Applicare separazione dei compiti, minimo privilegio e rotazione alla gestione delle chiavi"
+video:
+  provider: youtube
+  id: "n5TisbO-eYI"
+  start: 0
+  end: 600
+  channel: "Cosmos"
+  title: "Hardware Security Module (HSM) and Key Management Service (KSM)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-chiavi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'algoritmo forte basti: se la chiave è gestita male, la cifratura è inutile"
+  - "Tenere la chiave e i dati cifrati nello stesso posto, con gli stessi permessi"
+  - "Non provare mai il ripristino: la chiave di ripristino che non funziona si scopre troppo tardi"
+commands: []
+---
+
+<Scene title="La chiave nella cartella del backup">
+**Studio Ferri**, studio di commercialisti fittizio, cifra con AES-256 l'archivio dei clienti. Bene. La chiave però sta in un file di testo nella stessa cartella condivisa dell'archivio, leggibile da tutti i dipendenti, e non è mai cambiata da quattro anni.
+
+Una collaboratrice se ne va dallo studio. Nessuno sa se ha una copia della chiave.
+
+La domanda del caso: **come si gestisce una chiave in modo che un addio, un errore o un furto non rendano inutile la cifratura?**
+
+<Say who="sensei">Nel modulo C2 lo hai già sentito: la chiave nel posto sbagliato annulla l'algoritmo. Ora impariamo il mestiere di custodire chiavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ciclo di vita di una chiave">
+Una chiave ha una vita, come un mazzo di chiavi fisiche. Le fasi sono:
+
+1. **Creazione**: si genera con un generatore casuale serio, mai con una password inventata.
+2. **Distribuzione e conservazione**: si porta dove serve, senza copie sparse.
+3. **Uso**: solo per lo scopo previsto (una chiave per cifrare i dati non firma anche i documenti).
+4. **Rotazione**: a intervalli regolari, o subito dopo un sospetto, se ne usa una nuova.
+5. **Revoca e sospensione**: se è compromessa, si smette di fidarsi.
+6. **Distruzione**: quando non serve più, si cancella in modo sicuro, anche dai backup previsti.
+
+<Callout kind="regola">
+Ogni chiave ha uno **scopo**, un **proprietario**, una **data di rotazione** e un elenco di **chi può usarla**. Se non sai dirlo, la chiave non è gestita.
+</Callout>
+
+<Say who="assistente">Una chiave che non cambia mai ha un solo modo di finire: nelle mani sbagliate, prima o poi, senza che nessuno se ne accorga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="KMS e HSM">
+Per custodire chiavi in modo professionale ci sono due strumenti.
+
+Un **HSM** (*Hardware Security Module*) è un dispositivo fisico, a prova di manomissione, dentro cui le chiavi nascono e vivono. Le chiavi **non escono mai** in chiaro: si manda dati all'HSM e lui restituisce il risultato (cifrato, firmato). Chi ruba l'HSM non ottiene le chiavi.
+
+Un **KMS** (*Key Management Service*) è un servizio, spesso offerto da un fornitore cloud, che si occupa di creare, ruotare, controllare l'accesso e registrare l'uso delle chiavi. Molti KMS tengono le proprie chiavi radice dentro HSM.
+
+Se non vuoi dare ai programmi la chiave stessa, la cifratura a busta fa così: i dati si cifrano con una **chiave dati** (DEK) generata ogni volta; la DEK viene a sua volta cifrata da una **chiave principale** (KEK) che resta nel KMS o nell'HSM.
+
+<Log lines={[
+  "dati dell'archivio",
+  "  └─ cifrati con DEK (chiave dati, una per file)",
+  "        └─ DEK cifrata con KEK (chiave principale, nel KMS/HSM)",
+  "Il file cifrato porta con sé la DEK cifrata: senza il KMS non si apre.",
+]} />
+
+Vuoi sentire la differenza da un'altra voce? In inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">La busta ha due vantaggi: la chiave principale non esce mai, e per cambiarla basta ricifrare le piccole DEK, non tutti i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi può fare che cosa">
+Un buon sistema di chiavi non si fida di una persona sola.
+
+- **Minimo privilegio**: un servizio può **usare** la chiave per cifrare e decifrare, ma non **esportarla** né **cancellarla**.
+- **Separazione dei compiti**: chi amministra i sistemi non è chi decide le politiche delle chiavi; per i passaggi più delicati servono **due persone** (controllo duale).
+- **Registro d'uso (log)**: ogni uso della chiave viene scritto. Un picco di richieste di decifrazione alle tre di notte è un segnale da leggere.
+- **Backup della chiave**: si fa, ma protetto quanto la chiave, e si **prova il ripristino**.
+
+<Callout kind="attenzione">
+Perdere una chiave è grave quanto rubarla: i dati cifrati restano chiusi per sempre. Per questo il backup delle chiavi e la procedura di ripristino sono parte del progetto, non un extra.
+</Callout>
+
+<Callout kind="curiosita">
+Distruggere la chiave equivale a distruggere i dati cifrati con essa: si chiama *crypto-shredding*. Utile quando bisogna cancellare dati sparsi in mille copie, comprese quelle dei backup.
+</Callout>
+
+<Say who="assistente">Sapere chi ha usato una chiave, e quando, vale quanto proteggerla. Senza registro non puoi scoprire un abuso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un dipendente con accesso alle chiavi lascia l'azienda. Dopo di lui, quale azione protegge davvero i dati cifrati con quelle chiavi?"
+  options={[
+    "Ruotare le chiavi a cui aveva accesso e togliere i suoi permessi, controllando i log d'uso",
+    "Disattivare solo il suo account di posta",
+    "Aspettare la prossima rotazione annuale, che è già in calendario",
+    "Cifrare di nuovo i dati con la stessa chiave, per sicurezza",
+  ]}
+  answer={0}
+  explain="Chi ha avuto accesso a una chiave potrebbe averne una copia: la rotazione rende inutile quella copia. Togliere i permessi impedisce usi futuri, i log mostrano usi passati sospetti. Ricifrare con la stessa chiave non cambia nulla; aspettare lascia aperta la finestra di rischio."
+/>
+
+<Say who="sensei">Quando una persona che conosceva un segreto se ne va, il segreto va cambiato. Non è sfiducia: è igiene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rimettere in ordine lo Studio Ferri">
+<Guided
+  steps={[
+    "Si genera una nuova chiave principale in un KMS, con accesso limitato a pochi ruoli. La vecchia chiave nel file di testo si considera compromessa.",
+    "I dati dell'archivio si ricifrano con chiavi dati nuove (DEK), protette dalla chiave principale nel KMS. Il file con la chiave in chiaro viene eliminato dalla cartella condivisa.",
+    "Il programma dello studio riceve il permesso di cifrare e decifrare, ma non di esportare né di cancellare le chiavi.",
+    "Si imposta una rotazione automatica della chiave principale, per esempio una volta l'anno, e subito dopo ogni sospetto.",
+    "Si attiva il registro d'uso con un avviso per accessi fuori orario. Si prova a ripristinare da backup su una macchina di prova.",
+  ]}
+/>
+
+<Callout kind="regola">
+Un HSM o un KMS non rendono sicuro un sistema da soli: servono permessi stretti, registri letti da qualcuno e procedure provate.
+</Callout>
+
+<Say who="sensei">La tecnologia ti dà la cassaforte. Le regole decidono chi ha la combinazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla vita delle chiavi: ruoli, rotazione, busta, HSM e KMS.
+
+<Practice generator="c15-chiavi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora le chiavi non sono più segreti nella cartella: sono un servizio con regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una chiave ha un ciclo di vita: creazione, uso, rotazione, revoca, distruzione; ha scopo, proprietario e scadenza.
+- L'HSM custodisce chiavi che non escono in chiaro; il KMS è il servizio che le gestisce; la cifratura a busta separa chiave dati e chiave principale.
+- Minimo privilegio, doppio controllo, registro d'uso e backup provati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un HSM?", a: "Un dispositivo a prova di manomissione in cui le chiavi nascono e restano, senza uscire in chiaro" },
+    { q: "Che cos'è la cifratura a busta?", a: "Dati cifrati con una chiave dati, a sua volta cifrata da una chiave principale in un KMS o HSM" },
+    { q: "Che cosa si fa quando chi conosceva una chiave lascia l'azienda?", a: "Si ruota la chiave e si tolgono i permessi, guardando i log" },
+    { q: "Che cos'è il crypto-shredding?", a: "Distruggere la chiave per rendere illeggibili tutti i dati cifrati con essa" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: una firma sul software. Come si sa che un programma è davvero di chi dice e non è stato toccato.</Say>
+</Scene>

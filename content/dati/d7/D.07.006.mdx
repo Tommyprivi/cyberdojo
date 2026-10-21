@@ -1,0 +1,148 @@
+---
+id: D.07.006
+course: dati
+module: 7
+title: "Le dashboard"
+belt: arancione
+duration_min: 8
+prerequisites: [D.07.005]
+objectives:
+  - "Partire dall'obiettivo e da chi decide, non dai grafici"
+  - "Scegliere poche metriche e disporle con una gerarchia visiva"
+  - "Usare filtri e confronti senza appesantire la pagina"
+video:
+  provider: youtube
+  id: "t3cAUt7sOQg"
+  start: 0
+  end: 591
+  channel: "Geckoboard"
+  title: "12 Dashboard design tips for better data visualization"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-dashboard
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere tutti i grafici possibili «perché c'è spazio»"
+  - "Mostrare numeri senza un confronto (obiettivo o periodo precedente)"
+  - "Non scrivere periodo e data di aggiornamento"
+commands: []
+---
+
+<Scene title="Venticinque grafici">
+Marta ha costruito per la Bottega Verde una dashboard con venticinque grafici. Il titolare la apre, scorre la pagina per un minuto e dice: «Ma io, adesso, cosa devo fare?».
+
+Una **dashboard** è un cruscotto: una pagina che riunisce pochi indicatori per capire a colpo d'occhio come stanno andando le cose. Come il cruscotto di un'auto: non mostra tutto il motore, mostra ciò che serve per guidare.
+
+La domanda della lezione: **come si progetta un cruscotto che serve a decidere?**
+
+<Say who="sensei">Un cruscotto con venticinque lancette è uno spettacolo. Un cruscotto con cinque lancette è uno strumento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Obiettivo e chi decide">
+Si comincia con due domande, prima di aprire qualsiasi programma.
+
+1. **Qual è l'obiettivo?** Esempio: ridurre i resi del 10% quest'anno.
+2. **Chi la usa e per decidere cosa?** Il titolare, ogni lunedì, per decidere dove intervenire.
+
+Dalle due risposte vengono le metriche: per ridurre i resi serve il **tasso di reso** (resi diviso ordini), non il numero di clienti iscritti né le visite al sito.
+
+<Callout kind="regola">
+Se una metrica non aiuta una decisione, non va in prima pagina. Magari va in una pagina di dettaglio.
+</Callout>
+
+<Say who="assistente">Domanda test per ogni grafico: se questo numero cambiasse, qualcuno farebbe qualcosa di diverso? Se no, toglilo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Poche metriche, gerarchia visiva">
+**Poche metriche.** In una schermata di solito bastano cinque o sei numeri chiave.
+
+**Gerarchia visiva.** Grandezza, colore e posizione guidano l'occhio:
+- in **alto a sinistra** la metrica più importante, grande;
+- sotto o accanto, i numeri di supporto, più piccoli;
+- in basso, i dettagli.
+
+**Un numero non basta.** «Vendite: 52.000» non dice se va bene. Serve un confronto: con l'obiettivo (60.000) o con il mese scorso (+4%).
+
+**Il colore** si riserva a ciò che richiede attenzione. Con rosso e verde ovunque, niente spicca più.
+
+Vuoi sentire dodici consigli di progettazione da un'altra voce? In inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">L'occhio legge dall'alto a sinistra verso il basso a destra. Metti lì ciò che conta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Filtri, periodo, aggiornamento">
+**Filtri.** Un filtro (periodo, reparto, negozio) permette di restringere i dati senza costruire un'altra dashboard. Pochi filtri, quelli che servono davvero: con venti filtri chi legge deve impostare tutto prima di vedere qualcosa.
+
+**Periodo.** Scrivilo su ogni grafico. Se uno mostra l'ultimo mese e un altro l'ultimo anno senza dirlo, chi legge li confronta credendoli uguali.
+
+**Aggiornamento.** Scrivi la data dell'ultimo aggiornamento dei dati. Dati vecchi di tre mesi senza data sembrano dati di oggi.
+
+**Per chi decide.** Un direttore ha due minuti: i numeri chiave con il confronto e gli allarmi; i dettagli solo se li chiede.
+
+<Callout kind="trucco">
+Non confondere dashboard e report: la dashboard dà il colpo d'occhio e si aggiorna; il report spiega con calma e per iscritto.
+</Callout>
+
+<Say who="assistente">Una dashboard che non dice quando è stata aggiornata è come un orologio senza lancette: sembra funzionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una dashboard ha 25 grafici e nessuno sa cosa guardare. Come la migliori?"
+  options={["Tieni le cinque o sei metriche chiave in prima pagina e sposta il resto in una pagina di dettaglio", "Aggiungi altri cinque grafici per spiegare i primi", "Riduci i grafici per farli stare tutti nella pagina", "Cambia il tema da chiaro a scuro"]}
+  answer={0}
+  explain="Il problema è che mancano gerarchia e priorità, non lo spazio. Aggiungere o rimpicciolire peggiora la situazione. Meglio poche metriche legate a una decisione e il resto in una pagina di dettaglio."
+/>
+
+<Say who="sensei">Spazio disponibile non vuol dire spazio da riempire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cruscotti da correggere, metriche da scegliere, filtri da sistemare. Cinque risposte giuste su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-dashboard" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi, ricomincia dall'obiettivo e da chi decide. Il resto viene dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si parte dall'obiettivo e da chi decide: da lì vengono le metriche.
+- Cinque o sei metriche chiave, la più importante in alto a sinistra, ciascuna con un confronto; il colore solo per ciò che richiede attenzione.
+- Filtri pochi e utili, periodo su ogni grafico, data di aggiornamento ben visibile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si parte per costruire una dashboard?", a: "Dall'obiettivo e da chi decide" },
+    { q: "Quante metriche in prima pagina?", a: "Poche: cinque o sei" },
+    { q: "Cosa serve accanto a un numero?", a: "Un confronto con l'obiettivo o con il periodo precedente" },
+    { q: "Cosa va scritto per evitare dati vecchi scambiati per attuali?", a: "La data dell'ultimo aggiornamento" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Ultima lezione del modulo: gli strumenti, da matplotlib a Metabase.</Say>
+</Scene>

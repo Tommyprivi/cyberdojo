@@ -1,0 +1,156 @@
+---
+id: H.07.001
+course: hedge
+module: 7
+title: "Obiettivi e vincoli"
+belt: verde
+duration_min: 8
+prerequisites: [H.05.005]
+objectives:
+  - "Distinguere gli obiettivi di un fondo (rendimento, rischio) dai suoi vincoli (leva, concentrazione, liquidità)"
+  - "Calcolare drawdown, peso massimo di una posizione e leva lorda con numeri semplici"
+  - "Spiegare perché il mandato viene prima di ogni scelta di portafoglio"
+video:
+  provider: youtube
+  id: "MTAQVZBhvX4"
+  start: 0
+  end: 600
+  channel: "Altroconsumo"
+  title: "Profilo di rischio: che cos'è e come influisce sugli investimenti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-obiettivi-vincoli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere un obiettivo (ciò che si vorrebbe) con un vincolo (ciò che non si può superare)"
+  - "Pensare di poter avere rendimento alto e rischio basso insieme, senza compromessi"
+  - "Calcolare il drawdown sul valore di partenza invece che sul massimo raggiunto"
+commands: []
+---
+
+<Scene title="Prima di comprare qualsiasi cosa">
+**Rondine Capital** è un hedge fund fittizio da 300 milioni. Marta, la nuova responsabile del portafoglio, apre la prima riunione. Il gestore vorrebbe subito parlare dei titoli da comprare.
+
+Marta lo ferma: «Prima dimmi quanto rendimento cerchiamo, quanta oscillazione sopportano gli investitori, e che cosa **non possiamo** fare».
+
+La domanda del caso: **che cosa si decide prima di scegliere un solo titolo?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Un portafoglio senza regole non è una strategia. È una scommessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Obiettivi: ciò che si vuole">
+Un **obiettivo** dice dove si vorrebbe arrivare. I principali sono due:
+
+- **rendimento obiettivo**, per esempio «6% all'anno» (un desiderio, non una promessa);
+- **rischio obiettivo**, per esempio «volatilità attorno al 8% annuo» (la volatilità, ricordi, è l'oscillazione tipica dei rendimenti).
+
+Un modo semplice per confrontarli è il rapporto rendimento/volatilità. In questa lezione lo calcoliamo senza tasso privo di rischio, solo per semplicità:
+
+<Log lines={[
+  "rendimento obiettivo  6%",
+  "volatilità obiettivo  8%",
+  "rapporto  6 / 8 = 0,75",
+]} />
+
+<Callout kind="attenzione">
+Rendimento alto e volatilità bassa insieme sono in tensione: di solito per ottenere di più si accetta più rischio. Chi promette entrambi vende un sogno.
+</Callout>
+
+<Say who="assistente">Un obiettivo non si «ottiene». Si prova a raggiungerlo, e si può mancarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vincoli: ciò che non si supera">
+Un **vincolo** è un limite che il fondo deve rispettare, anche se l'obiettivo non è stato raggiunto. Eccone alcuni, scritti nel **mandato**, il documento che fissa strategie ammesse e limiti:
+
+- **leva massima**: quante volte il capitale si può esporre sul mercato;
+- **concentrazione**: peso massimo di una singola posizione;
+- **perdita massima (drawdown)**: la discesa dal massimo oltre la quale si interviene;
+- **liquidità**: gli investitori possono chiedere indietro i soldi, quindi servono posizioni vendibili in tempo.
+
+Vuoi sentire la stessa idea da un'altra voce? Il profilo di rischio, cioè quanto rischio si può e si vuole sopportare, in italiano:
+
+<Video />
+
+<Say who="sensei">Obiettivo: dove vuoi andare. Vincolo: dove non puoi andare. Prima i vincoli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre calcoli da conoscere">
+Numeri fittizi di Rondine Capital. Convenzioni: percentuali sul capitale del fondo, leva lorda = somma delle posizioni (lunghe più corte, in valore assoluto) divisa per il capitale.
+
+<Guided
+  steps={[
+    "Peso massimo di una posizione: limite 5% su 300 milioni, cioè 300 × 0,05 = 15 milioni.",
+    "Drawdown: il fondo ha toccato 150 milioni e ora vale 135. Perdita dal massimo: 15 su 150 = 10%. Si calcola sempre sul massimo, non sul valore di partenza.",
+    "Leva lorda: capitale 50 milioni, posizioni totali 150 milioni. 150 / 50 = 3 volte il capitale.",
+    "Per tornare al massimo dopo una perdita del 20% non basta un +20%: da 100 a 80, poi 80 × 1,25 = 100. Serve +25%.",
+  ]}
+/>
+
+<Callout kind="regola">
+Il drawdown si misura dal massimo raggiunto. Più si scende, più il recupero richiesto cresce in fretta.
+</Callout>
+
+<Say who="sensei">Una perdita pesa più di quanto sembri. Per questo il limite sul drawdown è un vincolo, non un suggerimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il gestore è già alla leva massima consentita (2 volte) e non ha raggiunto l'obiettivo di rendimento. Che cosa è corretto fare?"
+  options={[
+    "Superare la leva «solo per qualche giorno», così si recupera",
+    "Rispettare il vincolo e rivedere la strategia o l'obiettivo",
+    "Spostare le posizioni in un altro veicolo senza dirlo a nessuno",
+    "Chiedere al broker di non segnalare la leva",
+  ]}
+  answer={1}
+  explain="Il vincolo viene prima dell'obiettivo: se non si può rispettare entrambi, si cambia l'obiettivo o la strategia. Superare i limiti di nascosto è proprio il modo in cui i fondi si fanno male."
+/>
+
+<Say who="assistente">Un indizio: se un limite si può scavalcare quando ti dà fastidio, non era un limite.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi, calcoli semplici: drawdown, pesi massimi, leva, obiettivi e vincoli. Hai 3 tentativi.
+
+<Practice generator="h07-obiettivi-vincoli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: regalano solo le conseguenze delle regole che ti sei dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli obiettivi dicono dove si vorrebbe arrivare (rendimento, rischio); i vincoli dicono dove non si può andare (leva, concentrazione, drawdown, liquidità).
+- Il mandato scrive i limiti: si rispettano anche quando l'obiettivo non è raggiunto.
+- Il drawdown si calcola dal massimo: dopo -20% serve +25% per recuperare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra obiettivo e vincolo?", a: "L'obiettivo è ciò che si vorrebbe ottenere; il vincolo è un limite da non superare" },
+    { q: "Come si calcola il drawdown?", a: "Perdita dal massimo raggiunto, divisa per il massimo" },
+    { q: "Limite 5% su un fondo da 300 milioni: peso massimo di una posizione?", a: "15 milioni" },
+    { q: "Dopo una perdita del 20%, quanto serve per tornare al massimo?", a: "+25%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: con obiettivi e limiti chiari, come si divide il capitale tra strategie diverse.</Say>
+</Scene>

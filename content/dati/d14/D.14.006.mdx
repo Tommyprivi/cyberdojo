@@ -1,0 +1,157 @@
+---
+id: D.14.006
+course: dati
+module: 14
+title: "Prestazioni e costi"
+belt: marrone
+duration_min: 9
+prerequisites: [D.14.005]
+objectives:
+  - "Spiegare come partizionare, indicizzare e usare la cache per leggere meno dati"
+  - "Riconoscere una scansione inutile"
+  - "Applicare la regola «misura prima di ottimizzare»"
+video:
+  provider: youtube
+  id: "WsGw5TY2d1o"
+  start: 0
+  end: 300
+  channel: "Th30z Code"
+  title: "Database Indexing: Unveiling The Secrets of Fast Queries, in just 5 Minutes!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d14-prestazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ottimizzare a intuito, senza aver misurato dove si perde davvero tempo"
+  - "Aggiungere indici dappertutto: velocizzano le letture ma rallentano le scritture e occupano spazio"
+  - "Usare SELECT di tutte le colonne quando ne servono due"
+commands: []
+---
+
+<Scene title="Il conto che sale">
+La bolletta cloud di «Pasta Bianchi» è raddoppiata. Una query che mostra le vendite di ieri impiega **9 minuti** e ogni giorno rilegge tutti e 3 gli anni di dati. Il capo chiede a Nora: «Compriamo macchine più grosse?»
+
+Nora risponde: «Prima guardiamo **quanti dati leggiamo davvero**».
+
+<Say who="sensei">Spesso un sistema non è lento perché è piccolo, ma perché legge cose che non gli servono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Evitare scansioni inutili">
+Una **scansione completa** legge tutta la tabella, anche se la domanda riguarda una piccola parte. È come cercare un nome rileggendo l'intera rubrica ogni volta.
+
+Il modo migliore per essere veloci è **leggere meno**:
+- scegliere solo le **colonne** che servono (non tutte);
+- **filtrare** presto;
+- leggere solo le **parti** giuste dei dati.
+
+<Callout kind="regola">
+Il dato più veloce da elaborare è quello che non si legge. Prima si riduce la lettura, poi si pensa alla potenza.
+</Callout>
+
+<Say who="assistente">Se ti serve solo il totale degli importi, perché portarti dietro anche descrizione, indirizzo e note?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Partizionare">
+**Partizionare** vuol dire dividere una tabella in pezzi secondo una colonna, spesso la data. I dati di ogni giorno stanno in una «cartella» diversa.
+
+Quando chiedi «le vendite di ieri», il sistema apre **solo la cartella di ieri** e salta le altre: è la **potatura delle partizioni**.
+
+<Log lines={["vendite/data=2026-10-18/...", "vendite/data=2026-10-19/...", "vendite/data=2026-10-20/...", "Domanda: vendite del 2026-10-19  ->  si legge 1 cartella su 3"]} caption="Partizioni per data. Esempio fittizio." />
+
+<Callout kind="attenzione">
+Si partiziona per ciò che si usa **nei filtri**. Partizionare per una colonna con milioni di valori diversi crea milioni di cartellette: peggio di prima.
+</Callout>
+
+<Say who="sensei">Un archivio ordinato per anno aiuta se cerchi per anno. Se cerchi per cliente, non serve a niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indici e cache">
+Un **indice** è come quello in fondo a un libro: dice dove trovare una parola senza sfogliare tutto. Rende veloci le ricerche su una colonna.
+
+Il prezzo: occupa spazio e, a ogni scrittura, va aggiornato. Troppi indici rallentano chi scrive.
+
+La **cache** invece conserva in un posto veloce un risultato già calcolato. Se tutti i giorni alle 9 dieci persone chiedono la stessa dashboard, il calcolo si fa una volta e si riusa.
+
+<Callout kind="attenzione">
+Una cache può mostrare dati vecchi. Bisogna decidere per quanto tempo il risultato resta buono.
+</Callout>
+
+Un video breve sugli indici:
+
+<Video />
+
+<Say who="assistente">Indice: per trovare in fretta. Cache: per non rifare. Partizione: per non aprire tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misura prima di ottimizzare">
+Prima di cambiare qualcosa, **misura**: quanto tempo impiega ogni passo? Quanti dati legge? Quanto costa?
+
+Spesso il collo di bottiglia non è dove pensi. Se il 90% del tempo è in un solo passo, ottimizzare gli altri non cambia quasi niente.
+
+<Callout kind="trucco">
+Il ciclo è semplice: **misura**, cambia **una cosa sola**, **misura di nuovo**. Se non è migliorato, torna indietro.
+</Callout>
+
+I costi seguono la stessa logica: guarda quale lavoro costa di più, e spegni le risorse che non servono più (macchine, copie dimenticate, tabelle mai lette).
+
+<Say who="sensei">Un medico non cura prima di aver diagnosticato. Neanche tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una query sulle vendite di un solo giorno impiega minuti, perché legge tre anni di dati senza filtri sulla data. Qual è il primo intervento sensato?"
+  options={["Partizionare per data e filtrare sulla data, così si leggono solo i dati di quel giorno", "Comprare macchine il doppio più potenti", "Aggiungere un indice su ogni colonna", "Mettere in cache la tabella di tre anni"]}
+  answer={0}
+  explain="Il problema è leggere troppo. Partizionare per data e filtrare riduce la lettura a una frazione. Macchine più grosse costano di più senza togliere la causa; indici ovunque rallentano le scritture; la cache di tutta la tabella non risolve la scansione."
+/>
+
+<Say who="assistente">Prima togli lavoro inutile, poi eventualmente aggiungi potenza. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su partizioni, indici, cache, costi e misura.
+
+<Practice generator="d14-prestazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Misura, riduci ciò che leggi, poi decidi. Chiudi il ramo con questo metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il modo più efficace per essere veloci è leggere meno: poche colonne, filtri presto, solo le partizioni giuste.
+- Partizioni, indici e cache aiutano, ma ognuno ha un costo: complessità, spazio, scritture più lente o dati vecchi.
+- Prima si misura, poi si cambia una cosa sola, poi si misura di nuovo; lo stesso vale per i costi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una scansione completa?", a: "Leggere tutta la tabella anche se serve solo una parte" },
+    { q: "A che serve partizionare per data?", a: "A leggere solo i giorni richiesti e saltare gli altri" },
+    { q: "Qual è il costo di un indice?", a: "Spazio e scritture più lente" },
+    { q: "Che cosa si fa prima di ottimizzare?", a: "Si misura dove si perde davvero tempo o denaro" },
+  ]}
+/>
+
+<Say who="sensei">Il ramo è finito. Sai portare i dati nel cloud, elaborarli in grande, tenerli in ordine e farli correre senza sprechi. Bel lavoro.</Say>
+</Scene>

@@ -1,0 +1,174 @@
+---
+id: D.06.001
+course: dati
+module: 6
+title: "La probabilità"
+belt: gialla
+duration_min: 8
+prerequisites: [D.05.007]
+objectives:
+  - "Calcolare la probabilità di un evento semplice come casi favorevoli su casi possibili"
+  - "Distinguere frequenza osservata e probabilità teorica"
+  - "Spiegare con parole semplici la legge dei grandi numeri"
+video:
+  provider: youtube
+  id: "wbZHlMWzVqo"
+  start: 0
+  end: 384
+  channel: "Data Science Italia"
+  title: "Legge dei Grandi Numeri: spiegazione semplice e completa"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-probabilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che dopo una serie di teste «tocchi» croce: i lanci non hanno memoria"
+  - "Confondere la frequenza osservata (pochi dati) con la probabilità teorica"
+  - "Credere che la legge dei grandi numeri faccia «compensare» esattamente gli scarti"
+commands: []
+---
+
+<Scene title="La moneta di Giulia">
+Giulia, 15 anni, fa un esperimento per il club di scienze. Lancia una moneta **10 volte**. Escono **7 teste**.
+
+Il suo compagno Marco dice: «La moneta è truccata, esce testa troppo spesso!»
+
+Giulia non è sicura. Pensa: «Ma 7 su 10 è tanto, oppure è normale?»
+
+La domanda del caso: **come si misura "quanto è probabile" una cosa, e quanto ci si può fidare di pochi lanci?**
+
+<Say who="sensei">Prima di accusare una moneta, si impara a misurare il caso. È la base di tutta la statistica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un numero da 0 a 1">
+La **probabilità** di un evento è un numero che dice quanto è probabile che accada.
+
+- **0** significa impossibile.
+- **1** significa certo.
+- Tutto quello che sta in mezzo è «più o meno probabile». Con 0,5 è come lanciare una moneta.
+
+Quando tutti i casi sono ugualmente possibili, basta una divisione:
+
+**probabilità = casi favorevoli diviso casi possibili**
+
+Esempio con un dado a sei facce. «Esce un numero pari» ha 3 casi favorevoli (2, 4, 6) su 6 possibili: 3/6 = **1/2**.
+
+<Callout kind="regola">
+Una probabilità sta sempre tra **0 e 1** (o tra 0% e 100%). Se ti viene 1,2 o -0,3, c'è un errore nel calcolo.
+</Callout>
+
+<Say who="assistente">Casi favorevoli sopra, casi possibili sotto. Conta con calma, uno per uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contrario di un evento">
+Se un evento ha probabilità **p**, la probabilità che **non** accada è **1 meno p**. Perché le due cose insieme coprono tutti i casi.
+
+Esempio: pescare una carta di cuori da un mazzo di 52 carte. Le carte di cuori sono 13, quindi la probabilità è 13/52 = **1/4** = 0,25. Pescare una carta che **non** è di cuori ha probabilità 1 - 0,25 = **0,75**.
+
+<Callout kind="trucco">
+A volte è più facile contare il contrario. «Almeno una volta testa in tre lanci» si calcola come 1 meno «mai testa».
+</Callout>
+
+<Say who="sensei">Se non sai contare un evento, conta il suo contrario e sottrai da 1.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Frequenza e probabilità">
+Attenzione a due cose diverse.
+
+- La **probabilità teorica** è quella che calcoli ragionando: per un dado equo, 1/6 per ogni faccia.
+- La **frequenza relativa** è quella che osservi davvero: casi in cui è successo diviso numero di prove.
+
+Giulia lancia un dado 100 volte e il 6 esce 18 volte. La frequenza relativa del 6 è 18/100 = **0,18**. La probabilità teorica è 1/6, cioè circa **0,167**. Sono vicine, ma non uguali. E va bene così.
+
+<Callout kind="attenzione">
+I lanci **non hanno memoria**. Se una moneta equa dà cinque teste di fila, al sesto lancio la probabilità di testa è ancora **1/2**. Nessuna croce è «in arrivo».
+</Callout>
+
+<Say who="sensei">La moneta non sa cosa è uscito prima. Chi pensa il contrario perde soldi al casinò.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La legge dei grandi numeri">
+Torniamo a Giulia. Con 10 lanci, 7 teste su 10 (frequenza 0,7) è uno scarto che può capitare anche con una moneta equa. Con pochi dati il caso fa grandi oscillazioni.
+
+Ma se i lanci diventano 1000 e la frequenza delle teste è 0,52, qualcosa cambia: la frequenza si è **avvicinata** a 0,5.
+
+Questa è la **legge dei grandi numeri**: più prove si fanno, più la frequenza relativa si avvicina alla probabilità teorica.
+
+<Callout kind="curiosita">
+Non significa che gli scarti si «compensano» esattamente. Dopo 1000 lanci puoi avere 20 teste in più delle croci, e dopo 100 000 lanci perfino 100 in più: quello che si avvicina a 0,5 è la **frequenza**, non la differenza assoluta.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sette minuti, in italiano:
+
+<Video />
+
+<Say who="assistente">Pochi dati, molta confusione. Tanti dati, un quadro più chiaro. È il motivo per cui in statistica si raccolgono campioni grandi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una moneta equa ha dato testa 5 volte di fila. Qual è la probabilità di testa al lancio successivo?"
+  options={["1/2, come sempre", "Meno di 1/2, perché ora tocca croce", "Più di 1/2, perché è in serie positiva", "1/32"]}
+  answer={0}
+  explain="I lanci sono indipendenti e la moneta non ha memoria: la probabilità resta 1/2. Chi risponde meno di 1/2 cade nell'errore del giocatore. 1/32 è la probabilità di vedere cinque teste prima di lanciare, non dopo averle viste."
+/>
+
+<Guided
+  steps={[
+    "Un sacchetto contiene 3 palline rosse e 7 blu, tutte uguali al tatto. Quante sono le palline in tutto?",
+    "In tutto sono 3 + 7 = 10 palline: questi sono i casi possibili.",
+    "Quelle favorevoli (rosse) sono 3: la probabilità di pescare una rossa è 3/10 = 0,3.",
+    "La probabilità di pescare una blu è 1 - 0,3 = 0,7, cioè 7/10. Controllo: 0,3 + 0,7 = 1.",
+  ]}
+/>
+
+<Say who="sensei">Tre su dieci, non tre su sette. Sempre sul totale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Risolvi cinque domande su probabilità, frequenze e legge dei grandi numeri. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d06-probabilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sbaglia una probabilità sbaglia anche le decisioni che ci costruisce sopra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La probabilità è un numero da 0 (impossibile) a 1 (certo): casi favorevoli diviso casi possibili, quando i casi sono ugualmente possibili.
+- Frequenza osservata e probabilità teorica sono cose diverse; i lanci non hanno memoria.
+- La legge dei grandi numeri: con molte prove la frequenza relativa si avvicina alla probabilità.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la probabilità di un numero pari con un dado equo?", a: "3/6 = 1/2" },
+    { q: "Se P(evento) = 0,25, quanto vale P(non evento)?", a: "0,75" },
+    { q: "Dopo cinque teste, qual è la probabilità di testa al lancio dopo?", a: "1/2: la moneta non ha memoria" },
+    { q: "Che cosa dice la legge dei grandi numeri?", a: "Con molte prove la frequenza si avvicina alla probabilità" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si combinano più eventi e che cosa cambia quando una cosa dipende da un'altra.</Say>
+</Scene>

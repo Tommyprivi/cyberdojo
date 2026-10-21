@@ -1,0 +1,198 @@
+---
+id: D.17.002
+course: dati
+module: 17
+title: "Finanza: utile sì, cassa no"
+belt: blu
+duration_min: 10
+prerequisites: [D.17.001]
+objectives:
+  - "Distinguere ricavi, margini e flusso di cassa in un caso concreto"
+  - "Costruire una previsione con scenari invece di un solo numero"
+  - "Capire a livello intuitivo rischio e volatilità e controllare la correttezza dei dati contabili"
+video:
+  provider: youtube
+  id: "ASH_Q-t8dRU"
+  start: 0
+  end: 600
+  channel: "Antonio Lipari - Liquidità Aziendale"
+  title: "Flusso di cassa, un esempio pratico e facile da costruire"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-finanza
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che utile e cassa siano la stessa cosa: una vendita non incassata è utile ma non è denaro"
+  - "Dare una previsione come un numero sicuro invece di un intervallo con scenari"
+  - "Fidarsi del file contabile senza controlli: fatture duplicate o registrate nel periodo sbagliato falsano tutto"
+commands: []
+---
+
+<Scene title="Un trimestre in utile, la cassa che scende">
+«Bottega Verde» è un'azienda fittizia che vende prodotti da orto. Il trimestre si è chiuso con un **utile**. Eppure la cassa, cioè i soldi sul conto, è **scesa**.
+
+La titolare chiede: «Come è possibile? Abbiamo guadagnato o no?»
+
+<Callout kind="attenzione">
+Caso didattico con dati inventati. Non è consulenza finanziaria: serve a imparare a ragionare sui numeri, non a decidere dove mettere i propri soldi.
+</Callout>
+
+<Say who="sensei">Una domanda semplice, una risposta in due parti. Prima i ricavi e i margini, poi i soldi veri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ricavi, margini, utile">
+Il conto economico del trimestre (in euro):
+
+| Voce | Importo |
+|---|---|
+| Ricavi | 200.000 |
+| Costo del venduto | 120.000 |
+| **Margine lordo** | **80.000** (40%) |
+| Costi operativi | 60.000 |
+| **Utile operativo** | **20.000** (10%) |
+
+- **Ricavi**: tutto ciò che è stato venduto, anche se non ancora pagato.
+- **Margine lordo**: ricavi meno il costo diretto di ciò che si vende.
+- **Utile operativo**: il margine lordo meno i costi di gestione.
+
+Un'altra voce spiega il flusso di cassa. Eccola in un esempio pratico:
+
+<Video />
+
+<Say who="assistente">Margine lordo: 200.000 − 120.000 = 80.000, cioè il 40%. Poi 80.000 − 60.000 = 20.000, il 10%.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il flusso di cassa">
+Il **flusso di cassa** conta solo i soldi che **entrano e escono davvero** dal conto.
+
+| Voce | Importo |
+|---|---|
+| Incassi dai clienti | 150.000 |
+| Pagamenti ai fornitori e ai costi | 170.000 |
+| **Flusso di cassa** | **−20.000** |
+
+Cassa iniziale 50.000 €, cassa finale **30.000 €**.
+
+Perché la differenza? I clienti hanno pagato **150.000** su 200.000 di vendite: restano **50.000 da incassare** (crediti). L'azienda ha avuto 180.000 di costi ma pagato **170.000**: 10.000 sono debiti ancora aperti.
+
+Il conto torna: 20.000 di utile − 50.000 di crediti + 10.000 di debiti = **−20.000**.
+
+<Callout kind="regola">
+Utile = competenza (quando nasce la vendita o il costo). Cassa = quando si muove il denaro. Un'azienda può fallire con l'utile positivo se i soldi non arrivano in tempo.
+</Callout>
+
+<Say who="sensei">Venduto non vuol dire incassato. Il fornitore non accetta crediti da incassare: vuole denaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Previsioni e volatilità">
+Una **previsione** non è un numero: è un ventaglio. Per i ricavi del prossimo trimestre l'analista prepara tre **scenari**:
+
+- Prudente: **180.000**
+- Base: **200.000**
+- Ottimista: **230.000**
+
+La **volatilità** dice quanto i numeri ballano. Due aziende con 200.000 di ricavi in tre mesi:
+
+| Azienda | Mese 1 | Mese 2 | Mese 3 | Media |
+|---|---|---|---|---|
+| Bottega Verde | 60.000 | 70.000 | 70.000 | circa 66.700 |
+| Azienda B | 10.000 | 40.000 | 150.000 | circa 66.700 |
+
+Stessa media, ma Azienda B è molto più **rischiosa**: un mese brutto la mette in difficoltà.
+
+<Callout kind="curiosita">
+Rischio e volatilità non sono la stessa cosa, ma sono parenti: più i risultati ballano, più è difficile pianificare le spese fisse.
+</Callout>
+
+<Say who="assistente">La media da sola è bugiarda. Guarda sempre quanto i valori si allontanano da essa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati contabili: si controllano">
+Un dato contabile sbagliato rovina ogni analisi. Controlli minimi:
+
+- **Duplicati**: la stessa fattura registrata due volte.
+- **Periodo**: un ricavo di aprile messo nel trimestre di marzo.
+- **Riconciliazione**: i totali del registro devono tornare con l'estratto conto della banca.
+
+Esempio: nel registro i ricavi sono 200.000, ma una fattura da **10.000** è duplicata. I ricavi veri sono **190.000**.
+
+<Callout kind="trucco">
+Prima di calcolare un margine, conta le righe e cerca i duplicati. Un errore di 10.000 su 200.000 è il 5%: abbastanza per cambiare una decisione.
+</Callout>
+
+<Say who="sensei">I numeri non mentono, ma chi li registra può sbagliare. Controlla prima di fidarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Un'azienda chiude il trimestre con utile positivo ma la cassa è scesa. Quale spiegazione è la più probabile?"
+  options={["Molte vendite non sono ancora state incassate", "L'utile è stato calcolato sbagliato per forza", "I ricavi non contano mai", "La cassa e l'utile sono sempre uguali"]}
+  answer={0}
+  explain="L'utile conta le vendite quando nascono; la cassa solo quando il denaro arriva. Crediti verso i clienti non incassati fanno salire l'utile ma non la cassa. Non serve che il conto sia sbagliato."
+/>
+
+<Say who="sensei">Se un numero sale e l'altro scende, non stai sbagliando: stai guardando due cose diverse.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: perché l'utile è +20.000 e la cassa −20.000?",
+    "Dati: ricavi 200.000, costi 180.000, incassi 150.000, pagamenti 170.000.",
+    "Utile: 200.000 − 180.000 = 20.000. Cassa: 150.000 − 170.000 = −20.000.",
+    "Differenza: 50.000 di crediti non incassati meno 10.000 di debiti aperti spiegano i 40.000 di scarto.",
+    "Con una cassa di 30.000 e una perdita di cassa di 20.000 a trimestre, i soldi bastano per circa un trimestre e mezzo.",
+    "Decisione: sollecitare gli incassi e rivedere i tempi di pagamento ai clienti, prima di assumere o fare nuovi acquisti.",
+  ]}
+/>
+
+<Say who="assistente">Non è una consulenza: è un esercizio. Nella vita vera si consulta un professionista e si usano i dati reali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque piccoli casi su margini, cassa, scenari e controlli. Dati sempre fittizi. Hai 3 tentativi.
+
+<Practice generator="d17-finanza" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con i soldi, un errore di conto è un errore di vita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Margine lordo = ricavi − costo del venduto. Utile e cassa sono cose diverse: conta quando entra il denaro.
+- Una previsione è un ventaglio di scenari; la volatilità dice quanto i numeri ballano attorno alla media.
+- I dati contabili si controllano: duplicati, periodo giusto, riconciliazione con la banca.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Ricavi 200.000, costo del venduto 120.000: margine lordo in percentuale?", a: "40%" },
+    { q: "Perché un'azienda in utile può restare senza cassa?", a: "Perché le vendite non sono ancora state incassate" },
+    { q: "Che cosa mostra la volatilità?", a: "Quanto i valori si allontanano dalla media" },
+    { q: "Controllo base sui dati contabili?", a: "Cercare duplicati e riconciliare con l'estratto conto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la sanità, dove i dati sono delicati e le conclusioni vanno prese con cautela.</Say>
+</Scene>

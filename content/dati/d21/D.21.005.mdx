@@ -1,0 +1,196 @@
+---
+id: D.21.005
+course: dati
+module: 21
+title: "Versionare e rilasciare"
+belt: marrone
+duration_min: 10
+prerequisites: [D.21.004]
+objectives:
+  - "Descrivere il percorso di una modifica: branch, revisione, unione e rilascio"
+  - "Distinguere l'ambiente di sviluppo da quello di produzione e dire perché non si prova in produzione"
+  - "Spiegare in parole semplici che cosa fa l'integrazione continua per un progetto dbt"
+video:
+  provider: youtube
+  id: "w1X8qXlF4HY"
+  start: 0
+  end: 600
+  channel: "Datazard"
+  title: "dbt Environments Tutorial | Why You Need Multiple Environments | dbt Core"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-rilascio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Modificare un modello direttamente in produzione «solo per un attimo»: se sbaglia, la dashboard del capo sbaglia"
+  - "Unire una modifica senza revisione e senza aver lanciato i test"
+  - "Mettere password o chiavi dentro il repository Git: restano nella storia anche se poi si cancellano"
+commands: []
+---
+
+<Scene title="Venerdì alle 17:50">
+Sono le 17:50 di venerdì. Marta cambia al volo la regola dei ricavi direttamente nel progetto che alimenta la dashboard del capo. Senza provarla: «è una riga sola».
+
+Quella riga contiene una virgola di troppo. Il lunedì dopo la dashboard è vuota, e nessuno sa chi ha cambiato che cosa, né come tornare indietro.
+
+La domanda del caso: **come si cambia un modello senza rischiare la dashboard di tutti?**
+
+<Say who="sensei">Le modifiche di venerdì sera sono quelle che si pagano il lunedì. Esiste un percorso, ed è fatto apposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Git per i modelli">
+I file SQL e YAML del progetto stanno in un **repository Git**. Git conserva ogni versione di ogni file. Il lavoro si fa su un **branch** (ramo): una copia di lavoro separata dove si prova senza toccare quella principale (di solito `main`).
+
+<Log lines={[
+  "git switch -c cambia-regola-ricavi    # nuovo branch di lavoro",
+  "# ...modifichi models/marts/fct_ordini.sql...",
+  "git add models/marts/fct_ordini.sql",
+  "git commit -m 'Esclude i rimborsi dai ricavi'",
+  "git push -u origin cambia-regola-ricavi",
+]} caption="Sul tuo branch puoi sbagliare: main non cambia." />
+
+Poi si apre una **pull request** (richiesta di unione): dice ai colleghi «ho cambiato questo, controllate». Un collega legge il codice, commenta, approva. Solo allora il branch viene **unito** (*merge*) in `main`.
+
+<Callout kind="regola">
+Su `main` c'è solo ciò che è stato **rivisto e testato**. Nessuno scrive direttamente su `main`.
+</Callout>
+
+<Callout kind="attenzione">
+In Git non vanno mai password o chiavi. Per dbt, `profiles.yml` resta fuori dal repository e le credenziali si leggono dalle variabili d'ambiente. Una cartella `target/` o `logs/` non si versiona: sono file prodotti da dbt, da ignorare nel `.gitignore`.
+</Callout>
+
+<Say who="assistente">La pull request non è sfiducia. È un secondo paio di occhi: ne vede sempre di più di uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sviluppo e produzione">
+Un progetto dbt gira in due **ambienti**:
+
+| Ambiente | Chi lo usa | Dove scrive | Quando gira |
+|---|---|---|---|
+| sviluppo (dev) | tu, mentre lavori | uno schema personale, ad esempio `dbt_marta` | a mano, con `dbt build` |
+| produzione (prod) | dashboard e colleghi | lo schema ufficiale, ad esempio `analytics` | in automatico, ogni notte |
+
+In `profiles.yml` si definiscono due **target**:
+
+<Log lines={[
+  "cesto:",
+  "  target: dev",
+  "  outputs:",
+  "    dev:",
+  "      type: postgres",
+  "      host: localhost",
+  "      port: 5432",
+  "      user: marta",
+  "      password: \"{{ env_var('DBT_PASSWORD') }}\"",
+  "      dbname: cesto",
+  "      schema: dbt_marta",
+  "      threads: 4",
+  "    prod:",
+  "      type: postgres",
+  "      host: localhost",
+  "      port: 5432",
+  "      user: marta",
+  "      password: \"{{ env_var('DBT_PASSWORD') }}\"",
+  "      dbname: cesto",
+  "      schema: analytics",
+  "      threads: 4",
+]} caption="Esempio con PostgreSQL. Nel file la password è letta da una variabile, mai scritta." />
+
+Lo stesso codice, due destinazioni. `dbt build` scrive nello schema `dbt_marta`; `dbt build --target prod` scrive in `analytics`. Con `ref` dbt trova i nomi giusti in entrambi i casi.
+
+<Callout kind="trucco">
+`dbt build` esegue modelli e test **insieme**, nell'ordine del grafo: se un test fallisce, i modelli che ne dipendono non vengono costruiti. È il comando giusto per sviluppo e rilascio.
+</Callout>
+
+<Say who="sensei">Provare in sviluppo costa niente. Provare in produzione costa la fiducia di chi legge il report.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Integrazione continua in parole semplici">
+Rivedere a occhio non basta: una persona può non vedere che un test si è rotto. L'**integrazione continua** (CI, *continuous integration*) è un controllo **automatico** che parte a ogni pull request:
+
+<Guided
+  steps={[
+    "Marta apre una pull request: il sistema di CI (ad esempio GitHub Actions) si accorge e parte.",
+    "La CI costruisce i modelli in uno schema temporaneo, separato dalla produzione.",
+    "La CI lancia i test (dbt build): se uno fallisce, la pull request resta rossa.",
+    "Il collega rivede il codice e vede anche l'esito dei test: se è verde e il codice è giusto, approva.",
+    "Solo a questo punto si unisce in main. Un lavoro automatico notturno rilascia in produzione.",
+  ]}
+/>
+
+Per non ricostruire tutto a ogni modifica, la CI può costruire **solo ciò che è cambiato e ciò che ne dipende**. Con dbt Core si usa il confronto con lo stato di produzione:
+
+<Log lines={[
+  "dbt build --select state:modified+ --defer --state prod-artifacts/",
+]} caption="Costruisce i modelli modificati e quelli a valle; per gli altri legge la produzione. Serve il file manifest.json salvato dall'ultimo rilascio in prod-artifacts/." />
+
+<Callout kind="curiosita">
+Il servizio a pagamento dbt Cloud offre la stessa idea già pronta, con un'impostazione. Con dbt Core, gratuito, la scrivi tu nel sistema di CI.
+</Callout>
+
+<Video />
+
+<Say who="assistente">Il video spiega perché servono più ambienti, in inglese e con sottotitoli. L'idea è la stessa di qualunque software: si prova da una parte, si pubblica dall'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella pull request di Marta il collega nota che la CI è rossa: il test unique su fct_ordini.id_ordine è fallito. Che cosa si fa?"
+  options={[
+    "Si corregge il modello nel branch e si rilancia la CI, senza unire finché non è verde",
+    "Si unisce comunque: in produzione il test passerà da solo",
+    "Si cancella il test, così la CI torna verde",
+    "Si modifica direttamente main per fare prima",
+  ]}
+  answer={0}
+  explain="La CI rossa dice che la modifica rompe una regola. Si corregge sul branch, dove sbagliare costa poco, e si unisce solo a controlli verdi. Cancellare il test o scrivere su main toglie la protezione che serviva proprio in questo momento."
+/>
+
+<Say who="sensei">Una CI rossa è un messaggio utile, non un ostacolo. Ascoltalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Branch, ambienti, CI: che cosa si fa prima di rilasciare, e che cosa mai.
+
+<Practice generator="d21-rilascio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il rilascio sicuro è noioso, e per questo funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le modifiche si fanno su un branch, si rivedono con una pull request e si uniscono in main solo con test verdi. Nessuno scrive su main.
+- Sviluppo e produzione hanno schemi diversi, scelti dal target (dev o prod): si prova in sviluppo, la produzione serve alle persone.
+- L'integrazione continua costruisce e testa in automatico a ogni pull request, in uno schema temporaneo. Password e chiavi mai in Git.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un branch?", a: "Una copia di lavoro separata in cui si prova senza toccare main" },
+    { q: "Qual è la differenza tra dev e prod?", a: "Dev è lo schema personale per provare, prod è lo schema ufficiale letto da tutti" },
+    { q: "Che cosa fa dbt build?", a: "Esegue modelli e test insieme, nell'ordine del grafo" },
+    { q: "Che cosa fa l'integrazione continua?", a: "Costruisce e testa in automatico ogni modifica prima dell'unione" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del ramo: le metriche coerenti e il rapporto con la BI. Torniamo al problema dei due ricavi.</Say>
+</Scene>

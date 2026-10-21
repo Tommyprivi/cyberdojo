@@ -1,0 +1,186 @@
+---
+id: T.07.001
+course: trading
+module: 7
+title: "Il rendimento annuo composto"
+belt: arancione
+duration_min: 8
+prerequisites: [T.06.007]
+objectives:
+  - "Spiegare perché la media dei rendimenti annui non dice quanto è cresciuto un capitale"
+  - "Calcolare il rendimento annuo composto (CAGR) da capitale iniziale, finale e anni"
+  - "Trasformare un rendimento mensile in rendimento annuo senza moltiplicare per 12"
+video:
+  provider: youtube
+  id: "ChYOVJ5fqRc"
+  start: 0
+  end: 600
+  channel: "Gabriele Costa"
+  title: "Non puoi non sapere cosa è: CAGR spiegato semplice!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-cagr
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare la media dei rendimenti annui invece di comporli"
+  - "Moltiplicare per 12 un rendimento mensile per ottenere l'annuo"
+  - "Annualizzare periodi molto brevi e credere al numero ottenuto"
+commands: []
+---
+
+<Scene title="La media che mente">
+Marta ha provato una strategia su dati storici **fittizi**. Capitale iniziale: 10.000 euro (di carta, nessun conto reale).
+
+- Anno 1: **+25%**
+- Anno 2: **−20%**
+
+Marta fa la media: (25 − 20) / 2 = **+2,5% all'anno**. «Non è male!», pensa.
+
+La domanda del caso: **dopo due anni, quanti euro di carta ha davvero?**
+
+<Callout kind="attenzione">
+In questo corso si impara a valutare strategie. Si può perdere denaro, anche tutto, e il corso non è consulenza finanziaria. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Prima di credere a una media, rifai il conto con i soldi. I soldi non fanno medie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rifare il conto">
+Convenzione: usiamo i **rendimenti semplici** di ogni anno, cioè la variazione percentuale del capitale.
+
+- Dopo l'anno 1: 10.000 × 1,25 = **12.500**
+- Dopo l'anno 2: 12.500 × 0,80 = **10.000**
+
+Dopo due anni Marta è **a zero**: ha lo stesso capitale di partenza. Altro che +2,5% all'anno.
+
+Il motivo: il −20% del secondo anno si applica a un capitale **più grande**, quindi toglie più euro di quelli che il +25% aveva aggiunto.
+
+<Callout kind="regola">
+I rendimenti non si sommano e non si mediano: si **moltiplicano**. Ogni anno conta il fattore (1 + rendimento).
+</Callout>
+
+<Say who="assistente">Indizio: 1,25 × 0,80 fa esattamente 1. Un fattore uguale a 1 vuol dire nessun guadagno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La formula del CAGR">
+Il **rendimento annuo composto** (in inglese **CAGR**, «tasso annuo di crescita composto») risponde a una domanda precisa: **quale rendimento costante, ripetuto ogni anno, porterebbe dal capitale iniziale a quello finale?**
+
+CAGR = (capitale finale / capitale iniziale) ^ (1 / anni) − 1
+
+Esempio con numeri puliti: da 10.000 a 13.310 in 3 anni.
+
+- 13.310 / 10.000 = 1,331
+- radice cubica di 1,331 = 1,10 (perché 1,1 × 1,1 × 1,1 = 1,331)
+- CAGR = 1,10 − 1 = **10% all'anno**
+
+Per Marta: (10.000 / 10.000) ^ (1/2) − 1 = **0%**. Giusto.
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="sensei">Il CAGR è un tasso immaginario e costante. Il capitale vero ha salito e sceso. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal mese all'anno">
+Un backtest fittizio guadagna **1% al mese**. Quanto fa in un anno?
+
+Non 12%. Ogni mese il 1% si applica a un capitale già cresciuto:
+
+1,01 ^ 12 = 1,1268... cioè circa **+12,68%**.
+
+Se invece moltiplichi per 12 sbagli per difetto, e l'errore cresce con rendimenti più alti.
+
+Con i giorni di borsa si fa lo stesso: un anno ha circa **252 giorni di borsa** (convenzione che useremo in tutto il modulo). Se hai 504 giorni (due anni) e il capitale è passato da 100 a 121:
+
+CAGR = 1,21 ^ (252 / 504) − 1 = 1,1 − 1 = **10%**
+
+<Callout kind="trucco">
+Regola pratica: periodo più corto di un anno? Eleva alla potenza (periodi in un anno) / (periodi che hai). Periodo più lungo? Stessa formula con l'esponente più piccolo di 1.
+</Callout>
+
+<Say who="assistente">Attenzione ai campioni brevi: sei mesi di dati «annualizzati» sono una scommessa sulla fortuna, non una misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova nel codice">
+Stessi numeri in Python. Dati fittizi: quattro anni di rendimenti.
+
+```python
+import pandas as pd
+
+rend = pd.Series([0.25, -0.20, 0.10, 0.10])
+crescita = (1 + rend).prod()
+anni = len(rend)
+cagr = crescita ** (1 / anni) - 1
+print(round(crescita, 4), round(cagr, 4), round(rend.mean(), 4))
+```
+
+Output: `1.21 0.0488 0.0625`
+
+Il capitale è cresciuto del 21% in totale, il CAGR è **4,88%**, mentre la media semplice dice 6,25%. La media sovrastima sempre quando i rendimenti ballano.
+
+Ora prova tu con Python puro: cambia i numeri e premi Esegui.
+
+<PythonTerminal code={"iniziale = 10000\nfinale = 13310\nanni = 3\ncagr = (finale / iniziale) ** (1 / anni) - 1\nprint(round(cagr, 4))"} />
+
+<Say who="sensei">Cambia finale e anni, prevedi il risultato a mente, poi controlla. Così si impara.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia fittizia fa +50% il primo anno e −50% il secondo. Qual è il capitale finale se parti da 100?"
+  options={["75", "100", "50", "125"]}
+  answer={0}
+  explain="100 × 1,5 = 150, poi 150 × 0,5 = 75. La media dei rendimenti sarebbe 0%, ma il capitale ha perso il 25%. Chi risponde 100 ha mediato i rendimenti invece di moltiplicare i fattori."
+/>
+
+<Say who="sensei">Perdere il 50% richiede di guadagnare il 100% per tornare in pari. Terrai a mente questa asimmetria nelle prossime lezioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su CAGR, composizione dei rendimenti e annualizzazione. Servono tutte e cinque. Hai 3 tentativi e le domande cambiano.
+
+<Practice generator="t07-cagr" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un conto sbagliato in un report ti fa credere a una strategia che non esiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I rendimenti si moltiplicano come fattori (1 + r): la media semplice sovrastima la crescita vera.
+- CAGR = (finale / iniziale) ^ (1 / anni) − 1: il rendimento costante che darebbe lo stesso risultato.
+- Per annualizzare si eleva a potenza (1,01 ^ 12 e non 1 × 12) e i periodi brevi non fanno un numero affidabile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa misura il CAGR?", a: "Il rendimento annuo costante che porta dal capitale iniziale al finale" },
+    { q: "+25% poi −20%: quanto fa in totale?", a: "0%: 1,25 × 0,80 = 1" },
+    { q: "1% al mese, quanto all'anno?", a: "Circa 12,68%, perché 1,01^12 ≈ 1,1268" },
+    { q: "Quanti giorni di borsa in un anno, per convenzione?", a: "252" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quanto balla il capitale lungo la strada. La volatilità annualizzata.</Say>
+</Scene>

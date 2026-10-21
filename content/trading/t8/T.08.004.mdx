@@ -1,0 +1,157 @@
+---
+id: T.08.004
+course: trading
+module: 8
+title: "Latenza e dati in tempo reale"
+belt: arancione
+duration_min: 8
+prerequisites: [T.08.003]
+objectives:
+  - "Definire latenza e distinguere dati in tempo reale e dati ritardati"
+  - "Evitare l'errore di eseguire nel backtest a un prezzo che non era ancora noto"
+  - "Capire perché la corsa alla velocità non è il terreno di uno studente"
+video:
+  provider: youtube
+  id: "WstJM_aNSj8"
+  start: 0
+  end: 600
+  channel: "CBS"
+  title: "Wall Street: The Speed Traders"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-latenza
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Eseguire nel backtest al prezzo di chiusura che ha generato il segnale"
+  - "Usare dati ritardati come se fossero in tempo reale"
+  - "Provare a competere sulla velocità con chi ha i server accanto alla borsa"
+commands: []
+---
+
+<Scene title="Il segnale arriva tardi">
+Nora ha una regola semplice: se la chiusura di oggi supera quella di ieri, compra. Nel backtest compra **al prezzo di chiusura di oggi**, quello che ha generato il segnale. Nei dati storici funziona benissimo.
+
+In demo, invece, la chiusura si conosce solo quando il mercato è chiuso: l'ordine può partire soltanto **il giorno dopo**. E il giorno dopo il prezzo è un altro.
+
+La domanda del caso: **a che prezzo si può davvero comprare?**
+
+<Say who="sensei">Un backtest che usa informazioni prima che esistano è un imbroglio fatto a sé stessi, anche se nessuno se ne accorge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la latenza">
+La **latenza** è il ritardo tra un evento (un prezzo che cambia, un segnale) e il momento in cui il tuo ordine arriva sul mercato. Si misura in secondi, millisecondi (millesimi di secondo) o meno.
+
+Il ritardo ha tre pezzi: il dato che ti raggiunge, il tempo che il tuo programma impiega a decidere, l'ordine che torna al broker.
+
+<Callout kind="regola">
+Più passa tempo tra decisione ed esecuzione, più il prezzo ha modo di muoversi. È un'altra forma di slippage.
+</Callout>
+
+<Callout kind="curiosita">
+Esistono operatori professionali (high-frequency trading, trading ad alta frequenza) che mettono i computer dentro o accanto ai centri della borsa per risparmiare millisecondi. Spendono cifre enormi.
+</Callout>
+
+<Say who="assistente">Per te e per me, con un computer di casa, la velocità non è un vantaggio. Giochiamo un altro gioco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tempo reale o ritardato">
+I dati di mercato arrivano in due modi:
+
+- **in tempo reale**: aggiornati al momento (spesso a pagamento, o con limiti);
+- **ritardati**: molte fonti gratuite mostrano prezzi con **ritardo di diversi minuti**, a seconda del servizio.
+
+Un grafico gratuito ritardato va benissimo per studiare. Per decidere un ordine su una strategia di breve periodo, **no**: stai guardando il passato.
+
+Un programma prudente controlla l'**età del dato** prima di agire: se l'ultimo prezzo è troppo vecchio, non opera.
+
+Vuoi vedere come funziona la corsa alla velocità? Un servizio televisivo, dieci minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Guardalo come si guarda un documentario, non come un modello da imitare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eseguire al prezzo giusto">
+Nora corregge il backtest: il segnale calcolato con la chiusura di lunedì si esegue **all'apertura di martedì**.
+
+<Log lines={[
+  "chiusura lunedì:    100,00  (segnale: compra)",
+  "apertura martedì:   101,00  (qui puoi comprare)",
+  "100 azioni: differenza 1,00 x 100 = 100 euro",
+  "in percentuale: 1,00 / 100,00 = 1%",
+]} />
+
+Il «salto» tra chiusura e apertura si chiama **gap**. Nel backtest ingenuo non esiste; nella realtà costa.
+
+In pandas (il modulo T2 ne ha parlato) il trucco è **ritardare il segnale di un giorno** con `shift(1)`: la posizione di domani usa il segnale di oggi, mai quello di domani.
+
+<Callout kind="attenzione">
+Se il tuo backtest è troppo bello, controlla subito se stai usando informazioni del futuro. È l'errore più frequente.
+</Callout>
+
+<Say who="assistente">Regola da ricordare: la decisione di oggi si basa solo su ciò che sapevi ieri sera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia calcola il segnale con la chiusura del giorno e compra a quel prezzo nel backtest. Qual è il problema principale?"
+  options={[
+    "La chiusura si conosce solo a mercato chiuso: non si può comprare a quel prezzo",
+    "Il backtest è troppo prudente",
+    "Il segnale arriva sempre in anticipo",
+    "Non ci sono problemi: è il metodo standard",
+  ]}
+  answer={0}
+  explain="A mercato chiuso non si può più eseguire. L'ordine parte il giorno dopo, tipicamente all'apertura, a un prezzo diverso. Il backtest ingenuo usa un'informazione che nella realtà arriva troppo tardi."
+/>
+
+<Say who="sensei">Se la risposta ti sembra ovvia adesso, ricorda di controllarla ogni volta nel tuo codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su latenza, dati ritardati e prezzo di esecuzione nel backtest.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-latenza" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il tempo è un costo che non compare in nessuna tabella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La latenza è il ritardo tra evento e ordine: più è lungo, più il prezzo si può muovere.
+- Nel backtest il segnale calcolato con la chiusura si esegue dopo (per esempio all'apertura successiva), con `shift(1)`.
+- Non si compete sulla velocità con chi ha i server accanto alla borsa. Il corso è educativo, non è consulenza finanziaria: si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la latenza?", a: "Il ritardo tra un evento di mercato e l'arrivo del tuo ordine" },
+    { q: "A che prezzo si esegue un segnale calcolato con la chiusura?", a: "Dopo la chiusura, per esempio all'apertura successiva, non al prezzo di chiusura" },
+    { q: "Che cos'è un gap?", a: "Il salto tra la chiusura di un giorno e l'apertura del successivo" },
+    { q: "Che cosa si fa con un dato troppo vecchio?", a: "Il programma controlla l'età del dato e non opera" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le tasse sui guadagni finanziari in Italia, in sintesi.</Say>
+</Scene>

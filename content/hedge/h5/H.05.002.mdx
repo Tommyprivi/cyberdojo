@@ -1,0 +1,149 @@
+---
+id: H.05.002
+course: hedge
+module: 5
+title: "Le opzioni: call e put"
+belt: arancione
+duration_min: 9
+prerequisites: [H.05.001]
+objectives:
+  - "Spiegare che cos'è un'opzione e la differenza tra call e put"
+  - "Usare i termini premio, prezzo di esercizio (strike) e scadenza"
+  - "Distinguere chi compra un'opzione (ha un diritto) da chi la vende (ha un obbligo)"
+video:
+  provider: youtube
+  id: "pyM8_67AU6A"
+  start: 0
+  end: 600
+  channel: "Pietro Michelangeli"
+  title: "Le Opzioni spiegate ad un PRINCIPIANTE: Come funzionano?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-opzioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere call (diritto di comprare) con put (diritto di vendere)"
+  - "Pensare che chi vende un'opzione abbia solo vantaggi perché incassa il premio"
+  - "Dimenticare che il premio si paga subito e non si recupera"
+commands: []
+---
+
+<Scene title="Il biglietto con la caparra">
+Marta, del fondo fittizio **Rondine Capital**, vuole comprare le azioni di **Alfa Spa**, che oggi valgono 100 euro. Ma teme di sbagliare tempistica.
+
+Un collega le propone: «Paga 5 euro oggi. In cambio hai il **diritto** di comprare Alfa a 100 entro tre mesi. Se sale, compri a 100. Se scende, lasci perdere e hai perso solo i 5 euro».
+
+La domanda del caso: **come si chiama questo contratto, e chi sta rischiando di più, Marta o il collega?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Oggi si impara un linguaggio, non una ricetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un'opzione">
+Un'**opzione** è un contratto che dà a chi la compra il **diritto, ma non l'obbligo**, di comprare o vendere un sottostante a un prezzo fissato, entro una data. Parole da conoscere:
+
+- **Strike** (prezzo di esercizio): il prezzo fissato, qui 100.
+- **Scadenza**: la data limite.
+- **Premio**: il prezzo dell'opzione, qui 5 euro per azione. Si paga subito e non torna indietro.
+
+<Callout kind="regola">
+Chi **compra** l'opzione ha un **diritto**. Chi la **vende** (si dice anche «scrive») ha un **obbligo**, se l'altro decide di esercitare.
+</Callout>
+
+<Say who="assistente">Diritto da una parte, obbligo dall'altra. Questa asimmetria è la chiave di tutto il modulo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Call e put">
+Ci sono due tipi di opzione:
+
+- **Call**: diritto di **comprare** al prezzo di strike. Utile se pensi che il prezzo salga.
+- **Put**: diritto di **vendere** al prezzo di strike. Utile se pensi che il prezzo scenda, o per proteggerti da un ribasso.
+
+Quello di Marta è una **call** su Alfa, strike 100, premio 5.
+
+<Callout kind="trucco">
+Call = «chiamare» (comprare). Put = «mettere» sul tavolo (vendere). Se la call ha strike 100 e il prezzo sale a 130, il diritto di comprare a 100 vale almeno 30.
+</Callout>
+
+Un'altra voce, in italiano, per principianti:
+
+<Video />
+
+<Say who="sensei">Prima di operare chiediti sempre: sono call o put? Sto comprando il diritto o vendendo l'obbligo? Sbagliare qui costa caro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dall'altra parte del contratto">
+Il collega ha **venduto** la call a Marta e ha incassato 5 euro. Sembra un affare. Ma se Alfa sale a 150, lui deve consegnare l'azione a 100 e perde 50 meno i 5 incassati: **-45 euro**.
+
+<Guided
+  steps={[
+    "Il compratore di una opzione può perdere al massimo il premio pagato.",
+    "Il venditore incassa il premio subito, ma ha un obbligo che può costare molto di più.",
+    "Il venditore di una call senza possedere l'azione ha una perdita teoricamente senza limite: il prezzo può salire quanto vuole.",
+    "Vendere opzioni non è «incassare soldi gratis»: è assumersi un rischio in cambio di un premio.",
+  ]}
+/>
+
+<Say who="sensei">Chi vende opzioni raccoglie spiccioli davanti a un rullo compressore, dicono. Non sempre, ma il rischio c'è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azione vale 80 euro. Hai comprato una put con strike 100 e premio 3. Che cosa ti permette di fare?"
+  options={[
+    "Vendere l'azione a 100, cioè sopra il prezzo di mercato",
+    "Comprare l'azione a 100, cioè sopra il prezzo di mercato",
+    "Vendere l'azione a 80 e incassare altri 3 euro",
+    "Nulla: le put servono solo quando il prezzo sale"
+  ]}
+  answer={0}
+  explain="La put è il diritto di vendere allo strike. Con l'azione a 80 puoi venderla a 100: vale 20 euro prima di sottrarre il premio. Chi dice 'comprare a 100' ha confuso put e call."
+/>
+
+<Say who="assistente">Indizio: put e «vendere» iniziano per lettere diverse. Parti da quello che il contratto ti lascia fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su call, put, strike, premio, diritto e obbligo. Numeri fittizi.
+
+<Practice generator="h05-opzioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il vocabolario è la parte facile: i grafici arrivano alla prossima lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'opzione dà a chi la compra un diritto (non un obbligo) di comprare (call) o vendere (put) a un prezzo fissato, entro una scadenza.
+- Il compratore paga il premio e rischia al massimo quello; il venditore incassa il premio ma ha un obbligo che può costare molto.
+- Strike, scadenza e premio sono le tre parole chiave di ogni opzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una call?", a: "Il diritto di comprare a un prezzo fissato (strike)" },
+    { q: "Che cos'è una put?", a: "Il diritto di vendere a un prezzo fissato (strike)" },
+    { q: "Che cos'è il premio?", a: "Il prezzo dell'opzione, pagato subito dal compratore" },
+    { q: "Chi ha un obbligo in un'opzione?", a: "Il venditore, se il compratore esercita" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i payoff. Disegniamo guadagni e perdite a scadenza, call e put, comprate e vendute.</Say>
+</Scene>

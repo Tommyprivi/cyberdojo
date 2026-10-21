@@ -1,0 +1,175 @@
+---
+id: T.07.006
+course: trading
+module: 7
+title: "La forma dei rendimenti"
+belt: arancione
+duration_min: 9
+prerequisites: [T.07.005]
+objectives:
+  - "Leggere un istogramma dei rendimenti di una strategia"
+  - "Distinguere media e mediana e capire quando divergono"
+  - "Riconoscere strategie con tante piccole vincite e rare grandi perdite"
+video:
+  provider: youtube
+  id: "sBx8RSvttmM"
+  start: 0
+  end: 600
+  channel: "Paola Minopoli"
+  title: "Distribuzione NORMALE o GAUSSIANA"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-distribuzione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo la media e ignorare le perdite rare e grandi"
+  - "Giudicare una strategia dalla percentuale di operazioni vincenti"
+  - "Credere che i rendimenti reali seguano sempre la curva a campana"
+commands: []
+---
+
+<Scene title="Novanta su cento">
+Sara ha una strategia fittizia che vince **9 operazioni su 10**. «Il 90% di successo!», dice.
+
+Poi guarda il risultato totale: appena **+1%** su dieci operazioni. Che cosa è successo?
+
+La domanda del caso: **perché la percentuale di vincite non basta, e come si legge la forma dei rendimenti?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: si può perdere denaro, anche tutto. Dati fittizi, nessuna promessa. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Contare le vittorie è come contare i giorni di sole e dimenticare l'unico giorno di tempesta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dieci operazioni">
+Rendimenti fittizi di dieci operazioni, in percentuale:
+
+<Log lines={[
+  "+1  +1  +1  +1  +1  +1  +1  +1  +1  -8",
+]} />
+
+- Vincite: 9 su 10 → **90%**
+- Totale: 9 − 8 = **+1%**
+- **Media** per operazione: 1 / 10 = **0,1%**
+- **Mediana** (il valore in mezzo, ordinando): **+1%**
+
+La **mediana** è alta, la **media** è bassa: le due divergono perché una sola perdita grande trascina la media.
+
+<Callout kind="regola">
+Quando media e mediana sono molto diverse, la distribuzione è **asimmetrica**: c'è una coda lunga da una parte.
+</Callout>
+
+<Say who="assistente">Indizio: la mediana non si sposta se una perdita diventa più grande. La media sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Coda a sinistra">
+Disegnando un **istogramma** (le colonne contano quante operazioni cadono in ogni intervallo), questa strategia ha:
+
+- una montagna di piccole vincite a destra dello zero;
+- una **coda lunga** di perdite grandi a sinistra.
+
+Si chiama **asimmetria negativa**. Strategie così sembrano ottime per mesi e poi restituiscono tutto in un giorno.
+
+Il contrario esiste: la strategia che perde spesso poco e vince raramente tanto. Dieci operazioni fittizie: sette da **−1%** e tre da **+5%, +5%, +4%**. Vincite: 3 su 10 (30%), totale = −7 + 14 = **+7%**, media **0,7%**, mediana **−1%**. Tante piccole perdite, poche grandi vincite.
+
+<Callout kind="trucco">
+Percentuale di vincite e dimensione di vincite e perdite vanno guardate **insieme**. La media per operazione le mette insieme.
+</Callout>
+
+<Say who="sensei">Non chiederti solo quante volte vinci. Chiediti quanto perdi quando perdi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La curva a campana e le code">
+La **distribuzione normale** («curva a campana») è un modello semplice: rendimenti vicini alla media sono frequenti, quelli lontani sono rari. In una normale circa **il 68% dei valori** sta entro una deviazione standard dalla media e circa **il 95%** entro due.
+
+I rendimenti reali dei mercati spesso hanno **code più pesanti**: eventi estremi accadono più spesso di quanto la normale preveda. Lo si chiama **rischio di coda** (*fat tails*). Dunque la volatilità da sola può far sottovalutare il pericolo.
+
+Vuoi sentire la curva a campana spiegata da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Callout kind="attenzione">
+Il video parla della distribuzione normale in generale. Tienila come modello di partenza, non come verità sui mercati.
+</Callout>
+
+<Say who="sensei">La campana è comoda. Il mercato non l'ha mai letta. Controlla sempre le code.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+```python
+import pandas as pd
+
+t = pd.Series([1, 1, 1, 1, 1, 1, 1, 1, 1, -8])
+print(t.mean(), t.median(), (t > 0).mean(), t.min())
+```
+
+Output: `0.1 1.0 0.9 -8`
+
+Media 0,1, mediana 1,0, percentuale di vincite 0,9, perdita peggiore −8: i quattro numeri raccontano la forma.
+
+Prova con Python puro:
+
+<PythonTerminal code={"t = [-1, -1, -1, -1, -1, -1, -1, 5, 5, 4]\nmedia = sum(t) / len(t)\nordinati = sorted(t)\nmediana = (ordinati[4] + ordinati[5]) / 2\nprint(media, mediana)"} />
+
+<Say who="assistente">Con dieci valori la mediana è la media dei due valori centrali, il quinto e il sesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Strategia fittizia: 8 operazioni a +1% e 2 a −5%. Qual è la media per operazione?"
+  options={["−0,2%", "+0,8%", "+1%", "−1%"]}
+  answer={0}
+  explain="Totale = 8 × 1 − 2 × 5 = 8 − 10 = −2%. Media = −2 / 10 = −0,2%. Nonostante l'80% di vincite, la strategia perde. Chi risponde +1% ha guardato solo le operazioni vincenti."
+/>
+
+<Say who="sensei">Ottanta per cento di vincite, e il conto è in rosso. Il numero che conta è quello di tutto insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su media, mediana, asimmetria e code. Servono tutte e cinque. Hai 3 tentativi.
+
+<Practice generator="t07-distribuzione" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Ora hai gli strumenti per leggere un report con spirito critico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Media e mediana divergono quando c'è una coda lunga: poche perdite enormi possono cancellare tante vincite.
+- La percentuale di vincite non basta: conta anche quanto si vince e quanto si perde.
+- I rendimenti reali hanno spesso code più pesanti della curva normale: la volatilità da sola può far sottovalutare il rischio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la mediana?", a: "Il valore in mezzo, ordinando i dati" },
+    { q: "Media molto sotto la mediana: che cosa indica?", a: "Una coda lunga di perdite grandi" },
+    { q: "Percentuale in una normale entro 1 deviazione standard?", a: "Circa il 68%" },
+    { q: "90% di vincite basta per dire che è una buona strategia?", a: "No, contano anche le dimensioni di vincite e perdite" },
+  ]}
+/>
+
+<Say who="sensei">Fine del modulo. Nel prossimo parleremo di costi e realtà dell'esecuzione: dove i backtest incontrano il mondo vero.</Say>
+</Scene>

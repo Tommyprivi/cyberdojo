@@ -1,0 +1,237 @@
+---
+id: T.03.007
+course: trading
+module: 3
+title: "Gli indicatori nel codice con pandas"
+belt: gialla
+duration_min: 10
+prerequisites: [T.03.006]
+objectives:
+  - "Calcolare SMA, EMA, RSI, bande di Bollinger e ATR con pandas su dati piccoli"
+  - "Usare shift(1) per non guardare il futuro (look-ahead bias)"
+  - "Verificare il codice confrontandolo con un calcolo fatto a mano"
+video:
+  provider: youtube
+  id: "kUglXYh25s8"
+  start: 0
+  end: 600
+  channel: "Claudio Cama"
+  title: "Medie Mobili (Semplice, Ponderata ed Esponenziale) in Python"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-indicatori-codice
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare il segnale di oggi per decidere un'operazione di oggi, senza shift(1): è look-ahead bias"
+  - "Fidarsi dell'output senza controllare a mano un caso piccolo"
+  - "Dimenticare che i primi valori sono NaN e che pandas usa ddof=1 nella deviazione standard di default"
+commands: []
+---
+
+<Scene title="Il backtest troppo bello">
+Davide, 17 anni, scrive il suo primo codice: calcola una media mobile su prezzi **inventati** e crea un segnale «sono dentro se il prezzo è sopra la media». Poi guarda il risultato: perfetto, nessun errore.
+
+Troppo perfetto. Il motivo: Davide usa il segnale calcolato con la chiusura di **oggi** per decidere un'operazione già avvenuta **oggi**. Sta guardando il futuro.
+
+La domanda del caso: **come si calcolano gli indicatori nel codice senza ingannare se stessi?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Qui usiamo solo prezzi inventati e nessun conto reale.
+</Callout>
+
+<Say who="sensei">Un risultato troppo bello è quasi sempre un errore. Prima di festeggiare, cerca il bug.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Medie con rolling ed ewm">
+**pandas** è la libreria Python per le tabelle e le serie temporali. Una **Series** è una colonna di numeri con un indice.
+
+- `rolling(N).mean()` calcola la **SMA** su una finestra di N valori;
+- `ewm(span=N, adjust=False).mean()` calcola la **EMA** con α = 2 ÷ (N + 1).
+
+```python
+import pandas as pd
+
+close = pd.Series([10, 12, 14, 16, 18, 20], name="close")
+sma3 = close.rolling(3).mean()
+ema3 = close.ewm(span=3, adjust=False).mean()
+print(sma3.tolist())
+print(ema3.tolist())
+```
+
+<Log lines={[
+  "[nan, nan, 12.0, 14.0, 16.0, 18.0]",
+  "[10.0, 11.0, 12.5, 14.25, 16.125, 18.0625]",
+]} />
+
+I due `nan` iniziali ci sono perché la finestra di 3 non è ancora piena. I numeri sono gli stessi che abbiamo calcolato a mano nelle lezioni precedenti: se non tornano, c'è un errore.
+
+Un'altra voce in italiano sulle medie mobili in Python:
+
+<Video />
+
+<Say who="sensei">Prima a mano, poi nel codice, poi confronti. Il computer è veloce, non infallibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segnale e shift(1)">
+Un segnale semplice: **1** se la chiusura è sopra la SMA, **0** altrimenti. Un confronto con `nan` dà sempre `False`, quindi i primi giorni valgono 0.
+
+```python
+signal = (close > sma3).astype(int)
+position = signal.shift(1)
+print(signal.tolist())
+print(position.tolist())
+```
+
+<Log lines={[
+  "[0, 0, 1, 1, 1, 1]",
+  "[nan, 0.0, 0.0, 1.0, 1.0, 1.0]",
+]} />
+
+`shift(1)` **sposta i valori di una riga avanti nel tempo**: la posizione di oggi usa il segnale di **ieri**. È così che si evita il **look-ahead bias**: usare un'informazione di oggi per un'operazione già decisa.
+
+<Callout kind="regola">
+Il segnale calcolato sulla chiusura di oggi può essere usato solo da domani: `position = signal.shift(1)`.
+</Callout>
+
+<Say who="assistente">Il look-ahead è come correggere il compito guardando la soluzione. Sembra andar benissimo, ma non hai imparato niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="RSI e bande di Bollinger">
+Per l'**RSI** servono le variazioni (`diff`), i guadagni e le perdite (`clip`), e le loro medie. Qui, per semplicità, usiamo una **media semplice** su 5 variazioni, come nella lezione sull'RSI (la versione di Wilder, con smussamento, dà numeri leggermente diversi).
+
+```python
+close = pd.Series([100, 103, 101, 105, 104, 106])
+delta = close.diff()
+gain = delta.clip(lower=0)
+loss = (-delta).clip(lower=0)
+avg_gain = gain.rolling(5).mean()
+avg_loss = loss.rolling(5).mean()
+rsi = 100 - 100 / (1 + avg_gain / avg_loss)
+print(round(avg_gain.iloc[-1], 1), round(avg_loss.iloc[-1], 1), round(rsi.iloc[-1], 1))
+```
+
+<Log lines={[
+  "1.8 0.6 75.0",
+]} />
+
+`diff()` lascia `nan` nella prima riga: il primo giorno non ha un giorno precedente con cui confrontarsi. Per le **bande di Bollinger** attenzione alla deviazione standard: `rolling().std()` usa `ddof=1` di default, mentre la formula con divisore n si scrive `ddof=0`.
+
+```python
+close = pd.Series([2, 4, 4, 4, 5, 5, 7, 9])
+mid = close.rolling(8).mean()
+dev = close.rolling(8).std(ddof=0)
+upper = mid + 2 * dev
+lower = mid - 2 * dev
+print(mid.iloc[-1], round(dev.iloc[-1], 2), round(upper.iloc[-1], 2), round(lower.iloc[-1], 2))
+```
+
+<Log lines={[
+  "5.0 2.0 9.0 1.0",
+]} />
+
+<Say who="sensei">Gli stessi numeri che hai calcolato a mano: 75, e bande 1 e 9. Se il codice dice altro, il codice ha torto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ATR con pandas">
+Il True Range ha tre colonne di valori: si mettono vicine con `pd.concat` e si prende il **massimo di ogni riga** con `max(axis=1)`.
+
+```python
+high = pd.Series([102, 105, 105])
+low = pd.Series([99, 100, 101])
+close = pd.Series([101, 103, 102])
+prev = close.shift(1)
+tr = pd.concat([high - low, (high - prev).abs(), (low - prev).abs()], axis=1).max(axis=1)
+print(tr.tolist())
+print(tr.mean())
+```
+
+<Log lines={[
+  "[3.0, 5.0, 4.0]",
+  "4.0",
+]} />
+
+Il primo giorno ha solo `high - low` (3.0), perché manca la chiusura di ieri e `max` ignora i `nan`. In pratica l'ATR si calcola con `tr.rolling(14).mean()`.
+
+<Callout kind="curiosita">
+Le librerie come pandas-ta o TA-Lib hanno già questi indicatori. Conviene usarle **dopo** averli capiti: così puoi controllare che diano i numeri che ti aspetti.
+</Callout>
+
+<Say who="assistente">Controllo finale: i risultati coincidono con quelli a mano della lezione precedente. È la prova migliore che il codice è giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provalo tu">
+Qui puoi provare Python puro (pandas non è disponibile nel terminale del corso). Una funzione SMA fatta a mano, per vedere cosa fa pandas dietro le quinte. Prova a cambiare `n` e i prezzi.
+
+<PythonTerminal height={340} code={`def sma(prezzi, n):
+    risultato = []
+    for i in range(len(prezzi)):
+        if i < n - 1:
+            risultato.append(None)
+        else:
+            risultato.append(sum(prezzi[i - n + 1 : i + 1]) / n)
+    return risultato
+
+prezzi = [10, 12, 14, 16, 18, 20]
+print(sma(prezzi, 3))
+`} />
+
+Deve stampare `[None, None, 12.0, 14.0, 16.0, 18.0]`. `None` è il «nan» di Python puro.
+
+<Say who="sensei">Se capisci questa funzione, capisci rolling. Il resto sono solo scorciatoie.</Say>
+<Quiz
+  question="Con close = pd.Series([10, 12, 14, 16, 18, 20]), quanto vale close.rolling(3).mean() all'indice 3?"
+  options={["14.0", "16.0", "13.0", "nan"]}
+  answer={0}
+  explain="All'indice 3 la finestra contiene 12, 14 e 16: la somma è 42, divisa per 3 fa 14.0. Chi risponde nan ha contato male: i nan sono solo i primi due. Chi risponde 16.0 ha preso l'ultimo prezzo della finestra."
+/>
+
+<Say who="sensei">Indice 3 è il quarto elemento, perché si parte da 0. Il classico errore di chi comincia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sul codice: cosa stampa, cosa fa shift, perché compaiono i nan.
+
+<Practice generator="t03-indicatori-codice" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il modulo sugli indicatori: sai calcolarli, controllarli e non crederci ciecamente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- In pandas: rolling(N).mean() per la SMA, ewm(span=N, adjust=False).mean() per la EMA, diff() e clip() per l'RSI, std(ddof=0) per Bollinger.
+- shift(1) evita il look-ahead bias: il segnale di oggi si usa da domani.
+- Si controlla sempre il codice con un calcolo a mano su pochi numeri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché close.rolling(3).mean() ha due NaN iniziali?", a: "La finestra di 3 non è ancora piena nei primi due giorni" },
+    { q: "Che cosa fa shift(1)?", a: "Sposta i valori di una riga avanti nel tempo: oggi si vede il valore di ieri" },
+    { q: "Che cosa fa .max(axis=1) sul True Range?", a: "Per ogni riga prende il più grande dei tre valori" },
+    { q: "Qual è il ddof per la deviazione standard con divisore n?", a: "ddof=0" },
+  ]}
+/>
+
+<Say who="sensei">Prossimi passi: nel modulo di statistica capiremo perché i prezzi sono tanto rumorosi. Un indicatore è solo l'inizio.</Say>
+</Scene>

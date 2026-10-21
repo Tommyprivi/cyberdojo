@@ -1,0 +1,166 @@
+---
+id: F.08.004
+course: fondamenta
+module: 8
+title: "Le VLAN: reti virtuali"
+belt: arancione
+duration_min: 9
+prerequisites: [F.08.003]
+objectives:
+  - "Spiegare che cos'è una VLAN e perché separa le reti a livello 2"
+  - "Distinguere porte access e porte trunk"
+  - "Dire perché le VLAN aiutano la sicurezza, e che cosa non fanno da sole"
+video:
+  provider: youtube
+  id: "555V1g0g8Y0"
+  start: 0
+  end: 600
+  channel: "I zuky"
+  title: "Vi spiego le VLAN in modo SEMPLICE"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-vlan
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una VLAN filtri il traffico da sola: separa, ma serve un punto di controllo (ACL o firewall)"
+  - "Collegare un PC alla porta access sbagliata: sembra «senza rete»"
+  - "Usare la stessa sottorete IP in due VLAN diverse"
+commands: []
+---
+
+<Scene title="Tutti nello stesso corridoio">
+Nell'azienda del nostro caso, i computer della contabilità, il Wi-Fi degli ospiti e le telecamere sono tutti collegati agli **stessi switch**. Significa che sono tutti nella **stessa rete**: se uno viene infettato, può «vedere» gli altri.
+
+«Come facciamo a mettere dei muri», chiede il capo, «senza comprare switch nuovi per ogni reparto?»
+
+La risposta si chiama **VLAN**.
+
+<Say who="sensei">Una rete piatta è un open space. Il primo muro che si costruisce è la VLAN.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una VLAN">
+**VLAN** significa **rete locale virtuale**. È una **divisione fatta con la configurazione**: sullo stesso switch fisico, alcune porte appartengono alla rete «contabilità», altre alla rete «ospiti», altre ancora alle «telecamere».
+
+Dispositivi in VLAN diverse **non si vedono**, anche se sono attaccati allo stesso switch. Tecnicamente la separazione avviene al **livello 2**, quello dei frame Ethernet e dei MAC: anche i messaggi mandati a tutti (broadcast) restano dentro la propria VLAN.
+
+<Callout kind="trucco">
+Pensa a un palazzo con un solo ascensore e tre piani con le porte chiuse: l'edificio è uno, ma gli appartamenti sono separati. Lo switch è il palazzo, le VLAN sono gli appartamenti.
+</Callout>
+
+Ogni VLAN ha un **numero** (da 1 a 4094) e di solito un **nome** (per esempio 10 «contabilita», 20 «ospiti», 30 «telecamere»). In genere a ogni VLAN corrisponde **una sottorete IP diversa**.
+
+<Say who="assistente">Una VLAN è un'etichetta sulle porte. Stessa etichetta, stessa rete. Etichetta diversa, muro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Porte access e porte trunk">
+Esistono due tipi di porta, e conviene non confonderli.
+
+- **Porta access**: appartiene a **una sola VLAN**. Ci si collegano PC, stampanti, telecamere: i dispositivi finali, che non sanno nulla di VLAN.
+- **Porta trunk**: trasporta **più VLAN insieme** su un solo cavo, per esempio tra due switch o tra uno switch e un router. Ogni frame riceve un'**etichetta (tag 802.1Q)** con il numero della VLAN, così l'altro capo sa a quale appartiene.
+
+<Log
+  lines={[
+    "Switch A  porta 1   access  VLAN 10   (PC contabilità)",
+    "Switch A  porta 2   access  VLAN 20   (Wi-Fi ospiti)",
+    "Switch A  porta 24  trunk   VLAN 10, 20, 30  (verso Switch B)",
+    "Switch B  porta 24  trunk   VLAN 10, 20, 30  (verso Switch A)",
+    "Switch B  porta 3   access  VLAN 30   (telecamere)",
+  ]}
+  caption="Una piccola rete con due switch e tre VLAN, in testo."
+/>
+
+<Callout kind="curiosita">
+Una porta non ancora configurata sta di solito nella **VLAN 1**, quella predefinita. È meglio non lasciare dispositivi importanti lì, e spostare le porte inutilizzate in una VLAN «vuota» e spenta.
+</Callout>
+
+<Say who="sensei">Access: un cliente per volta, con la sua tessera. Trunk: l'autobus che porta tutte le tessere insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se le VLAN devono parlare">
+Due PC, uno in VLAN 10 e uno in VLAN 20, sullo stesso switch: **non si raggiungono**. Se a volte devono parlarsi (per esempio, la contabilità deve usare una stampante in un'altra VLAN) serve un **router** (o uno switch di livello 3) che instradi da una VLAN all'altra.
+
+Ma il router non è solo un ponte. È anche **il punto di controllo**: è lì che si decide che cosa può passare e che cosa no, per esempio con le **ACL** (la prossima lezione).
+
+<Callout kind="attenzione">
+Le VLAN da sole **separano**, ma non filtrano. Se un router collega tutte le VLAN senza regole, il muro ha una porta spalancata. Separare e poi controllare: sono due passi.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano che parte da zero:
+
+<Video />
+
+<Say who="assistente">Primo muro: la VLAN. Secondo muro: le regole sul router. Servono entrambi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché aiutano la sicurezza">
+<Guided
+  steps={[
+    "Il Wi-Fi degli ospiti è in VLAN 20, a parte. Un ospite arriva a Internet ma non vede i computer della contabilità.",
+    "Le telecamere sono in VLAN 30. Se una telecamera, spesso poco aggiornata, viene compromessa, non può parlare direttamente con i server.",
+    "Un'infezione che si diffonde tra computer vicini si ferma al confine della propria VLAN.",
+    "I messaggi broadcast restano dentro la VLAN: la rete è meno rumorosa e c'è meno da ascoltare per chi origlia.",
+    "Il danno di un incidente è più piccolo, e più facile da isolare: spegni una VLAN, non l'azienda.",
+  ]}
+/>
+
+<Say who="sensei">Un guasto o un attacco non si può evitare sempre. Si può far sì che resti piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un tecnico collega il PC di una nuova assunta a una porta access assegnata per errore alla VLAN 30 (telecamere). Che cosa succede?"
+  options={["Il PC non raggiunge il suo gateway né i colleghi: sembra senza rete", "Funziona normalmente, perché è collegato allo stesso switch", "Il PC cambia da solo VLAN e funziona", "Il PC vede tutte le VLAN"]}
+  answer={0}
+  explain="La VLAN è decisa dalla porta, non dal PC. Nella VLAN 30 il PC non trova il gateway della VLAN 10: dal suo punto di vista la rete non c'è. Il guasto è nella configurazione della porta, non nel cavo."
+/>
+
+<Say who="sensei">Quando un PC «non ha rete», controlla la porta e la VLAN prima di cambiare cavo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle VLAN. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f08-vlan" pass="5/5" retries={3} />
+
+<Say who="sensei">Access per i dispositivi, trunk per i collegamenti, router con regole per far parlare chi deve. Hai il disegno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una VLAN è una rete virtuale: separa i dispositivi a livello 2, anche sullo stesso switch.
+- Porta access: una VLAN, dispositivi finali. Porta trunk: più VLAN con tag 802.1Q.
+- Le VLAN separano ma non filtrano: serve un router con regole (ACL) dove le VLAN si incontrano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che livello separa una VLAN?", a: "Livello 2 (frame e MAC)" },
+    { q: "Che differenza c'è tra access e trunk?", a: "Access: una sola VLAN. Trunk: più VLAN con tag 802.1Q" },
+    { q: "Due VLAN sullo stesso switch si vedono?", a: "No, serve un router che instradi tra le VLAN" },
+    { q: "Una VLAN basta a filtrare il traffico?", a: "No: servono ACL o firewall nel punto di incontro" },
+  ]}
+/>
+
+<Say who="sensei">Muri costruiti. Ora le regole sulla porta: le ACL, nella prossima lezione.</Say>
+</Scene>

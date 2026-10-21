@@ -1,0 +1,162 @@
+---
+id: T.10.005
+course: trading
+module: 10
+title: "Quando l'API dice no"
+belt: verde
+duration_min: 9
+prerequisites: [T.10.004]
+objectives:
+  - "Distinguere gli errori da correggere (4xx) da quelli da riprovare (429, 5xx)"
+  - "Spiegare l'attesa crescente (exponential backoff) e perché ha un limite di tentativi"
+  - "Evitare di ripetere ciecamente un ordine dopo un errore"
+video:
+  provider: youtube
+  id: "zq97PFCftNA"
+  start: 0
+  end: 600
+  channel: "SystemDR - Scalable System Design"
+  title: "How to Implement Exponential Backoff & Retry Logic (Rate-Limit Handling, 429, 5xx)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-errori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ripetere subito una richiesta dopo un 429, peggiorando la situazione"
+  - "Riprovare all'infinito invece di fermarsi dopo pochi tentativi"
+  - "Riprovare un errore 4xx (richiesta sbagliata): non cambierà mai"
+commands: []
+---
+
+<Scene title="Troppe richieste">
+Il bot di Marta chiede i prezzi ogni mezzo secondo. Dopo un minuto il broker demo risponde `429`. Il programma, invece di rallentare, ripete la richiesta ancora più in fretta. Il broker blocca la chiave per qualche minuto.
+
+La domanda del caso: **come si comporta un programma educato, quando l'API dice «aspetta» o «non posso»?**
+
+<Say who="sensei">Un servizio ha dei limiti. Chi li ignora viene messo alla porta. Si chiama limite di chiamate: rispettalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due famiglie di errori">
+Gli errori si dividono in due famiglie, e vanno trattati in modo diverso:
+
+| Codice | Che cosa significa | Che cosa fare |
+|---|---|---|
+| 400, 422 | Richiesta sbagliata | Correggere il codice: riprovare è inutile |
+| 401, 403 | Chiave o permesso | Fermarsi e controllare la chiave |
+| 404 | Non esiste | Controllare l'indirizzo o l'identificativo |
+| 429 | Troppe richieste | Aspettare, poi riprovare |
+| 500, 502, 503 | Problema del server | Aspettare, poi riprovare qualche volta |
+
+<Callout kind="regola">
+Riprova solo ciò che può cambiare da solo (429 e 5xx). Se la richiesta è sbagliata, ripeterla cento volte la rende sbagliata cento volte.
+</Callout>
+
+<Say who="assistente">Un 4xx dice «è colpa tua». Un 5xx dice «è colpa mia, riprova più tardi». Un 429 dice «piano».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aspettare sempre di più">
+Quando si riprova, si aspetta un po', poi il doppio, poi il doppio ancora. Si chiama **attesa crescente** (in inglese *exponential backoff*). Così non si martella un servizio già in difficoltà.
+
+<PythonTerminal code={"attesa = 1\nfor tentativo in range(1, 5):\n    print('tentativo', tentativo, 'attendo', attesa, 'secondi')\n    attesa = attesa * 2"} />
+
+Risultato atteso: attese di 1, 2, 4 e 8 secondi.
+
+Alcuni broker mandano l'header `Retry-After`, che dice quanti secondi aspettare: in quel caso si ubbidisce a lui.
+
+Vuoi sentire un'altra voce su questo schema? Il video è in inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Si aspetta di più a ogni tentativo. E a un certo punto ci si ferma: non si insiste per sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il codice con limite">
+Una funzione di lettura con attesa crescente e **massimo di tentativi**:
+
+```python
+import time
+import requests
+
+def get_con_retry(url, headers, max_tentativi=4):
+    attesa = 1
+    for tentativo in range(1, max_tentativi + 1):
+        r = requests.get(url, headers=headers, timeout=10)
+        if r.status_code not in (429, 500, 502, 503):
+            r.raise_for_status()
+            return r.json()
+        if tentativo == max_tentativi:
+            raise RuntimeError(f"Troppi tentativi: ultimo codice {r.status_code}")
+        time.sleep(attesa)
+        attesa *= 2
+```
+
+Che cosa fa: con 200 restituisce i dati. Con un 4xx come 401 o 404 `raise_for_status()` segnala l'errore subito, senza riprovare. Con 429 o 5xx aspetta e riprova, ma solo quattro volte.
+
+<Callout kind="attenzione">
+Questa funzione usa `GET`, che non cambia nulla. Per un ordine (`POST`) non si riprova alla cieca: prima si controlla se l'ordine è già nel conto, o si riusa il `client_order_id`.
+</Callout>
+
+<Say who="assistente">Leggere si può ripetere. Ordinare, no, senza prima aver controllato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il programma riceve un 422 (richiesta non valida) mentre invia un ordine con quantità negativa. Che cosa è giusto fare?"
+  options={[
+    "Fermarsi, registrare l'errore e correggere il codice che calcola la quantità",
+    "Riprovare dieci volte con attese sempre più lunghe",
+    "Aumentare la quantità per vedere se il broker accetta",
+    "Cambiare chiave API e riprovare subito",
+  ]}
+  answer={0}
+  explain="Un 422 dice che la richiesta stessa è sbagliata: ripeterla non la cambia. Va corretto il calcolo della quantità. Il retry con attesa serve per 429 e 5xx, non per gli errori di richiesta."
+/>
+
+<Say who="sensei">Prima di riprovare, chiediti: l'errore può sparire da solo? Se no, non si riprova: si aggiusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su codici di errore, attese crescenti e ordini ripetuti.
+
+<Practice generator="t10-errori" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un programma robusto sa anche quando fermarsi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli errori 4xx sono della richiesta: si correggono. 429 e 5xx si riprovano, con attese sempre più lunghe e un massimo di tentativi.
+- Si rispetta il limite di chiamate e, se c'è, l'header Retry-After.
+- Un POST di ordine non si ripete alla cieca: prima si controlla lo stato o si riusa l'identificativo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire un 429?", a: "Troppe richieste: bisogna rallentare" },
+    { q: "Quali errori ha senso riprovare?", a: "429 e gli errori 5xx del server" },
+    { q: "Che cos'è l'attesa crescente?", a: "Aspettare 1, 2, 4, 8 secondi... tra un tentativo e l'altro" },
+    { q: "Perché fissare un massimo di tentativi?", a: "Per non insistere all'infinito su un problema che non passa" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: il diario di bordo. Un programma che lavora da solo deve lasciare traccia.</Say>
+</Scene>

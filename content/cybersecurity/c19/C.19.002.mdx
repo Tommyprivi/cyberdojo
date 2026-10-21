@@ -1,0 +1,194 @@
+---
+id: C.19.002
+course: cybersecurity
+module: 19
+title: "Sigma: regole che viaggiano"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.001]
+objectives:
+  - "Leggere una regola Sigma e riconoscerne le parti: titolo, origine dei log, rilevamento, condizione"
+  - "Spiegare perché una regola portabile vale più di una scritta per un solo prodotto"
+  - "Scrivere una regola Sigma semplice con un filtro per escludere i casi legittimi"
+video:
+  provider: youtube
+  id: "KFHf0Wfe6A4"
+  start: 0
+  end: 600
+  channel: "AISLabs AI"
+  title: "Sigma Rules Explained: Write One Detection for Any SIEM"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-sigma
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una regola Sigma si possa usare così com'è: va prima convertita nella lingua del proprio SIEM"
+  - "Dimenticare che i nomi dei campi dipendono da come si raccolgono i log: la regola va adattata ai propri dati"
+  - "Scrivere una condizione troppo larga e non escludere i casi legittimi noti"
+commands: []
+---
+
+<Scene title="Ogni SIEM parla una lingua diversa">
+Un collega di un'altra azienda ti manda una regola che ha funzionato benissimo da lui. Tu la apri e non ci capisci niente: è scritta per **Splunk**, un SIEM. Il tuo SIEM è un altro, e usa un altro linguaggio di interrogazione.
+
+Riscrivere ogni regola a mano per ogni prodotto è un lavoro enorme, e si sbaglia. La domanda del caso: **esiste un modo di scrivere una regola una volta sola e usarla ovunque?**
+
+<Say who="sensei">Chi condivide regole in un linguaggio solo, le condivide con pochi. Serve una lingua franca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sigma, la lingua comune">
+**Sigma** è un formato **aperto** per scrivere regole di rilevamento. Una regola Sigma è un file di testo in formato **YAML**, un modo di scrivere dati a elenchi rientrati, facile da leggere.
+
+La regola non si esegue direttamente. Si **converte** con uno strumento (per esempio *sigma-cli*) nella lingua del proprio SIEM: una query per Splunk, una per Elastic, una per Microsoft Sentinel e così via.
+
+<Callout kind="regola">
+Una regola Sigma è come un testo scritto in una lingua neutra: serve un traduttore per ogni SIEM, ma il testo originale è uno solo e lo capiscono tutti gli analisti.
+</Callout>
+
+La comunità mantiene migliaia di regole Sigma pubbliche: si possono leggere, usare e adattare. È un ottimo modo per imparare.
+
+<Say who="assistente">Non è un programma che rileva. È un modo di descrivere cosa rilevare. Il rilevamento lo fa il tuo SIEM.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una regola Sigma, riga per riga">
+Ecco una regola semplice. Cerca chi cancella le **copie di ripristino** di Windows, una mossa tipica prima di un ransomware.
+
+<Log lines={[
+  "title: Cancellazione delle copie shadow",
+  "status: experimental",
+  "description: Rileva vssadmin usato per cancellare le copie di ripristino",
+  "logsource:",
+  "  category: process_creation",
+  "  product: windows",
+  "detection:",
+  "  selection:",
+  "    Image|endswith: '\\vssadmin.exe'",
+  "    CommandLine|contains|all:",
+  "      - 'delete'",
+  "      - 'shadows'",
+  "  condition: selection",
+  "falsepositives:",
+  "  - Un amministratore che libera spazio su disco",
+  "level: high",
+  "tags:",
+  "  - attack.impact",
+  "  - attack.t1490",
+]} caption="Una regola Sigma completa e semplice." />
+
+- **title**, **description**: nome e spiegazione, per chi la leggerà tra un anno.
+- **logsource**: dove cercare. Qui, i log di creazione dei processi su Windows.
+- **detection**: le condizioni. `selection` descrive cosa cercare; `|endswith` e `|contains` sono **modificatori**.
+- **condition**: come combinare i pezzi.
+- **falsepositives**: quali casi legittimi possono far scattare la regola.
+- **level** e **tags**: gravità e tecnica ATT&CK collegata (`t1490` è «Inhibit System Recovery»).
+
+<Say who="sensei">Leggila come una frase: «quando un processo vssadmin riceve i comandi delete e shadows, avvisa con priorità alta».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Modificatori e filtri">
+I **modificatori** dicono come confrontare un campo:
+
+- `|contains`: il campo contiene il testo;
+- `|endswith`: il campo finisce con il testo;
+- `|contains|all`: il campo contiene **tutti** i testi dell'elenco (senza `all`, ne basta uno).
+
+Ora un problema reale: la regola fa scattare un allarme ogni notte, perché l'agente di backup aziendale usa lo stesso comando. Si risolve con un **filtro**:
+
+<Log lines={[
+  "detection:",
+  "  selection:",
+  "    Image|endswith: '\\vssadmin.exe'",
+  "    CommandLine|contains|all:",
+  "      - 'delete'",
+  "      - 'shadows'",
+  "  filtro_backup:",
+  "    ParentImage|endswith: '\\backup-agent.exe'",
+  "  condition: selection and not filtro_backup",
+]} caption="Si esclude il caso noto e legittimo: il comando lanciato dall'agente di backup." />
+
+La condizione diventa: «selection **e non** filtro_backup». Il caso legittimo conosciuto non fa più rumore, tutto il resto sì.
+
+<Callout kind="attenzione">
+Un filtro troppo largo è un buco. Se escludi «qualunque cosa lanciata da un programma di backup» e un attaccante rinomina il suo programma, passa inosservato. Il filtro deve essere **preciso**: nome, percorso, utente.
+</Callout>
+
+<Say who="assistente">Un filtro è un'eccezione scritta per iscritto. Chi la scrive risponde di ciò che lascia passare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla regola alla query">
+Dopo la conversione, lo stesso testo diventa una query per il prodotto scelto. Il video qui sotto spiega, con parole e dimostrazioni, perché scrivere una volta e convertire per ogni SIEM fa risparmiare tempo (in inglese, attiva i sottotitoli):
+
+<Video />
+
+Attenzione a un dettaglio che frega i principianti: i **nomi dei campi**. Sigma usa nomi standard (`Image`, `CommandLine`), ma il tuo SIEM può chiamare i campi in modo diverso. Per questo la conversione usa una tabella di corrispondenza, chiamata *pipeline*. Se non è giusta, la regola converte senza errori e **non trova mai nulla**.
+
+<Callout kind="trucco">
+Dopo ogni conversione, prova la regola su un evento che sai che deve scattare. Se non scatta, il problema è quasi sempre nei nomi dei campi.
+</Callout>
+
+<Say who="sensei">Una regola che non scatta mai non è sicura: è muta. Provala con un evento vero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un collega scrive la regola per il comando di cancellazione, ma nella condizione usa `CommandLine|contains: 'delete'` senza altro. Dopo una settimana, gli analisti ricevono centinaia di allarmi per comandi innocui che contengono la parola «delete».
+
+<Quiz
+  question="Quale correzione rende la regola più precisa senza perdere l'attacco?"
+  options={[
+    "Richiedere sia 'delete' sia 'shadows' con |contains|all e limitare a vssadmin.exe",
+    "Abbassare il livello della regola a «informational» e ignorarla",
+    "Cancellare la regola e rilevare solo gli indirizzi IP sospetti",
+    "Aggiungere la parola 'windows' al titolo",
+  ]}
+  answer={0}
+  explain="La regola era troppo larga: una sola parola comune. Chiedere insieme il programma giusto e tutte e due le parole la rende specifica. Abbassare il livello nasconde il problema, e gli indirizzi sono indicatori fragili."
+/>
+
+<Callout kind="curiosita">
+Tutto questo serve a difendere. Cancellare le copie di ripristino altrui prima di un ransomware è un reato grave: in Italia ricade nell'accesso abusivo a sistema informatico (art. 615-ter del codice penale) e in altri articoli. Si prova solo su macchine tue, in un laboratorio isolato.
+</Callout>
+
+<Say who="assistente">Più la regola è specifica, più l'allarme vale. Una regola larga non è prudente: è rumorosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari su regole Sigma. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-sigma" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- Sigma è un formato aperto, in YAML, per scrivere una regola una volta sola e convertirla per ogni SIEM.
+- Una regola ha titolo, logsource, detection, condition, falsepositives e livello; i modificatori dicono come confrontare i campi.
+- I filtri escludono i casi legittimi noti, ma devono essere precisi; dopo la conversione si prova la regola con un evento vero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è Sigma?", a: "Un formato aperto per scrivere regole di rilevamento portabili tra SIEM diversi" },
+    { q: "Che cosa fa il modificatore contains|all?", a: "Richiede che il campo contenga tutti i testi dell'elenco" },
+    { q: "A che cosa serve la sezione falsepositives?", a: "A dire quali casi legittimi possono far scattare la regola" },
+    { q: "Perché una regola convertita potrebbe non scattare mai?", a: "Perché i nomi dei campi non corrispondono a quelli del proprio SIEM" },
+  ]}
+/>
+
+<Say who="sensei">Hai la lingua per scrivere le regole. Prossima lezione: la mappa per decidere quali scrivere. MITRE ATT&CK.</Say>
+</Scene>

@@ -17,8 +17,12 @@ import { D14_ITEMS } from "./d14";
 import { D15_ITEMS } from "./d15";
 import { D16_ITEMS } from "./d16";
 import { D17_ITEMS } from "./d17";
+import { D18_ITEMS } from "./d18";
+import { D19_ITEMS } from "./d19";
+import { D20_ITEMS } from "./d20";
+import { D21_ITEMS } from "./d21";
 
-const MODULES = { D01_ITEMS, D02_ITEMS, D03_ITEMS, D04_ITEMS, D05_ITEMS, D06_ITEMS, D07_ITEMS, D08_ITEMS, D09_ITEMS, D10_ITEMS, D11_ITEMS, D12_ITEMS, D13_ITEMS, D14_ITEMS, D15_ITEMS, D16_ITEMS, D17_ITEMS };
+const MODULES = { D01_ITEMS, D02_ITEMS, D03_ITEMS, D04_ITEMS, D05_ITEMS, D06_ITEMS, D07_ITEMS, D08_ITEMS, D09_ITEMS, D10_ITEMS, D11_ITEMS, D12_ITEMS, D13_ITEMS, D14_ITEMS, D15_ITEMS, D16_ITEMS, D17_ITEMS, D18_ITEMS, D19_ITEMS, D20_ITEMS, D21_ITEMS };
 import { GENERATORS, isGeneratorId } from "../generators";
 import type { Question } from "../core";
 
@@ -28,7 +32,7 @@ describe("banche del corso Analista di dati", () => {
   for (const [id, items] of Object.entries(DATI_BANK_ITEMS)) {
     describe(id, () => {
       it("l'identificatore segue il formato dNN-argomento", () => {
-        expect(id).toMatch(/^d(0[1-9]|1[0-7])-[a-z0-9-]+$/);
+        expect(id).toMatch(/^d(0[1-9]|1[0-9]|2[01])-[a-z0-9-]+$/);
       });
       it("ha almeno 10 domande, tutte diverse", () => {
         expect(items.length).toBeGreaterThanOrEqual(10);

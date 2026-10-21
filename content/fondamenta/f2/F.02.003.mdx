@@ -1,0 +1,190 @@
+---
+id: F.02.003
+course: fondamenta
+module: 2
+title: "Il filesystem: l'albero di Linux"
+belt: bianca
+duration_min: 9
+prerequisites: [F.02.002]
+objectives:
+  - "Descrivere il filesystem come un albero che parte dalla radice /"
+  - "Distinguere un percorso assoluto da uno relativo"
+  - "Sapere a che cosa servono /etc, /var, /home, /tmp e /bin"
+video:
+  provider: youtube
+  id: "UYJ14qzK-xw"
+  start: 0
+  end: 412
+  channel: "Diario di Tecnologia"
+  title: "Struttura del File System Linux spiegata semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-filesystem
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cercare le lettere di unità come C: su Linux: esiste un solo albero che parte da /"
+  - "Confondere / (la radice) con ~ (la cartella personale)"
+  - "Scrivere un percorso relativo con la barra iniziale: /lab non è lo stesso di lab"
+commands: [ls, cd, pwd]
+---
+
+<Scene title="Il registro di sistema">
+Il collega del SOC ti manda un altro messaggio:
+
+«Il computer di laboratorio ha un registro di sistema: ci scrive tutto quello che succede. Trovalo. Ti do un indizio: non è nella tua cartella personale.»
+
+Hai esplorato la tua home. Ma il computer è molto più grande di quella cartella.
+
+La domanda del caso: **dove si trovano le cose in un computer Linux, e come le si indica in modo preciso?**
+
+<Say who="sensei">Un indirizzo vago non porta da nessuna parte. Oggi impari l'indirizzo preciso di ogni file del sistema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un albero capovolto">
+Il **filesystem** è il modo in cui il sistema organizza file e cartelle. Su Linux è un **albero**, capovolto: la **radice** sta in alto e si chiama **/** (una sola barra). Da lei partono tutti i rami.
+
+<Log lines={[
+  "studente@lab:~$ ls /",
+  "bin  boot  dev  etc  home  lib  proc  root  run  sbin  tmp  usr  var",
+]} caption="Le cartelle direttamente sotto la radice. L'elenco esatto cambia da un sistema all'altro." />
+
+Non ci sono lettere di unità come **C:** di Windows. Anche un disco USB collegato compare come una cartella dentro lo stesso albero.
+
+<Callout kind="attenzione">
+Non confondere: **/** è la radice di tutto il sistema, **~** è solo la tua cartella personale. Sono due posti molto diversi.
+</Callout>
+
+<Say who="assistente">Radice in alto, rami che scendono. Se ti perdi, cd / ti riporta al punto da cui parte tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percorso assoluto: l'indirizzo completo">
+Un **percorso** è l'indirizzo di un file. Il **percorso assoluto** parte sempre dalla radice e quindi **comincia con /**. Vale ovunque ti trovi, come un indirizzo con città e via.
+
+<Log lines={[
+  "studente@lab:~$ cd /home/studente/indagine",
+  "studente@lab:~/indagine$ pwd",
+  "/home/studente/indagine",
+]} />
+
+Ogni barra interna separa un livello: dentro **/** c'è **home**, dentro home c'è **studente**, dentro studente c'è **indagine**.
+
+<Callout kind="regola">
+Comincia con **/**? È assoluto. Non comincia con **/**? È relativo.
+</Callout>
+
+<Say who="sensei">L'indirizzo assoluto funziona da qualsiasi punto del sistema. È lento da scrivere, ma non sbaglia mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percorso relativo: parte da dove sei">
+Il **percorso relativo** parte dalla cartella in cui ti trovi. È come dire «la porta accanto» invece di dare l'indirizzo intero. Due segni speciali:
+
+- **.** (un punto) è la cartella corrente
+- **..** (due punti) è la cartella superiore
+
+<Log lines={[
+  "studente@lab:~/indagine$ cd evidenze",
+  "studente@lab:~/indagine/evidenze$ cd ../../appunti",
+  "studente@lab:~/appunti$ pwd",
+  "/home/studente/appunti",
+]} caption="Da evidenze salgo due livelli (../..) e arrivo in studente, poi scendo in appunti." />
+
+<Callout kind="trucco">
+Lo stesso posto ha **un solo percorso assoluto** ma tanti percorsi relativi, a seconda di dove parti. Per questo gli assoluti sono i più sicuri negli script e nelle guide.
+</Callout>
+
+Vuoi sentirlo spiegato da un'altra voce? Eccolo:
+
+<Video />
+
+<Say who="assistente">Un punto, qui. Due punti, sopra. Se leggi un percorso partendo da dove sei, non puoi sbagliarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cartelle di sistema">
+Sotto la radice ci sono cartelle con un compito preciso. Le cinque da conoscere:
+
+- **/home**: le cartelle personali degli utenti (/home/studente)
+- **/etc**: i file di **configurazione** del sistema
+- **/var**: i dati che cambiano nel tempo; dentro **/var/log** ci sono i **log**, cioè i registri
+- **/tmp**: file **temporanei**, che possono sparire in ogni momento
+- **/bin**: i programmi di base, come ls e cp
+
+<Callout kind="curiosita">
+Ecco la risposta al caso: il registro di sistema sta di solito in **/var/log**. In un SOC ci passi ogni giorno.
+</Callout>
+
+<Callout kind="attenzione">
+Dentro /etc e /bin si guarda, ma non si tocca senza sapere che cosa si fa: un file sbagliato può impedire al sistema di avviarsi. Per le prove c'è la tua home.
+</Callout>
+
+<Say who="sensei">Configurazione in /etc, registri in /var, utenti in /home. Tre nomi da sapere a memoria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sei in /var/log. Che cosa fa il comando «cd ../tmp»?"
+  options={[
+    "Ti porta in /var/tmp (sali a /var e scendi in tmp)",
+    "Ti porta in /tmp",
+    "Ti porta in /var/log/tmp",
+    "Dà sempre errore",
+  ]}
+  answer={0}
+  explain="Un percorso che non comincia con / è relativo. Da /var/log il .. porta a /var, poi si scende in tmp: /var/tmp. Per andare in /tmp servirebbe il percorso assoluto cd /tmp."
+/>
+
+<Say who="sensei">Se non c'è la barra davanti, parti da dove sei. Sempre.</Say>
+
+Vai a cercare il registro di sistema: entra nella cartella dei log scrivendo il **percorso assoluto** e guarda che cosa c'è.
+
+<LinuxTerminal goal="Vai in /var/log con un percorso assoluto e stampa la cartella in cui ti trovi con pwd." />
+
+<Say who="assistente">Il percorso assoluto comincia con la barra. Scrivi tutti i livelli, uno dopo l'altro: var, poi log.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cartelle di sistema e percorsi. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-filesystem" pass="4/5" retries={3} />
+
+<Say who="sensei">Un percorso scritto male porta nel posto sbagliato. Controlla sempre se c'è la barra iniziale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il filesystem è un albero che parte dalla radice /. Non esistono lettere di unità.
+- Percorso assoluto: comincia con / e vale ovunque. Relativo: parte da dove sei, con . (qui) e .. (sopra).
+- /home utenti, /etc configurazione, /var/log registri, /tmp file temporanei, /bin programmi di base.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si trovano di solito i log di sistema?", a: "In /var/log" },
+    { q: "Come si riconosce un percorso assoluto?", a: "Comincia con la barra /" },
+    { q: "Che cosa significa ..?", a: "La cartella superiore" },
+    { q: "Che cosa contiene /etc?", a: "I file di configurazione del sistema" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai orientarti. Domani si comincia a costruire: creare, copiare e spostare file, sempre in una cartella di prova.</Say>
+</Scene>

@@ -1,0 +1,152 @@
+---
+id: F.03.004
+course: fondamenta
+module: 3
+title: "sudo e root: il potere si presta"
+belt: gialla
+duration_min: 8
+prerequisites: [F.03.003]
+objectives:
+  - "Spiegare cosa fa sudo e quando serve davvero"
+  - "Applicare il principio del privilegio minimo"
+  - "Riconoscere i rischi di un comando eseguito con sudo senza capirlo"
+video:
+  provider: youtube
+  id: "07JOqKOBRnU"
+  start: 0
+  end: 600
+  channel: "Learn Linux TV"
+  title: "Linux Crash Course - sudo"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-sudo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere sudo davanti a ogni comando per evitare gli errori di permesso"
+  - "Credere che sudo chieda la password di root: chiede la tua"
+  - "Incollare nel terminale un comando trovato online senza capirlo, e per di più con sudo"
+commands: []
+---
+
+<Scene title="Il comando trovato in rete">
+Luca, del turno di notte, deve installare un programma. Cerca online e trova una riga da incollare nel terminale. Comincia con `sudo` e finisce con un indirizzo che non conosce.
+
+«Funziona sempre», gli ha scritto qualcuno in un forum. Luca ti guarda: «Lo incollo?»
+
+<Say who="sensei">Prima di rispondere, serve sapere cosa fa quella parola in testa alla riga. Siediti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fa sudo">
+**sudo** significa «super user do»: esegui **questo singolo comando** con i poteri dell'amministratore (root), poi torna normale.
+
+<Log lines={[
+  "studente@lab:~$ cat /var/log/auth.log",
+  "cat: /var/log/auth.log: Permission denied",
+  "studente@lab:~$ sudo cat /var/log/auth.log",
+  "[sudo] password for studente:",
+]} caption="Senza sudo il file è negato. Con sudo, il sistema chiede la password." />
+
+Attenzione: sudo chiede **la tua password**, non quella di root. Serve per verificare che sia davvero tu davanti alla tastiera, e che tu sia tra gli utenti autorizzati (il file `/etc/sudoers` decide chi).
+
+<Callout kind="curiosita">
+Ogni uso di sudo viene **registrato** nei log. È una delle differenze rispetto a «essere root»: con sudo resta traccia di chi ha fatto cosa.
+</Callout>
+
+<Say who="assistente">Sudo è un prestito. Il potere resta a root: tu lo prendi per un comando e lo restituisci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il privilegio minimo">
+Il principio dietro tutto è uno solo: **privilegio minimo**. Ogni utente e ogni programma deve avere **solo** i permessi che gli servono per fare il proprio lavoro. Non uno di più.
+
+<Callout kind="regola">
+Privilegio minimo: se per leggere un file basta il permesso di lettura, non dare la scrittura. Se basta un comando con sudo, non aprire una shell da root.
+</Callout>
+
+Pensa a un hotel: la receptionist ha la chiave della reception, non la chiave di tutte le camere. Se qualcuno le ruba la chiave, il danno resta piccolo.
+
+<Say who="sensei">Un privilegio che non serve è un rischio gratis. Non regalarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando serve davvero">
+Cose che di solito richiedono sudo: installare o rimuovere programmi, cambiare la configurazione del sistema, leggere file riservati, fermare servizi.
+
+Cose che **non** richiedono sudo: guardare le tue cartelle, scrivere i tuoi file, usare i tuoi programmi.
+
+<Guided
+  steps={[
+    "Un comando dà «Permission denied». Prima domanda: è un file mio o del sistema?",
+    "Se è mio, forse devo solo sistemare i permessi con chmod: niente sudo.",
+    "Se è del sistema e ne ho davvero bisogno, uso sudo per quel solo comando.",
+    "Dopo, controllo cosa è cambiato. Non resto in una shell da root «già che ci sono».",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Il simbolo `#` sul prompt invece di `$` di solito significa che sei root. Se lo vedi, rallenta: ogni comando ha il massimo del peso.
+</Callout>
+
+<Say who="assistente">Quando c'è dubbio, prima chiediti perché il comando è negato. Il sudo viene dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi">
+Torniamo alla domanda di Luca: «Lo incollo?»
+
+Un comando con sudo gira con **tutti i poteri**. Se contiene qualcosa di ostile (scarica un programma da un sito sconosciuto, cancella file, apre un accesso da fuori) lo fa senza fermarsi, perché tu hai detto «sì, puoi».
+
+<Video />
+
+<Quiz
+  question="Ti chiedono: «Metti sempre sudo davanti a ogni comando, così non vedi più gli errori». Cosa rispondi?"
+  options={["No: si usa solo quando serve davvero, perché riduce i danni degli errori", "Sì: sudo rende i comandi più sicuri", "Sì: così i comandi sono più veloci", "No: sudo funziona solo su file di testo"]}
+  answer={0}
+  explain="Gli errori di permesso sono un'informazione, non un fastidio. Con sudo ovunque, ogni sbaglio (e ogni comando ostile) agisce con i poteri dell'amministratore. Privilegio minimo: sudo solo quando serve e solo per quel comando."
+/>
+
+<Say who="sensei">Luca non ha incollato nulla. Ha chiesto a chi gestisce il sistema. Risposta giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sudo, root e privilegio minimo. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-sudo" pass="5/5" retries={3} />
+
+<Say who="sensei">Un amministratore bravo non è quello che usa più sudo. È quello che ne ha bisogno meno spesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- sudo esegue un singolo comando con i poteri di root e chiede la tua password. L'uso viene registrato.
+- Privilegio minimo: a ogni utente e programma solo i permessi che servono.
+- Prima di usare sudo chiediti perché il comando è negato. Mai incollare con sudo ciò che non capisci.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa fa sudo?", a: "Esegue un singolo comando con i privilegi di amministratore" },
+    { q: "Quale password chiede sudo?", a: "La tua, non quella di root" },
+    { q: "Cos'è il privilegio minimo?", a: "Dare solo i permessi strettamente necessari" },
+    { q: "Cosa indica un # sul prompt?", a: "Che di solito sei root" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai prestare il potere con giudizio. Prossima lezione: i processi, cioè i programmi che girano proprio ora sul server.</Say>
+</Scene>

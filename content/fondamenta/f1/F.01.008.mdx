@@ -1,0 +1,165 @@
+---
+id: F.01.008
+course: fondamenta
+module: 1
+title: "Primo avvio e ordine in laboratorio"
+belt: bianca
+duration_min: 8
+prerequisites: [F.01.007]
+objectives:
+  - "Aggiornare Kali dopo il primo avvio e fare lo snapshot"
+  - "Ripristinare la VM se qualcosa va storto"
+  - "Enunciare le regole del laboratorio, compresa quella sui sistemi altrui"
+video:
+  provider: youtube
+  id: "wqKmjiKDAtM"
+  start: 0
+  end: 366
+  channel: "IlSoftware.it"
+  title: "VirtualBox: Come funziona e come utilizzare le istantanee"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-primo-avvio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Non aggiornare dopo il primo avvio"
+  - "Considerare lo snapshot un backup dei dati"
+  - "Usare gli strumenti del laboratorio su sistemi che non sono tuoi"
+commands:
+  - "sudo apt update"
+  - "sudo apt full-upgrade"
+---
+
+<Scene title="Il primo avvio">
+La VM è installata. Accendila e accedi con l'utente e la password che hai scelto.
+
+Hai davanti il desktop di Kali. Prima di toccare qualunque strumento, serve **ordine**: aggiornare, fotografare, fissare le regole.
+
+<Callout kind="attenzione">
+La domanda del caso: **che cosa fai nei primi dieci minuti, prima di cominciare a provare?**
+</Callout>
+
+<Say who="sensei">I primi dieci minuti decidono se il laboratorio durerà un mese o un anno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiornare">
+Apri il **terminale**, la finestra in cui si scrivono i comandi. Poi:
+
+<Log lines={["sudo apt update", "sudo apt full-upgrade"]} caption="Prima l'elenco, poi gli aggiornamenti." />
+
+- `sudo apt update` scarica l'**elenco aggiornato** dei programmi disponibili. Non installa nulla.
+- `sudo apt full-upgrade` **installa** gli aggiornamenti.
+- `sudo` vuol dire «eseguilo con i permessi di amministratore»: ti chiede la tua password.
+
+Se al termine viene chiesto di riavviare, riavvia.
+
+<Callout kind="trucco">
+Gli aggiornamenti correggono errori e **falle di sicurezza**. Un laboratorio per la sicurezza che non si aggiorna è un controsenso.
+</Callout>
+
+<Say who="assistente">Può servire qualche minuto, a seconda della connessione. Lascialo lavorare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli snapshot e il ripristino">
+Quando l'aggiornamento è finito e tutto funziona, **spegni la VM** dal menu e fai un nuovo snapshot: «Dopo aggiornamento».
+
+Da quel momento, prima di ogni esperimento rischioso, ne fai un altro con un nome chiaro («prima di provare X»). Se qualcosa si rompe:
+
+<Guided
+  steps={[
+    "Spegni la VM.",
+    "In VirtualBox apri l'elenco degli snapshot.",
+    "Scegli l'ultimo che funzionava e ripristinalo.",
+    "Riaccendi: la VM è tornata a come stava.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Ripristinando, **perdi** tutto ciò che hai fatto dopo lo snapshot. E lo snapshot **non è un backup**: i file importanti vanno copiati anche altrove.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Sei minuti, con la parte pratica:
+
+<Video />
+
+<Say who="sensei">Uno snapshot costa pochi secondi. Un'ora di lavoro perso costa molto di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole del laboratorio">
+Prima di usare davvero gli strumenti di Kali, quattro regole. Valgono sempre.
+
+<Callout kind="regola">
+**1. Si prova solo ciò che è tuo**, o per cui hai un **permesso scritto**. Il laboratorio contiene la tua VM, non la rete della scuola, né il sito di qualcuno.
+</Callout>
+
+<Callout kind="regola">
+**2. Mai contro sistemi altrui.** In Italia l'accesso abusivo a un sistema informatico è un reato (articolo 615-ter del codice penale). Non c'è «ma volevo solo provare».
+</Callout>
+
+<Callout kind="regola">
+**3. Rete prudente.** Resta in NAT; il bridge solo se sai perché.
+</Callout>
+
+<Callout kind="regola">
+**4. Ordine.** Aggiorni, fai gli snapshot, spegni dal menu, non chiudi di colpo la finestra.
+</Callout>
+
+<Say who="sensei">Hai in mano strumenti potenti. Il carattere si vede da dove li usi, non da quello che sai fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico ti chiede di «provare Kali» sul sito web del suo negozio, senza che il titolare lo sappia. Che cosa rispondi?"
+  options={["No: senza il permesso del titolare è accesso abusivo, anche se «per gioco»", "Sì, basta non fare danni", "Sì, ma solo se usi una VM", "Sì, se lo fai di notte"]}
+  answer={0}
+  explain="La VM protegge il tuo computer, non ti autorizza a provare sistemi altrui. Serve il permesso del titolare, scritto. Chi risponde «sì, se usi una VM» confonde la sicurezza del tuo laboratorio con il diritto di provare."
+/>
+
+<Say who="sensei">Il laboratorio ti protegge da te stesso. Non protegge te dalla legge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su avvio, aggiornamento e regole. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-primo-avvio" pass="5/5" retries={3} />
+
+<Say who="sensei">Un laboratorio ordinato è un laboratorio che si può rimettere in piedi. Anche dopo un errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Dopo il primo avvio: aggiornare con sudo apt update e sudo apt full-upgrade, poi fare lo snapshot.
+- Se qualcosa si rompe, si ripristina l'ultimo snapshot funzionante; lo snapshot non è un backup.
+- Si prova solo ciò che è tuo o con permesso scritto: mai contro sistemi altrui (art. 615-ter c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa sudo apt update?", a: "Scarica l'elenco aggiornato dei pacchetti, senza installarli" },
+    { q: "Dopo l'aggiornamento, che cosa conviene fare?", a: "Uno snapshot con un nome chiaro" },
+    { q: "Che cosa si può provare con gli strumenti di Kali?", a: "Solo ciò che è tuo o per cui hai un permesso scritto" },
+    { q: "Lo snapshot è un backup?", a: "No: vive accanto alla VM e si perde con lei" },
+  ]}
+/>
+
+<Say who="sensei">Il laboratorio è pronto. Il modulo è finito. Ora si comincia il lavoro vero: il terminale, e la prima lezione di Linux.</Say>
+</Scene>

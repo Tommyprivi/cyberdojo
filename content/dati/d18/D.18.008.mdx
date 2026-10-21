@@ -1,0 +1,213 @@
+---
+id: D.18.008
+course: dati
+module: 18
+title: "Prestazioni e sicurezza"
+belt: marrone
+duration_min: 10
+prerequisites: [D.18.007]
+objectives:
+  - "Individuare e correggere una query lenta (funzione sulla colonna, statistiche, partizioni)"
+  - "Spiegare perché servono pool di connessioni e permessi minimi"
+  - "Riconoscere una SQL injection e sapere come si previene, anche con la cifratura dei dati"
+video:
+  provider: youtube
+  id: "e6kAsucxEYk"
+  start: 0
+  end: 600
+  channel: "DbSchema Database Designer"
+  title: "PostgreSQL Range Partitioning for Better Performance"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-prestazioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere WHERE extract(month from data) = 4 o date(data) = ... e perdere l'uso dell'indice sulla colonna data"
+  - "Costruire una query incollando il testo dell'utente invece di usare i parametri"
+  - "Dare all'applicazione un ruolo da amministratore «per non avere problemi di permessi»"
+commands: []
+---
+
+<Scene title="Lenta e aperta">
+Il negozio di Marta ha due problemi nello stesso giorno. Il report di aprile impiega un minuto, e nessuno capisce perché, visto che c'è l'indice sulla data. In più, il sito accetta il nome del cliente nella casella di ricerca e lo incolla direttamente nella query.
+
+La domanda del caso: **come si rende veloce una query e come si difende il database da chi lo usa male?**
+
+<Say who="sensei">Velocità e sicurezza sembrano due mondi. Sono lo stesso mestiere: conoscere che cosa fa il database quando gli scrivi una query.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Query lente: la funzione sulla colonna">
+Il report di aprile chiede gli ordini del mese con:
+
+<Log lines={[
+  "SELECT id, data FROM ordini",
+  "WHERE extract(month from data) = 4 ORDER BY id;",
+]} caption="Query che applica una funzione alla colonna data." />
+
+<Log lines={[
+  "id | data",
+  "4  | 2025-04-01",
+  "5  | 2025-04-03",
+  "6  | 2025-04-10",
+  "7  | 2025-04-15",
+]} caption="Quattro ordini: nella nostra tabella di otto righe sono quelli di aprile." />
+
+Il risultato è giusto, ma il database deve calcolare `extract` su **ogni riga**, quindi l'indice sulla colonna `data` non si può usare. La versione veloce chiede lo stesso risultato come **intervallo**:
+
+<Log lines={[
+  "SELECT id, data FROM ordini",
+  "WHERE data >= '2025-04-01' AND data < '2025-05-01' ORDER BY id;",
+]} caption="Stesso risultato: ordini 4, 5, 6 e 7. Ma ora l'indice sulla data lavora." />
+
+<Callout kind="regola">
+Lascia la colonna **da sola** nel confronto, e sposta il calcolo dall'altra parte. Colonna a sinistra, calcoli a destra.
+</Callout>
+
+Per trovare le query lente si usano i **log delle query lente** (`log_min_duration_statement`) e l'estensione **pg_stat_statements**, che elenca le query più costose. Poi si guarda il piano con EXPLAIN (lezione 3).
+
+<Quiz
+  question="Quale query restituisce gli ordini di aprile 2025 senza impedire l'uso di un indice sulla colonna data?"
+  options={["WHERE data >= '2025-04-01' AND data < '2025-05-01'", "WHERE extract(month from data) = 4", "WHERE to_char(data, 'MM') = '04'", "WHERE date_trunc('month', data) = '2025-04-01'"]}
+  answer={0}
+  explain="Solo la prima lascia la colonna data da sola nel confronto: l'indice può saltare dritto all'intervallo. Nelle altre tre il database deve calcolare una funzione su ogni riga prima di confrontare, e l'indice sulla colonna non serve (servirebbe un indice sull'espressione). Tutte e quattro restituiscono gli stessi ordini 4, 5, 6 e 7."
+/>
+
+<Say who="assistente">Il risultato è identico, la strada è diversa. Il piano te lo dice, se glielo chiedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Statistiche, partizioni, connessioni">
+Tre altre cause di lentezza.
+
+- **Statistiche vecchie**: se i dati sono cambiati molto, il pianificatore sbaglia le stime. `ANALYZE` le aggiorna, e PostgreSQL ha un processo automatico (**autovacuum**) che lo fa e ripulisce le righe morte lasciate da UPDATE e DELETE.
+- **Tabelle enormi**: una **partizione** divide una tabella grande in pezzi, per esempio uno per trimestre. Una query su aprile legge solo il pezzo giusto (*partition pruning*).
+- **Troppe connessioni**: in PostgreSQL ogni connessione è un processo, e il limite predefinito è di circa 100 (`max_connections`). Mille richieste insieme non si servono con mille connessioni: si usa un **pool di connessioni** come PgBouncer, che ne tiene poche aperte e le fa condividere.
+
+<Log lines={[
+  "CREATE TABLE ordini_storico (",
+  "  id bigint, cliente_id int, totale numeric, data date",
+  ") PARTITION BY RANGE (data);",
+  "",
+  "CREATE TABLE ordini_2025_t2 PARTITION OF ordini_storico",
+  "  FOR VALUES FROM ('2025-04-01') TO ('2025-07-01');",
+]} caption="Una tabella partizionata per data (il secondo trimestre 2025)." />
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sul partizionamento in PostgreSQL:
+
+<Video />
+
+<Callout kind="attenzione">
+Le partizioni non sono una bacchetta magica: aiutano su tabelle di centinaia di milioni di righe con filtri sulla chiave di partizione. Su tabelle piccole aggiungono solo complicazione.
+</Callout>
+
+<Say who="sensei">Prima misura, poi ottimizza. Una partizione messa «perché fa moderno» è solo lavoro in più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Permessi minimi">
+Passiamo alla sicurezza. Il principio è uno: **permessi minimi**. Ogni ruolo può fare solo ciò che gli serve.
+
+<Log lines={[
+  "CREATE ROLE app_negozio LOGIN PASSWORD 'scegli-una-password-lunga';",
+  "GRANT SELECT, INSERT ON ordini TO app_negozio;",
+  "GRANT SELECT ON clienti, prodotti TO app_negozio;",
+  "REVOKE ALL ON ALL TABLES IN SCHEMA public FROM PUBLIC;",
+]} caption="L'applicazione può leggere e inserire ordini, e basta. Non può cancellare né modificare tabelle." />
+
+- Mai l'amministratore (`postgres`) per l'applicazione.
+- Un ruolo per applicazione, e ruoli di sola lettura per chi fa report.
+- Il report del contabile legge una **vista** che nasconde le colonne riservate (lezione 4).
+- Le password sono **hash**, non cifrate: PostgreSQL usa `scram-sha-256` per proteggerle. Nessuno, nemmeno l'amministratore, deve poterle leggere in chiaro.
+
+Se il sito viene violato, un ruolo con pochi permessi limita il danno: chi entra può inserire ordini, non cancellare la tabella dei clienti.
+
+<Say who="assistente">Se perdi la chiave del magazzino, meglio che apra solo il magazzino e non tutto il palazzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="SQL injection: il richiamo">
+Torniamo alla casella di ricerca del sito. Il programma costruisce la query incollando il testo scritto dall'utente. Se qualcuno scrive il nome «Riva», la query è corretta. Se scrive `' OR '1'='1`, la query diventa:
+
+<Log lines={[
+  "SELECT * FROM clienti WHERE nome = '' OR '1'='1'",
+]} caption="La condizione è sempre vera: la query restituisce tutte e sei le righe di clienti." />
+
+Chi scrive quel testo ha trasformato un dato in **codice**. È la **SQL injection**, vista nel modulo C6 di cybersecurity: tra i difetti più comuni delle applicazioni. Si previene con le **query parametrizzate**: il testo dell'utente viaggia separato dalla query e non viene mai eseguito.
+
+<Log lines={[
+  "SELECT * FROM clienti WHERE nome = $1",
+]} caption="Parametro $1: qualunque cosa l'utente scriva, resta un semplice valore da confrontare." />
+
+Con la query parametrizzata, il testo `' OR '1'='1` viene cercato come nome. Nessun cliente si chiama così: risultato, zero righe.
+
+<Callout kind="regola">
+Difese in ordine: **query parametrizzate** sempre; **permessi minimi** del ruolo dell'applicazione; validare l'input; non mostrare all'utente i messaggi di errore del database.
+</Callout>
+
+<Callout kind="attenzione">
+Si prova la SQL injection **solo** su applicazioni proprie o con permesso scritto: in Italia l'accesso abusivo a un sistema informatico è reato (art. 615-ter del codice penale).
+</Callout>
+
+<Say who="sensei">Mai incollare testo dell'utente dentro una query. Mai. Nemmeno dentro una funzione del database.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifratura: tre posti">
+I dati si proteggono in tre momenti.
+
+- **In transito** (tra applicazione e database): connessione cifrata con **TLS**. In PostgreSQL si usa `sslmode=verify-full` nella stringa di connessione, così il client verifica anche l'identità del server.
+- **A riposo** (su disco): cifratura del disco o del volume, e **backup cifrati** (lezione 7). PostgreSQL da solo non cifra i file: lo fa il sistema.
+- **Nelle colonne** (dati molto sensibili): funzioni come quelle di `pgcrypto`, oppure cifratura fatta dall'applicazione prima di salvare. Chi ha accesso al database vede solo dati illeggibili.
+
+Una distinzione importante: le **password degli utenti** non si cifrano, si salvano come **hash lento** (come argon2 o bcrypt), che non si può invertire. I dati che devi poter rileggere (come un codice fiscale) si cifrano; quelli che devi solo verificare (le password) si trasformano in hash.
+
+<Callout kind="regola">
+Cifrare non sostituisce i permessi: sono due difese diverse. E ricorda il GDPR: per dati su salute, finanza e minori vale la massima cautela.
+</Callout>
+
+<Say who="assistente">Cifra il viaggio, cifra il disco, cifra il dato più delicato. Tre lucchetti, tre momenti diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su prestazioni e sicurezza. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-prestazioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Con questa lezione chiudi il ramo: sai far correre un database e proteggerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Query lente: non applicare funzioni alla colonna filtrata, tieni aggiornate le statistiche, usa partizioni solo su tabelle enormi e un pool di connessioni.
+- Sicurezza: permessi minimi, un ruolo per applicazione, query parametrizzate contro la SQL injection.
+- Cifra in transito (TLS), a riposo (disco e backup) e, per i dati più delicati, nelle colonne; le password si salvano come hash.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché WHERE extract(month from data) = 4 è lenta su una tabella grande?", a: "La funzione si calcola su ogni riga e l'indice sulla data non si usa" },
+    { q: "A che cosa serve un pool di connessioni come PgBouncer?", a: "A servire molte richieste con poche connessioni aperte" },
+    { q: "Come si previene la SQL injection?", a: "Con query parametrizzate e permessi minimi" },
+    { q: "Le password si cifrano o si salvano come hash?", a: "Come hash lento: non si può invertire" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e ramo completato. Hai in mano gli strumenti di chi gestisce un database vero. Usali con rispetto per i dati di chi ti ha dato fiducia.</Say>
+</Scene>

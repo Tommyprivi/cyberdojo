@@ -1,0 +1,187 @@
+---
+id: T.14.004
+course: trading
+module: 14
+title: "La relazione onesta"
+belt: marrone
+duration_min: 9
+prerequisites: [T.14.003]
+objectives:
+  - "Scrivere una relazione con domanda, metodo, risultati, limiti e conclusione prudente"
+  - "Riconoscere in una relazione abbellimenti, omissioni e promesse"
+  - "Elencare i limiti tipici di un backtest: pochi dati, bias, overfitting, costi"
+video:
+  provider: youtube
+  id: "Z8CAQogyFd0"
+  start: 0
+  end: 600
+  channel: "Enlightened Stock Trading"
+  title: "Common Backtesting Mistakes"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t14-relazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Raccontare solo la prova migliore e nascondere le altre"
+  - "Presentare il rendimento lordo senza dire che non include i costi"
+  - "Concludere «la strategia funziona» da un campione troppo piccolo"
+commands: []
+---
+
+<Scene title="Due relazioni, un solo test">
+Livia ha il risultato: strategia netta +3,26%, buy and hold +7,00%. Due compagni scrivono la relazione.
+
+**Andrea:** «La strategia ha guadagnato il 3,87% in dieci giorni: un metodo promettente!»
+
+**Chiara:** «In dieci giorni fittizi la strategia, al netto dei costi, ha reso il 3,26% contro il 7,00% del buy and hold. L'ipotesi è smentita. Il campione è troppo piccolo per altre conclusioni.»
+
+La domanda del caso: **quale relazione è onesta, e che cosa manca ancora a quella di Chiara?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. I numeri qui sono fittizi.
+</Callout>
+
+<Say who="sensei">Andrea ha scelto il numero più bello. Chiara ha scelto il numero giusto. In finanza, la differenza si paga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La struttura di una relazione">
+Una relazione onesta ha sette parti, sempre nello stesso ordine:
+
+1. **Domanda e ipotesi**, con il «sarà falsa se».
+2. **Dati**: da dove vengono, che periodo, che licenza.
+3. **Regole**: segnale, posizione, parametri.
+4. **Costi**: quali sono stati ipotizzati.
+5. **Risultati**: lordo, netto, confronto con il buy and hold.
+6. **Limiti**: che cosa può rendere il risultato poco affidabile.
+7. **Conclusione prudente**: che cosa si può dire e che cosa no.
+
+<Callout kind="regola">
+Si riportano **tutte** le prove fatte, non solo la migliore. Se hai provato 5 versioni, il lettore deve saperlo.
+</Callout>
+
+<Say who="assistente">Se il lettore non può rifare il tuo test dalla relazione, la relazione è incompleta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti da dichiarare">
+La parte sui limiti è la più importante. Per il nostro progetto:
+
+<Log lines={[
+  "LIMITI",
+  "- Campione: 10 giorni. Troppo pochi per qualsiasi conclusione statistica.",
+  "- Dati fittizi: non rappresentano un mercato reale.",
+  "- Nessuna prova fuori campione: tutto è stato usato per un solo test.",
+  "- Un solo parametro (3 giorni): altri valori non sono stati provati, quindi non sappiamo quanto il risultato dipenda da questa scelta.",
+  "- Costi ipotizzati (0,2%): spread e slippage reali potrebbero essere maggiori.",
+  "- Look-ahead evitato con lo shift di un giorno; survivorship bias non verificabile.",
+]} />
+
+Sono i limiti del modulo 5 messi in fila: look-ahead, sopravvivenza, overfitting, costi, pochi dati.
+
+Vuoi sentire un'altra voce sugli errori più comuni nei backtest? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Chi dichiara i limiti non è debole. È l'unico di cui puoi fidarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa si può concludere">
+Ecco la tabella che Chiara mette nella sezione risultati. Tutti i valori sono fittizi.
+
+<Log lines={[
+  "                    primi 5 giorni   ultimi 4 giorni   totale",
+  "buy and hold        +5,00%           +1,90%            +7,00%",
+  "strategia (lorda)   +0,96%           +2,88%            +3,87%",
+]} />
+
+La strategia ha fatto meglio nella seconda parte e peggio nella prima. Con quattro giorni di dati un risultato così non significa nulla: può essere solo il caso.
+
+Una conclusione prudente è: «Su questi dati l'ipotesi non è confermata. Servono molti più dati, periodi diversi, prove fuori campione. Non si può dire nulla sulla redditività della strategia».
+
+<Callout kind="trucco">
+Frasi da evitare: «funziona», «batte il mercato», «garantisce», «rendimento atteso del…». Frasi da usare: «in questi dati», «con queste ipotesi», «non è confermato».
+</Callout>
+
+<Say who="sensei">Una conclusione prudente è sempre meno bella di una promessa. Ed è sempre più vera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella relazione Marta scrive: «Dopo 30 prove con medie da 2 a 31 giorni, la migliore ha reso il 12% netto. Strategia validata.» Che cosa manca di fondamentale?"
+  options={[
+    "Dire che la migliore è stata scelta tra 30 tentativi sugli stessi dati e che non c'è prova fuori campione: il risultato può essere frutto del caso (overfitting)",
+    "Aggiungere più decimali al risultato del 12%",
+    "Usare solo la media da 31 giorni, perché è la più lunga",
+    "Nascondere le altre 29 prove per non confondere il lettore",
+  ]}
+  answer={0}
+  explain="Con 30 tentativi sugli stessi dati, uno qualunque vince quasi sempre per caso. Senza una prova su dati mai usati il risultato non è validato. Nascondere le altre prove è proprio l'errore da evitare: vanno dichiarate."
+/>
+
+<Say who="assistente">Quante cose hai provato? Questa è la prima domanda che qualsiasi lettore serio ti farà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Correggi la relazione di Andrea">
+Riscriviamo la frase di Andrea, un passo alla volta.
+
+<Guided
+  steps={[
+    "Frase originale: «La strategia ha guadagnato il 3,87% in dieci giorni: un metodo promettente!»",
+    "Problema 1: 3,87% è il rendimento lordo. Con i costi è 3,26%.",
+    "Problema 2: manca il confronto. Il buy and hold ha fatto +7,00%.",
+    "Problema 3: «promettente» da dieci giorni è una promessa che i dati non sostengono.",
+    "Versione onesta: «In 10 giorni fittizi la strategia ha reso +3,26% al netto dei costi contro +7,00% del buy and hold. L'ipotesi non è confermata e il campione è troppo piccolo per altre conclusioni.»",
+  ]}
+/>
+
+<Say who="sensei">Tre correzioni e la frase diventa vera. Fai questo esercizio con ogni tua relazione, prima di consegnarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di valutazione critica: backtest e relazioni da giudicare, limiti da riconoscere, frasi da correggere.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t14-relazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Saper smontare una relazione bella ma falsa ti protegge più di qualsiasi strategia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una relazione onesta ha sette parti: domanda, dati, regole, costi, risultati, limiti, conclusione prudente.
+- Si riportano tutte le prove fatte, il lordo e il netto, il confronto con il buy and hold.
+- Pochi dati, overfitting, costi e bias limitano ogni backtest: vanno dichiarati, non nascosti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le sette parti della relazione?", a: "Domanda, dati, regole, costi, risultati, limiti, conclusione prudente" },
+    { q: "Perché si riportano tutte le prove?", a: "Perché la migliore tra tante prove può vincere solo per caso" },
+    { q: "Perché il rendimento lordo da solo inganna?", a: "Non include i costi, che a ogni scambio riducono il risultato" },
+    { q: "Una frase prudente al posto di «la strategia funziona»?", a: "«In questi dati e con queste ipotesi l'ipotesi non è confermata»" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione: presentare il progetto e decidere i prossimi passi. Con prudenza, e senza promesse.</Say>
+</Scene>

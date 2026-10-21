@@ -1,0 +1,192 @@
+---
+id: T.07.005
+course: trading
+module: 7
+title: "Contro il buy and hold e il benchmark"
+belt: arancione
+duration_min: 8
+prerequisites: [T.07.004]
+objectives:
+  - "Spiegare che cosa sono il buy and hold e il benchmark"
+  - "Confrontare una strategia con il benchmark a parità di periodo e di rischio"
+  - "Riconoscere una curva troppo liscia come segnale di allarme"
+video:
+  provider: youtube
+  id: "mDzLxH8LwMo"
+  start: 0
+  end: 600
+  channel: "conTEmplata più che informazione"
+  title: "Il Benchmark"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t07-benchmark
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere un benchmark comodo che fa sembrare bravo il backtest"
+  - "Confrontare solo il rendimento e ignorare rischio e drawdown"
+  - "Fidarsi di una curva senza mai un calo"
+commands: []
+---
+
+<Scene title="Bravi rispetto a chi?">
+Paolo ha un backtest fittizio con CAGR 5%. «Funziona!», dice.
+
+Il suo amico Elia gli chiede: **«5% rispetto a cosa?»**. Se tenere fermo un indice, senza fare nulla, avesse reso di più, la strategia sarebbe solo fatica inutile.
+
+La domanda del caso: **con che cosa si confronta una strategia per sapere se vale qualcosa?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: si può perdere denaro, anche tutto. Numeri fittizi, nessuna promessa. I mercati non regalano niente.
+</Callout>
+
+<Say who="sensei">Un voto non esiste senza il confronto. 5 è tanto o poco? Dipende da chi hai accanto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Buy and hold e benchmark">
+Il **buy and hold** («compra e tieni») significa comprare e non fare nulla per tutto il periodo. È il confronto più onesto: **la strategia fa meglio di non fare niente?**
+
+Il **benchmark** è un indice di riferimento adatto a ciò che la strategia tratta. Se la strategia opera su azioni europee, il benchmark è un indice di azioni europee, non un indice qualsiasi.
+
+Regole del confronto:
+
+- **stesso periodo** di dati;
+- **stesso mercato** (non confrontare azioni con obbligazioni);
+- **stesso rischio**: guarda anche volatilità, drawdown, Sharpe;
+- **costi inclusi** da entrambe le parti.
+
+<Callout kind="regola">
+Il benchmark si sceglie **prima** di guardare i risultati. Sceglierlo dopo è un modo elegante per ingannare se stessi.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Indizio: se il benchmark lo scegli guardando chi perde peggio, non stai misurando, stai scegliendo il risultato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il confronto con i numeri">
+Tre anni di rendimenti annui fittizi:
+
+<Log lines={[
+  "anno   strategia   benchmark",
+  "1      +5%         +10%",
+  "2      +5%         -20%",
+  "3      +5%         +25%",
+]} />
+
+- Strategia: 1,05 × 1,05 × 1,05 = **1,157625** → CAGR **5,00%**
+- Benchmark: 1,10 × 0,80 × 1,25 = **1,10** → CAGR 1,10 ^ (1/3) − 1 ≈ **3,23%**
+- Massimo drawdown (a fine anno): strategia **0%**, benchmark **−20%**
+
+Sulla carta la strategia batte il benchmark di circa 1,77 punti all'anno e senza cadute. Ma c'è qualcosa che non torna.
+
+<Say who="sensei">Un +5% preciso ogni anno e nessuna caduta? Nel mondo reale non succede. Quando è troppo bello, si indaga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Troppo liscia per essere vera">
+Una curva troppo regolare è un **segnale di allarme**. Le cause più comuni nei backtest:
+
+- **look-ahead bias**: la strategia usa informazioni che nel momento della decisione non c'erano ancora;
+- **overfitting**: le regole sono state ritoccate finché i dati passati andavano bene;
+- **costi dimenticati**: commissioni e slippage non sono stati inclusi;
+- **pochi dati**: tre anni non dicono niente sul resto del tempo.
+
+<Callout kind="attenzione">
+Il buy and hold ha anch'esso cadute vere (qui −20%), ma è una scelta semplice, trasparente e senza costi di continue operazioni. Per battere un risultato così onesto, una strategia deve dimostrare molto.
+</Callout>
+
+Dopo il confronto del rendimento, guarda **Sharpe**: strategia con CAGR 5% e volatilità 5% → (5 − 2) / 5 = **0,6**. Benchmark con CAGR 8% e volatilità 16% → (8 − 2) / 16 = **0,375** (rf 2%, numeri di un altro esempio fittizio).
+
+<Say who="assistente">Il confronto giusto guarda tutto insieme: rendimento, rischio, costi e periodo. Un solo numero non basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nel codice">
+```python
+import pandas as pd
+
+strat = pd.Series([0.05, 0.05, 0.05])
+bench = pd.Series([0.10, -0.20, 0.25])
+for nome, r in [("strategia", strat), ("benchmark", bench)]:
+    crescita = (1 + r).prod()
+    cagr = crescita ** (1 / len(r)) - 1
+    print(nome, round(crescita, 4), round(cagr, 4))
+```
+
+Output:
+
+```
+strategia 1.1576 0.05
+benchmark 1.1 0.0323
+```
+
+Prova con Python puro: sposta un rendimento del benchmark e guarda come cambia il CAGR.
+
+<PythonTerminal code={"bench = [0.10, -0.20, 0.25]\ncrescita = 1\nfor r in bench:\n    crescita = crescita * (1 + r)\nprint(round(crescita, 4), round(crescita ** (1 / 3) - 1, 4))"} />
+
+<Say who="sensei">Il codice conferma i numeri, non conferma la strategia. Sono due cose diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un backtest fittizio ha CAGR 9% e nessun drawdown superiore al 2%. Il buy and hold dello stesso mercato ha CAGR 7% e drawdown −30%. Qual è la reazione più sensata?"
+  options={[
+    "Sospettare errori (look-ahead, overfitting, costi) prima di festeggiare",
+    "Concludere che la strategia è sicura e senza rischi",
+    "Ignorare il drawdown, conta solo il CAGR",
+    "Scegliere un benchmark più facile da battere",
+  ]}
+  answer={0}
+  explain="Un risultato così regolare e migliore del buy and hold va verificato: quasi sempre dietro c'è un errore o un ritocco. Mai concludere che sia «senza rischi», e mai scegliere il benchmark dopo aver visto i risultati."
+/>
+
+<Say who="sensei">Più il risultato è bello, più domande devi fare. La fiducia si guadagna col controllo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su buy and hold, benchmark e confronto onesto. Servono tutte e cinque. Hai 3 tentativi.
+
+<Practice generator="t07-benchmark" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Un confronto onesto vale più di mille rendimenti isolati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il buy and hold è il confronto minimo: una strategia deve fare meglio di non fare niente, a parità di periodo e di rischio.
+- Il benchmark si sceglie prima di guardare i risultati e deve essere adatto al mercato della strategia.
+- Una curva troppo liscia e troppo bella è un segnale di allarme: look-ahead, overfitting, costi dimenticati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il buy and hold?", a: "Comprare e tenere senza operare per tutto il periodo" },
+    { q: "Quando si sceglie il benchmark?", a: "Prima di guardare i risultati" },
+    { q: "Che cosa guardare oltre al rendimento?", a: "Volatilità, drawdown, Sharpe e costi" },
+    { q: "Una curva senza cadute: buon segno?", a: "No, è un segnale di allarme" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: la forma dei rendimenti. Non basta la media, conta come sono distribuiti.</Say>
+</Scene>

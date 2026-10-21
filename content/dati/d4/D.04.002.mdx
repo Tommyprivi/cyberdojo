@@ -1,0 +1,241 @@
+---
+id: D.04.002
+course: dati
+module: 4
+title: "Python in cinque minuti"
+belt: gialla
+duration_min: 8
+prerequisites: [D.04.001]
+objectives:
+  - "Usare variabili, liste e dizionari per tenere i dati di un ordine"
+  - "Scrivere e chiamare una funzione con un argomento di default"
+  - "Leggere gli errori più comuni: IndexError, KeyError, None al posto del risultato"
+video:
+  provider: youtube
+  id: "zFA4pctRR1g"
+  start: 0
+  end: 330
+  channel: "PitoneProgrammatore"
+  title: "PYTHON TUTORIAL ITA - Impara Python in tempo RECORD!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-python
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Contare gli elementi di una lista da 1: il primo ha indice 0"
+  - "Dimenticare return in una funzione: Python restituisce None"
+  - "Confondere l'assegnazione (=) con il confronto (==)"
+commands: []
+---
+
+<Scene title="Tre clienti e un biglietto">
+Giulia ti lascia un biglietto con tre ordini: Anna ha speso 40 euro, Bruno 20, Carla 40. «Mi serve il totale, e poi voglio ricalcolarlo con uno sconto.»
+
+Per farlo con il computer devi saper fare quattro cose: dare un **nome** a un valore, tenere **più valori** in fila, tenere valori **con un'etichetta**, e **riutilizzare** un calcolo.
+
+In Python si chiamano: variabili, liste, dizionari, funzioni. In questa lezione le riprendiamo in modo rapido. Se sono nuove per te, il modulo **F9 «Python per l'IT»** del corso Fondamenta le spiega con calma: tienilo aperto in un'altra scheda.
+
+La domanda del caso: **quanto bisogna sapere di Python per cominciare ad analizzare dati?** Meno di quanto credi.
+
+<Say who="sensei">Python per analizzare dati si impara a strati. Oggi lo strato più basso: quattro attrezzi. Basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Variabili: un nome per un valore">
+Una **variabile** è un'etichetta attaccata a un valore. Si crea con `=`:
+
+```python
+cliente = "Anna"
+importo = 40.5
+quantita = 3
+ordine_ok = True
+print(type(quantita), type(importo), type(cliente), type(ordine_ok))
+```
+
+```text
+<class 'int'> <class 'float'> <class 'str'> <class 'bool'>
+```
+
+I quattro tipi che userai di continuo: **int** (numero intero), **float** (numero con la virgola, che in Python è un punto), **str** (testo, tra virgolette) e **bool** (vero o falso: `True` o `False`).
+
+<Callout kind="attenzione">
+Un solo `=` significa «metti questo valore nella variabile». Per chiedere «sono uguali?» si usa `==`. Scambiarli è l'errore più comune dei principianti.
+</Callout>
+
+Le operazioni: `+`, `-`, `*`, `/`. La divisione dà sempre un numero con la virgola: `10 / 4` fa `2.5`. Per la divisione senza resto si usa `//` (`10 // 4` fa `2`) e per il resto `%` (`10 % 4` fa `2`).
+
+<Say who="assistente">Il nome della variabile lo scegli tu: scegline uno che spieghi cosa c'è dentro. importo si capisce, x no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Liste: tanti valori in fila">
+Una **lista** tiene più valori in un ordine preciso. Si scrive tra parentesi quadre.
+
+```python
+clienti = ["Anna", "Bruno", "Carla"]
+print(clienti[0])
+print(clienti[-1])
+clienti.append("Dario")
+print(len(clienti))
+print(clienti[1:3])
+```
+
+```text
+Anna
+Carla
+4
+['Bruno', 'Carla']
+```
+
+Tre regole da ricordare:
+
+- l'indice parte da **0**: il primo è `clienti[0]`;
+- `-1` è l'ultimo elemento;
+- `clienti[1:3]` prende dal 1 **fino al 3 escluso**: quindi gli elementi di indice 1 e 2.
+
+Per ripetere un'azione su ogni elemento si usa `for`. Nota i due punti e i quattro spazi a sinistra: sono obbligatori.
+
+```python
+importi = [40.0, 20.0, 40.0]
+totale = 0
+for importo in importi:
+    totale = totale + importo
+print(totale)
+```
+
+```text
+100.0
+```
+
+Ecco il totale di Giulia. Fra poco lo farai con una sola parola.
+
+<Say who="sensei">Si parte da zero, non da uno. Chi conta da uno sbaglia di uno per tutta la vita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dizionari: valori con un'etichetta">
+Un **dizionario** tiene coppie «etichetta: valore». L'etichetta si chiama **chiave**. Si scrive tra parentesi graffe.
+
+```python
+ordine = {"cliente": "Anna", "citta": "Roma", "importo": 40.0}
+print(ordine["citta"])
+ordine["importo"] = 45.0
+print(ordine)
+print(ordine.get("sconto", 0))
+```
+
+```text
+Roma
+{'cliente': 'Anna', 'citta': 'Roma', 'importo': 45.0}
+0
+```
+
+Se chiedi una chiave che non esiste con le parentesi quadre, ottieni un errore: `ordine["sconto"]` dà `KeyError: 'sconto'`. Con `.get("sconto", 0)` invece ricevi un valore di riserva, qui `0`.
+
+Una lista di dizionari è già quasi una tabella: ogni dizionario è una riga, ogni chiave è una colonna.
+
+```python
+ordini = [
+    {"cliente": "Anna", "importo": 40.0},
+    {"cliente": "Bruno", "importo": 20.0},
+]
+print(ordini[1]["cliente"])
+```
+
+```text
+Bruno
+```
+
+Prima l'elemento 1 della lista (il secondo dizionario), poi la chiave `"cliente"`. Nel modulo successivo trasformeremo proprio una struttura così in un **DataFrame** di pandas.
+
+<Say who="assistente">Lista: conta la posizione. Dizionario: conta l'etichetta. Se non ricordi quale, chiediti: cerco per numero o per nome?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Funzioni: un calcolo con un nome">
+Una **funzione** è un calcolo a cui dai un nome, per rifarlo senza riscriverlo. Si definisce con `def`, e con `return` restituisce il risultato.
+
+```python
+def sconto(prezzo, percentuale=10):
+    return prezzo - prezzo * percentuale / 100
+
+print(sconto(50))
+print(sconto(80, 25))
+```
+
+```text
+45.0
+60.0
+```
+
+`prezzo` e `percentuale` sono i **parametri**. Quando scrivi `percentuale=10` dai un valore di riserva: se chiami `sconto(50)` lo sconto è del 10 per cento. Con `sconto(80, 25)` lo cambi.
+
+<Callout kind="attenzione">
+Senza `return` la funzione fa i conti ma non restituisce niente. Python ti consegna `None`, cioè «nessun valore». Se vedi `None` al posto di un numero, controlla se hai dimenticato `return`.
+</Callout>
+
+Vuoi sentire tutto questo da un'altra voce, in meno di sei minuti?
+
+<Video />
+
+<Say who="sensei">Una funzione ben scritta fa una cosa e ha un nome che dice quale. Se la spieghi in una riga, è fatta bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Dato clienti = ['Anna', 'Bruno', 'Carla'], cosa succede con print(clienti[3])?"
+  options={["IndexError: list index out of range", "Stampa Carla", "Stampa None", "Stampa Anna"]}
+  answer={0}
+  explain="Gli indici validi sono 0, 1 e 2: la lista ha tre elementi, quindi l'ultimo ha indice 2. L'indice 3 non esiste e Python lo dice con un IndexError. Chi risponde Carla ha contato da 1."
+/>
+
+Ora prova tu: calcola il totale degli importi di Giulia, poi cambia i valori.
+
+<PythonTerminal code={"importi = [40.0, 20.0, 40.0]\ntotale = 0\nfor importo in importi:\n    totale = totale + importo\nprint('Totale:', totale)"} />
+
+<Say who="assistente">Aggiungi un importo alla lista e riesegui. Il totale cambia da solo: è il motivo per cui si scrive codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su liste, dizionari e funzioni: cosa stampa un codice breve, quale errore compare. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-python" pass="4/5" retries={3} />
+
+<Say who="sensei">Quando non sei sicuro, esegui il codice nel notebook. Provare non costa niente: è il vantaggio che hai sull'esame di matematica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Variabili: `nome = valore`. I tipi base sono int, float, str, bool. Un solo `=` assegna, `==` confronta.
+- Liste (indice da 0, `-1` ultimo, `[1:3]` si ferma prima del 3) e dizionari (chiave: valore, KeyError se la chiave manca).
+- Funzioni: `def nome(parametri):` e `return`. Senza `return` ottieni `None`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con clienti = ['Anna', 'Bruno', 'Carla'], quanto vale clienti[-1]?", a: "'Carla', l'ultimo elemento" },
+    { q: "Quale errore dà ordine['sconto'] se la chiave non esiste?", a: "KeyError: 'sconto'" },
+    { q: "Cosa restituisce una funzione senza return?", a: "None" },
+    { q: "Che cosa sono i quattro tipi base?", a: "int, float, str, bool" },
+  ]}
+/>
+
+<Say who="sensei">Gli attrezzi sono pronti. Prossima lezione: NumPy, per fare i conti su mille numeri come se fossero uno.</Say>
+</Scene>

@@ -1,0 +1,153 @@
+---
+id: T.01.001
+course: trading
+module: 1
+title: "A cosa servono i mercati"
+belt: bianca
+duration_min: 8
+prerequisites: []
+objectives:
+  - "Spiegare che cos'è un mercato finanziario e a cosa serve"
+  - "Capire come domanda e offerta formano il prezzo"
+  - "Distinguere mercato primario e mercato secondario"
+video:
+  provider: youtube
+  id: "OUX1fFGgTpA"
+  start: 0
+  end: 600
+  channel: "Etica Sgr"
+  title: "Cosa sono i mercati finanziari?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-mercati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il prezzo lo decida qualcuno: lo fanno compratori e venditori insieme"
+  - "Credere che la borsa «dia» soldi alle aziende ogni volta che un titolo si scambia"
+  - "Dimenticare che chi compra può anche perdere tutto il denaro investito"
+commands: []
+---
+
+<Scene title="Il birrificio che vuole crescere">
+Il **Birrificio Alba** (azienda inventata) vende buona birra artigianale, ma ha un problema: per comprare un nuovo impianto servono **2 milioni di euro** e in cassa ce ne sono molti meno.
+
+Dall'altra parte c'è Marta, una dentista con dei risparmi fermi sul conto. Non ha tempo di aprire un'azienda, ma vorrebbe che i suoi soldi lavorassero.
+
+La domanda del caso: **come fanno il birrificio e Marta a trovarsi?**
+
+<Callout kind="attenzione">
+Questo corso è **educazione**, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. Qui non troverai consigli su cosa comprare e useremo solo dati inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima si capisce come funzionano, poi, molto dopo, si parla di strategie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il mercato è un incontro">
+Un **mercato** è un luogo, fisico o su computer, dove chi vuole **comprare** incontra chi vuole **vendere**. Quello dei contadini il sabato mattina è un mercato. Un **mercato finanziario** è lo stesso, ma si scambiano **strumenti finanziari**: pezzi di carta (oggi file) che danno diritti, come una quota di azienda o la promessa di essere ripagati.
+
+A cosa serve? A **spostare denaro** da chi ne ha in più (Marta) a chi ne ha bisogno (il birrificio), con l'idea che chi presta o investe venga ricompensato.
+
+<Callout kind="regola">
+Mercato finanziario = posto dove compratori e venditori di strumenti finanziari si incontrano e fissano un prezzo.
+</Callout>
+
+<Say who="assistente">Pensa a un mercato come a una grande piazza: più gente c'è, più è facile comprare e vendere in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi decide il prezzo?">
+Nessuno lo decide da solo. Il prezzo nasce dall'incontro tra **domanda** (quanti vogliono comprare) e **offerta** (quanti vogliono vendere).
+
+Un esempio con numeri inventati, per un titolo chiamato ALFA:
+
+| Situazione | Cosa succede al prezzo |
+|-----------|------------------------|
+| Molti vogliono comprare, pochi vendere | tende a salire |
+| Molti vogliono vendere, pochi comprare | tende a scendere |
+| Compratori e venditori sono in equilibrio | resta più o meno fermo |
+
+<Callout kind="curiosita">
+Il prezzo è l'ultimo accordo raggiunto tra un compratore e un venditore. Non è «il valore vero» dell'azienda: è quanto qualcuno ha accettato di pagare in quel momento.
+</Callout>
+
+<Say who="sensei">Il prezzo non è una verità. È un accordo. Cambia ogni volta che qualcuno cambia idea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mercato primario e secondario">
+Il birrificio cerca soldi nuovi. Li ottiene **emettendo** (cioè creando e vendendo per la prima volta) dei titoli. Questo è il **mercato primario**: i soldi vanno **all'azienda**.
+
+Marta compra un titolo. Dopo un anno ha bisogno di denaro e lo rivende a Luca. Questo è il **mercato secondario**: i soldi vanno **da Luca a Marta**. L'azienda non incassa nulla.
+
+Il mercato secondario è quello dove si fa trading, ogni giorno. Serve anche a un'altra cosa: se puoi rivendere facilmente, ti fidi di più a comprare.
+
+<Callout kind="trucco">
+Domanda da farsi: i soldi vanno **all'azienda** (primario) o **da un investitore a un altro** (secondario)?
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano, solo la parte che serve:
+
+<Video />
+
+<Say who="assistente">Quando senti «ho comprato azioni in borsa», quasi sempre sei nel mercato secondario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta compra da Luca dieci azioni del Birrificio Alba che Luca aveva già. Chi incassa i soldi?"
+  options={[
+    "Luca, perché siamo nel mercato secondario",
+    "Il Birrificio Alba, perché le azioni sono sue",
+    "La borsa, che trattiene l'importo",
+    "Nessuno: il denaro resta bloccato fino alla scadenza",
+  ]}
+  answer={0}
+  explain="Le azioni erano già in circolazione: è uno scambio tra due investitori, quindi mercato secondario. L'azienda incassa solo quando vende titoli nuovi, nel mercato primario."
+/>
+
+<Say who="sensei">Segui il denaro. Chi lo riceve ti dice in quale mercato sei.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su mercati, domanda e offerta, primario e secondario.
+
+<Practice generator="t01-mercati" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Capire dove va il denaro è la base di tutto il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un mercato finanziario è il luogo dove si incontrano compratori e venditori di strumenti finanziari.
+- Il prezzo nasce da domanda e offerta ed è un accordo del momento, non un valore certo.
+- Primario: i soldi vanno all'azienda. Secondario: passano da un investitore all'altro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A cosa serve un mercato finanziario?", a: "A far incontrare chi ha denaro in più e chi ne ha bisogno, e a fissare i prezzi" },
+    { q: "Se molti vogliono comprare e pochi vendere, che cosa tende a fare il prezzo?", a: "Salire" },
+    { q: "Dove vanno i soldi nel mercato primario?", a: "All'azienda che emette i titoli" },
+    { q: "Dove vanno i soldi nel mercato secondario?", a: "Da un investitore all'altro, non all'azienda" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le azioni. Che cosa si compra davvero quando si compra un pezzetto di azienda.</Say>
+</Scene>

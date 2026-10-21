@@ -1,0 +1,164 @@
+---
+id: T.09.006
+course: trading
+module: 9
+title: "Strategie sulla volatilità"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.005]
+objectives:
+  - "Spiegare l'idea di regolare l'esposizione in base alla volatilità (volatility targeting)"
+  - "Calcolare l'esposizione = volatilità obiettivo / volatilità attuale, con un tetto"
+  - "Riconoscere il rischio delle strategie che vendono volatilità"
+video:
+  provider: youtube
+  id: "InDSxrD4ZSM"
+  start: 0
+  end: 279
+  channel: "Yahoo Finance"
+  title: "What is the VIX? Guide to market's 'fear gauge'"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-volatilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere volatilità (quanto balla) con direzione (su o giù)"
+  - "Credere che vendere volatilità sia «incassare premi senza rischio»"
+  - "Dimenticare che la volatilità stimata dal passato può cambiare di colpo"
+commands: []
+---
+
+<Scene title="Il mare calmo">
+**Paolo** nota che certi mesi il prezzo fittizio di «Delta SpA» balla pochissimo, altri tantissimo. Non gli interessa la direzione: gli interessa **quanto** balla.
+
+«E se tenessi poco denaro esposto quando il mare è mosso e di più quando è calmo?» pensa. Un amico gli dice invece: «C'è chi guadagna vendendo la volatilità, un po' alla volta».
+
+La domanda del caso: **come si usa la volatilità in una strategia? E dove sta l'insidia?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Studiamo idee con numeri fittizi: il corso non è consulenza finanziaria.
+</Callout>
+
+<Say who="sensei">La volatilità non ti dice dove va il prezzo. Ti dice quanto può farti male. Impariamo a leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la volatilità">
+La **volatilità** misura quanto i rendimenti ballano intorno alla media (lo hai visto nel modulo T4). Più alta, più il prezzo può muoversi in fretta, su o giù.
+
+Esiste anche una volatilità **attesa dal mercato**, ricavata dai prezzi delle opzioni: il famoso indice **VIX** è un esempio per il mercato azionario americano. Spesso è chiamato «indice della paura», perché sale quando il mercato è nervoso.
+
+<Callout kind="regola">
+Volatilità = quanto balla, non da che parte va. Un titolo molto volatile può salire o scendere.
+</Callout>
+
+Una voce in inglese, con sottotitoli, spiega il VIX:
+
+<Video />
+
+<Say who="assistente">Due mesi con lo stesso rendimento finale possono essere uno tranquillo e uno da montagne russe. La volatilità li distingue.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regolare l'esposizione">
+Un'idea usata dai gestori professionisti è il **volatility targeting**: si sceglie una volatilità obiettivo e si regola quanto capitale tenere esposto.
+
+esposizione = volatilità obiettivo / volatilità attuale
+
+con un **tetto a 1** (100%): senza leva. (La leva e i suoi pericoli sono nel modulo T6.)
+
+Esempio fittizio con volatilità obiettivo del **10%** annuo:
+
+| volatilità attuale | calcolo | esposizione |
+|---|---|---|
+| 5% | 0,10 / 0,05 = 2, tetto a 1 | 1,0 (100%) |
+| 10% | 0,10 / 0,10 | 1,0 |
+| 20% | 0,10 / 0,20 | 0,5 (50%) |
+| 40% | 0,10 / 0,40 | 0,25 (25%) |
+
+<PythonTerminal code={"target = 0.10\nfor vol in [0.05, 0.10, 0.20, 0.40]:\n    esposizione = min(target / vol, 1.0)\n    print(vol, esposizione)"} />
+
+<Log lines={[
+  "0.05 1.0",
+  "0.1 1.0",
+  "0.2 0.5",
+  "0.4 0.25",
+]} />
+
+<Say who="sensei">Quando il mare è mosso, riduci. È una regola di prudenza, non una macchina per guadagnare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vendere volatilità: raccogliere monetine">
+C'è chi costruisce strategie che **vendono volatilità**: incassano piccoli importi quasi ogni giorno, finché il mercato è calmo.
+
+Esempio fittizio:
+
+- per 29 giorni incassi +1 al giorno: +29;
+- il trentesimo giorno il mercato crolla e perdi -40;
+- totale: 29 - 40 = **-11**.
+
+Dopo un mese di piccoli incassi, un solo giorno cancella tutto e di più. Si dice: «raccogliere monetine davanti a un rullo compressore».
+
+Nel febbraio 2018 un prodotto quotato che scommetteva contro la volatilità perse gran parte del suo valore in un solo giorno e fu chiuso: un caso molto citato.
+
+<Callout kind="attenzione">
+I backtest delle strategie che vendono volatilità sembrano splendidi finché nel campione non c'è una crisi. Il rischio è nascosto nelle **code** (modulo T4): eventi rari ma enormi.
+</Callout>
+
+<Say who="assistente">Una curva che sale regolare e poi crolla non è un miracolo: è un rischio che non si vedeva ancora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Volatilità obiettivo 10%, volatilità attuale del titolo 25%. Senza leva, quale esposizione indica la regola?"
+  options={["0,4 (40%): 0,10 / 0,25", "2,5 (250%): 0,25 / 0,10", "1,0 (100%): sempre pieno", "0,25 (25%): coincide con la volatilità"]}
+  answer={0}
+  explain="Esposizione = 0,10 / 0,25 = 0,4. Chi risponde 2,5 ha capovolto la frazione: più è alta la volatilità, meno si espone. E 2,5 sarebbe oltre il tetto di 1."
+/>
+
+<Say who="sensei">Volatilità alta, esposizione bassa. Se ti viene più di 1, hai capovolto la frazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di esposizione e scenari sui rischi della volatilità. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-volatilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La volatilità si misura sul passato: il futuro può sorprendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La volatilità misura quanto il prezzo balla, non la direzione; il VIX è un indice di volatilità attesa sul mercato azionario americano.
+- Volatility targeting: esposizione = volatilità obiettivo / volatilità attuale, con tetto a 1 senza leva.
+- Vendere volatilità incassa poco spesso e rischia perdite enormi rare: i backtest senza crisi ingannano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa misura la volatilità?", a: "Quanto i rendimenti ballano, non la direzione" },
+    { q: "Obiettivo 10%, volatilità attuale 20%: esposizione?", a: "0,5 (50%)" },
+    { q: "Che cos'è il VIX?", a: "Un indice della volatilità attesa del mercato azionario americano, detto «indice della paura»" },
+    { q: "Rischio di chi vende volatilità?", a: "Tanti piccoli incassi e rare perdite enormi" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: perché le strategie, prima o poi, smettono di funzionare.</Say>
+</Scene>

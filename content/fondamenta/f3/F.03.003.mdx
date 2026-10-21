@@ -1,0 +1,172 @@
+---
+id: F.03.003
+course: fondamenta
+module: 3
+title: "chmod e chown: cambiare i permessi"
+belt: gialla
+duration_min: 9
+prerequisites: [F.03.002]
+objectives:
+  - "Cambiare i permessi con chmod, in modo simbolico e ottale"
+  - "Cambiare proprietario e gruppo con chown"
+  - "Riconoscere gli errori tipici, come il chmod 777"
+video:
+  provider: youtube
+  id: "RQLNDekr2wg"
+  start: 0
+  end: 600
+  channel: "Akamai Developers"
+  title: "Linux for Programmers #4 | chmod and File Permissions"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f03-chmod
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare 777 «per far funzionare» un file: significa dare a tutti il permesso di modificarlo"
+  - "Scrivere chmod con l'ordine delle parti sbagliato: prima i permessi, poi il file"
+  - "Confondere chmod (cambia i permessi) con chown (cambia il proprietario)"
+commands: []
+---
+
+<Scene title="Lo script che non parte">
+Marta ha scritto uno script, `controllo.sh`, che ogni sera conta i tentativi di accesso falliti. Lo lancia e il terminale risponde:
+
+<Log lines={[
+  "studente@lab:~/prova$ ./controllo.sh",
+  "bash: ./controllo.sh: Permission denied",
+]} caption="Il file esiste. Manca il permesso di esecuzione." />
+
+Con `ls -l` lo vedi subito: `-rw-r--r--`. Nessuna `x`. Il file si può leggere e modificare, ma non eseguire.
+
+<Say who="sensei">Un permesso mancante si aggiunge. Ma si aggiunge con precisione, non a caso. Vediamo come.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="chmod, il modo simbolico">
+`chmod` significa «change mode»: cambia i permessi. Il **modo simbolico** si legge come una frase:
+
+- **chi**: `u` (utente proprietario), `g` (gruppo), `o` (altri), `a` (tutti)
+- **cosa fare**: `+` aggiunge, `-` toglie, `=` imposta esattamente
+- **quale permesso**: `r`, `w`, `x`
+
+<Log lines={[
+  "studente@lab:~/prova$ chmod u+x controllo.sh",
+  "studente@lab:~/prova$ ls -l controllo.sh",
+  "-rwxr--r-- 1 studente team 220 ott 12 09:14 controllo.sh",
+  "studente@lab:~/prova$ ./controllo.sh",
+  "Tentativi falliti oggi: 3",
+]} caption="u+x: all'utente proprietario aggiungi il permesso x." />
+
+Altri esempi, da leggere ad alta voce: `chmod go-w file.txt` («a gruppo e altri togli la scrittura»), `chmod a+r guida.pdf` («a tutti aggiungi la lettura»).
+
+<Say who="assistente">Leggi sempre il comando come una frase: a chi, aggiungi o togli, cosa. Poi il nome del file.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="chmod, il modo ottale">
+Esiste una scorciatoia: i permessi come **numeri**. Ogni lettera vale un numero:
+
+- **r = 4**
+- **w = 2**
+- **x = 1**
+
+Si **sommano** per ogni categoria. `rwx` = 4 + 2 + 1 = **7**. `r-x` = 4 + 1 = **5**. `rw-` = 4 + 2 = **6**. `r--` = **4**.
+
+Tre cifre: proprietario, gruppo, altri.
+
+<Log lines={[
+  "studente@lab:~/prova$ chmod 750 controllo.sh",
+  "studente@lab:~/prova$ ls -l controllo.sh",
+  "-rwxr-x--- 1 studente team 220 ott 12 09:14 controllo.sh",
+]} caption="7 (rwx) per il proprietario, 5 (r-x) per il gruppo, 0 (---) per gli altri." />
+
+<Callout kind="trucco">
+Valori comuni: **644** per un file normale (rw-r--r--), **755** per uno script o una cartella (rwxr-xr-x), **600** per un file solo tuo (rw-------).
+</Callout>
+
+<Say who="sensei">Quattro, due, uno. Si sommano. Tre cifre, tre categorie. Fine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="chown: cambiare il proprietario">
+`chmod` cambia **cosa** si può fare. `chown` («change owner») cambia **di chi è** il file. Serve l'amministratore, quindi di solito `sudo`.
+
+<Log lines={[
+  "studente@lab:~/prova$ sudo chown marta controllo.sh",
+  "studente@lab:~/prova$ sudo chown marta:team controllo.sh",
+  "studente@lab:~/prova$ ls -l controllo.sh",
+  "-rwxr-x--- 1 marta team 220 ott 12 09:14 controllo.sh",
+]} caption="chown marta: nuovo proprietario. chown marta:team: nuovo proprietario e nuovo gruppo." />
+
+<Callout kind="attenzione">
+Non confonderli. **chmod** = permessi. **chown** = proprietario e gruppo. Se vuoi dare il file a Marta usi chown, non chmod.
+</Callout>
+
+<Video />
+
+<Say who="assistente">Il video è in inglese, ma i comandi sono gli stessi. Guarda soprattutto la parte sui numeri ottali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli errori tipici">
+L'errore più comune: il file non funziona, quindi si lancia `chmod 777`. **777** significa `rwxrwxrwx`: **tutti** possono leggere, **modificare** ed eseguire. Il problema sembra risolto, ma hai aperto una porta.
+
+<Guided
+  steps={[
+    "Situazione: lo script dà «Permission denied» e tu non sai perché.",
+    "Soluzione veloce ma sbagliata: chmod 777 controllo.sh. Ora chiunque sul sistema può riscriverlo.",
+    "Se qualcuno inserisce un comando ostile nello script e poi tu lo esegui, quel comando gira con i tuoi poteri.",
+    "Soluzione giusta: chmod 750 controllo.sh. Il proprietario fa tutto, il gruppo esegue, gli altri niente.",
+  ]}
+/>
+
+Altri errori frequenti: scrivere il file prima dei permessi (`chmod controllo.sh 755` dà un errore di modo non valido) e dimenticare di essere nella cartella giusta («No such file or directory»).
+
+<Callout kind="regola">
+Dai **il minimo che serve**. Se basta eseguire, aggiungi solo la x al proprietario.
+</Callout>
+
+<Say who="sensei">777 non è una soluzione. È il modo di cancellare il problema nascondendo il motivo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: «quale chmod serve», «cosa significa questo numero», «cosa cambia chown». Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f03-chmod" pass="5/5" retries={3} />
+
+<Say who="sensei">Un numero sbagliato qui apre una porta. Ricontrolla le somme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- chmod cambia i permessi: simbolico (`u+x`, `go-w`) oppure ottale (r=4, w=2, x=1, sommati: 755, 644).
+- chown cambia proprietario e gruppo (`chown marta:team file`), di solito con sudo.
+- Mai 777 «per far funzionare»: dai solo i permessi necessari.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale numero corrisponde a rwx?", a: "7 (4 + 2 + 1)" },
+    { q: "Cosa fa chmod u+x script.sh?", a: "Aggiunge l'esecuzione al proprietario" },
+    { q: "Quale comando cambia il proprietario di un file?", a: "chown" },
+    { q: "Perché 777 è un errore tipico?", a: "Dà a tutti il permesso di modificare ed eseguire il file" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai dare e togliere permessi. Prossima lezione: sudo, il potere dell'amministratore, e il principio che lo governa.</Say>
+</Scene>

@@ -1,0 +1,222 @@
+---
+id: D.04.003
+course: dati
+module: 4
+title: "NumPy: i conti su tanti numeri"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.002]
+objectives:
+  - "Creare un array NumPy e fare operazioni su tutti gli elementi in una riga"
+  - "Calcolare somma, media e deviazione standard con i metodi dell'array"
+  - "Filtrare un array con una condizione e capire perché NumPy è veloce"
+video:
+  provider: youtube
+  id: "QI35fM7UsqA"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Impara Numpy in 2 ore - Numpy Python Tutorial Italiano (data science e machine learning)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-numpy
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che array * 2 si comporti come lista * 2: la lista si ripete, l'array raddoppia i valori"
+  - "Sommare array di lunghezza diversa: dà ValueError, non si completa da solo"
+  - "Dimenticare che la deviazione standard di NumPy divide per n, quella di pandas per n-1"
+commands: []
+---
+
+<Scene title="Seimila ordini, un solo raddoppio">
+Giulia vuole simulare un aumento: «E se tutti i prezzi salissero del 10 per cento?». Hai gli importi degli ordini in una lista. Con i cicli della lezione scorsa dovresti scrivere un `for`, aggiungere ogni risultato a una nuova lista, ricordarti di non sbagliare gli indici.
+
+Esiste un modo più corto: scrivere `importi * 1.1` e basta. Funziona su sei numeri come su sei milioni.
+
+Lo strumento si chiama **NumPy**, la libreria di Python per i calcoli sui numeri. È la base di quasi tutto ciò che userai dopo, pandas compreso.
+
+La domanda del caso: **cos'è un array e perché fa i conti così in fretta?**
+
+<Say who="sensei">Un analista non scrive cicli per fare la somma. Scrive la somma. Impara a chiederlo nel modo giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'array: una lista di numeri dello stesso tipo">
+Un **array** è una fila di valori **tutti dello stesso tipo**. Si crea con `np.array(...)` da una lista. Per convenzione NumPy si importa con il nome corto `np`.
+
+```python
+import numpy as np
+
+importi = np.array([40, 20, 40, 20, 30, 30])
+print(importi)
+print(importi * 2)
+print(importi + 5)
+```
+
+```text
+[40 20 40 20 30 30]
+[80 40 80 40 60 60]
+[45 25 45 25 35 35]
+```
+
+Chiamiamo **operazione vettoriale** il fatto che l'operazione si applichi a **tutti** gli elementi insieme, senza `for`. Gli array nascono con le parentesi quadre, ma si stampano senza virgole: è il segnale che hai davanti un array e non una lista.
+
+<Callout kind="attenzione">
+`[1, 2, 3] * 2` su una lista **ripete** la lista: `[1, 2, 3, 1, 2, 3]`. `np.array([1, 2, 3]) * 2` **raddoppia i valori**: `[2 4 6]`. Stesso simbolo, effetto diverso.
+</Callout>
+
+<Say who="assistente">Se vedi le virgole tra i numeri è una lista, se non le vedi è un array. Un indizio piccolo che ti salva da molti errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Somma, media, deviazione standard">
+Un array sa calcolare le statistiche di base con i suoi **metodi**: funzioni che si scrivono dopo un punto.
+
+```python
+print(importi.sum())
+print(importi.mean())
+print(np.median(importi))
+print(importi.min(), importi.max())
+print(round(importi.std(), 2))
+print(round(importi.std(ddof=1), 2))
+```
+
+```text
+180
+30.0
+30.0
+20 40
+8.16
+8.94
+```
+
+Somma 180, media 30.0 (180 diviso 6), mediana 30.0, minimo 20, massimo 40.
+
+La **deviazione standard** dice quanto i valori si allontanano in media dalla media. NumPy per impostazione divide per **n** (qui 6) e ottiene 8.16. Con `ddof=1` divide per **n - 1** e ottiene 8.94: è il valore che userà pandas. Capiremo perché nel modulo di statistica; per ora ricorda che i due strumenti hanno scelte di partenza diverse.
+
+<Callout kind="trucco">
+In un notebook, per vedere un numero singolo scrivi `print(...)`. Con NumPy 2 il valore mostrato senza `print` può comparire come `np.float64(30.0)`: è lo stesso 30.0, solo scritto con il suo tipo.
+</Callout>
+
+<Say who="sensei">Media e deviazione standard vanno sempre in coppia. Una media senza l'idea di quanto variano i dati è mezza bugia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Operazioni tra array e condizioni">
+Con due array della **stessa lunghezza** le operazioni vanno elemento per elemento. Quantità per prezzo unitario, ordine per ordine:
+
+```python
+quantita = np.array([1, 2, 1, 4, 3, 3])
+prezzo = np.array([40, 10, 40, 5, 10, 10])
+print(quantita * prezzo)
+```
+
+```text
+[40 20 40 20 30 30]
+```
+
+Se le lunghezze non coincidono NumPy si ferma: `np.array([1, 2, 3]) + np.array([1, 2])` dà `ValueError: operands could not be broadcast together with shapes (3,) (2,)`.
+
+Un confronto dà un array di vero/falso, e si può usare per **filtrare**:
+
+```python
+print(importi > 25)
+print(importi[importi > 25])
+print((importi > 25).sum())
+```
+
+```text
+[ True False  True False  True  True]
+[40 40 30 30]
+4
+```
+
+Il confronto produce una **maschera**: un array di `True` e `False`. Mettendola tra parentesi quadre tieni solo gli elementi dove vale `True`. Sommare una maschera conta i `True`: gli ordini sopra i 25 euro sono 4.
+
+<Say who="assistente">Il trucco della maschera lo ritroverai identico in pandas. Imparalo qui, dove è piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché è veloce, e le tabelle a due dimensioni">
+Una lista Python può contenere tipi diversi: per questo ogni elemento va controllato uno per uno. Un array ha un solo tipo, i numeri sono uno accanto all'altro in memoria e il ciclo gira dentro codice già compilato, scritto in linguaggio C. Risultato: stesso conto, spesso decine di volte più veloce, e una riga invece di quattro.
+
+Un array può avere più **dimensioni**. Una tabella è un array a due dimensioni: righe e colonne.
+
+```python
+m = np.array([[1, 2, 3], [4, 5, 6]])
+print(m.shape)
+print(m.sum(axis=0))
+print(m.sum(axis=1))
+print(m.sum())
+```
+
+```text
+(2, 3)
+[5 7 9]
+[ 6 15]
+21
+```
+
+`shape` dà (righe, colonne): 2 righe e 3 colonne. Con `axis=0` si somma **lungo le righe**, cioè una somma per colonna: 1+4, 2+5, 3+6. Con `axis=1` una somma per riga: 1+2+3 e 4+5+6. Senza `axis` si somma tutto.
+
+Vuoi vederlo spiegato da un'altra voce, partendo dalla creazione degli array?
+
+<Video />
+
+<Say who="sensei">Non devi ricordare tutto di NumPy. Devi ricordare l'idea: un conto solo, su tutti i valori. Il resto lo cerchi nella documentazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con prezzi = np.array([10, 20, 30]), cosa stampa print(prezzi[prezzi > 15])?"
+  options={["[20 30]", "[ True  True]", "[False  True  True]", "[10 20 30]"]}
+  answer={0}
+  explain="prezzi > 15 dà la maschera [False True True]. Usata tra parentesi quadre tiene solo gli elementi dove la maschera è True: 20 e 30. Chi risponde con la maschera ha stampato il confronto e non il filtro."
+/>
+
+<Say who="assistente">Due passaggi: prima la maschera, poi il filtro. Se ti perdi, stampa la maschera da sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su array, medie e maschere: cosa stampa un codice breve, quale metodo serve. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-numpy" pass="4/5" retries={3} />
+
+<Say who="sensei">Pensa al conto, non alla sintassi. La sintassi la ricordi con l'uso, il ragionamento no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un array NumPy contiene valori dello stesso tipo e fa i conti su tutti insieme: `importi * 2`, `importi + 5`, `a * b` (stessa lunghezza).
+- Metodi utili: `.sum()`, `.mean()`, `np.median(...)`, `.min()`, `.max()`, `.std()`. NumPy divide per n, con `ddof=1` per n-1 come pandas.
+- Un confronto dà una maschera di True e False, che si usa per filtrare: `importi[importi > 25]`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa stampa np.array([1, 2, 3]) * 2?", a: "[2 4 6]" },
+    { q: "Cosa stampa [1, 2, 3] * 2 su una lista?", a: "[1, 2, 3, 1, 2, 3]" },
+    { q: "Cosa fa m.sum(axis=0) su una tabella?", a: "Una somma per colonna" },
+    { q: "Perché NumPy è veloce?", a: "Un solo tipo, numeri contigui e cicli in codice C già compilato" },
+  ]}
+/>
+
+<Say who="sensei">NumPy tiene i numeri in fila. Prossima lezione: pandas, che li mette in tabella e dà un nome alle colonne.</Say>
+</Scene>

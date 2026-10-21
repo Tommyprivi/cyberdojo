@@ -1,0 +1,156 @@
+---
+id: T.13.003
+course: trading
+module: 13
+title: "Cripto: opportunità e rischi"
+belt: blu
+duration_min: 8
+prerequisites: [T.13.002]
+objectives:
+  - "Spiegare perché le criptovalute sono molto volatili e prive di garanzie sul valore"
+  - "Dire che cosa cambia con il regolamento europeo MiCA in sintesi"
+  - "Riconoscere i rischi tipici: piattaforme non autorizzate, chiavi perse, promesse di rendimento"
+video:
+  provider: youtube
+  id: "dCX--q3wuhc"
+  start: 0
+  end: 600
+  channel: "BCC Felsinea"
+  title: "Ep. 19 - Crypto truffe: come difendersi dai finti guadagni facili - #5minuticonlabcc 2026 Podcast"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t13-cripto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «regolamentato» voglia dire «senza rischio»: MiCA mette regole, non garantisce il valore"
+  - "Fidarsi di una piattaforma solo perché ha un bel sito o molti follower, senza controllare l'autorizzazione"
+  - "Dare a qualcuno la propria frase di recupero o le chiavi: chi le ha controlla i fondi"
+commands: []
+---
+
+<Scene title="Il +400% di Sara">
+Sara, 22 anni, legge un post: «Questa nuova moneta ha fatto +400% in una settimana!». Un amico le dice che con la **criptovaluta** (una moneta digitale che esiste solo su una rete di computer, senza banca centrale dietro) si diventa ricchi.
+
+Lei guarda il grafico: sale a gradini. Ma ricorda che la scorsa settimana un'altra moneta è scesa dell'80% in un giorno.
+
+La domanda del caso: **che cosa è davvero una cripto, e quali sono i rischi che il post non dice?**
+
+<Callout kind="attenzione">
+Il corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto: con le cripto la perdita totale è un caso reale. Gli esercizi usano dati fittizi.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente, e quelli che si muovono del 400% in una settimana regalano ancora meno. Guardiamo il rovescio della medaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché oscillano tanto">
+Una cripto non ha utili, non ha un bilancio, e di solito non ha un garante che ne difenda il valore. Il suo prezzo dipende da **quanto la gente vuole comprarla**.
+
+Se la fiducia sale, il prezzo sale. Se la fiducia scende, può scendere molto e in fretta. Questa grande oscillazione si chiama **volatilità** (la hai già incontrata nel corso).
+
+<Callout kind="regola">
+Nessuna cripto ha un rendimento garantito. Se qualcuno te ne promette uno, è una bandiera rossa (come nella lezione sulle truffe).
+</Callout>
+
+<Callout kind="curiosita">
+Molte cripto sono scambiate 24 ore su 24, tutti i giorni. Non c'è la pausa di chiusura della borsa: i prezzi possono muoversi mentre dormi.
+</Callout>
+
+<Say who="assistente">Ricorda la frase da portare con te: prezzo alto non vuol dire valore. Vuol dire solo che qualcuno, oggi, ha pagato quel prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="MiCA in sintesi">
+In Europa c'è un regolamento che si chiama **MiCA** (Markets in Crypto-Assets). Mette regole a chi offre servizi con le cripto: piattaforme di scambio, custodia, consulenza. In Italia la Consob e la Banca d'Italia si dividono i compiti di vigilanza.
+
+In sintesi, ottobre 2026 (controlla le fonti ufficiali: le norme e gli elenchi cambiano):
+
+- chi offre servizi cripto a clienti in Europa deve avere **un'autorizzazione** in uno Stato dell'Unione;
+- esiste un **registro europeo** dei fornitori autorizzati, consultabile da chiunque;
+- chi opera senza autorizzazione può vedersi **oscurare il sito** dall'autorità.
+
+<Callout kind="attenzione">
+MiCA mette regole per i **fornitori di servizi**. Non rende sicuro il prezzo: una cripto autorizzata o scambiata su una piattaforma in regola può comunque perdere quasi tutto il suo valore.
+</Callout>
+
+Vuoi sentire un'altra voce su come difendersi dai finti guadagni facili con le cripto? Un podcast breve, in italiano:
+
+<Video />
+
+<Say who="sensei">Regole sui fornitori, nessuna garanzia sui prezzi. Non confondere le due cose, mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi concreti">
+Oltre al prezzo, ci sono rischi pratici. Elencali come una lista di controllo:
+
+- **Piattaforma non autorizzata**: se chiude o sparisce, non hai a chi chiedere i tuoi fondi.
+- **Chiavi e frasi di recupero**: la «chiave» è la password segreta che dà accesso ai tuoi fondi. Chi la ha, controlla il denaro. Nessun servizio serio te la chiede, e **non va mai condivisa**.
+- **Operazioni irreversibili**: se invii cripto all'indirizzo sbagliato, di solito non si torna indietro.
+- **Truffe a tema cripto**: finti consulenti, «bot di trading» che promettono rendimenti fissi, pump and dump (lo vediamo nella prossima lezione).
+
+<Callout kind="regola">
+Chi ha la chiave, ha i fondi. Mai darla a nessuno, nemmeno al «supporto tecnico» che ti scrive per primo.
+</Callout>
+
+<Say who="assistente">Se qualcuno ti scrive per primo parlando di «sicurezza del tuo portafoglio», sospetta. Chi lavora sul serio non ti cerca per chiederti la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una piattaforma cripto ti scrive: «Il suo portafoglio è a rischio, ci invii la frase di recupero per metterlo in sicurezza». Che cosa fai?"
+  options={[
+    "Non rispondi e non invii niente: la frase di recupero non si condivide mai, è la chiave dei tuoi fondi",
+    "Invii la frase ma solo se il messaggio usa il logo ufficiale",
+    "Invii solo metà della frase, così non può usarla tutta",
+    "Rispondi chiedendo un numero di telefono e dai la frase al telefono",
+  ]}
+  answer={0}
+  explain="La frase di recupero dà il controllo totale dei fondi: chi la ha può svuotare il portafoglio. Il logo si copia, e anche mezza frase è un grosso aiuto a chi vuole indovinare il resto. Nessun servizio serio la chiede."
+/>
+
+<Say who="sensei">La chiave è tua. Non si presta, non si manda, non si fotografa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su rischi e regole delle cripto: scegli che cosa è più prudente fare.
+
+<Practice generator="t13-cripto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce i rischi decide meglio, anche quando decide di non fare niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le cripto sono molto volatili e senza garanzia sul valore: la perdita totale è possibile.
+- MiCA mette regole ai fornitori di servizi (autorizzazione, registro europeo), non rende sicuro il prezzo.
+- Chiavi e frasi di recupero non si condividono mai; una piattaforma non autorizzata è un rischio in più.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è MiCA, in sintesi?", a: "Il regolamento europeo che mette regole a chi offre servizi con le cripto-attività" },
+    { q: "MiCA garantisce che il prezzo di una cripto non crolli?", a: "No: regola i fornitori di servizi, non garantisce il valore" },
+    { q: "Chi può chiederti la frase di recupero?", a: "Nessuno: non si condivide mai" },
+    { q: "Dove controlli se un fornitore cripto è autorizzato?", a: "Nel registro europeo e nei siti delle autorità, per esempio Consob" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: pump and dump. Come si gonfia un prezzo, e perché ci perde chi arriva dopo.</Say>
+</Scene>

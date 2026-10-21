@@ -1,0 +1,219 @@
+---
+id: D.03.009
+course: dati
+module: 3
+title: "Progettare le tabelle"
+belt: gialla
+duration_min: 10
+prerequisites: [D.03.008]
+objectives:
+  - "Scegliere il tipo di dato giusto per ogni colonna"
+  - "Usare chiavi e vincoli (PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, CHECK) per proteggere i dati"
+  - "Spiegare in parole semplici la normalizzazione e a che cosa serve un indice"
+video:
+  provider: youtube
+  id: "z0HGlOil0Xw"
+  start: 0
+  end: 497
+  channel: "Andrea Robba"
+  title: "Normalizzazione dei Database"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-progettare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare numeri decimali approssimati (FLOAT) per i soldi invece di NUMERIC"
+  - "Salvare i numeri di telefono o i CAP come numeri: si perdono gli zeri iniziali"
+  - "Mettere molti valori in una sola cella («candele, saponi») invece di una riga per valore"
+commands: []
+---
+
+<Scene title="Il secondo foglio di Marta">
+Marta apre un secondo negozio e crea una tabella `vendite` con tutto dentro:
+
+<Log lines={[
+  "ordine | cliente      | città  | prodotto         | categoria | prezzo",
+  "1      | Giulia Ferri | Torino | candela vaniglia | candele   | 12.50",
+  "3      | Giulia Ferri | Turin  | candela cedro    | candele   | 18.00",
+  "7      | Giulia Ferri | Torino | sapone argilla   | saponi    | 7.50",
+]} caption="Una tabella piatta. Notato niente?" />
+
+La città di Giulia è scritta in tre righe e **in una riga è diversa** («Turin»). Il cliente, la categoria, il prezzo: tutto ripetuto. Se Marta cancella l'ultimo ordine di un cliente, il cliente sparisce dal database.
+
+La domanda del caso: **come si progetta una tabella perché i dati non si contraddicano?**
+
+<Say who="sensei">Chi analizza i dati usa tabelle fatte da altri. Chi capisce come sono progettate trova gli errori prima che diventino numeri sbagliati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tipi di dato">
+Ogni colonna ha un **tipo**: dice che cosa può contenere. Il database rifiuta ciò che non rispetta il tipo.
+
+Ecco come si **crea** la tabella `clienti` con `CREATE TABLE`:
+
+<Log lines={[
+  "CREATE TABLE clienti (",
+  "  id    INTEGER PRIMARY KEY,",
+  "  nome  VARCHAR(100) NOT NULL,",
+  "  citta VARCHAR(60)",
+  ");",
+]} caption="Una tabella con tre colonne tipizzate (VARCHAR(100): testo fino a 100 caratteri)." />
+
+I tipi principali, con nomi più o meno uguali ovunque:
+
+- **INTEGER**: numeri interi (id, quantità);
+- **NUMERIC(8,2)**: decimali esatti, otto cifre in tutto e due dopo la virgola: **per i soldi**;
+- **VARCHAR / TEXT**: testo;
+- **DATE** e **TIMESTAMP**: data, e data con ora;
+- **BOOLEAN**: vero o falso.
+
+<Callout kind="attenzione">
+Per i soldi non usare `FLOAT` o `REAL`: sono numeri approssimati, e con molte somme gli errori si accumulano (0.1 + 0.2 può non fare esattamente 0.3). Usa `NUMERIC`. E numeri di telefono e CAP vanno salvati come **testo**: non si fanno somme con un telefono, e un numero perde lo zero iniziale (00123 diventa 123).
+</Callout>
+
+<Callout kind="regola">
+Progettare è anche **scegliere cosa non raccogliere**. Ogni colonna con dati personali (data di nascita, indirizzo) va giustificata: è la minimizzazione del GDPR.
+</Callout>
+
+<Say who="assistente">Il tipo è una promessa: «in questa colonna ci sono solo date». Il database la fa rispettare per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiavi e vincoli">
+I **vincoli** sono regole che il database controlla a ogni inserimento. Proteggono i dati da errori.
+
+<Log lines={[
+  "CREATE TABLE ordini (",
+  "  id          INTEGER PRIMARY KEY,",
+  "  cliente_id  INTEGER NOT NULL REFERENCES clienti (id),",
+  "  prodotto_id INTEGER NOT NULL REFERENCES prodotti (id),",
+  "  quantita    INTEGER NOT NULL CHECK (quantita > 0),",
+  "  totale      NUMERIC(8,2) NOT NULL,",
+  "  data        DATE NOT NULL",
+  ");",
+]} caption="La tabella ordini con i suoi vincoli." />
+
+- `PRIMARY KEY`: unica e mai vuota.
+- `NOT NULL`: la colonna non può essere vuota.
+- `UNIQUE`: nessun valore ripetuto (utile per una email).
+- `CHECK`: una condizione da rispettare (qui, quantità maggiore di zero).
+- `REFERENCES` (chiave esterna): il valore deve esistere nella tabella collegata.
+- `DEFAULT`: valore usato se non se ne indica uno.
+
+Con questi vincoli, provare a inserire un ordine con `cliente_id = 99` quando il cliente 99 non esiste dà un **errore**: il database impedisce l'ordine «orfano».
+
+<Callout kind="curiosita">
+Differenze tra database: l'id automatico si scrive in modi diversi (`GENERATED ... AS IDENTITY` in PostgreSQL, `AUTO_INCREMENT` in MySQL, `AUTOINCREMENT` in SQLite). In SQLite i controlli sulle chiavi esterne vanno attivati con `PRAGMA foreign_keys = ON`.
+</Callout>
+
+<Say who="sensei">Un vincolo è una guardia alla porta. Costa fatica scriverlo una volta e salva i dati per sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La normalizzazione in parole semplici">
+**Normalizzare** vuol dire dividere i dati in più tabelle, perché **ogni informazione sia scritta una volta sola**. Tre regole pratiche:
+
+1. **Una cella, un valore.** Mai «candele, saponi» in una cella: una riga per ogni valore.
+2. **Ogni colonna parla della riga intera.** In `ordini` ha senso `quantita` (riguarda quell'ordine), non il nome del cliente.
+3. **Niente colonne che dipendono da un'altra colonna che non è la chiave.** La città dipende dal **cliente**, non dall'ordine: va in `clienti`.
+
+La tabella piatta di Marta, divisa bene, diventa le tre tabelle che conosci:
+
+<Log lines={[
+  "clienti (id, nome, citta)",
+  "prodotti (id, nome, categoria, prezzo, giacenza)",
+  "ordini (id, cliente_id, prodotto_id, quantita, totale, data)",
+]} caption="Ogni dato scritto una sola volta, collegato con chiavi." />
+
+Vuoi sentirlo spiegare da un'altra voce? Un video sulla normalizzazione:
+
+<Video />
+
+<Callout kind="attenzione">
+Ma `totale` in `ordini` non è già calcolabile da quantità e prezzo? Sì, però il prezzo di un prodotto può cambiare nel tempo, e l'ordine deve ricordare **quanto è stato pagato davvero**. È una ripetizione voluta. E nei grandi archivi per l'analisi (data warehouse) le tabelle «piatte» sono scelte apposta, per rendere i report più veloci: normalizzare è una regola, non un dogma.
+</Callout>
+
+<Say who="sensei">Prima impara la regola. Poi, quando sai perché esiste, saprai quando infrangerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli indici in breve">
+Quando una tabella ha milioni di righe, cercare un valore (`WHERE cliente_id = 3`) significa leggerle tutte. Un **indice** è come l'**indice analitico di un libro**: una struttura a parte che dice dove stanno i valori, così il database salta direttamente alla pagina giusta.
+
+<Log lines={[
+  "CREATE INDEX idx_ordini_cliente",
+  "ON ordini (cliente_id);",
+]} caption="Un indice sulla colonna cliente_id." />
+
+I pro e i contro in poche righe:
+
+- **Pro**: letture e JOIN molto più veloci sulle colonne indicizzate.
+- **Contro**: occupa spazio e rallenta gli inserimenti, perché va aggiornato a ogni modifica.
+- La chiave primaria ha già un indice. Si aggiungono indici sulle colonne usate spesso in `WHERE` e `JOIN`.
+
+<Callout kind="trucco">
+Sulle nostre tabelle da otto righe un indice non serve a niente. Diventa utile con migliaia o milioni di righe. Non indicizzare «per sicurezza» ogni colonna.
+</Callout>
+
+<Say who="assistente">Indice = scorciatoia per la lettura, pagata con un po' di fatica in scrittura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nel database di Marta si vuole aggiungere l'indirizzo email del cliente, che deve essere diverso per ogni cliente e sempre presente. Come si definisce la colonna?"
+  options={[
+    "email VARCHAR(150) NOT NULL UNIQUE, nella tabella clienti",
+    "email FLOAT, nella tabella ordini",
+    "email VARCHAR(150), ripetuta in ogni riga della tabella ordini",
+    "email INTEGER PRIMARY KEY, nella tabella prodotti",
+  ]}
+  answer={0}
+  explain="L'email è un'informazione del cliente: va in clienti, come testo, con NOT NULL (sempre presente) e UNIQUE (mai ripetuta). Metterla in ordini la ripeterebbe a ogni ordine; FLOAT e INTEGER non sono tipi per il testo; e in prodotti non c'entra niente."
+/>
+
+<Say who="sensei">Un dato che descrive una persona sta nella tabella di quella persona. Una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tipi, vincoli, normalizzazione e indici. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-progettare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il modulo SQL: sai interrogare i dati e capire come sono costruiti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ogni colonna ha un tipo: NUMERIC per i soldi, testo per telefoni e CAP, DATE per le date.
+- I vincoli (PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, CHECK) proteggono i dati da errori.
+- Normalizzare vuol dire scrivere ogni informazione una volta sola; un indice accelera le ricerche ma rallenta le scritture.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che tipo si usa per i soldi?", a: "NUMERIC (decimali esatti), non FLOAT" },
+    { q: "A cosa serve un vincolo FOREIGN KEY?", a: "A impedire che un valore punti a una riga che non esiste" },
+    { q: "Idea di base della normalizzazione?", a: "Ogni informazione scritta una volta sola" },
+    { q: "Cos'è un indice e qual è il suo costo?", a: "Una scorciatoia per cercare; occupa spazio e rallenta gli inserimenti" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossimo passo: Python per l'analisi, per fare con il codice ciò che qui hai fatto con le query.</Say>
+</Scene>

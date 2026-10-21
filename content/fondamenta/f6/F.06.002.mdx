@@ -1,0 +1,168 @@
+---
+id: F.06.002
+course: fondamenta
+module: 6
+title: "Una barra e un numero: il CIDR"
+belt: gialla
+duration_min: 8
+prerequisites: [F.06.001]
+objectives:
+  - "Leggere un prefisso come /24, /16 o /8"
+  - "Passare da prefisso a maschera e da maschera a prefisso"
+video:
+  provider: youtube
+  id: "vR49DETQsiY"
+  start: 0
+  end: 496
+  channel: "Informaticaso"
+  title: "Dalle Classi di indirizzi IP al CIDR (Classless Inter-Domain Routing)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-cidr
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il numero dopo la barra conta i bit di rete, non i dispositivi"
+  - "Più grande è il numero dopo la barra, più piccola è la rete"
+  - "Un ottetto parziale non vale mai 255: 3 bit a 1 danno 224, non 3 o 255"
+commands: []
+---
+
+<Scene title="La regola del firewall">
+Il capo del SOC ti mostra una regola del firewall dell'azienda:
+
+<Log lines={["consenti  origine=192.168.1.0/24  destinazione=server-dati"]} caption="Che cosa vuol dire quel «/24»?" />
+
+Non c'è nessuna maschera scritta. Eppure la regola dice esattamente **quali** computer possono entrare.
+
+<Say who="sensei">Scrivere 255.255.255.0 ogni volta è lungo e si sbaglia. Gli analisti usano una scorciatoia. Oggi la impari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare gli uno">
+Ieri hai visto che la maschera è una fila di uno seguita da una fila di zeri. Allora basta dire **quanti uno**:
+
+<BitGrid bits="11111111" caption="255 = otto bit a 1" />
+
+255.255.255.0 ha 8 + 8 + 8 = **24 uno**. Si scrive **/24** dopo l'indirizzo: 192.168.1.0**/24**. Questa notazione si chiama **CIDR** (si legge «sider»). Il numero dopo la barra è il **prefisso**: i bit di rete.
+
+<Callout kind="curiosita">
+Un tempo gli indirizzi erano divisi in «classi» fisse (A, B, C) con tagli obbligati. Il CIDR ha tolto l'obbligo: oggi si può tagliare ovunque, per questo serve scrivere il prefisso.
+</Callout>
+
+<Say who="assistente">Una barra, un numero: quanti bit appartengono alla rete. Niente di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tre grandi classici">
+Tre prefissi li incontri ovunque:
+
+| Prefisso | Maschera | Bit di rete |
+|---|---|---|
+| /8 | 255.0.0.0 | 8 |
+| /16 | 255.255.0.0 | 16 |
+| /24 | 255.255.255.0 | 24 |
+
+Più il numero è **alto**, più bit sono di rete e **meno** restano per i dispositivi: una /24 è molto più piccola di una /8.
+
+<Callout kind="attenzione">
+La /8 non è «più piccola» perché ha il numero piccolo. È la **più grande**: ha 24 bit liberi per i dispositivi.
+</Callout>
+
+<Say who="sensei">Numero alto, rete piccola. Numero basso, rete grande. Ricordatelo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal prefisso alla maschera">
+Che succede con un prefisso a metà, come **/20**? Si spezza in ottetti da 8:
+
+<Guided
+  steps={[
+    "20 = 8 + 8 + 4. Due ottetti interi da 255 e un ottetto con 4 bit a 1.",
+    { text: "Quattro uno poi quattro zeri: 11110000.", bits: "11110000" },
+    "11110000 = 128 + 64 + 32 + 16 = 240.",
+    "La maschera di /20 è 255.255.240.0.",
+  ]}
+/>
+
+I valori di un ottetto parziale sono pochi e conviene conoscerli:
+
+| Bit a 1 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|---|
+| Valore | 128 | 192 | 224 | 240 | 248 | 252 | 254 |
+
+<Say who="assistente">Si sommano i pesi da sinistra: 128, poi 64, poi 32. Con tre uno fa 224.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla maschera al prefisso">
+Il percorso inverso: ti danno **255.255.255.248**. Quale prefisso è?
+
+<Guided
+  steps={[
+    "255.255.255 sono tre ottetti pieni: 24 bit a 1.",
+    "L'ultimo è 248. Nella tabella: 248 vale cinque uno (128+64+32+16+8).",
+    "24 + 5 = 29. La maschera è /29.",
+  ]}
+/>
+
+Vuoi sentire la storia dei prefissi da un'altra voce? Otto minuti, anche con le vecchie classi:
+
+<Video />
+
+<Say who="sensei">Si contano gli ottetti da 255, poi si cerca il resto nella tabella. Due passaggi, nessun mistero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Qual è la maschera di un prefisso /25?"
+  options={["255.255.255.128", "255.255.255.192", "255.255.255.25", "255.255.128.0"]}
+  answer={0}
+  explain="/25 = 24 + 1: tre ottetti pieni e un solo bit a 1 nell'ultimo, che vale 128. Chi sceglie 255.255.128.0 ha messo l'ottetto parziale al terzo posto: quello sarebbe un /17."
+/>
+
+<Say who="assistente">24 + 1 uno. Un solo uno in un ottetto vale 128, il peso più grande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui prefissi. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-cidr" pass="5/5" retries={3} />
+
+<Say who="sensei">Se dubiti, scomponi il prefisso in otto più otto più avanzo. L'avanzo è l'ottetto da calcolare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il prefisso CIDR (/24) conta i bit a 1 della maschera: sono i bit di rete.
+- /8, /16, /24 corrispondono a 255.0.0.0, 255.255.0.0, 255.255.255.0; per gli altri si usa 128-192-224-240-248-252-254.
+- Numero alto dopo la barra = rete piccola; numero basso = rete grande.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa conta il numero dopo la barra?", a: "I bit di rete (i bit a 1 della maschera)" },
+    { q: "Maschera di /27?", a: "255.255.255.224 (24 + 3 uno)" },
+    { q: "Maschera di /20?", a: "255.255.240.0 (8 + 8 + 4 uno)" },
+    { q: "Prefisso di 255.255.255.248?", a: "/29 (24 + 5 uno)" },
+  ]}
+/>
+
+<Say who="sensei">Ora la domanda che interessa a chi pianifica una rete: quanti computer ci stanno dentro? La prossima lezione la risolve con un calcolo solo.</Say>
+</Scene>

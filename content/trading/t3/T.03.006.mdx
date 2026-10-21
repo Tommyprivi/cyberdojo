@@ -1,0 +1,197 @@
+---
+id: T.03.006
+course: trading
+module: 3
+title: "Volumi e ATR: quanto si scambia, quanto si muove"
+belt: gialla
+duration_min: 9
+prerequisites: [T.03.005]
+objectives:
+  - "Calcolare il True Range e l'ATR con numeri semplici"
+  - "Leggere il volume rispetto alla sua media e calcolare l'OBV"
+  - "Usare l'ATR come misura di volatilità, senza aspettarsi una direzione"
+video:
+  provider: youtube
+  id: "U-IzP4iPwnk"
+  start: 0
+  end: 439
+  channel: "Strike Money"
+  title: "Average True Range (ATR) Indicator Explained in under 7 Mins"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-volumi-atr
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un ATR alto indichi un rialzo: misura l'ampiezza dei movimenti, non la direzione"
+  - "Dimenticare di includere i gap: il True Range guarda anche la chiusura di ieri"
+  - "Leggere il volume da solo, senza confrontarlo con il suo livello normale"
+commands: []
+---
+
+<Scene title="Il rialzo senza folla">
+La **Gialli Spa** (azienda inventata) sale del 3% in una giornata. Sembra bello. Ma Sara nota che oggi si sono scambiate pochissime azioni: **il rialzo è avvenuto quasi senza nessuno**.
+
+E c'è un'altra domanda: di quanto si muove, in media, questo titolo ogni giorno? Se un titolo di solito si muove del 2%, un +3% è normale; se di solito si muove dello 0,2%, è un evento.
+
+La domanda del caso: **come misuriamo la partecipazione (il volume) e la grandezza dei movimenti (l'ATR)?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. Numeri sempre inventati.
+</Callout>
+
+<Say who="sensei">Un rialzo sostenuto da pochi può sparire in fretta. Ma «può», non «deve»: ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il volume">
+Il **volume** è il numero di azioni (o contratti) **scambiati** in un periodo. Da solo dice poco: 1000 azioni sono tante per un titolo piccolo e pochissime per uno grande. Si legge **confrontandolo con il suo livello normale**.
+
+<Log lines={[
+  "volume di oggi: 1000",
+  "media dei volumi degli ultimi 20 giorni: 500",
+  "rapporto: 1000 / 500 = 2   -> oggi si è scambiato il doppio del solito",
+]} />
+
+L'idea dell'analisi tecnica: un movimento con **tanti volumi** ha più partecipazione ed è considerato più convincente; con volumi bassi, meno. Resta un'**ipotesi**, non una regola.
+
+<Say who="assistente">Volume uguale folla. Un movimento con tanta folla è più difficile da cancellare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'OBV">
+L'**OBV** (on-balance volume) è un conteggio progressivo: se oggi il prezzo chiude **più su** di ieri, si **somma** il volume di oggi; se chiude **più giù**, lo si **sottrae**; se è uguale, non cambia niente. Si parte da 0.
+
+Chiusure 10, 11, 10,5, 10,5 e volumi 100, 150, 200, 120:
+
+<Log lines={[
+  "giorno 1: partenza, OBV = 0",
+  "giorno 2: 11 > 10, si somma 150      -> OBV = 150",
+  "giorno 3: 10,5 < 11, si sottrae 200  -> OBV = -50",
+  "giorno 4: 10,5 = 10,5, invariato     -> OBV = -50",
+]} />
+
+<Callout kind="curiosita">
+Conta il **segno** della variazione, non la sua grandezza: +0,01 e +5 sommano lo stesso volume. È un indicatore grezzo, da usare con cautela.
+</Callout>
+
+<Say who="sensei">L'OBV è un contabile semplice: entrate se sale, uscite se scende. Non fa ragionamenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="True Range e ATR">
+Per misurare l'agitazione serve un numero che consideri anche i **salti** (gap) tra la chiusura di ieri e il prezzo di oggi. Il **True Range** di un giorno è il **più grande** tra tre valori:
+
+1. massimo − minimo di oggi;
+2. |massimo di oggi − chiusura di ieri|;
+3. |minimo di oggi − chiusura di ieri|.
+
+<Log lines={[
+  "massimo 105, minimo 100, chiusura di ieri 98",
+  "1) 105 - 100 = 5",
+  "2) |105 - 98| = 7",
+  "3) |100 - 98| = 2",
+  "True Range = max(5, 7, 2) = 7",
+]} />
+
+L'**ATR** (average true range) è la **media** dei True Range di N giorni. Con True Range 7, 3 e 5: ATR = (7 + 3 + 5) ÷ 3 = **5**.
+
+<Callout kind="regola">
+ATR = media dei True Range. Misura **quanto** si muove il prezzo, **non dove** va.
+</Callout>
+
+Un video in inglese, con sottotitoli, spiega l'ATR su un grafico:
+
+<Video />
+
+<Say who="sensei">Il valore assoluto serve perché ci interessa la distanza, non il segno. Un salto in giù conta quanto uno in su.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provalo in Python">
+Calcoliamo il True Range e l'ATR di tre giorni inventati, in Python puro.
+
+<PythonTerminal height={360} code={`massimi = [102, 105, 105]
+minimi = [99, 100, 101]
+chiusure = [101, 103, 102]
+
+tr = []
+for i in range(len(chiusure)):
+    ampiezza = massimi[i] - minimi[i]
+    if i == 0:
+        tr.append(ampiezza)
+    else:
+        ieri = chiusure[i - 1]
+        tr.append(max(ampiezza, abs(massimi[i] - ieri), abs(minimi[i] - ieri)))
+
+print("True Range:", tr)
+print("ATR:", sum(tr) / len(tr))
+`} />
+
+Deve stampare `[3, 5, 4]` e ATR 4.0.
+
+<Say who="assistente">Il primo giorno non ha una chiusura di ieri: si usa solo massimo meno minimo. Per questo i programmi veri ignorano i primissimi valori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="A che cosa serve l'ATR">
+L'ATR dà un **ordine di grandezza del movimento normale**. Si può esprimere in **percentuale del prezzo**: ATR 2 su un prezzo di 100 è il **2%**.
+
+Serve, per esempio, a ragionare sul rischio: se un titolo si muove di solito di 2 euro al giorno, uno stop (un ordine che chiude la posizione in perdita) a 0,5 euro scatterà quasi sempre per puro rumore. Ne parleremo nel modulo sulla gestione del rischio.
+
+<Callout kind="attenzione">
+Un ATR che sale da 2 a 4 dice che i movimenti si sono ingranditi. Non dice se il prezzo sale o scende, né se continuerà.
+</Callout>
+
+<Say who="sensei">Quando l'ATR raddoppia, il mare si agita. Il rischio cresce, anche se tu non hai mosso un dito.</Say>
+<Quiz
+  question="Massimo 52, minimo 49, chiusura di ieri 50. Quanto vale il True Range?"
+  options={["3", "2", "1", "52"]}
+  answer={0}
+  explain="I tre valori sono: 52 − 49 = 3; |52 − 50| = 2; |49 − 50| = 1. Il più grande è 3. Chi risponde 2 o 1 ha guardato solo uno dei confronti con la chiusura di ieri."
+/>
+
+<Say who="sensei">Tre calcoli, poi il massimo. Non fermarti al primo che ti sembra giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Volume, OBV, True Range e ATR con numeri semplici.
+
+<Practice generator="t03-volumi-atr" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai misurare la folla e l'agitazione, due cose diverse dalla direzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il volume si legge rispetto alla sua media; l'OBV somma il volume nei giorni in rialzo e lo sottrae in quelli in calo.
+- True Range = il maggiore tra massimo−minimo, |massimo−chiusura ieri|, |minimo−chiusura ieri|; ATR = media dei True Range.
+- L'ATR misura quanto si muove il prezzo, non la direzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Volume 1000 e media 500: come si legge?", a: "Il doppio del solito" },
+    { q: "Massimo 105, minimo 100, chiusura ieri 98: True Range?", a: "7" },
+    { q: "True Range 7, 3, 5: ATR?", a: "5" },
+    { q: "ATR 2 su prezzo 100: in percentuale?", a: "2%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione, l'ultima del modulo: mettiamo tutti gli indicatori nel codice, con pandas.</Say>
+</Scene>

@@ -1,0 +1,156 @@
+---
+id: T.01.002
+course: trading
+module: 1
+title: "Le azioni: un pezzetto di azienda"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.001]
+objectives:
+  - "Spiegare che cos'è un'azione e che diritti dà"
+  - "Calcolare la capitalizzazione di una società"
+  - "Distinguere dividendo e variazione di prezzo"
+video:
+  provider: youtube
+  id: "BlFor5y9cbM"
+  start: 0
+  end: 600
+  channel: "FinecoBank"
+  title: "Che cosa sono le azioni"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-azioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un'azione che costa poco sia «economica» e quindi un buon affare"
+  - "Confondere il prezzo di un'azione con il valore dell'intera società"
+  - "Credere che il dividendo sia garantito: l'azienda può non pagarlo"
+commands: []
+---
+
+<Scene title="Dieci euro per un pezzo di panificio">
+Il **Panificio Rossi S.p.A.** (azienda inventata) ha deciso di quotarsi, cioè di far scambiare le sue azioni in borsa. Marta legge che un'azione costa **10 euro** e pensa: «Con 10 euro divento socia di un panificio!»
+
+È proprio così, ma con una differenza importante rispetto a quello che si immagina. Non entra in cucina a fare il pane.
+
+La domanda del caso: **che cosa possiede esattamente chi compra un'azione?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nessun titolo di questo corso è un consiglio. Con le azioni si può perdere tutto il denaro investito.
+</Callout>
+
+<Say who="sensei">Un'azione non è un biglietto della lotteria. È una quota di un'azienda vera, con i suoi rischi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una fetta di torta">
+Il capitale di una società è come una torta. Viene tagliata in tante fette uguali: le **azioni**. Chi ne compra una diventa **azionista**, cioè **socio**, anche se per una fetta piccolissima.
+
+Cosa dà un'azione, in generale:
+- una parte **dei profitti**, se l'azienda decide di distribuirli;
+- il **diritto di voto** nelle assemblee (in genere un voto per azione);
+- la possibilità di **rivenderla** a un altro investitore.
+
+Se l'azienda va male, l'azionista è **l'ultimo a essere pagato**. Per questo le azioni sono considerate rischiose.
+
+<Say who="assistente">Una fetta di torta: se la torta cresce, la tua fetta vale di più. Se si rovina, vale meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto vale tutta l'azienda?">
+Il prezzo di una singola azione non dice quanto è grande l'azienda. Per saperlo si calcola la **capitalizzazione di mercato**:
+
+**capitalizzazione = prezzo di un'azione × numero di azioni**
+
+Esempio con numeri inventati: il Panificio Rossi ha **2.000.000 di azioni** a **10 euro** ciascuna.
+
+<Log lines={[
+  "prezzo = 10",
+  "azioni = 2_000_000",
+  "capitalizzazione = prezzo * azioni",
+  "capitalizzazione = 20.000.000 euro",
+]} />
+
+Un'altra società con azioni da 100 euro ma solo 50.000 azioni vale **5.000.000 di euro**: più piccola, anche se l'azione «costa» di più.
+
+<Callout kind="trucco">
+Per confrontare due aziende non guardare il prezzo dell'azione: guarda la capitalizzazione.
+</Callout>
+
+<Say who="sensei">Un prezzo alto non vuol dire azienda grande. Fai il conto, ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dividendo e prezzo">
+Un investitore in azioni può guadagnare (o perdere) in due modi:
+
+- **dividendo**: una parte dei profitti pagata ai soci, di solito una o due volte all'anno. L'azienda **non è obbligata** a pagarlo;
+- **variazione di prezzo**: se compri a 10 e rivendi a 12, la differenza è +2; se rivendi a 7, è −3.
+
+Esempio inventato: compri 100 azioni a 10 euro (spesa 1.000 euro). L'azienda paga un dividendo di 0,30 euro ad azione, quindi incassi 30 euro. Poi il prezzo scende a 9: le tue azioni valgono 900. Hai ricevuto 30 ma «perso» 100 sulla carta.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="assistente">Il dividendo è un extra che può arrivare. Il prezzo, invece, si muove sempre, in su e in giù.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La società Verde ha 500.000 azioni a 4 euro. La società Blu ha 10.000 azioni a 150 euro. Quale ha la capitalizzazione più grande?"
+  options={[
+    "Non si può sapere senza conoscere i profitti",
+    "Verde: 2.000.000 di euro contro 1.500.000 di Blu",
+    "Blu, perché la sua azione costa di più",
+    "Hanno la stessa capitalizzazione",
+  ]}
+  answer={1}
+  explain="Verde: 500.000 × 4 = 2.000.000. Blu: 10.000 × 150 = 1.500.000. Il prezzo della singola azione non dice nulla da solo: conta moltiplicarlo per il numero di azioni."
+/>
+
+<Say who="sensei">Prezzo per numero di azioni. Mai fidarsi del solo prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su che cosa dà un'azione, capitalizzazione, dividendo e rischio.
+
+<Practice generator="t01-azioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I conti puliti sono il primo mestiere di chi lavora con i mercati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'azione è una quota di capitale di una società: chi la possiede è socio e in genere può votare.
+- Capitalizzazione = prezzo di un'azione × numero di azioni.
+- Si guadagna o si perde con i dividendi (non garantiti) e con le variazioni di prezzo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'azione?", a: "Una quota del capitale di una società" },
+    { q: "Come si calcola la capitalizzazione?", a: "Prezzo di un'azione moltiplicato per il numero di azioni" },
+    { q: "Il dividendo è garantito?", a: "No: l'azienda può decidere di non pagarlo" },
+    { q: "In caso di fallimento, gli azionisti sono pagati per primi?", a: "No, sono gli ultimi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le obbligazioni. Non si diventa soci, ma creditori.</Say>
+</Scene>

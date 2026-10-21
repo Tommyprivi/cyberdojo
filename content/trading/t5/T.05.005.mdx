@@ -1,0 +1,165 @@
+---
+id: T.05.005
+course: trading
+module: 5
+title: "Il survivorship bias"
+belt: arancione
+duration_min: 8
+prerequisites: [T.05.004]
+objectives:
+  - "Spiegare che cos'è il bias di sopravvivenza (survivorship bias) nei dati"
+  - "Calcolare di quanto un campione di soli sopravvissuti gonfia il risultato"
+  - "Chiedere a ogni dataset: «chi manca all'appello?»"
+video:
+  provider: youtube
+  id: "GyEbt9zUhAM"
+  start: 0
+  end: 176
+  channel: "Quantra"
+  title: "Importance of Survivorship Bias | Financial Data Science | Dr. Ernest P. Chan"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-sopravvivenza
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Costruire il test con la lista di oggi dei titoli, ignorando quelli falliti o usciti dall'indice"
+  - "Pensare che «i dati sono veri» basti: bisogna chiedersi quali dati mancano"
+  - "Credere che il problema riguardi solo le azioni: vale anche per fondi, aziende e strategie"
+commands: []
+---
+
+<Scene title="La lista delle campionesse">
+Sara costruisce una strategia sulle azioni delle aziende **fittizie** che oggi fanno parte di un piccolo indice. Scarica i loro prezzi degli ultimi cinque anni, fa il suo backtest e ottiene un risultato bellissimo.
+
+Il prof. Neri le chiede: **«Chi faceva parte dell'indice cinque anni fa?»** Sara controlla. Cinque anni fa le aziende erano cinque, oggi sono tre: due sono fallite e sono sparite dall'indice. I loro prezzi non sono nella lista che ha scaricato.
+
+La domanda del caso: **che cosa succede a un backtest se mancano proprio le aziende che sono andate male?**
+
+<Say who="sensei">Chi non c'è più non può raccontarti la sua storia. Ma la sua storia conta.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Aziende e numeri fittizi, nessun denaro reale.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il bias di sopravvivenza">
+Si chiama **survivorship bias**: se nel campione entrano solo i **sopravvissuti**, il risultato sembra migliore di quello reale, perché sono stati tolti i casi peggiori.
+
+Un esempio famoso (non di finanza): durante la guerra si rinforzavano gli aerei nei punti dove i velivoli tornati avevano più buchi. Ma un aereo con quei buchi era tornato! I punti davvero critici erano quelli dove i buchi non si vedevano: gli aerei colpiti lì non erano tornati.
+
+<Callout kind="regola">
+Chiediti sempre: **chi manca all'appello?** Un dato può essere vero e comunque raccontare solo metà della storia.
+</Callout>
+
+<Say who="assistente">Succede anche ai fondi: quelli che vanno male spesso chiudono, e dalle classifiche spariscono. Restano solo quelli bravi, o fortunati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri del caso">
+Le cinque aziende fittizie dell'indice di cinque anni fa, rendimento totale in cinque anni:
+
+| azienda | rendimento | oggi in lista? |
+|---|---|---|
+| A | +30% | sì |
+| B | +20% | sì |
+| C | +10% | sì |
+| D | −60% | no (fallita) |
+| E | −40% | no (fallita) |
+
+Media dei **sopravvissuti** (A, B, C): (30 + 20 + 10) ÷ 3 = 60 ÷ 3 = **+20%**.
+
+Media di **tutte e cinque**: (30 + 20 + 10 − 60 − 40) ÷ 5 = (−40) ÷ 5 = **−8%**.
+
+<Log lines={[
+  "sopravvissuti (A,B,C):  (30+20+10)/3        = +20%",
+  "tutte le cinque:        (30+20+10-60-40)/5  =  -8%",
+  "differenza:             20 - (-8)           =  28 punti",
+]} />
+
+<Say who="sensei">Stessa epoca, stesse aziende. Con i soli sopravvissuti guadagni il 20%. Con tutti perdi l'8%. Ventotto punti di bugia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come difendersi">
+Per i backtest su più titoli servono **dati senza bias di sopravvivenza**: archivi che conservano anche le aziende fallite, fuse o uscite dall'indice, e la composizione dell'indice **com'era in ogni data**.
+
+- Usa la lista dei titoli **di allora**, non quella di oggi.
+- Se i dati gratuiti non la offrono, dichiaralo: «il risultato è probabilmente ottimistico».
+- Diffida di classifiche di fondi, strategie o aziende «vincenti»: chiediti quante sono sparite.
+
+<Callout kind="trucco">
+Tre domande sul dataset: quando è stato compilato? Contiene chi è fallito? La lista è quella di oggi o quella di allora?
+</Callout>
+
+<Say who="assistente">Se non sai rispondere a una di queste tre domande, scrivi nel tuo rapporto che il risultato potrebbe essere gonfiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi sentire il tema spiegato da un esperto di finanza quantitativa? Meno di tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Appunta una cosa che ti ha colpito. Poi la usiamo nel quiz.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito pubblica «le dieci strategie che hanno battuto il mercato negli ultimi cinque anni» scegliendole tra tutte quelle create nello stesso periodo. Che cosa manca?"
+  options={[
+    "Le strategie che hanno perso o sono state abbandonate: sono invisibili",
+    "Un grafico più colorato",
+    "Il nome degli autori",
+    "Nulla: se hanno battuto il mercato, sono buone"
+  ]}
+  answer={0}
+  explain="Se si pubblicano solo le dieci migliori, le molte strategie andate male sono scomparse dalla lista: è survivorship bias. Chi risponde «sono buone» scambia il risultato passato per una prova, ignorando quante strategie sono state escluse."
+/>
+
+<Say who="assistente">Il sito mostra i vincitori. Tu devi chiedere: «di quanti candidati?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sopravvissuti, campioni e calcoli con numeri puliti. Ne servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-sopravvivenza" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Un dato senza il suo contesto è una mezza verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Survivorship bias: se nel campione restano solo i sopravvissuti, il risultato sembra migliore del vero.
+- Si corregge con dati che includono i falliti e con la composizione dell'indice «di allora», non di oggi.
+- Ogni dataset merita la domanda: «chi manca all'appello?»
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il survivorship bias?", a: "L'errore di analizzare solo chi è sopravvissuto, ignorando chi è sparito" },
+    { q: "Perché gonfia i risultati di un backtest?", a: "Perché le aziende andate male, cioè i casi peggiori, non sono nel campione" },
+    { q: "Quale lista di titoli va usata in un backtest?", a: "Quella com'era in ogni data del passato, non quella di oggi" },
+    { q: "Il bias riguarda solo le azioni?", a: "No: anche fondi, aziende, strategie e classifiche" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'overfitting. Ottimizzare troppo una regola fino a farle imparare il rumore a memoria.</Say>
+</Scene>

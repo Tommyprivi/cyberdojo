@@ -1,0 +1,163 @@
+---
+id: D.06.005
+course: dati
+module: 6
+title: "Gli intervalli di confidenza"
+belt: arancione
+duration_min: 10
+prerequisites: [D.06.004]
+objectives:
+  - "Calcolare un intervallo di confidenza al 95% per una media con numeri semplici"
+  - "Spiegare che cosa dice e che cosa NON dice un intervallo di confidenza"
+  - "Leggere il margine di errore di un sondaggio"
+video:
+  provider: youtube
+  id: "9WgYe_sgQ4I"
+  start: 0
+  end: 377
+  channel: "Data Science Italia"
+  title: "Intervallo di confidenza: spiegazione semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-intervalli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il 95% dei dati cada dentro l'intervallo"
+  - "Dire «il valore vero ha il 95% di probabilità di stare in questo intervallo» come se fosse una scommessa su un singolo intervallo"
+  - "Pensare che il margine di errore corregga un campione non rappresentativo"
+commands: []
+---
+
+<Scene title="Il sondaggio della scuola">
+Nella scuola di Marta si vota il rappresentante. Un'amica fa un sondaggio su **400 studenti** scelti a caso: **200** dicono che voteranno la lista A, cioè il **50%**.
+
+Il giorno dopo, sul giornalino: «La lista A ha il 50%!»
+
+Marta commenta: «Ma abbiamo chiesto solo a 400 su mille. Il 50% è proprio quello vero?»
+
+La domanda del caso: **quanto possiamo fidarci di un numero che viene da un campione?**
+
+<Say who="sensei">Un campione dà una stima, non la verità. Un buon analista dice sempre quanto può sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una stima con un margine">
+Un **intervallo di confidenza** è una stima con un **margine di errore**: invece di dire «50%», si dice «tra 45% e 55%».
+
+Per una media, la ricetta è:
+
+**media del campione ± 1,96 per l'errore standard**
+
+Il numero **1,96** è il moltiplicatore per il **95%** di confidenza (valore approssimato, dalla campana normale). L'errore standard lo conosci: σ diviso la radice di n.
+
+Esempio: media 70, σ = 10, n = 100.
+- Errore standard: 10 diviso 10 = **1**.
+- Margine: 1,96 per 1 = **1,96**.
+- Intervallo: da 70 - 1,96 = **68,04** a 70 + 1,96 = **71,96**.
+
+<Callout kind="trucco">
+Il margine di errore è **metà della larghezza** dell'intervallo. «Da 45 a 55» è «50 ± 5».
+</Callout>
+
+<Say who="assistente">Media più o meno il margine. Il margine è 1,96 volte l'errore standard.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il sondaggio, con i numeri">
+Torniamo ai 400 studenti. Per una **percentuale**, l'errore standard è la radice di p per (1 - p) diviso n. Con p = 0,5 e n = 400:
+- p per (1 - p) = 0,5 per 0,5 = 0,25;
+- 0,25 diviso 400 = 0,000625;
+- radice = **0,025**, cioè 2,5 punti percentuali.
+
+Margine al 95%: 1,96 per 0,025 = 0,049, cioè circa **4,9 punti**. Intervallo: da circa **45,1% a 54,9%**.
+
+<Guided
+  steps={[
+    "Se gli studenti intervistati fossero 1600 (quattro volte tanti), l'errore standard sarebbe 0,0125.",
+    "Margine al 95%: 1,96 per 0,0125 = 0,0245, circa 2,5 punti.",
+    "Quadruplicando il campione, il margine si è dimezzato: da circa 4,9 a circa 2,5.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Con il 99% di confidenza il moltiplicatore diventa circa **2,58**: l'intervallo è più largo. Più certezza costa un intervallo meno preciso.
+</Callout>
+
+<Say who="sensei">Più persone, intervallo più stretto. Più certezza, intervallo più largo. Non puoi avere tutte e due le cose gratis.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice davvero il 95%">
+Attenzione, qui sbagliano in tanti.
+
+**Che cosa dice**: se ripetessimo il sondaggio moltissime volte, con campioni diversi, e ogni volta costruissimo l'intervallo con questo metodo, circa il **95%** degli intervalli conterrebbe il valore vero. Il **metodo** funziona nel 95% dei casi.
+
+**Che cosa NON dice**:
+- non dice che il 95% dei **dati** cade dentro l'intervallo (l'intervallo riguarda la media, non i singoli dati);
+- non dice che il valore vero ha «95% di probabilità» di stare nell'intervallo appena calcolato: il valore vero è fisso, e l'intervallo contiene il valore vero oppure no;
+- non protegge da un campione **sbagliato**: se intervisti solo gli iscritti a una palestra, il margine di errore non dice nulla sul resto della città.
+
+<Callout kind="attenzione">
+Quello che cambia da campione a campione è l'**intervallo**. Il valore vero resta fermo.
+</Callout>
+
+Vuoi sentirlo da un'altra voce? Poco più di sei minuti, in italiano:
+
+<Video />
+
+<Say who="assistente">Il 95% è una promessa sul metodo, non sul singolo intervallo. Bella differenza, no?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un intervallo di confidenza al 95% per la quota di «sì» va da 45% a 55%. Quale frase è corretta?"
+  options={["Il valore 60% non è tra quelli plausibili secondo l'intervallo", "Il 95% degli intervistati ha risposto tra 45% e 55%", "Il valore vero è sicuramente 50%", "Il 5% degli intervistati ha mentito"]}
+  answer={0}
+  explain="L'intervallo mostra i valori plausibili per la quota vera: 60% ne è fuori. Non descrive come si distribuiscono le risposte, non dice che il valore vero sia 50% e non parla di bugie."
+/>
+
+<Say who="sensei">Intervallo uguale valori plausibili. Non altro. Tienilo a mente quando leggi un sondaggio sul giornale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su intervalli, errore standard e margini. Hai 3 tentativi. Usa 1,96 per il 95%.
+
+<Practice generator="d06-intervalli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai capito sia il calcolo sia le insidie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Intervallo di confidenza al 95% per una media: media del campione ± 1,96 per l'errore standard (σ diviso la radice di n).
+- Dice che il metodo, ripetuto, contiene il valore vero nel 95% dei campioni. Non dice che il 95% dei dati è dentro, né corregge un campione non rappresentativo.
+- Più dati, intervallo più stretto (quadruplicare n dimezza il margine). Più confidenza, intervallo più largo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Moltiplicatore per il 95% di confidenza?", a: "Circa 1,96" },
+    { q: "Media 50, σ = 8, n = 64: intervallo al 95%?", a: "Da 48,04 a 51,96" },
+    { q: "Sondaggio con 400 persone e p = 0,5: margine al 95%?", a: "Circa 4,9 punti percentuali" },
+    { q: "Il margine di errore corregge un campione distorto?", a: "No" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dagli intervalli ai test. Domanda secca, risposta sì o no, con onestà sul rischio di sbagliare.</Say>
+</Scene>

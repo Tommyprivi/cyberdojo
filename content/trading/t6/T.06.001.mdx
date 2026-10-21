@@ -1,0 +1,164 @@
+---
+id: T.06.001
+course: trading
+module: 6
+title: "Prima il rischio, poi il rendimento"
+belt: arancione
+duration_min: 8
+prerequisites: [T.05.008]
+objectives:
+  - "Spiegare perché in una strategia conta prima quanto si può perdere e poi quanto si può guadagnare"
+  - "Calcolare il valore atteso di una singola operazione con numeri semplici"
+  - "Trovare la percentuale di operazioni vincenti che serve per andare almeno in pareggio"
+video:
+  provider: youtube
+  id: "LEqnbqLTZbA"
+  start: 0
+  end: 600
+  channel: "CapitalCom Italia"
+  title: "Trading da 0 a 101: #3 Il rapporto rischio/rendimento nel trading"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-rischio-prima
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Giudicare una strategia solo dalla percentuale di operazioni vinte"
+  - "Confondere «rischio» con «incertezza»: il rischio è quanto puoi perdere"
+  - "Dimenticare che il valore atteso si calcola pesando guadagni e perdite con le loro frequenze"
+commands: []
+---
+
+<Scene title="Due backtest, un solo vincitore">
+Giulia e Omar, due studenti fittizi, hanno provato ciascuno una strategia su dati storici inventati. Per ogni serie di **10 operazioni** hanno scritto quante ne hanno vinte e di quanto.
+
+- **Giulia**: 7 operazioni vinte, ognuna con **+1 €**. 3 perse, ognuna con **−4 €**.
+- **Omar**: 4 operazioni vinte, ognuna con **+5 €**. 6 perse, ognuna con **−2 €**.
+
+Giulia vince quasi sempre. Omar perde più spesso di quanto vince. Chi ha la strategia migliore?
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Tutti i numeri sono inventati e gli esercizi usano solo dati fittizi.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima di chiederti quanto puoi guadagnare, chiediti quanto puoi perdere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il rischio">
+Nella vita di tutti i giorni «rischio» vuol dire «può andare male». In finanza, qui, useremo una definizione pratica:
+
+<Callout kind="regola">
+**Rischio** = quanto denaro puoi perdere, e con quale probabilità. Non è un'emozione e non è «la sfortuna».
+</Callout>
+
+Il **rendimento** è quanto guadagni (o perdi) in percentuale sul capitale. Una strategia può avere un bel rendimento nel passato e un rischio altissimo: la prima cosa che si vede è il rendimento, la seconda, se la si cerca, è il rischio.
+
+<Callout kind="curiosita">
+Pensa a un'auto: la velocità massima ti dice quanto va forte, ma i freni ti dicono se puoi usarla. Un gestore del rischio guarda prima i freni.
+</Callout>
+
+<Say who="assistente">Un'idea per ricordare: il rendimento è la parte che ti piace guardare, il rischio è la parte che decide se resti in gioco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il valore atteso">
+Torniamo a Giulia e Omar. Per confrontarli si calcola il **valore atteso** di un'operazione: la media di quello che ti aspetti di ottenere ripetendola tante volte.
+
+Si moltiplica ogni esito per la sua frequenza e si somma.
+
+| Strategia | Vinte (su 10) | Guadagno | Perse (su 10) | Perdita | Totale su 10 |
+|---|---|---|---|---|---|
+| Giulia | 7 | +1 € | 3 | −4 € | 7 − 12 = **−5 €** |
+| Omar | 4 | +5 € | 6 | −2 € | 20 − 12 = **+8 €** |
+
+Per singola operazione: Giulia −0,50 €, Omar +0,80 €.
+
+<Callout kind="attenzione">
+La percentuale di operazioni vinte, da sola, non dice niente. Giulia vince il 70% delle volte e perde denaro; Omar vince il 40% e ne guadagna. Contano **quanto** si vince e **quanto** si perde.
+</Callout>
+
+<Say who="sensei">Settanta per cento di vittorie e il conto va giù. Succede. Il conto non conosce le percentuali di vittoria, conosce le somme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La soglia di pareggio">
+Quante operazioni devi vincere, almeno, per non perdere? Dipende dal rapporto tra perdita e guadagno medi.
+
+La **soglia di pareggio** della percentuale di vittorie è: perdita media diviso (guadagno medio + perdita media).
+
+- Guadagni 1 e perdi 1: soglia 1 / (1 + 1) = **50%**.
+- Guadagni 1 e perdi 3: soglia 3 / (1 + 3) = **75%**.
+- Guadagni 3 e perdi 1: soglia 1 / (3 + 1) = **25%**.
+
+Più le perdite sono grandi rispetto ai guadagni, più devi vincere spesso per sopravvivere. Questo rapporto si chiama **rischio/rendimento**.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano di un'azienda che offre servizi di trading: è materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">Se perdi tre volte quello che guadagni, ti serve vincere tre volte su quattro soltanto per restare a zero. Pensaci prima di entrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una strategia vince il 60% delle volte, guadagna 1 € quando vince e perde 2 € quando perde. Che valore atteso ha ogni operazione?"
+  options={["−0,20 €", "+0,60 €", "+0,20 €", "−1,20 €"]}
+  answer={0}
+  explain="Si pesano gli esiti con la frequenza: 0,6 × 1 − 0,4 × 2 = 0,6 − 0,8 = −0,2. Chi risponde +0,60 guarda solo i guadagni e dimentica le perdite."
+/>
+
+<Say who="sensei">Sessanta per cento di vittorie e valore atteso negativo. Ora capisci perché il solo tasso di vittoria è una trappola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova con il codice">
+Calcola i totali di Giulia e Omar con Python. Cambia i numeri e riesegui.
+
+<PythonTerminal code={"# Giulia: 7 vinte da +1, 3 perse da -4\ngiulia = 7 * 1 - 3 * 4\n# Omar: 4 vinte da +5, 6 perse da -2\nomar = 4 * 5 - 6 * 2\nprint('Giulia:', giulia)\nprint('Omar:', omar)"} />
+
+<Say who="assistente">Dovrebbe uscire -5 per Giulia e 8 per Omar. Prova a portare le perdite di Giulia a -1: cosa cambia?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande tra rischio, valore atteso e soglia di pareggio, con numeri semplici. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-rischio-prima" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un numero senza il suo rischio è mezza informazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio è quanto puoi perdere, e con quale probabilità: si guarda prima del rendimento.
+- Il valore atteso pesa guadagni e perdite con le loro frequenze: la sola percentuale di vittorie inganna.
+- La soglia di pareggio è perdita media diviso (guadagno medio + perdita media): più perdi quando sbagli, più devi vincere spesso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il rischio in questo corso?", a: "Quanto denaro puoi perdere e con quale probabilità" },
+    { q: "Come si calcola il valore atteso?", a: "Ogni esito per la sua frequenza, poi si somma" },
+    { q: "Guadagni 1 e perdi 3: quante vittorie servono per il pareggio?", a: "Il 75% (3 / (1 + 3))" },
+    { q: "Una strategia che vince il 70% delle volte è per forza buona?", a: "No: se le perdite sono più grandi dei guadagni il totale può essere negativo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quanto rischiare in ogni singola operazione. Si chiama dimensione della posizione.</Say>
+</Scene>

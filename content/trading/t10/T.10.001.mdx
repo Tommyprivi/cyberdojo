@@ -1,0 +1,155 @@
+---
+id: T.10.001
+course: trading
+module: 10
+title: "Soldi finti, prove vere"
+belt: verde
+duration_min: 8
+prerequisites: [T.09.007]
+objectives:
+  - "Spiegare che cos'è il paper trading e che cosa simula"
+  - "Dire che cosa il paper trading può verificare e che cosa no"
+  - "Usare il paper trading per provare il codice prima di tutto"
+video:
+  provider: youtube
+  id: "qW2527iJL68"
+  start: 0
+  end: 600
+  channel: "WebEconomia"
+  title: "Conto demo: conviene usarlo nel trading online ? Ecco cosa devi sapere"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-paper
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un buon risultato in paper trading garantisca un buon risultato con soldi veri"
+  - "Dimenticare che in demo gli ordini si eseguono sempre, senza code né prezzi peggiori"
+  - "Usare il paper trading solo per la strategia e non per provare il codice"
+commands: []
+---
+
+<Scene title="Il bot di Marta">
+Marta ha scritto un programma che segue una strategia semplice. Nel backtest, cioè la prova sui dati del passato, i numeri sono belli. Lei vorrebbe già «metterlo in funzione».
+
+Il Sensei la ferma: «Il passato non invia ordini. Il programma sì. Prima si prova **il programma**, non solo l'idea.»
+
+La domanda del caso: **come si prova un bot sul mercato di oggi senza rischiare denaro?**
+
+<Callout kind="attenzione">
+Questo corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto. Qui lavoriamo solo con dati fittizi e ambienti demo.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Prima di fidarti di un programma, guardalo lavorare con soldi finti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il paper trading">
+Il **paper trading** («trading sulla carta») è un conto **simulato**. Invii ordini come se fossero veri, ma il denaro è virtuale: se sbagli, non perdi niente.
+
+Molti broker offrono un **ambiente demo**, detto anche *sandbox* o *paper*: un sistema gemello di quello vero, con un conto finto e, di solito, prezzi simili a quelli del mercato.
+
+Un esempio con numeri fittizi, che puoi provare qui:
+
+<PythonTerminal code={"cassa = 10000.0\nprezzo = 50.0\nquantita = 20\ncassa = cassa - prezzo * quantita\nprint('Cassa:', cassa)\nprint('Posizione:', quantita, 'azioni')"} />
+
+Risultato atteso: `Cassa: 9000.0` e `Posizione: 20 azioni`. È così che un simulatore tiene i conti: sottrae dalla cassa e segna la posizione.
+
+<Say who="assistente">Il conto demo è una palestra: i pesi sono finti, ma i movimenti sono quelli giusti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa prova davvero">
+Il paper trading serve soprattutto a **provare il codice**:
+
+- il programma legge i dati giusti?
+- invia gli ordini nel formato giusto?
+- reagisce bene a un errore o a un ordine rifiutato?
+- scrive un registro che si può leggere il giorno dopo?
+
+Vuoi sentire un'altra voce sul conto demo? Il video è in italiano:
+
+<Video />
+
+<Callout kind="regola">
+Il paper trading prova il **tubo** (il programma). Non prova che la **strategia** funzionerà con denaro reale.
+</Callout>
+
+<Say who="sensei">Se il tubo perde, lo scopri con soldi finti. È il suo mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa non prova">
+Un conto demo è più **gentile** del mercato vero. Spesso:
+
+- gli ordini si eseguono **sempre** e **subito**, senza code;
+- il prezzo di esecuzione è quello che vedi, senza **slippage** (la differenza tra il prezzo atteso e quello ottenuto);
+- le quantità non cambiano il prezzo, perché nessuno ti «vede» comprare;
+- non senti l'ansia di vedere i soldi veri calare.
+
+<Callout kind="attenzione">
+Un risultato bello in paper trading è **ottimista** quanto un backtest. Non è una promessa: è solo una prova che il programma gira.
+</Callout>
+
+Marta confronta: ordine di 20 azioni a 50,00 in demo, eseguito a 50,00. Nel mercato reale, in un momento nervoso, potrebbe essere eseguito più in alto. Nel conto finto questo non succede mai.
+
+<Say who="sensei">Se il simulatore è più gentile del mercato, i risultati sono più belli del vero. Sempre. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il bot di Marta chiude il mese di paper trading in positivo. Che cosa si può dire con onestà?"
+  options={[
+    "Il programma funziona tecnicamente, ma il risultato non garantisce nulla sul denaro reale",
+    "La strategia è provata e funzionerà anche con denaro reale",
+    "I costi e lo slippage non contano più, perché li ha già provati",
+    "Il backtest è inutile, perché il paper trading lo sostituisce",
+  ]}
+  answer={0}
+  explain="Il paper trading mostra che il programma gira e invia ordini corretti. Ma gli ordini in demo sono più facili da eseguire, il campione è breve e nessuna emozione entra in gioco. Chi risponde «funzionerà anche con denaro reale» scambia una prova tecnica per una garanzia."
+/>
+
+<Say who="assistente">Chiediti: che cosa ho provato davvero? Il programma, non il futuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su paper trading e conti demo: che cosa provano e che cosa no.
+
+<Practice generator="t10-paper" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Soldi finti, ma il ragionamento è vero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il paper trading è un conto simulato con denaro virtuale: serve a provare il programma, non a garantire i risultati.
+- Il conto demo è più gentile del mercato: ordini sempre eseguiti, niente slippage, niente emozioni.
+- Un buon mese in demo non è una promessa: i risultati sono ottimisti come un backtest.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il paper trading?", a: "Trading simulato con denaro virtuale, in un ambiente demo" },
+    { q: "Che cosa prova davvero il paper trading?", a: "Che il programma legge, ordina e registra correttamente" },
+    { q: "Perché i risultati in demo sono ottimisti?", a: "Ordini sempre eseguiti, niente slippage, niente emozioni" },
+    { q: "Un mese positivo in demo garantisce guadagni reali?", a: "No: è solo una prova tecnica" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come il programma parla con il broker. Si chiamano API, e si comincia dalla porta demo.</Say>
+</Scene>

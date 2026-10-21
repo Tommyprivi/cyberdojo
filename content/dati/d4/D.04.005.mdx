@@ -1,0 +1,276 @@
+---
+id: D.04.005
+course: dati
+module: 4
+title: "Leggere i file"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.004]
+objectives:
+  - "Leggere un file CSV con read_csv e indicare il percorso giusto"
+  - "Correggere separatore, decimale e codifica quando la tabella arriva sbagliata"
+  - "Controllare e forzare il tipo delle colonne (dtype, na_values)"
+video:
+  provider: youtube
+  id: "KIb7ivsryd4"
+  start: 0
+  end: 570
+  channel: "Edoardo Midali"
+  title: "Caricare dati da CSV e JSON - Pandas Python Tutorial Italiano 04"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-leggere
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il file esiste ma Python lo cerca nella cartella sbagliata: FileNotFoundError"
+  - "Un file esportato da Excel italiano usa il punto e virgola e la virgola decimale: senza sep e decimal si legge male"
+  - "Una colonna di numeri che risulta object: dentro c'è un testo come n.d. o un numero scritto con la virgola"
+commands: []
+---
+
+<Scene title="Il file di Marco">
+Marco ha esportato gli ordini da Excel e ti manda `ordini.csv`. Lo apri nel notebook, scrivi `pd.read_csv("ordini.csv")` e Python risponde con un errore lungo mezza pagina. Poi, quando finalmente lo legge, tutto il file finisce in **una colonna sola**.
+
+I file arrivano da persone e programmi diversi, e ognuno ha le sue abitudini. Leggere bene un file è metà del lavoro dell'analista: se la tabella entra sbagliata, tutti i conti dopo sono sbagliati.
+
+La domanda del caso: **cosa va controllato quando si legge un file?** Quattro cose: dove sta, come sono separati i campi, con che codifica è scritto, che tipo ha ogni colonna.
+
+<Say who="sensei">Un file non è mai «solo un file». Controllalo come un pacco appena arrivato, prima di aprire tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il CSV e read_csv">
+Un file **CSV** (in inglese comma-separated values, valori separati da virgola) è un semplice file di testo: una riga per ogni riga della tabella, i campi separati da un carattere. La prima riga contiene i nomi delle colonne.
+
+In questa lezione i dati stanno dentro il testo, così gli esempi funzionano ovunque: `StringIO` crea un «finto file» in memoria. Nel lavoro vero al posto di `StringIO(testo)` scrivi il nome del file.
+
+```python
+import pandas as pd
+from io import StringIO
+
+testo = """cliente,citta,importo
+Anna,Roma,40.5
+Bruno,Milano,20
+Carla,Roma,40
+"""
+ordini = pd.read_csv(StringIO(testo))
+print(ordini)
+print(ordini.dtypes)
+```
+
+```text
+  cliente   citta  importo
+0    Anna    Roma     40.5
+1   Bruno  Milano     20.0
+2   Carla    Roma     40.0
+cliente     object
+citta       object
+importo    float64
+dtype: object
+```
+
+Nota `importo`: i valori 40.5, 20 e 40 diventano tutti `float64`, perché basta un decimale per far diventare la colonna intera «con la virgola».
+
+<Say who="assistente">Il nome del file lo scrivi tra virgolette: è un testo. Senza virgolette Python lo cerca come una variabile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dov'è il file? I percorsi">
+`pd.read_csv("ordini.csv")` cerca il file **nella cartella di lavoro** del notebook. Se non lo trova:
+
+```text
+FileNotFoundError: [Errno 2] No such file or directory: 'ordini.csv'
+```
+
+Significa quasi sempre che il file è da un'altra parte. Due strade:
+
+- **percorso relativo**: parte dalla cartella di lavoro, per esempio `"dati/ordini.csv"` (cartella `dati`, file dentro);
+- **percorso assoluto**: parte dalla radice del disco, per esempio `"/home/giulia/dati/ordini.csv"` su Linux o macOS e `"C:/Users/giulia/dati/ordini.csv"` su Windows.
+
+Su Windows usa le barre normali `/` nei percorsi, oppure metti una `r` davanti alle virgolette: `r"C:\Users\giulia\ordini.csv"`. La barra rovesciata da sola, in Python, ha un significato speciale.
+
+In **Google Colab** il file va prima caricato: si apre l'icona della cartella a sinistra e si trascina il file. Poi basta il nome. `read_csv` accetta anche un indirizzo web, `pd.read_csv("https://...")`, se il file è pubblico.
+
+<Callout kind="trucco">
+Non sai dove sei? Scrivi `import os` e poi `print(os.getcwd())`: ti dice qual è la cartella di lavoro. `os.listdir()` elenca i file che contiene.
+</Callout>
+
+<Say who="sensei">Il file esiste, il computer non sa dov'è. È un errore di indirizzo, non di dati. Si risolve con un indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Separatori e virgole decimali">
+Excel in italiano esporta i CSV con il **punto e virgola** come separatore, perché la virgola gli serve per i decimali. Se non lo dici, pandas non lo indovina.
+
+```python
+testo = "cliente;quantita\nAnna;3\nBruno;2\n"
+print(pd.read_csv(StringIO(testo)))
+print(pd.read_csv(StringIO(testo), sep=";"))
+```
+
+```text
+   cliente;quantita
+0            Anna;3
+1           Bruno;2
+   cliente  quantita
+0     Anna         3
+1    Bruno         2
+```
+
+La prima lettura è il sintomo tipico: **una sola colonna** con il nome tutto attaccato. Il rimedio è `sep=";"`.
+
+Se i numeri hanno la virgola decimale, serve anche `decimal=","`:
+
+```python
+testo = "cliente;importo\nAnna;40,5\nBruno;20,0\n"
+a = pd.read_csv(StringIO(testo), sep=";")
+b = pd.read_csv(StringIO(testo), sep=";", decimal=",")
+print(a.dtypes)
+print(b.dtypes)
+print(b)
+```
+
+```text
+cliente    object
+importo    object
+dtype: object
+cliente     object
+importo    float64
+dtype: object
+   cliente  importo
+0     Anna     40.5
+1    Bruno     20.0
+```
+
+Senza `decimal=","` «40,5» resta un **testo**: la colonna è `object` e non puoi farci la media.
+
+<Say who="assistente">Una colonna con tutto il nome attaccato e un punto e virgola in mezzo? Cambia il separatore, non i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le lettere strane: la codifica">
+Un file di testo salva ogni lettera come numero secondo una **codifica**. Oggi la più usata è **UTF-8**, che pandas si aspetta. I file esportati da vecchi programmi Windows possono usare altre codifiche, come **latin-1** (detta anche cp1252), dove una lettera come «ì» ha un numero diverso.
+
+```python
+from io import BytesIO
+
+dati = "citta\nPerugia\nForlì\n".encode("latin-1")
+print(pd.read_csv(BytesIO(dati), encoding="latin-1"))
+```
+
+```text
+     citta
+0  Perugia
+1    Forlì
+```
+
+Con la codifica sbagliata puoi ricevere due sintomi:
+
+- un errore che comincia con `UnicodeDecodeError: 'utf-8' codec can't decode byte`: il file non è UTF-8, prova `encoding="latin-1"`;
+- nessun errore, ma lettere sbagliate: al posto di «ì» compare «Ã¬» (accade quando un file UTF-8 viene letto come latin-1).
+
+<Callout kind="regola">
+I nomi con gli accenti sono il primo posto dove guardare. Dopo ogni lettura controlla `head()`: se «Forlì» è diventato «ForlÃ¬», la codifica è sbagliata.
+</Callout>
+
+<Say who="sensei">Sembra un dettaglio da programmatori. Poi scopri che Perugia e Forlì non sono finite nel report. Guarda sempre le prime righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tipo delle colonne">
+pandas prova a indovinare il tipo di ogni colonna, ma non sempre ci azzecca. Due casi classici.
+
+**Codici che sembrano numeri.** Un CAP come `00100` letto come numero perde gli zeri iniziali. Si chiede di leggerlo come testo con `dtype`:
+
+```python
+testo = "citta,cap,abitanti\nRoma,00100,2800000\nMilano,20100,1400000\n"
+print(pd.read_csv(StringIO(testo)))
+print(pd.read_csv(StringIO(testo), dtype={"cap": str}))
+```
+
+```text
+    citta    cap  abitanti
+0    Roma    100   2800000
+1  Milano  20100   1400000
+    citta    cap  abitanti
+0    Roma  00100   2800000
+1  Milano  20100   1400000
+```
+
+**Numeri con una scritta in mezzo.** Se una cella contiene `n.d.` («non disponibile»), tutta la colonna diventa testo. Con `na_values` dici quali scritte significano «manca»:
+
+```python
+testo = "citta,importo\nRoma,40\nMilano,n.d.\n"
+print(pd.read_csv(StringIO(testo)).dtypes)
+print(pd.read_csv(StringIO(testo), na_values=["n.d."]))
+```
+
+```text
+citta      object
+importo    object
+dtype: object
+    citta  importo
+0    Roma     40.0
+1  Milano      NaN
+```
+
+`NaN` è il valore mancante di pandas: significa «non so quanto vale» e non viene contato nelle medie.
+
+Vuoi vedere altri esempi con un'altra voce?
+
+<Video />
+
+<Say who="assistente">Dopo ogni lettura: head per vedere, dtypes per controllare. Due comandi, e sai se il file è entrato bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te e verifica pratica">
+<Quiz
+  question="Leggi un file con pd.read_csv e ottieni una sola colonna chiamata 'cliente;importo', con righe come 'Anna;40'. Cosa serve?"
+  options={["sep=\";\"", "decimal=\",\"", "encoding=\"latin-1\"", "dtype=str"]}
+  answer={0}
+  explain="Il file usa il punto e virgola come separatore e pandas ha cercato la virgola: ha trovato un solo campo per riga. Si risolve con sep=';'. decimal serve per la virgola dei numeri, encoding per le lettere accentate sbagliate."
+/>
+
+<Say who="assistente">Riconosci il sintomo, poi scegli il rimedio. Una colonna sola: separatore. Numeri che sono testo: decimal o na_values. Lettere strane: encoding.</Say>
+
+Cinque domande su `read_csv`: quale opzione serve, perché la tabella è entrata sbagliata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-leggere" pass="4/5" retries={3} />
+
+<Say who="sensei">Sintomo, causa, rimedio. Si fa così con i file, e anche con quasi tutto il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `pd.read_csv("file.csv")` cerca il file nella cartella di lavoro: se non lo trova, FileNotFoundError. Usa un percorso relativo o assoluto.
+- Una sola colonna: `sep=";"`. Numeri con la virgola: `decimal=","`. Lettere accentate strane: `encoding="latin-1"`.
+- Tipi: `dtype={"cap": str}` per tenere gli zeri, `na_values=["n.d."]` per i valori mancanti. Controlla con `head()` e `dtypes`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Il file esportato da Excel italiano arriva in una colonna sola: cosa cambi?", a: "Aggiungi sep=';'" },
+    { q: "Come si legge 40,5 come numero?", a: "decimal=','" },
+    { q: "Come si mantiene lo zero iniziale di un CAP?", a: "dtype={'cap': str}" },
+    { q: "Cos'è NaN?", a: "Un valore mancante: non viene contato nelle medie" },
+  ]}
+/>
+
+<Say who="sensei">Il file è dentro e in ordine. Prossima lezione: selezionare le colonne e le righe che ti servono.</Say>
+</Scene>

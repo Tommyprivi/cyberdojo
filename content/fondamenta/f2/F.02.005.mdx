@@ -1,0 +1,187 @@
+---
+id: F.02.005
+course: fondamenta
+module: 2
+title: "Leggere i file"
+belt: bianca
+duration_min: 8
+prerequisites: [F.02.004]
+objectives:
+  - "Leggere un file con cat e less"
+  - "Vedere le prime o le ultime righe con head e tail"
+  - "Contare le righe con wc -l e riconoscere il tipo di file con file"
+video:
+  provider: youtube
+  id: "4PPSPGMDFqQ"
+  start: 0
+  end: 181
+  channel: "Explosive Lab"
+  title: "I comandi cat, less, head e tail su Linux"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-leggere
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare cat su un file lunghissimo: scorre tutto e si vede solo la fine, meglio less"
+  - "Non sapere come uscire da less: si preme q"
+  - "Credere che wc -l conti le parole: conta le righe"
+commands: [cat, less, head, tail, wc, file]
+---
+
+<Scene title="Il registro degli accessi">
+Nella tua cartella di lavoro c'è un file: **registro.log**. È il registro degli accessi al computer di laboratorio. Il collega del SOC chiede:
+
+«Quanti eventi ci sono? Quali sono gli ultimi? C'è qualcosa di strano?»
+
+Per ora il file è chiuso: non hai un programma con le icone per aprirlo. Ma sai già muoverti, e ora impari a **leggere**.
+
+La domanda del caso: **come si legge un file di testo dal terminale, anche quando è lunghissimo?**
+
+<Say who="sensei">Un registro vero ha migliaia di righe. Leggerlo tutto è impossibile: si guardano l'inizio, la fine e i numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="cat: tutto subito">
+**cat** stampa **tutto** il contenuto di un file sullo schermo. Va bene per i file piccoli.
+
+<Log lines={[
+  "studente@lab:~/indagine$ cat registro.log",
+  "09:01 login ok utente=anna",
+  "09:05 login ok utente=marco",
+  "09:12 login fallito utente=admin",
+  "09:12 login fallito utente=admin",
+  "09:13 login fallito utente=admin",
+  "09:20 logout utente=anna",
+]} caption="Un registro fittizio di sei righe. Un file vero sarebbe molto più lungo." />
+
+<Callout kind="curiosita">
+Il nome viene da «concatenate» (unire): cat serve anche a unire più file. Ma qui lo usi solo per leggere, e **non modifica mai** il file.
+</Callout>
+
+<Say who="assistente">Guarda le righe 3, 4 e 5: tre accessi falliti di fila allo stesso utente. Tienilo a mente, ci torneremo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="less: una pagina alla volta">
+Se il file è lungo, cat te lo fa scorrere davanti in un lampo. Per questo c'è **less**: mostra il file **una pagina alla volta**.
+
+<Log lines={[
+  "studente@lab:~/indagine$ less registro.log",
+]} caption="less apre il file e resta aperto, finché non lo chiudi." />
+
+I tasti di less:
+
+- **Spazio**: pagina successiva
+- **b**: pagina precedente
+- **/parola** e Invio: cerca una parola
+- **q**: esci, e torni al prompt
+
+<Callout kind="attenzione">
+Dentro less il prompt non c'è: i comandi che scrivi non partono. Se ti sembra bloccato, premi **q**.
+</Callout>
+
+<Say who="sensei">less si chiude con q. Impara questo tasto: ti salva ogni volta che ti senti in trappola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="head, tail, wc, file">
+Altri strumenti rapidi per capire un file senza leggerlo tutto:
+
+- **head** mostra le **prime** righe (10 di default)
+- **tail** mostra le **ultime** righe (10 di default)
+- **-n 3** dopo head o tail sceglie il numero di righe
+- **wc -l** conta le **righe**
+- **file** dice di che **tipo** è un file
+
+<Log lines={[
+  "studente@lab:~/indagine$ head -n 2 registro.log",
+  "09:01 login ok utente=anna",
+  "09:05 login ok utente=marco",
+  "studente@lab:~/indagine$ tail -n 2 registro.log",
+  "09:13 login fallito utente=admin",
+  "09:20 logout utente=anna",
+  "studente@lab:~/indagine$ wc -l registro.log",
+  "6 registro.log",
+  "studente@lab:~/indagine$ file registro.log",
+  "registro.log: ASCII text",
+]} />
+
+<Callout kind="trucco">
+`tail -f registro.log` mostra le ultime righe e **continua ad aggiornarsi** man mano che ne arrivano di nuove: è come guardare un registro in diretta. Si ferma con **Ctrl+C**.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Pochi minuti:
+
+<Video />
+
+<Say who="assistente">Per un registro, di solito le righe più interessanti sono le ultime: sono quelle appena successe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il file elenco.txt contiene tre righe. Che cosa stampa «wc -l elenco.txt»?"
+  options={[
+    "3 elenco.txt",
+    "elenco.txt 3",
+    "Il contenuto delle tre righe",
+    "Il numero di parole del file",
+  ]}
+  answer={0}
+  explain="L'opzione -l fa contare le righe: wc stampa il numero seguito dal nome del file. Per leggere il contenuto servono cat o less. Le parole si contano con wc -w."
+/>
+
+<Say who="sensei">Un conto è leggere, un altro è contare. Scegli lo strumento giusto per la domanda giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova nel terminale">
+Rispondi alle domande del collega usando solo comandi di lettura: quante righe ha il registro e quali sono le ultime due.
+
+<LinuxTerminal goal="Nella cartella indagine conta le righe di registro.log con wc -l e mostra le ultime due righe con tail." />
+
+<Say who="assistente">Due comandi diversi. Per contare le righe c'è l'opzione -l, per le ultime c'è tail con -n.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cat, less, head, tail, wc e file. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-leggere" pass="4/5" retries={3} />
+
+<Say who="sensei">Leggere non fa danni: nessuno di questi comandi cambia il file. Usali senza paura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- cat stampa tutto il file; less lo mostra a pagine (si esce con q).
+- head e tail mostrano le prime e le ultime righe; con -n scegli quante.
+- wc -l conta le righe; file dice che tipo di file è. Nessuno modifica il file.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si esce da less?", a: "Premendo q" },
+    { q: "Quale comando mostra le ultime righe di un file?", a: "tail" },
+    { q: "Che cosa fa wc -l?", a: "Conta le righe di un file" },
+    { q: "Perché less è meglio di cat per un file lungo?", a: "Lo mostra una pagina alla volta invece di farlo scorrere tutto" },
+  ]}
+/>
+
+<Say who="sensei">Sai leggere un registro. Adesso impari a scrivere: gli editor di testo, partendo da nano.</Say>
+</Scene>

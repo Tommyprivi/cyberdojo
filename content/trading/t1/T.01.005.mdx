@@ -1,0 +1,154 @@
+---
+id: T.01.005
+course: trading
+module: 1
+title: "I derivati in breve"
+belt: bianca
+duration_min: 8
+prerequisites: [T.01.004]
+objectives:
+  - "Spiegare che un derivato prende il suo valore da un'altra attività"
+  - "Distinguere future (obbligo) e opzione (diritto)"
+  - "Capire perché la leva rende i derivati rischiosi"
+video:
+  provider: youtube
+  id: "j1-Hr98IoDY"
+  start: 0
+  end: 600
+  channel: "Investiamo"
+  title: "Le OPZIONI spiegate semplicemente"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t01-derivati
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere obbligo (future) e diritto (opzione)"
+  - "Dimenticare il premio pagato per l'opzione quando si calcola il risultato"
+  - "Pensare che la leva moltiplichi solo i guadagni: moltiplica anche le perdite"
+commands: []
+---
+
+<Scene title="Il grano di Giovanni">
+Giovanni coltiva grano. Oggi il grano vale 200 euro alla tonnellata, ma il raccolto sarà tra sei mesi e lui teme che il prezzo cali. Il mulino di Anna ha la paura opposta: teme che il prezzo salga.
+
+Si mettono d'accordo oggi: **tra sei mesi Giovanni venderà ad Anna il grano a 200 euro alla tonnellata**, qualunque sia il prezzo di mercato. Hanno appena creato un **derivato**.
+
+La domanda del caso: **che cos'è, in parole semplici, un derivato, e a chi serve?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza. I derivati sono strumenti complessi: si può perdere molto più di quanto si pensa, anche più del denaro messo all'inizio. In questa lezione solo i concetti e numeri inventati.
+</Callout>
+
+<Say who="sensei">Un derivato non vale per sé. Vale per quello che c'è sotto. Se non capisci cosa c'è sotto, non toccarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Derivato e sottostante">
+Un **derivato** è un contratto il cui valore **dipende** (deriva) da un'altra cosa, il **sottostante**: un'azione, il prezzo del grano, un tasso, una valuta.
+
+Si usa per due scopi molto diversi:
+- **copertura** (in inglese *hedging*): proteggersi da un prezzo che potrebbe muoversi, come Giovanni e Anna;
+- **speculazione**: puntare sul movimento di un prezzo sperando di guadagnare, accettando di poter perdere.
+
+<Callout kind="regola">
+Stesso strumento, due usi: chi si copre riduce un rischio, chi specula lo aumenta.
+</Callout>
+
+<Say who="assistente">Il contratto di Giovanni e Anna serve a dormire tranquilli. Chi ci scommette sopra senza grano né mulino fa un'altra cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Future: un obbligo">
+Il contratto tra Giovanni e Anna è un **future** (nella versione negoziata in borsa, standardizzata): le due parti sono **obbligate** a scambiare il bene alla data e al prezzo stabiliti.
+
+Numeri inventati: prezzo concordato 200 euro alla tonnellata.
+
+| Prezzo di mercato alla scadenza | Chi ci guadagna rispetto al mercato |
+|---|---|
+| 250 euro | Anna: compra a 200 invece di 250 |
+| 150 euro | Giovanni: vende a 200 invece di 150 |
+
+Ma l'obbligo vale **per tutti e due**: chi ci perde non può tirarsi indietro.
+
+<Say who="sensei">Obbligo vuol dire obbligo. Il mercato può andare dalla parte sbagliata e il contratto resta lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Opzione: un diritto">
+Un'**opzione** dà il **diritto, ma non l'obbligo**, di comprare (opzione *call*) o vendere (opzione *put*) a un prezzo fissato, chiamato **prezzo d'esercizio** (*strike*). Si paga in anticipo un **premio**, che non torna indietro.
+
+Esempio inventato con una call: strike 100, premio 3, per un'azione ALFA.
+
+| Prezzo di ALFA alla scadenza | Che cosa conviene | Risultato netto |
+|---|---|---|
+| 110 | esercitare: compri a 100 un'azione che vale 110 (+10) | 10 − 3 = **+7** |
+| 100 | non cambia nulla | 0 − 3 = **−3** |
+| 90 | non esercitare, non conviene | **−3** |
+
+La perdita massima di chi compra la call è il **premio**: 3. Il guadagno può essere molto più alto.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano:
+
+<Video />
+
+<Say who="assistente">Il premio è come un biglietto: se non lo usi, lo hai pagato lo stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai comprato una call con strike 50 e premio 2. A scadenza l'azione vale 58. Quale risultato netto ottieni, ignorando altri costi?"
+  options={[
+    "+6",
+    "+8",
+    "−2",
+    "+10",
+  ]}
+  answer={0}
+  explain="Esercitando guadagni 58 − 50 = 8, ma hai pagato 2 di premio: 8 − 2 = +6. Chi risponde +8 dimentica il premio."
+/>
+
+<Say who="sensei">Prima il guadagno lordo, poi i costi. Mai fermarsi a metà conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Derivati, future, opzioni, copertura e rischi.
+
+<Practice generator="t01-derivati" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sui derivati la prudenza non è timidezza: è sopravvivenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un derivato è un contratto che prende il valore da un sottostante: serve a coprirsi dai rischi o a speculare.
+- Future: obbligo di scambiare a prezzo e data fissati. Opzione: diritto, non obbligo, in cambio di un premio.
+- Con i derivati la leva può moltiplicare i guadagni ma anche le perdite, a volte oltre il denaro iniziale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un derivato?", a: "Un contratto il cui valore dipende da un'altra attività, il sottostante" },
+    { q: "Future o opzione: quale dà un obbligo?", a: "Il future" },
+    { q: "Qual è la perdita massima di chi compra una call?", a: "Il premio pagato" },
+    { q: "A che cosa serve la copertura (hedging)?", a: "A ridurre il rischio che un prezzo si muova contro di noi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la borsa, i broker e gli orari. Dove e tramite chi si compra davvero.</Say>
+</Scene>

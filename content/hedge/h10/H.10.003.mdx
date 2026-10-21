@@ -1,0 +1,155 @@
+---
+id: H.10.003
+course: hedge
+module: 10
+title: "Comunicare con onestà"
+belt: blu
+duration_min: 9
+prerequisites: [H.10.002]
+objectives:
+  - "Riconoscere una comunicazione ingannevole sui risultati"
+  - "Calcolare come cambia il rendimento scegliendo solo gli anni migliori"
+  - "Dire che cosa deve contenere una lettera onesta agli investitori"
+video:
+  provider: youtube
+  id: "sy9tbHcKwGo"
+  start: 0
+  end: 600
+  channel: "MeaningfulMoney"
+  title: "Past performance is no guide to future performance? REALLY?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h10-comunicazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mostrare solo il periodo migliore e nascondere gli anni negativi"
+  - "Annualizzare un risultato di pochi mesi come se fosse una promessa"
+  - "Presentare il rendimento lordo senza dire che le commissioni lo riducono"
+commands: []
+---
+
+<Scene title="La lettera del trimestre">
+Il fondo fittizio **Faro Capital** ha avuto questi rendimenti annui netti: **+12%, -8%, +6%, +10%**.
+
+La brochure per attirare nuovi investitori mostra solo gli **ultimi due anni** e scrive in grande: «Più di +16% in due anni!».
+
+La domanda del caso: **è una comunicazione onesta?**
+
+Questo corso è educazione, non consulenza: i numeri sono fittizi, si può perdere denaro, anche tutto.
+
+<Say who="sensei">I numeri non mentono, ma chi li sceglie sì, a volte. Si guarda anche ciò che non è stato mostrato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il racconto scelto">
+Calcoliamo i due racconti.
+
+<Guided
+  steps={[
+    "Solo gli ultimi due anni: 1,06 × 1,10 = 1,166, cioè +16,6%.",
+    "Tutti e quattro gli anni: 1,12 × 0,92 × 1,06 × 1,10 = 1,2014, cioè circa +20,1%.",
+    "Ma la brochure non dice che un anno su quattro è stato negativo (-8%).",
+    "I numeri sono veri, il quadro è incompleto: è ingannevole per omissione.",
+  ]}
+/>
+
+<Callout kind="regola">
+Una comunicazione onesta è **corretta, chiara e non fuorviante**: nessuna bugia, nessuna omissione che cambi il senso.
+</Callout>
+
+<Say who="assistente">Scegliere solo gli anni belli si chiama cherry picking: si raccolgono solo le ciliegie mature.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa contiene una lettera onesta">
+Ai professionisti e agli investitori già ammessi, un fondo dovrebbe comunicare:
+
+- **rendimento netto**, dopo le commissioni, oltre a quello lordo;
+- **anche i periodi negativi**, con la causa e le contromisure;
+- **un confronto con un benchmark adatto** (un indice di riferimento della stessa natura), sullo stesso periodo;
+- **i rischi principali** e la possibilità di perdere denaro;
+- **nessuna promessa** di rendimento futuro.
+
+In Italia e in Europa le regole su informazione e pubblicità dei fondi alternativi esistono (in sintesi, ottobre 2026: verifica le fonti ufficiali, come Consob e Banca d'Italia) e vietano messaggi ingannevoli.
+
+Vuoi sentire un'altra voce su «risultati passati e futuri»? Un video in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Chi ti dice solo cose belle, non ti sta informando. Ti sta vendendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altri trucchi comuni">
+Impara a riconoscerli:
+
+- **Annualizzare i mesi**: «+5% in tre mesi, cioè 20% all'anno!». Non è una previsione: i mercati non ripetono lo stesso risultato ogni trimestre.
+- **Benchmark scelto ad arte**: confrontare un fondo prudente con un indice molto rischioso solo nell'anno in cui questo è andato peggio.
+- **Passato come promessa**: «risultati eccezionali, quindi guadagnerai». I risultati passati non garantiscono quelli futuri.
+- **Silenzio sulle perdite**: se un fondo perde, gli investitori lo devono sapere subito, con chiarezza.
+
+<Callout kind="attenzione">
+Se scopri un errore nei numeri già inviati, il comportamento corretto è dirlo e correggere. Nascondere l'errore peggiora tutto.
+</Callout>
+
+<Say who="assistente">Quando un messaggio ti fa solo venire voglia di firmare, fermati e chiedi i numeri completi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha fatto +5% in tre mesi e scrive: «Rendimento: 20% all'anno». Che cosa non va?"
+  options={[
+    "Moltiplicare un trimestre per quattro non è una previsione: il risultato dei mesi seguenti può essere diverso",
+    "Niente, è il modo corretto di calcolare il rendimento annuo",
+    "Il numero giusto sarebbe 5% diviso 4",
+    "Non va il fatto di usare le percentuali",
+  ]}
+  answer={0}
+  explain="Il risultato di tre mesi non si può ripetere per quattro volte e presentarlo come annuale: non è garantito. Si può dire quanto è stato, non quanto sarà."
+/>
+
+<Say who="assistente">Descrivi sempre il passato come passato e il futuro come incerto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Casi di comunicazione, con qualche calcolo su rendimenti scelti e rendimenti completi.
+
+<Practice generator="h10-comunicazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi legge un fondo guarda anche ciò che manca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una comunicazione onesta è corretta, chiara e non fuorviante: niente bugie e niente omissioni che cambino il senso.
+- Scegliere solo gli anni migliori, annualizzare pochi mesi o confrontare con un benchmark sbagliato sono trucchi da riconoscere.
+- Una lettera onesta mostra rendimenti netti, periodi negativi, benchmark adatto e rischi, senza promettere nulla.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il cherry picking?", a: "Mostrare solo i periodi migliori e nascondere gli altri" },
+    { q: "+12%, -8%, +6%, +10%: totale dei quattro anni?", a: "Circa +20,1% (1,12 × 0,92 × 1,06 × 1,10)" },
+    { q: "Che cosa deve mostrare una lettera onesta?", a: "Rendimento netto, anche i periodi negativi, benchmark e rischi" },
+    { q: "I risultati passati garantiscono quelli futuri?", a: "No" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando i soldi non si possono ritirare subito. Lock-up e rimborsi.</Say>
+</Scene>

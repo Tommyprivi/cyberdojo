@@ -1,0 +1,159 @@
+---
+id: D.06.006
+course: dati
+module: 6
+title: "Il test di ipotesi"
+belt: arancione
+duration_min: 10
+prerequisites: [D.06.005]
+objectives:
+  - "Formulare ipotesi nulla e alternativa"
+  - "Seguire i cinque passi di un test di ipotesi"
+  - "Confrontare le medie di due gruppi con un test semplice"
+video:
+  provider: youtube
+  id: "XYnzvzlVWMA"
+  start: 0
+  end: 286
+  channel: "Adriano Gilardone"
+  title: "I TEST DI IPOTESI spiegati in modo semplice con una metafora!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d06-test-ipotesi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere ipotesi e soglia dopo aver visto i dati"
+  - "Pensare che «non rifiutare H0» dimostri che H0 sia vera"
+  - "Pensare che rifiutare H0 dimostri H1 con certezza"
+commands: []
+---
+
+<Scene title="Il metodo di ripasso">
+Una scuola prova una nuova app di ripasso. **50 studenti** la usano per un mese, altri **50** continuano con il metodo di sempre. Alla fine, tutti fanno la stessa verifica.
+
+Risultato: media **7,2** con l'app, **6,8** senza. Differenza: **0,4 punti**.
+
+La preside chiede: «L'app funziona davvero, o è solo fortuna?»
+
+La domanda del caso: **come si decide, con i dati, se una differenza è reale o frutto del caso?**
+
+<Say who="sensei">Una differenza c'è sempre, tra due gruppi. La domanda è se è più grande di quella che il caso produce da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ipotesi nulla e alternativa">
+Il test di ipotesi funziona come un processo.
+
+- **Ipotesi nulla (H0)**: «non c'è nessuna differenza», cioè l'app non cambia nulla. È l'imputato innocente.
+- **Ipotesi alternativa (H1)**: «c'è una differenza». È l'accusa.
+
+Si parte da H0, e si guarda se i dati sono **così strani** da rendere H0 difficile da sostenere.
+
+<Callout kind="regola">
+H0 e H1 si scrivono **prima** di guardare i dati. Altrimenti si costruisce l'ipotesi intorno al risultato, e il test perde di significato.
+</Callout>
+
+Nel nostro caso: H0 «le medie sono uguali», H1 «le medie sono diverse». Dato che H1 non dice quale è maggiore, il test è **a due code**.
+
+<Say who="assistente">Nessuna differenza, fino a prova contraria. Come un giudice con un imputato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I cinque passi">
+Tutti i test seguono lo stesso schema:
+
+1. **Scrivere H0 e H1.**
+2. **Scegliere la soglia** α (di solito 0,05), cioè il rischio che si accetta di rifiutare H0 per sbaglio.
+3. **Raccogliere i dati** e calcolare una **statistica del test**, che misura quanto i dati si discostano da H0.
+4. **Calcolare il p-value** o confrontare la statistica con il valore critico.
+5. **Decidere e comunicare**: rifiutare o non rifiutare H0, con le cifre.
+
+<Callout kind="attenzione">
+Se non rifiuti H0, **non** hai dimostrato che sia vera: hai solo detto che i dati non bastano per metterla in dubbio.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di cinque minuti:
+
+<Video />
+
+<Say who="sensei">Cinque passi, sempre gli stessi, sempre nello stesso ordine. Salta un passo e il risultato è carta straccia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il confronto tra due gruppi">
+Applichiamo i passi al nostro caso. Per semplicità supponiamo che in entrambi i gruppi la deviazione standard sia **1** (nella pratica la stimeresti dai dati: qui serve a tenere i conti semplici).
+
+<Guided
+  steps={[
+    "Passo 1. H0: le medie sono uguali. H1: le medie sono diverse. Passo 2. Soglia α = 0,05.",
+    "Passo 3. Differenza osservata: 7,2 - 6,8 = 0,4. Errore standard della differenza: radice di (1 diviso 50 più 1 diviso 50) = radice di 0,04 = 0,2.",
+    "La statistica del test è z = 0,4 diviso 0,2 = 2. La differenza è 2 errori standard.",
+    "Passo 4. Con α = 0,05 e due code, il valore critico è 1,96. Poiché 2 è maggiore di 1,96, il risultato è oltre la soglia (il p-value è circa 0,046).",
+    "Passo 5. Si rifiuta H0: la differenza è difficile da spiegare con il caso. L'app sembra migliorare i voti.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Se la differenza fosse stata 0,3, z sarebbe 1,5: sotto 1,96, quindi **non** si rifiuta H0. Stessi gruppi, differenza leggermente più piccola, conclusione diversa: la soglia è una convenzione.
+</Callout>
+
+<Say who="assistente">Differenza diviso errore standard. Più è grande, meno il caso basta a spiegarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa abbiamo concluso">
+Rifiutare H0 **non** dimostra con certezza che l'app funzioni. Dice che, se non funzionasse, un risultato così capiterebbe di rado (circa 5 volte su 100 o meno). C'è ancora un rischio di sbagliare.
+
+Un secondo esempio, con una moneta: la lanci **100 volte** e ottieni **60 teste**. H0: la moneta è equa (p = 0,5). L'errore standard della frequenza è 0,05, quindi z = (0,6 - 0,5) diviso 0,05 = **2**. Anche qui si rifiuta H0 al 5%: una moneta equa darebbe uno scarto simile in meno del 5% dei casi.
+
+<Quiz
+  question="In un test il risultato non permette di rifiutare H0. Che cosa si può dire?"
+  options={["I dati non bastano a mostrare una differenza", "H0 è dimostrata vera", "H1 è dimostrata falsa", "Il test è sbagliato"]}
+  answer={0}
+  explain="Non rifiutare H0 significa solo che le prove sono insufficienti. Come in un processo: «non colpevole» non vuol dire «innocente dimostrato». Con pochi dati, una differenza reale può restare invisibile."
+/>
+
+<Say who="sensei">Mancanza di prove non è prova di assenza. Ricordalo ogni volta che scrivi una conclusione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ipotesi, passi e decisioni. Hai 3 tentativi.
+
+<Practice generator="d06-test-ipotesi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai il metodo: ora arriva il numero al centro di tutto, il p-value.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- H0 dice «nessuna differenza», H1 «c'è una differenza»; si scrivono e si sceglie la soglia prima di vedere i dati.
+- Cinque passi: ipotesi, soglia, statistica del test, p-value o valore critico, decisione.
+- Non rifiutare H0 non la dimostra; rifiutarla non dimostra H1 con certezza: resta un rischio di errore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa afferma H0 in un confronto tra due gruppi?", a: "Che non c'è differenza tra le medie" },
+    { q: "Differenza 0,4, errore standard 0,2: quanto vale z?", a: "2: oltre 1,96, si rifiuta H0" },
+    { q: "Differenza 0,3, errore standard 0,2: che cosa si decide?", a: "z = 1,5: non si rifiuta H0" },
+    { q: "Quando si sceglie la soglia α?", a: "Prima di guardare i dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il p-value. Il numero più usato e più frainteso della statistica.</Say>
+</Scene>

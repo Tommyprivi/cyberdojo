@@ -1,0 +1,161 @@
+---
+id: F.06.004
+course: fondamenta
+module: 6
+title: "Dividere una rete in sottoreti"
+belt: gialla
+duration_min: 9
+prerequisites: [F.06.003]
+objectives:
+  - "Calcolare quanti bit servono per ottenere un certo numero di sottoreti"
+  - "Elencare le sottoreti di un blocco con rete, host e broadcast"
+video:
+  provider: youtube
+  id: "vjO36BsDFQg"
+  start: 0
+  end: 600
+  channel: "L'Informatica Che Appassiona"
+  title: "Come calcolare le subnet"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-sottoreti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Per 5 o 3 sottoreti non si usa 5 o 3 bit: si arrotonda alla potenza di due successiva"
+  - "Dividere una rete aumenta il prefisso: più sottoreti, ognuna più piccola"
+  - "I blocchi delle sottoreti partono sempre da multipli della loro dimensione"
+commands: []
+---
+
+<Scene title="Una rete sola per tutti">
+Nell'azienda del caso, gli uffici stanno tutti in **un'unica rete**, la 192.168.1.0/24: contabilità, magazzino, direzione e ospiti. È una rete «piatta».
+
+Se un PC viene infettato, può raggiungere subito **tutti** gli altri. Il titolare decide: ogni reparto avrà una sua rete, e il traffico tra reparti passerà da un punto di controllo.
+
+La domanda: **come si spezza 192.168.1.0/24 in quattro reti uguali?**
+
+<Say who="sensei">Separare i reparti non è burocrazia. È come mettere le porte tagliafuoco: l'incendio non attraversa il corridoio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prendere bit in prestito">
+Il trucco è semplice: si **sposta il taglio a destra**. Si prendono alcuni bit dalla parte dei dispositivi e si usano per **numerare le sottoreti**.
+
+Con **s** bit presi in prestito si ottengono **2^s** sottoreti:
+
+| Bit presi | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| Sottoreti | 2 | 4 | 8 | 16 |
+
+Per quattro reparti servono almeno 4 sottoreti: **2 bit**. Il prefisso passa da /24 a **/26**.
+
+<Callout kind="regola">
+Più sottoreti = più bit di rete = prefisso più alto = ogni sottorete più piccola.
+</Callout>
+
+<Say who="assistente">Due bit in prestito, quattro sottoreti. Il prefisso sale di due: da 24 a 26.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le quattro sottoreti">
+Ogni /26 ha 6 bit per i dispositivi: blocchi da **64** indirizzi. Partendo da 192.168.1.0:
+
+| Sottorete | Host utilizzabili | Broadcast |
+|---|---|---|
+| 192.168.1.0/26 | .1 – .62 | .63 |
+| 192.168.1.64/26 | .65 – .126 | .127 |
+| 192.168.1.128/26 | .129 – .190 | .191 |
+| 192.168.1.192/26 | .193 – .254 | .255 |
+
+Ogni sottorete ha **62 host utilizzabili**. In tutto gli host utilizzabili sono 4 × 62 = 248, contro i 254 della rete unica: sei indirizzi in più di servizio. È il prezzo della separazione.
+
+<Say who="sensei">Guarda come i blocchi si chiudono: l'ultimo broadcast è .255, lo stesso della rete intera. Non manca niente e niente si sovrappone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dov'è finita la .66?">
+Ricordi la postazione 192.168.1.66 della contabilità? Con la nuova divisione, in quale sottorete cade?
+
+<Guided
+  steps={[
+    "Le sottoreti partono da 0, 64, 128, 192.",
+    "66 sta tra 64 e 127: appartiene alla sottorete 192.168.1.64/26.",
+    "Il suo vicino 192.168.1.100 è nella stessa sottorete. Il 192.168.1.10, invece, sta nella 192.168.1.0/26.",
+    "Conclusione: .66 e .10 non sono più vicini di casa. Per parlarsi devono passare dal router.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Il router tra le sottoreti è anche un posto dove mettere regole: «la contabilità può parlare con il server, gli ospiti no». Senza sottoreti, questa regola non si potrebbe scrivere.
+</Callout>
+
+<Say who="assistente">Stesso numero finale, sottorete diversa. L'indirizzo da solo non basta mai: serve sempre il prefisso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se i reparti sono cinque">
+E se i reparti fossero **5**? Con 2 bit si hanno solo 4 sottoreti: non bastano. Servono **3 bit**, che danno 8 sottoreti: se ne usano 5 e 3 restano libere per il futuro.
+
+Il prefisso diventa /27 e ogni sottorete ha 30 host. I blocchi sono da 32: 0, 32, 64, 96, 128, 160, 192, 224.
+
+Lo stesso metodo funziona con ogni rete. Vuoi vederlo da un'altra voce, con i calcoli sulla lavagna?
+
+<Video />
+
+<Say who="sensei">Non esistono cinque sottoreti da sole: esistono quattro, otto, sedici. Si arrotonda sempre per eccesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Servono 5 sottoreti della stessa dimensione. Quanti bit prendi in prestito dalla parte dei dispositivi?"
+  options={["3", "2", "5", "4"]}
+  answer={0}
+  explain="Con 2 bit hai solo 4 sottoreti: non bastano. Con 3 bit ne hai 8: bastano e ne avanzano 3. Chi risponde 5 confonde il numero di sottoreti con il numero di bit."
+/>
+
+<Say who="assistente">Prova 2, 3, 4. Il primo numero di bit che dà almeno 5 sottoreti è la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle sottoreti. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-sottoreti" pass="5/5" retries={3} />
+
+<Say who="sensei">Bit in prestito, dimensione del blocco, elenco dei blocchi. In quest'ordine, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Subnetting: si prendono s bit dalla parte dei dispositivi e si ottengono 2^s sottoreti; il prefisso aumenta di s.
+- Per N sottoreti si cerca il più piccolo s con 2^s uguale o maggiore di N (5 sottoreti: 3 bit).
+- Le sottoreti partono da multipli della loro dimensione e permettono di separare i reparti e limitare i danni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti bit servono per 4 sottoreti?", a: "2 bit (2^2 = 4)" },
+    { q: "192.168.1.0/24 in 4 sottoreti: che prefisso hanno?", a: "/26, con blocchi da 64" },
+    { q: "Le 4 sottoreti di 192.168.1.0/24?", a: ".0, .64, .128, .192 (tutte /26)" },
+    { q: "Perché separare i reparti?", a: "Per limitare quanto può diffondersi un problema e poter mettere regole tra i reparti" },
+  ]}
+/>
+
+<Say who="sensei">Finora le sottoreti erano tutte uguali. Domani le facciamo su misura: ognuna grande quanto serve davvero.</Say>
+</Scene>

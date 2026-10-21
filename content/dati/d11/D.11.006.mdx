@@ -1,0 +1,161 @@
+---
+id: D.11.006
+course: dati
+module: 11
+title: "Valutare un modello"
+belt: verde
+duration_min: 10
+prerequisites: [D.11.005]
+objectives:
+  - "Costruire e leggere una matrice di confusione"
+  - "Calcolare accuratezza, precision e recall"
+  - "Riconoscere la trappola dell'accuratezza con classi sbilanciate e usare MAE e RMSE per i numeri"
+video:
+  provider: youtube
+  id: "gwG_6ZwkM9E"
+  start: 0
+  end: 548
+  channel: "Piero Savastano"
+  title: "Machine learning in python - 13 - Come leggere la matrice di confusione, la precisione e il richiamo"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-valutazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi dell'accuratezza quando una classe è molto più rara dell'altra"
+  - "Confondere precision (quante delle segnalate erano vere) con recall (quante delle vere sono state trovate)"
+  - "Sommare gli errori con il segno invece di toglierlo"
+commands: []
+---
+
+<Scene title="Il 99% che non vale niente">
+Una banca ha 1.000 transazioni, e **10 sono frodi**. Il suo modello dice sempre «regolare». Sbaglia solo 10 volte su 1.000: **accuratezza 99%**.
+
+Bellissimo. Ma non ha trovato **nemmeno una frode**.
+
+La domanda del caso: **con quali numeri si capisce se un modello è davvero buono?**
+
+<Say who="sensei">Un numero solo non basta. Chi dice «99%» senza dire su cosa, ti sta vendendo qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La matrice di confusione">
+Per i modelli di classificazione si conta, per ogni caso, **che cosa era** e **che cosa ha detto il modello**. Quattro caselle:
+
+- **vero positivo (TP)**: era spam, detto spam;
+- **falso negativo (FN)**: era spam, detto normale;
+- **falso positivo (FP)**: era normale, detto spam;
+- **vero negativo (TN)**: era normale, detto normale.
+
+Un esempio su 100 email, 10 delle quali spam:
+
+| | detto spam | detto normale |
+|---|---|---|
+| era spam | TP = 6 | FN = 4 |
+| era normale | FP = 2 | TN = 88 |
+
+Controllo: 6 + 4 + 2 + 88 = 100.
+
+<Say who="assistente">Positivo non vuol dire «buono»: vuol dire «la cosa che cerchiamo». Qui, lo spam.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Accuratezza, precision, recall">
+Dalle quattro caselle si ricavano tre misure:
+
+<Log lines={["accuratezza = (TP + TN) / totale = (6 + 88) / 100 = 94%", "precision    = TP / (TP + FP) = 6 / (6 + 2) = 6 / 8 = 75%", "recall       = TP / (TP + FN) = 6 / (6 + 4) = 6 / 10 = 60%"]} caption="Stessa matrice, tre numeri diversi." />
+
+- **Accuratezza**: quanti casi ha azzeccato in tutto.
+- **Precision**: tra le email segnate spam, quante lo erano davvero? (8 segnalate, 6 vere.)
+- **Recall** (richiamo): tra gli spam veri, quanti ne ha trovati? (10 veri, 6 trovati.)
+
+<Callout kind="trucco">
+Precision guarda la colonna «detto spam». Recall guarda la riga «era spam».
+</Callout>
+
+Vuoi ripassarlo da un'altra voce? Meno di dieci minuti:
+
+<Video />
+
+<Say who="sensei">Precision: di quelli che hai segnalato, quanti erano giusti. Recall: di quelli che c'erano, quanti ne hai presi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La trappola e la scelta">
+Il modello della banca che dice sempre «regolare»: accuratezza 99%. Ma il suo **recall sulle frodi è 0%**: 0 frodi trovate su 10.
+
+<Callout kind="attenzione">
+Con classi sbilanciate (una rara, una comune) l'accuratezza inganna. Guarda precision e recall sulla classe rara.
+</Callout>
+
+Quale misura conviene alzare dipende da cosa costa sbagliare:
+
+- **esame medico per una malattia rara**: meglio trovare quasi tutti i malati, anche con qualche falso allarme: **recall alto**;
+- **filtro antispam**: meglio non buttare mai una email vera: **precision alta**.
+
+In scikit-learn (Python 3.11+, scikit-learn 1.4+), con 3 TP, 1 FN, 1 FP e 5 TN:
+
+<Log lines={["from sklearn.metrics import accuracy_score, precision_score, recall_score", "y_true = [1, 1, 1, 1, 0, 0, 0, 0, 0, 0]", "y_pred = [1, 1, 1, 0, 1, 0, 0, 0, 0, 0]", "print(accuracy_score(y_true, y_pred))", "print(precision_score(y_true, y_pred))", "print(recall_score(y_true, y_pred))", "# 0.8", "# 0.75", "# 0.75"]} caption="Accuratezza 8/10 = 0,8. Precision 3/4. Recall 3/4." />
+
+<Say who="assistente">Quando senti «99% di accuratezza», chiedi: quanto è rara la cosa che cerchiamo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare i numeri: MAE e RMSE">
+Per la **regressione** si misura quanto ci si sbaglia sui numeri. Cinque previsioni sul prezzo di case (migliaia di euro), con errori **+1, -2, 0, +2, -6**:
+
+<Log lines={["MAE  = (1 + 2 + 0 + 2 + 6) / 5 = 11 / 5 = 2,2", "quadrati: 1 + 4 + 0 + 4 + 36 = 45  ->  media = 45 / 5 = 9", "RMSE = radice di 9 = 3"]} caption="MAE 2,2 contro RMSE 3." />
+
+L'**RMSE** eleva gli errori al quadrato prima di fare la media: un errore grande (-6) pesa molto di più. Per questo è maggiore del MAE. Scegli RMSE se **un errore grosso è molto peggio di tanti piccoli**.
+
+<Quiz
+  question="Matrice: 3 veri positivi, 1 falso negativo, 1 falso positivo, 5 veri negativi. Quanto vale la precision?"
+  options={["75% (3 su 4 segnalati)", "80%", "60%", "25%"]}
+  answer={0}
+  explain="Precision = TP / (TP + FP) = 3 / (3 + 1) = 75%. L'80% è l'accuratezza: (3 + 5) / 10. Chi risponde 60% ha diviso per 5 invece che per i casi segnalati."
+/>
+
+<Say who="sensei">Prima scrivi la formula, poi i numeri. A mente si sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande con matrici, formule e scelte di misura. Ricontrolla ogni conto. Hai 3 tentativi.
+
+<Practice generator="d11-valutazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Formula, numeri, controllo. Sempre in questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Matrice di confusione: TP, FN, FP, TN. Accuratezza = (TP + TN) / totale. Precision = TP / (TP + FP). Recall = TP / (TP + FN).
+- Con classi sbilanciate l'accuratezza inganna: un modello che dice sempre «normale» ha 99% e recall 0%.
+- Per i numeri: MAE è la media degli errori senza segno; RMSE punisce di più gli errori grandi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Precision con TP=6, FP=2?", a: "6/8 = 75%" },
+    { q: "Recall con TP=6, FN=4?", a: "6/10 = 60%" },
+    { q: "Errori +1, -2, 0, +2, -6: MAE e RMSE?", a: "MAE 2,2 e RMSE 3" },
+    { q: "Quando conviene un recall alto?", a: "Quando non trovare un caso vero costa molto (es. malattia rara)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: overfitting e underfitting. Memorizzare contro capire.</Say>
+</Scene>

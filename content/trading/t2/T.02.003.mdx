@@ -1,0 +1,171 @@
+---
+id: T.02.003
+course: trading
+module: 2
+title: "pandas e le serie temporali"
+belt: bianca
+duration_min: 9
+prerequisites: [T.02.002]
+objectives:
+  - "Creare un DataFrame con un indice di date"
+  - "Selezionare periodi, spostare i dati e calcolare medie mobili"
+  - "Riconoscere quando shift e le medie introducono look-ahead"
+video:
+  provider: youtube
+  id: "6DAiE8gpE98"
+  start: 0
+  end: 600
+  channel: "AnalytiCode"
+  title: "Master Time Series Resampling in Pandas (with Examples)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-pandas-serie
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare le date come testo e poi stupirsi che resample non funzioni"
+  - "Usare shift(-1): è il prezzo di domani, non di ieri"
+  - "Dimenticare che le prime righe di una media mobile sono NaN"
+commands: []
+---
+
+<Scene title="Una colonna di date">
+Sara ha cinque chiusure di Forno Rossi, ma le date sono solo testo. Prova a chiedere «i prezzi tra il 3 e il 5 marzo» e Python non capisce.
+
+I prezzi di borsa sono una **serie temporale**: valori legati a date che si susseguono. Per trattarli bene, le date devono essere vere date e fare da indice.
+
+La domanda del caso: **come si dice a pandas che il tempo conta?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. I numeri qui sono inventati.
+</Callout>
+
+<Say who="sensei">Un prezzo senza data è un numero. Un prezzo con data è un fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indice di date">
+`pd.to_datetime` trasforma i testi in date. Poi le si usa come indice del DataFrame:
+
+```python
+import pandas as pd
+
+date = pd.to_datetime(["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06"])
+df = pd.DataFrame({"chiusura": [10.4, 10.0, 10.1, 10.9, 10.6]}, index=date)
+print(df.loc["2026-03-03":"2026-03-05"])
+```
+
+<Log lines={[
+  "            chiusura",
+  "2026-03-03      10.0",
+  "2026-03-04      10.1",
+  "2026-03-05      10.9",
+]} />
+
+Lo «slicing» con le date comprende **entrambi gli estremi**: il 3 e il 5 sono dentro. Il 2 marzo è un lunedì: dal 2 al 6 sono cinque giornate di borsa.
+
+<Say who="assistente">Controlla sempre che l'indice sia ordinato dal più vecchio al più recente. Con `df.sort_index()` lo metti a posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Raggruppare per settimana">
+Con `resample` si cambia la frequenza dei dati. Per esempio, da giornaliero a **settimanale**, tenendo l'ultimo prezzo di ogni settimana:
+
+```python
+print(df.resample("W").last())
+```
+
+<Log lines={[
+  "            chiusura",
+  "2026-03-08      10.6",
+]} />
+
+La «W» indica settimane che finiscono di domenica: per questo la riga porta la data del 8 marzo, ma il valore 10,6 è la chiusura del venerdì 6. Cinque giorni sono diventati una riga.
+
+Vuoi vedere `resample` in azione da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Meno righe, ogni riga riassume di più. Ricordalo quando confronti dati settimanali e giornalieri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Medie mobili e spostamenti">
+La **media mobile** a 3 giorni è la media delle ultime 3 chiusure, che scorre ogni giorno:
+
+```python
+print(df["chiusura"].rolling(3).mean())
+```
+
+<Log lines={[
+  "2026-03-02          NaN",
+  "2026-03-03          NaN",
+  "2026-03-04    10.166667",
+  "2026-03-05    10.333333",
+  "2026-03-06    10.533333",
+  "Name: chiusura, dtype: float64",
+]} />
+
+Le prime due righe sono `NaN` («non un numero»): non ci sono ancora tre valori. Il 4 marzo: (10,4 + 10,0 + 10,1) / 3 = 10,1667.
+
+`shift(1)` sposta i valori in giù di una riga: ogni giorno vede il prezzo del giorno **prima**. Serve per confrontare oggi con ieri.
+
+<Callout kind="attenzione">
+`shift(-1)` fa il contrario: porta il prezzo di **domani** su oggi. In una strategia sarebbe barare, si chiama **look-ahead**. Lo ritroveremo.
+</Callout>
+
+<Say who="sensei">Tutto quello che usi per decidere oggi deve essere già successo. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con le chiusure 10,0 / 10,5 / 11,0, quanto vale rolling(2).mean() sulla terza riga?"
+  options={["10,75", "10,5", "10,25", "11,0"]}
+  answer={0}
+  explain="La finestra di 2 giorni sulla terza riga contiene 10,5 e 11,0: la media è (10,5 + 11,0) / 2 = 10,75. Chi risponde 10,5 ha preso la media dei primi due valori."
+/>
+
+<Say who="assistente">Scrivi quali valori stanno nella finestra, poi fai la media. Una riga alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su indice di date, resample, rolling e shift.
+
+<Practice generator="t02-pandas-serie" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il tempo è la dimensione più delicata dei dati finanziari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le date vanno convertite con `pd.to_datetime` e usate come indice, in ordine.
+- `loc` con le date comprende gli estremi, `resample` cambia la frequenza, `rolling` calcola medie mobili.
+- `shift(1)` guarda al passato; `shift(-1)` guarda al futuro ed è look-ahead.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale funzione trasforma testi in date?", a: "pd.to_datetime" },
+    { q: "Che cosa fa resample(\"W\").last()?", a: "Una riga per settimana, con l'ultimo valore" },
+    { q: "Perché rolling(3) dà NaN all'inizio?", a: "Mancano ancora tre valori nella finestra" },
+    { q: "Perché shift(-1) è pericoloso?", a: "Usa il prezzo di domani per decidere oggi: look-ahead" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dai prezzi ai rendimenti, il numero che conta davvero.</Say>
+</Scene>

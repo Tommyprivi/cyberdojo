@@ -1,0 +1,161 @@
+---
+id: H.02.003
+course: hedge
+module: 2
+title: "Event driven: fusioni e altri eventi"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.002]
+objectives:
+  - "Spiegare che cos'è una strategia event driven e fare esempi di eventi"
+  - "Calcolare lo spread di un'operazione di fusione e il rapporto tra guadagno e perdita possibili"
+  - "Riconoscere perché il rischio di fallimento dell'operazione pesa più del guadagno"
+video:
+  provider: youtube
+  id: "VnQs_HhfYKI"
+  start: 0
+  end: 600
+  channel: "Patrick Boyle"
+  title: "Merger Arbitrage Hedge Fund Strategy ― How Does it Work?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-event-driven
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che lo spread di una fusione sia un guadagno sicuro: è il compenso per il rischio che l'operazione salti"
+  - "Confrontare solo il guadagno possibile e non la perdita se l'operazione fallisce"
+  - "Credere che event driven voglia dire solo fusioni: ci sono anche scissioni, ristrutturazioni, riacquisti di azioni"
+commands: []
+---
+
+<Scene title="L'offerta su Tessilnova">
+**Tessilnova** è un'azienda fittizia quotata in borsa. Un lunedì mattina la più grande **GrandiFili** annuncia: «Compreremo Tessilnova pagando **50 euro per azione**, in contanti». Prima dell'annuncio l'azione costava 38 euro.
+
+Dopo l'annuncio il prezzo salta, ma **non arriva a 50**: si ferma a **48 euro**. Perché non a 50, se l'offerta è 50?
+
+La domanda del caso: **che cosa vuol dire quei 2 euro di differenza, e chi li incassa?**
+
+<Callout kind="attenzione">
+La lezione spiega come ragionano i fondi, non dice di comprare niente. Si può perdere denaro, anche tutto. Aziende e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Se c'è una differenza di prezzo, c'è un motivo. Trovalo prima di fidarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa vuol dire event driven">
+**Event driven** significa «guidato dagli eventi». Il fondo non scommette sull'economia in generale, ma su **un fatto preciso** che cambia il prezzo di un'azienda:
+
+- una **fusione** o un'acquisizione (un'azienda compra un'altra);
+- una **scissione** (un'azienda si divide in due);
+- una **ristrutturazione** dei debiti;
+- un **riacquisto di azioni** o un cambio di gestione.
+
+La più studiata è l'**arbitraggio sulle fusioni** (in inglese *merger arbitrage*): si compra l'azienda comprata e si aspetta che l'operazione si chiuda.
+
+Vuoi ascoltarlo da un'altra voce? Un video più lungo, in inglese con i sottotitoli: guardane i primi minuti.
+
+<Video />
+
+<Say who="assistente">Un evento ha una data e un esito: succede o non succede. Il fondo lavora su questo, non su sensazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I 2 euro di spread">
+Offerta: 50 euro. Prezzo oggi: 48 euro. La differenza si chiama **spread** e vale **2 euro**, cioè circa il **4,2%** di 48 (2 diviso 48 = 0,0417).
+
+Se l'operazione si completa, chi ha comprato a 48 incassa 50: **+2 euro per azione**. Ma se l'operazione **salta** (per esempio l'autorità che controlla la concorrenza non la autorizza), il prezzo tornerebbe verso i livelli di prima. Immaginiamo 36 euro.
+
+<Guided
+  steps={[
+    "Operazione riuscita: si passa da 48 a 50. Guadagno: +2 euro per azione.",
+    "Operazione fallita: si passa da 48 a 36. Perdita: -12 euro per azione.",
+    "Il guadagno possibile (2) è molto più piccolo della perdita possibile (12): 12 diviso 2 = 6 volte.",
+    "Per andare in pari serve che la probabilità di successo p soddisfi p x 2 = (1 - p) x 12. Si ottiene p = 12 / 14, cioè circa 85,7%.",
+    "Con probabilità del 90% la media è 0,9 x 2 - 0,1 x 12 = +0,6 euro. Con l'80% è 0,8 x 2 - 0,2 x 12 = -0,8 euro.",
+  ]}
+/>
+
+<Callout kind="regola">
+Lo spread non è un regalo: è il **compenso per il rischio** che l'operazione non si chiuda. Il mercato lo prezza, quindi per avere un vantaggio devi valutare il rischio meglio degli altri.
+</Callout>
+
+<Say who="sensei">Piccolo guadagno quasi certo, grossa perdita rara. È un lavoro che somiglia a vendere assicurazioni. Funziona finché non arriva il sinistro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché le operazioni falliscono">
+Un'operazione annunciata può saltare per molti motivi:
+
+- le **autorità** (per esempio quelle che tutelano la concorrenza) dicono di no o chiedono condizioni pesanti;
+- gli **azionisti** dell'azienda comprata rifiutano l'offerta;
+- l'azienda compratrice **cambia idea** o non trova i soldi;
+- il mercato crolla e il prezzo dell'offerta non sembra più conveniente.
+
+I gestori event driven studiano ogni operazione: chi la controlla, quanto tempo serve, che cosa dicono i contratti. Spesso ne tengono **molte in contemporanea**, così una che salta non basta a rovinare il fondo.
+
+<Callout kind="curiosita">
+Quando il mercato è in tensione, molte operazioni saltano o slittano insieme. Allora la diversificazione aiuta meno di quanto si pensi: i rischi non sono davvero indipendenti.
+</Callout>
+
+<Say who="assistente">Chiediti: chi può dire di no? Se la risposta è «tanti», lo spread deve essere grande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda quotata viene offerta a 80 euro per azione e il prezzo di mercato è 76 euro. Se l'operazione salta, il prezzo scenderebbe a 60 euro. Qual è il rapporto tra perdita possibile e guadagno possibile?"
+  options={[
+    "4 a 1: si perdono 16 euro contro un guadagno di 4",
+    "1 a 4: si perdono 4 euro contro un guadagno di 16",
+    "1 a 1: perdita e guadagno sono uguali",
+    "5 a 1: si perdono 20 euro contro un guadagno di 4",
+  ]}
+  answer={0}
+  explain="Se l'operazione riesce, 76 diventa 80: +4. Se salta, 76 diventa 60: -16. Il rapporto è 16 a 4, cioè 4 a 1. Chi risponde 5 a 1 ha calcolato la perdita dal prezzo d'offerta (80 - 60 = 20) invece che dal prezzo a cui si compra."
+/>
+
+<Say who="assistente">Parti sempre dal prezzo a cui compri, non da quello dell'offerta. È da lì che si misurano guadagno e perdita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sulle fusioni e sugli altri eventi: spread, rapporto tra guadagno e perdita, probabilità di pareggio.
+
+<Practice generator="h02-event-driven" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima la perdita possibile, poi il guadagno. In questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Event driven: il fondo punta su un fatto preciso (fusione, scissione, ristrutturazione, riacquisto di azioni).
+- Lo spread di una fusione è il compenso per il rischio che l'operazione salti, non un guadagno sicuro.
+- Guadagno piccolo e perdita grande: serve una probabilità di successo alta solo per andare in pari.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo spread in una fusione?", a: "La differenza tra il prezzo offerto e il prezzo di mercato dell'azienda comprata" },
+    { q: "Perché lo spread non è un guadagno sicuro?", a: "Perché l'operazione può saltare e il prezzo scendere molto" },
+    { q: "Fai un esempio di evento oltre alla fusione", a: "Scissione, ristrutturazione dei debiti, riacquisto di azioni" },
+    { q: "Da quale prezzo si misurano guadagno e perdita?", a: "Dal prezzo a cui si compra, non da quello dell'offerta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: relative value. Non un evento, ma due prezzi che sembrano fuori posto l'uno rispetto all'altro.</Say>
+</Scene>

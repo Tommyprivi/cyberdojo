@@ -1,0 +1,164 @@
+---
+id: T.02.004
+course: trading
+module: 2
+title: "Rendimenti semplici e logaritmici"
+belt: gialla
+duration_min: 9
+prerequisites: [T.02.003]
+objectives:
+  - "Calcolare il rendimento semplice e quello logaritmico tra due prezzi"
+  - "Capire perché +10% e poi -10% non fanno zero"
+  - "Usare pct_change e la differenza dei logaritmi in pandas"
+video:
+  provider: youtube
+  id: "gnW5G35kKn4"
+  start: 0
+  end: 600
+  channel: "Koolac"
+  title: "How to Calculate Percent Change (Growth Rate) in Pandas (Pct_Change) in Python"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-rendimenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Sommare rendimenti semplici su più giorni come se fossero esatti"
+  - "Pensare che +10% e poi -10% riportino al punto di partenza"
+  - "Non dichiarare se un rendimento è semplice o logaritmico"
+commands: []
+---
+
+<Scene title="+10% e -10%">
+Un titolo fittizio vale 100 euro. Lunedì sale del 10%: vale 110. Martedì scende del 10%: vale... 99.
+
+Giulio dice: «+10 e -10 fanno zero, dovrei essere a 100». Invece è a 99.
+
+La domanda del caso: **come si misura un rendimento senza farsi ingannare dalle percentuali?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. Numeri inventati, nessun denaro vero.
+</Callout>
+
+<Say who="sensei">Le percentuali ingannano chi non fa i conti. Li facciamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento semplice">
+Il **rendimento semplice** tra ieri e oggi è:
+
+**prezzo di oggi ÷ prezzo di ieri − 1**
+
+Da 100 a 110: 110 ÷ 100 − 1 = **+0,10**, cioè +10%. Da 110 a 99: 99 ÷ 110 − 1 = **−0,10**, cioè −10%.
+
+Ma il -10% è calcolato su 110, non su 100. Per questo il totale non è zero:
+
+(1 + 0,10) × (1 − 0,10) − 1 = 1,1 × 0,9 − 1 = **−0,01**, cioè −1%.
+
+<Callout kind="regola">
+I rendimenti semplici su più periodi **si moltiplicano** (come (1 + r)), non si sommano.
+</Callout>
+
+<Say who="assistente">Una perdita del 50% richiede un guadagno del 100% per tornare a zero: 50 → 100 raddoppia. Le perdite pesano di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento logaritmico">
+Il **rendimento logaritmico** è il logaritmo naturale del rapporto: **ln(prezzo di oggi ÷ prezzo di ieri)**.
+
+Da 100 a 110: ln(1,1) ≈ **0,0953**. Da 110 a 99: ln(0,9) ≈ **−0,1054**.
+
+La sua proprietà comoda: **si sommano**. 0,0953 − 0,1054 = **−0,0101**, ed è proprio ln(99 ÷ 100) = ln(0,99) ≈ −0,0101. Per rendimenti piccoli semplice e logaritmico sono molto vicini.
+
+Prova con Python (solo calcoli, nessun dato vero):
+
+<PythonTerminal code={"import math\na, b, c = 100, 110, 99\nprint(round(b / a - 1, 4), round(c / b - 1, 4))\nprint(round(math.log(b / a), 4), round(math.log(c / b), 4))"} />
+
+<Say who="sensei">Semplice per leggere, logaritmico per sommare. Dichiara sempre quale usi, e su che periodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="In pandas">
+Con una serie di prezzi, pandas calcola i rendimenti in una riga:
+
+```python
+import numpy as np
+import pandas as pd
+
+s = pd.Series([100, 110, 99])
+print(s.pct_change())
+print(np.log(s).diff())
+```
+
+<Log lines={[
+  "0    NaN",
+  "1    0.1",
+  "2   -0.1",
+  "dtype: float64",
+  "0         NaN",
+  "1    0.095310",
+  "2   -0.105361",
+  "dtype: float64",
+]} />
+
+`pct_change()` dà il rendimento **semplice**. `np.log(s).diff()` dà quello **logaritmico**. Il primo valore è sempre `NaN`: non c'è un giorno prima.
+
+Vuoi sentire come funziona `pct_change` da un'altra voce? In inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il risultato di pct_change è un decimale: 0,1 vuol dire 10%. Moltiplica per 100 solo per mostrarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Parti da 100, un giorno sale del 20% e il giorno dopo scende del 20%. Quanto vale alla fine?"
+  options={["96", "100", "104", "98"]}
+  answer={0}
+  explain="Dopo il +20% vale 120. Il -20% si calcola su 120: 120 × 0,8 = 96. Chi risponde 100 ha sommato le percentuali."
+/>
+
+<Say who="sensei">Ogni percentuale ha una base. Cambia la base, cambia il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su rendimenti semplici, logaritmici e composti.
+
+<Practice generator="t02-rendimenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Da qui in poi ogni misura di rischio si costruisce su questi numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Rendimento semplice = prezzo di oggi ÷ prezzo di ieri − 1; su più periodi si moltiplica (1 + r).
+- Rendimento logaritmico = ln(prezzo di oggi ÷ prezzo di ieri); su più periodi si somma.
+- In pandas: `pct_change()` per il semplice, `np.log(s).diff()` per il logaritmico; dichiara sempre la convenzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da 50 a 60: rendimento semplice?", a: "+20%" },
+    { q: "+10% poi -10%: che cosa ottieni?", a: "-1% (1,1 × 0,9 = 0,99)" },
+    { q: "Quale tipo di rendimento si somma nel tempo?", a: "Il logaritmico" },
+    { q: "Perché il primo valore di pct_change è NaN?", a: "Perché non c'è un prezzo precedente" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: split e dividendi, che falsano i prezzi se non li correggi.</Say>
+</Scene>

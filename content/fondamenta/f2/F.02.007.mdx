@@ -1,0 +1,193 @@
+---
+id: F.02.007
+course: fondamenta
+module: 2
+title: "Chiedere aiuto al terminale"
+belt: bianca
+duration_min: 8
+prerequisites: [F.02.006]
+objectives:
+  - "Consultare un comando con man e con --help"
+  - "Riusare i comandi con history, frecce e scorciatoie"
+  - "Leggere un messaggio di errore e capire che cosa dice"
+video:
+  provider: youtube
+  id: "UaFN8MQbzP0"
+  start: 0
+  end: 290
+  channel: "Hard-Reset_it"
+  title: "LINUX – Come usare le pagine Man (man pages)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f02-aiuto
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Non leggere il messaggio di errore e riprovare lo stesso comando a caso"
+  - "Credere che Permission denied voglia dire che il comando è sbagliato: vuol dire che non hai il permesso"
+  - "Dimenticare che si esce da man con q, come da less"
+commands: [man, history, clear]
+---
+
+<Scene title="Un errore alle sette di sera">
+Sei solo in laboratorio. Scrivi un comando e il computer risponde con una riga in rosso, in inglese:
+
+<Log lines={[
+  "studente@lab:~$ ls dati",
+  "ls: cannot access 'dati': No such file or directory",
+]} caption="Un errore. Spaventa, ma è un'informazione." />
+
+Il collega è andato a casa. Nessuno a cui chiedere.
+
+La domanda del caso: **come si risolve un problema quando non c'è nessuno vicino?**
+
+<Say who="sensei">Il terminale non ti odia. Quando sbagli, ti spiega che cosa non va. Basta leggere con calma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="man e --help">
+Ogni comando porta con sé le **istruzioni per l'uso**. Due modi per leggerle:
+
+- **man** apre il **manuale** completo: `man ls`. Si naviga come in less: **Spazio** per la pagina successiva, **/parola** per cercare, **q** per uscire
+- **--help** stampa un **riassunto** veloce: `ls --help`
+
+<Log lines={[
+  "studente@lab:~$ ls --help",
+  "Usage: ls [OPTION]... [FILE]...",
+  "List information about the FILEs (the current directory by default).",
+]} caption="Un estratto: l'elenco completo delle opzioni è molto più lungo." />
+
+<Callout kind="trucco">
+Per ricordare un'opzione: prima `comando --help` (veloce), poi `man comando` (completo). Dentro man premi `/` e scrivi la parola che cerchi.
+</Callout>
+
+<Callout kind="curiosita">
+Alcuni comandi sono interni alla shell (come cd): per loro non c'è una pagina man, ma funziona `help cd`.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Eccolo:
+
+<Video />
+
+<Say who="assistente">La documentazione è già sul computer, anche senza Internet. Usarla è il segno di chi lavora con metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non riscrivere: richiama">
+La shell ricorda ciò che hai scritto. Non serve riscrivere.
+
+- **Freccia su** (e giù): richiama i comandi precedenti
+- **history**: elenca i comandi usati, con un numero
+- **Ctrl+R**: cerca nella cronologia (scrivi una parte del comando)
+- **Ctrl+C**: interrompe un comando in esecuzione
+- **Ctrl+L** (o `clear`): pulisce lo schermo
+- **Ctrl+A** e **Ctrl+E**: vai a inizio e a fine riga
+- **Tab**: completa i nomi
+
+<Log lines={[
+  "studente@lab:~$ history",
+  "    1  whoami",
+  "    2  date",
+  "    3  ls dati",
+  "    4  ls --help",
+]} caption="Un estratto di history." />
+
+<Callout kind="regola">
+Hai sbagliato una lettera? **Freccia su**, correggi, Invio. Non riscrivere tutto.
+</Callout>
+
+<Say who="sensei">Un buon tecnico scrive poco. Frecce, Tab e Ctrl+R: tre strumenti che fanno risparmiare ore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come leggere un errore">
+Un messaggio di errore ha quasi sempre la stessa forma: **chi si lamenta**, **di che cosa**, **perché**.
+
+<Log lines={[
+  "bash: lss: command not found",
+  "ls: cannot access 'dati': No such file or directory",
+  "cat: /etc/shadow: Permission denied",
+  "mkdir: cannot create directory 'prova': File exists",
+]} />
+
+Che cosa dicono:
+
+- **command not found**: il comando non esiste. Controlla di averlo scritto bene
+- **No such file or directory**: il file o la cartella non esiste, o non è qui. Prova pwd e ls
+- **Permission denied**: il comando esiste, ma **non hai il permesso**. Non è un errore di scrittura
+- **File exists**: esiste già qualcosa con quel nome
+
+<Callout kind="attenzione">
+Non rilanciare lo stesso comando «più forte» e non copiare comandi trovati online senza capirli. Prima leggi l'errore, poi decidi.
+</Callout>
+
+<Say who="assistente">Risposta al caso: dati non esiste in questa cartella. Controlla il nome con ls, e se sei nel posto giusto con pwd.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Scrivi «cat note.txt» e il terminale risponde: «cat: note.txt: No such file or directory». Che cosa fai per primo?"
+  options={[
+    "Controllo con pwd e ls se sono nella cartella giusta e se il file si chiama davvero così",
+    "Riscrivo lo stesso comando più volte",
+    "Concludo che cat è rotto",
+    "Cancello la cartella e riparto",
+  ]}
+  answer={0}
+  explain="No such file or directory vuol dire che il file non c'è con quel nome in quel posto. Spesso sei nella cartella sbagliata o hai sbagliato una lettera. pwd e ls ti dicono dove sei e che cosa c'è."
+/>
+
+<Say who="sensei">Ogni errore ha una causa. Prima si legge, poi si controlla, poi si riprova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova nel terminale">
+Chiedi aiuto al computer: scopri che cosa fa l'opzione -a di ls senza uscire dal terminale.
+
+<LinuxTerminal goal="Usa ls --help oppure man ls per leggere a che cosa serve l'opzione -a." />
+
+<Say who="assistente">Se apri man, ricordati che si esce con q. Per cercare nel manuale premi / e scrivi la parola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su man, history, scorciatoie ed errori. Ne servono **quattro giuste**. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f02-aiuto" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi sa leggere un errore non ha mai bisogno di fortuna. Dimostralo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- man comando apre il manuale (si esce con q), comando --help stampa un riassunto.
+- Freccia su, history, Ctrl+R, Ctrl+C, Ctrl+L, Tab: lavori più veloce e sbagli meno.
+- Un errore va letto: command not found, No such file or directory, Permission denied dicono tre cose diverse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si legge il manuale di ls?", a: "man ls (si esce con q)" },
+    { q: "Che cosa vuol dire Permission denied?", a: "Il comando esiste, ma non hai il permesso di eseguirlo su quel file" },
+    { q: "Quale scorciatoia cerca nella cronologia dei comandi?", a: "Ctrl+R" },
+    { q: "Che cosa fa Ctrl+C?", a: "Interrompe il comando in esecuzione" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Sai muoverti, creare, leggere, scrivere e chiedere aiuto. È la base di tutto ciò che viene dopo: ricordala.</Say>
+</Scene>

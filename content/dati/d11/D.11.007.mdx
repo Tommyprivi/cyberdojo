@@ -1,0 +1,143 @@
+---
+id: D.11.007
+course: dati
+module: 11
+title: "Overfitting e underfitting"
+belt: verde
+duration_min: 8
+prerequisites: [D.11.006]
+objectives:
+  - "Riconoscere overfitting e underfitting dai punteggi di addestramento e test"
+  - "Spiegare perché un modello troppo complesso memorizza"
+  - "Usare validazione e validazione incrociata per scegliere un modello"
+video:
+  provider: youtube
+  id: "Wl3KGLJOxN8"
+  start: 0
+  end: 181
+  channel: "Simone Rizzo"
+  title: "Differenza tra overfitting e underfitting quando addestriamo un modello di machine learning"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-overfitting
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere il modello guardando solo il punteggio sull'addestramento"
+  - "Pensare che un modello più complesso sia sempre migliore"
+  - "Usare il test per scegliere tra molti modelli invece di un set di validazione"
+commands: []
+---
+
+<Scene title="Due studenti">
+Due studenti preparano l'esame di storia con le domande degli anni passati.
+
+**Anna impara a memoria tutte le risposte.** Sulle vecchie domande: 99%. Se la domanda cambia, è perduta.
+
+**Bruno non studia quasi niente.** Sulle vecchie domande 60%, su quelle nuove 59%.
+
+La domanda del caso: **come si riconoscono questi due comportamenti in un modello?**
+
+<Say who="sensei">Uno memorizza, l'altro non ha imparato. Nessuno dei due ha capito. Anche i modelli fanno tutti e due gli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Overfitting: memorizzare">
+Un modello in **overfitting** (sovradattamento) si adatta così bene ai dati di addestramento che impara anche il **rumore**, cioè le stranezze casuali, come se fossero regole.
+
+Segnale tipico: **punteggio altissimo sull'addestramento, molto più basso sul test**.
+
+<Log lines={["addestramento: 99%", "test:          70%", "-> overfitting: memorizza, non generalizza"]} caption="Il divario è il segnale. Più è grande, peggio è." />
+
+Succede soprattutto con **modelli molto complessi e pochi dati**. Un albero di decisione lasciato crescere finché ogni foglia contiene un solo esempio fa 100% sull'addestramento, ma ha imparato i casi, non la regola.
+
+<Say who="assistente">Anna è un albero senza limiti: conosce ogni domanda a memoria. Per questo non sa rispondere a quelle nuove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Underfitting: non aver imparato">
+Un modello in **underfitting** è troppo semplice per i dati. Esempio: una retta su punti che disegnano una curva evidente.
+
+Segnale: **punteggi bassi sia sull'addestramento sia sul test**, e vicini tra loro.
+
+<Log lines={["addestramento: 60%", "test:          59%", "-> underfitting: troppo semplice"]} caption="Sbaglia sempre, e allo stesso modo." />
+
+<Callout kind="regola">
+Guarda i due punteggi insieme. Addestramento alto e test basso: overfitting. Entrambi bassi: underfitting. Entrambi buoni e vicini (85% e 83%): il modello generalizza.
+</Callout>
+
+Vuoi sentirlo da un'altra voce? Tre minuti:
+
+<Video />
+
+<Say who="sensei">Il bravo modello sta nel mezzo: abbastanza complesso per capire, non tanto da memorizzare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trovare il punto giusto">
+Più il modello è complesso, più l'errore **sull'addestramento scende sempre**. L'errore **sul test scende per un po', poi risale**: è il punto in cui comincia a memorizzare.
+
+Come si trova il punto giusto senza consumare il test?
+
+- si divide in **addestramento, validazione e test**. Si prova ogni versione del modello sulla **validazione**, e il test resta intatto per la misura finale;
+- **validazione incrociata**: si divide l'addestramento in 5 parti, ogni parte fa a turno da validazione, e si fa la media dei 5 punteggi.
+
+<Log lines={["punteggi sulle 5 parti: 80, 85, 75, 90, 70", "somma = 400  ->  media = 400 / 5 = 80"]} caption="Il modello viene addestrato 5 volte, una per parte." />
+
+I rimedi all'overfitting: **più dati**, **modello più semplice**, **meno domande nell'albero**.
+
+<Say who="assistente">La validazione è l'esame di prova. Il test è l'esame vero, e lo fai una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello ha accuratezza 99% sull'addestramento e 70% sul test. Che cosa suggerisce?"
+  options={["Overfitting: ha memorizzato invece di capire", "Underfitting: è troppo semplice", "Il modello è perfetto", "Il test è sbagliato per forza"]}
+  answer={0}
+  explain="Il divario grande tra addestramento (99%) e test (70%) è il segno dell'overfitting. L'underfitting darebbe punteggi bassi su entrambi."
+/>
+
+<Say who="sensei">Mai fidarti del punteggio sull'addestramento da solo. Il test dice la verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: riconoscere overfitting e underfitting, e scegliere il rimedio. Hai 3 tentativi.
+
+<Practice generator="d11-overfitting" pass="5/5" retries={3} />
+
+<Say who="sensei">Due punteggi, uno accanto all'altro. La diagnosi sta nel divario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Overfitting: addestramento alto, test basso (memorizza). Underfitting: entrambi bassi (troppo semplice).
+- La complessità giusta sta nel mezzo; si cerca con la validazione, senza consumare il test.
+- Validazione incrociata: 5 parti, 5 addestramenti, media dei punteggi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Addestramento 99%, test 70%: che cos'è?", a: "Overfitting" },
+    { q: "Addestramento 60%, test 59%: che cos'è?", a: "Underfitting" },
+    { q: "Punteggi 80, 85, 75, 90, 70: media?", a: "80" },
+    { q: "Un rimedio all'overfitting?", a: "Più dati o un modello più semplice" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: limiti ed etica. Un modello preciso può essere ingiusto.</Say>
+</Scene>

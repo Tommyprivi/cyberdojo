@@ -1,0 +1,153 @@
+---
+id: T.12.004
+course: trading
+module: 12
+title: "Regole scritte e check-list"
+belt: blu
+duration_min: 8
+prerequisites: [T.12.003]
+objectives:
+  - "Scrivere regole misurabili invece di intenzioni vaghe"
+  - "Calcolare la perdita massima accettata con una regola di rischio in percentuale"
+  - "Usare una check-list breve prima di ogni operazione"
+video:
+  provider: youtube
+  id: "e-YdsMLXLBk"
+  start: 0
+  end: 600
+  channel: "Trade for Opportunity"
+  title: "Trade Checklist & Management - Disciplined Trading Pt. 2"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t12-regole
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere regole vaghe («sto attento») che non si possono verificare"
+  - "Cambiare le regole nel pieno di una giornata di perdite"
+  - "Fare una check-list così lunga che nessuno la usa"
+commands: []
+---
+
+<Scene title="Come un pilota">
+Prima di decollare, un pilota non si fida della memoria: legge una **check-list**, anche dopo mille voli. Non perché non sappia volare, ma perché sotto pressione si dimentica.
+
+Tommaso, invece, apre le operazioni demo «a sensazione». Alcune volte controlla il rischio, altre no. I risultati sono un'altalena.
+
+La domanda del caso: **come si trasforma un'intenzione in un comportamento ripetibile?**
+
+<Say who="sensei">Un pilota esperto usa la check-list. Un trader che non la usa non è più esperto: è solo più incosciente.</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Sui mercati si può perdere denaro, anche tutto. I mercati non regalano niente. Qui solo dati storici e conti demo.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole misurabili">
+Una buona regola si può **verificare con un numero**: alla fine sai subito se l'hai rispettata.
+
+<Log lines={[
+  "VAGA:       «Cerco di rischiare poco.»",
+  "MISURABILE: «Non rischio più dell'1% del capitale per operazione.»",
+  "VAGA:       «Se va male, esco.»",
+  "MISURABILE: «Esco se la perdita arriva a 100 euro (demo).»",
+]} />
+
+Un esempio di calcolo. Capitale demo **10.000 euro**, rischio **1%** per operazione: 10.000 × 0,01 = **100 euro** di perdita massima. Con 20.000 euro la stessa regola dà 200 euro.
+
+<Callout kind="regola">
+Una regola vaga si piega alle emozioni. Una regola misurabile no: o l'hai rispettata, o no.
+</Callout>
+
+<Say who="assistente">Se non riesci a scrivere il numero, la regola non è ancora una regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La check-list breve">
+Una check-list di trading deve stare in poche righe, altrimenti non verrà usata nei momenti di fretta:
+
+<Guided
+  steps={[
+    "1. C'è il segnale previsto dalla mia strategia? Se no, stop.",
+    "2. Quanto perdo al massimo se sbaglio? È dentro il limite (es. 1%)?",
+    "3. Ho già raggiunto il limite di perdita della giornata? Se sì, stop.",
+    "4. Come sto? Se sono agitato, arrabbiato o stanco, stop.",
+    "5. Ho scritto il motivo nel diario? Solo ora si può inviare l'ordine.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Nota che nella lista non c'è «quanto guadagnerò». Nessuno può saperlo prima: ciò che si controlla è il rischio, non il guadagno.
+</Callout>
+
+<Say who="sensei">Cinque domande, trenta secondi. Se sei troppo di fretta per rispondere, hai già la risposta: non entrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole non si cambiano nella tempesta">
+Dopo tre perdite Tommaso pensa: «Allargo lo stop, così non mi chiude.» Sembra ragionevole, ma è l'emozione che parla.
+
+Le regole si possono migliorare, ma **non nel mezzo di una giornata brutta**. Si cambia solo dopo aver rivisto i dati nel diario, a mente fredda, e annotando il motivo della modifica.
+
+E se violi una regola ma ti va bene? Annotalo come **violazione**. Un esito fortunato non rende buona una decisione sbagliata.
+
+Vuoi sentire un'altra voce parlare di check-list e disciplina? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Le regole sono la tua versione calma che parla alla tua versione agitata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Capitale demo 5.000 euro, regola: rischio massimo 2% per operazione. Quanto vale la perdita massima accettata su una singola operazione?"
+  options={["100 euro", "10 euro", "250 euro", "1.000 euro"]}
+  answer={0}
+  explain="5.000 × 0,02 = 100. Chi risponde 250 ha calcolato il 5%; chi risponde 10 ha spostato la virgola di due posti."
+/>
+
+<Say who="sensei">Il calcolo si fa prima, con calma. Non con la posizione già aperta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su regole misurabili, check-list e disciplina, con qualche calcolo semplice.
+
+<Practice generator="t12-regole" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Disciplina vuol dire fare ciò che hai deciso anche quando non ne hai voglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una buona regola è misurabile: si verifica con un numero. Le regole vaghe si piegano alle emozioni.
+- Una check-list breve prima di ogni ordine controlla segnale, rischio massimo, limite giornaliero e stato d'animo.
+- Le regole non si cambiano nel mezzo di una giornata brutta: prima si rivedono i dati, a mente fredda.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la perdita massima con 10.000 euro demo e rischio 1%?", a: "100 euro" },
+    { q: "Che cosa rende «misurabile» una regola?", a: "Si può verificare con un numero se è stata rispettata" },
+    { q: "Si può cambiare una regola dopo tre perdite di fila?", a: "No: si rivedono i dati a mente fredda e si annota il motivo" },
+    { q: "Perché la check-list deve essere breve?", a: "Se è lunga, nei momenti di fretta non viene usata" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: la più importante. Quando fermarsi, e a chi chiedere aiuto.</Say>
+</Scene>

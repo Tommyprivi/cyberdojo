@@ -1,0 +1,176 @@
+---
+id: H.05.003
+course: hedge
+module: 5
+title: "Payoff: leggere i grafici delle opzioni"
+belt: arancione
+duration_min: 9
+prerequisites: [H.05.002]
+objectives:
+  - "Calcolare il risultato a scadenza di una call o di una put, comprata o venduta"
+  - "Trovare il punto di pareggio (break-even) di una opzione"
+  - "Riconoscere guadagno massimo e perdita massima di ciascuna posizione"
+video:
+  provider: youtube
+  id: "KtqoLi8tvNc"
+  start: 0
+  end: 431
+  channel: "You Invest - Educazione Finanziaria"
+  title: "Le opzioni spiegate in modo semplice - cosa sono le call e le put, le controparti e i pay-off"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-payoff
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di sottrarre il premio nel calcolare il risultato netto"
+  - "Credere che il punto di pareggio sia lo strike"
+  - "Pensare che vendere una call abbia perdita massima uguale al premio incassato"
+commands: []
+---
+
+<Scene title="Che cosa resta in tasca">
+Alfa Spa vale 100 euro. Marta ha comprato la call con strike 100 pagando 5 euro di premio. Tre mesi dopo, Alfa vale 108.
+
+Marta esulta: «Ho guadagnato 8!». Il suo collega Dario scuote la testa: «Hai pagato 5. Ti restano 3».
+
+La domanda del caso: **come si calcola quanto si guadagna o si perde a scadenza, a ogni prezzo possibile?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Il guadagno si conta dopo il premio, mai prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il payoff: formule semplici">
+Il **payoff** è il risultato a scadenza. Convenzioni di questa lezione: opzioni **europee** (esercitabili solo a scadenza), **un'azione** per opzione, nessuna commissione, **S** = prezzo dell'azione a scadenza, **K** = strike.
+
+- **Call comprata**: (S - K se S supera K, altrimenti 0), meno il premio.
+- **Put comprata**: (K - S se K supera S, altrimenti 0), meno il premio.
+- Le posizioni **vendute** sono lo specchio: quello che guadagna il compratore lo perde il venditore.
+
+<Callout kind="regola">
+**Break-even** (pareggio): call = K + premio; put = K - premio. Prima di quel prezzo, il compratore è in perdita.
+</Callout>
+
+<Say who="assistente">Due passaggi: valore dell'opzione a scadenza, poi sottrai ciò che hai pagato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La call comprata">
+Call K = 100, premio 5. Risultato netto a scadenza:
+
+<Log lines={[
+  "S (prezzo a scadenza)   risultato netto",
+  "---------------------   ---------------",
+  "80                      -5",
+  "100                     -5",
+  "105                      0   <- pareggio",
+  "110                     +5",
+  "120                     +15",
+]} />
+
+- Perdita massima: **5** (il premio), qualunque cosa accada.
+- Guadagno massimo: **teoricamente illimitato**, perché S può salire molto.
+
+Un'altra voce, in italiano, mostra i grafici di payoff:
+
+<Video />
+
+<Say who="sensei">Sotto lo strike il diritto non vale nulla. Il premio è andato. Sopra lo strike, la linea sale con il prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La put comprata">
+Put K = 100, premio 4. Qui si guadagna quando il prezzo **scende**:
+
+<Log lines={[
+  "S (prezzo a scadenza)   risultato netto",
+  "---------------------   ---------------",
+  "80                      +16   (20 - 4)",
+  "90                      +6    (10 - 4)",
+  "96                       0    <- pareggio",
+  "100                     -4",
+  "110                     -4",
+]} />
+
+- Perdita massima: **4** (il premio).
+- Guadagno massimo: **K - premio = 96** per azione, se l'azione va a zero. Il prezzo non può scendere sotto zero.
+
+<Callout kind="attenzione">
+Il pareggio della put è **K - premio** (96), non lo strike (100): ricordati sempre di togliere il premio.
+</Callout>
+
+<Say who="assistente">La put guadagna al ribasso, ma il massimo è limitato: un'azione non vale meno di zero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le posizioni vendute">
+Chi **vende** ha il grafico capovolto:
+
+- **Call venduta** (K = 100, premio 5): incassa 5 se S resta sotto 100. Se S = 120, perde 20 - 5 = **15**. Se S = 150, perde **45**. Perdita **teoricamente illimitata**.
+- **Put venduta** (K = 100, premio 4): incassa 4. Se S = 80, perde 20 - 4 = **16**. Perdita massima **96** (azione a zero), guadagno massimo **4**.
+
+<Callout kind="attenzione">
+Il venditore di opzioni ha un guadagno **limitato** (il premio) e una perdita **molto grande o illimitata**. È una scommessa sbilanciata: è facile guadagnare poco spesso e perdere tanto una volta.
+</Callout>
+
+<Say who="sensei">Un premio piccolo incassato oggi può nascondere una perdita enorme domani. Guarda sempre il lato peggiore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai comprato una call con strike 50 e premio 2. A scadenza l'azione vale 53. Qual è il tuo risultato netto per azione?"
+  options={[
+    "+1 (3 di valore meno 2 di premio)",
+    "+3 (differenza tra 53 e 50)",
+    "-2 (il premio perso)",
+    "+5 (53 meno 48)"
+  ]}
+  answer={0}
+  explain="La call vale 53 - 50 = 3 a scadenza, ma hai pagato 2 di premio: risultato +1. Chi risponde +3 ha dimenticato il premio; chi risponde -2 non ha considerato che l'opzione è in guadagno."
+/>
+
+<Say who="assistente">Indizio: il pareggio è 52. Sei sopra, quindi sei in guadagno, ma poco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di payoff e pareggio su call e put, comprate e vendute. Numeri fittizi.
+
+<Practice generator="h05-payoff" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa leggere un payoff vede il rischio prima di entrare, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Payoff netto di una call comprata: max(S - K, 0) meno premio; di una put comprata: max(K - S, 0) meno premio. Pareggio: K + premio (call), K - premio (put).
+- Chi compra rischia al massimo il premio; la call ha guadagno potenziale illimitato, la put ha guadagno massimo K meno premio.
+- Chi vende guadagna al massimo il premio e può perdere molto di più: la call venduta senza copertura ha perdita illimitata.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Call K 100, premio 5: pareggio?", a: "105" },
+    { q: "Put K 100, premio 4: pareggio?", a: "96" },
+    { q: "Perdita massima di chi compra una call?", a: "Il premio pagato" },
+    { q: "Perdita massima di chi vende una call scoperta?", a: "Teoricamente illimitata" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le greche, cioè perché il premio cambia anche quando l'azione sta ferma.</Say>
+</Scene>

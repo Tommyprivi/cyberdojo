@@ -1,0 +1,167 @@
+---
+id: C.18.001
+course: cybersecurity
+module: 18
+title: "Le famiglie di malware"
+belt: marrone
+duration_min: 9
+prerequisites: [C.09.006]
+objectives:
+  - "Distinguere le principali famiglie di malware dal modo in cui si diffondono e da ciò che fanno"
+  - "Riconoscere la famiglia più probabile da una descrizione di comportamenti"
+  - "Spiegare perché ogni famiglia chiede una difesa diversa"
+video:
+  provider: youtube
+  id: "ZPgpvuf8mtU"
+  start: 0
+  end: 600
+  channel: "Cybersecurity and Videogames"
+  title: "Virus, Worm, Trojan, Spyware, Adware: impariamo a riconoscere i differenti tipi di Malware"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-famiglie
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Chiamare «virus» qualsiasi programma dannoso: il virus è solo una delle famiglie"
+  - "Classificare un malware dal nome e non da come si diffonde e da cosa fa"
+  - "Pensare che un solo antivirus basti contro tutte le famiglie"
+commands: []
+---
+
+<Scene title="Tre allarmi, tre nomi">
+Allo **Studio Bianchi**, un piccolo studio di commercialisti (fittizio), in una mattina arrivano tre segnalazioni.
+
+- Maria: «I miei file hanno un'estensione strana e non si aprono. C'è un messaggio che parla di un pagamento.»
+- Paolo: «Il PC è lento, e il mio browser mi porta su pagine che non ho cercato.»
+- Il sistemista: «Un computer dell'archivio parla con un indirizzo sconosciuto ogni notte alle 03:00.»
+
+Il titolare dice: «È tutto lo stesso virus, no?»
+
+La domanda del caso: **sono davvero la stessa cosa?**
+
+<Say who="sensei">Chi chiama «virus» ogni cosa non sa cosa sta difendendo. Il nome giusto dice cosa fare dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Malware: la parola giusta">
+**Malware** vuol dire «software malevolo»: un programma fatto per danneggiare, spiare o prendere il controllo di un sistema senza il permesso del proprietario. «Virus» è solo un tipo di malware, come «berretto» è solo un tipo di cappello.
+
+Per capire la famiglia basta chiedersi due cose:
+
+1. **Come si diffonde?** Da solo, o ha bisogno di una persona che lo apra?
+2. **Cosa fa una volta dentro?** Cifra, spia, apre una porta, usa il PC di nascosto?
+
+Vuoi sentirlo spiegare da un'altra voce? Un video che passa in rassegna i tipi più comuni:
+
+<Video />
+
+<Say who="assistente">Non imparare i nomi a memoria. Impara le due domande: come arriva, cosa fa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si diffondono">
+Prime tre famiglie, divise dal modo di muoversi.
+
+- **Virus**: si attacca a un file «ospite» e parte quando quel file viene aperto. Senza una persona che apre, resta fermo.
+- **Worm** («verme»): si copia da solo da un computer all'altro attraverso la rete, senza che nessuno apra nulla.
+- **Trojan** (da «cavallo di Troia»): si presenta come un programma utile o un allegato innocuo. Non si copia da solo: è l'utente a farlo entrare.
+
+<Callout kind="trucco">
+Virus: serve un file ospite. Worm: viaggia da solo. Trojan: lo fai entrare tu, convinto che sia altro.
+</Callout>
+
+<Say who="sensei">Il worm è il più veloce, il trojan è il più furbo. Il trojan sfrutta le persone, non le macchine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fanno una volta dentro">
+Altre famiglie si distinguono invece dallo **scopo**.
+
+- **Ransomware**: cifra i file e chiede un riscatto per renderli leggibili. È il caso di Maria.
+- **Spyware**: raccoglie di nascosto informazioni (cosa scrivi, cosa visiti).
+- **Adware**: mostra pubblicità invasive o cambia la pagina del browser. È il caso di Paolo.
+- **Backdoor** («porta sul retro»): lascia aperto un accesso per rientrare quando vuole.
+- **Botnet**: una rete di computer infetti comandati a distanza, usati senza che i proprietari lo sappiano. Il PC dell'archivio che «parla» alle 03:00 con un indirizzo ignoto fa pensare a questo.
+- **Rootkit**: nasconde la presenza di altro malware al sistema operativo, per restare invisibile.
+
+<Callout kind="attenzione">
+Le famiglie si **sommano**. Un trojan può portare un ransomware, un worm può installare una backdoor. Spesso un attacco usa più pezzi insieme.
+</Callout>
+
+<Say who="assistente">Un indizio pratico: il «come arriva» e il «cosa fa» sono due etichette separate sullo stesso oggetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un programma si copia da solo su tutti i computer della rete aziendale in pochi minuti, senza che nessuno apra file. Qual è la famiglia più probabile?"
+  options={["Worm", "Virus", "Trojan", "Adware"]}
+  answer={0}
+  explain="Muoversi da solo attraverso la rete è la caratteristica del worm. Il virus avrebbe bisogno che qualcuno aprisse un file ospite; il trojan avrebbe bisogno che l'utente lo facesse entrare."
+/>
+
+<Say who="sensei">Prima come si muove, poi cosa fa. Non saltare l'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalla famiglia alla difesa">
+Torniamo allo Studio Bianchi e mettiamo ordine.
+
+<Guided
+  steps={[
+    "Maria: file cifrati e richiesta di pagamento. Famiglia: ransomware. Difesa: backup provati e fuori dalla rete, isolare subito il PC.",
+    "Paolo: lentezza e pagine non cercate. Famiglia: adware (o simile). Difesa: togliere le estensioni sospette, installare solo da fonti ufficiali.",
+    "Archivio: comunicazione notturna verso un indirizzo ignoto. Famiglia: possibile backdoor o parte di una botnet. Difesa: controllare il traffico in uscita e isolare la macchina.",
+    "Conclusione: tre nomi, tre risposte diverse. «È tutto lo stesso virus» avrebbe fatto sbagliare due volte su tre.",
+  ]}
+/>
+
+<Callout kind="regola">
+Il malware si studia per **difendersi**. Costruirlo non fa parte di questo corso. In Italia il codice penale punisce con l'art. 615-quinquies chi **diffonde** programmi o dispositivi diretti a danneggiare o interrompere un sistema informatico. E, come sempre, si prova solo ciò che è proprio o per cui c'è un permesso scritto.
+</Callout>
+
+<Say who="sensei">Capire il nemico serve a chiudere le porte, non ad aprirle agli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque descrizioni di comportamenti: per ciascuna, scegli la famiglia o la difesa giusta. Hai 3 tentativi.
+
+<Practice generator="c18-famiglie" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai sbagliato, torna alle due domande. Quasi sempre la risposta è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- «Malware» è il nome generale; «virus» è solo una famiglia. Per classificare: come si diffonde, cosa fa.
+- Virus (file ospite), worm (da solo in rete), trojan (lo fai entrare tu): il modo di muoversi. Ransomware, spyware, adware, backdoor, botnet, rootkit: lo scopo.
+- Le famiglie si combinano: ogni pezzo chiede una difesa diversa. Diffondere programmi dannosi è reato (art. 615-quinquies c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra virus e worm?", a: "Il virus ha bisogno di un file ospite e di una persona; il worm si diffonde da solo in rete" },
+    { q: "Cos'è un trojan?", a: "Un malware che si presenta come qualcosa di utile e viene fatto entrare dall'utente" },
+    { q: "Cosa fa un ransomware?", a: "Cifra i file e chiede un riscatto" },
+    { q: "Cos'è una botnet?", a: "Una rete di computer infetti comandati a distanza" },
+  ]}
+/>
+
+<Say who="sensei">Sai dare un nome. Ora: da dove comincia un attacco e dove si può fermare? È la prossima lezione.</Say>
+</Scene>

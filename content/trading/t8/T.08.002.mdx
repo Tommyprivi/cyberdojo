@@ -1,0 +1,155 @@
+---
+id: T.08.002
+course: trading
+module: 8
+title: "Slippage: il prezzo che scivola"
+belt: arancione
+duration_min: 8
+prerequisites: [T.08.001]
+objectives:
+  - "Definire lo slippage e distinguerlo dallo spread"
+  - "Calcolare il costo dello slippage su un ordine"
+  - "Scegliere tra ordine a mercato e ordine limite sapendo cosa si rischia"
+video:
+  provider: youtube
+  id: "9J28gIa7sE0"
+  start: 0
+  end: 327
+  channel: "Brokerchampion"
+  title: "What Is Slippage? The Hidden Trading Cost That Makes 'Tight Spread' Brokers Expensive"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-slippage
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere slippage e spread: il primo è la differenza tra prezzo atteso e prezzo ottenuto"
+  - "Dimenticare di moltiplicare la differenza di prezzo per la quantità"
+  - "Credere che l'ordine limite sia sempre meglio: può non essere eseguito"
+commands: []
+---
+
+<Scene title="Il prezzo visto e il prezzo pagato">
+Nora vede sullo schermo, in un ambiente demo, un titolo fittizio a **50,00**. Preme «compra» con un ordine a mercato per **200 azioni**.
+
+L'ordine viene eseguito a **50,20**.
+
+Nessun errore, nessun guasto: il prezzo si è semplicemente mosso mentre l'ordine arrivava. La domanda del caso: **quanto è costato quel movimento, e si poteva evitare?**
+
+<Say who="sensei">Il prezzo sullo schermo è un invito, non un contratto. Il contratto è quello che ti eseguono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è lo slippage">
+Lo **slippage** («scivolamento») è la differenza tra il **prezzo che ti aspettavi** e il **prezzo a cui l'ordine viene davvero eseguito**.
+
+Non è lo spread. Lo spread è la distanza tra bid e ask in un certo istante. Lo slippage è quello che succede **in più**, perché passa del tempo o perché l'ordine è grande.
+
+Il conto di Nora, per ordine:
+
+<Log lines={[
+  "prezzo atteso:    50,00",
+  "prezzo eseguito:  50,20",
+  "slippage:          0,20 per azione",
+  "quantità:         200",
+  "costo:             0,20 x 200 = 40 euro",
+]} />
+
+<Callout kind="regola">
+Slippage in euro = (prezzo eseguito − prezzo atteso) × quantità. Sull'acquisto è un costo se il prezzo eseguito è più alto, sulla vendita se è più basso.
+</Callout>
+
+<Say who="assistente">Quaranta euro su 10.000 sono lo 0,4%. Sembra poco, ma ricordati che si paga a ogni ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando scivola di più">
+Lo slippage cresce quando:
+
+- il mercato si muove in fretta (una notizia, l'apertura della borsa);
+- il titolo è poco scambiato e ci sono pochi venditori disponibili;
+- l'ordine è grande rispetto a quello che il mercato offre (ne parliamo nella prossima lezione).
+
+Può anche essere **favorevole**: a volte il prezzo si muove a tuo favore. Ma in un backtest prudente non ci si conta: si assume un costo contro di sé.
+
+Vuoi sentirlo da un'altra voce? Cinque minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Un backtest che ipotizza sempre il prezzo perfetto sta raccontando una favola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mercato o limite?">
+Hai due modi principali per mandare un ordine:
+
+- **A mercato**: «compra subito, al prezzo che c'è». L'esecuzione è quasi certa, il prezzo no. Qui nasce lo slippage.
+- **Limite**: «compra solo se il prezzo non supera 50,05». Il prezzo massimo è garantito, ma l'ordine **può non essere eseguito**, e magari il titolo sale senza di te.
+
+<Callout kind="attenzione">
+Nessuna delle due è «la migliore»: con il mercato paghi il prezzo, con il limite rischi di restare fuori. È un compromesso, e va scelto prima.
+</Callout>
+
+<Say who="assistente">Chiediti: preferisco rischiare di pagare un po' di più o rischiare di non entrare?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Slippage nel codice">
+Nel backtest lo slippage si inserisce come costo. Prova a cambiare i numeri e a rieseguire:
+
+<PythonTerminal code={"prezzo_atteso = 50.00\nprezzo_eseguito = 50.20\nquantita = 200\nslippage = (prezzo_eseguito - prezzo_atteso) * quantita\nprint(round(slippage, 2))"} />
+
+L'output atteso è `40.0`. Il `round` serve perché i numeri decimali nel computer hanno piccolissimi errori di arrotondamento.
+
+<Quiz
+  question="Vendi 500 azioni: ti aspettavi 30,00 ma l'ordine viene eseguito a 29,90. Quanto è costato lo slippage?"
+  options={["50 euro", "0,10 euro", "5 euro", "500 euro"]}
+  answer={0}
+  explain="La differenza è 30,00 − 29,90 = 0,10 per azione; per 500 azioni sono 0,10 × 500 = 50 euro. Chi risponde 0,10 non ha moltiplicato per la quantità."
+/>
+
+<Say who="sensei">Prezzo atteso, prezzo ottenuto, quantità. Sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque calcoli e scenari su slippage, ordine a mercato e ordine limite.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-slippage" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce lo slippage non si fida più di un backtest senza costi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lo slippage è la differenza tra prezzo atteso e prezzo eseguito, moltiplicata per la quantità.
+- L'ordine a mercato garantisce l'esecuzione ma non il prezzo; l'ordine limite garantisce il prezzo massimo ma non l'esecuzione.
+- Nel backtest si inserisce uno slippage prudente. Il corso è educativo, non è consulenza finanziaria: si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo slippage?", a: "La differenza tra il prezzo atteso e il prezzo a cui l'ordine viene eseguito" },
+    { q: "Atteso 50,00, eseguito 50,20, 200 azioni: costo?", a: "0,20 × 200 = 40 euro" },
+    { q: "Che cosa rischia chi usa un ordine limite?", a: "Che l'ordine non venga eseguito" },
+    { q: "Slippage e spread sono la stessa cosa?", a: "No: lo spread è la distanza tra bid e ask, lo slippage è lo scarto tra prezzo atteso ed eseguito" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: liquidità e dimensioni. Perché un ordine grande sposta il prezzo da solo.</Say>
+</Scene>

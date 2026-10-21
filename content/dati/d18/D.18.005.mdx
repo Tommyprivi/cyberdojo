@@ -1,0 +1,214 @@
+---
+id: D.18.005
+course: dati
+module: 18
+title: "Funzioni e procedure"
+belt: marrone
+duration_min: 10
+prerequisites: [D.18.004]
+objectives:
+  - "Scrivere una funzione SQL semplice e usarla in una SELECT"
+  - "Spiegare la differenza tra funzione e procedura"
+  - "Descrivere a che cosa servono i trigger e quali rischi hanno"
+video:
+  provider: youtube
+  id: "vcjUOrPjPgc"
+  start: 0
+  end: 600
+  channel: "Codyscool"
+  title: "PostgreSQL Function vs Trigger Function vs Procedure vs Trigger | What’s the Difference?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-funzioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere nel database tutta la logica del negozio: diventa invisibile e difficile da provare e da versionare"
+  - "Dimenticare che un trigger scatta da solo, anche quando qualcuno modifica i dati a mano o da un altro programma"
+  - "Costruire query dinamiche dentro una funzione incollando testo ricevuto dall'utente: apre la porta alla SQL injection"
+commands: []
+---
+
+<Scene title="La stessa formula in dieci file">
+Nel negozio di Marta, ogni report calcola il prezzo con l'IVA al 22%. Il calcolo è copiato in dieci query diverse. Un giorno l'aliquota di una categoria cambia, e Marta ne corregge nove.
+
+Intanto, quando arriva un ordine, un programma deve fare due cose: togliere i pezzi dalla giacenza e scrivere la riga dell'ordine. Se il programma si ferma tra le due, i conti non tornano.
+
+La domanda del caso: **si può scrivere una regola una volta sola, dentro il database?**
+
+<Say who="sensei">Una regola scritta dieci volte è una regola che prima o poi si contraddice. Oggi vedi come si scrive una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La funzione">
+Una **funzione definita dall'utente** riceve dei valori, calcola e **restituisce un risultato**. Si usa dentro una `SELECT` come qualsiasi funzione già pronta.
+
+<Log lines={[
+  "CREATE FUNCTION prezzo_con_iva(prezzo numeric, aliquota numeric DEFAULT 22)",
+  "RETURNS numeric",
+  "LANGUAGE sql",
+  "IMMUTABLE",
+  "AS $$ SELECT round(prezzo * (1 + aliquota / 100), 2) $$;",
+]} caption="Una funzione (PostgreSQL). IMMUTABLE: a parità di ingressi dà sempre lo stesso risultato." />
+
+<Log lines={[
+  "SELECT nome, prezzo_con_iva(prezzo) AS con_iva",
+  "FROM prodotti ORDER BY id;",
+]} caption="Uso della funzione." />
+
+<Log lines={[
+  "nome             | con_iva",
+  "candela vaniglia | 15.25",
+  "sapone lavanda   | 7.32",
+  "candela cedro    | 21.96",
+  "profumatore      | 29.28",
+  "sapone argilla   | 9.15",
+  "candela mirra    | 23.18",
+]} caption="Controllo: 12.50 per 1.22 fa 15.25; 6.00 per 1.22 fa 7.32; 18 per 1.22 fa 21.96." />
+
+Provala qui. La formula è la stessa, scritta direttamente nella query:
+
+<SqlPlayground db="negozio" query="SELECT nome, round(prezzo * 1.22, 2) AS con_iva FROM prodotti ORDER BY id;" height={420} />
+
+<Say who="assistente">Se l'aliquota cambia, si modifica la funzione in un punto solo e tutte le query ne beneficiano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La procedura">
+Una **procedura** non restituisce un valore: **fa delle cose** (modifica tabelle) e si lancia con `CALL`. A differenza di una funzione, una procedura può gestire **transazioni** al suo interno (`COMMIT` e `ROLLBACK`).
+
+<Log lines={[
+  "CREATE PROCEDURE registra_vendita(p_cliente int, p_prodotto int, p_quantita int)",
+  "LANGUAGE plpgsql",
+  "AS $$",
+  "BEGIN",
+  "  UPDATE prodotti SET giacenza = giacenza - p_quantita WHERE id = p_prodotto;",
+  "  INSERT INTO ordini (cliente_id, prodotto_id, quantita, totale, data)",
+  "  SELECT p_cliente, id, p_quantita, prezzo * p_quantita, CURRENT_DATE",
+  "  FROM prodotti WHERE id = p_prodotto;",
+  "END;",
+  "$$;",
+]} caption="Una procedura che toglie i pezzi dal magazzino e scrive l'ordine." />
+
+<Log lines={[
+  "CALL registra_vendita(2, 3, 2);",
+]} caption="Marco (cliente 2) compra 2 candele al cedro (prodotto 3)." />
+
+Effetto: la giacenza della candela cedro passa da 12 a **10**, e compare un nuovo ordine con totale **36.00** (2 pezzi per 18.00). Le due operazioni stanno insieme: se una fallisce, l'altra viene annullata.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sulla differenza tra funzioni, procedure e trigger:
+
+<Video />
+
+<Callout kind="curiosita">
+PostgreSQL ha le procedure dalla versione 11. Prima c'erano solo le funzioni. In MySQL si usa `CREATE PROCEDURE` con `DELIMITER`, in SQL Server il linguaggio è T-SQL: la sintassi cambia, l'idea resta.
+</Callout>
+
+<Say who="sensei">Funzione: calcola e restituisce. Procedura: esegue e basta. Se confondi le due, confondi anche i loro limiti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il trigger">
+Un **trigger** («grilletto») è una funzione che il database lancia **da solo** quando succede un evento: un `INSERT`, un `UPDATE` o un `DELETE` su una tabella.
+
+Esempio: registrare ogni cambio di prezzo in una tabella di storico, `log_prezzi`.
+
+<Log lines={[
+  "CREATE FUNCTION registra_prezzo() RETURNS trigger",
+  "LANGUAGE plpgsql",
+  "AS $$",
+  "BEGIN",
+  "  IF NEW.prezzo <> OLD.prezzo THEN",
+  "    INSERT INTO log_prezzi (prodotto_id, vecchio, nuovo)",
+  "    VALUES (OLD.id, OLD.prezzo, NEW.prezzo);",
+  "  END IF;",
+  "  RETURN NEW;",
+  "END;",
+  "$$;",
+  "",
+  "CREATE TRIGGER t_prezzo AFTER UPDATE ON prodotti",
+  "FOR EACH ROW EXECUTE FUNCTION registra_prezzo();",
+]} caption="OLD è la riga prima della modifica, NEW la riga dopo." />
+
+Ora un collega scrive `UPDATE prodotti SET prezzo = 13.00 WHERE id = 1;`. Il trigger scatta senza che nessuno lo chiami:
+
+<Log lines={[
+  "prodotto_id | vecchio | nuovo",
+  "1           | 12.50   | 13.00",
+]} caption="Contenuto di log_prezzi dopo l'UPDATE." />
+
+Usi tipici: **storico delle modifiche** (audit), controlli che un vincolo non sa fare, colonne calcolate.
+
+<Say who="assistente">Nessuno ha chiamato il trigger: ha fatto tutto da solo. È la sua forza, e anche il suo rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi">
+Funzioni, procedure e trigger sono potenti, ma non vanno usati senza criterio.
+
+- **Logica nascosta**: un trigger scatta da solo. Chi legge solo il codice del programma non sa che esiste.
+- **Effetti a catena**: un trigger può modificare un'altra tabella, che ha un altro trigger... fino a risultati imprevisti.
+- **Prestazioni**: un trigger per riga su una modifica da un milione di righe viene eseguito un milione di volte.
+- **Difficoltà di prova e versionamento**: il codice nel database va tenuto in file di migrazione sotto controllo di versione, come il resto.
+- **Sicurezza**: una funzione `SECURITY DEFINER` gira con i permessi di chi l'ha creata, non di chi la chiama. Se scritta male, dà più potere del dovuto. E se dentro costruisci query incollando testo dell'utente, apri la **SQL injection** (la rivedrai nella lezione 8 e nel modulo C6 di cybersecurity).
+
+<Callout kind="regola">
+Regola pratica: nel database metti le regole **sui dati** (vincoli, audit, calcoli semplici). La logica di business complessa tienila nell'applicazione, dove si prova e si legge meglio.
+</Callout>
+
+<Say who="sensei">Un trigger che nessuno ricorda è una bomba a orologeria. Documentalo, o non scriverlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta lancia CALL registra_vendita(2, 3, 2). La candela cedro ha giacenza 12 e costa 18.00. Che cosa trova dopo?"
+  options={["Giacenza 10 e un nuovo ordine con totale 36.00", "Giacenza 12 e un nuovo ordine con totale 36.00", "Giacenza 10 e un nuovo ordine con totale 18.00", "Giacenza 14 e un nuovo ordine con totale 36.00"]}
+  answer={0}
+  explain="La procedura sottrae la quantità dalla giacenza (12 meno 2 fa 10) e scrive un ordine con totale prezzo per quantità (18.00 per 2 fa 36.00). Le altre risposte dimenticano una delle due operazioni o sbagliano il segno o il calcolo."
+/>
+
+<Say who="sensei">Due operazioni, un solo comando. Se una fallisce, fallisce tutto. Lo sai già: è una transazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su funzioni, procedure e trigger. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-funzioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai scrivere una regola una volta sola, e sai anche quando non farlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Una funzione restituisce un valore e si usa dentro le query; una procedura esegue operazioni e si lancia con CALL.
+- Un trigger scatta da solo a un evento (INSERT, UPDATE, DELETE): utile per audit e controlli, ma nascosto.
+- Rischi: logica invisibile, effetti a catena, prestazioni, permessi SECURITY DEFINER e SQL dinamica. Nel database le regole sui dati, nell'applicazione la logica complessa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si lancia una procedura in PostgreSQL?", a: "Con CALL nome_procedura(argomenti);" },
+    { q: "Che cosa sono OLD e NEW in un trigger?", a: "La riga prima della modifica e la riga dopo" },
+    { q: "Differenza tra funzione e procedura?", a: "La funzione restituisce un valore; la procedura esegue operazioni e può gestire transazioni" },
+    { q: "Perché i trigger sono rischiosi?", a: "Scattano da soli, restano nascosti e possono causare effetti a catena" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: PostgreSQL in pratica, con ruoli, schemi, JSONB e una visita guidata di pgAdmin.</Say>
+</Scene>

@@ -1,0 +1,189 @@
+---
+id: C.21.001
+course: cybersecurity
+module: 21
+title: "Fasi e standard del penetration test"
+belt: marrone
+duration_min: 10
+prerequisites: [C.08.006]
+objectives:
+  - "Spiegare che cos'è un penetration test e che cosa lo distingue da un attacco"
+  - "Elencare le sette fasi di PTES e dire a che cosa serve ciascuna"
+  - "Scegliere tra PTES, NIST SP 800-115 e OWASP in base al tipo di incarico"
+video:
+  provider: youtube
+  id: "_4mU4ZpnXAM"
+  start: 0
+  end: 600
+  channel: "ISGroup - Information Security Group"
+  title: "Penetration Test con ISGroup: Fasi e Approccio Strategico"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-fasi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il penetration test sia solo la fase in cui si «entra»: è soltanto una delle sette"
+  - "Confondere uno standard (il metodo) con uno strumento (il programma)"
+  - "Cominciare a lavorare prima di avere ambito e permesso scritti"
+commands: []
+---
+
+<Scene title="«Vorrei un penetration test»">
+Il titolare della **Bianchi Logistica Srl**, una piccola azienda di trasporti (fittizia), scrive a Marta, consulente di sicurezza: **«Vorrei un penetration test, quanto costa e quando partite?»**
+
+Marta non risponde con un prezzo. Risponde con quattro domande: *che cosa vuole proteggere? Che cosa può essere provato? Chi firma il permesso? Che cosa vuole ricevere alla fine?*
+
+La domanda del caso: **perché un professionista comincia dalle domande e non dagli strumenti?**
+
+<Say who="sensei">Un penetration test non comincia al computer. Comincia su un foglio firmato. Chi inverte l'ordine non fa un test: commette un reato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è, davvero">
+Un **penetration test** (in breve *pentest*) è una verifica di sicurezza **autorizzata**, con **ambito** e **durata** stabiliti, fatta imitando il ragionamento di un attaccante per scoprire quali debolezze possono essere davvero usate e che danno causerebbero.
+
+Tre parole contano più di tutte: **autorizzata**, **delimitata**, **documentata**.
+
+<Callout kind="regola">
+Si prova solo ciò che è tuo o per cui hai un **permesso scritto**. Entrare in un sistema senza autorizzazione è accesso abusivo a sistema informatico (art. 615-ter del codice penale), anche con buone intenzioni.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Questo video parla di fasi e approccio di un penetration test **a livello di metodo**. È solo da guardare: non è un permesso per provare niente.
+
+<Video />
+
+<Say who="assistente">Ricorda la differenza che hai visto nel modulo C8: lì imparavi nel tuo laboratorio. Qui impari come lavora chi viene pagato per farlo sui sistemi di un cliente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché serve uno standard">
+Se ogni consulente lavorasse a modo suo, due test sullo stesso sistema darebbero risultati impossibili da confrontare. Uno **standard** è un metodo condiviso che garantisce:
+
+- **completezza**: non si dimentica una parte importante;
+- **ripetibilità**: tra un anno si rifà e si confronta;
+- **comprensibilità**: il cliente sa che cosa aspettarsi.
+
+Uno standard non è un programma. È più simile alla **ricetta** di un cuoco: dice che cosa fare e in che ordine, non quale pentola comprare.
+
+<Callout kind="attenzione">
+Chi dice «uso lo scanner X, quindi seguo uno standard» confonde lo strumento con il metodo. Lo scanner è la pentola.
+</Callout>
+
+<Say who="sensei">Gli strumenti cambiano ogni anno. Il metodo resta. Impara il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le sette fasi di PTES">
+**PTES** (Penetration Testing Execution Standard, «standard di esecuzione dei penetration test») divide il lavoro in sette fasi:
+
+1. **Interazioni preliminari** (pre-engagement): ambito, permessi, regole, obiettivi.
+2. **Raccolta di informazioni**: capire che cosa esiste, in modo passivo o attivo, dentro l'ambito.
+3. **Modellazione delle minacce**: chi potrebbe attaccare, che cosa vorrebbe, che cosa vale di più per il cliente.
+4. **Analisi delle vulnerabilità**: individuare e valutare le debolezze.
+5. **Sfruttamento**: dimostrare, col minimo impatto concordato, che una debolezza è reale.
+6. **Post-sfruttamento**: capire fin dove arriverebbe l'impatto e che cosa ne deriva per il cliente.
+7. **Rapporto**: comunicare, spiegare, indicare i rimedi.
+
+<Callout kind="curiosita">
+Delle sette fasi, **una sola** ha a che fare con «entrare». Le altre sei sono permessi, ragionamento, valutazione e comunicazione. Il lavoro vero è soprattutto pensare e scrivere.
+</Callout>
+
+<Say who="assistente">Indizio per ricordare: prima il foglio, poi la mappa, poi il ragionamento, poi la prova, poi le conseguenze, poi il rapporto.</Say>
+
+PTES non è l'unico. Tre riferimenti da conoscere:
+
+- **NIST SP 800-115**: guida del National Institute of Standards and Technology (Stati Uniti) alla verifica di sicurezza. Quattro fasi: **pianificazione, scoperta, attacco, rapporto**. Molto usata in ambito istituzionale e di conformità.
+- **OWASP**: organizzazione aperta che pubblica la **Web Security Testing Guide**, elenco dettagliato di cose da verificare in **siti e applicazioni web**.
+- **OSSTMM**: manuale che misura la sicurezza in modo quantitativo, meno usato nei test di tutti i giorni.
+
+| Incarico | Riferimento tipico |
+|---|---|
+| Valutazione generale di una rete aziendale | PTES |
+| Verifica richiesta da una norma o da un ente pubblico | NIST SP 800-115 |
+| Test di un sito o di un'app | OWASP (guida di test web) |
+
+<Callout kind="trucco">
+Si possono **combinare**: PTES per la struttura dell'incarico, OWASP per il dettaglio sulle applicazioni web. Importante è dichiarare nel contratto quale si segue.
+</Callout>
+
+<Say who="sensei">Il cliente deve sapere quale metodo seguirai. Se non lo dici, non è un metodo: è un'improvvisazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: da che parte comincia Marta">
+Marta applica il metodo al caso della Bianchi Logistica. Ragionamento passo per passo (tutto fittizio):
+
+<Guided
+  steps={[
+    "Fase 1: incontra il titolare. Obiettivo concordato: «sapere se un estraneo potrebbe arrivare ai dati dei clienti dal sito e dalla rete degli uffici».",
+    "Fase 1: firmano contratto e lettera di autorizzazione con ambito (il sito e la rete degli uffici), date e contatti. Il magazzino del fornitore è escluso.",
+    "Fase 2 e 3: Marta elenca che cosa è esposto e che cosa vale di più per l'azienda: l'archivio clienti conta più del sito vetrina.",
+    "Fase 4 e 5: valuta le debolezze in ordine di importanza e ne dimostra una col minimo impatto concordato, senza toccare dati veri.",
+    "Fase 6 e 7: spiega fin dove l'impatto sarebbe arrivato e consegna un rapporto con rimedi ordinati per priorità.",
+  ]}
+/>
+
+Notare: la fase 1 occupa **il primo giorno**, quando non è ancora stato toccato nulla.
+
+<Say who="sensei">Prima del primo clic, ambito e permesso. Dopo l'ultimo clic, il rapporto. In mezzo, il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'amica ti chiede di «provare la sicurezza» della rete del suo studio professionale. Che cosa fa un professionista come prima cosa?"
+  options={[
+    "Definisce con lei ambito, obiettivi e permesso scritto firmato da chi ne ha il potere",
+    "Scansiona la rete per vedere come sta messa, così può fare un'offerta precisa",
+    "Chiede soltanto un permesso a voce, perché si conoscono bene",
+    "Comincia dal sito web perché è la parte più visibile",
+  ]}
+  answer={0}
+  explain="La prima fase di ogni standard sono le interazioni preliminari: ambito, obiettivi e autorizzazione scritta. Scansionare «per fare un'offerta» è già un'attività sul sistema, quindi serve già il permesso. Un permesso a voce non protegge nessuno dei due."
+/>
+
+<Say who="assistente">La parola chiave è «prima». Prima di ogni attività sul sistema, anche la più innocua, c'è il documento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su fasi, standard e ordine del lavoro. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-fasi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il metodo è ciò che ti distingue da chi ha solo gli strumenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un penetration test è una verifica autorizzata, delimitata e documentata: senza permesso scritto è accesso abusivo (art. 615-ter c.p.).
+- PTES ha sette fasi, dal permesso al rapporto: una sola riguarda lo sfruttamento.
+- NIST SP 800-115 e OWASP sono altri riferimenti: si sceglie in base all'incarico e lo si dichiara nel contratto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le sette fasi di PTES?", a: "Interazioni preliminari, raccolta di informazioni, modellazione delle minacce, analisi delle vulnerabilità, sfruttamento, post-sfruttamento, rapporto" },
+    { q: "Quante fasi ha NIST SP 800-115 e quali?", a: "Quattro: pianificazione, scoperta, attacco, rapporto" },
+    { q: "A che cosa serve la guida di test web di OWASP?", a: "A elencare che cosa verificare in siti e applicazioni web" },
+    { q: "Qual è la differenza tra standard e strumento?", a: "Lo standard è il metodo (che cosa fare e in che ordine); lo strumento è solo un mezzo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la fase uno nel dettaglio. Ambito e regole d'ingaggio, dove si decide se il lavoro sarà legale o no.</Say>
+</Scene>

@@ -1,0 +1,143 @@
+---
+id: D.11.008
+course: dati
+module: 11
+title: "Limiti ed etica"
+belt: verde
+duration_min: 9
+prerequisites: [D.11.007]
+objectives:
+  - "Riconoscere come i dati distorti producono modelli ingiusti"
+  - "Spiegare la spiegabilità e il ruolo della persona nella decisione"
+  - "Decidere quando NON usare il machine learning"
+video:
+  provider: youtube
+  id: "ZJWEqoOIDKo"
+  start: 0
+  end: 346
+  channel: "Yuri Mariotti"
+  title: "Cosa sono i Bias nei dati e perchè rovinano le AI"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-limiti-etica
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che i numeri siano neutrali: i dati portano con sé le distorsioni di chi li ha raccolti"
+  - "Pensare che togliere una colonna sensibile basti, mentre altre (come il CAP) possono farne le veci"
+  - "Dare la responsabilità al modello invece che alle persone che lo usano"
+commands: []
+---
+
+<Scene title="L'assistente che sceglie i candidati">
+Un'azienda addestra un modello sulle assunzioni degli ultimi dieci anni, per scegliere i curriculum da leggere. Nel passato **il 90% degli assunti era uomo**.
+
+Il modello ha un'ottima accuratezza. Ma scarta quasi tutte le candidate.
+
+La domanda del caso: **come può un modello preciso essere ingiusto?**
+
+<Say who="sensei">Il modello ha imparato ciò che gli hai mostrato. Se gli mostri un passato storto, ti restituisce un futuro storto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il bias nei dati">
+Un **bias** è una distorsione: i dati non rappresentano in modo equo la realtà o le persone. Alcuni modi in cui nasce:
+
+- il **passato era già ingiusto** (le assunzioni di prima);
+- **alcuni gruppi mancano** nei dati: un riconoscimento facciale addestrato quasi solo su un gruppo di persone sbaglierà di più sugli altri;
+- le **etichette le hanno messe persone** con i loro pregiudizi.
+
+Un modo di verificarlo: confrontare i risultati tra gruppi.
+
+<Log lines={["gruppo A: 60 accettati su 100 -> 60%", "gruppo B: 30 accettati su 100 -> 30%", "rapporto: 60 / 30 = 2 volte"]} caption="Dati fittizi. Una differenza così grande va indagata." />
+
+<Callout kind="attenzione">
+Togliere la colonna «sesso» o «etnia» non basta. Altre colonne, come il CAP, possono fare da **sostituto (proxy)** e far entrare lo stesso pregiudizio dalla finestra.
+</Callout>
+
+<Say who="assistente">Quando un modello tratta gruppi diversi in modo molto diverso, non basta dire «l'ha deciso il computer».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spiegabilità e responsabilità">
+La **spiegabilità** è poter dire **quali fattori hanno portato a una decisione**. Un albero di decisione si legge. Altri modelli sono scatole nere: danno una risposta e non il perché.
+
+Quando la decisione tocca una persona (un prestito, un lavoro, una cura) il perché conta. Il **GDPR**, il regolamento europeo sui dati personali, tutela chi è soggetto a decisioni **solo automatizzate**: si può chiedere l'intervento di una persona e contestare la decisione.
+
+La **responsabilità** resta alle persone e all'organizzazione che usano il modello, mai al modello. Per le decisioni importanti si tiene una persona **nel circuito** (human in the loop): controlla e può correggere.
+
+Vuoi ripassarlo da un'altra voce? Meno di sei minuti sul bias:
+
+<Video />
+
+<Say who="sensei">Un modello non risponde delle sue decisioni. Rispondi tu che lo usi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando NON usare il machine learning">
+Il machine learning non è sempre la risposta. **Non conviene** quando:
+
+- **una regola semplice e nota basta**: per calcolare l'IVA al 22% si usa la formula;
+- **non ci sono dati sufficienti o affidabili**;
+- **non si può spiegare** una decisione che la persona ha il diritto di capire;
+- **sbagliare costa troppo** e non c'è nessuno a controllare.
+
+E quando si usa, si **dichiara** per che cosa il modello è adatto, i suoi limiti, come si controllano gli errori. Si **controllano nel tempo** i risultati: se i comportamenti cambiano (i clienti del 2024 non sono quelli del 2019), si riaddestra con dati recenti.
+
+Sui dati delle persone, specie su salute, finanze e minori: **minimizzazione** (solo i dati necessari), **consenso** o altra base legale, e tutela rafforzata.
+
+<Say who="assistente">Il segno di un buon analista non è usare il modello più potente. È sapere quando bastano due righe di regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un modello assicurativo non usa l'etnia, ma usa il CAP. Perché può essere comunque un problema?"
+  options={["Il CAP può fare da sostituto (proxy) di caratteristiche protette", "I modelli non leggono i numeri come il CAP", "Il CAP rende il modello non supervisionato", "Non è un problema: l'etnia non compare"]}
+  answer={0}
+  explain="Se in certe zone vivono soprattutto certi gruppi, il CAP porta nel modello la stessa informazione dell'etnia. Togliere la colonna sensibile non basta: bisogna controllare gli effetti sui gruppi."
+/>
+
+<Say who="sensei">Non basta togliere la colonna. Si guarda che cosa il modello fa alle persone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su bias, spiegabilità, responsabilità e uso corretto. Hai 3 tentativi.
+
+<Practice generator="d11-limiti-etica" pass="5/5" retries={3} />
+
+<Say who="sensei">Qui non basta il calcolo: serve giudizio. Pensa a chi subisce la decisione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I dati distorti producono modelli distorti: il bias viene da passato ingiusto, gruppi mancanti e etichette di parte; anche colonne come il CAP possono fare da sostituto.
+- Spiegabilità e persona nel circuito: chi usa il modello ne risponde, e chi subisce una decisione solo automatizzata può chiedere un intervento umano (GDPR).
+- Il machine learning non serve quando basta una regola, mancano dati affidabili o non si può spiegare e controllare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un bias nei dati?", a: "Una distorsione: i dati non rappresentano in modo equo la realtà" },
+    { q: "Che cos'è un proxy?", a: "Una colonna che fa le veci di una caratteristica protetta (es. il CAP)" },
+    { q: "Chi risponde di una decisione presa con un modello?", a: "Le persone e l'organizzazione che lo usano" },
+    { q: "Un caso in cui NON usare il machine learning?", a: "Quando una regola semplice e nota risolve il problema" },
+  ]}
+/>
+
+<Say who="sensei">Con questo il modulo è chiuso. Sai prevedere, raggruppare, misurare e, cosa più rara, dubitare. Tienilo caro.</Say>
+</Scene>

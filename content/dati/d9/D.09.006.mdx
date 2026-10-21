@@ -1,0 +1,156 @@
+---
+id: D.09.006
+course: dati
+module: 9
+title: "L'orchestrazione"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.005]
+objectives:
+  - "Spiegare a che cosa serve un orchestratore"
+  - "Leggere una pianificazione in stile cron"
+  - "Descrivere le dipendenze tra compiti come un grafo senza giri"
+video:
+  provider: youtube
+  id: "CGxxVj13sOs"
+  start: 0
+  end: 600
+  channel: "Data with Marc"
+  title: "What is Apache Airflow? For beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-orchestrazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pianificare con orari fissi senza dichiarare le dipendenze: il compito parte prima che i dati siano pronti"
+  - "Confondere l'orchestratore con chi fa il lavoro: decide quando e in che ordine, non trasforma i dati"
+  - "Scambiare i campi di cron (minuti e ore)"
+commands: []
+---
+
+<Scene title="Il report che parte troppo presto">
+Tavola Bella ha tre pipeline: una importa gli ordini, una importa i clienti, una prepara il report. Giulia le fa partire a mano, una dopo l'altra, ogni mattina.
+
+Un giorno è malata. Alle 7 parte da sola solo la pipeline del report, ma gli ordini non erano ancora arrivati: il capo riceve un report **vuoto**.
+
+La domanda del caso: **chi decide quando e in che ordine partono i compiti?**
+
+<Say who="sensei">Se la mattina dipende da una persona, la pipeline non è finita. Serve un direttore d'orchestra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il direttore d'orchestra">
+L'**orchestratore** è il programma che fa partire i compiti **al momento giusto**, nell'**ordine giusto**, e controlla come vanno.
+
+Non suona nessuno strumento: **non trasforma i dati**. Dice a ciascuno quando entrare. Strumenti conosciuti: **Apache Airflow**, Dagster, Prefect. Sono gratuiti e liberi da usare.
+
+Sa fare quattro cose:
+
+- **pianificare**: «ogni giorno alle 6»;
+- **rispettare le dipendenze**: «il report parte dopo gli ordini»;
+- **riprovare** se un compito fallisce;
+- **avvisare** se qualcosa non va.
+
+<Say who="assistente">Il direttore non suona: guarda lo spartito e dà gli attacchi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pianificare: la sintassi cron">
+Su molti sistemi la pianificazione si scrive con **cron**, cinque campi separati da spazi:
+
+<Log lines={[
+  "minuto  ora  giorno-del-mese  mese  giorno-della-settimana",
+  "",
+  "0 6 * * *     ogni giorno alle 06:00",
+  "30 2 * * 1    ogni lunedì alle 02:30",
+  "0 * * * *     all'inizio di ogni ora",
+]} />
+
+L'asterisco `*` significa «qualunque valore». Nel giorno della settimana, 1 è lunedì.
+
+<Callout kind="attenzione">
+Il campo dei **minuti** viene **prima** di quello delle **ore**. Chi scrive `6 0 * * *` ottiene le 00:06, non le 06:00.
+</Callout>
+
+<Say who="sensei">Un orario sbagliato di sei ore non dà errori. Dà risultati sbagliati. Rileggi sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dipendenze: chi aspetta chi">
+I compiti non sono tutti indipendenti. Si disegnano come **scatole con frecce**. Una freccia dice: «questo parte solo quando quello è finito».
+
+<Log lines={[
+  "importa_ordini  --\\",
+  "                   >--> prepara_report --> invia_email",
+  "importa_clienti --/",
+]} />
+
+`prepara_report` aspetta **entrambi** gli import. Se uno fallisce, il report **non parte**: meglio nessun report che un report sbagliato.
+
+Questo disegno si chiama **DAG** (grafo orientato senza giri): le frecce vanno in una direzione e non tornano mai indietro. Se tornassero, i compiti si aspetterebbero a vicenda per sempre.
+
+In Airflow ogni scatola è un **compito (task)**, tutto il disegno è un **DAG**. Un altro spiegone, con l'interfaccia vera:
+
+<Video />
+
+<Say who="assistente">Le frecce sono promesse: «io parto dopo di te».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il report parte alle 7:00 ogni mattina, l'import degli ordini alle 6:00 e di solito finisce in 20 minuti. Oggi l'import ha impiegato due ore e il report è uscito vuoto. Qual è la correzione migliore?"
+  options={[
+    "Dichiarare che il report dipende dall'import, così parte solo a import finito",
+    "Spostare il report alle 7:05",
+    "Far partire l'import alle 5:59",
+    "Rimuovere il controllo degli errori",
+  ]}
+  answer={0}
+  explain="Spostare gli orari aggiusta solo il giorno di oggi: domani l'import potrebbe impiegare ancora di più. La dipendenza dichiarata rende il report corretto qualunque sia la durata."
+/>
+
+<Say who="sensei">Gli orari sono speranze. Le dipendenze sono regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di orchestrazione: pianificazioni, dipendenze e guasti.
+
+<Practice generator="d09-orchestrazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un buon orchestratore si nota solo quando manca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'orchestratore decide quando e in che ordine partono i compiti; non elabora i dati.
+- Cron: minuto, ora, giorno del mese, mese, giorno della settimana; * vuol dire qualunque.
+- Le dipendenze si disegnano come DAG: frecce senza giri; un compito parte solo se i precedenti sono riusciti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire 0 6 * * *?", a: "Ogni giorno alle 06:00" },
+    { q: "Che cos'è un DAG?", a: "Un grafo con frecce a senso unico e senza giri: i compiti e il loro ordine" },
+    { q: "Perché dichiarare le dipendenze invece di spostare gli orari?", a: "Gli orari reggono solo se i tempi non cambiano; le dipendenze reggono sempre" },
+    { q: "Nomina due orchestratori.", a: "Apache Airflow, Dagster (anche Prefect)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come accorgersi che i dati sono sbagliati. Qualità e monitoraggio.</Say>
+</Scene>

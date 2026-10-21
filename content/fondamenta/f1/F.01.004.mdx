@@ -1,0 +1,142 @@
+---
+id: F.01.004
+course: fondamenta
+module: 1
+title: "File e programmi"
+belt: bianca
+duration_min: 8
+prerequisites: [F.01.003]
+objectives:
+  - "Spiegare che cosa sono un file, un'estensione e un eseguibile"
+  - "Distinguere programma e processo"
+  - "Capire che cosa significa «installare»"
+video:
+  provider: youtube
+  id: "m_B-skJCEpc"
+  start: 0
+  end: 313
+  channel: "Prof. Liuzzi (Nico)"
+  title: "Cosa Sono le Estensioni dei File e a Cosa Servono?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-file-programmi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi del nome del file senza guardare l'estensione vera"
+  - "Confondere il programma (file sul disco) con il processo (programma in esecuzione)"
+  - "Pensare che cambiare l'estensione converta il file"
+commands: []
+---
+
+<Scene title="La fattura che non è una fattura">
+Un collega riceve un'email con un allegato: **fattura.pdf.exe**. Sull'icona c'è il simbolo di un PDF. Sta per aprirlo.
+
+<Callout kind="attenzione">
+La domanda del caso: **perché non deve aprirlo?** Per rispondere servono quattro parole: file, estensione, eseguibile, processo.
+</Callout>
+
+<Say who="sensei">Un nome può mentire. L'estensione, di solito, dice la verità. Impara a leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il file e la sua estensione">
+Un **file** è un insieme di dati salvato con un nome, di solito sul disco. Ne hai migliaia: foto, documenti, programmi.
+
+Le ultime lettere del nome, dopo l'ultimo punto, sono l'**estensione**: `.jpg`, `.docx`, `.txt`, `.exe`. Dicono al sistema **che tipo di file è** e con quale programma aprirlo.
+
+<Callout kind="trucco">
+Cambiare l'estensione **non converte** il file. Rinominare `foto.jpg` in `foto.txt` cambia solo il nome: il contenuto è sempre una foto, ma il sistema prova ad aprirla come testo.
+</Callout>
+
+<Say who="assistente">Su Windows le estensioni sono spesso nascoste. Conviene mostrarle: così non ti fai ingannare dai nomi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il programma e il processo">
+Un **eseguibile** è un file che contiene istruzioni che la CPU può eseguire. È un **programma**. Su Windows ha spesso estensione `.exe`.
+
+Mentre è chiuso, il programma è solo un file sull'armadio (il disco). Quando lo avvii, il sistema lo copia nella RAM e lo fa lavorare: ora è un **processo**.
+
+<Callout kind="regola">
+**Programma** = il file sul disco. **Processo** = quel programma **in esecuzione**. Aprendo due volte lo stesso programma ottieni due processi.
+</Callout>
+
+<Say who="sensei">Ecco la risposta al caso. Un file con estensione finale .exe è un programma. Aprirlo vuol dire farlo girare con i tuoi permessi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa vuol dire installare">
+**Installare** un programma, in generale, significa tre cose:
+
+<Guided
+  steps={[
+    "I file del programma vengono copiati nel computer, in una cartella precisa.",
+    "Il sistema operativo viene a sapere dove sono e come avviarli (collegamenti, voci nel menu).",
+    "A volte si aggiungono impostazioni e piccoli servizi che partono da soli.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un programma, una volta avviato, può fare tutto ciò che permette l'utente che l'ha lanciato. Per questo si installa **solo da fonti ufficiali**.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Poco più di cinque minuti sulle estensioni:
+
+<Video />
+
+<Say who="assistente">Quando un programma si blocca, non cancellarlo: chiudi il suo processo dal gestore delle attività.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Ricevi un allegato chiamato «curriculum.pdf.exe». Qual è la lettura giusta?"
+  options={["È un programma che si finge un PDF: non lo apro", "È un PDF compresso, quindi sicuro", "È un PDF normale con due estensioni", "È un PDF che si apre da solo senza problemi"]}
+  answer={0}
+  explain="Conta l'ultima estensione: .exe. Il «.pdf» è solo parte del nome, messo lì per ingannare. Chi risponde «PDF compresso» si è fidato del nome invece dell'estensione vera."
+/>
+
+<Say who="sensei">L'ultima estensione comanda. Sempre l'ultima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su file, programmi e processi. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-file-programmi" pass="5/5" retries={3} />
+
+<Say who="sensei">Un clic su un file sbagliato può costare caro. Un'occhiata all'estensione, nulla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un file è un insieme di dati con un nome; l'estensione dice il tipo, ma non converte nulla.
+- Programma = file eseguibile sul disco; processo = programma in esecuzione.
+- Installare vuol dire copiare i file e dire al sistema dove sono: si fa solo da fonti ufficiali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Rinominare foto.jpg in foto.txt la converte?", a: "No, cambia solo il nome" },
+    { q: "Che cos'è un eseguibile?", a: "Un file con istruzioni che la CPU può eseguire" },
+    { q: "Differenza tra programma e processo?", a: "Il programma è il file; il processo è il programma in esecuzione" },
+    { q: "In «fattura.pdf.exe» quale estensione conta?", a: "L'ultima: .exe" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le macchine virtuali. Un computer dentro il computer, dove puoi sbagliare senza paura.</Say>
+</Scene>

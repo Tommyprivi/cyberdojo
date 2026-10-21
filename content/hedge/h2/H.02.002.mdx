@@ -1,0 +1,159 @@
+---
+id: H.02.002
+course: hedge
+module: 2
+title: "Global macro: scommettere sui Paesi"
+belt: gialla
+duration_min: 8
+prerequisites: [H.02.001]
+objectives:
+  - "Spiegare che cosa fa un fondo global macro e su quali strumenti lavora"
+  - "Calcolare il risultato di una scommessa su una moneta con numeri semplici"
+  - "Riconoscere i rischi: idea giusta ma tempi sbagliati, leva, eventi imprevisti"
+video:
+  provider: youtube
+  id: "XZpkZ30m2Hk"
+  start: 0
+  end: 174
+  channel: "Simple Explain"
+  title: "Global Macro Hedge Fund: What is it, How it Works, Example"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-macro
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che indovinare la direzione dell'economia basti: contano anche i tempi e la dimensione della posizione"
+  - "Dimenticare che l'idea può essere giusta ma il mercato resta «sbagliato» più a lungo di quanto il fondo regga"
+  - "Pensare che macro significhi solo valute: si opera anche su tassi, azioni e materie prime"
+commands: []
+---
+
+<Scene title="Il Paese di Valdora">
+**Valdora** è un Paese inventato. Da due anni i prezzi salgono in fretta e la banca centrale tiene i tassi d'interesse bassi per non frenare l'economia. Il governo spende più di quanto incassa. La moneta, il **valdo**, vale 10 valdi per un euro.
+
+Livia, gestore del fondo fittizio **Orizzonte Macro**, pensa che il valdo sia destinato a perdere valore. La domanda del caso: **si può trasformare un'idea sull'economia di un Paese in una posizione di investimento?**
+
+<Callout kind="attenzione">
+Questa lezione spiega un metodo di ragionamento. Non è una raccomandazione: si può perdere denaro, anche tutto. Paese, moneta e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Un'idea sui Paesi è una scommessa come le altre: va misurata prima, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il global macro">
+**Macro** vuol dire «grande»: il fondo guarda i grandi numeri di un'economia, come inflazione, tassi d'interesse, debito pubblico, crescita. Poi sceglie lo strumento per puntare su ciò che pensa accadrà.
+
+Gli strumenti più usati:
+
+- **Valute** (euro, dollaro, yen…)
+- **Tassi d'interesse** e titoli di Stato
+- **Indici di borsa**
+- **Materie prime** (petrolio, oro, grano)
+
+Il fondo può stare long o short, in tanti Paesi. Alcuni gestori decidono con il proprio giudizio (**discrezionali**), altri seguono regole fisse scritte in un modello (**sistematici**).
+
+Vuoi sentirlo da un'altra voce? Meno di tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il global macro è il fondo con la cartina geografica sul tavolo. Prima il Paese, poi lo strumento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di Livia">
+Livia vende **10 milioni di valdi** contro euro quando il cambio è 10 valdi per 1 euro. Incassa **1 milione di euro**. Più avanti dovrà ricomprare i 10 milioni di valdi per chiudere la scommessa. Tre futuri possibili (numeri inventati, senza costi né interessi):
+
+<Guided
+  steps={[
+    "Oggi: 10.000.000 di valdi / 10 = 1.000.000 di euro incassati.",
+    "Caso A, il valdo si indebolisce: il cambio va a 12,5 valdi per euro. Per ricomprare 10 milioni di valdi servono 10.000.000 / 12,5 = 800.000 euro. Guadagno: 1.000.000 - 800.000 = +200.000 euro.",
+    "Caso B, il valdo si rafforza: il cambio va a 8 valdi per euro. Servono 10.000.000 / 8 = 1.250.000 euro. Perdita: 1.000.000 - 1.250.000 = -250.000 euro.",
+    "Un'idea giusta sul Paese non basta: vale anche di quanto si muove il cambio e in quanto tempo. Qui la perdita è su una posizione da un milione.",
+  ]}
+/>
+
+<Callout kind="regola">
+Nel global macro conta la **direzione**, la **misura** del movimento e il **tempo**. Sbagliare una sola delle tre può costare caro.
+</Callout>
+
+<Say who="sensei">Controlla i conti due volte. Un valdo che sale invece di scendere si paga in euro veri, se i soldi fossero veri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando l'idea è giusta ma il fondo perde">
+Livia ha ragione sul lungo periodo, ma il valdo **resta forte per un altro anno**. Intanto:
+
+- La posizione perde, e il fondo deve metterci più soldi come garanzia.
+- Gli investitori vedono il rosso e possono chiedere indietro i soldi.
+- Livia è costretta a chiudere in perdita **prima** che l'idea si avveri.
+
+Molte posizioni macro usano la **leva**: si prende in prestito per fare una posizione più grande del capitale. La leva ingrandisce guadagni e perdite, e rende i tempi sbagliati ancora più pericolosi.
+
+Inoltre un Paese può cambiare idea di colpo: la banca centrale alza i tassi, il governo vara una legge, scoppia una crisi altrove. Eventi che nessun modello prevede bene.
+
+<Callout kind="attenzione">
+I gestori macro famosi sono pochi e quelli che hanno sbagliato di più non finiscono nelle storie. Un racconto di successo non è una prova.
+</Callout>
+
+<Say who="assistente">Essere giusti troppo presto, nel trading, assomiglia molto a essere sbagliati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo macro vende 6 milioni di una moneta a cambio 6 per 1 euro, incassando 1 milione di euro. Il cambio sale a 8 monete per euro (la moneta si indebolisce). Quanto vale il risultato, senza costi?"
+  options={[
+    "Guadagno di 250.000 euro",
+    "Perdita di 250.000 euro",
+    "Guadagno di 333.333 euro",
+    "Nessun guadagno e nessuna perdita",
+  ]}
+  answer={0}
+  explain="Per ricomprare 6 milioni di monete a cambio 8 servono 6.000.000 / 8 = 750.000 euro. Il fondo aveva incassato 1.000.000: guadagna 250.000. Chi sceglie la perdita ha confuso il verso: qui il fondo ha venduto la moneta, quindi guadagna se si indebolisce. Chi dice 333.333 ha calcolato una percentuale sul cambio invece di ricomprare le monete."
+/>
+
+<Say who="assistente">Quando la moneta si indebolisce, per ricomprarla servono meno euro. Chi aveva venduto guadagna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sul global macro: calcoli su monete e ragionamenti sui rischi.
+
+<Practice generator="h02-macro" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda il metodo: direzione, misura, tempo. E il rischio viene prima del sogno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il global macro parte da grandi numeri (inflazione, tassi, debito) e sceglie valute, tassi, indici o materie prime per puntare sulla propria idea.
+- Contano tre cose: la direzione, la misura e il tempo. Un'idea giusta nel momento sbagliato può far perdere.
+- La leva e gli eventi imprevisti (banche centrali, crisi) sono i rischi principali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Su quali strumenti lavora un fondo global macro?", a: "Valute, tassi d'interesse e titoli di Stato, indici di borsa, materie prime" },
+    { q: "Che differenza c'è tra macro discrezionale e sistematico?", a: "Il discrezionale decide con il proprio giudizio, il sistematico segue regole di un modello" },
+    { q: "Perché un'idea giusta può portare a una perdita?", a: "Perché il mercato può impiegare più tempo del previsto e il fondo può essere costretto a chiudere prima" },
+    { q: "Che cosa fa la leva?", a: "Ingrandisce la posizione rispetto al capitale, quindi anche guadagni e perdite" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli event driven. Non un Paese, ma un fatto preciso: una fusione, una scissione, un fallimento.</Say>
+</Scene>

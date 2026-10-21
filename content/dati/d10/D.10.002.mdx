@@ -1,0 +1,150 @@
+---
+id: D.10.002
+course: dati
+module: 10
+title: "Le metriche di un negozio online"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.001]
+objectives:
+  - "Calcolare conversione, ricavo medio per utente e costo di acquisizione"
+  - "Distinguere utenti attivi, ordini e clienti"
+  - "Scegliere la metrica giusta per una domanda"
+video:
+  provider: youtube
+  id: "hyC9WOKzUMc"
+  start: 0
+  end: 305
+  channel: "CodeLucky"
+  title: "SaaS Metrics Explained: MRR, ARR, Churn, LTV & CAC | Product Management for Beginners"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-metriche-prodotto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dividere per il numero sbagliato (visite invece di ordini, ordini invece di clienti)"
+  - "Confondere il ricavo medio per ordine con quello per utente"
+  - "Dimenticare che costo di acquisizione e ricavo per utente vanno confrontati insieme"
+commands: []
+---
+
+<Scene title="Un mese di Tavola Bella">
+Giulia apre il rapporto di marzo di **Tavola Bella**, il negozio online di prodotti da cucina. Questi sono i numeri grezzi:
+
+| Voce | Marzo |
+|---|---|
+| Visitatori del sito | 10.000 |
+| Ordini | 300 |
+| Clienti che hanno comprato | 250 |
+| Nuovi clienti | 100 |
+| Ricavo | 12.000 € |
+| Spesa in pubblicità | 1.500 € |
+
+Il capo chiede: **«Stiamo andando bene o male?»** Da questi sei numeri nascono molte metriche, e ognuna risponde a una domanda diversa.
+
+<Say who="sensei">Numeri grezzi non rispondono a niente. Si dividono l'uno per l'altro, e ogni divisione è una domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Conversione e utenti attivi">
+Prima domanda: **quanti dei visitatori comprano?** Si chiama **tasso di conversione**.
+
+conversione = ordini ÷ visitatori = 300 ÷ 10.000 = **3%**
+
+Seconda: **quanta gente usa davvero il negozio?** Un **utente attivo** è chi ha fatto l'azione che conta in un periodo: qui chi ha comprato in marzo. Sono **250**, non i 10.000 visitatori.
+
+Vuoi sentire un'altra voce? Un video corto, in inglese, sulle metriche di prodotto (usa i sottotitoli):
+
+<Video />
+
+<Callout kind="attenzione">
+Scrivi sempre **per che cosa** dividi. 300 ordini su 10.000 visitatori è una conversione. 300 ordini su 250 clienti è un'altra cosa: gli ordini per cliente.
+</Callout>
+
+<Say who="assistente">Gli utenti attivi sono chi si fa vedere e agisce, non chi passa solo davanti alla vetrina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto vale un cliente">
+Terza domanda: **quanto spende in media ogni cliente?** Il **ricavo medio per utente** (in inglese ARPU) è il ricavo diviso gli utenti attivi.
+
+ricavo per cliente = 12.000 ÷ 250 = **48 €**
+
+Il **valore medio dell'ordine** invece divide per gli ordini: 12.000 ÷ 300 = **40 €**.
+
+Due numeri simili ma diversi: il primo conta le persone, il secondo gli acquisti. Chi compra più volte nel mese fa salire il primo.
+
+<Callout kind="trucco">
+Il numeratore (sopra) è il ricavo. Il denominatore (sotto) dice **di chi o di che cosa** stai parlando: clienti o ordini.
+</Callout>
+
+<Say who="sensei">Stesso ricavo, due denominatori, due risposte. Scegli quella che serve alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto costa un cliente">
+Quarta domanda: **quanto spendiamo per trovare un cliente nuovo?** Il **costo di acquisizione** (CAC) è la spesa di pubblicità divisa per i **nuovi** clienti.
+
+CAC = 1.500 ÷ 100 = **15 €**
+
+Attenzione: i nuovi sono 100, non 250. Gli altri 150 erano già clienti.
+
+<Quiz
+  question="Un cliente nuovo costa 15 € di pubblicità. In un mese spende in media 48 €. Che cosa si può dire?"
+  options={["Ricavo per cliente (48 €) è più alto del costo di acquisizione (15 €): conviene, se il margine copre i costi", "Conviene sempre, perché 48 è più di 15", "Non conviene, perché 15 € sono una spesa", "Non si può dire niente: sono metriche diverse"]}
+  answer={0}
+  explain="Si confrontano proprio per questo. Ma 48 € è ricavo, non guadagno: servono anche i costi dei prodotti e della spedizione. Per questo si scrive «se il margine copre i costi»."
+/>
+
+<Say who="assistente">Costo per trovarlo, ricavo che porta: sono i due piatti della bilancia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Altro mese, altro negozio fittizio: calcola con calma, a mano.
+
+<Guided
+  steps={[
+    "Aprile: 8.000 visitatori, 240 ordini. Conversione: 240 ÷ 8.000 = 3%.",
+    "Ricavo 9.600 €, clienti attivi 200. Ricavo per cliente: 9.600 ÷ 200 = 48 €.",
+    "Pubblicità 1.200 €, nuovi clienti 60. CAC: 1.200 ÷ 60 = 20 €.",
+    "Domanda di controllo: il CAC è salito da 15 a 20 €. È un segnale per il team di pubblicità, anche se il ricavo per cliente non è cambiato.",
+  ]}
+/>
+
+<Practice generator="d10-metriche-prodotto" pass="5/5" retries={3} />
+
+<Say who="sensei">Divisioni giuste, denominatori giusti. Un denominatore sbagliato fa decidere male un budget.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Conversione = ordini ÷ visitatori. Utenti attivi = chi ha fatto l'azione che conta nel periodo.
+- Ricavo per utente = ricavo ÷ utenti attivi. Valore medio ordine = ricavo ÷ ordini.
+- Costo di acquisizione = spesa ÷ nuovi clienti, da confrontare con quanto il cliente porta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "10.000 visitatori, 300 ordini: conversione?", a: "3%" },
+    { q: "Ricavo 12.000 €, 250 clienti: ricavo per cliente?", a: "48 €" },
+    { q: "Spesa 1.500 €, 100 nuovi clienti: CAC?", a: "15 €" },
+    { q: "Per che cosa si divide la spesa nel CAC?", a: "Per i clienti nuovi, non per tutti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: l'imbuto. Dove si perdono i visitatori tra la vetrina e la cassa.</Say>
+</Scene>

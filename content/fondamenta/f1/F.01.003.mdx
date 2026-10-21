@@ -1,0 +1,146 @@
+---
+id: F.01.003
+course: fondamenta
+module: 1
+title: "Il sistema operativo"
+belt: bianca
+duration_min: 8
+prerequisites: [F.01.002]
+objectives:
+  - "Spiegare che cosa fa il sistema operativo e che cos'è il kernel"
+  - "Dire a che cosa serve un driver"
+  - "Confrontare Windows, macOS e Linux in modo semplice"
+video:
+  provider: youtube
+  id: "jGnO3c7FX6U"
+  start: 0
+  end: 282
+  channel: "Informaticaso"
+  title: "Il Sistema Operativo in 5 minuti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f01-sistema-operativo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere il kernel con tutto il sistema operativo"
+  - "Pensare che Linux sia un programma da installare dentro Windows"
+  - "Credere che un programma possa usare l'hardware senza chiedere al sistema"
+commands: []
+---
+
+<Scene title="La stampante che non risponde">
+Colleghi una stampante nuova. Il computer la vede, ma non stampa. Poi scarichi un piccolo programma dal sito del produttore e **funziona**.
+
+Che cosa è successo? Chi decideva se la stampante poteva parlare con il computer?
+
+<Callout kind="attenzione">
+La domanda del caso: **chi sta in mezzo tra i programmi e i pezzi fisici?**
+</Callout>
+
+<Say who="sensei">Tra l'app che apri e la macchina che gira c'è qualcuno che organizza tutto. Si chiama sistema operativo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il direttore d'orchestra">
+Il **sistema operativo** (spesso abbreviato in **SO**) è il programma principale del computer. Fa tre cose:
+
+- **gestisce le risorse**: decide chi usa la CPU, quanta RAM tocca a ciascun programma, dove stanno i file
+- **fa da ponte** tra i programmi e l'hardware
+- **ti dà un'interfaccia**: finestre, icone, un terminale
+
+<Callout kind="regola">
+Un programma non parla mai direttamente con i pezzi fisici. **Chiede al sistema operativo**, e lui decide.
+</Callout>
+
+<Say who="assistente">Come un direttore d'orchestra: non suona, ma decide quando ognuno entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il kernel e i driver">
+Il **kernel** è il nucleo del sistema operativo: la parte che controlla davvero CPU, memoria e dispositivi. Il resto (interfaccia, programmi di base, servizi) gli sta intorno.
+
+I **driver** sono piccoli programmi che insegnano al sistema a usare **un dispositivo preciso**: stampante, scheda video, webcam. Sono come **traduttori**: ogni dispositivo parla una sua lingua.
+
+<Callout kind="attenzione">
+Kernel e sistema operativo **non sono la stessa cosa**. Il kernel è il nucleo; il sistema operativo comprende molto di più.
+</Callout>
+
+<Say who="sensei">Ecco la risposta al caso. Il programma scaricato era il driver: mancava il traduttore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Windows, macOS, Linux">
+I tre sistemi più diffusi sui computer:
+
+- **Windows**: il più diffuso sui PC. Prodotto da Microsoft, a pagamento (di solito incluso nel computer).
+- **macOS**: il sistema dei computer Apple. Funziona solo su quell'hardware.
+- **Linux**: un kernel **libero**, usato in tante versioni chiamate **distribuzioni** (Ubuntu, Debian, Kali...). Gratuito, personalizzabile, molto usato sui server.
+
+<Callout kind="curiosita">
+Un programma scritto per un sistema, di solito, **non gira** sugli altri senza adattamenti. Per questo esistono versioni diverse dello stesso programma.
+</Callout>
+
+<Callout kind="trucco">
+Nel nostro corso useremo soprattutto **Linux**, nella distribuzione **Kali**. Ecco perché ti serve conoscerlo.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di cinque minuti:
+
+<Video />
+
+<Say who="assistente">Tre sistemi, tre famiglie. Non c'è quello «giusto»: ognuno ha il suo scopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un programma difettoso prova a scrivere dove non deve. Perché, di solito, non manda in tilt tutto il computer?"
+  options={["Perché passa dal sistema operativo, che controlla i permessi e lo ferma", "Perché la CPU lo riconosce da sola e lo cancella", "Perché la RAM è più forte del programma", "Perché il disco si protegge da solo"]}
+  answer={0}
+  explain="I programmi non toccano l'hardware direttamente: chiedono al sistema operativo, che controlla cosa possono fare. È uno dei motivi per cui il sistema operativo esiste."
+/>
+
+<Say who="sensei">Se ogni programma facesse come vuole, il computer sarebbe un caos. Il SO è l'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sistema operativo, kernel e driver. Servono **cinque giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f01-sistema-operativo" pass="5/5" retries={3} />
+
+<Say who="sensei">Sapere chi comanda dentro il computer è il primo passo per capire chi può abusarne.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il sistema operativo gestisce le risorse, fa da ponte tra programmi e hardware e offre un'interfaccia.
+- Il kernel è il suo nucleo; i driver insegnano a usare i dispositivi.
+- Windows, macOS e Linux sono tre famiglie diverse: Linux è libero e lo useremo nel corso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il kernel?", a: "Il nucleo del sistema operativo: controlla CPU, memoria e dispositivi" },
+    { q: "A che cosa serve un driver?", a: "A far usare al sistema un dispositivo preciso" },
+    { q: "Che cos'è Linux?", a: "Un kernel libero, usato in molte distribuzioni" },
+    { q: "Un programma può usare l'hardware senza chiedere?", a: "No: passa dal sistema operativo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: file e programmi. Che cos'è, davvero, ciò che apri ogni giorno.</Say>
+</Scene>

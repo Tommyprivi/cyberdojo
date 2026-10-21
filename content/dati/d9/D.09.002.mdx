@@ -1,0 +1,166 @@
+---
+id: D.09.002
+course: dati
+module: 9
+title: "ETL ed ELT"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.001]
+objectives:
+  - "Descrivere i tre passi: estrarre, trasformare, caricare"
+  - "Spiegare la differenza tra ETL ed ELT"
+  - "Scegliere tra i due in base al problema"
+video:
+  provider: youtube
+  id: "bv7tlrh32U4"
+  start: 0
+  end: 600
+  channel: "Andreas Kretz"
+  title: "ETL vs ELT Explained SIMPLE Example!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-etl
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che ETL ed ELT differiscano per i passi: cambia l'ORDINE e il LUOGO della trasformazione"
+  - "Pensare che ELT sia sempre migliore: con dati sensibili da nascondere prima, ETL può servire"
+  - "Dimenticare che caricare i dati grezzi vuol dire conservare anche quelli sbagliati o riservati"
+commands: []
+---
+
+<Scene title="Il file pieno di errori">
+Il magazzino di **Tavola Bella** manda ogni notte un file di ordini. Giulia lo apre e storce il naso:
+
+| id | citta | totale |
+|----|--------|--------|
+| 1 | roma | 20 |
+| 2 | Milano | 35 |
+| 3 | roma | -5 |
+| 4 | TORINO | 40 |
+
+Città scritte in modi diversi, un totale negativo. Prima di usare questi dati bisogna **ripulirli**. Ma **dove** farlo: prima di metterli nel magazzino dati, o dopo?
+
+<Say who="sensei">Un dato sporco non si butta e non si usa: si tratta. La domanda è quando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Estrarre, trasformare, caricare">
+Spostare dati da un posto all'altro richiede tre passi. Pensa a un **trasloco**:
+
+1. **Extract (estrarre)**: prendi gli scatoloni dalla vecchia casa.
+2. **Transform (trasformare)**: butti il superfluo, rimetti in ordine, etichetti.
+3. **Load (caricare)**: sistemi tutto nella casa nuova.
+
+Il processo classico si chiama **ETL**: estrai, trasformi, poi carichi. Il lavoro di pulizia avviene **in un posto di passaggio**, prima dell'arrivo.
+
+<Callout kind="trucco">
+ETL: **E**strai, **T**rasforma, **L**oad (carica). Le lettere stanno nell'ordine in cui accadono le cose.
+</Callout>
+
+<Say who="assistente">Nel trasloco ETL, nella casa nuova entra solo roba già pulita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ELT: prima carico, poi sistemo">
+Con l'**ELT** l'ordine cambia: estrai, **carichi subito i dati grezzi**, e li trasformi **dentro il magazzino**, di solito con SQL.
+
+Per Giulia: il file arriva e viene copiato così com'è in una tabella `ordini_grezzi`. Poi basta una query:
+
+<Log lines={[
+  "CREATE TABLE ordini_puliti AS",
+  "SELECT id, UPPER(citta) AS citta, totale",
+  "FROM ordini_grezzi",
+  "WHERE totale > 0;",
+  "",
+  "id  citta   totale",
+  "--  ------  ------",
+  "1   ROMA    20",
+  "2   MILANO  35",
+  "4   TORINO  40",
+]} />
+
+La riga 3, con il totale negativo, è esclusa dalla tabella pulita. Ma **nella tabella grezza c'è ancora**: se un giorno capiamo che quel -5 era un rimborso importante, possiamo recuperarlo.
+
+Altra voce, altro esempio? Guarda qui:
+
+<Video />
+
+<Say who="sensei">ELT conserva l'originale. È come tenere la foto non ritoccata accanto a quella ritoccata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale scegliere">
+Nessuno dei due vince sempre. Guarda il problema:
+
+| Situazione | Scelta |
+|------------|--------|
+| Magazzino dati cloud potente, si vuole tenere anche il grezzo | ELT |
+| Dati con codici fiscali da nascondere **prima** che arrivino ovunque | ETL |
+| Archivio piccolo e costoso, entra solo il necessario | ETL |
+| Molte analisi diverse che richiedono trasformazioni diverse | ELT |
+
+<Callout kind="attenzione">
+Con ELT i dati grezzi, anche quelli riservati, finiscono nel magazzino. Chi può leggerli? Ne parliamo nell'ultima lezione del modulo.
+</Callout>
+
+<Say who="assistente">Domanda guida: voglio tenere anche il dato originale, o ci sono cose che non devono nemmeno arrivare?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una clinica deve portare nel magazzino dati le visite, ma i nomi dei pazienti non devono arrivarci in chiaro. Quale approccio è più adatto?"
+  options={[
+    "ETL: si nascondono i nomi prima del caricamento",
+    "ELT: si caricano i nomi e si spera che nessuno li legga",
+    "Nessuno dei due: i dati non si spostano mai",
+    "ELT, perché è più moderno",
+  ]}
+  answer={0}
+  explain="Con dati sensibili conviene trasformare prima di caricare: i nomi non arrivano mai nel magazzino. Scegliere ELT solo perché è moderno è l'errore più comune."
+/>
+
+<Say who="sensei">Si sceglie per il problema, non per la moda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari: per ogni caso, dì se serve ETL o ELT e che cosa è andato storto.
+
+<Practice generator="d09-etl" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sceglie bene l'ordine dei passi risparmia mesi di guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tre passi: estrarre, trasformare, caricare.
+- ETL trasforma prima di caricare; ELT carica il grezzo e trasforma dentro il magazzino.
+- ETL se i dati sensibili vanno nascosti prima; ELT se si vuole tenere il grezzo e il magazzino è potente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa cambia tra ETL ed ELT?", a: "L'ordine: dove e quando si trasformano i dati" },
+    { q: "Vantaggio di ELT?", a: "Si conserva il dato grezzo e si può rifare la trasformazione" },
+    { q: "Quando conviene ETL?", a: "Con dati sensibili da nascondere o archivi piccoli" },
+    { q: "Che cos'è un dato grezzo?", a: "Il dato così come arriva, prima di ogni pulizia" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i passi diventano una catena. Le pipeline.</Say>
+</Scene>

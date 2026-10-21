@@ -1,0 +1,245 @@
+---
+id: D.03.008
+course: dati
+module: 3
+title: "CASE, date e testo"
+belt: gialla
+duration_min: 9
+prerequisites: [D.03.007]
+objectives:
+  - "Classificare i dati con CASE WHEN, anche dentro un'aggregazione"
+  - "Usare le date per filtrare e raggruppare (per esempio per mese)"
+  - "Pulire il testo con funzioni come UPPER, TRIM, || e COALESCE, sapendo che i database hanno nomi diversi"
+video:
+  provider: youtube
+  id: "Hv-2eJb1r2A"
+  start: 0
+  end: 600
+  channel: "Mirco Miglietta"
+  title: "DATE & CASE WHEN | SQL per DATA ANALYST LEZIONE 9"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-case-date-testo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere le condizioni di CASE nell'ordine sbagliato: vince la prima vera"
+  - "Dimenticare ELSE: le righe non coperte diventano NULL"
+  - "Dare per scontato che le funzioni di data e di testo si chiamino allo stesso modo in tutti i database"
+commands: []
+---
+
+<Scene title="Etichette e mesi">
+Marta chiede tre cose che non sono nelle tabelle così come sono:
+
+1. dividere i prodotti in fasce: **economico, medio, premium**;
+2. quanti ordini e quanto incasso **mese per mese**;
+3. un elenco clienti **pulito**, con i nomi in maiuscolo e la scritta «non indicata» dove manca la città.
+
+Sono tutte trasformazioni: partono dai dati che ci sono e li **riscrivono** in una forma più utile.
+
+La domanda del caso: **come si trasformano i dati direttamente dentro la query?**
+
+<Say who="sensei">I dati veri arrivano sporchi e mai nella forma che serve. Trasformarli bene è il mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CASE WHEN: le condizioni dentro la query">
+`CASE WHEN` è l'«se... allora... altrimenti» di SQL. Si controllano le condizioni **in ordine**: vince la **prima vera**. `ELSE` copre tutti gli altri casi, e si chiude con `END`.
+
+<Log lines={[
+  "SELECT nome, prezzo,",
+  "       CASE WHEN prezzo < 10 THEN 'economico'",
+  "            WHEN prezzo < 18 THEN 'medio'",
+  "            ELSE 'premium'",
+  "       END AS fascia",
+  "FROM prodotti",
+  "ORDER BY prezzo;",
+  "",
+  "nome             | prezzo | fascia",
+  "sapone lavanda   | 6.00   | economico",
+  "sapone argilla   | 7.50   | economico",
+  "candela vaniglia | 12.50  | medio",
+  "candela cedro    | 18.00  | premium",
+  "candela mirra    | 19.00  | premium",
+  "profumatore      | 24.00  | premium",
+]} caption="Tre fasce di prezzo." />
+
+La candela cedro costa esattamente 18.00: non è `< 18`, quindi cade nell'`ELSE` e diventa premium.
+
+<Callout kind="attenzione">
+Senza `ELSE`, le righe che non soddisfano nessuna condizione ricevono **NULL**. E l'ordine conta: se scrivessi prima `WHEN prezzo < 18` e poi `WHEN prezzo < 10`, il secondo non scatterebbe mai (i prezzi sotto 10 sono già sotto 18).
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video su date e CASE WHEN:
+
+<Video />
+
+<Say who="assistente">Il database legge i WHEN dall'alto e si ferma al primo vero. Metti prima i casi più specifici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CASE dentro un'aggregazione">
+`CASE` dentro `SUM` o `COUNT` permette di **contare solo alcune righe**: è un trucco molto usato dagli analisti. Si assegna 1 alle righe che interessano e 0 alle altre, poi si somma.
+
+<Log lines={[
+  "SELECT SUM(CASE WHEN totale >= 20 THEN 1 ELSE 0 END) AS ordini_grandi,",
+  "       COUNT(*) AS ordini_totali",
+  "FROM ordini;",
+  "",
+  "ordini_grandi | ordini_totali",
+  "3             | 8",
+]} caption="Quanti ordini superano 20 euro, sul totale degli ordini." />
+
+Gli ordini da almeno 20 euro sono tre (25.00, 24.00 e 30.00) su otto.
+
+Lo stesso trucco serve per mettere categorie diverse in colonne diverse, in una sola riga:
+
+<Log lines={[
+  "SELECT SUM(CASE WHEN data >= '2025-04-01' AND data < '2025-05-01' THEN totale ELSE 0 END) AS incasso_aprile,",
+  "       SUM(CASE WHEN data >= '2025-04-01' AND data < '2025-05-01' THEN 0 ELSE totale END) AS incasso_altri",
+  "FROM ordini;",
+  "",
+  "incasso_aprile | incasso_altri",
+  "81.50          | 73.00",
+]} caption="Incasso dei soli ordini di aprile e di tutti gli altri, in una riga." />
+
+<Say who="sensei">Controlla: 81.50 più 73.00 fa 154.50, il totale di tutti gli ordini. Le due colonne non perdono niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le date">
+Le date si scrivono in formato **AAAA-MM-GG** (standard ISO): `2025-04-10`. Così l'ordine alfabetico coincide con l'ordine nel tempo, e i confronti con `>=` e `<` funzionano.
+
+Per raggruppare per **mese** si estrae il mese dalla data. In SQL standard e in PostgreSQL si usa `EXTRACT`:
+
+<Log lines={[
+  "SELECT EXTRACT(MONTH FROM data) AS mese,",
+  "       COUNT(*) AS n_ordini,",
+  "       SUM(totale) AS incasso",
+  "FROM ordini",
+  "GROUP BY EXTRACT(MONTH FROM data)",
+  "ORDER BY mese;",
+  "",
+  "mese | n_ordini | incasso",
+  "3    | 3        | 61.00",
+  "4    | 4        | 81.50",
+  "5    | 1        | 12.00",
+]} caption="Ordini e incasso per mese (PostgreSQL e SQL standard)." />
+
+Marzo 3 ordini, aprile 4, maggio 1. Controllo: 61.00 + 81.50 + 12.00 = 154.50.
+
+<Callout kind="attenzione">
+**Qui i database sono diversi.** Stessa idea, nomi diversi:
+- mese di una data: `EXTRACT(MONTH FROM data)` (PostgreSQL, standard), `MONTH(data)` (MySQL, SQL Server), `strftime('%m', data)` (SQLite);
+- data di oggi: `CURRENT_DATE` (quasi ovunque);
+- aggiungere 7 giorni: `data + INTERVAL '7 days'` (PostgreSQL), `DATE_ADD(data, INTERVAL 7 DAY)` (MySQL), `date(data, '+7 days')` (SQLite).
+
+Quando cambi database, cerca nella sua documentazione la funzione equivalente. La logica non cambia.
+</Callout>
+
+<Say who="assistente">Non imparare a memoria tutte le funzioni di data. Impara cosa chiedere: «estrai il mese», «aggiungi giorni», «differenza tra date».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il testo e i valori mancanti">
+Le funzioni di testo servono a **pulire e preparare**. Le più comuni: `UPPER` e `LOWER` (maiuscolo e minuscolo), `LENGTH` (lunghezza), `TRIM` (toglie spazi ai bordi), `SUBSTR` (un pezzo di testo), `||` (unisce testi).
+
+`COALESCE(a, b)` restituisce il **primo valore non NULL**: perfetto per sostituire i valori mancanti.
+
+<Log lines={[
+  "SELECT UPPER(nome) AS cliente,",
+  "       COALESCE(citta, 'non indicata') AS citta",
+  "FROM clienti",
+  "ORDER BY id;",
+  "",
+  "cliente      | citta",
+  "GIULIA FERRI | Torino",
+  "MARCO BASSI  | Milano",
+  "SARA NERI    | Torino",
+  "LUCA RIVA    | Roma",
+  "ANNA CONTI   | Milano",
+  "PAOLO GALLO  | non indicata",
+]} caption="Nomi in maiuscolo e città mancante sostituita." />
+
+<Log lines={[
+  "SELECT nome || ' (' || categoria || ')' AS etichetta",
+  "FROM prodotti",
+  "WHERE categoria = 'candele'",
+  "ORDER BY id;",
+  "",
+  "etichetta",
+  "candela vaniglia (candele)",
+  "candela cedro (candele)",
+  "candela mirra (candele)",
+]} caption="Unire testi con ||: nome e categoria in una sola colonna." />
+
+<Callout kind="attenzione">
+Differenze tra database: `||` unisce testi in PostgreSQL e SQLite (è lo standard), ma in MySQL si usa `CONCAT(a, b)`. In SQL Server si usa `+` o `CONCAT`. Per «una parte di testo», `SUBSTR` esiste in quasi tutti, `SUBSTRING` in PostgreSQL, MySQL e SQL Server.
+</Callout>
+
+<Callout kind="curiosita">
+Se unisci un testo con un valore NULL usando `||`, il risultato è NULL. Un altro motivo per usare `COALESCE` prima di unire.
+</Callout>
+
+<Say who="sensei">Un NULL in una concatenazione cancella tutto il testo. COALESCE prima, concatenazione dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta vuole contare, in una sola query, quanti ordini hanno quantità maggiore o uguale a 3, e quanti ordini ci sono in tutto. Quale query serve?"
+  options={[
+    "SELECT SUM(CASE WHEN quantita >= 3 THEN 1 ELSE 0 END) AS grandi, COUNT(*) AS totali FROM ordini;",
+    "SELECT COUNT(CASE WHEN quantita >= 3) AS grandi, COUNT(*) AS totali FROM ordini;",
+    "SELECT SUM(quantita >= 3) AS grandi, COUNT(*) AS totali FROM ordini WHERE quantita >= 3;",
+    "SELECT CASE WHEN quantita >= 3 THEN 'si' END, COUNT(*) FROM ordini;",
+  ]}
+  answer={0}
+  explain="Il CASE dà 1 alle righe con quantità almeno 3 e 0 alle altre; la SUM le somma, mentre COUNT(*) conta tutte le righe. Nella seconda manca THEN. Nella terza il WHERE scarta le altre righe, quindi i totali sarebbero sbagliati. Nella quarta c'è una colonna non aggregata accanto a COUNT senza GROUP BY."
+/>
+
+<Say who="sensei">Risultato: 2 ordini grandi (quantità 3 e 5) su 8. Controlla sempre a mano un esempio piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su CASE, date e testo. Servono tutte e cinque giuste. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-case-date-testo" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Trasformare bene i dati vale quanto analizzarli bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- CASE WHEN classifica le righe: vince la prima condizione vera, senza ELSE le altre diventano NULL.
+- CASE dentro SUM o COUNT conta solo le righe che interessano.
+- Date e testo hanno funzioni utili (EXTRACT, UPPER, TRIM, COALESCE), ma i nomi cambiano tra PostgreSQL, MySQL, SQLite e SQL Server.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa succede se nessun WHEN è vero e manca ELSE?", a: "Il risultato è NULL" },
+    { q: "Cosa fa COALESCE(citta, 'n/d')?", a: "Restituisce la città se c'è, altrimenti 'n/d'" },
+    { q: "Come si conta solo una parte delle righe?", a: "SUM(CASE WHEN condizione THEN 1 ELSE 0 END)" },
+    { q: "Perché il formato AAAA-MM-GG è comodo?", a: "Perché l'ordine alfabetico coincide con l'ordine nel tempo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: dopo aver interrogato le tabelle, impariamo a progettarle.</Say>
+</Scene>

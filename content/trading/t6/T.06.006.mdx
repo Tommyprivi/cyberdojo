@@ -1,0 +1,188 @@
+---
+id: T.06.006
+course: trading
+module: 6
+title: "Diversificare davvero"
+belt: arancione
+duration_min: 9
+prerequisites: [T.06.005]
+objectives:
+  - "Spiegare perché la diversificazione riduce il rischio solo se gli strumenti non si muovono insieme"
+  - "Calcolare la volatilità di un portafoglio di due strumenti al variare della correlazione"
+  - "Riconoscere false diversificazioni, come molti titoli dello stesso settore o strategie quasi identiche"
+video:
+  provider: youtube
+  id: "9sSwydRzX0Y"
+  start: 0
+  end: 600
+  channel: "Pensa alla Pensione con Salvatore Spinosa"
+  title: "Diversificazione di portafoglio: strategie, benefici ed errori da non fare"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-diversificazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che avere molti strumenti basti: contano le correlazioni, non il numero"
+  - "Credere che la correlazione sia stabile: nelle crisi tende ad aumentare"
+  - "Confondere la riduzione del rischio con la garanzia di non perdere"
+commands: []
+---
+
+<Scene title="Dieci titoli, un solo rischio">
+Nora, studentessa fittizia, ha un portafoglio demo con **dieci azioni diverse**. Si sente prudente: «ho diversificato!»
+
+Poi succede una cosa: una notizia colpisce il settore dei **semiconduttori**. Le dieci azioni sono tutte di aziende di quel settore. Scendono tutte insieme.
+
+La domanda del caso: **dieci strumenti bastano per essere diversificati?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. Titoli e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">Dieci barche nella stessa tempesta non sono dieci possibilità di salvarsi. Sono una barca sola, moltiplicata per dieci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché diversificare">
+La **diversificazione** riduce il rischio di un portafoglio mettendo insieme strumenti che **non si muovono nello stesso modo**.
+
+Il numero che misura quanto due strumenti si muovono insieme è la **correlazione** (modulo T4):
+
+- **+1**: si muovono sempre insieme, nella stessa direzione.
+- **0**: nessun legame lineare.
+- **−1**: si muovono sempre in direzioni opposte.
+
+Se due strumenti sono correlati a +1, mescolarli non riduce niente. Più la correlazione scende, più il portafoglio diventa stabile.
+
+<Callout kind="regola">
+Diversificare non vuol dire «avere tanti strumenti». Vuol dire «avere strumenti che non cadono insieme».
+</Callout>
+
+<Say who="assistente">Chiediti sempre: se cade uno, cade anche l'altro? Se la risposta è sì, è la stessa scommessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri: due strumenti">
+Due strumenti fittizi, ciascuno con volatilità annua del **20%**, in un portafoglio **50 e 50**. La volatilità del portafoglio è:
+
+volatilità = 20% × radice di (0,5 + 0,5 × correlazione)
+
+| Correlazione | Volatilità del portafoglio |
+|---|---|
+| +1 | 20% |
+| 0 | circa 14,1% |
+| −1 | 0% |
+
+Con correlazione +1 non c'è nessun beneficio. Con correlazione 0 la volatilità scende da 20% a circa 14,1%. Con −1 (caso teorico, quasi mai nella realtà) il rischio scompare del tutto.
+
+<Callout kind="curiosita">
+Convenzione: la volatilità è la deviazione standard dei rendimenti annui. La formula vale per due strumenti con la stessa volatilità e pesi uguali: è un esempio, non una ricetta.
+</Callout>
+
+<Say who="sensei">Per correlazione zero la radice di un mezzo è circa 0,707: per questo 20 diventa circa 14,1.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più strumenti non correlati">
+Se aggiungi tanti strumenti con **volatilità 20%**, pesi uguali e correlazione **0** tra tutti, la volatilità del portafoglio è:
+
+volatilità = 20% / radice di N
+
+| N strumenti | Volatilità |
+|---|---|
+| 1 | 20% |
+| 4 | 10% |
+| 25 | 4% |
+
+I benefici però rallentano: passare da 1 a 4 strumenti dimezza il rischio, passare da 4 a 25 lo riduce di meno in termini assoluti.
+
+<Callout kind="attenzione">
+Nella realtà la correlazione zero tra tanti strumenti non esiste. Nelle **crisi**, inoltre, le correlazioni tendono ad aumentare: strumenti che sembravano indipendenti scendono insieme. La diversificazione aiuta, non protegge da tutto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano sulla diversificazione e sugli errori da evitare: è materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">Più strumenti diversi, meno rischio. Ma con rendimenti decrescenti: dopo un po' aggiungerne altri cambia poco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Diversificare le strategie, non solo gli strumenti">
+In un corso di trading algoritmico puoi diversificare su più livelli:
+
+- **Strumenti**: azioni, obbligazioni, materie prime, valute.
+- **Settori e aree geografiche**: non tutti i titoli nello stesso settore.
+- **Strategie**: una che segue le tendenze e una che punta sul ritorno alla media, perché non vanno bene negli stessi periodi (le vedremo nel modulo T9).
+- **Tempi**: strategie con orizzonti diversi.
+
+Attenzione alla **falsa diversificazione**: cinque strategie che usano la stessa idea sugli stessi titoli sono una strategia sola, con cinque nomi.
+
+<Say who="sensei">Se due strategie guadagnano e perdono nello stesso giorno, sono una strategia. Guarda la correlazione dei loro rendimenti, non i loro nomi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un portafoglio contiene sei azioni di banche della stessa area. Un'ottima notizia per la diversificazione?"
+  options={[
+    "No: sono molto correlate e si muovono insieme, quindi la diversificazione è scarsa",
+    "Sì: sei strumenti diversi riducono sempre il rischio",
+    "Sì: le banche sono sempre le più sicure",
+    "No: la diversificazione funziona solo con almeno cento titoli",
+  ]}
+  answer={0}
+  explain="Titoli dello stesso settore e della stessa area reagiscono alle stesse notizie: la correlazione è alta e il rischio ridotto è poco. Conta quanto gli strumenti si muovono insieme, non quanti sono."
+/>
+
+<Say who="sensei">Sei nomi, un solo rischio. Ricordalo la prossima volta che conti i titoli.</Say>
+
+Calcola la volatilità del portafoglio 50 e 50 al variare della correlazione. Cambia i valori e riesegui.
+
+<PythonTerminal code={"import math\nsigma = 20   # volatilita di ciascuno strumento, in percento\nfor rho in (1, 0, -1):\n    var = 0.25 * sigma**2 + 0.25 * sigma**2 + 2 * 0.25 * rho * sigma**2\n    print(rho, round(math.sqrt(var), 1))"} />
+
+<Say who="assistente">Dovrebbe uscire 20.0 per correlazione 1, 14.1 per 0 e 0.0 per -1. Prova rho = 0.5: dà circa 17,3.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su correlazione, volatilità del portafoglio e false diversificazioni, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-diversificazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Diversificare è un modo di ridurre il rischio, non di cancellarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La diversificazione funziona se gli strumenti non si muovono insieme: conta la correlazione, non il numero.
+- Con due strumenti da 20% di volatilità, 50 e 50: correlazione +1 dà 20%, 0 dà circa 14,1%, −1 dà 0%.
+- Nelle crisi le correlazioni tendono ad aumentare: la diversificazione riduce il rischio ma non lo elimina.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve la diversificazione?", a: "A ridurre il rischio mescolando strumenti che non si muovono insieme" },
+    { q: "Volatilità di 4 strumenti non correlati da 20% ciascuno, pesi uguali?", a: "10% (20% / radice di 4)" },
+    { q: "Che cos'è una falsa diversificazione?", a: "Molti strumenti o strategie in realtà molto correlati" },
+    { q: "Che cosa succede alle correlazioni nelle crisi?", a: "Tendono ad aumentare" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: la leva e il margine, lo strumento che può trasformare un errore piccolo in un disastro.</Say>
+</Scene>

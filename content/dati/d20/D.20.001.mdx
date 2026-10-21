@@ -1,0 +1,180 @@
+---
+id: D.20.001
+course: dati
+module: 20
+title: "Eventi e tracciamento"
+belt: blu
+duration_min: 8
+prerequisites: [D.13.006]
+objectives:
+  - "Spiegare che cos'è un evento e quali proprietà lo descrivono"
+  - "Scrivere un piano di tracciamento con nomi coerenti"
+  - "Distinguere identificatore utente e identificatore di sessione"
+video:
+  provider: youtube
+  id: "Y2CaYddY4jw"
+  start: 0
+  end: 600
+  channel: "Gabriele Rapino"
+  title: "Cosa sono gli Eventi su Google Analytics - Tutorial GA e GTM 12"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-eventi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare allo stesso evento nomi diversi (aggiunta_carrello, AddToCart) e poi non riuscire a contarli insieme"
+  - "Confondere utente e sessione: un utente può avere molte sessioni"
+  - "Tracciare tutto «per sicurezza» invece di partire dalle domande a cui si deve rispondere"
+commands: []
+---
+
+<Scene title="Il bottone che nessuno conta">
+**Tavola Bella**, il negozio online di piatti e bicchieri di Giulia, ha un sito con 10.000 visite al mese. Giulia vuole sapere quante persone cliccano «Aggiungi al carrello». Chiede al programmatore: «Quanti clic ha avuto il bottone?»
+
+Risposta: «Non lo so. Il sito non registra i clic». Le visite ci sono, ma il comportamento dentro le pagine è invisibile.
+
+La domanda del caso: **come si fa a contare ciò che le persone fanno?**
+
+<Say who="sensei">Si contano solo le cose che qualcuno ha deciso di registrare. Non esiste il dato «che c'è già». Qualcuno lo deve costruire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un evento">
+Un **evento** è una riga di registro che dice: «in questo momento, qualcuno ha fatto questa cosa». Esempi: ha visto una pagina, ha cliccato un bottone, ha completato un acquisto.
+
+Ogni evento ha almeno tre pezzi:
+
+- il **nome**: che cosa è successo (`aggiunta_carrello`);
+- il **momento**: quando;
+- le **proprietà** (o parametri): i dettagli (quale prodotto, a che prezzo).
+
+Ecco quattro righe di registro di Tavola Bella:
+
+| ora | evento | prodotto | prezzo |
+|---|---|---|---|
+| 10:01 | visita_pagina | piatto_blu | 12 |
+| 10:02 | aggiunta_carrello | piatto_blu | 12 |
+| 10:05 | aggiunta_carrello | bicchiere_set | 18 |
+| 10:09 | acquisto | piatto_blu | 12 |
+
+<Callout kind="trucco">
+Il **nome** risponde a «che cosa è successo?». Le **proprietà** rispondono a «quale, quanto, dove?». Non mettere il dettaglio nel nome: `aggiunta_carrello_piatto_blu` è un errore, perché dovresti creare un evento nuovo per ogni prodotto.
+</Callout>
+
+<Say who="sensei">Un nome per l'azione, le proprietà per i dettagli. Un evento, tante possibili descrizioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi lo ha fatto">
+Per sapere **chi** ha fatto l'evento servono due identificatori, che spesso si confondono.
+
+- L'**identificatore utente** (user id) indica la persona, o meglio il suo browser o il suo account, nel tempo.
+- L'**identificatore di sessione** indica una singola visita: dall'arrivo sul sito fino a un lungo periodo di inattività (in molti strumenti, 30 minuti).
+
+Una persona ha **un** utente e **tante** sessioni.
+
+<Log lines={[
+  "utente   sessione   evento",
+  "U1       S1         visita_pagina",
+  "U1       S1         aggiunta_carrello",
+  "U1       S2         acquisto",
+  "U2       S3         visita_pagina",
+  "U2       S3         visita_pagina",
+  "U3       S4         visita_pagina",
+]} />
+
+Qui ci sono **3 utenti**, **4 sessioni** e **6 eventi**. U1 è tornato il giorno dopo: stesso utente, sessione nuova.
+
+<Callout kind="attenzione">
+Contare gli eventi non è contare le persone. U2 ha generato due eventi, ma è una persona sola.
+</Callout>
+
+<Say who="assistente">Indizio: per contare le persone si contano gli utenti diversi, non le righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano di tracciamento">
+Prima di scrivere codice si scrive un **piano di tracciamento**: una tabella che elenca ogni evento da registrare, perché serve e quali proprietà ha.
+
+| evento | perché serve | proprietà |
+|---|---|---|
+| visita_pagina | sapere quali pagine funzionano | pagina |
+| aggiunta_carrello | misurare l'interesse | prodotto, prezzo |
+| inizio_pagamento | trovare dove si perde la gente | totale_carrello |
+| acquisto | misurare il risultato | totale, metodo_pagamento |
+
+Regole per i **nomi coerenti**:
+
+- sempre minuscolo, con il trattino basso, senza spazi;
+- sempre **verbo o azione** (`acquisto`, non `pagina_acquisti_ok`);
+- sempre la stessa lingua; mai `AddToCart` in un punto e `aggiunta_carrello` in un altro.
+
+Vuoi sentire un altro spiegare come funzionano gli eventi? Il video è in italiano, bastano i primi minuti:
+
+<Video />
+
+<Say who="sensei">Se non sai perché tracci un evento, non tracciarlo. Ogni evento in più è lavoro da mantenere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Due programmatori hanno registrato lo stesso gesto in modi diversi: `aggiunta_carrello` sul sito, `AddToCart` nell'app. Giulia vuole il totale delle aggiunte al carrello.
+
+<Quiz
+  question="Che cosa succede se i due nomi restano diversi?"
+  options={["I conteggi vanno sommati a mano o uno dei due viene dimenticato", "Lo strumento li somma da solo in modo automatico", "Non cambia nulla: i nomi sono solo etichette", "L'app smette di funzionare"]}
+  answer={0}
+  explain="Per lo strumento sono due eventi diversi. Il totale reale è la somma, ma nessuno lo vede finché i nomi non sono allineati. Per questo si scrive un piano con nomi coerenti prima di tracciare."
+/>
+
+<Quiz
+  question="Nel registro ci sono 12 eventi, fatti da 4 utenti diversi in 6 sessioni. Quante sono le persone distinte?"
+  options={["4", "6", "12", "2"]}
+  answer={0}
+  explain="Le persone si contano con gli utenti distinti: 4. Le sessioni sono 6 (visite), gli eventi sono 12 (azioni). Sono tre unità di conto diverse."
+/>
+
+<Say who="sensei">Persona, visita, azione. Tre unità diverse. Chi le confonde sbaglia ogni media dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Alcune domande sul registro eventi di Tavola Bella: nomi, proprietà e conteggi.
+
+<Practice generator="d20-eventi" pass="5/5" retries={3} />
+
+<Say who="sensei">Tre unità di conto e un piano scritto prima. Il resto viene da sé.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un evento è una riga di registro: nome (che cosa), momento (quando), proprietà (i dettagli).
+- Utente = persona nel tempo, sessione = una visita, evento = un'azione: tre cose da non confondere.
+- Un piano di tracciamento elenca eventi, motivo e proprietà, con nomi coerenti scritti una sola volta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa descrivono le proprietà di un evento?", a: "I dettagli: quale prodotto, quanto, dove" },
+    { q: "Una persona torna il giorno dopo: che cosa cambia?", a: "Stesso utente, nuova sessione" },
+    { q: "12 eventi, 4 utenti distinti: quante persone?", a: "4" },
+    { q: "Perché servono nomi coerenti?", a: "Per contare lo stesso gesto in un solo conteggio" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: Google Analytics. Lo strumento che raccoglie questi eventi, e i limiti da conoscere.</Say>
+</Scene>

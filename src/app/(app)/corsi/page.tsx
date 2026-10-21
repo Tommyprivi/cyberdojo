@@ -11,6 +11,14 @@ export const metadata: Metadata = {
 };
 
 const BLURB: Record<CourseId, { lead: string; for: string }> = {
+  T: {
+    lead: "I mercati e il trading spiegati con Python: dati, indicatori, backtest, rischio e costi. Si impara a pensare in modo critico, su dati storici e ambienti demo: nessun soldo vero, nessuna promessa di guadagno. Non è consulenza finanziaria.",
+    for: "Per chi sa già un po' di Python o ha finito il modulo Python di Fondamenta.",
+  },
+  H: {
+    lead: "Come funzionano gli hedge fund: strategie, portafoglio, derivati, rischio, operazioni e regole. Un corso per capire il mestiere del gestore e i suoi limiti, con casi storici e senza scorciatoie. Non è consulenza finanziaria.",
+    for: "Per chi vuole capire la finanza professionale; aiuta conoscere le basi di statistica.",
+  },
   D: {
     lead: "Dai fogli di calcolo a SQL e Python, dalla statistica alla visualizzazione e al machine learning: come si trasformano i dati in decisioni, con tutte le strade del mestiere (analista, data engineer, data scientist).",
     for: "Per chi vuole lavorare con i dati, anche partendo da zero.",

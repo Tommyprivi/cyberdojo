@@ -1,0 +1,159 @@
+---
+id: H.09.002
+course: hedge
+module: 9
+title: "MiFID II: proteggere chi investe"
+belt: blu
+duration_min: 8
+prerequisites: [H.09.001]
+objectives:
+  - "Spiegare in sintesi a che cosa serve la MiFID II"
+  - "Distinguere clienti al dettaglio, professionali e controparti qualificate"
+  - "Capire perché esiste il questionario e che cosa vuol dire adeguatezza"
+video:
+  provider: youtube
+  id: "yGiceh7Z-u4"
+  start: 0
+  end: 600
+  channel: "Investitore Efficace"
+  title: "Questionario MiFID: Cos'è e come si compila"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-mifid
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Compilare il questionario «per sembrare esperti»: toglie la protezione che le regole danno"
+  - "Pensare che la MiFID II elimini il rischio: protegge dalle scorrettezze, non dalle perdite di mercato"
+  - "Confondere AIFMD (chi gestisce il fondo) con MiFID II (come si vendono e consigliano gli investimenti)"
+commands: []
+---
+
+<Scene title="Il questionario di Luca">
+Luca, 19 anni, ha qualche risparmio. In banca gli propongono un prodotto complicato, molto rischioso. Prima gli fanno compilare un lungo **questionario**: cosa sa dei mercati, quanto può permettersi di perdere, per quanto tempo vuole investire.
+
+Luca pensa: «Ma è solo burocrazia. Se dico che sono esperto, mi lasciano comprare tutto.»
+
+La domanda del caso: **a che cosa serve quel questionario, e perché mentire è un errore?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. Fatti normativi in sintesi, ottobre 2026: controlla le fonti ufficiali.
+
+<Say who="sensei">Il questionario non è un esame. È una cintura di sicurezza. Allacciala bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la MiFID II">
+**MiFID II** è un insieme di regole europee (direttiva del 2014, applicata dal 2018) per chi presta **servizi di investimento**: comprare e vendere per conto dei clienti, consigliare, gestire portafogli.
+
+Lo scopo: **proteggere chi investe** e rendere i mercati più trasparenti e corretti.
+
+Differenza da ricordare:
+- **AIFMD**: regole su **come è gestito il fondo** e il suo gestore.
+- **MiFID II**: regole su **come si vendono, consigliano e eseguono** gli investimenti.
+
+<Callout kind="regola">
+In breve: la MiFID II chiede informazioni chiare, costi trasparenti, prodotti adatti al cliente e la **miglior esecuzione** degli ordini.
+</Callout>
+
+Un video in italiano sul questionario, per sentirlo da un'altra voce:
+
+<Video />
+
+<Say who="assistente">Le due direttive si incontrano: un fondo è gestito con le regole AIFMD, ma chi lo propone ai clienti segue anche le regole sulla vendita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre tipi di cliente">
+La MiFID II distingue tre categorie:
+
+- **Cliente al dettaglio**: il risparmiatore comune. Ha **più protezioni**, perché si presume sappia meno.
+- **Cliente professionale**: per esempio un grande investitore istituzionale. Ha meno protezioni, perché si presume sappia di più.
+- **Controparte qualificata**: banche, grandi imprese di investimento e simili, tra loro.
+
+<Callout kind="attenzione">
+Alcuni fondi, come molti hedge fund, sono pensati per investitori professionali o qualificati. Un risparmiatore al dettaglio non può semplicemente decidere di «salire di categoria»: ci sono condizioni precise e conseguenze (si perdono protezioni).
+</Callout>
+
+<Say who="sensei">Meno protezioni significa più responsabilità. Prima di rinunciare a una tutela, chiediti se sei pronto a pagarne il prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Adeguato per te?">
+Quando ti viene proposto un prodotto, l'intermediario deve fare un controllo di **adeguatezza** (se ti dà un consiglio) o di **appropriatezza** (se vendi senza consiglio, per prodotti complessi): è adatto a **te**?
+
+Il questionario raccoglie:
+- **conoscenze ed esperienza** sui prodotti;
+- **situazione finanziaria**, compresa la capacità di sopportare perdite;
+- **obiettivi** e **orizzonte di tempo**.
+
+Altre tutele della MiFID II:
+- **costi e oneri** mostrati in anticipo;
+- **incentivi** (compensi da terzi) regolati e comunicati;
+- **governo dei prodotti**: chi crea un prodotto deve definire a chi è destinato.
+
+<Callout kind="trucco">
+Se le risposte dicono «non ho esperienza e non posso perdere nulla», un prodotto molto rischioso **non è adatto**. È il questionario che lavora a tuo favore.
+</Callout>
+
+<Say who="assistente">Rispondere con sincerità è un gesto di rispetto verso te stesso. Il resto viene dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un consulente propone a Luca un prodotto molto rischioso. Le risposte del questionario dicono: nessuna esperienza e nessuna capacità di perdere. Che cosa è corretto?"
+  options={[
+    "Il prodotto non è adatto: l'intermediario deve spiegarlo e, di norma, non consigliarlo",
+    "Va bene lo stesso, basta che Luca firmi",
+    "Va bene se la commissione è bassa",
+    "Va bene se il prodotto ha un nome rassicurante",
+  ]}
+  answer={0}
+  explain="Il questionario esiste per questo: evitare di consigliare prodotti non adatti. La firma di Luca non cancella il problema, e il nome o la commissione non cambiano il rischio."
+/>
+
+<Say who="sensei">Se la risposta onesta dice «no», quel «no» ti ha appena protetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sulla MiFID II: scegli che cosa è corretto fare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-mifid" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce le regole riconosce subito chi le calpesta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La MiFID II protegge chi investe: informazioni chiare, costi trasparenti, prodotti adatti e miglior esecuzione.
+- Esistono clienti al dettaglio (più tutele), professionali e controparti qualificate.
+- Il questionario serve a valutare se un prodotto è adatto a te: rispondere con sincerità ti protegge.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa regola la MiFID II?", a: "I servizi di investimento: vendita, consulenza, esecuzione, con tutele per il cliente" },
+    { q: "Le tre categorie di clienti?", a: "Al dettaglio, professionali, controparti qualificate" },
+    { q: "Che cos'è la miglior esecuzione?", a: "Cercare il miglior risultato possibile per il cliente (prezzo, costi, rapidità)" },
+    { q: "Perché non mentire nel questionario?", a: "Perché perdi la protezione che le regole ti danno" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: antiriciclaggio e «conosci il cliente». Chi sta davvero dietro il denaro?</Say>
+</Scene>

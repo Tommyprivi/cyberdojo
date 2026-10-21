@@ -1,0 +1,212 @@
+---
+id: D.08.007
+course: dati
+module: 8
+title: "Una checklist e la documentazione"
+belt: arancione
+duration_min: 9
+prerequisites: [D.08.006]
+objectives:
+  - "Seguire una checklist di pulizia in ordine e senza toccare il file originale"
+  - "Tenere un registro delle trasformazioni e controlli automatici con assert"
+  - "Confrontare la tabella prima e dopo la pulizia"
+video:
+  provider: youtube
+  id: "I7lK7c-l-JY"
+  start: 0
+  end: 600
+  channel: "DSconDango"
+  title: "Data Cleaning: Cosa è? Tipologie di errori"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d08-checklist
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Correggere i dati a mano nel file originale: non si può più ripetere né verificare"
+  - "Pulire senza registrare cosa è stato cambiato: nessuno si fida del risultato"
+  - "Non confrontare prima e dopo: la pulizia può aver aumentato i buchi o buttato righe senza che nessuno lo noti"
+commands: []
+---
+
+<Scene title="Chi ha cambiato quel numero?">
+Tra un mese il tuo capo ti chiede: «Nel report le età dei clienti non sono quelle del file originale. Perché?». Tu non ricordi più cosa hai cambiato, e il file è stato sovrascritto.
+
+La domanda del caso: **come lavori oggi in modo che tra un mese tu (o chiunque) possa rispondere?**
+
+Un lavoro di pulizia ben fatto ha tre qualità: è **ripetibile** (rilanciando il codice ottieni lo stesso risultato), **documentato** (si sa cosa è stato cambiato) e **controllato** (dei test automatici lo verificano).
+
+<Say who="sensei">Un dato pulito che nessuno può verificare vale meno di un dato sporco, almeno di quello si sa che è sporco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La checklist">
+Ecco l'ordine che abbiamo costruito nel modulo. Usalo ogni volta:
+
+1. **Salva l'originale** e non toccarlo mai: lavori su una copia.
+2. **Guarda**: righe, colonne, `dtypes`, qualche riga di esempio.
+3. **Valori mancanti**: conta con `isna().sum()` e decidi.
+4. **Duplicati**: scegli la chiave e controlla anche i conflitti.
+5. **Formati e tipi**: date, numeri, unità di misura.
+6. **Testo**: spazi, maiuscole, varianti.
+7. **Outlier**: impossibili, sospetti, vere eccezioni.
+8. **Unioni**: chiave, orfani, cardinalità.
+9. **Controlli automatici** sul risultato.
+10. **Documenta** e confronta prima e dopo.
+
+<Callout kind="regola">
+L'originale è sacro. Mai correggere nel file di partenza: si lavora in codice, e il file pulito è un file **nuovo**.
+</Callout>
+
+<Say who="assistente">L'ordine conta: sistemare i tipi prima di cercare i duplicati, per esempio, evita di non vedere righe uguali scritte in modo diverso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una funzione con il registro">
+Tutta la pulizia si mette in **una funzione**, e la funzione tiene un **registro** delle trasformazioni: una lista di frasi che raccontano cosa è successo.
+
+<Log lines={[
+  "import pandas as pd",
+  "import numpy as np",
+  "",
+  "grezzo = pd.DataFrame({",
+  "    'id': [1, 2, 2, 3, 4],",
+  "    'eta': [25, -5, -5, np.nan, 40],",
+  "})",
+  "",
+  "def pulisci(df):",
+  "    registro = []",
+  "    n = len(df)",
+  "    df = df.drop_duplicates()",
+  "    registro.append(f'duplicati tolti: {n - len(df)}')",
+  "    fuori = df['eta'].notna() & ~df['eta'].between(0, 110)",
+  "    registro.append(f'eta fuori scala messe a NaN: {fuori.sum()}')",
+  "    df = df.assign(eta=df['eta'].where(~fuori))",
+  "    return df, registro",
+  "",
+  "pulito, registro = pulisci(grezzo)",
+  "for riga in registro:",
+  "    print(riga)",
+  "",
+  "duplicati tolti: 1",
+  "eta fuori scala messe a NaN: 1",
+]} caption="La funzione non modifica grezzo: restituisce una tabella nuova e il registro." />
+
+Leggi la funzione: toglie un duplicato, poi mette a NaN le età impossibili (fuori da 0-110). Ogni passo scrive una riga nel registro. Il registro si salva con il report: è il diario del lavoro.
+
+<Callout kind="trucco">
+Per ogni trasformazione scrivi **quante righe** ha toccato. «Messe a NaN: 0» è un'informazione: vuol dire che hai controllato.
+</Callout>
+
+<Say who="sensei">Un registro non è burocrazia. È la risposta alla domanda del tuo capo, scritta in anticipo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controlli automatici">
+Una funzione può sbagliare. Dopo la pulizia metti dei **controlli automatici** con `assert`: se la frase non è vera, il programma si ferma con un errore (`AssertionError`) invece di far passare dati sporchi.
+
+<Log lines={[
+  "assert pulito['id'].is_unique",
+  "assert pulito['eta'].dropna().between(0, 110).all()",
+  "print('controlli superati')",
+  "controlli superati",
+]} caption="Il primo controlla che la chiave non si ripeta, il secondo che nessuna età sia fuori scala." />
+
+Altri controlli utili: **nessun buco** nelle colonne obbligatorie, **tipi attesi** (`dtypes`), **numero di righe** entro un intervallo che ti aspetti.
+
+Un'altra voce sui tipi di errore nei dati e su come cercarli:
+
+<Video />
+
+<Callout kind="regola">
+I controlli si scrivono **prima** di guardare il risultato, e restano nel codice. Quando i dati cambiano il mese dopo, ti avvisano da soli.
+</Callout>
+
+<Say who="assistente">Un controllo che non può fallire non serve. Prova a immaginare cosa potrebbe andare storto e scrivi quello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Confronto prima e dopo">
+L'ultimo passo: **mettere accanto** la tabella grezza e quella pulita, con pochi numeri.
+
+<Log lines={[
+  "print(len(grezzo), len(pulito))",
+  "5 4",
+  "print(grezzo['eta'].isna().sum(), pulito['eta'].isna().sum())",
+  "1 2",
+  "print(pulito)",
+  "",
+  "   id   eta",
+  "0   1  25.0",
+  "1   2   NaN",
+  "3   3   NaN",
+  "4   4  40.0",
+]} caption="Righe da 5 a 4 (un duplicato). Buchi da 1 a 2: un'età impossibile è diventata un buco." />
+
+Il risultato dice due cose oneste: abbiamo **meno righe** e **più buchi**. Meglio dichiararlo nel report: «una riga duplicata rimossa; un'età fuori scala (−5) trattata come mancante».
+
+<Callout kind="attenzione">
+Se dopo la pulizia hai molti più buchi o molte meno righe di quanto ti aspettavi, **non proseguire**: una regola troppo severa sta buttando dati veri.
+</Callout>
+
+<Say who="sensei">Un buon report dice cosa hai tolto, cosa hai cambiato e cosa non hai potuto sistemare. Anche questa è pulizia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai pulito una tabella e le righe sono passate da 1000 a 400. Qual è la mossa migliore?"
+  options={[
+    "Fermarsi, guardare il registro e capire quale regola ha tolto così tante righe",
+    "Procedere: meno righe vuol dire dati più puliti",
+    "Riempire le righe mancanti con zeri",
+    "Cancellare il file originale per risparmiare spazio",
+  ]}
+  answer={0}
+  explain="Perdere il 60% delle righe è un segnale: una regola troppo severa (per esempio dropna su tutte le colonne) potrebbe aver buttato dati veri. Il registro e il confronto prima/dopo servono proprio a notarlo. L'originale non si cancella mai."
+/>
+
+<Say who="assistente">Il confronto prima e dopo è come guardarsi allo specchio prima di uscire: ti accorgi di cosa non va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su checklist, registro, controlli e confronto. Servono tutte e cinque. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d08-checklist" pass="5/5" retries={3} />
+
+<Say who="sensei">Un lavoro che si può rifare e controllare è un lavoro che si può difendere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Mai toccare l'originale: tutta la pulizia sta in codice ripetibile e produce un file nuovo.
+- Ogni trasformazione scrive nel registro quante righe ha toccato; `assert` fa da controllo automatico.
+- Confronta sempre prima e dopo (righe, buchi, tipi): un cambiamento grande è un segnale, non una vittoria.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché non si corregge mai il file originale?", a: "Perché poi non si può più ripetere né verificare il lavoro" },
+    { q: "Cosa fa assert se la condizione è falsa?", a: "Si ferma con un AssertionError" },
+    { q: "Cosa contiene il registro delle trasformazioni?", a: "Cosa è stato cambiato e quante righe sono state toccate" },
+    { q: "Dopo la pulizia hai molte meno righe del previsto: cosa fai?", a: "Ti fermi e controlli quale regola le ha tolte" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso: i tuoi dati ora si possono ripetere, spiegare e difendere. Il prossimo passo è il data engineering: portare tutto questo in pipeline automatiche.</Say>
+</Scene>

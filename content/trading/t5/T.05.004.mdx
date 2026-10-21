@@ -1,0 +1,161 @@
+---
+id: T.05.004
+course: trading
+module: 5
+title: "Il look-ahead bias"
+belt: arancione
+duration_min: 9
+prerequisites: [T.05.003]
+objectives:
+  - "Spiegare che cos'è il look-ahead bias (guardare il futuro) in un backtest"
+  - "Riconoscere un risultato «troppo bello» come segnale d'allarme"
+  - "Applicare il test: se cambia il dato di domani, può cambiare la decisione di oggi?"
+video:
+  provider: youtube
+  id: "az7M5X3BEWU"
+  start: 0
+  end: 193
+  channel: "Quantra"
+  title: "Look-Ahead Bias - Future Data | Financial Data Science | Dr. Ernest P. Chan"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t05-look-ahead
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Togliere lo spostamento di un giorno (shift) e non accorgersi che il risultato è truccato"
+  - "Calcolare indicatori o medie su tutti i dati, anche quelli futuri, e usarli per decidere nel passato"
+  - "Fidarsi di un risultato eccezionale invece di sospettare un errore"
+commands: []
+---
+
+<Scene title="Il backtest perfetto">
+Luca ha un'idea: **«E se la posizione fosse subito il segnale, senza spostarlo?»** Toglie lo `shift(1)` e rilancia il backtest. Sullo schermo compare una curva bellissima: **+11,2%** contro l'8% di «compra e tieni». Luca esulta.
+
+La prof. Bianchi non sorride: **«Un'idea che si inventa in cinque minuti e batte il mercato? Controlla di nuovo.»**
+
+La domanda del caso: **come mai un cambiamento di una riga ha trasformato una strategia perdente in una vincente?**
+
+<Say who="sensei">Quando un risultato è troppo bello, la prima domanda non è «come lo uso?». È «dove ho sbagliato?».</Say>
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Dati fittizi, nessun denaro reale. I mercati non regalano niente.
+</Callout>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa è successo">
+Senza lo spostamento, la posizione del giorno t è uguale al segnale del giorno t. Ma il segnale del giorno t è «oggi il prezzo è salito». Quindi la strategia è **dentro proprio nei giorni in cui il prezzo sale**.
+
+```python
+rend_truccata = segnale * rend
+curva_truccata = (1 + rend_truccata.fillna(0)).cumprod()
+print(curva_truccata.round(4).tolist())
+```
+
+<Log lines={[
+  "[1.0, 1.02, 1.02, 1.0503, 1.0503, 1.0809, 1.0809, 1.1118]",
+]} />
+
+La strategia prende **tutte** le salite (+2%, +2,97%, +2,91%, +2,86%) e **nessuna** discesa. Un robot che sa in anticipo che il prezzo salirà. Nella vita reale nessuno lo sa.
+
+<Say who="assistente">Controlla il giorno 1: il segnale dice «il prezzo oggi è salito da 100 a 102». Per saperlo devi aver visto il 102. Ma lo vedi solo a fine giornata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il nome dell'errore">
+Si chiama **look-ahead bias**, cioè «errore di guardare avanti»: il backtest usa informazioni che **nel momento della decisione non esistevano ancora**.
+
+Il risultato sembra bello perché il computer **sbircia il futuro**. Un conto è quello che si sa a fine giornata, un altro è quello che si sa all'apertura del giorno dopo.
+
+<Callout kind="regola">
+Test dell'indizio: **se cambio il prezzo di domani, può cambiare la decisione di oggi?** Se sì, c'è look-ahead.
+</Callout>
+
+<Callout kind="curiosita">
+Il guaio è che il codice «funziona»: nessun errore, nessun avviso. Solo un risultato troppo bello. Per questo il look-ahead è il bias più pericoloso per i principianti.
+</Callout>
+
+<Say who="sensei">Il computer non protesta. Fa esattamente quello che gli dici, anche se è impossibile nella realtà. La responsabilità è tua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altre forme, più nascoste">
+Lo shift dimenticato è la forma più semplice. Ce ne sono altre, e sono più subdole:
+
+- **Normalizzare con tutti i dati**: calcolare una media o un massimo su tutto il periodo e usarlo per decidere nel passato (la media «sa» già come finisce l'anno).
+- **Prezzi di chiusura per entrare «all'apertura»**: decidere con la chiusura di oggi ma comprare al prezzo di oggi invece che a quello di domani.
+- **Dati aggiornati dopo**: un bilancio o una statistica ufficiale usati nella data a cui si riferiscono e non in quella in cui sono stati pubblicati (con ritardo e a volte rivisti).
+
+In tutti i casi, il dato è vero, ma **nel momento della decisione non era disponibile**.
+
+<Say who="assistente">Per ogni dato che usi, chiediti: «in quella data, a quell'ora, lo avevo già in mano?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un'altra voce">
+Vuoi sentire l'errore spiegato da un docente di finanza quantitativa? Pochi minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Se durante il video ti viene in mente un dato che usi nei tuoi esercizi, bravo: scrivilo. Domani lo ricontrolli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un backtest calcola il massimo dei prezzi dell'intero anno e compra ogni volta che il prezzo supera il 90% di quel massimo. Perché è sbagliato?"
+  options={[
+    "Nei primi mesi il massimo dell'anno non si poteva ancora conoscere: è look-ahead",
+    "Perché il 90% è un numero troppo alto",
+    "Perché in finanza non si usano i massimi",
+    "Non è sbagliato: il massimo è un dato vero"
+  ]}
+  answer={0}
+  explain="Il dato è vero, ma a gennaio il massimo di dicembre non esiste ancora. La regola corretta usa solo il massimo calcolato fino a quel giorno. Chi risponde «il dato è vero» confonde «vero» con «disponibile al momento della decisione»."
+/>
+
+<Say who="assistente">Applica il test: se cambio il prezzo di dicembre, cambia la decisione di gennaio? Sì. Allora è look-ahead.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari: trova dove il backtest guarda il futuro, o dove non lo fa. Ne servono **cinque giusti**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t05-look-ahead" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Imparare a sospettare dei bei risultati vale più di cento strategie inventate.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Look-ahead bias: il backtest usa informazioni non ancora disponibili al momento della decisione.
+- Spia di allarme: un risultato troppo bello, ottenuto senza sforzo.
+- Test: se cambio un dato futuro, cambia la decisione di oggi? Se sì, c'è look-ahead.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il look-ahead bias?", a: "Usare nel backtest dati che al momento della decisione non erano ancora disponibili" },
+    { q: "Qual è la forma più semplice di look-ahead?", a: "Dimenticare lo spostamento di un giorno tra segnale e posizione" },
+    { q: "Qual è il test dell'indizio?", a: "Se cambio il dato di domani, può cambiare la decisione di oggi?" },
+    { q: "Perché un backtest troppo bello è sospetto?", a: "Perché spesso nasconde un errore, come guardare il futuro" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il survivorship bias. Un'altra bugia dei dati, ma questa riguarda chi manca all'appello.</Say>
+</Scene>

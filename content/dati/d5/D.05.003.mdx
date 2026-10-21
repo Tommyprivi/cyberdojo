@@ -1,0 +1,152 @@
+---
+id: D.05.003
+course: dati
+module: 5
+title: "Quartili e box plot"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.002]
+objectives:
+  - "Trovare quartili e IQR di un piccolo insieme di numeri"
+  - "Spiegare cos'è un percentile"
+  - "Leggere un box plot descritto a parole"
+video:
+  provider: youtube
+  id: "JQnPDDl1UEQ"
+  start: 0
+  end: 314
+  channel: "Adriano Gilardone"
+  title: "Il BOXPLOT spiegato semplice con una metafora!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-quartili
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare i quartili senza ordinare prima i dati"
+  - "Pensare che la scatola contenga tutti i dati: contiene solo la metà centrale"
+  - "Credere che i quartili dividano l'asse in parti uguali: dividono i dati, non la lunghezza"
+commands: []
+---
+
+<Scene title="Undici compagni, undici numeri">
+In classe hai contato quanti **messaggi** ha mandato in un'ora ciascuno di 11 compagni. Ecco i numeri, già in ordine:
+
+<Log lines={[
+  "2  4  5  6  8  9  11  12  14  15  19",
+]} />
+
+Media e mediana dicono dove sta il centro. Ma tu vuoi un'immagine che mostri **in un colpo solo** il centro, la dispersione e gli eventuali estremi. Come si fa?
+
+<Say who="sensei">Un buon grafico vale cento numeri. Ma prima servono i numeri giusti: i quartili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quartili">
+I **quartili** dividono i dati ordinati in **quattro parti** con lo stesso numero di dati.
+
+- **Q2** è la mediana: metà dei dati sta sotto.
+- **Q1** è la mediana della **metà inferiore**: un quarto dei dati sta sotto.
+- **Q3** è la mediana della **metà superiore**: tre quarti dei dati stanno sotto.
+
+<Callout kind="regola">
+Convenzione usata in questo corso: si trova la mediana, poi si prende la mediana di ciascuna metà. Se i dati sono in numero **dispari**, la mediana **non** entra in nessuna delle due metà. Fogli Google, Python e altri programmi usano metodi un po' diversi e possono dare valori leggermente diversi sui piccoli insiemi: non è un errore, è una convenzione.
+</Callout>
+
+<Say who="assistente">Mediana, poi la mediana della parte bassa, poi quella della parte alta. Tre passi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il calcolo sui messaggi">
+<Guided
+  steps={[
+    "I dati sono 11: la mediana è il sesto valore, cioè 9. Questa è Q2.",
+    "Metà inferiore (senza il 9): 2, 4, 5, 6, 8. La mediana di queste è 5. Q1 = 5.",
+    "Metà superiore (senza il 9): 11, 12, 14, 15, 19. La mediana è 14. Q3 = 14.",
+    "IQR (intervallo interquartile) = Q3 − Q1 = 14 − 5 = 9. Dice quanto è larga la metà centrale dei dati.",
+    "Riepilogo dei cinque numeri: minimo 2, Q1 5, mediana 9, Q3 14, massimo 19.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Con un numero pari di dati è più facile: 3, 5, 6, 8, 10, 12, 13, 20 ha mediana 9 (la media di 8 e 10). La metà bassa è 3, 5, 6, 8 con Q1 = 5,5. La metà alta è 10, 12, 13, 20 con Q3 = 12,5.
+</Callout>
+
+<Say who="sensei">Cinque numeri riassumono tutto: minimo, Q1, mediana, Q3, massimo. Quelli sono il box plot.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il box plot">
+Il **box plot** (grafico a scatola e baffi) disegna proprio quei cinque numeri.
+
+- La **scatola** va da Q1 a Q3: contiene il **50% centrale** dei dati. La sua larghezza è l'IQR.
+- Una **linea dentro la scatola** segna la mediana.
+- I **baffi** arrivano fino ai valori più piccolo e più grande (salvo gli outlier, che vedremo tra due lezioni).
+
+<Callout kind="attenzione">
+La scatola non contiene tutti i dati: contiene la metà di mezzo. Un quarto dei dati sta nel baffo di sinistra e un quarto in quello di destra.
+</Callout>
+
+Vuoi vederlo costruire da un'altra voce? Poco più di cinque minuti:
+
+<Video />
+
+<Say who="assistente">Scatola larga: dati sparsi. Scatola stretta: dati vicini tra loro. La linea dentro è la mediana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percentili e lettura">
+Il **percentile** generalizza il quartile. Il **70° percentile** è il valore sotto cui sta circa il 70% dei dati. Q1 è il 25° percentile, la mediana il 50°, Q3 il 75°.
+
+Esempio: se il tuo tempo di corsa è al 90° percentile tra gli studenti, vuol dire che circa il 90% ha un tempo uguale o inferiore al tuo. (Attento: per i tempi, un percentile alto significa essere tra i più lenti.)
+
+<Quiz
+  question="In un box plot la linea della mediana è molto vicina al lato sinistro della scatola, e il baffo di destra è molto più lungo di quello di sinistra. Cosa suggerisce?"
+  options={["I valori alti sono più sparpagliati di quelli bassi", "I valori bassi sono più sparpagliati di quelli alti", "Tutti i dati sono uguali", "La media è esattamente uguale alla mediana"]}
+  answer={0}
+  explain="La parte di destra è più lunga: i dati sopra la mediana sono distribuiti su un tratto più ampio. È una forma asimmetrica con una coda a destra. Chi risponde l'opposto ha letto il lato sbagliato del grafico."
+/>
+
+<Say who="sensei">Il box plot si legge a occhio: dov'è la linea, quanto è larga la scatola, quanto sono lunghi i baffi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su quartili, IQR e lettura del box plot. Usa la convenzione della lezione: mediana delle due metà, mediana esclusa se i dati sono dispari. Hai 3 tentativi.
+
+<Practice generator="d05-quartili" pass="5/5" retries={3} />
+
+<Say who="sensei">Ordina, trova la mediana, dividi a metà, trova di nuovo le mediane. Mai di fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I quartili Q1, Q2 (mediana), Q3 dividono i dati ordinati in quattro parti. IQR = Q3 − Q1.
+- Il box plot mostra minimo, Q1, mediana, Q3 e massimo: la scatola contiene il 50% centrale dei dati.
+- Il percentile dice quanti dati stanno sotto un certo valore: il 25° è Q1, il 75° è Q3.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Q1 e Q3 di 1, 2, 3, 4, 5, 6, 7?", a: "Q1 = 2 e Q3 = 6, con IQR 4" },
+    { q: "Quanti dati stanno dentro la scatola?", a: "Circa il 50%, quelli centrali" },
+    { q: "Il 25° percentile coincide con…", a: "Il primo quartile Q1" },
+    { q: "Una scatola molto larga cosa indica?", a: "Dati molto sparsi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le distribuzioni. Il box plot è una sintesi, l'istogramma mostra la forma intera.</Say>
+</Scene>

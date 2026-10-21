@@ -1,0 +1,255 @@
+---
+id: D.19.006
+course: dati
+module: 19
+title: "Statistica applicata in R"
+belt: marrone
+duration_min: 10
+prerequisites: [D.19.005]
+objectives:
+  - "Riassumere dati con summary, mean e sd e confrontare due gruppi con t.test"
+  - "Calcolare una correlazione e una retta di regressione con cor e lm"
+  - "Interpretare p-value e intervallo di confidenza senza cadere nel p-hacking"
+video:
+  provider: youtube
+  id: "ReNGrErzsV4"
+  start: 0
+  end: 600
+  channel: "Dr Lyndon Walker"
+  title: "Performing a basic t-test and linear regression in R"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-statistica-r
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Leggere un p-value sopra 0,05 come «la differenza non esiste»: significa solo che i dati non bastano"
+  - "Provare molti test e raccontare solo quello che «viene»: è il p-hacking"
+  - "Usare la retta di regressione fuori dal campo dei dati osservati"
+commands: []
+---
+
+<Scene title="Due classi, un punto di voto">
+Nel liceo di Giulia due classi hanno fatto lo stesso compito di matematica. La classe A ha 5 voti: 6, 7, 7, 8, 7. La classe B ne ha 5: 5, 6, 7, 6, 6.
+
+La media di A è 7, la media di B è 6. Un punto di differenza. La preside chiede: «La classe A è davvero più brava, oppure è un caso di questo compito?»
+
+R ha strumenti per rispondere, ma **non danno risposte magiche**: danno numeri che vanno interpretati. Nei moduli di statistica hai imparato media, deviazione standard, campioni e probabilità. Ora li usi con poche righe.
+
+La domanda del caso: **come si fa un test in R, e che cosa dice (e non dice) il risultato?**
+
+<Say who="sensei">Un test non dice se hai ragione. Dice quanto sarebbe strano vedere questi dati, se in realtà non ci fosse nessuna differenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riassumere con summary, mean e sd">
+Si parte sempre guardando i dati. Le funzioni base:
+
+```r
+classe_a <- c(6, 7, 7, 8, 7)
+classe_b <- c(5, 6, 7, 6, 6)
+
+mean(classe_a)
+sd(classe_a)
+summary(c(4, 5, 6, 6, 7, 7, 7))
+```
+
+```text
+[1] 7
+[1] 0.7071068
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0     5.5     6.0     6.0     7.0     7.0 
+```
+
+`sd()` è la deviazione standard del campione: la radice di (somma dei quadrati degli scarti divisa per n − 1). Per la classe A gli scarti dalla media sono 1, 0, 0, 1, 0: somma dei quadrati 2, diviso 4 fa 0,5, radice 0,707.
+
+`summary()` dà in una riga minimo, primo quartile, mediana, media, terzo quartile e massimo: i numeri del box plot.
+
+<Callout kind="curiosita">
+Per i quartili R usa un metodo con interpolazione: sette voti 4, 5, 6, 6, 7, 7, 7 danno primo quartile 5,5. Il metodo «mediana delle due metà» del modulo di statistica darebbe 5. Non è un errore: esistono più convenzioni, e i valori possono differire di poco.
+</Callout>
+
+Vuoi vedere un t-test e una regressione fatti passo per passo da un altro docente? Il video è in inglese, con sottotitoli attivabili:
+
+<Video />
+
+<Say who="assistente">Nota che summary non è un test: descrive. I test rispondono a domande, summary racconta cosa c'è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il t-test">
+Per confrontare le medie di due gruppi si usa `t.test()`:
+
+```r
+t.test(classe_a, classe_b)
+```
+
+```text
+
+	Welch Two Sample t-test
+
+data:  classe_a and classe_b
+t = 2.2361, df = 8, p-value = 0.05577
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.0312764  2.0312764
+sample estimates:
+mean of x mean of y 
+        7         6 
+
+```
+
+Come si legge:
+
+- **p-value = 0,0558**: se tra le due classi **non ci fosse nessuna differenza reale**, vedere una differenza grande almeno così capiterebbe circa nel 5,6% dei casi. La regola convenzionale (soglia 0,05) dice di non considerarla «significativa».
+- **intervallo di confidenza al 95%** da −0,03 a 2,03: la differenza vera potrebbe essere zero, ma anche due punti. È l'informazione più utile, perché mostra **l'incertezza**.
+- **mean of x, mean of y**: le medie dei due gruppi, 7 e 6.
+
+<Callout kind="attenzione">
+Un p-value sopra 0,05 **non prova** che le classi siano uguali. Dice che con soli 10 voti non possiamo escludere il caso. Con più studenti la stessa differenza potrebbe risultare chiara.
+</Callout>
+
+`t.test()` fa per impostazione predefinita il test di **Welch**, che non richiede due gruppi con la stessa variabilità. Con una tabella si scrive `t.test(voto ~ classe, data = voti)`: «il voto in funzione della classe».
+
+<Say who="sensei">Il p-value è una misura di sorpresa, non di verità. E l'intervallo ti dice quanto sei ancora al buio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Correlazione e regressione">
+Sette studenti hanno registrato le ore di studio prima del compito e il voto: ore 1, 2, 3, 4, 5, 6, 7; voti 4, 5, 6, 6, 7, 7, 7.
+
+```r
+studenti <- data.frame(
+  ore  = 1:7,
+  voto = c(4, 5, 6, 6, 7, 7, 7)
+)
+
+cor(studenti$ore, studenti$voto)
+modello <- lm(voto ~ ore, data = studenti)
+coef(modello)
+summary(modello)$r.squared
+```
+
+```text
+[1] 0.9354143
+(Intercept)         ore 
+        4.0         0.5 
+[1] 0.875
+```
+
+- `cor()` dà la **correlazione**, tra −1 e 1: qui 0,94, molto forte e positiva;
+- `lm(voto ~ ore)` adatta una **retta**: «il voto in funzione delle ore»;
+- `coef()` dà i due numeri della retta: voto previsto = **4,0 + 0,5 × ore**. In questo campione, un'ora in più è associata a mezzo punto in più;
+- `r.squared` è **0,875**: la retta spiega l'87,5% della variabilità dei voti.
+
+Si può usare la retta per fare previsioni, ma solo **dentro** il campo dei dati osservati (da 1 a 7 ore):
+
+```r
+predict(modello, data.frame(ore = c(8, 20)))
+```
+
+```text
+ 1  2 
+ 8 14 
+```
+
+Con 8 ore la previsione 8 è ragionevole. Con 20 ore il modello prevede 14: un voto che non esiste. Fuori dai dati la retta non vale.
+
+<Callout kind="attenzione">
+Una correlazione forte **non prova** che le ore di studio facciano salire il voto. Potrebbe esserci una terza causa, come la motivazione. La regressione descrive un legame, non lo spiega.
+</Callout>
+
+<Say who="assistente">Le due cifre di coef sono: il punto di partenza e quanto cresce per ogni ora. Come una tariffa fissa più un costo orario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il p-hacking">
+Il **p-hacking** è fare molti test, o molte analisi diverse, finché qualcosa «viene significativo», e poi raccontare solo quello. Non serve volontà di barare: succede anche in buona fede.
+
+Il motivo è aritmetico. Con soglia 0,05, un test su dati **senza nessun effetto vero** dà comunque un falso allarme una volta su venti. Se fai 20 test indipendenti, la probabilità di avere **almeno un falso allarme** è:
+
+1 − 0,95 elevato a 20 = **circa 64%**.
+
+In R lo calcoli così:
+
+```r
+1 - 0.95^20
+```
+
+```text
+[1] 0.6415141
+```
+
+Come difendersi, con poche regole semplici:
+
+- **decidi domanda e test prima** di guardare i dati, e scrivili nel report;
+- **dichiara tutti i test fatti**, non solo quelli riusciti;
+- guarda **dimensione dell'effetto e intervallo di confidenza**, non solo se p è sotto 0,05;
+- se fai molti confronti, usa una correzione (per esempio `p.adjust()`);
+- **ripeti l'analisi su dati nuovi**: un effetto vero resiste.
+
+<Callout kind="regola">
+Se cambi domanda dopo aver visto i risultati, il p-value non vale più niente. È come tirare le frecce e disegnare il bersaglio intorno a quella più vicina.
+</Callout>
+
+<Say who="sensei">Sei onesto con i numeri quando racconti anche le strade che non hanno portato a niente. Questo è il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un t.test tra due gruppi di 5 persone dà p-value = 0.08 e intervallo di confidenza da −0.2 a 1.8. Quale conclusione è corretta?"
+  options={[
+    "I dati non bastano per escludere che la differenza sia zero, ma la differenza vera potrebbe anche essere vicina a 2",
+    "Le due medie sono uguali",
+    "La differenza è dovuta al caso con probabilità dell'8%",
+    "Il test è sbagliato: bisogna ripeterlo finché p scende sotto 0.05"
+  ]}
+  answer={0}
+  explain="Un p-value alto con pochi dati non dimostra che le medie siano uguali: dice solo che i dati sono compatibili anche con nessuna differenza. L'intervallo mostra che la differenza vera potrebbe andare da quasi zero fino a quasi due punti. L'8% non è la probabilità che sia dovuta al caso. Ripetere il test finché p scende è proprio il p-hacking."
+/>
+
+<Say who="assistente">Quando il p non basta, leggi l'intervallo. Dice dove può stare la verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su summary, t.test, cor, lm e interpretazione dei risultati. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-statistica-r" pass="4/5" retries={3} />
+
+<Say who="sensei">Leggi ogni output come un referto: cosa dice, cosa non dice. Poi rispondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `summary()`, `mean()` e `sd()` descrivono; `t.test()` confronta due medie e restituisce p-value e intervallo di confidenza.
+- `cor()` misura la forza del legame tra due numeri; `lm(y ~ x)` adatta una retta; la previsione vale solo dentro i dati osservati e la correlazione non è causa.
+- Un p-value alto non prova l'uguaglianza; il p-hacking si evita decidendo prima il test, dichiarando tutto e ripetendo su dati nuovi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa p-value = 0.0558 in un t-test?", a: "Con nessun effetto reale, un risultato così estremo capiterebbe circa nel 5,6% dei casi" },
+    { q: "Che cosa restituisce coef(lm(voto ~ ore))?", a: "L'intercetta e la pendenza della retta" },
+    { q: "Con 20 test indipendenti a soglia 0,05, qual è la probabilità di almeno un falso allarme?", a: "Circa il 64%" },
+    { q: "Perché non usare la retta per 20 ore se i dati arrivano a 7?", a: "Fuori dal campo osservato la previsione non è affidabile" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: mettere tutto in un report che chiunque può rifare. Quarto, parametri e cartelle di progetto.</Say>
+</Scene>

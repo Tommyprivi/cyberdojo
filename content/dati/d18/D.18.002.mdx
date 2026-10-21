@@ -1,0 +1,202 @@
+---
+id: D.18.002
+course: dati
+module: 18
+title: "Gli indici"
+belt: blu
+duration_min: 9
+prerequisites: [D.18.001]
+objectives:
+  - "Spiegare che cos'è un indice e come lo fa un B-tree a livello concettuale"
+  - "Scrivere un CREATE INDEX e dire a quali query aiuta"
+  - "Riconoscere i casi in cui un indice non serve o fa danno"
+video:
+  provider: youtube
+  id: "iXBur0jSDAM"
+  start: 0
+  end: 600
+  channel: "ProfessionAI"
+  title: "Indici in SQL: Cosa Sono e Perché Rendono le Query Più Veloci"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d18-indici
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Creare un indice su ogni colonna «per sicurezza»: ogni indice rallenta le scritture e occupa spazio"
+  - "Aspettarsi che l'indice aiuti anche quando la query restituisce quasi tutte le righe"
+  - "Scrivere LIKE '%testo' o applicare una funzione alla colonna e stupirsi che l'indice non venga usato"
+commands: []
+---
+
+<Scene title="Tre milioni di ordini">
+Il negozio di Marta è cresciuto. La tabella `ordini` ha ora **tre milioni di righe**. La dashboard mostra gli ordini di un cliente con:
+
+<Log lines={[
+  "SELECT * FROM ordini WHERE cliente_id = 4217;",
+]} caption="La query dell'area clienti." />
+
+All'inizio rispondeva subito. Ora ci mette quattro secondi. Il database, per trovare le righe del cliente 4217, **le legge tutte e tre milioni**, una per una.
+
+La domanda del caso: **come si trova una riga senza leggerle tutte?**
+
+<Say who="sensei">Un archivio che si legge da cima a fondo a ogni domanda è un archivio che muore con la crescita. C'è un rimedio antico: l'indice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'indice analitico del libro">
+In fondo a un libro c'è l'**indice analitico**: parole in ordine alfabetico, ognuna con il numero della pagina. Se cerchi «ossidiana» non sfogli 300 pagine: guardi l'indice e vai alla pagina giusta.
+
+Un **indice di database** è la stessa idea: una struttura **ordinata**, separata dalla tabella, che per ogni valore di una colonna ricorda **dove** stanno le righe.
+
+Ecco la tabella `ordini` del negozio (le otto righe che già conosci):
+
+<Log lines={[
+  "id | cliente_id | prodotto_id | quantita | totale | data",
+  "1  | 1          | 1           | 2        | 25.00  | 2025-03-02",
+  "2  | 2          | 2           | 3        | 18.00  | 2025-03-05",
+  "3  | 1          | 3           | 1        | 18.00  | 2025-03-09",
+  "4  | 3          | 1           | 1        | 12.50  | 2025-04-01",
+  "5  | 2          | 4           | 1        | 24.00  | 2025-04-03",
+  "6  | 4          | 2           | 5        | 30.00  | 2025-04-10",
+  "7  | 1          | 5           | 2        | 15.00  | 2025-04-15",
+  "8  | 3          | 2           | 2        | 12.00  | 2025-05-02",
+]} caption="La tabella ordini. Gli ordini sono in ordine di data, non di cliente." />
+
+Un indice su `cliente_id` sarebbe una piccola rubrica: cliente 1 porta alle righe 1, 3, 7; cliente 2 alle righe 2, 5; cliente 3 alle righe 4, 8; cliente 4 alla riga 6.
+
+<Say who="assistente">La rubrica è ordinata per cliente. La tabella no. Ecco perché la rubrica si consulta in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il B-tree, a grandi linee">
+Il tipo di indice più usato (e quello predefinito in PostgreSQL, MySQL e SQL Server) si chiama **B-tree**, «albero bilanciato».
+
+Immagina un gioco a indovinare un numero da 1 a 1000: a ogni mossa dici «più alto» o «più basso» e scarti metà dei numeri. Il B-tree fa lo stesso, ma a ogni passo scarta molto più di metà: ogni «nodo» ha centinaia di cartelli che indicano dove andare.
+
+- Con **tre milioni di righe** bastano **pochi passi** (tre o quattro livelli) per arrivare alla riga giusta.
+- Con sei milioni di righe i passi non raddoppiano: ne serve forse uno in più.
+- Poiché i valori sono **ordinati**, l'indice aiuta anche con `ORDER BY` e con gli intervalli (`BETWEEN`, `>=`).
+
+Vuoi vederlo spiegato da un'altra voce? Un video sugli indici in SQL:
+
+<Video />
+
+<Callout kind="curiosita">
+Esistono altri tipi: **hash** (solo uguaglianze), **GIN** (testo e JSON), **GiST** e **BRIN**. Il B-tree copre quasi tutto quello che incontrerai all'inizio.
+</Callout>
+
+<Say who="sensei">Pochi passi invece di milioni di righe. È tutta qui la differenza tra quattro secondi e quattro millisecondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Creare un indice">
+Si crea con una riga:
+
+<Log lines={[
+  "CREATE INDEX idx_ordini_cliente ON ordini (cliente_id);",
+]} caption="Indice sulla colonna cliente_id." />
+
+Da questo momento la stessa query di prima usa l'indice. Il **risultato non cambia**, cambia solo la velocità:
+
+<Log lines={[
+  "SELECT * FROM ordini WHERE cliente_id = 1 ORDER BY id;",
+]} caption="Query sul cliente 1." />
+
+<Log lines={[
+  "id | cliente_id | prodotto_id | quantita | totale | data",
+  "1  | 1          | 1           | 2        | 25.00  | 2025-03-02",
+  "3  | 1          | 3           | 1        | 18.00  | 2025-03-09",
+  "7  | 1          | 5           | 2        | 15.00  | 2025-04-15",
+]} caption="Tre righe: gli ordini 1, 3 e 7." />
+
+<Callout kind="regola">
+PostgreSQL crea **da solo** un indice per ogni chiave primaria e per ogni vincolo `UNIQUE`. Per le **chiavi esterne** come `cliente_id` invece no: li devi creare tu. (MySQL con InnoDB, al contrario, li crea in automatico.)
+</Callout>
+
+Prova la query qui sotto: l'indice non si vede, ma il risultato è quello della tabella.
+
+<SqlPlayground db="negozio" query="SELECT * FROM ordini WHERE cliente_id = 1 ORDER BY id;" height={420} />
+
+<Say who="assistente">Se il risultato è identico, come sai che l'indice serve? Lo scoprirai nella prossima lezione, con il piano di esecuzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando aiuta e quando no">
+Ogni indice ha un costo: occupa spazio e **rallenta INSERT, UPDATE e DELETE**, perché va aggiornato insieme alla tabella. Si crea solo dove serve.
+
+<Log lines={[
+  "AIUTA:",
+  "  WHERE cliente_id = 4217           (pochi risultati su molte righe)",
+  "  JOIN ordini ON ordini.cliente_id = clienti.id",
+  "  ORDER BY data  /  WHERE data >= '2025-04-01'",
+  "NON AIUTA:",
+  "  tabella piccola (leggerla tutta costa meno)",
+  "  colonna con pochi valori distinti (es. sì/no)",
+  "  query che restituisce quasi tutte le righe",
+  "  WHERE nome LIKE '%rossi'          (parte iniziale ignota)",
+  "  WHERE lower(nome) = 'rossi'       (funzione sulla colonna)",
+]} caption="Regole pratiche." />
+
+Sull'ultimo caso la soluzione esiste: un **indice sull'espressione**, `CREATE INDEX ON clienti (lower(nome));`.
+
+<Callout kind="attenzione">
+Un indice su una colonna sì/no con metà `sì` e metà `no` quasi mai viene usato: per leggere metà tabella conviene leggere la tabella intera.
+</Callout>
+
+<Say who="sensei">Un indice non è gratis. Chiediti sempre: quale query lo userà, e quante volte al giorno?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La tabella ordini ha 3 milioni di righe. Quale indice ha più probabilità di velocizzare davvero WHERE cliente_id = 4217?"
+  options={["Un indice su cliente_id: pochi risultati su molte righe", "Un indice su una colonna sì/no: ha solo due valori", "Nessun indice: il database è già veloce", "Un indice su ogni colonna della tabella"]}
+  answer={0}
+  explain="L'indice serve quando il filtro seleziona poche righe da una tabella grande. Una colonna sì/no non scarta abbastanza righe. Un indice su ogni colonna rallenta le scritture senza servire alle query. Senza indice il database legge tutte e tre milioni di righe."
+/>
+
+<Say who="sensei">Pochi risultati, tante righe: quello è il terreno dell'indice. Tutto il resto, si misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su indici, B-tree e scelte. Servono tutte e cinque giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="d18-indici" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un buon analista sa quando un indice aiuta e quando è solo peso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un indice è una struttura ordinata, separata dalla tabella, che dice dove stanno le righe con un certo valore.
+- Il B-tree trova una riga in pochi passi anche con milioni di righe, e aiuta con uguaglianze, intervalli e ORDER BY.
+- Ogni indice rallenta le scritture: si crea solo dove serve, e non aiuta su tabelle piccole, filtri poco selettivi o LIKE '%...'.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si crea un indice su ordini(cliente_id)?", a: "CREATE INDEX idx_ordini_cliente ON ordini (cliente_id);" },
+    { q: "Qual è il costo di un indice?", a: "Spazio su disco e scritture più lente" },
+    { q: "Perché LIKE '%rossi' non usa un B-tree?", a: "Perché l'inizio della parola è ignoto e l'ordine non aiuta" },
+    { q: "PostgreSQL indicizza in automatico le chiavi esterne?", a: "No: solo chiavi primarie e vincoli UNIQUE" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come chiedere al database se sta davvero usando l'indice. Si chiama EXPLAIN.</Say>
+</Scene>

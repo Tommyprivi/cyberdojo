@@ -1,0 +1,158 @@
+---
+id: D.13.001
+course: dati
+module: 13
+title: "Scegliere il progetto"
+belt: blu
+duration_min: 9
+prerequisites: [D.12.006]
+objectives:
+  - "Trasformare un'idea troppo grande in un problema piccolo e fattibile"
+  - "Trovare dati aperti italiani ed europei e controllarne la licenza"
+  - "Valutare in anticipo se un progetto si può finire"
+video:
+  provider: youtube
+  id: "0OfsXybrweI"
+  start: 0
+  end: 600
+  channel: "Associazione onData"
+  title: "Le API sui dati statistici di Istat e il progetto SDMX"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-scelta-progetto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere un progetto enorme («analizzo tutta l'Italia») e non finirlo mai"
+  - "Partire dall'idea senza controllare prima che i dati esistano"
+  - "Usare un file trovato in rete senza leggere la licenza e senza citare la fonte"
+commands: []
+---
+
+<Scene title="«Voglio analizzare tutto»">
+Giulia ha 16 anni e ha finito il corso di base sui dati. Ora vuole fare «il suo primo vero progetto». La sua idea: **analizzare tutta l'Italia**: economia, scuola, ambiente, tutto insieme.
+
+Dopo due settimane ha venti schede aperte, otto file diversi e nessun risultato. Si sente bloccata.
+
+La domanda del caso: **come si sceglie un progetto che si può davvero finire?**
+
+<Say who="sensei">Un progetto finito vale più di dieci idee grandiose. Si comincia stringendo il campo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Piccolo, reale, misurabile">
+Un buon primo progetto ha tre qualità:
+
+- **Piccolo**: si finisce in due o tre settimane, a poche ore alla volta.
+- **Reale**: risponde a un problema che qualcuno si pone davvero (il quartiere, la scuola, la squadra, un'associazione).
+- **Misurabile**: la risposta si può dare con numeri, non solo con opinioni.
+
+«Analizzare tutta l'Italia» non è un problema: è un argomento. Un problema è **una domanda con un confine**.
+
+<Callout kind="trucco">
+Restringi su tre assi: **dove** (un comune, una regione), **quando** (un anno, cinque anni), **che cosa** (una sola misura, per esempio la raccolta differenziata).
+</Callout>
+
+Vuoi sentire come si arriva ai dati ufficiali? Un esempio dall'Istat, l'istituto italiano di statistica:
+
+<Video />
+
+<Say who="assistente">Giulia può partire da una domanda come: «Nella mia regione la raccolta differenziata è cresciuta negli ultimi cinque anni?». Una regione, un periodo, una misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove trovare dati aperti">
+I **dati aperti** (open data) sono dati che chiunque può scaricare e riusare, di solito con una licenza chiara. Fonti stabili:
+
+- **Istat** (istat.it): statistiche ufficiali su popolazione, lavoro, scuola, prezzi.
+- **dati.gov.it**: il portale nazionale dei dati aperti della pubblica amministrazione italiana. Raccoglie dataset di ministeri, regioni e comuni.
+- **data.europa.eu**: il portale europeo dei dati aperti; indicizza anche i portali dei singoli paesi.
+- **Eurostat** (ec.europa.eu/eurostat): statistiche confrontabili tra i paesi dell'Unione europea.
+- **OpenCoesione** (opencoesione.gov.it): i progetti finanziati con fondi pubblici, per comune.
+- **Kaggle** (kaggle.com): dataset caricati da utenti e organizzazioni, comodi per esercitarsi. Controlla sempre chi li ha pubblicati e da dove vengono.
+
+<Callout kind="attenzione">
+Su portali e siti le pagine cambiano posto con il tempo (verificato a ottobre 2026): se un link non funziona, cerca il nome del dataset dalla home del sito.
+</Callout>
+
+<Say who="sensei">I dati si cercano prima di innamorarsi dell'idea. Se non esistono, l'idea è un sogno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La licenza e la fonte">
+Un file scaricabile non è un file libero da vincoli. Prima di usarlo guarda tre cose:
+
+1. **Licenza**: cosa puoi fare con i dati. Le più comuni sono **CC BY 4.0** (puoi riusare i dati se citi la fonte), **CC0** (nessun vincolo) e la **IODL 2.0**, la licenza italiana dei dati aperti (riuso con citazione della fonte).
+2. **Fonte e data**: chi ha prodotto i dati e quando sono stati aggiornati l'ultima volta.
+3. **Descrizione delle colonne** (i metadati): senza sapere cosa significa ogni colonna, il numero non dice niente.
+
+<Callout kind="regola">
+Nel progetto scrivi sempre: nome del dataset, ente che l'ha prodotto, link, data di scarico e licenza. Chi legge deve poter rifare il tuo lavoro.
+</Callout>
+
+<Callout kind="attenzione">
+Dati su persone (salute, scuola, minori) richiedono ancora più cautela: se il file contiene dati personali, non è un buon candidato per un progetto pubblico. Ricorda il GDPR del modulo precedente.
+</Callout>
+
+<Say who="assistente">Se non trovi la licenza, non assumere che sia libera. Cerca un altro dataset oppure scrivi all'ente per chiedere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Giulia ha trovato un dataset interessante su un sito, senza licenza né descrizione delle colonne. Qual è la mossa più sensata?"
+  options={[
+    "Cercare lo stesso tema su una fonte ufficiale con licenza chiara, oppure chiedere all'ente come si può riusare il file",
+    "Usarlo comunque: se è online, si può riusare",
+    "Cancellare le colonne che non capisce e analizzare le altre",
+    "Pubblicare il progetto senza citare la fonte, così nessuno farà domande",
+  ]}
+  answer={0}
+  explain="Essere online non significa essere riusabile. Senza licenza non sai cosa è permesso; senza descrizione delle colonne rischi di leggere male i numeri. Si cambia fonte o si chiede all'ente."
+/>
+
+<Say who="sensei">Controllare costa cinque minuti. Un riuso sbagliato può costare molto di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su come scegliere e controllare un progetto.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-scelta-progetto" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Chi sceglie con cura il progetto ha già fatto metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un buon progetto è piccolo, reale e misurabile: una domanda con un confine di luogo, tempo e misura.
+- I dati si cercano prima: Istat, dati.gov.it, data.europa.eu, Eurostat, OpenCoesione, Kaggle.
+- Di ogni dataset si controllano licenza, fonte, data e descrizione delle colonne, e si cita sempre la fonte.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Tre qualità di un buon primo progetto?", a: "Piccolo, reale, misurabile" },
+    { q: "Come si stringe un argomento troppo grande?", a: "Con un confine di dove, quando e che cosa" },
+    { q: "Cosa significa CC BY 4.0?", a: "Riuso libero citando la fonte" },
+    { q: "Perché cercare i dati prima di fissare l'idea?", a: "Perché senza dati l'idea non si può realizzare" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dalla domanda ai dati. Trasformiamo l'idea in un piano, con un'ipotesi che può anche essere smentita.</Say>
+</Scene>

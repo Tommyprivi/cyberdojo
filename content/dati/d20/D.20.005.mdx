@@ -1,0 +1,176 @@
+---
+id: D.20.005
+course: dati
+module: 20
+title: "Attribuzione e campagne"
+belt: marrone
+duration_min: 9
+prerequisites: [D.20.004]
+objectives:
+  - "Costruire un indirizzo con parametri UTM coerenti"
+  - "Confrontare ultimo clic, primo clic e modelli lineari"
+  - "Calcolare il costo per acquisizione e riconoscerne i limiti"
+video:
+  provider: youtube
+  id: "JR0K6pYvuVw"
+  start: 0
+  end: 600
+  channel: "Tiziano Fogliata"
+  title: "Parametri URL UTM: come e perché utilizzarli con Google Analytics"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-attribuzione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere i parametri UTM in modo diverso (Social, social, facebook) e spezzare un canale in più righe"
+  - "Credere che l'ultimo clic dica da dove è nato l'interesse"
+  - "Calcolare il costo per acquisizione dividendo per i clic invece che per i clienti nuovi"
+commands: []
+---
+
+<Scene title="Chi merita il merito">
+Giulia di **Tavola Bella** investe in tre cose: annunci sui social, annunci sul motore di ricerca e email ai clienti. Un cliente, Marco, compra un set di piatti da 60 €.
+
+Ma Marco prima ha cliccato un annuncio sui social lunedì, poi ha cercato «piatti blu» mercoledì, e infine ha aperto una email venerdì e ha comprato.
+
+La domanda del caso: **a chi si attribuisce l'acquisto?**
+
+<Say who="sensei">Un acquisto ha tanti padri. Decidere quale conta di più è una scelta, non un fatto. Dichiarala sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le etichette UTM">
+Per sapere da dove arriva una visita si aggiungono all'indirizzo dei parametri chiamati **UTM**. Tre da conoscere:
+
+- `utm_source`: la fonte (per esempio `instagram`, `newsletter`);
+- `utm_medium`: il tipo di canale (`social`, `email`, `cpc` per annunci a pagamento);
+- `utm_campaign`: il nome della campagna (`saldi_primavera`).
+
+Un indirizzo completo:
+
+<Log lines={[
+  "https://tavolabella.example/piatti?utm_source=instagram",
+  "    &utm_medium=social&utm_campaign=saldi_primavera",
+]} />
+
+<Callout kind="attenzione">
+Per lo strumento `Social`, `social` e `facebook` sono tre valori diversi. Il risultato sono tre righe nei rapporti al posto di una. Scrivi una **regola unica** (tutto minuscolo, trattino basso) e rispettala.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in italiano, bastano i primi minuti:
+
+<Video />
+
+<Say who="assistente">Indizio: gli UTM si mettono solo sui link che porti dall'esterno. Mai sui link interni al sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il viaggio di Marco">
+Il percorso di Marco, con tre contatti prima dell'acquisto da **60 €**:
+
+| giorno | canale |
+|---|---|
+| lunedì | social |
+| mercoledì | ricerca |
+| venerdì | email (acquisto) |
+
+Quanti euro vanno a ogni canale secondo ciascun **modello di attribuzione**?
+
+| modello | social | ricerca | email |
+|---|---|---|---|
+| ultimo clic | 0 | 0 | 60 |
+| primo clic | 60 | 0 | 0 |
+| lineare (parti uguali) | 20 | 20 | 20 |
+| a posizione (40/20/40) | 24 | 12 | 24 |
+
+Controllo: ogni riga somma a 60. Nel modello a posizione, 40% di 60 = 24, 20% = 12, 40% = 24.
+
+<Callout kind="curiosita">
+L'**ultimo clic** è il più usato perché è semplice. Ma premia il canale che arriva alla fine, spesso l'email a chi era già convinto, e dimentica chi ha fatto nascere l'interesse.
+</Callout>
+
+<Say who="sensei">Nessun modello è «vero». Ognuno risponde a una domanda diversa: chi ha chiuso, chi ha aperto, chi ha aiutato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il costo per acquisizione">
+Il **costo per acquisizione** (in inglese CPA) è quanto si spende per ottenere un cliente: **spesa ÷ clienti acquisiti**.
+
+| canale | spesa | clienti | CPA |
+|---|---|---|---|
+| social | 500 € | 25 | 20 € |
+| ricerca | 600 € | 40 | 15 € |
+| email | 100 € | 20 | 5 € |
+| totale | 1.200 € | 85 | circa 14,1 € |
+
+Controllo: 500 ÷ 25 = 20; 600 ÷ 40 = 15; 100 ÷ 20 = 5; 1.200 ÷ 85 = 14,12.
+
+Quale canale è il migliore? Sembra l'email. Ma i suoi 20 clienti erano già nella lista: senza l'email avrebbero comprato lo stesso? Forse sì.
+
+<Callout kind="attenzione">
+Limiti dell'attribuzione: chi vede l'annuncio e non clicca non compare; un cliente può passare da telefono a computer e sembrare due persone; chi rifiuta i cookie è invisibile. Il CPA è una stima, non una verità.
+</Callout>
+
+<Say who="sensei">Un numero preciso al centesimo non è per forza esatto. Dillo, quando consegni il rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marco compra 60 € dopo social, ricerca ed email. Con il modello lineare, quanti euro vanno alla ricerca?"
+  options={["20 €", "0 €", "60 €", "30 €"]}
+  answer={0}
+  explain="Lineare vuol dire parti uguali: 60 ÷ 3 = 20 € a ciascun canale. Con l'ultimo clic avrebbe preso 0 €."
+/>
+
+<Quiz
+  question="Un canale ha speso 800 € e ha portato 32 clienti. Qual è il CPA?"
+  options={["25 €", "2,5 €", "40 €", "256 €"]}
+  answer={0}
+  explain="800 ÷ 32 = 25. La formula è spesa diviso clienti. Chi risponde 2,5 ha sbagliato di un fattore dieci."
+/>
+
+<Say who="assistente">Spesa sopra, clienti sotto. Un euro per cliente, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+UTM, modelli di attribuzione, CPA e limiti: calcoli e scenari.
+
+<Practice generator="d20-attribuzione" pass="5/5" retries={3} />
+
+<Say who="sensei">Dichiara il modello, ricontrolla i totali, ricorda i limiti. Il CPA più basso non è sempre il canale migliore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli UTM (source, medium, campaign) etichettano i link: valori coerenti, sempre minuscoli, una regola sola.
+- Ultimo clic, primo clic, lineare e a posizione sono scelte diverse: ognuna risponde a una domanda.
+- CPA = spesa ÷ clienti acquisiti; è una stima che dipende dal modello e dai dati che mancano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa indica utm_medium?", a: "Il tipo di canale, per esempio social, email, cpc" },
+    { q: "60 € e tre canali con modello lineare: quanto a ciascuno?", a: "20 €" },
+    { q: "Formula del CPA?", a: "Spesa ÷ clienti acquisiti" },
+    { q: "Perché l'ultimo clic può ingannare?", a: "Premia chi chiude, non chi ha fatto nascere l'interesse" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: privacy e consenso. Ciò che puoi misurare dipende da ciò che le persone ti concedono.</Say>
+</Scene>

@@ -1,0 +1,158 @@
+---
+id: D.11.002
+course: dati
+module: 11
+title: "La regressione lineare"
+belt: verde
+duration_min: 9
+prerequisites: [D.11.001]
+objectives:
+  - "Usare una retta per prevedere un numero"
+  - "Calcolare l'errore di una previsione e l'errore medio"
+  - "Capire perché non si prevede lontano dai dati visti"
+video:
+  provider: youtube
+  id: "NS0GqOv0-PI"
+  start: 0
+  end: 350
+  channel: "Datapizza"
+  title: "La REGRESSIONE spiegata semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d11-regressione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere la pendenza (di quanto sale y per ogni x in più) con il punto di partenza"
+  - "Usare la retta per prevedere molto fuori dai dati visti"
+  - "Scambiare una correlazione per una causa"
+commands: []
+---
+
+<Scene title="Quanto prenderò?">
+Luca ha chiesto a cinque compagni quante ore hanno studiato per l'ultima verifica e che voto hanno preso.
+
+| ore di studio | voto |
+|---|---|
+| 1 | 3 |
+| 2 | 5 |
+| 3 | 6 |
+| 4 | 8 |
+| 5 | 9 |
+
+Luca vuole sapere: **se studio 4 ore e mezza, che voto posso aspettarmi?** E poi: quanto posso fidarmi?
+
+<Say who="sensei">Un numero da prevedere, e dei punti già visti. Questo si chiama regressione. Si comincia con una retta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La retta come modello">
+La **regressione** prevede **un numero**. La **regressione lineare** usa una retta:
+
+**voto = 1,5 × ore + 1,7**
+
+Due numeri la descrivono. **1,5** è la pendenza: per ogni ora in più il voto sale di 1,5. **1,7** è il punto di partenza: il voto previsto con zero ore.
+
+<Log lines={["ore = 1  ->  1,5 x 1 + 1,7 = 3,2", "ore = 2  ->  1,5 x 2 + 1,7 = 4,7", "ore = 3  ->  1,5 x 3 + 1,7 = 6,2", "ore = 4  ->  1,5 x 4 + 1,7 = 7,7", "ore = 5  ->  1,5 x 5 + 1,7 = 9,2"]} caption="Le previsioni della retta sui cinque punti." />
+
+<Say who="assistente">Il computer non ha scelto 1,5 e 1,7 a caso: ha provato molte rette e ha tenuto quella che sbaglia di meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'errore">
+L'**errore** di un punto è la differenza tra voto reale e voto previsto: **reale meno previsto**.
+
+| ore | reale | previsto | errore |
+|---|---|---|---|
+| 1 | 3 | 3,2 | -0,2 |
+| 2 | 5 | 4,7 | +0,3 |
+| 3 | 6 | 6,2 | -0,2 |
+| 4 | 8 | 7,7 | +0,3 |
+| 5 | 9 | 9,2 | -0,2 |
+
+Per un riassunto si usa l'**errore medio assoluto** (MAE): si toglie il segno e si fa la media. Qui: (0,2 + 0,3 + 0,2 + 0,3 + 0,2) diviso 5 = 1,2 diviso 5 = **0,24**.
+
+<Callout kind="attenzione">
+Non sommare gli errori con il segno: -0,2 e +0,3 si compensano. Qui la somma fa 0, ma la retta non è perfetta.
+</Callout>
+
+<Say who="sensei">Il segno si toglie, altrimenti gli errori si cancellano a vicenda e sembra tutto perfetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una retta peggiore">
+Proviamo un'altra retta: **voto = 1 × ore + 3**. Le previsioni sono 4, 5, 6, 7, 8.
+
+<Log lines={["errori: 3-4 = -1 | 5-5 = 0 | 6-6 = 0 | 8-7 = +1 | 9-8 = +1", "MAE = (1 + 0 + 0 + 1 + 1) / 5 = 3 / 5 = 0,6"]} caption="Errore medio 0,6 contro 0,24." />
+
+0,6 è più grande di 0,24: la prima retta è migliore. **Addestrare** una regressione lineare vuol dire cercare la retta con l'errore più piccolo.
+
+Vuoi sentirlo da un'altra voce? Un video di meno di sei minuti:
+
+<Video />
+
+<Say who="assistente">Il computer prova tante rette e sceglie quella con l'errore più piccolo. Qui l'hai visto fare a mano con due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Guided
+  steps={[
+    "Domanda: con la retta voto = 1,5 × ore + 1,7, che voto prevede per 4 ore?",
+    "Si moltiplica: 1,5 × 4 = 6.",
+    "Si aggiunge il punto di partenza: 6 + 1,7 = 7,7.",
+    "E per 6 ore? 1,5 × 6 + 1,7 = 10,7. Ma il voto massimo è 10: la retta ha superato i limiti!",
+    "Morale: fuori dall'intervallo dei dati visti (1-5 ore) la retta può dire cose assurde. Meglio non fidarsi.",
+  ]}
+/>
+
+<Quiz
+  question="Un modello trova che i gelati venduti salgono insieme alle scottature solari. Che cosa si può dedurre?"
+  options={["C'è un legame nei dati, ma non prova che uno causi l'altro (c'entra il caldo)", "I gelati causano le scottature", "Bisogna vietare i gelati", "Il modello è sbagliato"]}
+  answer={0}
+  explain="Due cose che salgono insieme sono legate nei dati, ma il legame può avere una terza causa: qui il caldo. La regressione misura il legame, non prova la causa."
+/>
+
+<Say who="sensei">Una previsione non è una certezza, e un legame non è una causa. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque piccoli calcoli con rette, errori e previsioni. Ricontrolla ogni conto: un segno sbagliato cambia la risposta. Hai 3 tentativi.
+
+<Practice generator="d11-regressione" pass="5/5" retries={3} />
+
+<Say who="sensei">Un conto alla volta, e il segno sempre sotto controllo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La regressione prevede un numero. La retta y = pendenza × x + punto di partenza è il modello più semplice.
+- L'errore è reale meno previsto. L'errore medio assoluto (MAE) toglie il segno e fa la media.
+- Non prevedere lontano dai dati visti, e non scambiare un legame per una causa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa prevede una regressione?", a: "Un numero" },
+    { q: "Nella retta y = 3x + 4, che cosa indica 3?", a: "Di quanto sale y quando x sale di 1" },
+    { q: "Come si calcola il MAE?", a: "Errori senza segno, poi la media" },
+    { q: "Perché non prevedere fuori dall'intervallo dei dati?", a: "Il modello non ha mai visto casi simili: può dire cose assurde" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la classificazione. Non un numero, ma una categoria: spam o non spam.</Say>
+</Scene>

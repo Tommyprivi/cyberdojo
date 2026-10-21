@@ -1,0 +1,239 @@
+---
+id: F.09.003
+course: fondamenta
+module: 9
+title: "Testo e input"
+belt: arancione
+duration_min: 9
+prerequisites: [F.09.002]
+objectives:
+  - "Usare indici, slice e len() sulle stringhe"
+  - "Costruire una riga di log con una f-string"
+  - "Pulire e spezzare il testo con i metodi di stringa e leggere dati con input()"
+video:
+  provider: youtube
+  id: "vRGPM4pbqsA"
+  start: 0
+  end: 600
+  channel: "PyMike"
+  title: "14. I metodi delle stringhe (Corso Python base)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f09-testo
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "input() restituisce sempre testo, anche se scrivi un numero"
+  - "I metodi di stringa non modificano la stringa: restituiscono una copia nuova"
+  - "Gli indici partono da 0, non da 1"
+commands: []
+---
+
+<Scene title="Una riga ordinata">
+Nel log del server compare ogni minuto una riga come questa:
+
+<Log lines={["03:12  src=203.0.113.9  porta=22  esito=FAILED"]} caption="Una riga di log vera: più campi, tutti attaccati." />
+
+Marta vuole che lo script prenda ora, indirizzo e porta, e ne scriva una frase leggibile per il rapporto del mattino. Poi vuole poter **chiedere un dato a chi usa lo script**.
+
+La domanda del caso: **come si tagliano, si puliscono e si compongono i pezzi di testo?**
+
+<Say who="sensei">Un log è testo. Quasi tutto il lavoro di un analista è tagliare e ricomporre testo. Questa lezione vale oro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le stringhe: un testo, tanti caratteri">
+Un testo in Python si chiama **stringa** (str). Si scrive tra virgolette doppie `"..."` o apici singoli `'...'`, a tua scelta, purché ci siano gli stessi all'inizio e alla fine.
+
+Ogni carattere ha una posizione, detta **indice**, e si comincia a contare da **0**. Con gli indici negativi si conta dalla fine: `-1` è l'ultimo carattere. Una **slice** `[a:b]` prende dal carattere `a` fino a quello **prima** di `b`.
+
+```python
+ip = "203.0.113.9"
+print(len(ip))
+print(ip[0])
+print(ip[-1])
+print(ip[0:3])
+```
+
+Output:
+
+```text
+11
+2
+9
+203
+```
+
+`len()` conta i caratteri, punti compresi: 11.
+
+<Callout kind="attenzione">
+Il primo carattere è `ip[0]`, non `ip[1]`. È l'errore più comune: ripeti a voce «si parte da zero».
+</Callout>
+
+<Say who="assistente">La slice [0:3] prende gli indici 0, 1 e 2. Il 3 resta fuori: è il primo che non vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le f-string: il modo comodo">
+Per comporre una frase con dei valori dentro si usa la **f-string**: una stringa con la `f` davanti. Dentro le graffe `{}` metti il nome di una variabile, o anche un calcolo.
+
+```python
+ora = "03:12"
+ip = "203.0.113.9"
+porta = 22
+print(f"{ora} src={ip} porta={porta}")
+```
+
+Output:
+
+```text
+03:12 src=203.0.113.9 porta=22
+```
+
+Puoi anche decidere quante cifre decimali mostrare, scrivendo `:.2f` dopo il valore:
+
+```python
+tentativi = 40
+print(f"Media: {tentativi / 3:.2f}")
+```
+
+Output:
+
+```text
+Media: 13.33
+```
+
+<Callout kind="trucco">
+Con la f-string non devi convertire i numeri con `str()`: Python lo fa da solo. È più corta e più leggibile della somma di testi.
+</Callout>
+
+<Say who="sensei">Una riga di log ben formattata si legge in un secondo. Una mal formattata costa un errore. Usa le f-string.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I metodi di stringa">
+Un **metodo** è una funzione che appartiene a un valore: si scrive dopo un punto. Questi sono i più usati sui log:
+
+```python
+riga = "  03:12 FAILED login da 203.0.113.9  "
+print(riga.strip())
+print(riga.strip().upper())
+print("FAILED" in riga)
+print(riga.strip().split())
+print(riga.replace("FAILED", "OK").strip())
+```
+
+Output:
+
+```text
+03:12 FAILED login da 203.0.113.9
+03:12 FAILED LOGIN DA 203.0.113.9
+True
+['03:12', 'FAILED', 'login', 'da', '203.0.113.9']
+03:12 OK login da 203.0.113.9
+```
+
+- `strip()` toglie spazi e a capo all'inizio e alla fine
+- `upper()` e `lower()` cambiano le maiuscole
+- `split()` spezza il testo in una **lista** di pezzi (la studieremo meglio più avanti)
+- `replace(a, b)` sostituisce un pezzo con un altro
+- `in` risponde True o False: il pezzo c'è?
+
+<Callout kind="attenzione">
+I metodi **non cambiano** la stringa originale: ne restituiscono una nuova. Scrivere `riga.upper()` da solo non serve a niente: devi usare il risultato, per esempio `riga = riga.upper()`.
+</Callout>
+
+Vuoi vedere i metodi di stringa spiegati da un'altra voce?
+
+<Video />
+
+<Say who="assistente">Il metodo split() è il tuo migliore amico: una riga di log diventa una lista di campi, pronti da leggere uno per uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiedere un dato: input()">
+La funzione `input()` mette in pausa il programma, mostra una domanda e aspetta che l'utente scriva qualcosa e prema Invio.
+
+```python
+nome = input("Nome dell'analista: ")
+print(f"Turno assegnato a {nome}")
+```
+
+Se l'utente scrive `Ada`, vedi:
+
+```text
+Nome dell'analista: Ada
+Turno assegnato a Ada
+```
+
+<Callout kind="attenzione">
+`input()` restituisce **sempre testo**, anche se l'utente scrive `22`. Per usarlo come numero va convertito:
+</Callout>
+
+```python
+porta = int(input("Porta: "))
+print(porta + 1)
+```
+
+Se l'utente scrive `22` stampa `23`. Senza `int()` si avrebbe un `TypeError`, come nella lezione precedente.
+
+<Say who="sensei">Mai fidarsi di ciò che scrive un utente: è testo, e può essere sbagliato. Convertilo, e un domani impareremo a controllarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa questo codice? s = 'ssh' e poi s.upper() e poi print(s)"
+  options={["ssh", "SSH", "Errore", "None"]}
+  answer={0}
+  explain="upper() restituisce una copia in maiuscolo, ma la variabile s non cambia. Qui il risultato di s.upper() non viene salvato né stampato, quindi print(s) mostra ancora ssh. Per tenerlo servirebbe s = s.upper()."
+/>
+
+Ora componi tu la riga di log. Cambia i valori e riesegui.
+
+<PythonTerminal code={"ora = '03:12'\nip = '203.0.113.9'\nesito = 'FAILED'\nprint(f'{ora} src={ip} esito={esito.lower()}')"} />
+
+<Say who="assistente">Prova a cambiare esito in 'OK' e guarda come cambia la riga. La f-string si adatta da sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande: cosa stampa il codice, quale metodo serve, dove sta l'errore. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f09-testo" pass="4/5" retries={3} />
+
+<Say who="sensei">Indici che partono da zero e stringhe che non cambiano. Sono le due trappole: ricordale entrambe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le stringhe hanno indici da 0, indici negativi dalla fine e slice `[a:b]` che escludono `b`.
+- Una f-string compone una riga con i valori dentro le graffe; `:.2f` fissa i decimali.
+- `strip()`, `upper()`, `split()`, `replace()` restituiscono una copia nuova; `input()` dà sempre testo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa stampa print('ciao'[1:3])?", a: "ia" },
+    { q: "Quale metodo toglie gli spazi ai bordi?", a: "strip()" },
+    { q: "Che tipo restituisce input()?", a: "Sempre str (testo)" },
+    { q: "Come si scrive una f-string?", a: "f davanti alle virgolette, variabili tra graffe" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le decisioni. Lo script imparerà a scegliere cosa fare in base a ciò che legge.</Say>
+</Scene>

@@ -1,0 +1,176 @@
+---
+id: T.06.004
+course: trading
+module: 6
+title: "Drawdown: scendere è facile, risalire no"
+belt: arancione
+duration_min: 9
+prerequisites: [T.06.003]
+objectives:
+  - "Calcolare il drawdown e il drawdown massimo a partire da una serie di valori del capitale"
+  - "Calcolare il guadagno necessario per recuperare una perdita percentuale"
+  - "Spiegare perché perdite grandi sono sproporzionatamente difficili da recuperare"
+video:
+  provider: youtube
+  id: "g_InfsykL60"
+  start: 0
+  end: 600
+  channel: "TabletClass Math"
+  title: "Stocks go down 50% - How much PERCENT gain is required to recover? (many people confuse this)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t06-drawdown
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che dopo una perdita del 50% basti un guadagno del 50% per tornare al punto di partenza"
+  - "Calcolare il drawdown rispetto al valore iniziale invece che rispetto al massimo precedente"
+  - "Confondere il drawdown corrente con il drawdown massimo"
+commands: []
+---
+
+<Scene title="Meno 50, più 50">
+Un conto demo fittizio vale **1.000 €**. Dopo una brutta serie di operazioni scende a **500 €**: ha perso il 50%.
+
+Il mese dopo la strategia guadagna il **50%**. Il proprietario è sollevato: «siamo tornati a posto!»
+
+Fai il conto: 500 € + 50% = 750 €. Non è 1.000 €. La domanda del caso: **quanto serve guadagnare per tornare al punto di partenza?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: sui mercati si può perdere denaro, anche tutto. I numeri sono inventati.
+</Callout>
+
+<Say who="sensei">Le percentuali non si sommano e non si annullano a coppie. Su questo sbagliano quasi tutti, all'inizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il drawdown">
+Il **drawdown** misura **di quanto sei sceso rispetto al massimo precedente** del tuo capitale. Si calcola così:
+
+drawdown = (valore attuale − massimo precedente) / massimo precedente
+
+Esempio con un conto fittizio nei giorni successivi:
+
+| Giorno | Valore | Massimo finora | Drawdown |
+|---|---|---|---|
+| 1 | 100 | 100 | 0% |
+| 2 | 120 | 120 | 0% |
+| 3 | 90 | 120 | −25% |
+| 4 | 108 | 120 | −10% |
+| 5 | 96 | 120 | −20% |
+| 6 | 132 | 132 | 0% |
+
+Il giorno 3: (90 − 120) / 120 = −0,25, cioè **−25%**. Il giorno 5: (96 − 120) / 120 = −20%.
+
+<Callout kind="regola">
+Il drawdown si calcola rispetto al **massimo precedente**, non rispetto al capitale di partenza. Quando il valore fa un nuovo massimo, il drawdown torna a zero.
+</Callout>
+
+<Say who="assistente">Immagina di scalare una collina: il drawdown è quanto sei sceso dall'ultima cima raggiunta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il drawdown massimo">
+Il **drawdown massimo** (in inglese *maximum drawdown*) è il **peggiore** drawdown in tutta la serie. Nella tabella è **−25%** (giorno 3).
+
+Perché interessa? Perché dice la peggiore discesa che avresti vissuto, nel passato, tenendo la strategia dall'inizio. È un numero che parla di **tenuta**: ce la faresti a continuare dopo una discesa così?
+
+<Callout kind="curiosita">
+Il drawdown massimo osservato in un backtest è un **minimo** di quello che può succedere: nel futuro può andare peggio. Il passato non esaurisce i casi possibili.
+</Callout>
+
+<Say who="sensei">Il drawdown massimo del backtest non è il tetto della sofferenza. È solo il peggio che hai già visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché risalire costa di più">
+Dopo una perdita del **d** (in frazione), il capitale è (1 − d) del precedente. Per tornare a 1 serve moltiplicare per 1 / (1 − d), cioè un guadagno di **d / (1 − d)**.
+
+| Perdita | Guadagno necessario per recuperare |
+|---|---|
+| 10% | 11,1% |
+| 20% | 25% |
+| 25% | 33,3% |
+| 50% | 100% |
+| 75% | 300% |
+
+Controllo sul caso: 1.000 € dimezzati sono 500 €; per tornare a 1.000 € devi **raddoppiare** (+100%), non salire del 50%.
+
+Vuoi vederlo spiegato da un'altra voce? Un video in inglese, di un insegnante di matematica, sul caso del −50% (con i sottotitoli). È materiale didattico, non un invito a operare.
+
+<Video />
+
+<Say who="assistente">Più scendi, più la salita è ripida. Evitare le perdite grandi vale più che inseguire guadagni grandi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un conto passa da 200 € a 150 € (−25%). Di quanto deve salire il valore di 150 € per tornare a 200 €?"
+  options={["Circa il 33,3%", "Il 25%", "Il 50%", "Il 75%"]}
+  answer={0}
+  explain="Servono 50 € su 150 €: 50 / 150 = 0,333, cioè circa il 33,3%. Chi risponde 25% confonde la base di calcolo: la salita si calcola sul valore più basso, non su quello iniziale."
+/>
+
+<Say who="sensei">Il 25% si calcola su 200, la risalita su 150. Basi diverse, percentuali diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova con il codice">
+Calcola il drawdown di ogni giorno con un ciclo. È la stessa tabella di prima.
+
+<PythonTerminal code={"valori = [100, 120, 90, 108, 96, 132]\npicco = 0\nfor v in valori:\n    picco = max(picco, v)\n    dd = (v - picco) * 100 / picco\n    print(v, picco, round(dd, 1))"} />
+
+Con pandas la stessa idea si scrive in tre righe (non si esegue qui nel terminale):
+
+```python
+import pandas as pd
+valori = pd.Series([100, 120, 90, 108, 96, 132])
+dd = valori / valori.cummax() - 1
+print(dd.min())  # -0.25
+```
+
+<Say who="assistente">L'ultima colonna del terminale deve dare 0.0, 0.0, -25.0, -10.0, -20.0, 0.0. Il minimo è il drawdown massimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque calcoli di drawdown e di recupero, con numeri puliti. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t06-drawdown" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Se ricordi la tabella del recupero, eviti l'errore più costoso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il drawdown è la discesa rispetto al massimo precedente; il drawdown massimo è il peggiore della serie.
+- Per recuperare una perdita d serve un guadagno di d / (1 − d): −50% richiede +100%.
+- Il drawdown massimo di un backtest è solo il peggio già visto, non il peggio possibile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola il drawdown?", a: "(valore attuale − massimo precedente) / massimo precedente" },
+    { q: "Dopo −50%, quanto serve per recuperare?", a: "+100%" },
+    { q: "Dopo −20%, quanto serve per recuperare?", a: "+25%" },
+    { q: "Il drawdown massimo di un backtest è il peggio possibile?", a: "No: è solo il peggio osservato nei dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il rischio di rovina, cioè quando una serie di perdite ti toglie dal gioco.</Say>
+</Scene>

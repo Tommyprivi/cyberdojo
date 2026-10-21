@@ -1,0 +1,169 @@
+---
+id: D.13.006
+course: dati
+module: 13
+title: "Ruoli e colloqui"
+belt: blu
+duration_min: 10
+prerequisites: [D.13.005]
+objectives:
+  - "Distinguere analista, BI analyst, data engineer, data scientist e analytics engineer"
+  - "Scegliere un percorso di studio adatto alla propria età e situazione"
+  - "Preparare un colloquio con un progetto e domande oneste su di sé"
+video:
+  provider: youtube
+  id: "3ShlR6qvGg8"
+  start: 0
+  end: 600
+  channel: "Mirco Miglietta"
+  title: "DATA ANALYST VS DATA SCIENTIST | Quale è il più adatto a te?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d13-ruoli-colloqui
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «data scientist» sia il primo ruolo da puntare, senza basi di analisi"
+  - "Fidarsi di chi promette uno stipendio sicuro in cambio di un corso"
+  - "Arrivare al colloquio senza saper spiegare i propri progetti"
+commands: []
+---
+
+<Scene title="Troppi nomi, una sola domanda">
+Sofia ha 17 anni e ha quasi finito il corso. Guarda le offerte di lavoro e si confonde: «analista», «BI analyst», «data engineer», «data scientist», «analytics engineer». Sembrano tutti la stessa cosa, con nomi diversi.
+
+La domanda del caso: **che differenza c'è, e quale strada fa per me?**
+
+<Say who="sensei">I nomi dei ruoli cambiano da azienda ad azienda. Impara cosa si fa, non solo come si chiama.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I cinque ruoli">
+Una mappa semplice. I confini sono sfumati e variano per azienda:
+
+- **Analista dei dati**: risponde a domande di business con SQL, fogli di calcolo e grafici. «Perché le vendite sono scese?»
+- **BI analyst** (business intelligence): costruisce **cruscotti e report** stabili per chi decide, con strumenti come Power BI, Looker Studio o Metabase.
+- **Data engineer**: costruisce e mantiene le **condutture dei dati** (pipeline): fa arrivare dati puliti e affidabili dove servono. Più programmazione e sistemi.
+- **Data scientist**: usa statistica e **modelli predittivi** (machine learning) per stimare cosa accadrà. Serve matematica più solida.
+- **Analytics engineer**: ponte tra i due mondi; trasforma i dati grezzi in tabelle pulite e documentate per gli analisti, con SQL e strumenti come dbt.
+
+Una voce italiana che confronta due di questi ruoli:
+
+<Video />
+
+<Say who="assistente">Non è una scala dove «scientist» sta in cima. Sono mestieri diversi: scegli quello che ti piace fare ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Competenze: cosa serve davvero">
+Quasi tutti questi ruoli chiedono:
+
+- **SQL**, quasi sempre;
+- un linguaggio come **Python** (soprattutto per data engineer e scientist);
+- **statistica di base** e senso critico sui numeri;
+- **comunicazione**: spiegare un risultato a chi non è tecnico;
+- conoscenza del **settore** (sanità, retail, logistica, pubblica amministrazione).
+
+Si differenziano così: l'analista e il BI analyst puntano su domande e comunicazione; l'engineer su sistemi e codice; lo scientist su matematica e modelli.
+
+<Callout kind="curiosita">
+Molti iniziano come analisti e poi si spostano verso ingegneria o scienza dei dati, quando scoprono cosa piace loro. Il primo ruolo non è una condanna.
+</Callout>
+
+<Say who="sensei">Il settore conta. Un analista che conosce bene la logistica vale più di uno che conosce solo gli strumenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percorsi per fascia d'età">
+Indicazioni generali (costi, requisiti e calendari cambiano: controlla sempre i siti ufficiali; riferimento ottobre 2026):
+
+- **14-17 anni**: la scuola superiore e la **pratica**. Continua con SQL, Python e progetti piccoli; costruisci il portfolio. Non c'è fretta di certificazioni a pagamento.
+- **18-25 anni**: **università** (statistica, informatica, matematica, economia, ingegneria) o un percorso post-diploma come gli **ITS Academy**, più brevi e pratici. Tirocini e progetti contano molto.
+- **26-40 anni**: se cambi lavoro, unisci la tua **esperienza di settore** a competenze sui dati. Corsi serali, master o studio autonomo con un progetto reale nel tuo ambito.
+- **41 anni e oltre**: la tua conoscenza del mestiere è un valore. Parti da analisi legate al tuo settore e cerca ruoli dove sapere come funziona un'azienda conta.
+
+**Certificazioni** esistenti, a titolo di esempio: Microsoft Power BI Data Analyst (PL-300), Google Data Analytics su Coursera, CompTIA Data+, la certificazione dbt per analytics engineer. Aiutano a strutturare lo studio ma non sostituiscono la pratica né garantiscono un lavoro.
+
+<Callout kind="attenzione">
+Nessun corso può promettere un lavoro o uno stipendio. Diffida di chi lo fa e chiedi dati verificabili su come sono andati davvero gli studenti precedenti.
+</Callout>
+
+<Say who="assistente">Una certificazione può servire da filtro in alcune aziende. Guarda le offerte che ti interessano: se la chiedono, valuta; se no, parti dal progetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il colloquio e il mercato">
+**Come prepararti**:
+
+1. Scegli **due progetti** e preparane una spiegazione di due minuti: domanda, dati, metodo, risultato, limiti.
+2. Ripassa **SQL**: join, raggruppamenti, filtri. Spesso c'è una piccola prova.
+3. Prepara un **caso**: «le vendite scendono: da dove cominci?». Rispondi pensando ad alta voce: domanda, dati, ipotesi, controlli.
+4. Studia l'azienda: cosa vende, che dati potrebbe avere.
+5. Prepara **domande tue**: con chi lavorerai? Come arrivano i dati? Come si misura il tuo lavoro?
+6. Se non sai una cosa, **dillo** e spiega come la cercheresti. Inventare si nota.
+
+**Onestà sul mercato**: i ruoli per chi comincia sono spesso molto competitivi, con tante candidature per ogni posto, quindi il percorso può richiedere tempo e più tentativi. Gli strumenti cambiano e l'automazione, comprese le IA, svolge sempre più lavori ripetitivi: le competenze che durano sono pensiero critico, conoscenza del settore e comunicazione. Nessuno può prometterti un risultato o uno stipendio.
+
+<Say who="sensei">Chi ti fa le domande vuole capire come ragioni. Un «non lo so, ma farei così» vale più di una risposta inventata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Durante un colloquio ti chiedono qualcosa di SQL che non conosci. Cosa conviene fare?"
+  options={[
+    "Dire che non lo conosci e descrivere come lo cercheresti e lo proveresti",
+    "Inventare una risposta sicura sperando che non controllino",
+    "Cambiare discorso e parlare solo dei tuoi punti di forza",
+    "Scusarti a lungo e dire che non sei adatto al ruolo",
+  ]}
+  answer={0}
+  explain="Chi seleziona valuta il ragionamento e l'onestà. Dire «non lo so, ma farei così» mostra metodo; inventare, evitare o svalutarsi no."
+/>
+
+<Say who="sensei">Onestà e metodo. Sono le due cose che nessun colloquio perdona di non avere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su ruoli, percorsi e colloqui.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d13-ruoli-colloqui" pass="5/5" retries={3} />
+
+<Say who="sensei">Bene. Hai davanti più strade di quante credessi: scegli con calma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Analista, BI analyst, data engineer, data scientist e analytics engineer sono mestieri diversi: domande, cruscotti, condutture, modelli, tabelle pulite.
+- Il percorso dipende dall'età e dalla situazione: pratica e portfolio a 14-17, università o ITS a 18-25, esperienza di settore a 26 e oltre; le certificazioni aiutano ma non garantiscono.
+- Al colloquio contano due progetti ben spiegati, SQL, ragionamento ad alta voce e onestà; nessuno può promettere un lavoro o uno stipendio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Chi costruisce le pipeline che portano i dati?", a: "Il data engineer" },
+    { q: "Chi costruisce cruscotti e report stabili?", a: "Il BI analyst" },
+    { q: "Una certificazione garantisce un lavoro?", a: "No: dà struttura allo studio, non un posto" },
+    { q: "Non sai rispondere a una domanda: cosa fai?", a: "Lo dici e spieghi come cercheresti la risposta" },
+  ]}
+/>
+
+<Say who="sensei">Il tronco principale è finito. Ora scegli un ramo avanzato, oppure torna al progetto: il portfolio si costruisce un passo alla volta.</Say>
+</Scene>

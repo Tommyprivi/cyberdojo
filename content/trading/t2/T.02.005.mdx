@@ -1,0 +1,147 @@
+---
+id: T.02.005
+course: trading
+module: 2
+title: "Dividendi, split e prezzi corretti"
+belt: gialla
+duration_min: 9
+prerequisites: [T.02.004]
+objectives:
+  - "Spiegare che cos'è uno split e perché crea un falso crollo nei prezzi"
+  - "Correggere i prezzi passati per uno split e per un dividendo"
+  - "Capire perché per i rendimenti si usano i prezzi corretti"
+video:
+  provider: youtube
+  id: "DOhVBVGivho"
+  start: 0
+  end: 600
+  channel: "Yahoo Finance"
+  title: "Stock splits: How they work and why companies do them"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-prezzi-corretti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che uno split faccia perdere valore agli azionisti"
+  - "Calcolare rendimenti sui prezzi grezzi e vedere crolli che non esistono"
+  - "Dimenticare che i fornitori di dati correggono i prezzi con metodi leggermente diversi"
+commands: []
+---
+
+<Scene title="Il crollo che non c'è">
+Pasta Bellini è un'azienda fittizia. Nella tabella dei prezzi grezzi un giorno il titolo passa da 82 a 41 euro: **−50% in un giorno!** Il bot di Davide scatta e «vende».
+
+Ma nessuno ha perso niente: quel giorno l'azienda ha fatto uno **split** (un frazionamento).
+
+La domanda del caso: **come si distinguono un vero crollo e un cambiamento tecnico?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. Dati fittizi, nessun denaro vero.
+</Callout>
+
+<Say who="sensei">Prima di dire che il prezzo è crollato, chiediti se l'azienda ha cambiato il numero di azioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è uno split">
+In uno **split 2 per 1**, ogni azione diventa **due** azioni e il prezzo si **dimezza**. Il valore totale resta uguale.
+
+Hai 10 azioni da 80 euro = 800 euro. Dopo lo split: 20 azioni da 40 euro = 800 euro.
+
+È come cambiare una banconota da 20 in due da 10: il valore non cambia.
+
+Il contrario è il **reverse split** (per esempio 1 per 10): le azioni si riuniscono e il prezzo sale in proporzione.
+
+Vuoi sentirlo spiegare da un'altra voce? Pochi minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Cambia il numero di azioni e il prezzo di ciascuna, non il valore dell'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Correggere i prezzi passati">
+Prezzi grezzi di Pasta Bellini (fittizi), con split 2 per 1 al terzo giorno:
+
+| giorno | prezzo grezzo | prezzo corretto |
+|--------|---------------|-----------------|
+| 1 | 80 | 40 |
+| 2 | 82 | 41 |
+| 3 | 41 | 41 |
+| 4 | 42 | 42 |
+
+I prezzi **prima** dello split si moltiplicano per **0,5**. Il rendimento del giorno 3 sui prezzi grezzi è 41 ÷ 82 − 1 = **−50%**, falso. Sui prezzi corretti è 41 ÷ 41 − 1 = **0%**, vero.
+
+<PythonTerminal code={"prezzi = [80.0, 82.0, 41.0, 42.0]\ncorretti = [p * 0.5 for p in prezzi[:2]] + prezzi[2:]\nprint(corretti)\nprint(round(prezzi[2] / prezzi[1] - 1, 4))\nprint(round(corretti[2] / corretti[1] - 1, 4))"} />
+
+<Say who="sensei">I prezzi corretti non sono prezzi falsi. Sono prezzi confrontabili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I dividendi">
+Un **dividendo** è una parte degli utili che l'azienda paga agli azionisti. Il giorno dello stacco il prezzo scende all'incirca dell'importo pagato.
+
+Esempio fittizio: il giorno prima dello stacco il titolo chiude a **50,00** e il dividendo è **1,00**. Una convenzione comune corregge i prezzi precedenti con il fattore **1 − 1 ÷ 50 = 0,98**.
+
+Un prezzo di 50,00 diventa 49,00 (50 × 0,98). Così il calo dello stacco non sembra una perdita.
+
+<Callout kind="attenzione">
+Fornitori diversi possono usare metodi leggermente diversi, e i prezzi corretti vecchi possono cambiare a ogni nuovo dividendo. Dichiara sempre da quale fonte vengono (in sintesi, ottobre 2026: verifica la documentazione del fornitore).
+</Callout>
+
+<Say who="assistente">Nelle fonti spesso trovi due colonne: chiusura grezza e chiusura corretta. Per i rendimenti usa la corretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Possiedi 10 azioni da 100 euro e c'è uno split 5 per 1. Che cosa hai dopo lo split?"
+  options={["50 azioni da 20 euro", "10 azioni da 20 euro", "50 azioni da 100 euro", "2 azioni da 500 euro"]}
+  answer={0}
+  explain="Lo split 5 per 1 moltiplica le azioni per 5 (10 × 5 = 50) e divide il prezzo per 5 (100 ÷ 5 = 20). Il valore resta 1000 euro."
+/>
+
+<Say who="sensei">Il valore totale non si muove. Se cambia, non è uno split.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su split, dividendi e prezzi corretti.
+
+<Practice generator="t02-prezzi-corretti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un backtest su prezzi grezzi vede crolli che non sono mai esistiti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Uno split cambia il numero di azioni e il prezzo, non il valore totale: nei prezzi grezzi crea un salto falso.
+- Si correggono i prezzi passati con un fattore: 0,5 per uno split 2 per 1; 1 − dividendo ÷ prezzo prima dello stacco per un dividendo.
+- Per i rendimenti si usano i prezzi corretti, dichiarando la fonte e il metodo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Split 2 per 1: che cosa cambia?", a: "Le azioni raddoppiano, il prezzo si dimezza" },
+    { q: "Con quale fattore si correggono i prezzi prima di uno split 2 per 1?", a: "0,5" },
+    { q: "Dividendo 1,00, chiusura precedente 50,00: fattore?", a: "0,98" },
+    { q: "Quali prezzi si usano per calcolare i rendimenti?", a: "I prezzi corretti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: pulire i dati prima di fidarsene.</Say>
+</Scene>

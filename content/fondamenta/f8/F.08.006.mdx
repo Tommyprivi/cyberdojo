@@ -1,0 +1,169 @@
+---
+id: F.08.006
+course: fondamenta
+module: 8
+title: "Le VPN: un tunnel su Internet"
+belt: arancione
+duration_min: 9
+prerequisites: [F.08.005]
+objectives:
+  - "Spiegare che cos'è una VPN e che cosa significa tunnel"
+  - "Distinguere VPN site-to-site e VPN per l'accesso remoto, e dire che cosa sono IPsec e WireGuard"
+  - "Elencare che cosa una VPN protegge e che cosa non protegge"
+video:
+  provider: youtube
+  id: "bdnGl51J4iw"
+  start: 0
+  end: 600
+  channel: "CrazyNet Italia– Networking & Cybersecurity"
+  title: "Come funziona una VPN: crittografia, tunneling e NORDVPN"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f08-vpn
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una VPN renda anonimi o protegga da malware e phishing"
+  - "Dimenticare che con una VPN commerciale la fiducia si sposta sul fornitore"
+  - "Confondere cifrare (nascondere il contenuto) con autenticare (sapere chi c'è dall'altra parte)"
+commands: []
+---
+
+<Scene title="Il lavoro da casa">
+Lunedì mattina. Marta, della contabilità, lavora da casa e deve raggiungere il gestionale dell'azienda, che sta nella rete interna. Per sbaglio qualcuno propone: «Apriamo il gestionale su Internet, così ci entra da dove vuole.»
+
+Il capo del SOC blocca tutto. «Un servizio interno esposto su Internet è un invito. Ci serve un'altra strada: un **tunnel**.»
+
+<Say who="sensei">Non si apre una porta a tutti per far entrare una persona. Si costruisce un passaggio solo per lei.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una VPN">
+**VPN** significa **rete privata virtuale**. È un collegamento **cifrato** tra due punti, che attraversa una rete pubblica come Internet come se fosse un cavo privato. Quel collegamento si chiama **tunnel**.
+
+Come funziona, in parole povere:
+
+1. Il computer di Marta prende il suo pacchetto originale (per esempio, la richiesta al gestionale).
+2. Lo **cifra** e lo chiude dentro un altro pacchetto, il pacchetto del tunnel.
+3. Il pacchetto del tunnel viaggia su Internet. Chi lo intercetta vede solo che due punti parlano, non che cosa dicono.
+4. All'arrivo, il **server VPN** dell'azienda lo apre, controlla chi è e lo consegna alla rete interna.
+
+<Callout kind="trucco">
+È l'idea delle **buste** del modulo F5, usata di proposito: una busta dentro un'altra. Il pacchetto vero è chiuso nella busta del tunnel, e solo chi ha la chiave la apre.
+</Callout>
+
+<Say who="assistente">Tunnel non vuol dire nascondersi. Vuol dire che chi sta in mezzo vede una scatola chiusa, non il contenuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due scenari tipici">
+Le VPN si usano soprattutto in due modi.
+
+- **Accesso remoto**: un singolo utente (Marta da casa, un tecnico in trasferta) entra nella rete dell'azienda. Sul suo computer c'è un programma VPN.
+- **Site-to-site**: due **sedi** dell'azienda, per esempio Milano e Bari, vengono collegate tra loro. I router o i firewall delle due sedi creano il tunnel, e per i dipendenti le due reti sembrano una sola.
+
+<Log
+  lines={[
+    "Marta (casa, 203.0.113.34)  ==tunnel==>  server VPN (azienda, 198.51.100.7)  ->  rete interna 10.10.0.0/24",
+    "Sede Milano 10.10.0.0/24  ==tunnel==  Sede Bari 10.20.0.0/24",
+  ]}
+  caption="Due scenari: accesso remoto e site-to-site (indirizzi inventati)."
+/>
+
+<Callout kind="curiosita">
+Un'opzione frequente è lo **split tunnel**: nel tunnel passa solo il traffico diretto all'azienda, il resto va direttamente su Internet. Più veloce, ma l'azienda non vede più tutto il traffico.
+</Callout>
+
+<Say who="sensei">Una persona o una sede. Il tunnel è lo stesso: cambia chi sta alle due estremità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IPsec e WireGuard">
+Un tunnel ha bisogno di un **protocollo**: regole concordate per cifrare e per autenticare. Ne vedi due, a livello concettuale.
+
+- **IPsec**: una famiglia di protocolli che lavora a livello IP, cifrando e autenticando i pacchetti. È lo standard storico, presente su moltissimi router e firewall, molto usato per le VPN site-to-site. Ricco di opzioni, e perciò non semplice da configurare.
+- **WireGuard**: più recente, **molto semplice** e con pochissimo codice. Usa chiavi pubbliche, simili a quelle che si scambiano gli interlocutori di una chat cifrata, e gira su UDP. Più facile da capire e da controllare.
+
+<Callout kind="regola">
+Una VPN fa **due cose** insieme: **cifra** (nasconde il contenuto) e **autentica** (verifica chi sta dall'altra parte). Una VPN che cifra ma non sa con chi parla sarebbe una buona serratura su una porta aperta al primo venuto.
+</Callout>
+
+Un video in italiano spiega la cifratura e il tunneling con esempi:
+
+<Video />
+
+<Say who="assistente">Non devi saper configurare IPsec o WireGuard oggi. Devi sapere perché esistono e che cosa garantiscono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa protegge, che cosa no">
+<Guided
+  steps={[
+    "Protegge il tragitto: su un Wi-Fi pubblico, chi è sulla stessa rete non legge il tuo traffico, perché lo vede cifrato.",
+    "Permette di raggiungere i servizi interni senza esporli a Internet: il gestionale resta dentro, raggiungibile solo dal tunnel.",
+    "Con una VPN commerciale, i siti vedono l'indirizzo del server VPN e non il tuo. Ma il fornitore della VPN vede il tuo traffico: la fiducia si sposta su di lui.",
+    "Non protegge da un allegato infetto, da un'email di phishing, da una password debole: cifra la strada, non controlla ciò che apri.",
+    "Non rende anonimi: i siti dove fai l'accesso sanno comunque chi sei.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Il tunnel finisce al server VPN. Da lì in poi, il pacchetto prosegue come sarebbe andato: se non è cifrato per conto suo (HTTPS), nel tratto successivo resta in chiaro.
+</Callout>
+
+<Say who="sensei">Una VPN è un tubo cifrato, non uno scudo magico. Non spacciarla per ciò che non è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta usa la VPN aziendale da casa e per sbaglio apre un allegato infetto. La VPN la protegge?"
+  options={["No: la VPN cifra il tragitto, ma non controlla che cosa si apre", "Sì: ogni pacchetto nel tunnel viene controllato contro i virus", "Sì, ma solo se usa IPsec", "Sì, perché l'allegato passa dal server VPN"]}
+  answer={0}
+  explain="Il tunnel protegge ciò che viaggia da Marta all'azienda. Non analizza i file e non ferma un utente che apre un allegato: per questo servono antivirus, aggiornamenti e attenzione."
+/>
+
+<Say who="sensei">Strumento giusto per il problema giusto. La VPN protegge la strada, non chi la percorre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle VPN. Cinque su cinque, 3 tentativi.
+
+<Practice generator="f08-vpn" pass="5/5" retries={3} />
+
+<Say who="sensei">Tunnel, autenticazione, scenari d'uso e limiti. Chi li ricorda ha capito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una VPN è un tunnel cifrato e autenticato su una rete pubblica: i pacchetti viaggiano dentro altri pacchetti.
+- Accesso remoto (un utente) e site-to-site (due sedi). IPsec è lo standard storico, WireGuard il più semplice.
+- Protegge il tragitto e permette di tenere i servizi interni, ma non rende anonimi né ferma malware e phishing.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un tunnel VPN?", a: "Un collegamento cifrato che attraversa una rete pubblica" },
+    { q: "Site-to-site o accesso remoto: due sedi collegate?", a: "Site-to-site" },
+    { q: "Una VPN protegge dal phishing?", a: "No: cifra il tragitto, non controlla ciò che apri" },
+    { q: "Quali due cose fa una VPN insieme?", a: "Cifra e autentica" },
+  ]}
+/>
+
+<Say who="sensei">Ora l'ultimo pezzo del modulo: il nuovo sistema di indirizzi, IPv6, e gli strumenti per capire dove si rompe una rete.</Say>
+</Scene>

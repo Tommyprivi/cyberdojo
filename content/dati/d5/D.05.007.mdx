@@ -1,0 +1,152 @@
+---
+id: D.05.007
+course: dati
+module: 5
+title: "Campionamento e bias"
+belt: gialla
+duration_min: 9
+prerequisites: [D.05.006]
+objectives:
+  - "Distinguere popolazione e campione e spiegare cos'è un campione casuale"
+  - "Riconoscere bias di selezione, di sopravvivenza e di autoselezione"
+  - "Valutare un sondaggio chiedendosi chi ha risposto"
+video:
+  provider: youtube
+  id: "9EuEW_xO08Y"
+  start: 0
+  end: 272
+  channel: "Tecnophilosophy TV"
+  title: "Campioni vs popolazione in statistica"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-campionamento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un campione molto grande sia sempre affidabile: se è scelto male, resta sbagliato"
+  - "Confondere la differenza casuale tra campioni con il bias"
+  - "Guardare solo i casi riusciti (bias di sopravvivenza) e ignorare quelli scomparsi"
+commands: []
+---
+
+<Scene title="Il sondaggio sulla mensa">
+La tua scuola ha **2000 studenti**. Un'amica vuole sapere se la mensa piace. Mette un sondaggio sul suo profilo social e in due giorni riceve 150 risposte: il 90% dice che la mensa è ottima.
+
+Può dire che «alla scuola piace la mensa»? Chi ha risposto, esattamente?
+
+<Say who="sensei">Prima di guardare i risultati di un sondaggio, guarda chi ha risposto. Il resto viene dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Popolazione e campione">
+La **popolazione** è **tutto** il gruppo che ti interessa: qui i 2000 studenti. Il **campione** è la parte di cui hai davvero i dati: qui le 150 risposte.
+
+Quasi mai si può misurare tutta la popolazione: costa troppo o è impossibile. Si misura un campione e si **stima** la popolazione.
+
+<Callout kind="regola">
+Un campione serve se è **rappresentativo**: una piccola copia della popolazione, con gli stessi tipi di persone nelle stesse proporzioni.
+</Callout>
+
+<Say who="assistente">Popolazione: tutti. Campione: quelli che hai davvero misurato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il campione casuale">
+Il modo più sicuro è il **campione casuale**: ogni studente ha la **stessa probabilità** di essere scelto, per esempio pescando 100 numeri a sorte da un elenco completo di tutti i 2000.
+
+Così non decidi tu chi entra, e quindi non puoi favorire nessuno senza accorgertene.
+
+Un campione piccolo varia di caso in caso. Esempio con la popolazione 10, 20, 30, 40, 50, 60 (media 35):
+
+<Log lines={[
+  "campione A: 20, 40, 60  →  media 40",
+  "campione B: 10, 30, 50  →  media 30",
+  "popolazione: media 35",
+]} />
+
+I due campioni sbagliano di 5, uno in alto e uno in basso. È **variabilità casuale**, normale. Con più dati scelti a sorte diminuisce.
+
+<Say who="sensei">L'errore casuale si riduce con più dati. L'errore sistematico, no. Questo secondo si chiama bias.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il bias di selezione">
+Il **bias** (distorsione) è un errore che spinge sempre nella stessa direzione. Il **bias di selezione** nasce quando il modo in cui scegli il campione favorisce certi tipi di persone.
+
+Il sondaggio sul profilo social: lo vedono solo i suoi amici (e magari quelli a cui la mensa piace), e rispondono solo i volontari. Questo è anche **bias di autoselezione**: chi sceglie di rispondere non è un campione a caso.
+
+<Callout kind="attenzione">
+Un campione **enorme ma scelto male** resta sbagliato. Nel 1936 una rivista americana raccolse milioni di cartoline per prevedere le elezioni e sbagliò, perché scelse i destinatari da elenchi che favorivano le persone più benestanti.
+</Callout>
+
+<Say who="assistente">Non conta quanti hanno risposto. Conta come sono stati scelti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il bias di sopravvivenza">
+Il **bias di sopravvivenza** nasce quando guardi solo ciò che è **sopravvissuto** e ignori ciò che è sparito.
+
+Esempio famoso: durante la seconda guerra mondiale si esaminavano gli aerei tornati dalle missioni e si vedeva dove avevano più buchi. Lo statistico Abraham Wald fece notare che andava rinforzata la zona **senza** buchi sugli aerei tornati: gli aerei colpiti lì non erano tornati.
+
+Altro esempio: studiare solo le aziende di successo di oggi per capire «come si fa» ignora quelle che hanno fatto le stesse scelte e sono fallite.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di cinque minuti, su campioni e popolazione:
+
+<Video />
+
+<Say who="sensei">Chiediti sempre: chi manca? Spesso la risposta è nei dati che non vedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Per sapere se la mensa piace a tutta la scuola, quale scelta dà il campione più rappresentativo?"
+  options={["Estrarre a sorte 100 nomi dall'elenco completo degli studenti e chiedere a tutti e 100", "Chiedere ai 100 studenti che escono per primi dalla mensa", "Pubblicare un sondaggio aperto sul profilo di un'amica", "Chiedere ai 100 studenti della propria classe"]}
+  answer={0}
+  explain="Solo l'estrazione a sorte da un elenco completo dà a tutti la stessa probabilità. Chi esce per primo, chi segue un profilo e chi sta nella tua classe sono campioni di comodo: favoriscono certi tipi di persone."
+/>
+
+<Say who="assistente">Elenco completo e sorteggio. Gli altri metodi sono scorciatoie con una trappola dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su popolazione, campione e bias. Hai 3 tentativi.
+
+<Practice generator="d05-campionamento" pass="5/5" retries={3} />
+
+<Say who="sensei">Per ogni sondaggio, la domanda è una sola: chi ha risposto, e chi no?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Popolazione è il gruppo intero, campione è la parte misurata. Il campione casuale dà a tutti la stessa probabilità di entrare.
+- Un campione grande ma scelto male resta sbagliato: il bias non si cura con più dati.
+- Bias di selezione e autoselezione: chi entra nel campione non è a caso. Bias di sopravvivenza: guardi solo chi è rimasto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Popolazione di 2000 studenti, ne interroghi 100. Qual è il campione?", a: "I 100 interrogati" },
+    { q: "Cosa rende «casuale» un campione?", a: "Ogni elemento ha la stessa probabilità di essere scelto" },
+    { q: "Più dati risolvono il bias?", a: "No: riducono l'errore casuale, non quello sistematico" },
+    { q: "Dove rinforzare gli aerei tornati con buchi?", a: "Dove non ci sono buchi: lì gli aerei non sono tornati" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Sai riassumere i dati e sai dubitare di loro: sono le due metà del mestiere dell'analista.</Say>
+</Scene>

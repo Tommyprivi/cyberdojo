@@ -1,0 +1,300 @@
+---
+id: D.04.006
+course: dati
+module: 4
+title: "Selezionare e filtrare"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.005]
+objectives:
+  - "Scegliere colonne e righe con le parentesi, loc e iloc"
+  - "Filtrare con una maschera booleana, combinando condizioni con & e |"
+  - "Usare isin e query e riconoscere gli errori tipici (parentesi, and, indici dopo il filtro)"
+video:
+  provider: youtube
+  id: "Tn9yIWZNd0Q"
+  start: 0
+  end: 589
+  channel: "Claudio Cama"
+  title: "Corso completo di pandas (Lezione 6): Selezionare e filtrare i valori (loc, iloc, at, iat, ecc)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-selezionare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare and / or invece di & / | tra due condizioni: ValueError"
+  - "Dimenticare le parentesi attorno a ogni condizione quando si usa & o |"
+  - "Confondere loc (etichette, estremo incluso) con iloc (posizioni, estremo escluso)"
+commands: []
+---
+
+<Scene title="Solo Roma, solo sopra i 25 euro">
+Giulia chiede: «Fammi vedere solo gli ordini di Roma sopra i 25 euro. Voglio capire se la città paga bene».
+
+Hai la tabella degli ordini dalla lezione scorsa. Ricordala:
+
+```text
+   cliente   citta   prodotto  quantita  importo
+0     Anna    Roma      casco         1     40.0
+1    Bruno  Milano       luci         2     20.0
+2    Carla    Roma      casco         1     40.0
+3    Dario  Torino  borraccia         4     20.0
+4    Elisa  Milano       luci         3     30.0
+5     Anna    Roma       luci         3     30.0
+```
+
+Per rispondere devi fare due scelte: quali **colonne** tenere e quali **righe**. Selezionare è scegliere una parte della tabella, filtrare è scegliere le righe che rispettano una condizione.
+
+La domanda del caso: **come si scrive «solo Roma e solo sopra i 25» in pandas?**
+
+<Say who="sensei">Prima impara a indicare un pezzo di tabella. Poi a descriverlo con una condizione. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scegliere le colonne">
+Una colonna si sceglie con il suo nome tra parentesi quadre. Più colonne: una **lista** di nomi, quindi due coppie di parentesi.
+
+```python
+print(ordini["citta"].head(2))
+print(ordini[["cliente", "importo"]])
+```
+
+```text
+0      Roma
+1    Milano
+Name: citta, dtype: object
+   cliente  importo
+0     Anna     40.0
+1    Bruno     20.0
+2    Carla     40.0
+3    Dario     20.0
+4    Elisa     30.0
+5     Anna     30.0
+```
+
+Con una coppia di parentesi ottieni una **Series**. Con la lista, cioè due coppie, ottieni un **DataFrame**.
+
+<Callout kind="attenzione">
+Se scrivi `ordini["cliente", "importo"]` (un solo livello di parentesi, due nomi) ottieni un `KeyError`. I nomi vanno dentro una lista.
+</Callout>
+
+<Say who="assistente">Tra parentesi quadre ci può stare un nome, una lista di nomi o, tra poco, una condizione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="loc e iloc: etichette e posizioni">
+Per scegliere **righe e colonne insieme** servono `loc` e `iloc`. La differenza è una sola:
+
+- **`loc`** usa le **etichette**: il numero dell'indice e il nome della colonna;
+- **`iloc`** usa le **posizioni** (come in una lista): 0 è la prima riga, 0 la prima colonna.
+
+```python
+print(ordini.loc[2, "cliente"])
+print(ordini.iloc[0, 1])
+print(ordini.loc[1:3, ["cliente", "importo"]])
+print(ordini.iloc[1:3, [0, 4]])
+```
+
+```text
+Carla
+Roma
+   cliente  importo
+1    Bruno     20.0
+2    Carla     40.0
+3    Dario     20.0
+   cliente  importo
+1    Bruno     20.0
+2    Carla     40.0
+```
+
+`loc[1:3]` prende le righe 1, 2 **e 3**: con le etichette l'estremo è incluso. `iloc[1:3]` prende le posizioni 1 e 2: come nelle liste, l'estremo è escluso. `iloc[0, 1]` è la riga 0 e la colonna in posizione 1, cioè `citta`.
+
+<Callout kind="regola">
+Etichetta o posizione? Se ti viene da dire «la riga numero 3», domandati: numero dell'indice o terza riga dall'alto? Sono due cose diverse, e dopo un filtro diventano davvero diverse.
+</Callout>
+
+<Say who="sensei">loc cerca per nome, iloc per posto. Come il biglietto del cinema: la fila C, oppure il terzo da sinistra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La maschera booleana">
+Per filtrare si scrive una **condizione** sulla colonna. Il risultato è una **maschera**: una Series di vero e falso, una per riga.
+
+```python
+print(ordini["importo"] > 25)
+```
+
+```text
+0     True
+1    False
+2     True
+3    False
+4     True
+5     True
+Name: importo, dtype: bool
+```
+
+Se metti la maschera tra parentesi quadre del DataFrame, tieni **solo le righe vere**:
+
+```python
+filtrato = ordini[ordini["importo"] > 25]
+print(filtrato)
+```
+
+```text
+   cliente   citta  prodotto  quantita  importo
+0     Anna    Roma     casco         1     40.0
+2    Carla    Roma     casco         1     40.0
+4    Elisa  Milano      luci         3     30.0
+5     Anna    Roma      luci         3     30.0
+```
+
+Guarda l'indice: restano 0, 2, 4, 5. **I numeri dell'indice non si rinumerano.** Ecco la trappola di prima:
+
+```python
+print(filtrato.loc[2, "cliente"])
+print(filtrato.iloc[2, 0])
+```
+
+```text
+Carla
+Elisa
+```
+
+`loc[2]` cerca l'etichetta 2 (Carla). `iloc[2]` prende la terza riga dall'alto, che ha etichetta 4 (Elisa).
+
+<Say who="assistente">Dopo un filtro l'indice ha dei buchi: è normale. Se li vuoi togliere, aggiungi .reset_index(drop=True).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più condizioni insieme">
+Per il caso di Giulia servono due condizioni: **Roma e sopra i 25**. Si combinano con `&` (e), `|` (oppure), `~` (non). **Ogni condizione va tra parentesi.**
+
+```python
+roma = ordini[(ordini["citta"] == "Roma") & (ordini["importo"] > 25)]
+print(roma)
+```
+
+```text
+   cliente  citta  prodotto  quantita  importo
+0     Anna   Roma     casco         1     40.0
+2    Carla   Roma     casco         1     40.0
+5     Anna   Roma      luci         3     30.0
+```
+
+Tre righe: la risposta alla domanda di Giulia. Se vuoi anche scegliere la colonna, usa `loc` con la maschera e il nome:
+
+```python
+print(ordini.loc[ordini["citta"] == "Roma", "importo"])
+```
+
+```text
+0    40.0
+2    40.0
+5    30.0
+Name: importo, dtype: float64
+```
+
+Per «una di queste città» c'è `isin`, molto più comodo di tanti `|`:
+
+```python
+print(ordini[ordini["citta"].isin(["Roma", "Torino"])])
+```
+
+```text
+   cliente   citta   prodotto  quantita  importo
+0     Anna    Roma      casco         1     40.0
+2    Carla    Roma      casco         1     40.0
+3    Dario  Torino  borraccia         4     20.0
+5     Anna    Roma       luci         3     30.0
+```
+
+<Callout kind="attenzione">
+Errori tipici: usare `and` al posto di `&` dà `ValueError: The truth value of a Series is ambiguous`; dimenticare le parentesi fa applicare `&` prima del confronto e dà un errore. E ricorda `==` per confrontare: un solo `=` assegna.
+</Callout>
+
+<Say who="sensei">Le parentesi non sono estetica. Senza di esse Python legge un'altra frase. Mettile sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="query: la stessa cosa, più leggibile">
+Il metodo `query` scrive la condizione come una frase, in un testo. Il risultato è identico:
+
+```python
+soglia = 25
+print(ordini.query("citta == 'Roma' and importo > @soglia"))
+```
+
+```text
+   cliente  citta  prodotto  quantita  importo
+0     Anna   Roma     casco         1     40.0
+2    Carla   Roma     casco         1     40.0
+5     Anna   Roma      luci         3     30.0
+```
+
+Dentro `query` si scrivono i nomi delle colonne senza `ordini[...]`, si usa `and` e `or` (qui vanno bene!), e per usare una variabile del notebook le si mette davanti la chiocciola `@`. Il testo da confrontare sta tra apici dentro il testo della query, per questo `'Roma'` ha gli apici singoli e la query esterna le virgolette.
+
+Quando scegliere? `query` è più leggibile per condizioni semplici. La maschera con `&` è più flessibile e funziona con ogni colonna, anche con nomi con gli spazi.
+
+Una spiegazione dettagliata di loc, iloc e filtri, con un'altra voce:
+
+<Video />
+
+<Callout kind="trucco">
+Se modifichi un pezzo filtrato (per esempio aggiungi una colonna) e pandas segnala `SettingWithCopyWarning`, parti da una copia esplicita: `filtrato = ordini[ordini["importo"] > 25].copy()`.
+</Callout>
+
+<Say who="assistente">Non devi scegliere un solo metodo per sempre. Usa quello che rende la riga più facile da rileggere tra una settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te e verifica pratica">
+<Quiz
+  question="Quante righe restituisce ordini.loc[1:3, ['cliente', 'importo']] sulla tabella di sei righe (indici da 0 a 5)?"
+  options={["3 righe: gli indici 1, 2 e 3", "2 righe: gli indici 1 e 2", "4 righe: gli indici da 0 a 3", "Errore: loc non accetta intervalli"]}
+  answer={0}
+  explain="Con loc l'estremo finale è incluso: 1, 2 e 3 sono tre righe. Chi risponde 2 ha applicato la regola di iloc e delle liste, in cui l'estremo è escluso."
+/>
+
+<Say who="assistente">Ripeti la regola a voce: loc include, iloc esclude. Pochi sbagli di indice sopravvivono.</Say>
+
+Cinque domande su colonne, `loc`, `iloc` e filtri: cosa restituisce un codice, quale riga è sbagliata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-selezionare" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima la condizione a parole, poi in codice. Chi inverte l'ordine finisce a cercare l'errore nelle parentesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `df["col"]` è una Series, `df[["a", "b"]]` un DataFrame. `loc` usa le etichette (estremo incluso), `iloc` le posizioni (estremo escluso).
+- Filtrare: `df[df["importo"] > 25]`; condizioni combinate con `&`, `|`, `~`, ciascuna tra parentesi; `isin` per più valori.
+- Dopo un filtro l'indice non si rinumera. `query("citta == 'Roma' and importo > @soglia")` è la forma scritta come frase.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Differenza tra loc e iloc?", a: "loc usa le etichette (estremo incluso), iloc le posizioni (estremo escluso)" },
+    { q: "Come si combinano due condizioni su una tabella?", a: "Con & oppure |, ognuna tra parentesi" },
+    { q: "Che errore dà 'and' tra due Series?", a: "ValueError: The truth value of a Series is ambiguous" },
+    { q: "Come si usa una variabile dentro query?", a: "Con la chiocciola: importo > @soglia" },
+  ]}
+/>
+
+<Say who="sensei">Sai estrarre ciò che ti serve. Prossima lezione: riassumerlo, per città, per prodotto, per qualunque gruppo.</Say>
+</Scene>

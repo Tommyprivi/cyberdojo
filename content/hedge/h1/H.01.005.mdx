@@ -1,0 +1,146 @@
+---
+id: H.01.005
+course: hedge
+module: 1
+title: "Chi può investire: gli investitori qualificati"
+belt: bianca
+duration_min: 8
+prerequisites: [H.01.004]
+objectives:
+  - "Spiegare perché molti hedge fund sono riservati a investitori qualificati"
+  - "Descrivere in sintesi accredited investor e le categorie MiFID II"
+  - "Riconoscere un invito sospetto a un fondo «esclusivo»"
+video:
+  provider: youtube
+  id: "RZZwx3FN2Bs"
+  start: 0
+  end: 600
+  channel: "Bloomberg Television"
+  title: "SEC Changes the Definition of ‘Accredited Investor’"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h01-investitori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la qualifica elimini il rischio di perdita"
+  - "Fidarsi di un «fondo esclusivo» che promette rendimenti garantiti"
+  - "Considerare le soglie di legge come fisse per sempre: cambiano, vanno controllate"
+commands: []
+---
+
+<Scene title="Il messaggio sul telefono">
+Giada riceve un messaggio: «**Fondo esclusivo** riservato a pochi. Rendimento garantito del 30%. Bonifico entro stasera, i posti finiscono!». Chiede al padre: «Posso entrare?».
+
+La domanda del caso: **chi può davvero investire in un hedge fund, e questo messaggio è credibile?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. Le norme di questa lezione sono in sintesi, ottobre 2026: **controlla sempre le fonti ufficiali**.
+
+<Say who="sensei">Un rendimento garantito del 30% non esiste. Chi lo scrive mente o non ha capito. Resta con noi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché solo alcuni">
+Molti hedge fund sono riservati a investitori **qualificati** o **professionali**. Il motivo: sono prodotti **complessi e rischiosi**, con lock-up e commissioni alte. La regola parte da una presunzione: chi ha esperienza e patrimonio sa valutarli e può **sopportare una perdita**.
+
+Questa non è una garanzia: essere ammessi non toglie il rischio.
+
+<Callout kind="regola">
+La qualifica è solo un **requisito d'accesso**. Non protegge dalle perdite.
+</Callout>
+
+<Say who="assistente">È come la patente per una moto potente: ti fa salire, ma non ti evita le cadute.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Stati Uniti ed Europa, in sintesi">
+**Stati Uniti**: l'**accredited investor** è, per le persone, chi supera soglie fissate dalla legge, per esempio un patrimonio netto sopra **1 milione di dollari** (senza contare la casa dove si abita) o un certo reddito per più anni. Le soglie possono cambiare.
+
+**Unione europea**: la direttiva **MiFID II** divide i clienti in **al dettaglio**, **professionali** e **controparti qualificate**. I professionali sono per esempio banche, fondi pensione e assicurazioni, oppure clienti privati che rispettano criteri di esperienza e patrimonio. I fondi alternativi sono regolati dalla direttiva **AIFMD**, che vedremo nel modulo H9.
+
+**Italia**: i fondi riservati sono pensati per investitori professionali e, in casi precisi, per non professionali con **importi minimi molto alti**. I dettagli dipendono dal tipo di fondo e dalla normativa: verifica sui siti di **Consob** e **Banca d'Italia**.
+
+Un video in inglese (sottotitoli) racconta le soglie americane:
+
+<Video />
+
+<Say who="sensei">Le soglie cambiano nel tempo. Un numero senza data è un numero da diffidare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segnale di allarme">
+Torniamo al messaggio di Giada. Ecco perché non è credibile:
+
+<Guided
+  steps={[
+    "«Rendimento garantito del 30%»: nessun fondo può garantirlo, e i fondi seri non lo promettono.",
+    "«Bonifico entro stasera»: la fretta serve a non farti pensare.",
+    "«Fondo esclusivo»: chi è ammesso a un fondo riservato viene verificato; non entra con un messaggio.",
+    "Che cosa fare: non rispondere, non pagare, controllare l'intermediario sui siti ufficiali di Consob e Banca d'Italia, e parlarne con un adulto.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un fondo serio controlla chi sei (norme antiriciclaggio) e ti consegna documenti. Chi ti chiede un bonifico subito, senza documenti, è un segnale di truffa.
+</Callout>
+
+<Say who="assistente">Quando c'è fretta, rallenta. È proprio lì che ti fregano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito scrive: «Fondo esclusivo, rendimento garantito del 30%, bonifico oggi». Che cosa è più prudente fare?"
+  options={[
+    "Diffidare e verificare l'intermediario sui siti ufficiali di Consob e Banca d'Italia",
+    "Versare subito per non perdere l'occasione",
+    "Fidarsi perché c'è scritto «esclusivo»",
+    "Versare se un conoscente è d'accordo",
+  ]}
+  answer={0}
+  explain="Rendimenti garantiti e fretta sono segnali tipici di truffa. «Esclusivo» è una parola di marketing. Il parere di un conoscente non sostituisce la verifica ufficiale."
+/>
+
+<Say who="sensei">La verifica richiede cinque minuti. La truffa può costarti tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su investitori qualificati, regole e segnali di allarme.
+
+<Practice generator="h01-investitori" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai imparato una cosa che ti salva i risparmi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Molti hedge fund sono per investitori qualificati o professionali perché sono prodotti complessi e rischiosi.
+- Le soglie (USA e UE) sono in sintesi, ottobre 2026: cambiano, controlla le fonti ufficiali.
+- Rendimento garantito e fretta sono segnali di truffa: verifica su Consob e Banca d'Italia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un accredited investor?", a: "Persona o ente che supera le soglie di reddito o patrimonio fissate dalla legge americana" },
+    { q: "Le categorie MiFID II?", a: "Al dettaglio, professionali, controparti qualificate" },
+    { q: "La qualifica elimina il rischio?", a: "No" },
+    { q: "Dove si verifica un intermediario italiano?", a: "Sui siti ufficiali di Consob e Banca d'Italia" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: il panorama degli hedge fund, in Italia e nel mondo.</Say>
+</Scene>

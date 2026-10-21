@@ -1,0 +1,174 @@
+---
+id: T.14.005
+course: trading
+module: 14
+title: "Presentare il progetto e andare avanti"
+belt: marrone
+duration_min: 9
+prerequisites: [T.14.004]
+objectives:
+  - "Presentare un progetto in tre minuti: domanda, metodo, risultato, limiti"
+  - "Rispondere con onestà alle domande difficili senza promesse"
+  - "Scegliere prossimi passi prudenti e rivedere il percorso di tutto il corso"
+video:
+  provider: youtube
+  id: "NHh4IlEspQc"
+  start: 0
+  end: 600
+  channel: "Panoz4u"
+  title: "Data Storytelling per tutti: coinvolgi il tuo pubblico coi dati"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t14-sintesi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Presentare solo il grafico più bello e nascondere i risultati deludenti"
+  - "Rispondere a una domanda difficile con una promessa invece che con un limite"
+  - "Credere che finire il corso significhi essere pronti a investire denaro reale"
+commands: []
+---
+
+<Scene title="Tre minuti davanti alla classe">
+Livia presenta il progetto alla classe. Ha tre minuti. Un compagno alza la mano: «Quindi la tua strategia funziona?»
+
+Lei ha due scelte: dire «sì, con un po' di ottimizzazione potrebbe rendere molto», oppure dire che cosa i dati mostrano davvero.
+
+La domanda del caso: **come si presenta un risultato deludente senza abbellirlo e senza buttare via il lavoro?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Questo progetto non è un invito a investire.
+</Callout>
+
+<Say who="sensei">Chi presenta bene non vende. Racconta. E sa dire «non lo so» quando è vero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre minuti, quattro blocchi">
+Una presentazione di tre minuti ha quattro blocchi:
+
+1. **La domanda** (30 secondi): «Stare investiti solo sopra la media a 3 giorni batte il buy and hold, al netto dei costi?»
+2. **Il metodo** (60 secondi): dati, regole, segnale spostato di un giorno, costi dello 0,2%.
+3. **Il risultato** (60 secondi): netto +3,26%, buy and hold +7,00%, ipotesi smentita.
+4. **I limiti e i passi successivi** (30 secondi): dieci giorni, nessuna prova fuori campione, che cosa si farebbe dopo.
+
+Un solo grafico, due linee: strategia netta e buy and hold, sulla stessa scala, con il titolo che dice il risultato anche quando è brutto.
+
+Vuoi sentire un'altra voce su come raccontare i dati? Il video è in italiano:
+
+<Video />
+
+<Say who="assistente">Un messaggio solo, detto bene. Il resto va nella relazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le domande difficili">
+Dopo la presentazione arrivano le domande. Alcune risposte oneste:
+
+- **«Funziona?»** → «Su questi dati fittizi l'ipotesi non è confermata. Non posso dire altro.»
+- **«Con una media a 5 giorni sarebbe andata meglio?»** → «Non l'ho provato. Se lo provassi ora sugli stessi dati, rischierei di adattare la regola al caso: lo farei su dati nuovi.»
+- **«Quanto potrebbe rendere con soldi veri?»** → «Non so dirlo e non faccio previsioni. Si può anche perdere tutto il denaro investito.»
+- **«E i costi reali?»** → «Ho ipotizzato 0,2%: i costi reali vanno verificati con un intermediario autorizzato.»
+
+<Callout kind="regola">
+Mai una cifra di guadagno atteso, mai un «garantito», mai un «con un po' di fortuna». Una risposta onesta può essere corta: «Non lo so».
+</Callout>
+
+<Say who="sensei">Un «non lo so» detto con calma vale più di una promessa detta con sicurezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa fare dopo">
+Dopo il progetto, i passi successivi sono **prudenti e progressivi**:
+
+1. **Più dati**: periodi lunghi, mercati e fasi diverse, con dati di cui hai la licenza.
+2. **Prove fuori campione e walk-forward**: parti di dati mai toccate durante la messa a punto.
+3. **Test di robustezza**: cambiare un po' i parametri e i costi, e vedere se il risultato crolla.
+4. **Paper trading** su un ambiente demo, solo per provare il codice (modulo 10).
+5. **Diario e regole scritte** (modulo 12), per tenere a bada le emozioni.
+
+<Callout kind="attenzione">
+Nessun passo prevede denaro reale. Se un giorno vorrai operare con denaro tuo, verifica prima l'intermediario (modulo 13) e ricorda: i mercati non regalano niente.
+</Callout>
+
+<Say who="assistente">Ogni passo risponde a una domanda: il risultato regge con più dati, regge con altri costi, regge senza di me?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Alla fine della presentazione qualcuno chiede: «Quanto renderebbe questa strategia nei prossimi 12 mesi?». Qual è la risposta onesta?"
+  options={[
+    "Non so prevederlo e non do cifre: i dati mostrano solo che cosa è successo in questo campione, con questi limiti",
+    "Intorno al 3% perché è il risultato che ha avuto nel test",
+    "Più del buy and hold, perché le regole sono semplici e sensate",
+    "Dipende solo da quanto capitale si usa: più capitale, più rendimento",
+  ]}
+  answer={0}
+  explain="Un backtest descrive il passato di un campione, non il futuro. Dare una cifra trasforma il risultato in una promessa. Il capitale non cambia il rendimento percentuale, e le regole semplici non garantiscono di battere il buy and hold."
+/>
+
+<Say who="sensei">Il passato non invia ordini e non firma promesse. Ricordalo, anche quando nessuno ti ascolta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il percorso del corso">
+Prima di chiudere, rimetti insieme tutto il corso. Una frase per ogni gruppo di moduli:
+
+<Guided
+  steps={[
+    "Moduli 1-2: i mercati e i dati. Azioni, obbligazioni, ETF, ordini; candele, rendimenti, prezzi corretti, dati puliti e con licenza.",
+    "Moduli 3-4: indicatori e statistica. Medie mobili, RSI, MACD, Bollinger; volatilità, correlazione, code grasse, rumore, significatività.",
+    "Moduli 5-7: strategie, rischio e metriche. Backtest, look-ahead, survivorship, overfitting; position sizing, drawdown, rovina; Sharpe, Sortino, drawdown massimo.",
+    "Moduli 8-9: costi e strategie classiche. Commissioni, spread, slippage, tasse in sintesi; trend, mean reversion, momentum, e perché le strategie smettono di funzionare.",
+    "Moduli 10-11: paper trading, API e machine learning. Ambienti demo, chiavi al sicuro; perdita di dati, validazione temporale, overfitting.",
+    "Moduli 12-13: la testa e la legge. Bias, FOMO, diario, regole scritte; CONSOB, MiFID II in sintesi, truffe, abusi di mercato, verifica dell'intermediario.",
+  ]}
+/>
+
+<Say who="sensei">Quattordici moduli. Non servono per diventare ricchi. Servono per non farsi ingannare, dai mercati e da te stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica finale del corso">
+Ultima verifica: domande di sintesi su tutto il corso, dai mercati al progetto. Venti domande tra cui estrarre, cinque su cinque per passare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t14-sintesi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il corso. Ora viene la parte più difficile: restare prudente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Una presentazione di tre minuti ha quattro blocchi: domanda, metodo, risultato, limiti e passi successivi.
+- Alle domande difficili si risponde con i limiti dei dati, mai con una cifra di guadagno atteso.
+- I passi successivi sono più dati, prove fuori campione, robustezza e paper trading: nessun denaro reale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i quattro blocchi di una presentazione di tre minuti?", a: "Domanda, metodo, risultato, limiti e passi successivi" },
+    { q: "Come si risponde a «quanto renderebbe?»", a: "Non lo so e non faccio previsioni: i dati mostrano solo il passato di questo campione" },
+    { q: "Dopo il progetto, che cosa si fa prima di pensare ai soldi veri?", a: "Più dati, prove fuori campione, test di robustezza e paper trading" },
+    { q: "A che cosa serve davvero il corso?", a: "A non farsi ingannare dai mercati, dalle truffe e dai propri bias" },
+  ]}
+/>
+
+<Say who="sensei">Corso concluso. I mercati non regalano niente. Quello che hai imparato, invece, è tuo.</Say>
+</Scene>

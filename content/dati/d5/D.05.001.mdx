@@ -1,0 +1,171 @@
+---
+id: D.05.001
+course: dati
+module: 5
+title: "Media, mediana e moda"
+belt: gialla
+duration_min: 8
+prerequisites: [D.04.009]
+objectives:
+  - "Calcolare media, mediana e moda di un piccolo insieme di numeri"
+  - "Scegliere l'indice giusto quando c'è un valore estremo"
+video:
+  provider: youtube
+  id: "kRsZffYLNvM"
+  start: 0
+  end: 400
+  channel: "Paola Minopoli"
+  title: "MODA, MEDIA E MEDIANA: primi elementi di statistica"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d05-media
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare la mediana senza mettere prima i numeri in ordine"
+  - "Con un numero pari di dati, dimenticare di fare la media dei due numeri centrali"
+  - "Usare la media quando c'è un valore estremo e poi dire «lo stipendio tipico»"
+commands: []
+---
+
+<Scene title="Lo stipendio tipico">
+Sei appena arrivato come analista in un negozio di biciclette. Il titolare ti mostra gli stipendi mensili, in euro, dei cinque dipendenti:
+
+| Dipendente | Stipendio |
+| --- | --- |
+| Anna | 1200 |
+| Bruno | 1300 |
+| Carla | 1300 |
+| Dario | 1400 |
+| Elena | 1800 |
+
+Vuole una sola cifra da scrivere in un annuncio: «lo stipendio tipico da noi è…». Ma quale cifra?
+
+<Say who="sensei">Un insieme di numeri si riassume con un numero solo. Ma ne esistono tre, e danno risposte diverse. Scegliere male è il primo errore di un analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La media">
+La **media** è la più famosa. Si sommano tutti i valori e si divide per quanti sono.
+
+<Log lines={[
+  "somma: 1200 + 1300 + 1300 + 1400 + 1800 = 7000",
+  "quanti sono: 5",
+  "media: 7000 / 5 = 1400",
+]} />
+
+Pensa a un **punto di equilibrio**: se i numeri fossero pesi su un'asse, la media è il punto dove l'asse sta in piano.
+
+<Callout kind="trucco">
+Controllo veloce: la media sta sempre **tra il più piccolo e il più grande** dei valori. Se ottieni 2000, hai sbagliato.
+</Callout>
+
+<Say who="assistente">Sommi tutto, dividi per il numero dei valori. Qui fa 1400.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La mediana">
+La **mediana** è il valore che sta **in mezzo** quando i numeri sono messi in fila, dal più piccolo al più grande.
+
+Prima si ordina. Poi si prende quello centrale. Nel negozio: 1200, 1300, **1300**, 1400, 1800. In mezzo c'è **1300**.
+
+E se i valori sono in numero **pari**? Allora i centrali sono due, e si fa la media dei due.
+
+<Callout kind="attenzione">
+Prima di cercare il centro, **ordina sempre i numeri**. Se non lo fai, il «centro» è solo quello che capita in mezzo alla riga.
+</Callout>
+
+<Say who="sensei">La mediana divide i dati a metà: metà dei valori sta sotto, metà sopra. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La moda">
+La **moda** è il valore che compare **più volte**. Nel negozio 1300 compare due volte, tutti gli altri una sola: la moda è **1300**.
+
+La moda è l'unica che funziona anche con le **parole**: il colore di maglietta più venduto, la taglia di scarpe più richiesta. Non puoi fare la media dei colori, ma puoi contare quale compare di più.
+
+<Callout kind="curiosita">
+Un insieme può avere **due mode** (due valori ugualmente frequenti) oppure **nessuna** (se ogni valore compare una volta sola).
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sette minuti, con esempi scolastici:
+
+<Video />
+
+<Say who="assistente">Media per sommare, mediana per il centro, moda per il più frequente. Tre domande diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Arriva il titolare">
+Il titolare si aggiunge all'elenco con il suo stipendio: **8000** euro. Ora i valori sono sei.
+
+<Guided
+  steps={[
+    "Somma: 1200 + 1300 + 1300 + 1400 + 1800 + 8000 = 15000. Media: 15000 / 6 = 2500.",
+    "Ordinati: 1200, 1300, 1300, 1400, 1800, 8000. I valori sono sei, quindi i centrali sono il terzo e il quarto: 1300 e 1400.",
+    "Mediana: (1300 + 1400) / 2 = 1350.",
+    "Moda: ancora 1300, compare due volte.",
+    "Un solo valore estremo ha spostato la media da 1400 a 2500. La mediana è passata solo da 1300 a 1350.",
+  ]}
+/>
+
+<Say who="sensei">Nessuno dei cinque dipendenti guadagna 2500. La media non descrive nessuno. La mediana, invece, descrive bene la squadra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale usare">
+<Callout kind="regola">
+**Media**: dati senza valori estremi, distribuiti in modo equilibrato. **Mediana**: quando ci sono valori estremi o dati molto sbilanciati (stipendi, prezzi delle case). **Moda**: per le categorie o per il valore più frequente.
+</Callout>
+
+<Quiz
+  question="Un quartiere ha 9 case che costano tra 150 000 e 200 000 euro e una villa da 4 milioni. Quale indice descrive meglio il prezzo «normale» di una casa?"
+  options={["La mediana", "La media", "Il prezzo più alto", "La somma dei prezzi"]}
+  answer={0}
+  explain="La villa tira la media molto in alto, anche se quasi nessuna casa costa così. La mediana resta tra i prezzi delle case comuni. Chi sceglie la media si fa ingannare dal valore estremo."
+/>
+
+<Say who="sensei">Se c'è un gigante nella stanza, la media lo segue. La mediana no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su media, mediana e moda, con numeri piccoli. Hai 3 tentativi.
+
+<Practice generator="d05-media" pass="5/5" retries={3} />
+
+<Say who="sensei">Calcola a mano, con calma. Ordina prima di cercare la mediana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Media: somma diviso quanti sono. Mediana: il valore centrale dopo aver ordinato (con un numero pari, la media dei due centrali). Moda: il valore più frequente.
+- Un valore estremo sposta molto la media e poco la mediana.
+- Stipendi, prezzi e redditi: meglio la mediana. Categorie: la moda.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Mediana di 3, 9, 5, 1, 7?", a: "5 (ordinati: 1, 3, 5, 7, 9)" },
+    { q: "Mediana di 2, 4, 6, 8?", a: "5, cioè (4 + 6) / 2" },
+    { q: "Quale indice si lascia ingannare da un valore estremo?", a: "La media" },
+    { q: "Quale indice funziona anche con i colori?", a: "La moda" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: capire quanto i numeri sono sparsi attorno al centro. Due gruppi possono avere la stessa media e non somigliarsi per niente.</Say>
+</Scene>

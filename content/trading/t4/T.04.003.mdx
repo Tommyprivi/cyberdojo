@@ -1,0 +1,169 @@
+---
+id: T.04.003
+course: trading
+module: 4
+title: "Correlazione e diversificazione"
+belt: gialla
+duration_min: 8
+prerequisites: [T.04.002]
+objectives:
+  - "Leggere un coefficiente di correlazione tra -1 e +1"
+  - "Calcolare la volatilità di un portafoglio 50/50 di due titoli con la stessa volatilità"
+  - "Spiegare perché la diversificazione ha limiti, soprattutto nelle crisi"
+video:
+  provider: youtube
+  id: "kdSEClPxsgw"
+  start: 0
+  end: 291
+  channel: "Jeff Davis"
+  title: "Correlation and Diversification"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-correlazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare la correlazione sui prezzi invece che sui rendimenti"
+  - "Pensare che correlazione voglia dire che un titolo causa l'altro"
+  - "Credere che diversificare elimini tutto il rischio: nelle crisi le correlazioni salgono"
+commands: []
+---
+
+<Scene title="Due ombrelli, un solo temporale">
+Lucia ha in mente un portafoglio di prova con due azioni fittizie: **Delta** (un'azienda di gelati) e **Omega** (un'azienda di ombrelli). Pensa: «Quando una va male, l'altra va bene. Così rischio meno».
+
+È una buona idea? E se invece avesse scelto due aziende di gelati?
+
+La domanda del caso: **come si misura se due titoli si muovono insieme, e quanto aiuta metterli nello stesso portafoglio?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. Dati e aziende sono inventati e nel corso non si usano soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente, nemmeno la diversificazione. Si capisce con i numeri, non con le sensazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La correlazione">
+La **correlazione** è un numero tra **−1 e +1** che dice se due serie si muovono nella stessa direzione.
+
+- **+1**: si muovono sempre insieme, nello stesso verso.
+- **0**: nessun legame lineare.
+- **−1**: si muovono sempre in verso opposto.
+
+Cinque rendimenti giornalieri fittizi, in percentuale:
+
+| giorno | 1 | 2 | 3 | 4 | 5 |
+|--------|---|---|---|---|---|
+| Delta | +2 | −2 | +4 | −4 | 0 |
+| Omega | −2 | +2 | −4 | +4 | 0 |
+
+Ogni giorno Omega fa l'opposto di Delta: correlazione **−1**. Un caso limite, che nel mercato reale non esiste, ma serve a capire.
+
+<PythonTerminal code={"import statistics\n\ndelta = [2, -2, 4, -4, 0]\nomega = [-2, 2, -4, 4, 0]\nprint(round(statistics.correlation(delta, omega), 2))"} />
+
+<Say who="assistente">Cambia i numeri di omega in modo che seguano delta e riesegui: la correlazione sale verso +1.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il portafoglio 50/50">
+Metti metà del capitale fittizio in Delta e metà in Omega. Ogni giorno il rendimento del portafoglio è la **media** dei due.
+
+<Log lines={[
+  "giorno 1: (+2 + -2) / 2 = 0",
+  "giorno 2: (-2 + +2) / 2 = 0",
+  "giorno 3: (+4 + -4) / 2 = 0",
+  "giorno 4: (-4 + +4) / 2 = 0",
+  "giorno 5: (0 + 0) / 2 = 0",
+]} />
+
+Il portafoglio non si muove mai: **volatilità zero**, pur avendo due titoli che ballano. Quello è il frutto della correlazione −1.
+
+Per due titoli con la **stessa volatilità** σ e correlazione ρ, in un portafoglio 50/50:
+
+volatilità del portafoglio = σ × √((1 + ρ) / 2)
+
+<Callout kind="regola">
+Con σ = 20%: ρ = +1 dà 20% (nessun vantaggio); ρ = +0,5 dà circa 17,3%; ρ = 0 dà circa 14,1%; ρ = −1 dà 0%.
+</Callout>
+
+<Say who="sensei">Meno sono correlati, più il portafoglio è calmo. Questo è tutto il segreto della diversificazione. Non è magia, è aritmetica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti">
+Nella realtà il −1 non si trova. Titoli diversi hanno correlazioni tra 0 e +0,9. E c'è di peggio.
+
+<Callout kind="attenzione">
+**Nelle crisi le correlazioni salgono.** Quando il panico colpisce, molti titoli scendono insieme: la diversificazione che sembrava solida si riduce proprio quando serve di più.
+</Callout>
+
+Altre due trappole:
+
+- La correlazione si calcola sui **rendimenti**, non sui prezzi. Due prezzi che salgono entrambi nel tempo sembrano correlati anche se non c'entrano nulla.
+- **Correlazione non è causalità**: i gelati e i costumi da bagno salgono insieme perché c'è l'estate, non perché uno faccia vendere l'altro.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di cinque minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Se due titoli sembrano correlati, chiediti: c'è una causa comune, come l'estate, o è solo una coincidenza dei prezzi?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Due titoli fittizi hanno entrambi volatilità 20% e correlazione 0. In un portafoglio 50/50, la volatilità sarà..."
+  options={[
+    "Circa 14,1%, più bassa di 20%",
+    "Esattamente 20%",
+    "Esattamente 10%",
+    "Circa 28,3%, più alta di 20%",
+  ]}
+  answer={0}
+  explain="Con ρ = 0 la formula dà 20% × √(1/2) = circa 14,1%. Chi risponde 20% pensa che la media delle volatilità sia sufficiente: non lo è, serve la correlazione. Chi risponde 10% divide per due la volatilità: ma la volatilità non si dimezza, tranne nel caso estremo ρ = −1, dove scende a 0."
+/>
+
+<Say who="sensei">Un portafoglio non è la media dei suoi pezzi. Conta come si muovono insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Correlazioni da interpretare e volatilità di portafoglio da calcolare. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-correlazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Diversificare riduce il rischio, non lo cancella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La correlazione va da −1 a +1: dice se due rendimenti si muovono insieme; non dice chi causa chi.
+- Portafoglio 50/50 con stessa volatilità σ: σ × √((1 + ρ) / 2). Con σ = 20%: ρ=0 dà circa 14,1%.
+- La diversificazione ha limiti: nelle crisi le correlazioni salgono; si calcola sui rendimenti, non sui prezzi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che valori può avere la correlazione?", a: "Da -1 a +1" },
+    { q: "Due titoli con correlazione +1: la diversificazione aiuta?", a: "No, si muovono sempre insieme" },
+    { q: "Che cosa succede alle correlazioni nelle crisi?", a: "Salgono: molti titoli scendono insieme" },
+    { q: "Si calcola la correlazione sui prezzi o sui rendimenti?", a: "Sui rendimenti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i giorni davvero fuori dal comune. Code grasse ed eventi rari.</Say>
+</Scene>

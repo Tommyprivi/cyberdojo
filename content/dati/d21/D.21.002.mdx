@@ -1,0 +1,254 @@
+---
+id: D.21.002
+course: dati
+module: 21
+title: "Modelli SQL e dbt"
+belt: blu
+duration_min: 10
+prerequisites: [D.21.001]
+objectives:
+  - "Spiegare che un modello dbt è un file SQL con una sola SELECT"
+  - "Usare ref e source per collegare i modelli e leggere il grafo delle dipendenze (DAG)"
+  - "Scegliere tra le materializzazioni view, table e incremental"
+video:
+  provider: youtube
+  id: "NcvinETlG1w"
+  start: 0
+  end: 600
+  channel: "Datazard"
+  title: "dbt Models Explained | Create Tables, Views, Compiled SQL & Custom Schema | Part 1"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-dbt
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere nel modello CREATE TABLE o INSERT: nel modello va solo la SELECT, la tabella la crea dbt"
+  - "Scrivere a mano il nome di un'altra tabella invece di usare ref: dbt perde le dipendenze e non sa l'ordine di esecuzione"
+  - "Scegliere table per tutto: ogni esecuzione ricostruisce tutto, con costo e tempo"
+commands: []
+---
+
+<Scene title="Venti query e un programma che le ordina">
+L'analista del Cesto di Marta ha venti query SQL salvate in cartelle diverse. Alcune leggono la tabella `ordini`, altre leggono i risultati di altre query, copiati a mano in tabelle di appoggio. Per aggiornare il report devono girare **nell'ordine giusto**, e l'ordine lo sa solo lui.
+
+Un lunedì ne dimentica una: il report mostra numeri vecchi per metà.
+
+La domanda del caso: **come si fa a dire a un programma «ricostruisci tutto, nell'ordine giusto»?**
+
+<Say who="sensei">Se l'ordine esiste solo nella testa di una persona, il processo non esiste. Lo scriviamo.</Say>
+
+**dbt** (*data build tool*) è un programma gratuito (dbt Core, a riga di comando) che fa tre cose:
+
+- legge i tuoi file SQL;
+- capisce **in che ordine** vanno eseguiti;
+- li esegue nel magazzino dati e **crea tabelle o viste** con i risultati.
+
+Non estrae e non carica dati: fa solo la **T** di ELT. Ogni file SQL con una `SELECT` si chiama **modello**. Il nome del file diventa il nome della tabella: `ordini_pagati.sql` crea `ordini_pagati`.
+
+<Callout kind="regola">
+Un modello è **una sola SELECT**. Niente CREATE TABLE, niente INSERT: dbt scrive quella parte al posto tuo.
+</Callout>
+
+<Say who="assistente">Tu descrivi come deve essere il risultato. dbt decide come costruirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un progetto minuscolo: i file">
+Un progetto dbt è una cartella. Il nostro ha quattro file importanti:
+
+<Log lines={[
+  "cesto_dbt/",
+  "  dbt_project.yml          <- identità del progetto e impostazioni",
+  "  models/",
+  "    sources.yml            <- dichiara le tabelle grezze di partenza",
+  "    stg_ordini.sql         <- modello 1: pulisce gli ordini",
+  "    ordini_pagati.sql      <- modello 2: tiene solo i pagati",
+  "    ricavi_mensili.sql     <- modello 3: somma per mese",
+]} />
+
+Il file `dbt_project.yml` dà il nome al progetto e le regole generali. Versione per dbt Core 1.8 o successivo:
+
+<Log lines={[
+  "name: cesto_dbt",
+  "version: '1.0.0'",
+  "config-version: 2",
+  "profile: cesto",
+  "model-paths: ['models']",
+  "models:",
+  "  cesto_dbt:",
+  "    +materialized: view",
+]} caption="«profile» indica quale connessione usare. Le password non vanno qui: stanno in un altro file, fuori dal progetto." />
+
+<Callout kind="attenzione">
+La connessione al magazzino (indirizzo, utente, password) sta in `profiles.yml`, che di solito vive nella tua cartella personale, non nel progetto. Per le password si usano variabili d'ambiente con `env_var('NOME')`. Mai password dentro Git.
+</Callout>
+
+<Say who="sensei">Il progetto descrive il lavoro. La connessione è un segreto e resta fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="source e ref: collegare i pezzi">
+Prima si dichiarano le tabelle grezze, in `models/sources.yml`:
+
+<Log lines={[
+  "version: 2",
+  "",
+  "sources:",
+  "  - name: negozio",
+  "    tables:",
+  "      - name: ordini",
+]} />
+
+Poi il primo modello, `stg_ordini.sql`, legge la tabella grezza con `source`:
+
+<Log lines={[
+  "select",
+  "    id as id_ordine,",
+  "    cliente_id as id_cliente,",
+  "    cast(data as date) as data_ordine,",
+  "    cast(importo as numeric(10, 2)) as importo,",
+  "    lower(stato) as stato",
+  "from {{ source('negozio', 'ordini') }}",
+]} />
+
+Il secondo, `ordini_pagati.sql`, legge il primo con `ref`:
+
+<Log lines={[
+  "select id_ordine, data_ordine, importo",
+  "from {{ ref('stg_ordini') }}",
+  "where stato = 'pagato'",
+]} />
+
+<Callout kind="trucco">
+`source('negozio', 'ordini')` indica una tabella **grezza** che non è un modello. `ref('stg_ordini')` indica un **altro modello**. Con `ref` dbt scopre da solo le dipendenze e scrive il nome giusto della tabella, anche se cambia lo schema (dev o produzione).
+</Callout>
+
+<Say who="assistente">Le due parentesi graffe sono Jinja, un linguaggio di modelli: dbt le sostituisce con il nome vero della tabella prima di lanciare la query.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Risultati e grafo (DAG)">
+I dati grezzi di marzo, per ricontrollare a mano:
+
+| id | cliente_id | data | importo | stato |
+|---|---|---|---|---|
+| 101 | 1 | 2025-03-02 | 12.50 | PAGATO |
+| 102 | 1 | 2025-03-15 | 18.00 | PAGATO |
+| 103 | 2 | 2025-03-16 | 7.50 | ANNULLATO |
+| 104 | 3 | 2025-03-20 | 30.00 | PAGATO |
+| 105 | 2 | 2025-03-28 | 22.00 | PAGATO |
+
+`stg_ordini` rinomina le colonne e mette lo stato in minuscolo: 5 righe. `ordini_pagati` toglie l'ordine 103 (stato «annullato») e lascia **4 righe**. Il terzo modello, `ricavi_mensili.sql`, le somma:
+
+<Log lines={[
+  "select",
+  "    cast(date_trunc('month', data_ordine) as date) as mese,",
+  "    sum(importo) as ricavi",
+  "from {{ ref('ordini_pagati') }}",
+  "group by 1",
+  "",
+  "mese        | ricavi",
+  "2025-03-01  | 82.50",
+]} caption="12,50 + 18,00 + 30,00 + 22,00 = 82,50. Funzione date_trunc: sintassi di PostgreSQL, Snowflake e DuckDB; BigQuery la scrive in modo diverso." />
+
+Le dipendenze formano un **grafo orientato senza cicli** (DAG): una mappa con frecce.
+
+<Log lines={[
+  "source negozio.ordini",
+  "   -> stg_ordini",
+  "      -> ordini_pagati",
+  "         -> ricavi_mensili",
+]} caption="dbt esegue sempre da sinistra a destra: un modello parte solo quando quelli da cui dipende sono pronti." />
+
+Il comando `dbt run` costruisce tutto nell'ordine giusto. `dbt run --select ordini_pagati+` ricostruisce quel modello e tutti quelli che ne dipendono.
+
+<Say who="sensei">Mai a mano l'ordine. Lo scrivono i ref, e il grafo non sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Materializzazioni">
+Come dbt trasforma una SELECT in qualcosa di vero nel magazzino? Dipende dalla **materializzazione**:
+
+| Tipo | Che cosa crea | Quando usarlo |
+|---|---|---|
+| view | una vista: la query salvata, calcolata a ogni lettura | modelli leggeri, di pulizia |
+| table | una tabella ricostruita a ogni `dbt run` | modelli letti spesso e un po' pesanti |
+| incremental | una tabella che aggiunge solo le righe nuove | tabelle molto grandi e che crescono |
+| ephemeral | niente: il codice è incollato dentro i modelli che lo usano | piccoli passaggi intermedi |
+
+Si sceglie nel file del modello:
+
+<Log lines={[
+  "{{ config(materialized='table') }}",
+  "",
+  "select * from {{ ref('ordini_pagati') }}",
+]} caption="Nel dbt_project.yml l'impostazione vale per tutti; nel modello vale solo per quello." />
+
+<Callout kind="curiosita">
+Regola pratica: **parti con view**, passa a **table** se la lettura è lenta, passa a **incremental** solo se la tabella è così grande che ricostruirla costa troppo.
+</Callout>
+
+<Video />
+
+<Say who="assistente">Il video mostra come cambia il risultato tra view e table, con un progetto vero. Parla inglese: usa i sottotitoli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai un modello `report.sql` che contiene: select * from analytics.ordini_pagati. Un collega lo cambia in: select * from {{ ref('ordini_pagati') }}. Quale vantaggio concreto ottiene?"
+  options={[
+    "dbt sa che report dipende da ordini_pagati e lo costruisce dopo di lui",
+    "La query diventa più veloce",
+    "Il modello diventa una tabella invece di una vista",
+    "Il modello ottiene i test in automatico",
+  ]}
+  answer={0}
+  explain="Con il nome scritto a mano dbt non vede la dipendenza e potrebbe eseguire report prima di ordini_pagati. Con ref il grafo è completo e l'ordine è corretto. La velocità e il tipo di materializzazione non cambiano."
+/>
+
+<Say who="sensei">Ogni nome scritto a mano è un anello rotto nel grafo. Usa ref.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Modelli, ref, grafo e materializzazioni: leggi i file e decidi che cosa succede.
+
+<Practice generator="d21-dbt" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi legge un modello sa che cosa produce e da chi dipende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un modello dbt è un file SQL con una sola SELECT: il nome del file è il nome della tabella creata.
+- `source` indica le tabelle grezze, `ref` un altro modello: così dbt costruisce il grafo (DAG) ed esegue nell'ordine giusto.
+- Materializzazioni: view (di default, leggera), table (ricostruita a ogni run), incremental (aggiunge solo il nuovo), ephemeral (solo codice).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene un modello dbt?", a: "Una sola SELECT, in un file .sql" },
+    { q: "Quando si usa ref e quando source?", a: "ref per un altro modello, source per una tabella grezza dichiarata" },
+    { q: "Che cos'è il DAG?", a: "La mappa delle dipendenze tra i modelli, con frecce e senza cicli" },
+    { q: "Quale materializzazione conviene all'inizio?", a: "view, poi table o incremental solo se serve" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come mettere ordine tra i modelli, con i tre livelli staging, intermediate e marts.</Say>
+</Scene>

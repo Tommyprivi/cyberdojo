@@ -1,0 +1,155 @@
+---
+id: D.12.004
+course: dati
+module: 12
+title: "Sicurezza dei dati"
+belt: verde
+duration_min: 9
+prerequisites: [D.12.003]
+objectives:
+  - "Applicare accessi minimi e cifratura a un caso concreto"
+  - "Riconoscere gli errori comuni nella condivisione di file con dati personali"
+  - "Sapere che cosa fare se un file finisce al destinatario sbagliato"
+video:
+  provider: youtube
+  id: "q1RZtpGcTKg"
+  start: 0
+  end: 288
+  channel: "Simone Giannetti - Omegatech"
+  title: "Hai un backup… ma è davvero sicuro? La regola 3-2-1 che può salvarti"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-sicurezza
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che nascondere una colonna in un foglio la protegga"
+  - "Mandare la password nella stessa email dell'archivio cifrato"
+  - "Aspettare di essere sicuri del danno prima di segnalare un errore"
+commands: []
+---
+
+<Scene title="Il foglio inviato per email">
+Giulia, analista in una società di assicurazioni fittizia, deve mandare a un fornitore un foglio per un controllo. Per comodità invia il file completo: nome, indirizzo, IBAN e data di nascita dei clienti. Ha nascosto due colonne, pensando di averle protette.
+
+Il fornitore le risponde dopo un'ora: «Ho visto che c'erano delle colonne nascoste, le ho mostrate: c'erano i codici fiscali».
+
+La domanda del caso: **come si custodiscono e si condividono i dati senza esporre le persone?**
+
+<Say who="sensei">La sicurezza dei dati non è un programma. È una serie di piccole abitudini, ripetute ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Accessi minimi e copie">
+Il primo principio è il **minimo privilegio**: ciascuno accede solo ai dati che servono al suo compito, e solo finché servono. Una stagista che fa un grafico sui reclami non ha bisogno di tutto il database clienti.
+
+Quando una persona cambia ruolo o lascia l'organizzazione, gli accessi si tolgono subito.
+
+Poi le **copie**: ogni copia in più (nella cartella Download, su una chiavetta, in un file «prova») è un posto in più dove i dati possono perdersi. Meglio lavorare sui dati dove stanno, e dove serve una copia, saperne il motivo e cancellarla alla fine.
+
+Vuoi sentire parlare dei backup da un'altra voce? Meno di cinque minuti:
+
+<Video />
+
+<Callout kind="trucco">
+Backup, regola 3-2-1: 3 copie dei dati, su 2 supporti diversi, 1 copia fuori sede. Ma un backup è comunque una copia di dati personali: protetta e con una durata.
+</Callout>
+
+<Say who="assistente">Chiediti: chi ha accesso, perché, e fino a quando? Se non lo sai, c'è lavoro da fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifrare">
+**Cifrare** vuol dire trasformare i dati in modo che solo chi ha la chiave possa leggerli.
+
+- **A riposo**: disco del portatile, database, backup. Se il portatile viene perso, chi lo trova non legge niente.
+- **In transito**: collegamenti protetti (HTTPS e simili), per i dati che viaggiano in rete.
+
+Per inviare un file con dati personali a qualcuno fuori dall'organizzazione, una buona abitudine è un archivio cifrato con una password robusta, comunicata **su un altro canale** (per esempio per telefono). Se la password sta nella stessa email, è come attaccare la chiave alla porta.
+
+<Callout kind="attenzione">
+La cifratura protegge da certi rischi (perdita, intercettazione), non da tutti: chi ha la chiave e l'accesso vede i dati. Per questo servono anche gli accessi minimi.
+</Callout>
+
+<Say who="sensei">La serratura serve. Ma una serratura con la chiave sotto lo zerbino è solo scenografia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errori comuni">
+Torniamo a Giulia. Ecco gli errori più frequenti, spesso in buona fede:
+
+<Guided
+  steps={[
+    "Colonne o fogli nascosti: restano nel file. Chi lo riceve può mostrarli. Per togliere dati, si eliminano davvero (o meglio, si crea un estratto senza quelle colonne).",
+    "Link «chiunque abbia il link»: il link può circolare senza controllo. Meglio condividere con persone indicate, per il tempo necessario.",
+    "Email a molti destinatari in copia visibile (CC): tutti vedono gli indirizzi degli altri. Si usa CCN, copia nascosta.",
+    "Dati reali in un ambiente di prova: si usano dati fittizi o pseudonimizzati.",
+    "Il file allegato al destinatario sbagliato: si avvisa subito chi si occupa di privacy e sicurezza, senza aspettare di essere sicuri del danno.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Se una violazione di dati presenta un rischio per le persone, l'organizzazione ha tempi stretti per notificarla al Garante (in sintesi, entro 72 ore dalla scoperta). Per questo la segnalazione interna rapida è importante.
+</Callout>
+
+<Say who="assistente">Segnalare presto non è una colpa. Il guaio vero è tacere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Devi condividere con una collega un file con dati personali dei clienti. Quale scelta è la più prudente?"
+  options={["Una cartella condivisa con accesso solo a lei, per il tempo necessario", "Un link pubblico: chiunque abbia il link può aprirlo", "Un'email a tutto il team, così ce l'hanno tutti", "Una chiavetta lasciata sulla sua scrivania"]}
+  answer={0}
+  explain="L'accesso a persone precise, per il tempo che serve, è l'applicazione del minimo privilegio. Il link pubblico e l'email a tutti moltiplicano le persone che possono vedere i dati, e la chiavetta lasciata sulla scrivania si perde facilmente."
+/>
+
+<Callout kind="attenzione">
+Questa è una guida per capire, non una consulenza legale o tecnica completa. Le regole della tua organizzazione hanno la precedenza: chiedi a chi si occupa di sicurezza e privacy.
+</Callout>
+
+<Say who="sensei">Meno persone, meno copie, più protezione. Se hai un dubbio, chiedi prima di inviare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sulla sicurezza dei dati. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-sicurezza" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La sicurezza sta nei gesti piccoli: li ripeti finché diventano un'abitudine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Accessi minimi: ognuno vede solo ciò che serve al compito, e gli accessi si tolgono quando non servono più. Poche copie, protette, con una durata.
+- Cifra a riposo e in transito; l'archivio cifrato si invia con la password su un altro canale.
+- Errori comuni: colonne nascoste, link aperti a tutti, CC invece di CCN, dati reali in prova. Se sbagli destinatario, avvisa subito.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il minimo privilegio?", a: "Dare a ciascuno solo gli accessi necessari al suo compito" },
+    { q: "Una colonna nascosta in un foglio è protetta?", a: "No: resta nel file e si può mostrare" },
+    { q: "Dove si comunica la password di un archivio cifrato?", a: "Su un altro canale, non nella stessa email" },
+    { q: "Hai inviato un file al destinatario sbagliato: che cosa fai?", a: "Avvisi subito chi si occupa di privacy e sicurezza" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chi decide dei dati, chi li cura e quando vanno cancellati.</Say>
+</Scene>

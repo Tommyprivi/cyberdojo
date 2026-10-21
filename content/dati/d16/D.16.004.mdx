@@ -1,0 +1,147 @@
+---
+id: D.16.004
+course: dati
+module: 16
+title: "Il boosting"
+belt: blu
+duration_min: 9
+prerequisites: [D.16.003]
+objectives:
+  - "Spiegare a parole l'idea del gradient boosting: correggere gli errori un passo alla volta"
+  - "Calcolare a mano due passi di correzione con un tasso di apprendimento"
+  - "Dire quando il boosting conviene e quali rischi ha"
+video:
+  provider: youtube
+  id: "3CC4N4z3GJc"
+  start: 0
+  end: 600
+  channel: "StatQuest with Josh Starmer"
+  title: "Gradient Boost Part 1 (of 4): Regression Main Ideas"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d16-boosting
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il boosting sia una foresta: gli alberi non votano in parallelo, si correggono in sequenza"
+  - "Aggiungere troppi alberi senza fermarsi: il modello comincia a imparare il rumore"
+  - "Credere che il boosting vinca sempre: su pochi dati o dati molto sporchi può fare peggio di un modello semplice"
+commands: []
+---
+
+<Scene title="Il correttore di bozze">
+Nora prevede la spesa mensile in euro di tre clienti. Il primo tentativo è banale: dà a tutti la **media**. Poi chiede a un collega di guardare dove ha sbagliato di più e di correggere solo quegli errori. Poi a un altro di correggere gli errori rimasti.
+
+Questa è l'idea del **boosting**: tanti modelli piccoli, uno dopo l'altro, ciascuno che ripara gli errori dei precedenti.
+
+<Say who="sensei">Nella foresta gli alberi lavorano da soli e poi votano. Nel boosting lavorano in fila. Ognuno studia gli errori di quello prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un passo alla volta, con i numeri">
+Spese vere: **10, 20, 30** euro.
+
+**Passo 0.** Previsione uguale per tutti: la media, 20. Gli **errori** (valore vero meno previsione) sono −10, 0, +10.
+
+**Passo 1.** Un piccolo albero impara a prevedere gli errori. Per cautela non applichiamo tutta la correzione, ma solo la metà: il **tasso di apprendimento** vale 0,5. Nuova previsione: 20 + 0,5 × (−10, 0, +10) = **15, 20, 25**.
+
+**Passo 2.** Errori rimasti: −5, 0, +5. Nuova previsione: (15, 20, 25) + 0,5 × (−5, 0, +5) = **17,5, 20, 22,5**.
+
+Vuoi sentirlo spiegare da un'altra voce? L'idea principale del gradient boost, in inglese (con sottotitoli):
+
+<Video />
+
+<Say who="assistente">Ogni passo toglie metà dell'errore che resta. Dopo due passi sei più vicino a 10 e a 30 rispetto a prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto si sbaglia a ogni passo">
+Calcoliamo l'errore medio assoluto (la media degli errori senza segno):
+
+- Passo 0: (10 + 0 + 10) / 3 = **6,67**.
+- Passo 1: (5 + 0 + 5) / 3 = **3,33**.
+- Passo 2: (2,5 + 0 + 2,5) / 3 = **1,67**.
+
+Ogni passo dimezza l'errore: con tasso 0,5 è proprio così. Con un tasso più basso (per esempio 0,1) si va più piano ma con più sicurezza: servono più alberi.
+
+<Callout kind="regola">
+Il boosting ha due leve: il **numero di alberi** e il **tasso di apprendimento**. Tasso basso + molti alberi spesso funziona meglio, ma costa più tempo.
+</Callout>
+
+<Say who="sensei">Piccoli passi, molti passi. Chi corre troppo con la correzione salta oltre il bersaglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando conviene e quali rischi">
+Sui dati in tabella (righe e colonne) il boosting è spesso tra i modelli più precisi. Strumenti noti: la classe `GradientBoostingClassifier` di scikit-learn e le librerie XGBoost, LightGBM e CatBoost.
+
+<Log lines={[
+  "from sklearn.ensemble import GradientBoostingClassifier",
+  "modello = GradientBoostingClassifier(n_estimators=300, learning_rate=0.1,",
+  "                                     max_depth=3, n_iter_no_change=10,",
+  "                                     validation_fraction=0.2, random_state=0)",
+  "modello.fit(X_train, y_train)"
+]} caption="Con n_iter_no_change il modello si ferma se per 10 passi non migliora su una parte di validazione." />
+
+I rischi:
+
+- **Overfitting** se si aggiungono troppi alberi: serve la validazione.
+- **Rumore**: se alcune etichette sono sbagliate, il boosting le insegue.
+- **Spiegabilità** più difficile di un albero solo.
+- Su pochi dati o problemi semplici, un modello più semplice può bastare.
+
+<Say who="assistente">Fermarsi in tempo è parte del metodo. «Early stopping» vuol dire proprio questo: basta correggere quando non migliori più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Valori veri 10, 20, 30, previsione iniziale 20 per tutti, tasso di apprendimento 0,5. Dopo il primo passo (che prevede perfettamente gli errori) quali sono le previsioni?"
+  options={["15, 20, 25", "10, 20, 30", "17,5, 20, 22,5", "5, 20, 35"]}
+  answer={0}
+  explain="Gli errori sono −10, 0, +10. Si applica metà: −5, 0, +5. Previsioni: 20 − 5 = 15, 20, 20 + 5 = 25. Con la correzione intera (tasso 1) si avrebbe 10, 20, 30; 17,5, 20, 22,5 è il passo successivo."
+/>
+
+<Say who="sensei">Prima si calcola l'errore, poi se ne applica una parte. Non si salta nessun passaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Correzioni passo dopo passo, tasso di apprendimento, rischi del boosting. Cinque domande, senza errori.
+
+<Practice generator="d16-boosting" pass="5/5" retries={3} />
+
+<Say who="sensei">Un modello potente chiede più disciplina, non meno. Controllalo con la validazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il boosting costruisce tanti piccoli alberi in fila: ognuno corregge gli errori dei precedenti.
+- Il tasso di apprendimento dice quanta parte della correzione si applica; con 0,5 l'errore dimezza a ogni passo.
+- Sui dati in tabella spesso è molto preciso, ma può andare in overfitting e inseguire il rumore: serve fermarsi in tempo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Foresta e boosting: che differenza c'è?", a: "La foresta fa votare alberi indipendenti; il boosting li costruisce in fila, ciascuno corregge gli errori precedenti" },
+    { q: "Previsione 20, vero 30, tasso 0,5, errore perfettamente previsto: nuova previsione?", a: "20 + 0,5 × 10 = 25" },
+    { q: "Che cos'è l'early stopping?", a: "Fermare l'aggiunta di alberi quando il voto di validazione non migliora più" },
+    { q: "Un rischio del boosting?", a: "Overfitting e rincorsa del rumore nei dati" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione, con la cintura marrone: le serie storiche, dove il tempo cambia le regole.</Say>
+</Scene>

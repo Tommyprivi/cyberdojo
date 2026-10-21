@@ -1,0 +1,159 @@
+---
+id: C.18.002
+course: cybersecurity
+module: 18
+title: "Il ciclo di vita di un attacco"
+belt: marrone
+duration_min: 9
+prerequisites: [C.18.001]
+objectives:
+  - "Elencare le sette fasi della cyber kill chain e dire cosa succede in ognuna"
+  - "Collocare un indizio osservato (un log, un allegato) nella fase giusta"
+  - "Spiegare perché la difesa a strati interrompe la catena in più punti"
+video:
+  provider: youtube
+  id: "s6XgCJ141Ww"
+  start: 0
+  end: 600
+  channel: "Adam Goss"
+  title: "The Cyber Kill Chain Explained: Map & Analyze Cyber Attacks!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c18-ciclo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'attacco sia un momento solo, e non una catena di fasi"
+  - "Credere che bloccare la prima fase sia l'unica difesa che conta"
+  - "Confondere l'arrivo del malware (consegna) con il momento in cui parte (sfruttamento e installazione)"
+commands: []
+---
+
+<Scene title="La fattura di Lucia">
+Alla **Ferramenta Moretti** (azienda fittizia), Lucia dell'amministrazione riceve una mail: «Fattura scaduta, vedi allegato». Il mittente sembra un fornitore. Lei apre l'allegato. Non succede nulla di visibile.
+
+Due settimane dopo, il responsabile IT trova nei registri: un computer che ogni notte contatta un indirizzo esterno, e un archivio di file compressi creato in una cartella insolita.
+
+La domanda del caso: **cosa è successo nelle due settimane, e dove si poteva fermare?**
+
+<Say who="sensei">Un attacco non è un lampo. È una catena. E una catena si spezza anche in un solo anello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una catena di sette anelli">
+Un'azienda americana, Lockheed Martin, ha descritto un attacco come una sequenza di sette fasi: la **cyber kill chain**. Non è l'unico modello, ma è semplice e utile per ragionare.
+
+Vuoi sentirla spiegare da un'altra voce? Un video che mostra come si usa per analizzare un attacco:
+
+<Video />
+
+<Callout kind="curiosita">
+Esiste anche il modello **MITRE ATT&CK** (lo hai incontrato in «Conoscere l'avversario»): è più dettagliato e descrive i comportamenti, non solo l'ordine delle fasi. La kill chain è la mappa grande; ATT&CK è la mappa di dettaglio.
+</Callout>
+
+<Say who="assistente">Non devi sapere come si fa ogni fase. Devi sapere cosa lascia dietro di sé, perché è lì che si scopre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le prime quattro fasi">
+1. **Ricognizione**: chi attacca raccoglie informazioni (nomi, mail, fornitori) su siti pubblici e social. Traccia lasciata: quasi nessuna.
+2. **Preparazione dell'arma** (weaponization): prepara il materiale dannoso, per esempio un allegato che sembra una fattura. Traccia: nessuna sul bersaglio.
+3. **Consegna**: l'allegato arriva, per mail, chiavetta o sito. Traccia: la mail nei log del filtro posta.
+4. **Sfruttamento**: l'allegato aperto fa partire qualcosa che non doveva. Traccia: un comportamento strano del programma che l'ha aperto.
+
+<Callout kind="trucco">
+Le prime due fasi avvengono **fuori** da casa tua. Le puoi quasi solo rendere più difficili: poche informazioni pubbliche, personale formato.
+</Callout>
+
+<Say who="sensei">Dal punto 3 comincia il tuo terreno. È lì che i tuoi strumenti vedono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le ultime tre fasi">
+5. **Installazione**: il malware si fissa sul computer per restare anche dopo il riavvio. Traccia: un nuovo programma o servizio all'avvio.
+6. **Comando e controllo** (C2): il malware contatta chi lo guida, per ricevere ordini. Traccia: collegamenti ripetuti, a orari regolari, verso un indirizzo mai visto. È il caso dei collegamenti notturni di Lucia.
+7. **Azioni sull'obiettivo**: raccolta e furto dei dati, cifratura, danno. Traccia: un grande archivio creato e inviato all'esterno.
+
+<Callout kind="attenzione">
+Più si va avanti, più il danno è reale. Ma più si va avanti, più **tracce** ci sono. La difesa sta nel notarle prima della fase sette.
+</Callout>
+
+<Say who="assistente">Nei log di Lucia: la mail (consegna), il nuovo programma (installazione), i contatti notturni (C2), l'archivio (obiettivo).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il responsabile IT vede un computer che contatta ogni notte, a orario fisso, un indirizzo esterno mai visto. In quale fase della catena è l'attacco?"
+  options={["Comando e controllo", "Ricognizione", "Consegna", "Preparazione dell'arma"]}
+  answer={0}
+  explain="Contatti regolari verso chi guida l'attacco sono il comando e controllo. Ricognizione e preparazione avvengono prima e fuori dalla rete; la consegna è l'arrivo dell'allegato."
+/>
+
+<Say who="sensei">Se sei già al C2, qualcosa è entrato prima. Torna indietro a cercare come.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spezzare la catena">
+Come si ferma il caso di Lucia? Ragiona per anelli.
+
+<Guided
+  steps={[
+    "Ricognizione: ridurre quello che si pubblica su fornitori e organigramma.",
+    "Consegna: filtro posta che segnala allegati sospetti; formazione per riconoscere la fattura strana.",
+    "Sfruttamento: programmi aggiornati e macro disattivate di default.",
+    "Installazione: elenco dei programmi autorizzati; allarme se compare qualcosa di nuovo all'avvio.",
+    "Comando e controllo: controllo del traffico in uscita, blocco degli indirizzi non necessari.",
+    "Obiettivo: backup, limiti di trasferimento verso l'esterno, allarme su archivi insoliti.",
+    "Una difesa sola può fallire. Sette difese in fila rendono difficile che l'attacco le superi tutte.",
+  ]}
+/>
+
+<Callout kind="regola">
+Questo schema serve a **difendere e a capire**. Descrivere le fasi non significa saperle eseguire, né è lecito provarle su sistemi altrui: in Italia diffondere programmi dannosi è reato (art. 615-quinquies c.p.), e accedere senza permesso a un sistema è punito dall'art. 615-ter.
+</Callout>
+
+<Say who="sensei">Difesa a strati: non perché ognuno sia perfetto, ma perché sbagliano in punti diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque indizi da collocare nella fase giusta, o cinque difese da scegliere. Hai 3 tentativi.
+
+<Practice generator="c18-ciclo" pass="5/5" retries={3} />
+
+<Say who="sensei">Se confondi consegna e sfruttamento, ripensa: una cosa è l'arrivo, un'altra è la partenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Sette fasi: ricognizione, preparazione dell'arma, consegna, sfruttamento, installazione, comando e controllo, azioni sull'obiettivo.
+- Ogni fase dopo la consegna lascia tracce: i log e i controlli servono a notarle in tempo.
+- Una difesa a strati interrompe la catena in più punti: basta un anello spezzato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quante fasi ha la cyber kill chain di Lockheed Martin?", a: "Sette" },
+    { q: "Cos'è il comando e controllo (C2)?", a: "La fase in cui il malware contatta chi lo guida per ricevere ordini" },
+    { q: "Perché non basta difendere solo la prima fase?", a: "Perché una difesa sola può fallire: gli strati si coprono a vicenda" },
+    { q: "Quale traccia lascia la fase di installazione?", a: "Un nuovo programma o servizio all'avvio" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai dove cercare. Prossima lezione: come si guarda dentro un file sospetto senza mai farlo partire.</Say>
+</Scene>

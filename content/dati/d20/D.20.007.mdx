@@ -1,0 +1,165 @@
+---
+id: D.20.007
+course: dati
+module: 20
+title: "Dashboard e rapporto di prodotto"
+belt: marrone
+duration_min: 9
+prerequisites: [D.20.006]
+objectives:
+  - "Scegliere una metrica nord e poche metriche di salute del prodotto"
+  - "Scrivere un rapporto settimanale di una pagina con variazioni calcolate bene"
+  - "Impostare un allarme semplice su anomalie"
+video:
+  provider: youtube
+  id: "5dW6F9gQ2rM"
+  start: 0
+  end: 600
+  channel: "Looker Studio dashboards by Gaille Reports"
+  title: "Tutorial #5 - How to Add Scorecards and KPIs to Your Looker Studio Report"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d20-dashboard
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere nel rapporto trenta numeri senza dire quale conta e che cosa fare"
+  - "Calcolare la variazione percentuale sul valore nuovo invece che sul precedente"
+  - "Impostare un allarme con soglia fissa troppo stretta, che suona di continuo e viene ignorato"
+commands: []
+---
+
+<Scene title="Il lunedì delle sei dashboard">
+Ogni lunedì Giulia di **Tavola Bella** riceve sei dashboard diverse, con grafici colorati. Alla fine non sa se la settimana è andata bene o male.
+
+Un lunedì le ordini sono scesi quasi a metà e nessuno se n'è accorto per tre giorni: il sito aveva un errore al pagamento.
+
+La domanda del caso: **che cosa deve contenere un rapporto perché serva davvero, e come ci si accorge subito di un guasto?**
+
+<Say who="sensei">Un cruscotto che non cambia mai le decisioni è un soprammobile. Ora ne costruisci uno che serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La metrica nord e la salute">
+La **metrica nord** è l'unico numero che dice se il prodotto sta andando nella direzione giusta. Per Tavola Bella: **ordini completati a settimana**.
+
+Intorno a lei, poche **metriche di salute**, che dicono perché sale o scende:
+
+- sessioni (quanta gente arriva);
+- tasso di conversione (quanti comprano);
+- valore medio dell'ordine (quanto spendono);
+- tasso di errori al pagamento (se il sito funziona).
+
+Cinque numeri al massimo. Il resto sta in una pagina di approfondimento.
+
+<Callout kind="trucco">
+Ordini = sessioni × tasso di conversione. Se gli ordini scendono, una delle due parti è scesa: la salute dice quale.
+</Callout>
+
+Vuoi vedere come si fanno i riquadri dei numeri chiave in uno strumento gratuito (Looker Studio)? Il video è in inglese:
+
+<Video />
+
+<Say who="assistente">Indizio: la metrica nord è una sola. Se ne hai tre, hai tre priorità, cioè nessuna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rapporto di una pagina">
+Un buon rapporto settimanale sta in **una pagina** e ha questo ordine: il numero nord, le metriche di salute con il confronto, una frase su che cosa è cambiato e perché, una cosa da fare.
+
+| metrica | scorsa settimana | questa settimana | variazione |
+|---|---|---|---|
+| sessioni | 9.000 | 10.000 | +11,1% |
+| ordini | 306 | 300 | -2,0% |
+| conversione | 3,4% | 3,0% | -0,4 punti |
+| ricavo | 15.300 € | 14.400 € | -5,9% |
+
+Come si calcola: variazione = (nuovo − vecchio) ÷ **vecchio**. Sessioni: 1.000 ÷ 9.000 = 11,1%. Ordini: −6 ÷ 306 = −2,0%. Ricavo: −900 ÷ 15.300 = −5,9%. Conversione: 306 ÷ 9.000 = 3,4% e 300 ÷ 10.000 = 3,0%, quindi −0,4 **punti** percentuali.
+
+Frase del rapporto: «Più visite (+11%), ma convertono meno: gli ordini calano del 2% e il ricavo del 6%. Verificare il traffico nuovo dai social».
+
+<Callout kind="attenzione">
+Distingui **percentuale** e **punti percentuali**: da 3,4% a 3,0% la conversione perde 0,4 punti, e in termini relativi circa il 12%. Scrivi sempre quale dei due stai usando.
+</Callout>
+
+<Say who="sensei">Un numero senza la sua spiegazione è un indovinello. Un rapporto dice: che cosa è successo, perché, che cosa facciamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli allarmi sulle anomalie">
+Non si può guardare la dashboard ogni ora. Si imposta un **allarme**: un controllo automatico che avvisa quando un numero esce da un intervallo normale.
+
+Regola semplice: la **media** delle ultime quattro settimane, con una tolleranza (per esempio ±20%).
+
+- ordini delle ultime 4 settimane: 290, 310, 300, 300
+- media: (290 + 310 + 300 + 300) ÷ 4 = **300**
+- intervallo normale: da 240 (300 − 20%) a 360 (300 + 20%)
+
+Se questa settimana gli ordini sono 190, sono fuori dall'intervallo: **allarme**. Se sono 280, no.
+
+<Callout kind="curiosita">
+Una soglia troppo stretta (±2%) suona sempre e nessuno la ascolta. Una troppo larga (±80%) non suona mai. Si sceglie guardando quanto varia di solito il numero. Nei dati reali si tiene conto anche del giorno della settimana: un lunedì non si confronta con una domenica.
+</Callout>
+
+<Say who="sensei">Un allarme che suona sempre è un allarme spento. Meglio pochi avvisi, giusti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Gli ordini passano da 400 a 440. Qual è la variazione percentuale?"
+  options={["+10%", "+9,1%", "+40%", "-10%"]}
+  answer={0}
+  explain="(440 − 400) ÷ 400 = 0,10, cioè +10%. Chi risponde 9,1% ha diviso per il valore nuovo (40 ÷ 440): la base è sempre il valore precedente."
+/>
+
+<Quiz
+  question="Ordini delle ultime 4 settimane: 200, 220, 180, 200. Soglia ±20% sulla media. Che cosa fa scattare l'allarme?"
+  options={["Meno di 160 o più di 240 ordini", "Meno di 200 ordini", "Più di 220 ordini", "Qualsiasi valore diverso da 200"]}
+  answer={0}
+  explain="La media è (200 + 220 + 180 + 200) ÷ 4 = 200. Il 20% di 200 è 40: intervallo da 160 a 240. Fuori da qui scatta l'allarme."
+/>
+
+<Say who="assistente">Passo uno: la media. Passo due: il 20% della media. Passo tre: sottrai e somma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Metrica nord, variazioni, rapporti e allarmi: scenari e calcoli.
+
+<Practice generator="d20-dashboard" pass="5/5" retries={3} />
+
+<Say who="sensei">Una metrica nord, base giusta per le variazioni, un allarme che suona solo quando serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Una metrica nord sola, poche metriche di salute che spiegano perché cambia.
+- Il rapporto di una pagina: numero nord, confronto, spiegazione, azione; variazione = (nuovo − vecchio) ÷ vecchio.
+- Un allarme usa la media recente e una tolleranza scelta guardando la variabilità normale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la metrica nord?", a: "L'unico numero che dice se il prodotto va nella direzione giusta" },
+    { q: "Da 306 a 300 ordini: variazione?", a: "-2,0% circa" },
+    { q: "Da 3,4% a 3,0%: di quanti punti scende la conversione?", a: "0,4 punti percentuali" },
+    { q: "Perché una soglia troppo stretta è un problema?", a: "Suona sempre e viene ignorata" },
+  ]}
+/>
+
+<Say who="sensei">Ramo finito. Hai gli strumenti per misurare un prodotto web con metodo, rispetto per le persone e onestà sui limiti. Buon lavoro.</Say>
+</Scene>

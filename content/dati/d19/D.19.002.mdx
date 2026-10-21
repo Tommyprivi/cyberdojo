@@ -1,0 +1,223 @@
+---
+id: D.19.002
+course: dati
+module: 19
+title: "I tipi e le strutture di base"
+belt: blu
+duration_min: 9
+prerequisites: [D.19.001]
+objectives:
+  - "Creare vettori, liste e data frame e riconoscerne il tipo con class()"
+  - "Estrarre elementi, righe e colonne con [ ], [[ ]] e $"
+  - "Scrivere una funzione con un argomento di default"
+video:
+  provider: youtube
+  id: "QpDtRvgAS4s"
+  start: 0
+  end: 600
+  channel: "Samuel Leanza - WebTutorDiMatematica"
+  title: "Estrarre righe, colonne o elementi di un dataframe tramite gli indici in R"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-tipi-strutture
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il primo elemento di un vettore abbia indice 0: in R si parte da 1"
+  - "Scrivere un nome di colonna con la maiuscola sbagliata: R distingue maiuscole e minuscole"
+  - "Mescolare numeri e testo in un vettore: R trasforma tutto in testo"
+commands: []
+---
+
+<Scene title="Il foglio ordini di Giulia">
+Giulia ti manda sei ordini del suo negozio: cliente, città e importo in euro. Vuoi calcolare la media, estrarre gli ordini grandi e controllare solo quelli di Roma.
+
+Per farlo devi sapere **come R tiene i dati in memoria**. Sono pochi attrezzi, e li userai in ogni analisi:
+
+- il **vettore**: tanti valori dello stesso tipo in fila;
+- la **lista**: un contenitore che può tenere cose diverse;
+- il **data frame**: la tabella, con righe e colonne;
+- il **fattore**: una colonna di categorie.
+
+La domanda del caso: **come si prende da una tabella proprio il pezzo che serve?**
+
+<Say who="sensei">Chi non sa estrarre dai dati un pezzo preciso si perde in fretta. Imparare a indicizzare è metà del mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il vettore">
+Un **vettore** si crea con `c()`, che significa «combina». Tutti gli elementi hanno lo stesso tipo.
+
+```r
+importi <- c(40, 20, 40, 10, 30, 40)
+class(importi)
+length(importi)
+importi * 2
+```
+
+<Log lines={["[1] \"numeric\"", "[1] 6", "[1] 80 40 80 20 60 80"]} caption="class() dice il tipo, length() quanti elementi, importi * 2 raddoppia ogni elemento." />
+
+I tipi base sono quattro: `numeric` (numeri con la virgola, come 2.5), `integer` (interi, come `5L`), `character` (testo tra virgolette) e `logical` (`TRUE` o `FALSE`).
+
+<Callout kind="attenzione">
+Se mescoli tipi, R sceglie il più «largo» e trasforma tutto: `c(1, "a", TRUE)` diventa `"1" "a" "TRUE"`. Tutti testi. Dopo, non puoi più fare somme.
+</Callout>
+
+Vuoi sentire come si estraggono righe, colonne ed elementi spiegato da un altro docente? Il video mostra proprio le parentesi quadre sui data frame:
+
+<Video />
+
+<Say who="assistente">Il video usa dati diversi dai nostri, ma le parentesi quadre sono le stesse. Guardalo con calma, poi torna qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indicizzare un vettore con [ ]">
+Le parentesi quadre dicono **quale pezzo** prendere. In R il primo elemento ha indice **1**, non 0.
+
+```r
+importi[2]
+importi[c(1, 3)]
+importi[-1]
+importi[2:4]
+importi[importi > 25]
+```
+
+<Log lines={["[1] 20", "[1] 40 40", "[1] 20 40 10 30 40", "[1] 20 40 10", "[1] 40 40 30 40"]} caption="Un numero prende un elemento, un numero negativo lo esclude, 2:4 prende dal secondo al quarto, una condizione prende quelli veri." />
+
+L'ultima riga è la più utile: `importi > 25` crea un vettore di `TRUE` e `FALSE`, e le parentesi quadre tengono solo gli elementi veri. È un **filtro**.
+
+Se chiedi un elemento che non esiste, R non si arrabbia: `importi[7]` restituisce `NA`, cioè «valore mancante».
+
+<Callout kind="trucco">
+Per contare quanti valori rispettano una condizione: `sum(importi > 25)`. Il vero vale 1, il falso 0, quindi la somma conta i veri. Qui dà `4`.
+</Callout>
+
+<Say who="sensei">Indice che parte da uno. Meno davanti esclude. Condizione dentro le quadre filtra. Tre regole, a memoria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Liste e data frame">
+Una **lista** può contenere cose di tipo diverso, ognuna con un nome. Si legge con `$` oppure con le doppie quadre `[[ ]]`.
+
+```r
+scheda <- list(nome = "Anna", ordini = c(40, 25))
+scheda$nome
+scheda$ordini[2]
+class(scheda["nome"])
+class(scheda[["nome"]])
+```
+
+<Log lines={["[1] \"Anna\"", "[1] 25", "[1] \"list\"", "[1] \"character\""]} caption="Una quadra singola restituisce ancora una lista, la doppia quadra restituisce il contenuto." />
+
+Un **data frame** è una lista di vettori della stessa lunghezza: la tabella dei dati. Ogni colonna è un vettore.
+
+```r
+ordini <- data.frame(
+  cliente = c("Anna", "Bruno", "Carla", "Dario", "Elena", "Fabio"),
+  citta   = c("Roma", "Milano", "Roma", "Torino", "Milano", "Roma"),
+  importo = c(40, 20, 40, 10, 30, 40)
+)
+ordini
+```
+
+<Log lines={["  cliente  citta importo", "1    Anna   Roma      40", "2   Bruno Milano      20", "3   Carla   Roma      40", "4   Dario Torino      10", "5   Elena Milano      30", "6   Fabio   Roma      40"]} caption="La tabella dei sei ordini. La prima colonna senza nome è il numero di riga." />
+
+Con `$` prendi una colonna intera, con `[riga, colonna]` una porzione:
+
+```r
+ordini$importo
+ordini[2, ]
+ordini[ordini$importo > 25, ]
+```
+
+<Log lines={["[1] 40 20 40 10 30 40", "  cliente  citta importo", "2   Bruno Milano      20", "  cliente  citta importo", "1    Anna   Roma      40", "3   Carla   Roma      40", "5   Elena Milano      30", "6   Fabio   Roma      40"]} caption="La virgola separa righe e colonne: lasciare vuoto un lato vuol dire tutte." />
+
+<Callout kind="attenzione">
+R distingue maiuscole e minuscole: `ordini$Importo` non è `ordini$importo`. Il primo restituisce `NULL`, cioè niente, senza avvisarti.
+</Callout>
+
+<Say who="assistente">Prima della virgola le righe, dopo la virgola le colonne. Se ne lasci una vuota, le prendi tutte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fattori e funzioni">
+Un **fattore** è una colonna di categorie con un elenco ordinato di valori ammessi, i **livelli**. Serve quando l'ordine conta, come taglie o livelli di istruzione.
+
+```r
+taglia <- factor(c("M", "S", "L", "M"), levels = c("S", "M", "L"))
+as.integer(taglia)
+table(taglia)
+```
+
+<Log lines={["[1] 2 1 3 2", "taglia", "S M L ", "1 2 1 "]} caption="Dietro le quinte il fattore è un numero per ogni livello: S è 1, M è 2, L è 3." />
+
+Se non indichi `levels`, R ordina i livelli in ordine alfabetico. Per le taglie sarebbe L, M, S: un ordine senza senso.
+
+Una **funzione** è una ricetta riutilizzabile. L'ultima riga calcolata è il risultato, senza bisogno di `return`.
+
+```r
+prezzo_finale <- function(prezzo, sconto = 0.1) {
+  prezzo * (1 - sconto)
+}
+prezzo_finale(200)
+prezzo_finale(200, 0.25)
+```
+
+<Log lines={["[1] 180", "[1] 150"]} caption="Se non indichi lo sconto, vale 0.1 (il valore di default). Se lo indichi, vale quello." />
+
+<Say who="sensei">Una funzione è un pezzo di lavoro con un nome. Scrivila una volta, usala cento. È così che il codice resta corto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai il data frame ordini della lezione. Che cosa restituisce ordini[ordini$citta == 'Milano', 'importo'] ?"
+  options={["20 30", "Bruno Elena", "Le righe 2 e 5 con tutte le colonne", "Un errore: manca la virgola"]}
+  answer={0}
+  explain="La condizione sulla città tiene le righe 2 e 5 (Bruno ed Elena, entrambi di Milano). Dopo la virgola c'è il nome della colonna: importo. Quindi i valori sono 20 e 30. Per avere tutte le colonne si lascia vuoto il posto dopo la virgola."
+/>
+
+<Say who="assistente">Leggi da sinistra: prima quali righe, poi quale colonna. Due domande, una risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su vettori, liste, data frame, indicizzazione e funzioni. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-tipi-strutture" pass="4/5" retries={3} />
+
+<Say who="sensei">Indicizzare bene è la differenza tra un'analisi giusta e una che sembra giusta. Calma e attenzione alle quadre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un vettore tiene valori dello stesso tipo (numeric, integer, character, logical). Si crea con `c()` e si indicizza da 1 con `[ ]`.
+- Una lista contiene cose diverse; un data frame è una lista di colonne uguali in lunghezza. `$` prende una colonna, `[riga, colonna]` una porzione.
+- Il fattore ha livelli ordinati; la funzione `function()` è una ricetta riutilizzabile con argomenti di default.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da quale indice parte un vettore in R?", a: "Da 1" },
+    { q: "Che cosa fa importi[importi > 25]?", a: "Tiene solo gli elementi maggiori di 25" },
+    { q: "Differenza tra scheda[\"nome\"] e scheda[[\"nome\"]]?", a: "La prima restituisce una lista, la seconda il contenuto" },
+    { q: "Che cosa sono i livelli di un fattore?", a: "L'elenco ordinato dei valori ammessi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il tidyverse. Gli stessi dati, ma con parole che si leggono come frasi.</Say>
+</Scene>

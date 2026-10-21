@@ -1,0 +1,152 @@
+---
+id: H.03.005
+course: hedge
+module: 3
+title: "Alpha e beta"
+belt: arancione
+duration_min: 8
+prerequisites: [H.03.004]
+objectives:
+  - "Separare il rendimento di un fondo in parte dovuta al mercato (beta) e parte residua (alpha)"
+  - "Calcolare l'alpha di Jensen con numeri dati"
+  - "Spiegare perché un alpha positivo non basta a dire che il gestore è bravo"
+video:
+  provider: youtube
+  id: "acCZy9MqEWw"
+  start: 0
+  end: 202
+  channel: "Quantopian"
+  title: "Alpha and Beta in Finance"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-alpha-beta
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scambiare un beta alto per abilità del gestore"
+  - "Dimenticare che l'alpha può essere solo fortuna, soprattutto su pochi anni"
+  - "Non togliere le commissioni: all'investitore interessa l'alpha netto"
+commands: []
+---
+
+<Scene title="Il fondo che ha battuto il mercato">
+Il fondo fittizio **Falco Uno** ha reso il **14%** in un anno in cui il mercato ha reso l'8%. Il suo responsabile commerciale dice: «Abbiamo battuto il mercato di 6 punti!»
+
+Luca, l'analista di Rondine Capital, chiede: **battuto, ma a che prezzo di rischio?** Il fondo ha un beta di 2.
+
+La domanda del caso: **quanto di quel 14% è abilità e quanto è solo mercato preso a prestito?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. Non esistono rendimenti gratis, e i numeri qui sono inventati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due pezzi">
+Il rendimento di un fondo si divide in due parti:
+
+- **Beta**: la parte spiegata dal mercato. Si ottiene con un fondo indicizzato economico.
+- **Alpha**: la parte che resta, attribuita all'abilità del gestore (o alla fortuna).
+
+L'**alpha di Jensen** è: rendimento del fondo meno il rendimento atteso dal CAPM.
+
+Una spiegazione in inglese, breve, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Un indizio: prima togli ciò che il mercato ti avrebbe dato comunque, poi guarda cosa resta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il conto di Falco Uno">
+Numeri fittizi: tasso privo di rischio 2%, mercato 8%, premio 6%.
+
+<Guided
+  steps={[
+    "Falco Uno ha beta 2: rendimento atteso CAPM = 2% + 2 x 6% = 14%.",
+    "Ha reso 14%. Alpha = 14% - 14% = 0%.",
+    "Non ha battuto il mercato per abilità: ha usato il doppio del mercato. Se il mercato fosse sceso, avrebbe perso il doppio.",
+    "Il «+6 punti» era beta, non alpha.",
+  ]}
+/>
+
+<Say who="sensei">Chi usa la leva sul mercato non ha talento: ha coraggio. E ne paga il conto quando il mercato scende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altri conti">
+Stessi tassi: rf 2%, mercato 8%.
+
+<Log lines={[
+  "Fondo C: rende 12%, beta 1,5 -> atteso 11%  -> alpha +1%",
+  "Fondo D: rende 9%,  beta 1   -> atteso 8%   -> alpha +1%",
+  "Fondo E: rende 7%,  beta 1,2 -> atteso 9,2% -> alpha -2,2%",
+  "Fondo F: rende 5%,  beta 0,5 -> atteso 5%   -> alpha 0%",
+]} />
+
+<Callout kind="curiosita">
+Un fondo **market neutral** ha beta vicino a zero: se non ha alpha, ci si aspetta circa il tasso privo di rischio. Per questo i fondi speculativi vendono soprattutto alpha.
+</Callout>
+
+<Say who="sensei">Un alpha negativo significa che chi ha comprato il fondo avrebbe fatto meglio con il mercato. Succede più spesso di quanto si dica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fortuna, costi e tempo">
+<Quiz
+  question="Un fondo mostra alpha positivo per tre anni. Che cosa conviene fare prima di dire che il gestore è bravo?"
+  options={[
+    "Verificare se può essere fortuna: tre anni sono pochi e l'alpha ha un margine di errore",
+    "Niente: tre anni sono una prova definitiva",
+    "Aumentare subito l'investimento",
+    "Ignorare l'alpha e guardare solo il beta",
+  ]}
+  answer={0}
+  explain="Su pochi anni l'alpha può essere solo fortuna. Inoltre conta l'alpha netto: se un fondo ha alpha lordo 1% e commissioni 3 punti, per l'investitore l'alpha è negativo."
+/>
+
+<Callout kind="attenzione">
+Il CAPM è un modello imperfetto: parte dell'«alpha» può essere esposizione a fattori di rischio non inclusi nel modello. Ne parliamo nella lezione dopo.
+</Callout>
+
+<Say who="assistente">Controlla sempre tre cose: il beta, i costi, e quanti anni di dati hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di alpha di Jensen e domande sul suo significato. Numeri fittizi.
+
+<Practice generator="h03-alpha-beta" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora puoi smontare uno slogan sul «battere il mercato».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rendimento di un fondo si divide in beta (il mercato) e alpha (il resto, abilità o fortuna).
+- Alpha di Jensen = rendimento del fondo meno il rendimento atteso CAPM; un beta alto da solo non è abilità.
+- Un alpha positivo su pochi anni può essere fortuna, e va considerato al netto dei costi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "rf 2%, mercato 8%: fondo 12%, beta 1,5. Alpha?", a: "+1%" },
+    { q: "Fondo 14%, beta 2, rf 2%, mercato 8%: alpha?", a: "0%: è tutto beta" },
+    { q: "Che beta ha un fondo market neutral?", a: "Circa zero" },
+    { q: "Quale alpha interessa all'investitore?", a: "Quello netto, dopo le commissioni" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i fattori di rischio, oltre il solo mercato.</Say>
+</Scene>

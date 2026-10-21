@@ -1,0 +1,180 @@
+---
+id: T.03.003
+course: trading
+module: 3
+title: "RSI: la forza recente del prezzo"
+belt: gialla
+duration_min: 9
+prerequisites: [T.03.002]
+objectives:
+  - "Calcolare l'RSI da guadagno medio e perdita media con numeri semplici"
+  - "Leggere i livelli 30 e 70 senza trasformarli in ordini automatici"
+  - "Spiegare perché un RSI alto non vuol dire «scenderà»"
+video:
+  provider: youtube
+  id: "h_8NuNWgACg"
+  start: 0
+  end: 264
+  channel: "IG Italia"
+  title: "RSI: cos'è l'indice di forza relativa e come usarlo per le tue decisioni di trading"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-rsi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che RSI sopra 70 significhi «vendi» e sotto 30 «compra»"
+  - "Dimenticare che nei trend forti l'RSI resta alto (o basso) a lungo"
+  - "Confondere l'RSI con il prezzo: è un numero da 0 a 100 sullo slancio recente"
+commands: []
+---
+
+<Scene title="L'RSI a 82">
+Marco apre il grafico della **Verdi Spa** (azienda inventata). In basso c'è una linea con un numero: **RSI = 82**. In un forum legge: «sopra 70 devi vendere, scenderà di sicuro».
+
+Marco si domanda se sia davvero così semplice.
+
+La domanda del caso: **che cosa misura l'RSI e che cosa ne possiamo concludere?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria: nessun consiglio su cosa comprare o vendere. Si può perdere denaro, anche tutto.
+</Callout>
+
+<Say who="sensei">Se un forum ti dice «di sicuro», chiudi il forum. I mercati non regalano certezze.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rialzi contro ribassi">
+L'**RSI** (relative strength index, «indice di forza relativa») confronta **quanto è salito** il prezzo con **quanto è sceso** negli ultimi N giorni. Di solito N = 14. Il risultato è un numero da **0 a 100**.
+
+Ingredienti, con le variazioni dei prezzi di chiusura:
+
+- **guadagno medio**: media dei rialzi (i giorni in calo contano 0);
+- **perdita media**: media dei ribassi, presi come numeri positivi (i giorni in rialzo contano 0).
+
+<Callout kind="regola">
+RS = guadagno medio ÷ perdita media. **RSI = 100 − 100 ÷ (1 + RS)**.
+</Callout>
+
+<Say who="assistente">Più i rialzi pesano rispetto ai ribassi, più l'RSI si avvicina a 100. Se pesano uguale, siamo a 50.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un calcolo a mano">
+Chiusure inventate: 100, 103, 101, 105, 104, 106. Sono **cinque variazioni**, usiamo N = 5 per semplicità.
+
+<Log lines={[
+  "variazioni: +3, -2, +4, -1, +2",
+  "guadagni:   3 + 0 + 4 + 0 + 2 = 9   -> media 9/5 = 1,8",
+  "perdite:    0 + 2 + 0 + 1 + 0 = 3   -> media 3/5 = 0,6",
+  "RS  = 1,8 / 0,6 = 3",
+  "RSI = 100 - 100/(1+3) = 100 - 25 = 75",
+]} />
+
+Altri casi puliti: guadagno = perdita dà **RSI 50**. Nessun giorno in calo (perdita media 0) dà **100**. Guadagno 1 e perdita 4 danno RS = 0,25 e **RSI 20**.
+
+<Say who="sensei">Controlla due volte: somma i guadagni, somma le perdite, dividi. Poi la formula. Mai a occhio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provalo in Python">
+Lo stesso calcolo in Python puro. Cambia le chiusure e guarda l'RSI muoversi.
+
+<PythonTerminal height={340} code={`chiusure = [100, 103, 101, 105, 104, 106]
+
+guadagni = []
+perdite = []
+for ieri, oggi in zip(chiusure, chiusure[1:]):
+    variazione = oggi - ieri
+    guadagni.append(max(variazione, 0))
+    perdite.append(max(-variazione, 0))
+
+media_guadagni = sum(guadagni) / len(guadagni)
+media_perdite = sum(perdite) / len(perdite)
+rs = media_guadagni / media_perdite
+rsi = 100 - 100 / (1 + rs)
+
+print("guadagno medio", media_guadagni)
+print("perdita media", media_perdite)
+print("RSI", round(rsi, 1))
+`} />
+
+Deve stampare 1.8, 0.6 e RSI 75.0.
+
+<Callout kind="curiosita">
+La versione originale di Wilder, quella dei programmi di grafici, **smussa** le medie con una formula simile alla EMA invece di fare una media semplice: i numeri cambiano un po', l'idea è la stessa.
+</Callout>
+
+<Say who="assistente">Prova a mettere solo prezzi in salita: la perdita media è 0 e il programma si ferma con una divisione per zero. Per questo i programmi veri trattano quel caso a parte: RSI = 100.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ipercomprato non vuol dire «vendi»">
+Per convenzione, **sopra 70** si parla di **ipercomprato** e **sotto 30** di **ipervenduto**. Sono solo **etichette**: dicono che i rialzi (o i ribassi) recenti sono stati forti.
+
+<Callout kind="attenzione">
+In un trend forte l'RSI può restare sopra 70 per settimane mentre il prezzo continua a salire. Vendere «perché è sopra 70» può significare uscire troppo presto. Allo stesso modo, sotto 30 il prezzo può continuare a scendere.
+</Callout>
+
+Un'altra lettura è la **divergenza**: il prezzo segna un nuovo massimo, ma l'RSI no. Lo slancio si sta indebolendo, ma è solo un **indizio**, non un segnale sicuro.
+
+Un'altra voce, in italiano, sullo stesso indicatore:
+
+<Video />
+
+<Say who="sensei">Marco, un RSI a 82 dice che ultimamente ha vinto chi comprava. Non dice chi vincerà domani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Guadagno medio 1,5 e perdita media 0,5. Quanto vale l'RSI?"
+  options={["75", "50", "300", "3"]}
+  answer={0}
+  explain="RS = 1,5 ÷ 0,5 = 3. RSI = 100 − 100 ÷ (1 + 3) = 100 − 25 = 75. Chi risponde 3 si è fermato a RS; chi risponde 50 ha dimenticato che i rialzi pesano il triplo dei ribassi."
+/>
+
+<Say who="sensei">Prima RS, poi la formula. Se ti fermi a RS hai solo mezzo indicatore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di RSI e letture prudenti dei livelli.
+
+<Practice generator="t03-rsi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai calcolarlo e, cosa più importante, sai non crederci ciecamente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- RSI = 100 − 100 ÷ (1 + RS), con RS = guadagno medio ÷ perdita media; va da 0 a 100.
+- Sopra 70 e sotto 30 sono etichette convenzionali (ipercomprato, ipervenduto), non ordini.
+- Nei trend forti l'RSI può restare estremo a lungo: una lettura è un indizio, non una previsione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Guadagno medio 1,5 e perdita 0,5: RSI?", a: "RS = 3, RSI = 75" },
+    { q: "Guadagno medio = perdita media: RSI?", a: "50" },
+    { q: "Che cosa significa «ipervenduto»?", a: "RSI sotto 30: i ribassi recenti sono stati forti, non che salirà" },
+    { q: "Che cos'è una divergenza?", a: "Il prezzo fa un nuovo massimo ma l'RSI no: lo slancio si indebolisce (solo un indizio)" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il MACD, che confronta due medie mobili tra loro.</Say>
+</Scene>

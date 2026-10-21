@@ -1,0 +1,165 @@
+---
+id: D.09.005
+course: dati
+module: 9
+title: "Data lake e lakehouse"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.004]
+objectives:
+  - "Spiegare che cos'è un data lake e che cosa lo distingue dal warehouse"
+  - "Confrontare i formati CSV, JSON e Parquet"
+  - "Capire che cosa aggiunge un lakehouse"
+video:
+  provider: youtube
+  id: "cXOTjfFMJ0I"
+  start: 0
+  end: 600
+  channel: "stepbystepdatascience"
+  title: "Data Warehouse Vs Data Lake Vs Delta Lake Vs Lakehouse in simple terms"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-lake
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Buttare tutto nel lake senza ordine né nomi: diventa una palude di dati (data swamp)"
+  - "Scegliere CSV per grandi quantità di dati analitici, quando Parquet è molto più efficiente"
+  - "Pensare che lake e warehouse siano uno la copia dell'altro: hanno regole diverse"
+commands: []
+---
+
+<Scene title="Foto, log e fogli">
+Tavola Bella ora riceve di tutto: file di ordini, i registri di navigazione del sito, foto dei prodotti, messaggi dal servizio clienti. Non hanno la forma di una tabella.
+
+Giulia prova a metterli nel warehouse e si blocca: per entrare, ogni dato deve avere **colonne e tipi decisi in anticipo**. E non si sa ancora quali analisi serviranno.
+
+La domanda del caso: **dove si mettono i dati che non hanno ancora una forma?**
+
+<Say who="sensei">Prima di decidere la forma, bisogna avere il dato. Un posto dove metterlo subito esiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il lago">
+Un **data lake** («lago di dati») è un grande spazio di archiviazione dove si **versano i file così come arrivano**: tabelle, testi, immagini. Costa poco e non chiede di decidere la forma in anticipo.
+
+Il confronto con il warehouse:
+
+| | Warehouse | Lake |
+|---|-----------|------|
+| Cosa contiene | Tabelle ordinate | File di ogni tipo |
+| Forma dei dati | Decisa **prima** di caricare | Decisa **quando si legge** |
+| Costo di archiviazione | Più alto | Più basso |
+| Rischio | Rigido | Disordine |
+
+<Callout kind="attenzione">
+Un lago senza cartelle ordinate, nomi chiari e descrizioni diventa una **palude** (data swamp): i dati ci sono ma nessuno sa trovarli o fidarsene.
+</Callout>
+
+<Say who="assistente">Il warehouse è una libreria con le etichette. Il lake è un magazzino con scatoloni: serve comunque un registro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre formati di file">
+Nel lake si incontrano soprattutto tre formati. Lo stesso dato in due di essi:
+
+<Log lines={[
+  "CSV (testo, una riga per record):",
+  "id,citta,totale",
+  "1,Roma,20",
+  "2,Milano,35",
+  "",
+  "JSON (testo, con nomi dei campi):",
+  "[",
+  "  {\"id\": 1, \"citta\": \"Roma\", \"totale\": 20},",
+  "  {\"id\": 2, \"citta\": \"Milano\", \"totale\": 35}",
+  "]",
+]} />
+
+- **CSV**: semplice, lo apre chiunque, ma non dice i tipi dei dati.
+- **JSON**: ogni record porta con sé i nomi dei campi; adatto a dati annidati, come quelli delle API.
+- **Parquet**: formato **binario** (non si legge a occhio) che tiene i dati **per colonna**, li comprime e conserva i tipi. Per analizzare una colonna sola, legge solo quella.
+
+<Callout kind="trucco">
+Per scambiarsi pochi dati: CSV o JSON. Per grandi quantità da analizzare spesso: **Parquet**.
+</Callout>
+
+Un'altra voce confronta i tre mondi:
+
+<Video />
+
+<Say who="sensei">Il formato giusto fa risparmiare tempo e denaro ogni singola volta che si legge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il lakehouse">
+Il lake è economico ma disordinato; il warehouse è affidabile ma rigido. Il **lakehouse** prova a prendere il meglio di entrambi.
+
+I dati restano come **file nel lake** (di solito Parquet), ma sopra c'è uno **strato di gestione** che tiene un registro delle tabelle: quali file ne fanno parte, che forma hanno, quali modifiche sono state fatte. Strumenti come Delta Lake e Apache Iceberg fanno questo lavoro.
+
+Risultato: si può fare SQL come in un warehouse, sui file economici del lake, con più garanzie (per esempio modifiche che riescono per intero o non riescono affatto).
+
+<Callout kind="curiosita">
+Il lakehouse non è magia: è un lake con un **registro** ben tenuto.
+</Callout>
+
+<Say who="assistente">Lake per conservare, warehouse per rispondere, lakehouse per volerli un po' insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda raccoglie ogni secondo i dati dei sensori dei frigoriferi, ma non sa ancora quali analisi farà. Che cosa conviene fare per cominciare?"
+  options={[
+    "Salvare i file grezzi in un data lake, in cartelle ordinate per data",
+    "Progettare subito uno schema a stella completo",
+    "Buttare via i dati finché non si sa a che cosa servono",
+    "Metterli tutti in un unico file CSV",
+  ]}
+  answer={0}
+  explain="Con usi ancora ignoti conviene conservare il grezzo a basso costo nel lake, ordinato per data. Lo schema a stella si progetta quando le domande sono chiare. Un unico CSV gigante diventa ingestibile."
+/>
+
+<Say who="sensei">Prima conserva, poi decidi. Ma conserva con ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari: quale architettura serve, quale formato conviene, che cosa è andato storto.
+
+<Practice generator="d09-lake" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Scegliere dove mettere i dati è scegliere come costeranno domani.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il data lake conserva file di ogni tipo a basso costo; la forma si decide quando si leggono.
+- CSV e JSON sono testo semplice; Parquet è binario, per colonne e compresso: ideale per analisi.
+- Il lakehouse aggiunge al lake un registro delle tabelle, per usare SQL con più garanzie.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un data swamp?", a: "Un lake disordinato dove nessuno trova o si fida dei dati" },
+    { q: "Perché Parquet è efficiente per le analisi?", a: "Tiene i dati per colonna e li comprime: si legge solo ciò che serve" },
+    { q: "Differenza chiave warehouse e lake?", a: "Nel warehouse la forma si decide prima di caricare, nel lake quando si legge" },
+    { q: "Che cosa aggiunge il lakehouse?", a: "Uno strato di gestione sulle tabelle dei file del lake" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi fa partire tutto, e nell'ordine giusto. L'orchestrazione.</Say>
+</Scene>

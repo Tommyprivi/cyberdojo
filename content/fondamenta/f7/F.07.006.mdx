@@ -1,0 +1,144 @@
+---
+id: F.07.006
+course: fondamenta
+module: 7
+title: "HTTPS: la conversazione nella busta chiusa"
+belt: arancione
+duration_min: 8
+prerequisites: [F.07.005]
+objectives:
+  - "Spiegare che cosa aggiunge HTTPS a HTTP: cifratura e identità del sito"
+  - "Spiegare a che cosa serve un certificato e che cosa dice il lucchetto"
+video:
+  provider: youtube
+  id: "mHvxaMczfLo"
+  start: 0
+  end: 498
+  channel: "L'Informatica Che Appassiona"
+  title: "Introduzione al protocollo SSL/TLS"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f07-https
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il lucchetto dice che la connessione è cifrata e il sito ha un certificato valido, non che il sito sia onesto"
+  - "HTTPS non rende sicuro il sito: protegge il viaggio dei dati, non il server"
+  - "Un avviso sul certificato non va ignorato premendo «continua»"
+commands: []
+---
+
+<Scene title="Il lucchetto è sparito">
+Un collega mostra al SOC lo schermo del browser: accanto all'indirizzo del sito dei fornitori c'è un avviso «Non sicuro». Poche ore prima c'era il lucchetto.
+
+Il collega vuole solo continuare: «Tanto è il solito sito».
+
+<Say who="sensei">Non si preme «continua» a occhi chiusi. Prima si capisce che cosa il lucchetto prometteva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il problema di HTTP">
+HTTP viaggia **in chiaro**: chi sta nel mezzo (una rete Wi-Fi pubblica, un apparato lungo il percorso) può leggere tutto ciò che passa, password comprese. È come una cartolina.
+
+**HTTPS** è lo stesso HTTP, ma dentro un canale **cifrato** (cioè trasformato in modo che solo mittente e destinatario possano leggerlo). Usa di solito la porta **443**.
+
+<Callout kind="regola">
+HTTPS = HTTP + cifratura (TLS). La conversazione è la stessa, ma dentro una busta chiusa.
+</Callout>
+
+<Say who="assistente">Il contenuto delle richieste e delle risposte è nascosto. Si vede ancora, in generale, con quale sito parli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi sei davvero?">
+Cifrare non basta: se parli in segreto con la persona sbagliata, hai solo un segreto con l'impostore. Serve anche sapere **chi c'è dall'altra parte**.
+
+Il sito presenta un **certificato**: una specie di carta d'identità del sito. Dice per quale nome vale, chi lo ha emesso e fino a quando è valido.
+
+Chi emette i certificati? Delle organizzazioni di fiducia, le **autorità di certificazione**. Il browser si fida di un elenco di queste autorità: se il certificato è firmato da una di loro, e il nome corrisponde, tutto torna.
+
+<Callout kind="curiosita">
+La cifratura vera e propria usa i concetti che incontrerai nel modulo di crittografia del corso Cybersecurity: chiavi, scambio di chiavi, firme digitali. Qui basta sapere **che cosa garantiscono**.
+</Callout>
+
+Un'altra voce, per vedere come si mettono d'accordo:
+
+<Video />
+
+<Say who="sensei">Cifratura più identità. Senza la seconda, la prima non vale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice il lucchetto">
+Il lucchetto dice **due cose**: la connessione è cifrata, e il certificato è valido per quel nome.
+
+Non dice:
+
+- che il sito sia **onesto**: anche un sito truffa può avere un certificato valido per il proprio nome;
+- che il **server** sia al sicuro da attacchi;
+- che l'indirizzo sia quello che credi: se scrivi un nome simile ma sbagliato, il lucchetto c'è comunque.
+
+<Callout kind="attenzione">
+Avvisi come «certificato scaduto» o «il nome non corrisponde» sono segnali veri. In azienda non si ignorano: si segnalano al SOC.
+</Callout>
+
+<Say who="assistente">Il lucchetto controlla il tubo, non la persona in fondo al tubo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un utente vede il lucchetto su un sito che imita una banca, con un nome quasi uguale all'originale. Perché il lucchetto non basta a fidarsi?"
+  options={[
+    "Perché il lucchetto garantisce cifratura e certificato valido per quel nome, ma non che il sito sia quello giusto o onesto",
+    "Perché il lucchetto significa che il sito è stato controllato da un esperto prima della pubblicazione",
+    "Perché senza il lucchetto il sito non può avere certificati",
+    "Perché il lucchetto compare solo sui siti non cifrati"
+  ]}
+  answer={0}
+  explain="Il certificato è valido per il nome del sito falso, quindi il browser mostra il lucchetto. Il controllo sull'onestà del sito non esiste. Per questo si controlla l'indirizzo e non ci si fida del solo lucchetto."
+/>
+
+<Say who="sensei">Prima l'indirizzo, poi il lucchetto. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cifratura, certificati e lucchetto. Hai 3 tentativi.
+
+<Practice generator="f07-https" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai capito che cosa promette il lucchetto, hai già evitato un errore da principiante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- HTTPS è HTTP dentro un canale cifrato (TLS), di solito sulla porta 443.
+- Il certificato è la carta d'identità del sito, firmata da un'autorità di fiducia.
+- Il lucchetto garantisce cifratura e certificato valido, non l'onestà del sito: gli avvisi sul certificato vanno presi sul serio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa aggiunge HTTPS a HTTP?", a: "La cifratura del canale e la verifica dell'identità del sito" },
+    { q: "Su quale porta lavora di solito HTTPS?", a: "La 443" },
+    { q: "Che cos'è un certificato?", a: "La carta d'identità digitale del sito, firmata da un'autorità di certificazione" },
+    { q: "Il lucchetto garantisce che il sito sia onesto?", a: "No: dice solo che la connessione è cifrata e il certificato è valido" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il DHCP. Come un dispositivo appena acceso ottiene il suo indirizzo.</Say>
+</Scene>

@@ -1,0 +1,231 @@
+---
+id: D.21.004
+course: dati
+module: 21
+title: "Test e documentazione"
+belt: marrone
+duration_min: 10
+prerequisites: [D.21.003]
+objectives:
+  - "Scegliere il test giusto tra not_null, unique, relationships e accepted_values"
+  - "Scrivere un test di business come query che restituisce le righe sbagliate"
+  - "Usare descrizioni, documentazione generata e proprietario (ownership) dei modelli"
+video:
+  provider: youtube
+  id: "yKh_WxMSfpQ"
+  start: 0
+  end: 600
+  channel: "Datazard"
+  title: "dbt Generic Tests Explained — not_null, unique, accepted_values & more | dbt Tutorial"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-test
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che relationships controlli anche i valori nulli: li ignora, serve not_null accanto"
+  - "Aggiungere test solo quando qualcosa si rompe: i test servono prima, per accorgersene subito"
+  - "Scrivere descrizioni che ripetono il nome («id_cliente: l'id del cliente») invece di dire cosa significa"
+commands: []
+---
+
+<Scene title="Il cliente fantasma">
+Martedì il capo del Cesto di Marta guarda la tabella dei clienti e trova **due righe con id_cliente 3**: due persone diverse con lo stesso codice. Dei suoi ordini, metà è attribuita a Sara e metà a uno sconosciuto.
+
+Nessun errore era comparso: `dbt run` era verde. Il modello era sbagliato, ma **eseguire** non vuol dire **essere corretto**.
+
+La domanda del caso: **come ci si accorge del dato sbagliato prima di chi legge il report?**
+
+<Say who="sensei">Un modello che gira non è un modello che funziona. Servono controlli scritti, e che parlino da soli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro test di base">
+dbt ha quattro **test generici**, già pronti. Si dichiarano in un file YAML accanto ai modelli. Ecco `models/marts/_marts__models.yml` (dbt Core 1.8 o successivo):
+
+<Log lines={[
+  "version: 2",
+  "",
+  "models:",
+  "  - name: dim_clienti",
+  "    columns:",
+  "      - name: id_cliente",
+  "        data_tests:",
+  "          - not_null",
+  "          - unique",
+  "",
+  "  - name: fct_ordini",
+  "    columns:",
+  "      - name: id_cliente",
+  "        data_tests:",
+  "          - not_null",
+  "          - relationships:",
+  "              to: ref('dim_clienti')",
+  "              field: id_cliente",
+]} caption="Test su due modelli. La chiave data_tests è quella di dbt 1.8; nelle versioni prima della 1.8 si chiamava tests." />
+
+Che cosa controllano:
+
+- **not_null**: nessuna riga ha il valore vuoto in quella colonna.
+- **unique**: nessun valore compare due volte.
+- **relationships**: ogni valore esiste anche nella colonna di un altro modello (come una chiave esterna).
+- **accepted_values**: la colonna contiene solo valori di un elenco.
+
+<Callout kind="regola">
+Un test passa quando la query che dbt costruisce **non restituisce nessuna riga sbagliata**. Zero righe, test verde.
+</Callout>
+
+<Say who="assistente">Una chiave primaria si chiama così perché è unica e mai vuota: not_null più unique. Due test, sempre insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="accepted_values e relationships in azione">
+Nello staging degli ordini, lo stato può valere solo tre cose:
+
+<Log lines={[
+  "models:",
+  "  - name: stg_negozio__ordini",
+  "    columns:",
+  "      - name: stato",
+  "        data_tests:",
+  "          - accepted_values:",
+  "              values: ['pagato', 'annullato', 'spedito']",
+]} />
+
+Il giorno dopo il sito introduce i rimborsi: arriva un ordine 106 con stato `RIMBORSATO`. Con `dbt test` il controllo scatta:
+
+<Log lines={[
+  "1 of 1 START test accepted_values_stg_negozio__ordini_stato__pagato__annullato__spedito",
+  "1 of 1 FAIL 1 accepted_values_stg_negozio__ordini_stato__pagato__annullato__spedito",
+  "Failure in test accepted_values ...",
+  "  Got 1 result, configured to fail if != 0",
+]} caption="Output semplificato: dbt dice quante righe violano la regola (qui una: l'ordine 106)." />
+
+Per **relationships** il caso è un ordine con `id_cliente` 9, che non esiste tra i clienti: il test fallisce con 1 risultato. Un ordine con `id_cliente` vuoto invece **passa** il test: relationships ignora i valori nulli. Per questo si mette accanto `not_null`.
+
+<Callout kind="attenzione">
+Un test che fallisce non è un fastidio: è il sistema che funziona. Meglio sapere oggi che un dato è sbagliato che scoprirlo dal cliente.
+</Callout>
+
+<Say who="sensei">Il test non dice come aggiustare. Dice che c'è qualcosa da guardare. Il resto è lavoro tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I test di business">
+I quattro generici controllano la forma dei dati. Per le **regole di business** si scrive un **test singolare**: un file SQL nella cartella `tests/` che restituisce le righe che violano la regola.
+
+Regola: un ordine pagato deve avere importo maggiore di zero.
+
+<Log lines={[
+  "-- tests/assert_ordini_pagati_con_importo_positivo.sql",
+  "select id_ordine, importo",
+  "from {{ ref('fct_ordini') }}",
+  "where importo <= 0",
+]} caption="Se la query restituisce righe, il test fallisce. Con i nostri 4 ordini (12.50, 18.00, 30.00, 22.00) restituisce 0 righe: test verde." />
+
+La logica è sempre quella: **scrivi la query che trova i guai**. Se non ne trova, va tutto bene.
+
+Un test può anche avvisare senza bloccare. Si imposta la gravità:
+
+<Log lines={[
+  "      - name: citta",
+  "        data_tests:",
+  "          - not_null:",
+  "              config:",
+  "                severity: warn",
+]} caption="Con warn il test segnala il problema ma non ferma l'esecuzione." />
+
+<Callout kind="trucco">
+Da dove cominciare? Su ogni modello: **chiave primaria con not_null e unique**. Poi relationships sulle chiavi esterne. Poi, quando incontri un errore vero, un test per non rivederlo mai più.
+</Callout>
+
+<Video />
+
+<Say who="assistente">Il video mostra i test generici su un progetto reale. In inglese, con sottotitoli. Poi i test di business: li scrivi tu, che conosci l'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Documentazione e proprietario">
+Nello stesso file YAML si scrive la **documentazione**: ogni modello e ogni colonna ha una descrizione.
+
+<Log lines={[
+  "models:",
+  "  - name: dim_clienti",
+  "    description: Un cliente per riga, con numero di ordini pagati e totale speso.",
+  "    config:",
+  "      meta:",
+  "        owner: team-vendite",
+  "    columns:",
+  "      - name: speso_totale",
+  "        description: Somma degli importi degli ordini pagati, in euro. Zero se il cliente non ha ordini.",
+]} />
+
+Poi due comandi: `dbt docs generate` costruisce un piccolo sito, `dbt docs serve` lo apre nel browser. Il sito mostra le descrizioni, le colonne e **il grafo delle dipendenze**, cliccabile.
+
+Il campo `owner` in `meta` dice **chi risponde** del modello. Quando un test fallisce, si sa a chi chiedere. Una descrizione utile dice cosa significa la colonna e in che unità, non solo il suo nome: «id_cliente: l'id del cliente» non aggiunge niente.
+
+<Callout kind="curiosita">
+La documentazione nel codice ha un vantaggio: si cambia nello stesso momento del modello, nella stessa revisione. Un manuale a parte, invece, resta indietro dopo due settimane.
+</Callout>
+
+<Say who="sensei">Un modello senza proprietario è un modello orfano. Quando si rompe, nessuno risponde.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella tabella fct_ordini la colonna id_cliente ha il test relationships verso dim_clienti. Arriva un ordine con id_cliente vuoto (NULL). Che cosa succede, e che cosa serve per prenderlo?"
+  options={[
+    "Il test passa, perché ignora i NULL: serve anche not_null su id_cliente",
+    "Il test fallisce, perché il NULL non esiste tra i clienti: non serve altro",
+    "Il test passa e va bene così: un cliente vuoto è un cliente anonimo",
+    "Il test si ferma con un errore di sintassi",
+  ]}
+  answer={0}
+  explain="relationships controlla solo i valori presenti: un NULL non viene confrontato con niente e non è considerato una violazione. Per vietare i valori vuoti serve not_null, ed è il motivo per cui i due test vanno quasi sempre insieme."
+/>
+
+<Say who="sensei">Ogni test copre una cosa sola. Se vuoi due garanzie, scrivi due test.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Quale test serve, che cosa fa fallire un controllo, come si documenta.
+
+<Practice generator="d21-test" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un test ben scelto vale cento controlli a occhio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- not_null, unique, relationships e accepted_values sono i quattro test generici: si dichiarano in YAML sotto data_tests. Un test passa se non trova righe sbagliate.
+- Le regole di business si scrivono come test singolari: una query in tests/ che restituisce le righe che violano la regola.
+- Descrizioni, dbt docs e un proprietario (owner in meta) rendono il modello comprensibile e dicono chi risponde se si rompe.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando un test dbt passa?", a: "Quando la query di controllo non restituisce nessuna riga" },
+    { q: "Quali due test si mettono sulla chiave primaria?", a: "not_null e unique" },
+    { q: "Relationships controlla i valori NULL?", a: "No, li ignora: serve anche not_null" },
+    { q: "Come si genera la documentazione?", a: "Con dbt docs generate, poi dbt docs serve per aprirla" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: versionare e rilasciare. Come far arrivare le modifiche in produzione senza rompere niente.</Say>
+</Scene>

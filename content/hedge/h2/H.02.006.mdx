@@ -1,0 +1,169 @@
+---
+id: H.02.006
+course: hedge
+module: 2
+title: "Credit e distressed: i debiti in crisi"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.005]
+objectives:
+  - "Spiegare che cos'è un'obbligazione e perché il suo prezzo scende quando l'azienda è in difficoltà"
+  - "Calcolare guadagno o perdita di un investimento in un'obbligazione in crisi con diversi recuperi"
+  - "Capire perché il prezzo di mercato già contiene le aspettative e quali sono i rischi del distressed"
+video:
+  provider: youtube
+  id: "XUBAwwkJ3HQ"
+  start: 0
+  end: 600
+  channel: "3-Minute Explanation"
+  title: "How Vulture Funds Make Billions From Bankruptcy: Distressed Debt & Loan-to-Own Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-credit-distressed
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un'obbligazione a prezzo basso sia un affare: il prezzo basso dice che il mercato teme di non essere rimborsato"
+  - "Ignorare l'ordine di rimborso: chi presta con garanzia viene pagato prima di chi presta senza garanzia, e gli azionisti per ultimi"
+  - "Dimenticare che i tempi di una ristrutturazione sono lunghi e le obbligazioni in crisi si vendono con difficoltà"
+commands: []
+---
+
+<Scene title="Cartiere del Lago">
+**Cartiere del Lago** è un'azienda fittizia che produce carta. Ha preso soldi in prestito emettendo **obbligazioni**: titoli con cui l'azienda promette di restituire **100 euro** a scadenza e di pagare un interesse ogni anno.
+
+Poi le vendite crollano. Gli investitori temono che l'azienda non riesca a restituire tutto. Un'obbligazione che vale 100 sulla carta ora costa **40 euro** sul mercato.
+
+Qualcuno in un fondo la compra. La domanda del caso: **perché qualcuno compra un debito di un'azienda in crisi?**
+
+<Callout kind="attenzione">
+La lezione spiega un ragionamento, non consiglia di comprare niente. Si può perdere denaro, anche tutto. Azienda e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Quando un prezzo è basso, qualcuno sa qualcosa che non sai. Cerca di capire cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Obbligazioni e crisi">
+Un'**obbligazione** è un prestito diviso in pezzi: chi la compra presta soldi all'azienda. A scadenza dovrebbe riavere 100 (il **valore nominale**) più gli interessi.
+
+Il prezzo di mercato però cambia. Quando l'azienda va male, scende, perché aumenta la probabilità che **non restituisca tutto**.
+
+Un fondo **credit** investe in debiti (obbligazioni e prestiti) di aziende. Un fondo **distressed** (cioè «in difficoltà») compra debiti di aziende **già in crisi o vicine al fallimento**, a prezzi molto bassi, e punta su quanto verrà recuperato alla fine, spesso dopo una **ristrutturazione**: un accordo per cambiare le condizioni dei debiti.
+
+Un video da un'altra voce, in inglese con sottotitoli: guardane i primi minuti.
+
+<Video />
+
+<Say who="assistente">Il distressed è il «medico d'urgenza» dei debiti: arriva quando gli altri sono scappati, e spesso il paziente non guarisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto si recupera?">
+Il fondo ha comprato un'obbligazione a **40**. Alla fine della ristrutturazione i creditori ricevono una parte dei 100 promessi. Tre futuri possibili (interessi ignorati, numeri inventati):
+
+<Guided
+  steps={[
+    "Recupero 60: l'obbligazione vale 60. Guadagno: 60 - 40 = +20, cioè +50% su 40.",
+    "Recupero 40: l'obbligazione vale 40. Guadagno: 0.",
+    "Recupero 25: l'obbligazione vale 25. Perdita: 25 - 40 = -15, cioè -37,5% su 40.",
+    "Se il mercato pensa che 60 e 20 siano ugualmente probabili, la media è (60 + 20) / 2 = 40: il prezzo di 40 è già «giusto». Non c'è un affare, ci sono due esiti ugualmente probabili.",
+  ]}
+/>
+
+<Callout kind="regola">
+Il prezzo di mercato contiene già le aspettative di tutti. Un fondo ha un vantaggio solo se sa **valutare il recupero meglio degli altri**: studiando i contratti, i beni dell'azienda e le procedure legali.
+</Callout>
+
+<Say who="sensei">Prezzo basso non vuol dire occasione. Vuol dire rischio alto. A te scoprire se è giustificato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi viene pagato per primo">
+Quando un'azienda fallisce o si ristruttura, non tutti ricevono lo stesso. L'ordine di rimborso, dal più protetto al meno protetto:
+
+1. **Debiti con garanzia** (per esempio garantiti da un impianto): vengono pagati per primi con il ricavato di quei beni.
+2. **Obbligazioni senza garanzia** (*senior*): vengono dopo.
+3. **Debiti subordinati**: ultimi tra i creditori.
+4. **Azionisti**: per ultimi, spesso non ricevono niente.
+
+Per questo un fondo distressed legge molto attentamente i contratti: due obbligazioni della stessa azienda possono valere cose molto diverse.
+
+<Callout kind="curiosita">
+A volte i fondi distressed, invece di aspettare i soldi, accettano nuove azioni dell'azienda ristrutturata al posto del debito: diventano proprietari, e possono cambiare la gestione.
+</Callout>
+
+<Say who="assistente">Prima chiedi: «Chi viene pagato prima di me?» Poi decidi se il prezzo ha senso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi del distressed">
+- **Il recupero può essere molto basso.** Si può perdere quasi tutto il capitale investito in quel debito.
+- **I tempi sono lunghi.** Una ristrutturazione dura mesi o anni: il capitale resta bloccato.
+- **Scarsa liquidità.** Questi titoli si scambiano poco: vendere in fretta può costringere ad accettare un prezzo molto più basso.
+- **Contratti e tribunali.** Gli esiti dipendono da regole legali e da trattative, spesso difficili da prevedere.
+- **Crisi generali.** Quando molte aziende vanno in crisi insieme, i prezzi di tutti i debiti scendono insieme e gli investitori chiedono indietro i soldi.
+
+Per questo i fondi seri spesso accettano che gli investitori **non possano ritirare i soldi per molto tempo** (lo vedrai nel modulo sulle operazioni).
+
+<Say who="sensei">Comprare un debito in crisi non è coraggio. È un lavoro da avvocati e analisti, con conti pazienti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo compra a 50 un'obbligazione da 100 di un'azienda in crisi. Dopo la ristrutturazione il recupero è 35. Qual è il risultato in percentuale sul prezzo pagato (interessi ignorati)?"
+  options={[
+    "-30%",
+    "-15%",
+    "-35%",
+    "+30%",
+  ]}
+  answer={0}
+  explain="35 - 50 = -15 euro. In percentuale sul prezzo pagato: -15 / 50 = -0,30, cioè -30%. Chi risponde -15% ha confuso euro e percentuale. Chi risponde -35% ha confuso il recupero con la perdita."
+/>
+
+<Say who="assistente">Prima la differenza in euro, poi dividi per quanto hai pagato, non per i 100 promessi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su debiti in crisi: calcoli di recupero, ordine di rimborso e rischi.
+
+<Practice generator="h02-credit-distressed" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Quando il prezzo è basso, guarda prima il rischio. Poi il guadagno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le obbligazioni sono prestiti: se l'azienda va in crisi il prezzo scende perché cresce il rischio di non essere rimborsati.
+- Il distressed compra debiti di aziende in difficoltà puntando sul recupero finale; il prezzo basso riflette già il rischio.
+- L'ordine di rimborso (garantiti, senior, subordinati, azionisti), i tempi lunghi e la scarsa liquidità sono i punti chiave.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un fondo distressed?", a: "Un fondo che compra debiti di aziende in crisi, puntando su quanto verrà recuperato" },
+    { q: "Perché il prezzo di un'obbligazione scende quando l'azienda va male?", a: "Perché aumenta il rischio che non restituisca tutto" },
+    { q: "Chi viene pagato per ultimo in un fallimento?", a: "Gli azionisti" },
+    { q: "Perché un prezzo basso non è per forza un affare?", a: "Perché riflette già il rischio che il mercato vede: serve valutare il recupero meglio degli altri" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i managed futures. Niente aziende: regole che seguono i prezzi di decine di mercati.</Say>
+</Scene>

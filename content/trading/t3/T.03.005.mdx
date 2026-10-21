@@ -1,0 +1,200 @@
+---
+id: T.03.005
+course: trading
+module: 3
+title: "Bande di Bollinger: quanto balla il prezzo"
+belt: gialla
+duration_min: 9
+prerequisites: [T.03.004]
+objectives:
+  - "Costruire le bande di Bollinger da media mobile e deviazione standard"
+  - "Calcolare l'ampiezza delle bande e lo %B con numeri semplici"
+  - "Spiegare perché toccare una banda non è un segnale di vendita o di acquisto"
+video:
+  provider: youtube
+  id: "13oogPJwWAM"
+  start: 0
+  end: 580
+  channel: "Trading 212"
+  title: "Bollinger Bands: Beginner Guide"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t03-bollinger
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Trattare le bande come un recinto: il prezzo può uscire e restare fuori a lungo"
+  - "Leggere uno squeeze come un segnale di direzione: dice solo che la volatilità è bassa"
+  - "Dimenticare che in pandas rolling().std() usa ddof=1 di default, non il divisore n"
+commands: []
+---
+
+<Scene title="Due tipi di mercato">
+La **Neri Spa** (azienda inventata) ha un prezzo che per settimane oscilla tra 99 e 101. Poi, in pochi giorni, passa da 100 a 112 e torna a 104. Stesso titolo, due «personalità»: calma e agitata.
+
+Un indicatore che non guarda la direzione ma **quanto il prezzo si agita** potrebbe aiutarci a vedere la differenza.
+
+La domanda del caso: **come si misura l'agitazione e come la mostrano le bande di Bollinger?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza finanziaria. Si può perdere denaro, anche tutto. Tutti i numeri sono inventati.
+</Callout>
+
+<Say who="sensei">Un mare calmo e una tempesta possono avere lo stesso livello medio. Cambia solo l'agitazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Deviazione standard in una riga">
+La **deviazione standard** misura quanto i valori si allontanano **di solito** dalla loro media. Piccola = valori vicini alla media; grande = valori sparpagliati.
+
+Calcolo con otto prezzi inventati: **2, 4, 4, 4, 5, 5, 7, 9**.
+
+<Log lines={[
+  "media = (2+4+4+4+5+5+7+9) / 8 = 40 / 8 = 5",
+  "scarti dalla media: -3, -1, -1, -1, 0, 0, 2, 4",
+  "scarti al quadrato: 9, 1, 1, 1, 0, 0, 4, 16  (somma 32)",
+  "varianza = 32 / 8 = 4",
+  "deviazione standard = radice di 4 = 2",
+]} />
+
+<Callout kind="curiosita">
+Qui abbiamo diviso per **n = 8** (deviazione «della popolazione»), come nella formula originale delle bande. Alcuni programmi, pandas compreso, dividono per **n − 1** di default: il numero cambia un po'.
+</Callout>
+
+<Say who="assistente">Passo uno: media. Passo due: scarti. Passo tre: quadrati. Passo quattro: media dei quadrati. Passo cinque: radice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre linee">
+Le **bande di Bollinger** sono tre linee:
+
+- **centrale**: media mobile semplice a 20 periodi;
+- **superiore**: centrale + **2** deviazioni standard;
+- **inferiore**: centrale − **2** deviazioni standard.
+
+Esempio: media 100 e deviazione standard 3.
+
+<Log lines={[
+  "superiore = 100 + 2×3 = 106",
+  "inferiore = 100 - 2×3 = 94",
+  "ampiezza = (106 - 94) / 100 = 12 / 100 = 12%",
+]} />
+
+Quando i prezzi si agitano, la deviazione standard cresce e le bande si **allargano**; quando si calmano, si **stringono**.
+
+<Callout kind="regola">
+Bande = SMA(20) ± 2 deviazioni standard. Ampiezza = (superiore − inferiore) ÷ centrale.
+</Callout>
+
+<Say who="sensei">Le bande non guardano il futuro. Raccontano quanta agitazione c'è stata nelle ultime venti sedute.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove sta il prezzo: %B">
+Si può chiedere: **in che punto delle bande** si trova il prezzo? Lo dice lo **%B**:
+
+**%B = (prezzo − inferiore) ÷ (superiore − inferiore)**
+
+Con bande 94 e 106:
+
+<Log lines={[
+  "prezzo 94  -> %B = (94-94)/12  = 0     (sulla banda inferiore)",
+  "prezzo 100 -> %B = (100-94)/12 = 0,5   (a metà)",
+  "prezzo 103 -> %B = (103-94)/12 = 0,75",
+  "prezzo 106 -> %B = (106-94)/12 = 1     (sulla banda superiore)",
+]} />
+
+Un prezzo fuori dalle bande ha %B sotto 0 o sopra 1.
+
+Un video in inglese, con sottotitoli, mostra le bande su un grafico:
+
+<Video />
+
+<Say who="assistente">Zero è sul fondo, uno è sul tetto. Quasi tutto il tempo il prezzo sta in mezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non è un recinto">
+Molti leggono le bande come: «tocca sopra, vendi; tocca sotto, compra». Non è vero in generale.
+
+<Callout kind="attenzione">
+In un trend forte il prezzo può «camminare» lungo la banda superiore per molte sedute. Le bande sono una **misura statistica della volatilità recente**, non un muro: il prezzo può uscire e restare fuori.
+</Callout>
+
+Quando le bande sono molto strette si parla di **squeeze** («strizzata»): la volatilità è bassa. Spesso, **ma non sempre**, dopo la calma arriva più movimento, però lo squeeze **non dice in quale direzione**.
+
+Usare 2,5 deviazioni invece di 2 allarga le bande: il prezzo le tocca meno spesso. E come per ogni indicatore, provare tante combinazioni fino a trovare quella che «funzionava» sul passato rischia di essere solo adattamento al caso.
+
+<Say who="sensei">La banda dice «è agitato». Non dice «salirà» né «scenderà». Impara a non chiedergli di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provalo in Python">
+Costruiamo le bande per gli otto prezzi di prima, in Python puro.
+
+<PythonTerminal height={300} code={`prezzi = [2, 4, 4, 4, 5, 5, 7, 9]
+
+media = sum(prezzi) / len(prezzi)
+varianza = sum((p - media) ** 2 for p in prezzi) / len(prezzi)
+dev = varianza ** 0.5
+
+print("media", media)
+print("deviazione", dev)
+print("banda superiore", media + 2 * dev)
+print("banda inferiore", media - 2 * dev)
+`} />
+
+Deve stampare 5.0, 2.0, 9.0 e 1.0. In pandas si ottiene lo stesso con `close.rolling(8).std(ddof=0)`.
+
+<Say who="assistente">Prova ad aggiungere un prezzo molto lontano, come 30: le bande si spalancano. È l'agitazione che esplode.</Say>
+<Quiz
+  question="Media a 20 periodi = 100, deviazione standard = 3. Quali sono le bande a 2 deviazioni?"
+  options={["94 e 106", "97 e 103", "91 e 109", "100 e 106"]}
+  answer={0}
+  explain="2 deviazioni valgono 2 × 3 = 6. Banda superiore = 100 + 6 = 106, banda inferiore = 100 − 6 = 94. Chi risponde 97 e 103 ha usato una sola deviazione."
+/>
+
+<Say who="sensei">Prima moltiplica per il numero di deviazioni, poi somma e sottrai. L'ordine conta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli su bande, ampiezza, %B e letture prudenti.
+
+<Practice generator="t03-bollinger" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Conosci l'indicatore e sai cosa non può dirti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Bande di Bollinger = SMA(20) ± 2 deviazioni standard: si allargano con la volatilità, si stringono con la calma.
+- %B dice in che punto delle bande si trova il prezzo: 0 = banda inferiore, 1 = superiore.
+- Toccare una banda non è un ordine di vendita o di acquisto; uno squeeze non indica la direzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si costruiscono le bande standard?", a: "SMA a 20 periodi ± 2 deviazioni standard" },
+    { q: "Media 100 e dev. standard 3: bande?", a: "94 e 106" },
+    { q: "Bande 94 e 106, prezzo 103: %B?", a: "(103−94)/12 = 0,75" },
+    { q: "Che cosa indica uno squeeze?", a: "Volatilità bassa, senza dire la direzione" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i volumi e l'ATR, per capire quanto si scambia e di quanto si muove il prezzo.</Say>
+</Scene>

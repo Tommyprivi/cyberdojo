@@ -1,0 +1,157 @@
+---
+id: F.06.005
+course: fondamenta
+module: 6
+title: "Sottoreti su misura e VLSM"
+belt: arancione
+duration_min: 9
+prerequisites: [F.06.004]
+objectives:
+  - "Trovare il prefisso giusto per un numero di dispositivi richiesto"
+  - "Costruire un piano di indirizzi con maschere diverse (VLSM)"
+video:
+  provider: youtube
+  id: "wDBYjuluOuM"
+  start: 0
+  end: 600
+  channel: "Roberto Manfrin"
+  title: "Esercizio svolto Subnetting VLSM Variable Length Subnet Mask"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f06-vlsm
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Con 63 host una /26 non basta: gli utilizzabili sono 62, serve una /25"
+  - "Si assegnano prima le sottoreti più grandi, altrimenti i blocchi non si allineano"
+  - "Per un collegamento tra due router un /30 basta: un /26 spreca 60 indirizzi"
+commands: []
+---
+
+<Scene title="La filiale">
+L'azienda apre una **filiale** e riceve per lei un solo blocco: **192.168.20.0/24**. Le richieste dei reparti:
+
+- Contabilità: **50** dispositivi
+- Magazzino: **25** dispositivi
+- Direzione: **10** dispositivi
+- Collegamento tra i due router della filiale: **2** dispositivi
+
+Si potrebbe dividere il blocco in quattro /26 uguali: ci starebbe tutto. Ma il collegamento tra i router, che ha **due soli** dispositivi, si prenderebbe una rete da 62 host per usarne 2.
+
+<Say who="sensei">Dare a ogni reparto la stessa taglia è comodo e sprecone. Chi pianifica una rete lo fa su misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dagli host al prefisso">
+Per ogni reparto si cerca la **rete più piccola** che contenga i dispositivi richiesti: la più piccola potenza di due con **2^n − 2 almeno uguale agli host**.
+
+| Dispositivi | Rete scelta | Host utilizzabili |
+|---|---|---|
+| 50 | /26 | 62 |
+| 25 | /27 | 30 |
+| 10 | /28 | 14 |
+| 2 | /30 | 2 |
+
+<Callout kind="attenzione">
+Occhio al limite: con **62** dispositivi basta una /26, con **63** serve una /25. Con **14** basta una /28, con **15** serve una /27. Gli utilizzabili sono due meno degli indirizzi totali.
+</Callout>
+
+<Say who="assistente">Controlla sempre il «meno due». È lì che si nascondono gli errori del 15 e del 63.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="VLSM: maschere diverse nella stessa rete">
+Usare **maschere di lunghezza diversa** dentro lo stesso blocco si chiama **VLSM** (Variable Length Subnet Mask, maschera di sottorete a lunghezza variabile). Il contrario, tutte uguali, è la maschera fissa.
+
+La regola per costruire il piano: si assegnano **prima le sottoreti più grandi**, una dopo l'altra, partendo dall'inizio del blocco. Così ogni sottorete parte da un multiplo della propria dimensione e non ci sono sovrapposizioni.
+
+<Callout kind="trucco">
+Ordina i reparti dal più grande al più piccolo. Poi, per ognuno, scrivi dove comincia e dove finisce il suo blocco.
+</Callout>
+
+<Say who="sensei">Prima i massi, poi i sassi, poi la sabbia. Al contrario non ci sta tutto nel barattolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano, passo dopo passo">
+<Guided
+  steps={[
+    "Contabilità (50): /26, 64 indirizzi. Da 192.168.20.0 a 192.168.20.63.",
+    "Magazzino (25): /27, 32 indirizzi. Parte dal primo indirizzo libero, il 64: 192.168.20.64/27, fino al 95.",
+    "Direzione (10): /28, 16 indirizzi. Parte dal 96: 192.168.20.96/28, fino al 111.",
+    "Collegamento (2): /30, 4 indirizzi. Parte dal 112: 192.168.20.112/30, fino al 115.",
+    "Usati 64 + 32 + 16 + 4 = 116 indirizzi. Restano liberi dal 116 al 255 (140 indirizzi) per i reparti futuri.",
+  ]}
+/>
+
+<Say who="assistente">Ogni blocco comincia dove finisce il precedente. Se l'inizio non è un multiplo della dimensione, hai sbagliato un passaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un altro punto di vista">
+Con quattro /26 uguali si sarebbero usati tutti i 256 indirizzi, senza avanzo. Con il VLSM se ne usano 116 e **140 restano liberi**: una filiale che cresce non deve chiedere un nuovo blocco.
+
+Un esercizio svolto da un'altra voce, passo dopo passo:
+
+<Video />
+
+<Callout kind="curiosita">
+Nella pratica, il router di ogni reparto occupa a sua volta un indirizzo (di solito il gateway, quello che vedrai nella prossima lezione). Un tecnico prudente lascia sempre un po' di margine.
+</Callout>
+
+<Say who="sensei">Un buon piano non usa tutto, lascia spazio. Una rete piena è una rete già vecchia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un reparto ha 15 dispositivi. Qual è la rete più piccola che li contiene tutti?"
+  options={["/27", "/28", "/29", "/30"]}
+  answer={0}
+  explain="Una /28 ha 16 indirizzi ma solo 14 utilizzabili: per 15 non basta. La /27 ne ha 30. Chi risponde /28 conta gli indirizzi totali e dimentica rete e broadcast."
+/>
+
+<Say who="assistente">Quanti utilizzabili ha una /28? Quattordici. Quindici dispositivi non ci stanno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su prefissi e VLSM. Servono **tutte e cinque** giuste. Hai 3 tentativi e a ogni tentativo le domande cambiano.
+
+<Practice generator="f06-vlsm" pass="5/5" retries={3} />
+
+<Say who="sensei">Prefisso giusto, poi posizione giusta. Una sbaglia, l'altra anche.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per un numero di host richiesto si sceglie la rete più piccola con 2^n − 2 almeno uguale agli host.
+- Il VLSM usa maschere diverse nello stesso blocco: ogni sottorete ha la misura giusta e non si spreca spazio.
+- Si assegnano prima le sottoreti più grandi, ognuna dal primo indirizzo libero; un collegamento tra due router è un /30.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Prefisso per 50 dispositivi?", a: "/26 (62 utilizzabili)" },
+    { q: "Prefisso per 15 dispositivi?", a: "/27: la /28 ne ha solo 14 utilizzabili" },
+    { q: "Che cosa significa VLSM?", a: "Maschere di lunghezza diversa per sottoreti diverse, ognuna della misura giusta" },
+    { q: "In che ordine si assegnano le sottoreti?", a: "Dalla più grande alla più piccola, dal primo indirizzo libero" },
+  ]}
+/>
+
+<Say who="sensei">Le reti ora hanno la loro misura. Resta una domanda: come fa un pacchetto a passare da una all'altra? Si comincia dal gateway.</Say>
+</Scene>

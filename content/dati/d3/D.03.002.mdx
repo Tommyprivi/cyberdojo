@@ -1,0 +1,305 @@
+---
+id: D.03.002
+course: dati
+module: 3
+title: "SELECT, FROM e WHERE"
+belt: bianca
+duration_min: 9
+prerequisites: [D.03.001]
+objectives:
+  - "Scrivere una SELECT che sceglie le colonne giuste da una tabella"
+  - "Filtrare le righe con WHERE, AND, OR, NOT, LIKE, IN e BETWEEN"
+  - "Riconoscere perché il valore NULL non si confronta con ="
+video:
+  provider: youtube
+  id: "JVWpKyHu-3I"
+  start: 0
+  end: 600
+  channel: "DataBeasy"
+  title: "SQL SERVER | CORSO SQL 2023 Ep. 02 | Condizioni con la clausola WHERE e operatori di confronto"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d03-select-where
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere WHERE citta = NULL: non trova mai niente, serve IS NULL"
+  - "Mescolare AND e OR senza parentesi: l'AND si calcola per primo"
+  - "Dimenticare che BETWEEN include anche gli estremi"
+commands: []
+---
+
+<Scene title="Una domanda di Marta">
+Marta ti scrive: «Quali candele costano meno di 20 euro e ne ho almeno 20 pezzi in magazzino? Devo decidere cosa mettere in vetrina».
+
+Per rispondere non serve guardare tutta la tabella `prodotti`. Serve **scegliere le colonne** che interessano e **tenere solo le righe** giuste. In SQL si fa con tre parole: `SELECT`, `FROM`, `WHERE`.
+
+La domanda del caso: **come si scrive questa domanda in SQL?**
+
+<Say who="sensei">Un analista non scorre tabelle con gli occhi. Fa domande precise. Impariamo a farle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scegliere colonne e righe">
+`SELECT` dice **quali colonne** vuoi, `FROM` dice **da quale tabella**. Il punto e virgola chiude la domanda.
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti;",
+  "",
+  "nome             | prezzo",
+  "candela vaniglia | 12.50",
+  "sapone lavanda   | 6.00",
+  "candela cedro    | 18.00",
+  "profumatore      | 24.00",
+  "sapone argilla   | 7.50",
+  "candela mirra    | 19.00",
+]} caption="Due colonne, tutte le righe." />
+
+Con `SELECT *` si chiedono tutte le colonne. Va bene per curiosare, meno per i report veri: meglio nominare le colonne.
+
+`WHERE` aggiunge una **condizione**: restano solo le righe per cui è vera. Gli operatori di confronto sono `=` (uguale), `<>` (diverso), `<`, `>`, `<=`, `>=`.
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "WHERE prezzo > 15;",
+  "",
+  "nome          | prezzo",
+  "candela cedro | 18.00",
+  "profumatore   | 24.00",
+  "candela mirra | 19.00",
+]} caption="Solo i prodotti con prezzo maggiore di 15." />
+
+<Callout kind="regola">
+Il testo va tra apici singoli (`'candele'`), i numeri no. In SQL il confronto di uguaglianza si scrive con **un solo** `=`.
+</Callout>
+
+<Callout kind="curiosita">
+Il database ragiona in quest'ordine: prima `FROM` (prende la tabella), poi `WHERE` (scarta righe), infine `SELECT` (sceglie colonne). Per questo, di solito, nel `WHERE` non si possono usare i nuovi nomi (alias) che dai nel `SELECT`: quando il `WHERE` lavora, non esistono ancora.
+</Callout>
+
+<Say who="assistente">SELECT sceglie le colonne, WHERE sceglie le righe. Una taglia in verticale, l'altra in orizzontale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="AND, OR e NOT">
+Per unire condizioni si usano tre parole. `AND`: devono essere vere **tutte e due**. `OR`: ne basta **una**. `NOT`: **capovolge** la condizione.
+
+<Log lines={[
+  "SELECT nome, giacenza",
+  "FROM prodotti",
+  "WHERE categoria = 'candele' AND giacenza > 20;",
+  "",
+  "nome             | giacenza",
+  "candela vaniglia | 40",
+  "candela mirra    | 25",
+]} caption="AND: candele e con più di 20 pezzi." />
+
+<Log lines={[
+  "SELECT nome, categoria, prezzo",
+  "FROM prodotti",
+  "WHERE categoria = 'saponi' OR prezzo > 20;",
+  "",
+  "nome           | categoria | prezzo",
+  "sapone lavanda | saponi    | 6.00",
+  "profumatore    | profumi   | 24.00",
+  "sapone argilla | saponi    | 7.50",
+]} caption="OR: saponi, oppure prezzo sopra 20." />
+
+<Log lines={[
+  "SELECT nome, categoria",
+  "FROM prodotti",
+  "WHERE NOT categoria = 'candele';",
+  "",
+  "nome           | categoria",
+  "sapone lavanda | saponi",
+  "profumatore    | profumi",
+  "sapone argilla | saponi",
+]} caption="NOT: tutto tranne le candele." />
+
+<Callout kind="attenzione">
+Quando mescoli AND e OR, l'**AND si calcola per primo**. `A OR B AND C` significa `A OR (B AND C)`. Se non è questo che vuoi, metti le parentesi: `(A OR B) AND C`.
+</Callout>
+
+<Log lines={[
+  "SELECT nome",
+  "FROM prodotti",
+  "WHERE categoria = 'saponi' OR categoria = 'profumi' AND prezzo > 10;",
+  "",
+  "nome",
+  "sapone lavanda",
+  "profumatore",
+  "sapone argilla",
+]} caption="Senza parentesi: saponi, oppure (profumi e prezzo sopra 10)." />
+
+<Log lines={[
+  "SELECT nome",
+  "FROM prodotti",
+  "WHERE (categoria = 'saponi' OR categoria = 'profumi') AND prezzo > 10;",
+  "",
+  "nome",
+  "profumatore",
+]} caption="Con le parentesi: (saponi o profumi) e prezzo sopra 10." />
+
+<Say who="sensei">Stesse condizioni, parentesi diverse, risultati diversi. In un report, questa differenza sono soldi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="LIKE, IN e BETWEEN">
+Tre scorciatoie per scrivere condizioni più corte.
+
+`LIKE` cerca un pattern nel testo: `%` sta per «qualsiasi sequenza di caratteri», `_` per «un carattere qualsiasi».
+
+<Log lines={[
+  "SELECT nome",
+  "FROM prodotti",
+  "WHERE nome LIKE 'candela%';",
+  "",
+  "nome",
+  "candela vaniglia",
+  "candela cedro",
+  "candela mirra",
+]} caption="Nomi che cominciano con «candela»." />
+
+`IN` controlla se un valore è in un elenco: è un `OR` più corto.
+
+<Log lines={[
+  "SELECT nome, categoria",
+  "FROM prodotti",
+  "WHERE categoria IN ('saponi', 'profumi');",
+  "",
+  "nome           | categoria",
+  "sapone lavanda | saponi",
+  "profumatore    | profumi",
+  "sapone argilla | saponi",
+]} caption="Categoria saponi oppure profumi." />
+
+`BETWEEN` controlla un intervallo, **estremi inclusi**.
+
+<Log lines={[
+  "SELECT nome, prezzo",
+  "FROM prodotti",
+  "WHERE prezzo BETWEEN 7 AND 15;",
+  "",
+  "nome             | prezzo",
+  "candela vaniglia | 12.50",
+  "sapone argilla   | 7.50",
+]} caption="Prezzo da 7 a 15, 7 e 15 compresi." />
+
+<Callout kind="attenzione">
+Differenza tra database: in PostgreSQL `LIKE` distingue maiuscole e minuscole (per ignorarle si usa `ILIKE`), in SQLite e in MySQL di solito no. Se un filtro sul testo sembra «sbagliato», controlla le maiuscole.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Ecco i filtri con WHERE in un video:
+
+<Video />
+
+<Say who="assistente">LIKE per i pattern, IN per gli elenchi, BETWEEN per gli intervalli. Sono solo modi più comodi di scrivere condizioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="NULL: il valore che manca">
+Torniamo ai clienti. Di Paolo Gallo non conosciamo la città: nella cella c'è **NULL**, che vuol dire «non so». Non è zero, non è una stringa vuota.
+
+<Log lines={[
+  "SELECT nome",
+  "FROM clienti",
+  "WHERE citta = 'Torino';",
+  "",
+  "nome",
+  "Giulia Ferri",
+  "Sara Neri",
+]} caption="I clienti di Torino." />
+
+<Log lines={[
+  "SELECT nome",
+  "FROM clienti",
+  "WHERE citta <> 'Torino';",
+  "",
+  "nome",
+  "Marco Bassi",
+  "Luca Riva",
+  "Anna Conti",
+]} caption="I clienti che non sono di Torino. Paolo non c'è!" />
+
+Perché Paolo non compare? Per il database, «non so se Paolo è di Torino» non è né vero né falso: è **sconosciuto**, e il WHERE tiene solo le righe **vere**. Per trovare i valori mancanti serve una parola speciale:
+
+<Log lines={[
+  "SELECT nome",
+  "FROM clienti",
+  "WHERE citta IS NULL;",
+  "",
+  "nome",
+  "Paolo Gallo",
+]} caption="Si usa IS NULL, non = NULL." />
+
+<Callout kind="regola">
+`= NULL` non trova mai niente. Si scrive `IS NULL` (manca) oppure `IS NOT NULL` (c'è). E ricorda: i confronti con una colonna che può essere NULL lasciano fuori quelle righe.
+</Callout>
+
+<Say who="sensei">NULL non è un valore: è un'assenza. Chi la confronta con = perde righe senza accorgersene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo alla domanda di Marta: candele sotto i 20 euro, con almeno 20 pezzi in magazzino.
+
+<Quiz
+  question="Quale query risponde alla domanda di Marta?"
+  options={[
+    "SELECT nome FROM prodotti WHERE categoria = 'candele' AND prezzo < 20 AND giacenza >= 20;",
+    "SELECT nome FROM prodotti WHERE categoria = 'candele' OR prezzo < 20 OR giacenza >= 20;",
+    "SELECT nome FROM prodotti WHERE categoria = candele AND prezzo < 20 AND giacenza >= 20;",
+    "SELECT nome FROM prodotti WHERE categoria = 'candele' AND prezzo BETWEEN 20 AND 0;",
+  ]}
+  answer={0}
+  explain="Servono tre condizioni vere insieme: AND. Con OR comparirebbero anche saponi e profumi. Senza apici, candele sarebbe preso per il nome di una colonna e darebbe errore. E BETWEEN 20 AND 0 ha gli estremi al contrario: non restituisce niente."
+/>
+
+<Say who="sensei">Risultato: candela vaniglia (12.50, 40 pezzi) e candela mirra (19.00, 25 pezzi). La cedro ha solo 12 pezzi: fuori. Verifica sempre con i dati davanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ti vengono date alcune query sul database del negozio. Per ognuna devi dire cosa restituisce o quale scrivere. Servono tutte e cinque giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d03-select-where" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Leggere una query e prevedere il risultato è la vera abilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- SELECT sceglie le colonne, FROM la tabella, WHERE tiene solo le righe che rispettano la condizione.
+- AND vuole tutte le condizioni vere, OR ne basta una, NOT capovolge; l'AND si calcola prima dell'OR.
+- NULL significa «non so»: si controlla con IS NULL, mai con =.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa WHERE?", a: "Tiene solo le righe per cui la condizione è vera" },
+    { q: "BETWEEN 7 AND 15 include 7 e 15?", a: "Sì, gli estremi sono inclusi" },
+    { q: "Come si trovano le righe con città mancante?", a: "WHERE citta IS NULL (non = NULL)" },
+    { q: "Qual è calcolato per primo, AND o OR?", a: "AND (per cambiare ordine servono le parentesi)" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: mettere in ordine i risultati, prendere solo i primi, togliere i doppioni.</Say>
+</Scene>

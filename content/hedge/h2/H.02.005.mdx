@@ -1,0 +1,167 @@
+---
+id: H.02.005
+course: hedge
+module: 2
+title: "Quantitative: quando decide il modello"
+belt: gialla
+duration_min: 9
+prerequisites: [H.02.004]
+objectives:
+  - "Spiegare come un fondo quantitativo trasforma dati e regole in posizioni"
+  - "Capire perché molte piccole scommesse con un vantaggio minimo funzionano solo con grandi numeri"
+  - "Riconoscere i rischi tipici: overfitting, posizioni affollate, modelli che smettono di funzionare"
+video:
+  provider: youtube
+  id: "CSgm-8cqUqM"
+  start: 0
+  end: 600
+  channel: "LSEG"
+  title: "Quant Questions: Just how does a quantitative hedge fund operate? | Hedge Fund Huddle"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h02-quantitative
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un modello sia oggettivo e senza errori: lo scrivono persone, con dati e ipotesi che possono essere sbagliati"
+  - "Fidarsi di una regola che funziona benissimo sui dati passati ma è stata cercata fino a trovarla (overfitting)"
+  - "Dimenticare che molti fondi usano idee simili: quando escono tutti insieme i prezzi si muovono contro di loro"
+commands: []
+---
+
+<Scene title="Il fondo senza intuito">
+**Modello Sette** è un fondo fittizio dove nessuno guarda i giornali. Al mattino un programma legge i prezzi di 500 aziende e decide da solo: queste dieci si comprano, queste dieci si vendono allo scoperto. Le regole le hanno scritte Irene e Paolo, due matematici, dopo anni di prove sui dati del passato.
+
+Ogni singola scommessa ha un vantaggio minuscolo. Se Irene dicesse al suo capo «vinciamo il 52% delle volte», il capo risponderebbe: **«Tutto qui?»**
+
+La domanda del caso: **come può un vantaggio così piccolo diventare un fondo intero?**
+
+<Callout kind="attenzione">
+La lezione spiega un metodo, non consiglia niente. Con i mercati si può perdere denaro, anche tutto. Fondo, persone e numeri sono inventati.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Un vantaggio piccolo è ancora un vantaggio, ma solo se è vero. Vediamo come si controlla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati, regole, macchina">
+Un fondo **quantitativo** (o *quant*) usa **matematica, statistica e computer** per decidere. Il ciclo è questo:
+
+1. **Idea**: un'ipotesi semplice (per esempio: «le aziende che hanno guadagnato di più negli ultimi mesi tendono a continuare»).
+2. **Dati**: tanti anni di prezzi e altri numeri.
+3. **Prova** sul passato (*backtest*): la regola avrebbe funzionato?
+4. **Regole scritte**: se funziona, il programma sceglie le posizioni, con limiti di rischio fissi.
+5. **Controllo continuo**: si osserva se la regola smette di funzionare.
+
+Vuoi vederlo spiegare da persone del settore? Un video in inglese con sottotitoli, guardane i primi minuti.
+
+<Video />
+
+<Say who="assistente">Quant non vuol dire «magia dei numeri». Vuol dire che le decisioni sono scritte e controllabili, invece di nascere da un'intuizione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tanti piccoli tentativi">
+Un vantaggio piccolo si vede solo con **tanti tentativi**. Esempio inventato: ogni scommessa vale +1 se va bene e -1 se va male, e la regola va bene il 52% delle volte.
+
+<Guided
+  steps={[
+    "Su 1.000 scommesse ci si aspetta 520 vincenti e 480 perdenti: 520 - 480 = +40.",
+    "Per ogni scommessa il vantaggio medio è 40 / 1.000 = +0,04. Piccolissimo.",
+    "Su sole 10 scommesse, con il 52% di successo, puoi vincerne 4 o 7 senza che questo dica niente sul vantaggio: la fortuna pesa molto più del vantaggio.",
+    "Per questo i fondi quant fanno migliaia di scommesse piccole e indipendenti: il caso si compensa. Ma anche così si può chiudere un anno in perdita.",
+  ]}
+/>
+
+<Callout kind="regola">
+Vantaggio piccolo + tante prove = risultato possibile. Vantaggio piccolo + poche prove = rumore.
+</Callout>
+
+<Say who="sensei">Se chi ti propone un metodo lo ha provato dieci volte, non ti ha provato niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il pericolo dell'overfitting">
+Il nemico numero uno dei quant si chiama **overfitting**: una regola così adattata al passato che funziona benissimo lì e **male sul futuro**.
+
+Esempio inventato: Irene prova **10 regole completamente casuali** sui dati degli ultimi 5 anni. Ogni regola ha il 5% di probabilità di sembrare brava per sola fortuna. La probabilità che **almeno una** sembri brava è 1 meno 0,95 alla decima, cioè circa **40%**.
+
+Irene trova una regola che «guadagna il 30% all'anno» sui dati passati. Sul primo anno nuovo, fa -2%. Non era un vantaggio: era un caso.
+
+Per difendersi si usano **dati fuori campione** (non usati per cercare la regola), regole semplici, e pochissimi tentativi rispetto alla quantità di dati.
+
+<Callout kind="attenzione">
+Un backtest bellissimo è un sospetto, non una prova. Ricorda il bias di look-ahead (usare informazioni che nel passato non c'erano ancora) e i costi di trading, che il backtest spesso dimentica.
+</Callout>
+
+<Say who="assistente">Se la regola funziona solo con un parametro preciso e sparisce cambiandolo di poco, probabilmente è overfitting.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli altri rischi">
+- **Posizioni affollate.** Molti fondi quant usano idee simili. Se uno deve vendere in fretta, i prezzi si muovono contro anche agli altri. Nell'agosto 2007 diversi fondi quant ebbero perdite forti e ravvicinate proprio per questo: è un episodio noto, che si studia ancora.
+- **Il mondo cambia.** Una regola che funzionava negli ultimi dieci anni può smettere di funzionare, per esempio perché troppi la copiano.
+- **Errori nel modello o nei dati.** Un numero sbagliato o una riga di codice errata decidono migliaia di operazioni.
+- **Comportamento nelle crisi.** I dati del passato contengono pochi eventi estremi: il modello li conosce poco.
+
+<Say who="sensei">Un modello è un dipendente che esegue senza dubbi. Per questo serve qualcuno che dubiti al suo posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un gestore prova 20 regole casuali sul passato e ne trova una che sembra molto brava. Ogni regola ha il 5% di probabilità di sembrare brava per sola fortuna. Che cosa conviene pensare prima di usarla?"
+  options={[
+    "Può essere un colpo di fortuna: con molte prove qualcuna sembra brava per caso, serve verificarla su dati nuovi",
+    "È certamente un vantaggio vero, perché ha battuto altre 19 regole",
+    "Va usata subito con più capitale, così il guadagno è maggiore",
+    "Vale solo se ha funzionato per più di un anno nei dati passati",
+  ]}
+  answer={0}
+  explain="Più regole si provano, più è probabile che una sembri brava per puro caso (con 20 regole la probabilità è circa il 64%). Una regola trovata cercando tra tante va confermata su dati che non ha mai visto, prima di rischiare denaro. Aumentare il capitale subito moltiplica il rischio senza prova."
+/>
+
+<Say who="assistente">Cerca finché trovi: ecco il problema. Dopo, la regola va provata su dati nuovi, non su quelli con cui l'hai scelta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari sui fondi quantitativi: piccoli vantaggi, tanti tentativi, overfitting e rischi.
+
+<Practice generator="h02-quantitative" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Diffida di ciò che funziona troppo bene: di solito c'è un errore nascosto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I fondi quant trasformano idee e dati in regole scritte, provate sul passato e controllate nel tempo.
+- Un vantaggio piccolo diventa risultato solo con tantissime scommesse indipendenti: con poche prove vince il caso.
+- Overfitting, posizioni affollate e regole che smettono di funzionare sono i rischi principali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un fondo quantitativo?", a: "Un fondo che decide con matematica, dati e regole scritte eseguite da un programma" },
+    { q: "Che cos'è l'overfitting?", a: "Una regola troppo adattata al passato, che funziona lì e non nel futuro" },
+    { q: "Perché servono molte scommesse?", a: "Perché con un vantaggio piccolo il caso pesa troppo se le prove sono poche" },
+    { q: "Che cosa sono i dati fuori campione?", a: "Dati non usati per cercare la regola, utili per verificarla davvero" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: credit e distressed. Aziende in difficoltà e i debiti che hanno lasciato.</Say>
+</Scene>

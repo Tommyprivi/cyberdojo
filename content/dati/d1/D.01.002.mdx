@@ -1,0 +1,158 @@
+---
+id: D.01.002
+course: dati
+module: 1
+title: "I tipi di dati"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.001]
+objectives:
+  - "Riconoscere dati numerici, categorici, di testo, date e booleani"
+  - "Distinguere un dato discreto da uno continuo"
+  - "Capire quali operazioni hanno senso su ogni tipo"
+video:
+  provider: youtube
+  id: "6CQoGsots3A"
+  start: 0
+  end: 235
+  channel: "Orbital"
+  title: "Types of Data: Qualitative vs Quantitative, Discrete vs Continuous"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-tipi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che ogni numero sia un dato numerico: il CAP o il numero di telefono si scrivono con cifre ma non si sommano"
+  - "Confondere discreto (si conta, 3 libri) con continuo (si misura, 162,5 cm)"
+  - "Fare la media di una categoria: non ha senso"
+commands: []
+---
+
+<Scene title="Il registro della biblioteca">
+Nella biblioteca della scuola, il professor Neri annota ogni prestito. Oggi vuole sapere due cose: «Qual è la pagina media dei libri?» e «Qual è il libro più popolare?».
+
+Guarda il suo foglio e si accorge che ogni colonna contiene cose diverse: titoli, numeri, date, sì e no.
+
+La domanda del caso: **si può fare lo stesso calcolo su tutte le colonne?**
+
+<Say who="sensei">Non tutti i dati sono uguali. Prima di calcolare, bisogna sapere di che tipo sono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo guardiamo da vicino">
+Ecco il foglio del prof. Neri, con cinque prestiti inventati:
+
+| id | titolo | genere | pagine | prestito | restituito |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Il faro | Giallo | 210 | 2025-10-02 | sì |
+| 2 | Stelle d'estate | Fantasy | 340 | 2025-10-03 | no |
+| 3 | Ombre a Torino | Giallo | 180 | 2025-10-05 | sì |
+| 4 | Il robot gentile | Fantascienza | 150 | 2025-10-07 | sì |
+| 5 | La mappa rotta | Avventura | 260 | 2025-10-09 | no |
+
+Ogni colonna ha un **tipo di dato**: l'insieme dei valori che può contenere e delle operazioni che ha senso fare.
+
+<Say who="assistente">Il tipo ti dice cosa puoi fare con la colonna. È come sapere se un oggetto è un cucchiaio o una forchetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Numeri e categorie">
+Esistono due grandi famiglie.
+
+**Dati numerici**: si possono sommare e mediare. Colonna «pagine»: 210 + 340 + 180 + 150 + 260 = 1140; divisi per 5 libri fanno **228 pagine** in media.
+
+**Dati categorici**: dividono in gruppi. Colonna «genere»: Giallo, Fantasy, Fantascienza, Avventura. Non si fa la media dei generi: si **contano**. I gialli sono 2 su 5.
+
+<Callout kind="attenzione">
+Non basta che ci siano cifre. Il **CAP** (10121) o il **numero di telefono** si scrivono con cifre, ma sommarli non ha senso: sono etichette, quindi categorie o testo.
+</Callout>
+
+<Callout kind="trucco">
+Domanda di controllo: **ha senso farne la media?** Se sì, è numerico. Se no, è una categoria.
+</Callout>
+
+<Say who="sensei">Prima chiedi: posso fare la media? Se la risposta è no, smetti di calcolare e comincia a contare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contare o misurare">
+I dati numerici hanno due sottotipi.
+
+**Discreti**: si **contano**, valori «a scalini». Le pagine di un libro (210), il numero di fratelli (2). Non esistono 2,5 fratelli.
+
+**Continui**: si **misurano**, possono avere i decimali. L'altezza (162,5 cm), il tempo sui 100 metri (14,32 secondi), la temperatura (21,4 gradi).
+
+<Callout kind="curiosita">
+Tra due valori continui ce n'è sempre un altro: tra 162,5 e 162,6 c'è 162,55. Con i discreti no: tra 2 e 3 fratelli non c'è nulla.
+</Callout>
+
+<Quiz
+  question="Quale di questi dati è continuo?"
+  options={["Il peso di uno zaino in chilogrammi (4,35)", "Il numero di quaderni nello zaino (7)", "Il numero di ore di lezione al giorno (6)", "Il numero di compagni in classe (24)"]}
+  answer={0}
+  explain="Il peso si misura e può avere decimali: è continuo. Quaderni, ore di lezione e compagni si contano a numeri interi: sono discreti."
+/>
+
+<Say who="assistente">Se lo conti con le dita, è discreto. Se serve un righello o una bilancia, è continuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Testo, date e sì/no">
+Gli ultimi tre tipi della colonna.
+
+**Testo**: parole libere, come il titolo «Il faro». Non si somma e non si media; si può cercare una parola o contare le lettere.
+
+**Date**: hanno un ordine nel tempo. Si possono confrontare e calcolare differenze: dal 2025-10-02 al 2025-10-09 passano 7 giorni.
+
+**Booleani** (dal nome del matematico George Boole): solo due valori, sì o no, vero o falso. «Restituito»: sì, no. Si contano: i libri non restituiti sono 2 su 5, cioè il **40%**.
+
+Vuoi vedere i tipi spiegati da un'altra voce? Meno di quattro minuti:
+
+<Video />
+
+<Say who="sensei">Una data scritta come testo è una trappola: il computer non sa che il 9 viene dopo il 2. Dichiara sempre il tipo giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Classifica le colonne, scegli il calcolo che ha senso e ricontrolla qualche conto sul foglio del professor Neri.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-tipi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sbaglia il tipo sbaglia il calcolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Numerici (si calcolano), categorici (si contano), testo, date e booleani (sì/no): ogni colonna ha un tipo.
+- I numerici sono discreti se si contano, continui se si misurano.
+- Una colonna di cifre non è per forza numerica: CAP e telefoni sono etichette.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale domanda aiuta a riconoscere un dato numerico?", a: "Ha senso farne la media?" },
+    { q: "Discreto o continuo: il numero di fratelli?", a: "Discreto: si conta" },
+    { q: "Discreto o continuo: la temperatura?", a: "Continuo: si misura" },
+    { q: "Che tipo è una colonna con solo sì e no?", a: "Booleano" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come si organizzano i dati in tabelle, con righe e colonne che hanno un nome preciso.</Say>
+</Scene>

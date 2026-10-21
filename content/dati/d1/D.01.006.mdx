@@ -1,0 +1,145 @@
+---
+id: D.01.006
+course: dati
+module: 1
+title: "I mestieri dei dati"
+belt: bianca
+duration_min: 8
+prerequisites: [D.01.005]
+objectives:
+  - "Descrivere che cosa fanno analista, data engineer, data scientist, BI analyst e chi si occupa di governance"
+  - "Collegare ogni mestiere agli strumenti e alla fase in cui interviene"
+video:
+  provider: youtube
+  id: "PJ2Gxvan6zQ"
+  start: 0
+  end: 600
+  channel: "Alberto Olla"
+  title: "Cosa vuol dire Data Analytics, Business Intelligence e Data Scientist"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d01-mestieri
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «lavorare con i dati» sia un solo mestiere"
+  - "Credere che il data scientist faccia sempre le stesse cose dell'analista: i confini cambiano da azienda ad azienda"
+  - "Dimenticare chi garantisce regole e privacy sui dati (la governance)"
+commands: []
+---
+
+<Scene title="Un negozio online, tanti mestieri">
+LibriVolanti è un negozio online di libri (azienda inventata). Ogni giorno arrivano migliaia di ordini. Ad agosto il titolare nota che gli ordini calano e chiede: **«Cosa sta succedendo?»**
+
+Per rispondere non basta una persona. Servono mestieri diversi, ognuno con un compito sui dati.
+
+La domanda del caso: **chi fa che cosa?**
+
+<Say who="sensei">Dietro ogni numero in una riunione c'è una squadra. Conoscerla ti aiuta a scegliere la tua strada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il data engineer: le tubature">
+Gli ordini nascono sul sito, i pagamenti in un altro programma, le spedizioni in un terzo. Qualcuno deve **raccoglierli e portarli in un posto unico**, in forma ordinata.
+
+Il **data engineer** (ingegnere dei dati) costruisce e mantiene queste «tubature», chiamate **pipeline** (in italiano condotte): prendono i dati dalle fonti, li puliscono e li depositano in un **database** o in un **data warehouse**, un grande archivio per l'analisi.
+
+**Strumenti tipici**: SQL, Python, database, strumenti per automatizzare i flussi.
+
+<Say who="assistente">Se i dati arrivano puliti e puntuali ogni mattina, ringrazia il data engineer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'analista: risponde alle domande">
+Il **data analyst** (analista di dati) prende i dati già pronti e risponde a domande concrete: «Perché sono calati gli ordini ad agosto? Quali libri sono andati meno?».
+
+Usa quello che hai imparato: sceglie le righe, calcola, confronta, e racconta il risultato con tabelle e grafici in modo comprensibile.
+
+**Strumenti tipici**: fogli di calcolo (Excel o l'alternativa gratuita Fogli Google, LibreOffice), SQL, a volte Python.
+
+<Callout kind="trucco">
+L'analista parla due lingue: quella dei dati e quella dell'azienda. Il suo valore sta nel tradurre.
+</Callout>
+
+<Say who="sensei">Il numero non basta. Se il titolare non capisce la risposta, il lavoro non è finito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="BI analyst e data scientist">
+Il **BI analyst** (Business Intelligence, cioè «intelligenza per il business») costruisce **dashboard**: pannelli con grafici aggiornati ogni giorno, per seguire le vendite senza rifare i conti. **Strumenti**: Power BI e Tableau (a pagamento) o Metabase e Looker Studio (gratuiti).
+
+Il **data scientist** (scienziato dei dati) usa statistica e programmazione per **prevedere**: «Quali clienti smetteranno di comprare?». Costruisce modelli di **machine learning**, cioè programmi che imparano dai dati passati. **Strumenti**: Python, statistica, notebook.
+
+<Callout kind="attenzione">
+I confini non sono netti: in un'azienda piccola una persona fa due o tre di questi mestieri. I nomi cambiano da azienda ad azienda.
+</Callout>
+
+<Say who="assistente">Dashboard guarda cosa è successo. Modello cerca di capire cosa succederà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La governance: le regole">
+Un ultimo mestiere, spesso dimenticato. Gli ordini contengono nomi e indirizzi di persone vere. Chi può vederli? Per quanto tempo si conservano? Come si rispetta la legge sulla privacy?
+
+Chi si occupa di **governance dei dati** (governo dei dati) stabilisce regole, responsabilità e controlli: chi è il responsabile di quali dati, chi può accedere, come si rispetta il **GDPR**, il regolamento europeo sulla protezione dei dati personali. Può essere un responsabile della protezione dei dati o un **data steward**, cioè un «custode» dei dati di un'area.
+
+<Callout kind="regola">
+Si usano solo i dati che servono (minimizzazione) e solo per scopi dichiarati. Con salute, finanze e minori si presta ancora più attenzione.
+</Callout>
+
+<Quiz
+  question="Gli ordini di LibriVolanti calano. Chi costruisce la dashboard che li mostra ogni mattina?"
+  options={["Il BI analyst", "Il data engineer, che prepara le condotte dei dati", "Il data scientist, che prevede i clienti persi", "Chi si occupa di governance"]}
+  answer={0}
+  explain="La dashboard è il lavoro del BI analyst. Il data engineer porta i dati nell'archivio, il data scientist costruisce modelli di previsione, la governance stabilisce chi può vedere cosa."
+/>
+
+Vuoi sentire i mestieri spiegati da un'altra voce? Una decina di minuti:
+
+<Video />
+
+<Say who="sensei">Dati personali, responsabilità personale. Chi li tocca risponde di come li usa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Collega ogni compito al mestiere giusto, nelle situazioni di LibriVolanti.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d01-mestieri" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai già dove cercare chi può aiutarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il data engineer porta i dati dove servono, puliti; l'analista risponde alle domande; il BI analyst costruisce le dashboard; il data scientist prevede; la governance stabilisce le regole.
+- Gli strumenti si somigliano (SQL, Python, fogli di calcolo) ma cambiano gli scopi; esistono alternative gratuite a Power BI e Tableau.
+- I confini tra i mestieri sono sfumati e cambiano da azienda ad azienda.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa costruisce il data engineer?", a: "Le pipeline che portano i dati puliti in un archivio" },
+    { q: "Che cosa fa l'analista di dati?", a: "Risponde a domande con i dati e racconta il risultato" },
+    { q: "Che cos'è una dashboard e chi la costruisce?", a: "Un pannello di grafici sempre aggiornato; il BI analyst" },
+    { q: "Di che cosa si occupa la governance dei dati?", a: "Regole, responsabilità e privacy: chi può usare quali dati" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Prossimo: i fogli di calcolo, il primo strumento per mettere mano ai dati.</Say>
+</Scene>

@@ -1,0 +1,173 @@
+---
+id: T.10.004
+course: trading
+module: 10
+title: "Un ordine simulato in codice"
+belt: verde
+duration_min: 9
+prerequisites: [T.10.003]
+objectives:
+  - "Costruire un ordine come dizionario Python e controllarlo prima di inviarlo"
+  - "Spiegare perché serve un identificativo dell'ordine deciso dal programma"
+  - "Inviare un ordine solo all'ambiente demo, con controlli di sicurezza"
+video:
+  provider: youtube
+  id: "tb8gHvYlCFs"
+  start: 0
+  end: 600
+  channel: "Corey Schafer"
+  title: "Python Requests Tutorial: Request Web Pages, Download Images, POST Data, Read JSON, and More"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t10-ordini
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Inviare l'ordine senza controllarlo prima (quantità zero, prezzo limite mancante)"
+  - "Non avere un identificativo proprio dell'ordine e rischiare ordini doppi"
+  - "Dimenticare il timeout: il programma resta fermo ad aspettare"
+commands: []
+---
+
+<Scene title="Ordine inviato due volte">
+Il bot di Marta invia un ordine demo di 10 azioni. La rete è lenta, la risposta non arriva, il programma ripete l'invio. Risultato: nel conto demo ci sono **20 azioni** invece di 10.
+
+Con soldi finti è una lezione. Con soldi veri sarebbe un errore costoso.
+
+La domanda del caso: **come si costruisce e si invia un ordine in modo che gli errori si vedano subito e non si moltiplichino?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: gli esempi usano un broker inventato, un conto demo e numeri fittizi. Nessun codice di questo corso va collegato a un conto con denaro reale.
+</Callout>
+
+<Say who="sensei">Un ordine è un'azione che non si ritira. Costruiscilo con cura, anche quando i soldi sono finti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ordine è un dizionario">
+Un ordine è un insieme di campi. In Python è un dizionario:
+
+```python
+ordine = {
+    "client_order_id": "bot-2026-10-21-0001",
+    "symbol": "AAA",
+    "side": "buy",
+    "type": "limit",
+    "qty": 10,
+    "limit_price": 50.00,
+    "time_in_force": "day",
+}
+```
+
+- `symbol`: il simbolo dello strumento (qui un titolo inventato).
+- `side`: `buy` compra, `sell` vende.
+- `type`: `limit` vuol dire «non pagare più di questo prezzo».
+- `time_in_force`: `day` vale fino a fine giornata.
+- `client_order_id`: un codice **deciso da te**, unico per ogni ordine.
+
+<Say who="assistente">Il client_order_id è come lo scontrino con il numero: se lo ripresenti, il broker capisce che è lo stesso ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima si controlla">
+Prima di inviare, il programma controlla l'ordine. Così un errore si ferma in casa. Provalo:
+
+<PythonTerminal code={"def controlla_ordine(o):\n    if o['qty'] <= 0:\n        return 'quantità non valida'\n    if o['type'] == 'limit' and o.get('limit_price') is None:\n        return 'manca il prezzo limite'\n    return 'ok'\n\nprint(controlla_ordine({'qty': 10, 'type': 'limit', 'limit_price': 50.0}))\nprint(controlla_ordine({'qty': 0, 'type': 'market'}))\nprint(controlla_ordine({'qty': 5, 'type': 'limit'}))"} />
+
+Risultato atteso: `ok`, poi `quantità non valida`, poi `manca il prezzo limite`.
+
+<Callout kind="regola">
+Un ordine passa da **tre porte**: controllo del formato, controllo dell'ambiente (demo), controllo dei limiti (quantità massima). Se una si chiude, non parte niente.
+</Callout>
+
+<Say who="sensei">I controlli sono noiosi. Per questo funzionano: non si stancano mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'invio, solo in demo">
+Con la libreria `requests` l'invio è breve. Nota: indirizzo demo, chiave letta dall'ambiente, timeout, controllo dell'ambiente.
+
+```python
+import os
+import requests
+
+BASE_URL = "https://api.example-broker.test/paper/v1"
+if "/paper/" not in BASE_URL:
+    raise SystemExit("Indirizzo non demo: mi fermo.")
+
+chiave = os.environ["BROKER_PAPER_KEY"]
+risposta = requests.post(
+    f"{BASE_URL}/orders",
+    json=ordine,
+    headers={"Authorization": f"Bearer {chiave}"},
+    timeout=10,
+)
+print(risposta.status_code)
+```
+
+Quello che non c'è: nessuna chiave scritta nel codice, nessun indirizzo reale, nessun invio senza timeout.
+
+Vuoi vedere un'altra voce usare `requests` per leggere e inviare dati? Il video è in inglese, con sottotitoli, ed è lungo: guarda la parte iniziale.
+
+<Video />
+
+<Say who="sensei">Il timeout è il programma che sa quando smettere di aspettare. Senza, resta appeso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il programma invia un ordine, ma la risposta non arriva. Ripeti l'invio con lo stesso client_order_id. Perché è più sicuro che cambiare codice?"
+  options={[
+    "Il broker può riconoscere che l'ordine è lo stesso e non crearne un secondo",
+    "Il broker è obbligato a eseguire l'ordine due volte per sicurezza",
+    "Il codice identificativo fa arrivare la risposta più in fretta",
+    "Con lo stesso codice il prezzo limite non conta più",
+  ]}
+  answer={0}
+  explain="Un identificativo scelto da te e riusato permette al broker di riconoscere un tentativo ripetuto come lo stesso ordine. Chi invia ogni volta un ordine «nuovo» rischia di ottenerne due. Non tutti i broker lo gestiscono allo stesso modo: si legge la documentazione."
+/>
+
+<Say who="assistente">Prima di ripetere un invio, chiediti: potrebbe essere già arrivato? Se sì, controlla lo stato dell'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su ordini simulati: campi, controlli e sicurezza dell'ambiente.
+
+<Practice generator="t10-ordini" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. L'ordine giusto è quello controllato tre volte prima di partire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un ordine è un dizionario di campi (simbolo, lato, tipo, quantità, prezzo limite) con un client_order_id deciso da te.
+- Si controlla prima: formato, ambiente demo, limiti. Se un controllo fallisce, non parte niente.
+- L'invio usa chiave dall'ambiente, indirizzo demo e timeout. Mai un ordine «nuovo» a ogni tentativo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa un ordine di tipo limit?", a: "Non accetta un prezzo peggiore del limite indicato" },
+    { q: "A che cosa serve il client_order_id?", a: "A riconoscere lo stesso ordine se l'invio viene ripetuto" },
+    { q: "Perché mettere un timeout alla richiesta?", a: "Perché il programma non resti fermo ad aspettare per sempre" },
+    { q: "Quali sono le tre porte di un ordine?", a: "Formato, ambiente demo, limiti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando l'API risponde con un errore o ti dice di rallentare. Succede, e va previsto.</Say>
+</Scene>

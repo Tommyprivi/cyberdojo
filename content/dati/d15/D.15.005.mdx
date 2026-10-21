@@ -1,0 +1,168 @@
+---
+id: D.15.005
+course: dati
+module: 15
+title: "Governance dei report"
+belt: marrone
+duration_min: 9
+prerequisites: [D.15.004]
+objectives:
+  - "Spiegare perché si certificano le fonti e come si riconoscono"
+  - "Applicare permessi per riga e livelli di sensibilità"
+  - "Gestire il ciclo di vita dei report e ridurre i duplicati"
+video:
+  provider: youtube
+  id: "MxU_FYSSnYU"
+  start: 0
+  end: 600
+  channel: "Guy in a Cube"
+  title: "How to Setup Row-Level Security (RLS) in Power BI"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d15-governance
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che nascondere una colonna in un grafico basti a proteggerla: i permessi si applicano ai dati, non alla pagina"
+  - "Copiare un report «per sicurezza» invece di condividerlo: nascono duplicati che divergono"
+  - "Non assegnare un proprietario: un report orfano resta in giro anche se nessuno lo guarda"
+commands: []
+---
+
+<Scene title="Il report dell'ex collega">
+In Bottega Rossi circolano 48 report. Un lunedì la direttrice trova un report di vendite che nessuno ricorda di aver fatto: i numeri sono vecchi di un anno, l'autore ha lasciato l'azienda, e mostra anche gli stipendi dei responsabili di negozio a chiunque abbia il link.
+
+<Say who="sensei">Un report senza regole è come una chiave lasciata sul portone. Prima o poi qualcuno entra. Governance vuol dire: regole, proprietari, controlli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Certificare le fonti">
+Non tutte le fonti dati valgono uguale. Una **fonte certificata** è un insieme di dati che qualcuno ha controllato e di cui risponde: definizioni chiare, aggiornamento regolare, proprietario noto.
+
+Pensa ai prodotti a marchio controllato: sai chi li ha fatti e che qualcuno li ha verificati.
+
+Un report nuovo si costruisce, per regola, **solo su fonti certificate**. Chi usa un file personale per un'analisi veloce lo dichiara: etichetta «non certificato».
+
+<Callout kind="regola">
+Una fonte certificata ha: un **proprietario**, una **definizione scritta**, un **controllo di qualità** e una **data dell'ultima verifica**.
+</Callout>
+
+<Say who="assistente">Se due fonti contraddicono, la certificata vince. Se nessuna è certificata, nessuna vince: si chiede al proprietario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Permessi per riga">
+I **permessi per riga** (in inglese row-level security) fanno vedere a ogni persona **solo le righe** che le competono. Lo stesso report, dati diversi.
+
+Vendite di prova di Bottega Rossi:
+
+| negozio | importo |
+|---|---|
+| Milano | 40 |
+| Milano | 30 |
+| Torino | 50 |
+| Roma | 20 |
+| Torino | 10 |
+
+Il totale è 150. Con la regola «il responsabile vede solo il suo negozio»:
+
+- responsabile di Milano: 40 + 30 = **70**;
+- responsabile di Torino: 50 + 10 = **60**;
+- responsabile di Roma: **20**;
+- la direzione, senza regola: **150**.
+
+<Callout kind="attenzione">
+I permessi si mettono sui **dati**, non sul disegno della pagina. In Power BI, per esempio, la regola per riga vale per chi **guarda** il report, mentre chi ha diritto di modifica sull'area di lavoro può non esserne limitato: si controlla chi ha quali diritti.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, ed è un esempio di regola per riga in uno strumento:
+
+<Video />
+
+<Say who="sensei">Meno dati vede una persona, meno ne può perdere. Dare accesso a tutto «per comodità» è pigrizia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sensibilità dei dati">
+Ogni fonte ha un **livello di sensibilità**, scritto come etichetta, per esempio:
+
+- **pubblico**: può uscire dall'azienda;
+- **interno**: per tutti i dipendenti;
+- **riservato**: solo alcuni gruppi (per esempio i margini);
+- **strettamente riservato**: dati personali delicati, stipendi, salute.
+
+L'etichetta segue il dato: un report costruito su dati riservati è riservato. Per i dati delle persone valgono privacy e GDPR: si usa **solo ciò che serve** (minimizzazione), per lo scopo dichiarato, e si pseudonimizza dove si può. Un report su clienti non ha bisogno dei loro nomi per mostrare un trend.
+
+<Callout kind="curiosita">
+Spesso il modo più sicuro di proteggere una colonna è **non caricarla affatto** nel modello. Quello che non c'è non si può perdere.
+</Callout>
+
+<Say who="assistente">Domanda prima di aggiungere una colonna: «serve davvero a rispondere a una domanda?». Se no, non entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ciclo di vita e duplicati">
+Un report ha una vita: **nasce** (richiesta e proprietario), **vive** (usato e aggiornato), **si rivede** (ogni tanto si controlla se serve ancora) e **si ritira** (archiviato, poi eliminato).
+
+Il controllo periodico guarda l'uso. Esempio con i 48 report di Bottega Rossi:
+
+<Log lines={["Report totali: 48", "Aperti negli ultimi 90 giorni: 30  ->  18 inutilizzati (37,5%)", "Duplicati di altri report: 12  ->  12 / 48 = 25% da unire", "Dopo la pulizia dei duplicati restano: 48 - 12 = 36"]} caption="Un piccolo inventario dei report. Numeri fittizi." />
+
+I duplicati nascono quando ognuno **copia** un report per cambiarci una cosa. La cura è condividere un report base, con filtri o varianti ben fatte, e un solo proprietario. Prima di archiviare si avvisa chi lo usa, con una data.
+
+<Say who="sensei">Un report non finisce quando lo consegni. Finisce quando lo ritiri con ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'analista vuole mostrare a ogni responsabile solo le vendite del suo negozio, con lo stesso report per tutti. Qual è la soluzione corretta?"
+  options={["Una regola di permesso per riga sui dati, collegata al negozio di ciascun utente", "Nascondere le altre barre del grafico", "Fare una copia del report per ogni negozio", "Mandare il file e fidarsi che nessuno cambi il filtro"]}
+  answer={0}
+  explain="La regola per riga limita i dati a monte, quindi anche chi cambia filtri o esporta vede solo il suo negozio. Nascondere barre protegge la vista, non i dati. Una copia per negozio crea duplicati che divergono. Fidarsi non è una misura di sicurezza."
+/>
+
+<Say who="assistente">La sicurezza sta nei dati, non nella grafica. Se si può cambiare un filtro per vederli, non erano protetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su fonti certificate, permessi per riga, sensibilità, ciclo di vita e duplicati, con piccoli calcoli. Cinque domande, senza errori.
+
+<Practice generator="d15-governance" pass="5/5" retries={3} />
+
+<Say who="sensei">Governance non è burocrazia. È sapere chi risponde di che cosa, quando qualcosa va storto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le fonti certificate hanno proprietario, definizione scritta e controllo di qualità: i report nuovi partono da lì.
+- I permessi per riga e le etichette di sensibilità proteggono i dati, non solo la pagina; per i dati personali vale la minimizzazione.
+- Ogni report ha un proprietario e un ciclo di vita; i duplicati si riducono condividendo un report base.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una fonte certificata?", a: "Un insieme di dati controllato, con proprietario, definizione e verifica" },
+    { q: "A che servono i permessi per riga?", a: "A far vedere a ciascuno solo le righe che gli competono" },
+    { q: "Come si riducono i report duplicati?", a: "Condividendo un report base con un proprietario, invece di copiarlo" },
+    { q: "Qual è il modo più sicuro di proteggere una colonna inutile?", a: "Non caricarla nel modello" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del ramo: come rilasciare e aggiornare i report senza sorprese. Rilascio e aggiornamento.</Say>
+</Scene>

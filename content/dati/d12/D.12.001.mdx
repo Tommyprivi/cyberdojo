@@ -1,0 +1,161 @@
+---
+id: D.12.001
+course: dati
+module: 12
+title: "Dati personali e GDPR per chi analizza"
+belt: verde
+duration_min: 9
+prerequisites: [D.11.008]
+objectives:
+  - "Riconoscere un dato personale e un dato particolare in una tabella"
+  - "Applicare minimizzazione e finalità prima di chiedere o usare dei dati"
+  - "Sapere quando fermarsi e chiedere a chi si occupa di privacy"
+video:
+  provider: youtube
+  id: "WUyBmkeLWxM"
+  start: 0
+  end: 493
+  channel: "Zanichelli editore"
+  title: "La privacy #2 - Il GDPR e il trattamento dei dati personali"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d12-gdpr
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che togliere il nome renda i dati anonimi"
+  - "Pensare che il consenso sia l'unica base giuridica possibile"
+  - "Chiedere tutte le colonne «per ogni evenienza» invece di quelle che servono"
+commands: []
+---
+
+<Scene title="Il file «clienti_completo»">
+Sara è un'analista in una catena di negozi. Il responsabile le gira un file con 20 000 righe: nome, cognome, email, telefono, data di nascita, indirizzo, codice fiscale, acquisti e una colonna di note degli operatori.
+
+Il compito è semplice: capire quali prodotti vendono di più nelle varie città.
+
+Sara guarda il file e si accorge di una cosa: per rispondere le servono solo la città e gli acquisti. Tutto il resto è in più.
+
+La domanda del caso: **che cosa può usare, e che cosa dovrebbe lasciar fuori, chi analizza dati sulle persone?**
+
+<Say who="sensei">Prima dei grafici, si guardano le colonne. Ogni colonna in più è una persona in più che può essere danneggiata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un dato personale">
+Un **dato personale** è un'informazione che riguarda una persona identificata o identificabile. Non serve il nome: basta che, da sola o insieme ad altre informazioni, porti a una persona.
+
+Sono dati personali: email, telefono, indirizzo, foto, codice cliente, indirizzo IP, posizione GPS. Anche una combinazione come data di nascita, CAP e sesso.
+
+Alcuni dati sono **particolari** (il regolamento europeo, il **GDPR**, li chiama così): salute, origine etnica, opinioni politiche, convinzioni religiose, appartenenza sindacale, dati genetici e biometrici, vita e orientamento sessuale. Servono cautele maggiori.
+
+<Callout kind="attenzione">
+«Ho tolto la colonna del nome, quindi è anonimo» è un errore comune. Se i dati restano collegabili a una persona, restano dati personali.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Otto minuti, i punti principali del GDPR:
+
+<Video />
+
+<Say who="assistente">Se un'informazione aiuta a capire di chi si parla, trattala come personale. Meglio una cautela in più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché e per cosa">
+Chi usa dati personali deve avere un motivo valido: la **base giuridica**. In sintesi, le principali sono il **contratto** (spedire un ordine), l'**obbligo di legge** (conservare le fatture), il **consenso** libero e specifico (la newsletter), l'**interesse legittimo** (certe misure antifrode).
+
+Il consenso è **una** delle basi, non l'unica.
+
+Poi c'è la **finalità**: i dati si raccolgono per uno scopo dichiarato, e non si usano per altri scopi incompatibili. Gli indirizzi raccolti per spedire un pacco non diventano, per magia, materiale per qualsiasi analisi.
+
+<Callout kind="regola">
+Prima di un'analisi chiediti: perché abbiamo questo dato, e questa analisi è compatibile con quello scopo? Se non sai rispondere, chiedi.
+</Callout>
+
+<Say who="sensei">Un dato ha uno scopo. Se l'analisi ne ha un altro, non si procede alla cieca: si verifica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Meno colonne, meno rischi">
+Torniamo al file di Sara. Il GDPR chiede, tra l'altro, la **minimizzazione**: raccogliere e usare solo i dati adeguati e necessari allo scopo. E la **limitazione della conservazione**: tenerli solo per il tempo che serve.
+
+<Guided
+  steps={[
+    "Scopo: capire quali prodotti vendono di più per città.",
+    "Colonne necessarie: città, prodotto, quantità, data dell'acquisto.",
+    "Colonne non necessarie: nome, cognome, email, telefono, data di nascita, codice fiscale, note libere.",
+    "Azione corretta: chiedere al responsabile un estratto con solo le colonne necessarie, invece di tenere il file completo.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Meno colonne vuol dire anche meno rischi se il file finisce nel posto sbagliato, e un'analisi più veloce.
+</Callout>
+
+<Say who="assistente">Chiedere meno dati non è pigrizia. È un lavoro fatto bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Hai un problema in più: i diritti delle persone e le analisi più delicate.
+
+Le persone hanno diritti, tra cui **accesso** (sapere quali dati si hanno su di loro), **rettifica** (correggerli), **cancellazione** (in certi casi), **opposizione** (a certi usi) e **portabilità**. Chi analizza deve sapere che esistono, perché alcune richieste possono arrivare fino a lui.
+
+Per trattamenti rischiosi (molti dati sanitari, sorveglianza su larga scala, profilazione) può servire una **valutazione d'impatto** (DPIA): un'analisi fatta **prima**, per capire i rischi e come ridurli. Se stai per partire con un progetto così, la decisione non spetta all'analista da solo.
+
+<Quiz
+  question="Ti chiedono di analizzare le diagnosi di migliaia di pazienti per un nuovo progetto, e nessuno ha parlato di privacy. Che cosa è corretto fare?"
+  options={["Chiedere a chi si occupa di privacy se serve una valutazione d'impatto, prima di cominciare", "Cominciare e mettere le regole dopo, a fine progetto", "Togliere solo i nomi e procedere", "Spostare i dati sul proprio portatile per lavorare meglio"]}
+  answer={0}
+  explain="Sono dati sanitari, quindi particolari. La valutazione d'impatto si fa prima, non dopo. Togliere i nomi non basta a renderli anonimi, e portare i dati sul proprio portatile aumenta i rischi. Chi risponde «cominciamo e vediamo» rimanda un problema che poi costa di più."
+/>
+
+<Callout kind="attenzione">
+Questa è una guida per capire, non una consulenza legale. Per un caso reale verifica con chi si occupa di privacy nella tua organizzazione.
+</Callout>
+
+<Say who="sensei">L'analista non decide da solo. Ma deve saper vedere il problema e dirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque scenari su dati personali, finalità, diritti e minimizzazione. A ogni tentativo le domande cambiano.
+
+Hai 3 tentativi.
+
+<Practice generator="d12-gdpr" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I dati sono persone: chi li analizza risponde di come li tratta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un dato personale è ogni informazione che porta a una persona, da sola o insieme ad altre. I dati particolari (salute, convinzioni, biometrici) richiedono più cautela.
+- Serve un motivo valido (base giuridica) e uno scopo: il consenso è solo una delle basi, e non si usano i dati per scopi incompatibili.
+- Minimizzazione: chiedi solo le colonne che servono. Per trattamenti rischiosi, chiedi prima a chi si occupa di privacy.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato personale?", a: "Un'informazione che identifica o rende identificabile una persona" },
+    { q: "Che cosa vuol dire minimizzazione?", a: "Usare solo i dati adeguati e necessari allo scopo" },
+    { q: "Il consenso è l'unica base giuridica?", a: "No: ci sono anche contratto, obbligo di legge, interesse legittimo e altre" },
+    { q: "Quando si fa la valutazione d'impatto (DPIA)?", a: "Prima di un trattamento ad alto rischio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i pregiudizi che si nascondono nei dati, anche quando nessuno li ha messi apposta.</Say>
+</Scene>

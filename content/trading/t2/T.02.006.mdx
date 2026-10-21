@@ -1,0 +1,164 @@
+---
+id: T.02.006
+course: trading
+module: 2
+title: "Pulire i dati finanziari"
+belt: gialla
+duration_min: 9
+prerequisites: [T.02.005]
+objectives:
+  - "Trovare duplicati, buchi, errori di tipo e righe incoerenti"
+  - "Scegliere un riempimento che non usa il futuro"
+  - "Documentare ogni correzione fatta ai dati"
+video:
+  provider: youtube
+  id: "EaGbS7eWSs0"
+  start: 0
+  end: 600
+  channel: "codebasics"
+  title: "Python Pandas Tutorial 5: Handle Missing Data: fillna, dropna, interpolate"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t02-pulizia
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Riempire i buchi con il prezzo del giorno dopo (bfill): usa il futuro"
+  - "Cancellare un prezzo strano senza controllare la fonte"
+  - "Trattare sabato e domenica come errori: la borsa è chiusa"
+commands: []
+---
+
+<Scene title="Un prezzo da mille">
+Elena scarica i prezzi di un titolo fittizio. Quasi tutti sono vicini a 10 euro, ma una riga dice **1000**. Un'altra riga è identica alla precedente. In un giorno il prezzo manca.
+
+Se calcola i rendimenti così com'è, il numero finale è assurdo.
+
+La domanda del caso: **come si puliscono i dati senza rovinarli?**
+
+<Callout kind="attenzione">
+Corso educativo, non consulenza finanziaria: in borsa si può perdere denaro, anche tutto. Dati fittizi.
+</Callout>
+
+<Say who="sensei">Dati sporchi, risultati sporchi. Ma pulire male è peggio che non pulire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I problemi tipici">
+Quattro problemi da cercare sempre:
+
+- **duplicati**: la stessa riga due volte;
+- **valori mancanti** (`NaN`): un prezzo assente;
+- **errori di tipo**: numeri letti come testo, date come testo;
+- **valori incoerenti**: un massimo sotto il minimo, un prezzo mille volte più alto dei vicini (spesso un errore di virgola).
+
+Non sono errori: **sabato, domenica e festività**. La borsa è chiusa, quindi i giorni mancano.
+
+<Say who="assistente">Prima di correggere, conta quante righe hai e quante sono sospette. Poi decidi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pulire con pandas">
+Un esempio piccolo, con un duplicato e un buco:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "data": ["2026-03-02", "2026-03-03", "2026-03-03", "2026-03-04", "2026-03-05"],
+    "chiusura": [10.4, 10.0, 10.0, None, 10.9],
+})
+df = df.drop_duplicates()
+df["chiusura"] = df["chiusura"].ffill()
+print(df)
+```
+
+<Log lines={[
+  "         data  chiusura",
+  "0  2026-03-02      10.4",
+  "1  2026-03-03      10.0",
+  "3  2026-03-04      10.0",
+  "4  2026-03-05      10.9",
+]} />
+
+`drop_duplicates()` ha tolto la riga 2. `ffill()` ha riempito il buco con l'**ultimo prezzo noto** (10,0). Vedi che l'indice salta da 1 a 3: la riga 2 non c'è più.
+
+Vuoi sentire come si gestiscono i valori mancanti da un'altra voce? In inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">`df.isna()` ti mostra dove sono i buchi. Guarda sempre prima di riempire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riempire senza barare">
+`ffill` porta avanti il prezzo di ieri: usa solo il **passato**. `bfill` usa il prezzo di **domani** per riempire oggi: è **look-ahead**, in un backtest sarebbe barare.
+
+<Callout kind="regola">
+Nei dati finanziari: riempi con il passato, non con il futuro. E ricorda che un prezzo riempito non è un prezzo vero: annotalo.
+</Callout>
+
+Controlla anche la coerenza di ogni riga: il massimo deve essere almeno il maggiore tra apertura e chiusura, il minimo al massimo il minore dei due.
+
+<PythonTerminal code={"righe = [(10.0, 10.6, 9.8, 10.4), (10.4, 10.5, 10.9, 10.0)]\nfor ap, mx, mn, ch in righe:\n    print(mx >= max(ap, ch) and mn <= min(ap, ch))"} />
+
+<Say who="sensei">La seconda riga ha il minimo sopra il massimo. Quella non si corregge a occhio: si controlla la fonte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Manca il prezzo di un giorno lavorativo. Che cosa è prudente fare in un backtest?"
+  options={[
+    "Riportare avanti l'ultimo prezzo noto e annotare la correzione",
+    "Usare il prezzo del giorno dopo, che è più vicino",
+    "Mettere zero, così si vede il buco",
+    "Inventare un prezzo che fa tornare il grafico",
+  ]}
+  answer={0}
+  explain="Il prezzo del giorno prima è già noto quel giorno. Quello del giorno dopo no: usarlo è look-ahead. Zero e prezzi inventati falsano i rendimenti."
+/>
+
+<Say who="assistente">Chiediti: a quell'ora, questa informazione esisteva già?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su pulizia e coerenza dei dati.
+
+<Practice generator="t02-pulizia" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Pulire bene vuol dire poter dire che cosa hai cambiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Cerca duplicati, buchi, errori di tipo e righe incoerenti; weekend e festività non sono errori.
+- Riempi con il passato (`ffill`), mai con il futuro (`bfill`); un valore sospetto si controlla alla fonte.
+- Tieni una copia dei dati grezzi e annota ogni correzione fatta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale comando elimina le righe duplicate?", a: "drop_duplicates()" },
+    { q: "Perché bfill è pericoloso nei backtest?", a: "Usa il prezzo di domani: look-ahead" },
+    { q: "Il sabato non ci sono prezzi: errore?", a: "No, la borsa è chiusa" },
+    { q: "Che cosa fare con un prezzo 100 volte più alto dei vicini?", a: "Segnarlo come sospetto e controllare la fonte" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: guardare i dati con un grafico onesto.</Say>
+</Scene>

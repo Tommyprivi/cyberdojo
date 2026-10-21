@@ -1,0 +1,178 @@
+---
+id: T.08.003
+course: trading
+module: 8
+title: "Liquidità e dimensioni dell'ordine"
+belt: arancione
+duration_min: 8
+prerequisites: [T.08.002]
+objectives:
+  - "Spiegare che cos'è la liquidità e come si riconosce"
+  - "Calcolare il prezzo medio di un ordine che «scorre» il book"
+  - "Dire perché una strategia può funzionare con poco capitale e non con tanto"
+video:
+  provider: youtube
+  id: "qrLJgQUOceY"
+  start: 0
+  end: 200
+  channel: "jpmorgan"
+  title: "What is Liquidity? I Unpacked I J.P. Morgan Insights"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t08-liquidita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che si possa sempre comprare o vendere qualsiasi quantità al prezzo visto"
+  - "Guardare solo il prezzo e non il volume scambiato"
+  - "Credere che un backtest con 1.000 euro valga anche per 1 milione"
+commands: []
+---
+
+<Scene title="Troppo grande per il mercato">
+Il titolo fittizio «Beta Spa» è poco scambiato. Nora, in demo, vuole comprare **300 azioni**. Sullo schermo vede il prezzo **10,00**.
+
+L'ordine viene eseguito, ma il prezzo medio che paga non è 10,00. Se avesse comprato soltanto 100 azioni, sì.
+
+La domanda del caso: **perché la quantità cambia il prezzo?**
+
+<Say who="sensei">Il prezzo che vedi vale per una certa quantità. Oltre quella quantità, è un altro prezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la liquidità">
+Un mercato è **liquido** quando puoi comprare o vendere **molto, in fretta, senza spostare il prezzo** e con costi bassi. Pensa al mercato di un quartiere affollato: trovi sempre qualcuno con cui scambiare. Un mercato **illiquido** è una piazza semi vuota.
+
+Segnali di buona liquidità:
+
+- spread stretto (poca differenza tra bid e ask);
+- molti scambi ogni giorno (**volume** alto);
+- tante offerte a prezzi vicini.
+
+<Callout kind="regola">
+Liquidità alta = costi bassi e prezzi stabili. Liquidità bassa = spread largo e slippage alto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Prima di studiare una strategia su un titolo, guarda quanto si scambia ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il book degli ordini">
+Le offerte di vendita sono in una lista chiamata **book**, dal prezzo più basso al più alto. Le quantità sono limitate a ogni prezzo. Esempio fittizio per «Beta Spa»:
+
+<Log lines={[
+  "OFFERTE DI VENDITA (ask)",
+  "quantità   prezzo",
+  "100        10,00",
+  "100        10,02",
+  "100        10,04",
+]} />
+
+Un ordine a mercato per 300 azioni **consuma** i livelli uno dopo l'altro:
+
+<Guided
+  steps={[
+    "Prime 100 azioni a 10,00: 1.000 euro.",
+    "Altre 100 a 10,02: 1.002 euro.",
+    "Ultime 100 a 10,04: 1.004 euro.",
+    "Totale: 1.000 + 1.002 + 1.004 = 3.006 euro. Prezzo medio: 3.006 / 300 = 10,02.",
+    "Rispetto al prezzo visto (10,00) lo scarto è 0,02 per azione, cioè 6 euro in tutto.",
+  ]}
+/>
+
+<Say who="sensei">Più compri, più alto è il prezzo medio. Il mercato non è un distributore automatico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto è grande, per lui?">
+Non conta quanto è grande l'ordine in assoluto, ma **quanto pesa sul volume giornaliero** del titolo.
+
+Esempio: volume medio **50.000 azioni al giorno**, ordine da **2.000 azioni**:
+
+<Log lines={[
+  "2.000 / 50.000 = 0,04 = 4% del volume giornaliero",
+]} />
+
+Una regola pratica prudente tra chi fa backtest è tenere l'ordine **ben sotto l'1-2% del volume** giornaliero (non è una legge: è un ordine di grandezza per non farsi illusioni).
+
+<Callout kind="attenzione">
+Un backtest che compra «sempre al prezzo di chiusura, in qualsiasi quantità» ignora tutto questo. Con soldi veri l'ordine sposterebbe il prezzo.
+</Callout>
+
+<Say who="assistente">Come ridurre il problema: spezzare l'ordine in pezzi piccoli nel tempo, o scegliere solo titoli molto scambiati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il book di vendita ha 100 azioni a 10,00 e 100 a 10,02. Compri 200 azioni a mercato. Qual è il prezzo medio pagato?"
+  options={["10,01", "10,00", "10,02", "20,02"]}
+  answer={0}
+  explain="Spendi 1.000 + 1.002 = 2.002 euro per 200 azioni: 2.002 / 200 = 10,01. Chi risponde 10,00 usa solo il primo livello; chi risponde 20,02 ha sommato i prezzi invece di fare la media."
+/>
+
+<Say who="sensei">Media pesata sulle quantità. Con quantità uguali è la media semplice dei prezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Capacità di una strategia">
+Una strategia può reggere con 1.000 euro e **non con un milione**: più capitale significa ordini più grandi, quindi più slippage e prezzi peggiori. Si dice che ha una **capacità** limitata.
+
+Per questo, nei backtest seri:
+
+- si scartano i titoli con volume troppo basso;
+- si fissa un tetto alla quota di volume che l'ordine può rappresentare;
+- si dichiara con quanto capitale la strategia è plausibile.
+
+Prima della verifica: sei dubbioso? Rileggi il calcolo del book, è la parte che cade più spesso.
+
+<Say who="sensei">Un risultato che vale solo con poco denaro non è sbagliato. È incompleto, se non lo dici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sul book e sul peso dell'ordine, più scenari di liquidità.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t08-liquidita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La liquidità si controlla prima, non dopo aver perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un mercato liquido ha spread stretto, volumi alti e molte offerte vicine.
+- Un ordine grande consuma più livelli del book: il prezzo medio peggiora.
+- Una strategia ha una capacità limitata. Il corso è educativo, non è consulenza finanziaria: nel trading si può perdere denaro, anche tutto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la liquidità?", a: "La possibilità di comprare o vendere molto e in fretta senza spostare il prezzo" },
+    { q: "Ordine da 2.000 azioni su un volume di 50.000 al giorno: che quota?", a: "4%" },
+    { q: "Perché un ordine grande fa peggiorare il prezzo medio?", a: "Perché consuma più livelli del book, a prezzi via via peggiori" },
+    { q: "Che cos'è la capacità di una strategia?", a: "Il capitale massimo con cui regge senza che l'impatto sul prezzo la rovini" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la latenza. Quanto conta il tempo tra decidere e comprare.</Say>
+</Scene>

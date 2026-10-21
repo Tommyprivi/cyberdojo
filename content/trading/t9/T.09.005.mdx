@@ -1,0 +1,160 @@
+---
+id: T.09.005
+course: trading
+module: 9
+title: "Breakout: quando il prezzo sfonda"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.004]
+objectives:
+  - "Scrivere e applicare una regola di breakout sul massimo degli ultimi N giorni"
+  - "Spiegare che cos'è un falso breakout"
+  - "Capire perché lo slippage pesa proprio sui breakout"
+video:
+  provider: youtube
+  id: "KPRGSWzSdQs"
+  start: 0
+  end: 590
+  channel: "Habib Al Attas"
+  title: "Why Most Breakouts Fail (Trading Breakout Strategy Explained)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-breakout
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Considerare vero ogni breakout: molti rientrano subito"
+  - "Includere nel massimo anche il giorno corrente (look-ahead)"
+  - "Ignorare che si compra a un prezzo peggiore del livello rotto (slippage)"
+commands: []
+---
+
+<Scene title="Il muro dei 53">
+**Elena** guarda il prezzo fittizio di «Gamma SpA». Per giorni non supera 53, come se ci fosse un muro. Oggi chiude a 55.
+
+«Ha sfondato! Parte la corsa!» pensa. Ma una settimana fa è successo lo stesso, e il prezzo è tornato indietro.
+
+La domanda del caso: **come si scrive una regola di breakout, e come si riconoscono i falsi allarmi?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Studiamo un'idea con numeri fittizi: il corso non è consulenza finanziaria.
+</Callout>
+
+<Say who="sensei">Un muro rotto può essere una porta o una trappola. Una regola scritta ti evita di decidere a emozione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un breakout">
+Un **breakout** («rottura») avviene quando il prezzo supera un livello che aveva faticato a superare: di solito il **massimo degli ultimi N giorni** (o scende sotto il minimo).
+
+La regola semplice, detta anche «canale di Donchian»:
+
+- **entra** se la chiusura di oggi supera il **massimo delle chiusure dei N giorni precedenti**;
+- esci con una regola scritta (per esempio quando il prezzo scende sotto il minimo degli ultimi M giorni).
+
+È una parente del trend following: entra quando il movimento è già partito.
+
+<Callout kind="regola">
+Nel massimo dei «N giorni precedenti» **non** va mai incluso il giorno di oggi: sarebbe confrontare il prezzo con sé stesso.
+</Callout>
+
+Un'altra voce, in inglese con sottotitoli, spiega perché molti breakout falliscono:
+
+<Video />
+
+<Say who="assistente">Il livello è una soglia scritta prima. Se la sposti dopo aver visto il grafico, stai barando con te stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola nei numeri">
+Chiusure **fittizie**, regola con N = 3: entra se la chiusura supera il massimo dei 3 giorni precedenti.
+
+| giorno | chiusura | massimo dei 3 giorni prima | breakout? |
+|---|---|---|---|
+| 4 | 53 | 52 (50, 52, 51) | sì |
+| 5 | 52 | 53 (52, 51, 53) | no |
+| 6 | 55 | 53 (51, 53, 52) | sì |
+| 7 | 54 | 55 (53, 52, 55) | no |
+
+<PythonTerminal code={"chiusure = [50, 52, 51, 53, 52, 55, 54]\nn = 3\nfor i in range(n, len(chiusure)):\n    massimo = max(chiusure[i - n : i])\n    print(i + 1, chiusure[i], massimo, chiusure[i] > massimo)"} />
+
+<Log lines={[
+  "4 53 52 True",
+  "5 52 53 False",
+  "6 55 53 True",
+  "7 54 55 False",
+]} />
+
+<Say who="sensei">Nota il giorno 5: il prezzo rientra sotto il massimo. Sarebbe stato un falso breakout, se il giorno 4 avessimo comprato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Falsi segnali e slippage">
+Due problemi tipici:
+
+- **Falso breakout**: il prezzo rompe il livello, poi rientra. Si entra in alto e si perde. Succede spesso nei mercati senza direzione.
+- **Slippage**: la differenza tra il prezzo che ti aspetti e quello a cui eseguono l'ordine (modulo T8). Nei breakout pesa molto, perché tutti vogliono comprare nello stesso momento e il prezzo scappa.
+
+Esempio fittizio: il segnale scatta a 53, ma l'ordine viene eseguito a 53,5. Se poi il prezzo rientra a 52, la perdita è 1,5 punti, non 1.
+
+Per ridurre i falsi segnali si possono aggiungere filtri (per esempio il volume), ma ogni filtro nuovo è un parametro in più: rischio di **overfitting**.
+
+<Callout kind="attenzione">
+Un breakout su un backtest «eseguito esattamente al livello rotto» è irrealistico. Nel modulo T8 hai visto che il prezzo reale è quasi sempre peggiore.
+</Callout>
+
+<Say who="assistente">Più il segnale è affollato, più paghi per entrare. È il prezzo della fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Chiusure fittizie: 40, 42, 41, 43, 44. Regola con N = 3: breakout se la chiusura supera il massimo dei 3 giorni precedenti. Il giorno 5 (chiusura 44) è un breakout?"
+  options={["Sì: il massimo dei 3 giorni precedenti (42, 41, 43) è 43, e 44 è maggiore", "No: 44 non supera 43 perché sono vicini", "Sì: 44 è il massimo di tutti e 5 i giorni, quindi sempre breakout", "No: il massimo dei 3 giorni precedenti è 44"]}
+  answer={0}
+  explain="I tre giorni prima sono 42, 41 e 43: il massimo è 43. 44 è maggiore, quindi sì. Chi include il giorno corrente trova massimo 44 e dice «no»: è l'errore del look-ahead."
+/>
+
+<Say who="sensei">Si guarda indietro, mai il giorno stesso. Lì nasce il barare senza accorgersene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Regole di breakout da applicare e limiti da riconoscere. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-breakout" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un breakout è un'ipotesi: il prezzo deve ancora confermarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Breakout: la chiusura supera il massimo (o scende sotto il minimo) dei N giorni precedenti, giorno corrente escluso.
+- Molti breakout sono falsi: il prezzo rientra e si perde, soprattutto nei mercati laterali.
+- Lo slippage colpisce i breakout: si entra a un prezzo peggiore del livello rotto; nel backtest va considerato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un breakout?", a: "Il prezzo supera il massimo (o il minimo) degli ultimi N giorni" },
+    { q: "Che cos'è un falso breakout?", a: "Il prezzo rompe il livello e poi rientra subito" },
+    { q: "Perché non includere il giorno di oggi nel massimo?", a: "Si confronterebbe il prezzo con sé stesso: look-ahead" },
+    { q: "Perché lo slippage pesa sui breakout?", a: "Molti comprano insieme e il prezzo di esecuzione è peggiore" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la volatilità. Non la direzione del prezzo, ma quanto balla.</Say>
+</Scene>

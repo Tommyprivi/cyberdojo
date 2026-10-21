@@ -1,0 +1,168 @@
+---
+id: D.02.003
+course: dati
+module: 2
+title: "Riferimenti relativi e assoluti"
+belt: bianca
+duration_min: 9
+prerequisites: [D.02.002]
+objectives:
+  - "Prevedere come cambia una formula quando la si copia in un'altra cella"
+  - "Fissare una cella con il simbolo $ (riferimento assoluto)"
+  - "Riconoscere l'errore tipico di copia: il riferimento che scivola su celle vuote"
+video:
+  provider: youtube
+  id: "daZNMocFLTs"
+  start: 0
+  end: 600
+  channel: "Edoardo Midali"
+  title: "Referenze relative e assolute - EXCEL TUTORIAL ITALIANO 14"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-riferimenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Copiare una formula con lo sconto in una cella fissa senza il $: dalla seconda riga in poi il riferimento punta a celle vuote"
+  - "Mettere il $ davanti a tutto «per sicurezza»: poi la formula non si adatta più dove dovrebbe"
+  - "Non controllare la formula copiata: il foglio non segnala nulla, i numeri sono semplicemente sbagliati"
+commands: []
+---
+
+<Scene title="Lo sconto che sparisce">
+Il negozio scolastico di Sara fa il 10% di sconto sugli articoli. Nel foglio c'è lo sconto in una cella, i prezzi in una colonna e una formula per il prezzo scontato.
+
+Sara scrive la formula nella prima riga, la copia in giù e... il secondo e il terzo prezzo non sono scontati. Nessun errore, nessun avviso: i numeri sono semplicemente sbagliati.
+
+La domanda del caso: **perché la formula copiata «scivola» e come si ferma?**
+
+<Say who="sensei">Il foglio ti obbedisce sempre, anche quando sbagli. Impariamo a prevedere cosa fa una copia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il riferimento relativo">
+Di solito una formula descrive una posizione **rispetto a sé stessa**, non un indirizzo fisso. Se in C2 c'è `=A2+B2` e la copi in C3, diventa `=A3+B3`: le celle si spostano di una riga, come la formula.
+
+Si chiama **riferimento relativo**.
+
+| | A | B | C |
+|---|---|---|---|
+| **2** | 5 | 7 | `=A2+B2` dà 12 |
+| **3** | 4 | 1 | `=A3+B3` dà 5 |
+
+Copiata a **destra**, cambia la lettera della colonna. Copiata **in giù**, cambia il numero della riga.
+
+<Callout kind="trucco">
+Immagina un post-it che dice «le due celle a sinistra di me». Spostato in un'altra riga, vale ancora: le due celle a sinistra del nuovo posto.
+</Callout>
+
+<Say who="assistente">Di solito è comodissimo: scrivi una formula, trascini, e vale per tutte le righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando scivola troppo">
+Torniamo a Sara. Lo sconto è nella cella **E1** (10% si scrive 0,1). I prezzi sono in B2:B4.
+
+| | A | B | C | E |
+|---|---|---|---|---|
+| **1** | Articolo | Prezzo | Scontato | Sconto: 0,1 |
+| **2** | Zaino | 50 | `=B2*(1-E1)` | |
+| **3** | Astuccio | 20 | | |
+| **4** | Agenda | 80 | | |
+
+In C2 la formula funziona: 50 per (1 - 0,1) = 50 per 0,9 = **45**.
+
+Copiata in C3 diventa `=B3*(1-E2)`: ma **E2 è vuota**, vale zero. Il risultato è 20 per (1 - 0) = **20**, senza sconto. In C4 diventa `=B4*(1-E3)` e dà **80**, di nuovo senza sconto.
+
+<Log lines={[
+  "C2  =B2*(1-E1)   ->  45   (giusto)",
+  "C3  =B3*(1-E2)   ->  20   (sconto sparito: E2 è vuota)",
+  "C4  =B4*(1-E3)   ->  80   (sconto sparito: E3 è vuota)",
+]} />
+
+<Say who="sensei">Il prezzo B si deve spostare, lo sconto E1 no. Il foglio non lo sa: glielo dici tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il dollaro blocca">
+Il simbolo **$** davanti alla lettera o al numero dice «questo non si sposta». Si chiama **riferimento assoluto**.
+
+<Callout kind="regola">
+**$E$1** blocca colonna e riga: copiata ovunque, resta E1. **E1** (senza dollari) è relativo. **$E1** blocca solo la colonna, **E$1** solo la riga: sono i riferimenti **misti**.
+</Callout>
+
+La formula giusta di Sara è `=B2*(1-$E$1)`. Copiata in giù:
+
+<Log lines={[
+  "C2  =B2*(1-$E$1)   ->  45",
+  "C3  =B3*(1-$E$1)   ->  18   (20 per 0,9)",
+  "C4  =B4*(1-$E$1)   ->  72   (80 per 0,9)",
+]} caption="B cambia riga, $E$1 resta fermo." />
+
+Non devi scrivere il $ a mano: in Excel e in Fogli Google, mentre modifichi la formula, premi **F4** dopo aver cliccato il riferimento (su alcuni Mac con Excel: Cmd+T). In LibreOffice Calc si usa Maiusc+F4.
+
+<Say who="assistente">Lo sconto in una cella sola ha un grande vantaggio: cambi il 10 in 15 e tutti i prezzi si aggiornano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un caso con una tabellina. In **A2:A4** ci sono 1, 2, 3 e in **B1:D1** ci sono 1, 2, 3. In **B2** scrivi `=$A2*B$1` e copi in tutta la tabella. Il dollaro blocca la colonna A per i fattori a sinistra e la riga 1 per quelli in alto.
+
+<Quiz
+  question="Se copi la formula =$A2*B$1 dalla cella B2 alla cella C3, che formula trovi?"
+  options={["=$A3*C$1", "=$A2*B$1", "=$A3*B$2", "=$B3*C$2"]}
+  answer={0}
+  explain="La colonna A è bloccata (resta $A), la riga cambia da 2 a 3: $A3. La riga 1 è bloccata (resta $1), la colonna cambia da B a C: C$1. Risultato: =$A3*C$1."
+/>
+
+Per vedere se hai capito, confronta anche con il caso di Sara: lì i dollari servono perché **un solo numero** (lo sconto) deve valere per tutte le righe. Quando nella formula entrano due serie di numeri (righe e colonne), servono i riferimenti misti.
+
+Un video riprende tutto con esempi dal vivo:
+
+<Video />
+
+<Say who="sensei">Prima di copiare, chiediti: questa cella deve spostarsi o restare ferma? Una domanda sola, e hai già evitato l'errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su formule copiate e riferimenti fissi. Immagina di trascinare la formula e scrivi il risultato.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-riferimenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Dopo una copia, controlla sempre due o tre celle a campione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un riferimento relativo (E1) si sposta insieme alla formula copiata; uno assoluto ($E$1) resta fermo.
+- Il $ blocca la colonna o la riga che segue: $E1 blocca la colonna, E$1 la riga, $E$1 entrambe.
+- Valori come lo sconto o l'IVA vanno in una cella sola, richiamata con $: si cambiano una volta e tutto si aggiorna.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa diventa =A2+B2 se la copi dalla riga 2 alla riga 5?", a: "=A5+B5" },
+    { q: "Che cosa fa il simbolo $?", a: "Blocca la colonna o la riga che segue, per non farla spostare" },
+    { q: "Quale tasto mette i dollari in una formula?", a: "F4 (in LibreOffice Calc: Maiusc+F4)" },
+    { q: "Con lo sconto in E1 e la formula =B3*(1-E2), cosa succede?", a: "E2 è vuota: nessuno sconto. Serviva $E$1" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: ordinare e filtrare i dati senza rompere la tabella.</Say>
+</Scene>

@@ -1,0 +1,178 @@
+---
+id: D.17.003
+course: dati
+module: 17
+title: "Sanità: dati delicati, conclusioni caute"
+belt: blu
+duration_min: 10
+prerequisites: [D.17.002]
+objectives:
+  - "Trattare i dati sanitari con privacy e minimizzazione"
+  - "Distinguere uno studio osservazionale da uno sperimentale"
+  - "Calcolare l'effetto dei falsi positivi in un test e restare cauti nelle conclusioni"
+video:
+  provider: youtube
+  id: "P5_6Arr08c0"
+  start: 0
+  end: 600
+  channel: "Biblio E-learning - Università degli Studi di Milano-Bicocca"
+  title: "Gli studi osservazionali"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d17-sanita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Concludere che una cosa causa un'altra solo perché chi la fa sta meglio (studio osservazionale)"
+  - "Pensare che un test positivo al 90% di sensibilità significhi 90% di probabilità di essere malati"
+  - "Trattare i dati sanitari come dati qualunque: sono dati particolari, con regole più severe"
+commands: []
+---
+
+<Scene title="La vitamina che sembra funzionare">
+Un'azienda sanitaria fittizia, «ASL Valleverde», ha un'app per le visite. L'analista nota che gli utenti che prendono un integratore di vitamina D finiscono **meno spesso in ospedale**.
+
+Il direttore vuole distribuire l'integratore a tutti. La domanda: **i dati bastano per decidere?**
+
+<Callout kind="attenzione">
+Caso didattico con dati inventati. Non è consulenza medica: per la salute si chiede a un medico, mai a un esercizio di analisi.
+</Callout>
+
+<Say who="sensei">In sanità una conclusione sbagliata non fa perdere soldi: fa male alle persone. Qui si va piano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Osservare non è sperimentare">
+I dati dell'app dicono:
+
+| Gruppo | Persone | Ricoverate | Percentuale |
+|---|---|---|---|
+| Prendono l'integratore | 400 | 32 | 8% |
+| Non lo prendono | 600 | 72 | 12% |
+
+Questo è uno **studio osservazionale**: si guarda ciò che le persone hanno fatto da sole. Chi sceglie l'integratore potrebbe anche fare più attività fisica, mangiare meglio, andare più spesso dal medico. Queste differenze nascoste si chiamano **fattori di confusione**.
+
+Per capire se l'integratore funziona serve uno **studio sperimentale**: le persone sono assegnate **a caso** a integratore o a placebo (una pillola finta), così i due gruppi sono simili in tutto il resto.
+
+Una lezione universitaria spiega gli studi osservazionali e i loro limiti:
+
+<Video />
+
+<Say who="assistente">8% contro 12% è una differenza reale nei dati. Ma «reale nei dati» non vuol dire «causata dall'integratore».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati sensibili e privacy">
+I dati sulla salute sono **categorie particolari** di dati personali: il GDPR (il regolamento europeo sulla privacy) li protegge di più. Regole pratiche:
+
+- **Minimizzazione**: si raccoglie solo ciò che serve alla domanda.
+- **Pseudonimizzazione**: al posto del nome si usa un codice; la chiave sta in un posto separato e protetto.
+- **Gruppi piccoli**: una tabella con una cella di 2 persone può far riconoscere qualcuno. Si evita di pubblicare gruppi molto piccoli.
+- **Accessi**: solo chi deve, solo il tempo necessario.
+
+<Callout kind="regola">
+Se non serve il nome, il codice fiscale o l'indirizzo per rispondere alla domanda, non si porta nell'analisi.
+</Callout>
+
+<Say who="sensei">Dietro ogni riga c'è una persona che ti ha dato fiducia. Il dato si protegge prima di analizzarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Falsi positivi">
+Un test di controllo (fittizio) per una malattia rara. In 1.000 persone, il 2% è malato: **20 malati**, 980 sani.
+
+- **Sensibilità 90%**: riconosce 18 malati su 20.
+- **Specificità 95%**: i sani risultati negativi sono 931 su 980, quindi **49 sani** risultano positivi per errore (**falsi positivi**).
+
+Positivi totali: 18 + 49 = **67**. Chi è davvero malato tra i positivi? 18 su 67, cioè circa **27%**.
+
+<Callout kind="curiosita">
+Un test che sembra molto affidabile può dare tanti falsi positivi quando la malattia è rara: i sani sono tantissimi, anche un piccolo errore su di loro pesa.
+</Callout>
+
+<Say who="assistente">Un test positivo non è una diagnosi. È un motivo per fare un controllo più preciso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cautela nelle conclusioni">
+Come si scrive una conclusione in sanità:
+
+- «I dati **suggeriscono** un'associazione», non «l'integratore riduce i ricoveri».
+- Si dicono i **limiti**: studio osservazionale, fattori di confusione possibili.
+- Si propone il **passo successivo**: uno studio sperimentale o il parere di un esperto clinico.
+
+<Callout kind="trucco">
+Le parole contano: «associato a», «potrebbe», «serve verificare». Evitare «prova che» e «causa».
+</Callout>
+
+<Say who="sensei">Un analista prudente non è un analista debole. In sanità è l'unico tipo che serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te, poi decidi">
+<Quiz
+  question="Il test dell'esempio ha sensibilità 90% ma, su 67 positivi, solo 18 sono malati. Come mai?"
+  options={["Perché la malattia è rara e i falsi positivi tra i sani sono molti", "Perché la sensibilità è stata calcolata male", "Perché i positivi sono sempre meno dei malati", "Perché il test non funziona sui malati"]}
+  answer={0}
+  explain="I sani sono 980 e il 5% di loro (49) risulta positivo, contro 18 veri positivi. Il test funziona bene sui malati (18 su 20), ma i numeri assoluti dei sani pesano di più. Non c'è errore di calcolo."
+/>
+
+<Say who="sensei">Guarda sempre i numeri assoluti, non solo le percentuali.</Say>
+
+**La decisione.** Ora metti insieme i pezzi:
+
+<Guided
+  steps={[
+    "Domanda: distribuire l'integratore a tutti sulla base dei dati osservati?",
+    "Dati: ricoveri 8% con integratore (32 su 400), 12% senza (72 su 600).",
+    "Limite: chi lo prende per scelta può essere diverso (più attento alla salute): fattori di confusione.",
+    "Cosa non si può dire: che l'integratore riduca i ricoveri. Si può dire che c'è un'associazione.",
+    "Privacy: nell'analisi bastano codici e fasce d'età, non nomi.",
+    "Decisione prudente: non distribuire a tutti per questo solo dato; proporre uno studio con assegnazione casuale e chiedere il parere dei medici.",
+  ]}
+/>
+
+<Say who="assistente">La decisione «aspetto una prova migliore» è una decisione vera, non una fuga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque piccoli casi su privacy, tipi di studio, test e cautela. Dati fittizi. Hai 3 tentativi.
+
+<Practice generator="d17-sanita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. In sanità, prudenza e precisione vanno insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- I dati sanitari sono dati particolari: minimizzazione, pseudonimi, attenzione ai gruppi piccoli.
+- Studio osservazionale: associazione; studio sperimentale con assegnazione casuale: può mostrare una causa.
+- Con malattie rare un test buono dà molti falsi positivi: positivo non vuol dire malato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un fattore di confusione?", a: "Una differenza nascosta tra i gruppi che falsa il confronto" },
+    { q: "Che cosa serve per dimostrare una causa?", a: "Uno studio sperimentale con assegnazione casuale" },
+    { q: "Che cos'è un falso positivo?", a: "Un sano che il test segnala come malato" },
+    { q: "Come si scrive una conclusione prudente?", a: "Con «associato a» e dichiarando i limiti dello studio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: lo sport, dove i piccoli campioni ingannano più di ogni altra cosa.</Say>
+</Scene>

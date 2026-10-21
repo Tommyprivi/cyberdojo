@@ -1,0 +1,173 @@
+---
+id: D.15.002
+course: dati
+module: 15
+title: "Misure e calcoli"
+belt: blu
+duration_min: 9
+prerequisites: [D.15.001]
+objectives:
+  - "Distinguere una misura da una colonna calcolata"
+  - "Leggere una misura semplice scritta in DAX e il suo equivalente in altri strumenti"
+  - "Prevedere il risultato di una misura in un dato contesto di filtro"
+video:
+  provider: youtube
+  id: "lX2ztEh3tuA"
+  start: 0
+  end: 600
+  channel: "SQLBI"
+  title: "Filter Context in DAX"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d15-misure
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare la media delle percentuali di riga invece di dividere la somma per la somma"
+  - "Calcolare in una colonna ciò che dovrebbe essere una misura: il risultato non cambia con i filtri del report"
+  - "Dimenticare che la stessa misura dà numeri diversi in celle diverse perché cambia il contesto di filtro"
+commands: []
+---
+
+<Scene title="Il margine che non torna">
+Bottega Rossi ha quattro righe di vendita con importo e costo. Marta calcola in ogni riga il margine percentuale e poi ne fa la media. Il report mostra **50%**. Il direttore, con il totale, trova **48%**.
+
+Chi ha ragione? Il numero giusto è uno solo, e dipende da **dove** si fa il calcolo.
+
+<Say who="sensei">Un calcolo fatto nel posto sbagliato dà un numero sbagliato, anche se la formula è giusta. Oggi si impara a scegliere il posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Colonna calcolata e misura">
+Ci sono due modi di calcolare.
+
+- Una **colonna calcolata** è calcolata **riga per riga**, una volta, quando i dati vengono caricati. Resta scritta nella tabella.
+- Una **misura** è calcolata **al momento**, sui dati che il report sta mostrando in quel momento, secondo i filtri attivi.
+
+Pensa a un quaderno e a una calcolatrice. La colonna è il risultato scritto a penna sul quaderno. La misura è la calcolatrice: dà il totale di ciò che stai guardando ora.
+
+<Callout kind="regola">
+Se il numero deve cambiare quando filtri per negozio, mese o categoria, serve una **misura**. Se serve a descrivere ogni riga (per esempio «prezzo con IVA»), va bene una colonna.
+</Callout>
+
+<Say who="assistente">Domanda utile: «questo valore dipende da cosa sto guardando?». Se sì, è una misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di prova">
+Le quattro righe di vendita, fittizie.
+
+| riga | negozio | categoria | importo | costo |
+|---|---|---|---|---|
+| 1 | Milano | Caffè | 100 | 60 |
+| 2 | Milano | Accessori | 50 | 20 |
+| 3 | Torino | Caffè | 80 | 48 |
+| 4 | Torino | Accessori | 70 | 28 |
+
+Totali: importo **300**, costo **156**, margine 300 − 156 = **144**. Margine percentuale = 144 / 300 = **48%**.
+
+La colonna calcolata «margine %» per riga dà 40%, 60%, 40%, 60%. La media è **50%**: è sbagliata, perché una riga da 50 pesa quanto una da 100.
+
+<Callout kind="attenzione">
+Mai fare la media di percentuali. Si **somma il numeratore**, si **somma il denominatore**, poi si divide. Somma diviso somma.
+</Callout>
+
+<Say who="sensei">Il 50% è un numero elegante e falso. Il 48% è quello che incassa l'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una misura, scritta in DAX">
+**DAX** è il linguaggio delle formule di Power BI. Una misura si scrive così:
+
+<Log lines={["Importo = SUM(Vendite[importo])", "Costo = SUM(Vendite[costo])", "Margine = [Importo] - [Costo]", "Margine % = DIVIDE([Margine], [Importo])"]} caption="Quattro misure. DIVIDE evita l'errore se il denominatore è zero." />
+
+Le misure si possono **riusare**: «Margine %» usa «Margine», che usa «Importo».
+
+Gli equivalenti, per concetto:
+
+- Fogli Google o Excel: le funzioni SOMMA.PIÙ.SE o una tabella pivot con campo calcolato.
+- Looker Studio: un campo calcolato con SUM al numeratore e al denominatore.
+- Metabase: una «metrica» salvata sulla domanda.
+- SQL: SUM(importo) e SUM(costo) con GROUP BY.
+
+<Say who="assistente">DAX, SQL o campo calcolato: l'idea è sempre la stessa. Una formula che somma prima e divide dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contesto di filtro">
+La stessa misura dà numeri diversi in celle diverse. Il motivo si chiama **contesto di filtro**: l'insieme dei filtri attivi in quel punto del report.
+
+| negozio | categoria | Importo | Margine | Margine % |
+|---|---|---|---|---|
+| Milano | tutte | 150 | 70 | 46,7% |
+| Torino | tutte | 150 | 74 | 49,3% |
+| tutti | Caffè | 180 | 72 | 40% |
+| tutti | Accessori | 120 | 72 | 60% |
+| tutti | tutte | 300 | 144 | 48% |
+
+Nella cella «Milano» il contesto tiene solo le righe 1 e 2: importo 100 + 50 = 150, costo 60 + 20 = 80, margine 70. Nessuno ha cambiato la formula: è cambiato **ciò che la formula vede**.
+
+<Callout kind="trucco">
+Per prevedere una cella, chiediti: «quali righe restano con i filtri di questa riga e di questa colonna?». Poi applica la formula solo a quelle.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? È in inglese, sul contesto di filtro:
+
+<Video />
+
+<Say who="sensei">Prima i filtri, poi la formula. Se inverti l'ordine, ti perdi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nelle quattro righe di prova, quanto vale la misura Margine % nella cella «Caffè» (tutti i negozi)?"
+  options={["40%", "50%", "48%", "60%"]}
+  answer={0}
+  explain="Restano le righe 1 e 3. Importo 100 + 80 = 180, costo 60 + 48 = 108, margine 72. 72 / 180 = 40%. Il 48% è il totale di tutte le righe, il 60% è la categoria Accessori."
+/>
+
+<Say who="assistente">Righe che restano, somme, poi divisione. Tre passi, nessun salto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su misure, colonne calcolate e contesto di filtro, con calcoli sulle righe di prova. Cinque domande, senza errori.
+
+<Practice generator="d15-misure" pass="5/5" retries={3} />
+
+<Say who="sensei">Se sai prevedere la cella prima di vederla, hai capito il contesto. Il resto è sintassi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una colonna è calcolata riga per riga e resta scritta; una misura si calcola sui dati filtrati in quel momento.
+- Le percentuali si calcolano come somma diviso somma, mai come media delle percentuali di riga.
+- Lo stesso calcolo dà risultati diversi in celle diverse perché cambia il contesto di filtro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Misura o colonna: il numero deve cambiare con i filtri?", a: "Misura" },
+    { q: "Come si calcola un margine percentuale totale?", a: "Somma del margine diviso somma dell'importo" },
+    { q: "Che cos'è il contesto di filtro?", a: "L'insieme dei filtri attivi nel punto del report dove la misura viene calcolata" },
+    { q: "A che serve DIVIDE in DAX?", a: "A dividere evitando l'errore quando il denominatore è zero" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove far vivere queste misure, perché nessun report debba inventarsele per conto suo. Il livello semantico.</Say>
+</Scene>

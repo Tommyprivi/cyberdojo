@@ -1,0 +1,172 @@
+---
+id: D.02.004
+course: dati
+module: 2
+title: "Ordinare e filtrare"
+belt: bianca
+duration_min: 8
+prerequisites: [D.02.003]
+objectives:
+  - "Ordinare una tabella senza separare i dati dalle loro righe"
+  - "Filtrare le righe che interessano, sapendo che le altre sono solo nascoste"
+  - "Preparare un intervallo o una tabella adatti a ordinare e filtrare"
+video:
+  provider: youtube
+  id: "YAf07gtU-Is"
+  start: 0
+  end: 494
+  channel: "Edoardo Midali"
+  title: "Ordina e filtra dati celle - EXCEL TUTORIAL ITALIANO 47"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d02-ordinare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Ordinare una sola colonna: i nomi restano dove sono e le età cambiano posto, i dati si mescolano"
+  - "Credere che il filtro cancelli le righe: le nasconde soltanto, e SOMMA le conta ancora"
+  - "Lasciare righe o colonne vuote dentro la tabella: il foglio la «spezza» e ordina o filtra solo una parte"
+commands: []
+---
+
+<Scene title="Il club che si è mescolato">
+Il club di robotica ha cinque iscritti. Luca vuole vederli in ordine di età. Seleziona la colonna dell'età, clicca «Ordina»... e i nomi restano dov'erano, mentre le età si spostano.
+
+Ora «Anna» risulta avere 14 anni, mentre ne ha 15, ed «Elena» 17, mentre ne ha 15. I dati non sono più veri.
+
+La domanda del caso: **come si ordina e si filtra una tabella senza rompere le righe?**
+
+<Say who="sensei">Una riga è una persona intera. Se la separi, hai inventato dati falsi. Vediamo come non farlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella di esempio">
+Ecco gli iscritti, con la riga dei titoli (l'**intestazione**) sopra i dati.
+
+| | A | B | C | D |
+|---|---|---|---|---|
+| **1** | Nome | Città | Età | Quota |
+| **2** | Anna | Torino | 15 | 20 |
+| **3** | Bruno | Roma | 17 | 30 |
+| **4** | Carla | Torino | 14 | 20 |
+| **5** | Dario | Napoli | 16 | 30 |
+| **6** | Elena | Roma | 15 | 25 |
+
+Ogni riga è un **record**: una persona con tutti i suoi dati. Ogni colonna è un **campo**: un tipo di dato.
+
+<Callout kind="regola">
+Prima di ordinare o filtrare, la tabella deve essere un blocco compatto: titoli nella prima riga, nessuna riga vuota, nessuna colonna vuota, nessuna cella unita.
+</Callout>
+
+<Say who="assistente">Un titolo per ogni colonna, e niente buchi in mezzo. Quasi tutti i guai nascono da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordinare">
+**Ordinare** cambia l'ordine delle righe secondo una colonna, dal più piccolo al più grande (crescente) o il contrario (decrescente).
+
+Il modo sicuro: clicca **una cella qualsiasi dentro la tabella**, poi scegli Dati > Ordina. Il foglio riconosce da solo tutto il blocco e sposta le righe intere.
+
+Ordinando per **Età** in modo crescente:
+
+| Nome | Città | Età | Quota |
+|---|---|---|---|
+| Carla | Torino | 14 | 20 |
+| Anna | Torino | 15 | 20 |
+| Elena | Roma | 15 | 25 |
+| Dario | Napoli | 16 | 30 |
+| Bruno | Roma | 17 | 30 |
+
+Ogni nome è rimasto con la sua età, la sua città, la sua quota.
+
+<Callout kind="attenzione">
+Se selezioni una sola colonna e il foglio chiede se estendere la selezione, rispondi **sì**: estendi a tutta la tabella. Se non lo chiede, hai già mescolato i dati: annulla subito con Ctrl+Z.
+</Callout>
+
+<Say who="sensei">Si ordina una tabella, non una colonna. Ricorda la differenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Filtrare">
+**Filtrare** vuol dire mostrare solo le righe che rispondono a una condizione. Le altre sono **nascoste**, non cancellate.
+
+In Excel: Dati > Filtro. In Fogli Google: Dati > Crea un filtro. In LibreOffice Calc: Dati > Filtro automatico. Compaiono delle frecce nei titoli: scegli il valore da tenere.
+
+Con il filtro **Città = Roma** vedi solo Bruno ed Elena (2 righe). Con **Età maggiore o uguale a 16** vedi Dario e Bruno (2 righe). Con **Città = Torino** ed **Età = 15** vedi solo Anna (1 riga).
+
+<Callout kind="curiosita">
+I numeri di riga cambiano colore e saltano (2, 3, 5...): le righe mancanti ci sono ancora. Togli il filtro e tornano tutte.
+</Callout>
+
+<Callout kind="attenzione">
+Con il filtro Città = Roma, `=SOMMA(D2:D6)` dà ancora **125** (20+30+20+30+25), perché SOMMA conta anche le righe nascoste. Per sommare solo quelle visibili serve SUBTOTALE (SUBTOTAL).
+</Callout>
+
+<Say who="assistente">Se un totale non ti torna dopo un filtro, controlla: forse sta contando anche quello che non vedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Intervalli e tabelle">
+Il foglio indovina il blocco di dati, ma può sbagliare. Una soluzione più robusta è trasformare l'intervallo in una **Tabella** (Excel: Ctrl+T, o Inserisci > Tabella; in Fogli Google: Inserisci > Tabella; in LibreOffice Calc: Dati > Definisci intervallo).
+
+Una Tabella vera:
+- ha già i filtri sui titoli;
+- **si allarga da sola** quando aggiungi una riga sotto;
+- ha un nome, e le formule diventano più leggibili.
+
+<Quiz
+  question="Ordini la tabella degli iscritti selezionando solo la colonna Età (senza estendere). Che cosa succede?"
+  options={["Le età si spostano ma i nomi restano: i dati si mescolano", "Si ordina tutta la tabella correttamente", "Il foglio cancella le altre colonne", "Non succede nulla"]}
+  answer={0}
+  explain="Spostando una sola colonna, le età si staccano dalle persone a cui appartengono. È l'errore più comune: la regola è cliccare dentro la tabella, non selezionare una colonna."
+/>
+
+Un video mostra ordinamento e filtri passo passo:
+
+<Video />
+
+<Say who="sensei">Un dato fuori posto non fa rumore. Per questo si impara a ordinare nel modo giusto, la prima volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla tabella degli iscritti. Immagina il risultato di ordinamenti e filtri.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d02-ordinare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ordinare e filtrare sono le prime due domande che si fanno a un dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si ordina una tabella intera cliccando dentro il blocco: le righe si spostano insieme, mai le colonne da sole.
+- Il filtro nasconde le righe che non servono, non le cancella; SOMMA conta anche le righe nascoste, SUBTOTALE no.
+- Titoli nella prima riga, niente righe o colonne vuote, niente celle unite; una Tabella si allarga da sola.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il modo sicuro per ordinare?", a: "Cliccare una cella dentro la tabella e ordinare: il foglio sposta le righe intere" },
+    { q: "Il filtro cancella le righe?", a: "No, le nasconde: togliendo il filtro tornano" },
+    { q: "Che cosa conta SOMMA con un filtro attivo?", a: "Anche le righe nascoste. Per le sole visibili: SUBTOTALE" },
+    { q: "Che cosa succede con una riga vuota in mezzo alla tabella?", a: "Il foglio la spezza in due e ordina o filtra solo una parte" },
+  ]}
+/>
+
+<Say who="sensei">Bene. Prossima lezione: cercare un dato dentro un'altra tabella, con CERCA.VERT e CERCA.X.</Say>
+</Scene>

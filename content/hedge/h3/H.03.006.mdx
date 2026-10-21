@@ -1,0 +1,152 @@
+---
+id: H.03.006
+course: hedge
+module: 3
+title: "I fattori di rischio"
+belt: arancione
+duration_min: 8
+prerequisites: [H.03.005]
+objectives:
+  - "Descrivere i fattori mercato, dimensione (size), valore (value) e momentum"
+  - "Calcolare un rendimento atteso con un modello a più fattori (numeri fittizi)"
+  - "Spiegare perché parte dell'alpha può essere esposizione a fattori, e perché i premi non sono garantiti"
+video:
+  provider: youtube
+  id: "D1nn5as44F0"
+  start: 0
+  end: 206
+  channel: "Simple Explain"
+  title: "Fama and French Three Factor Model Definition: Formula and Interpretation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h03-fattori
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che i premi dei fattori siano garantiti nel futuro"
+  - "Chiamare «abilità» ciò che è solo esposizione a un fattore noto"
+  - "Trovare «fattori» che funzionano solo per caso sui dati passati"
+commands: []
+---
+
+<Scene title="L'alpha che non era alpha">
+Il fondo fittizio **Quercia** compra quasi solo aziende piccole e «a buon prezzo». Rispetto al CAPM mostra un alpha positivo per anni. Il suo gestore ne è molto fiero.
+
+Luca nota una cosa: tutte le sue azioni hanno qualcosa in comune. Non è un caso.
+
+La domanda del caso: **l'alpha di Quercia è abilità, o è il premio per qualcosa che molti altri fondi potrebbero prendere a basso costo?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. I numeri sono inventati e i mercati non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Oltre il mercato">
+Negli anni Novanta **Eugene Fama** e **Kenneth French** osservarono che il solo mercato non spiega bene i rendimenti. Aggiunsero due fattori al modello (1993):
+
+- **Size (SMB)**: le aziende **piccole** hanno reso, in media, più di quelle grandi.
+- **Value (HML)**: i titoli **a buon prezzo** rispetto al valore contabile («value») hanno reso, in media, più di quelli «growth».
+
+Altri studi hanno aggiunto il **momentum**: i titoli saliti negli ultimi mesi tendono, in media, a continuare meglio degli altri.
+
+Una voce inglese, con i sottotitoli, mostra la formula a tre fattori:
+
+<Video />
+
+<Callout kind="regola">
+Un fattore è una caratteristica comune a molti titoli che spiega una parte dei loro rendimenti. Ogni fattore ha un **premio** storico, che non è garantito.
+</Callout>
+
+<Say who="assistente">Un indizio: i fattori sono «famiglie» di titoli che si muovono in modo simile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un rendimento a più fattori">
+Il modello a fattori somma i contributi: **tasso privo di rischio + (esposizione x premio) di ogni fattore**.
+
+Numeri fittizi: rf 2%, premio di mercato 6%, premio size 2%, premio value 3%. Il fondo ha esposizioni 1 al mercato, 0,5 a size, 1 a value.
+
+<Guided
+  steps={[
+    "Mercato: 1 x 6% = 6%.",
+    "Size: 0,5 x 2% = 1%.",
+    "Value: 1 x 3% = 3%.",
+    "Totale: 2% + 6% + 1% + 3% = 12% di rendimento atteso nel modello (non una previsione).",
+    "Il CAPM da solo avrebbe dato 2% + 1 x 6% = 8%. I 4 punti in più sono premio di fattori, non abilità.",
+  ]}
+/>
+
+<Say who="sensei">Se un fondo guadagna per fattori noti, l'investitore può averli altrove a costo più basso. Non paga per il gestore: paga per un'etichetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I premi non sono promesse">
+I premi sono medie **storiche**. Possono restare bassi, o negativi, per molti anni.
+
+- Quando un fattore diventa noto e **affollato**, il premio può ridursi e le inversioni sono più brusche.
+- Provando molte idee sugli stessi dati passati, **qualcuna sembra funzionare per caso**: è il rischio di scoprire fattori che non esistono.
+- Fattori diversi vanno bene in periodi diversi: combinarli può ridurre le oscillazioni, senza garanzie.
+
+<Callout kind="attenzione">
+Gli economisti non sono tutti d'accordo sul perché i premi esistano: compenso per un rischio, o errori di comportamento degli investitori. Non c'è una risposta unica.
+</Callout>
+
+<Say who="sensei">I dati passati sono un indizio, non una prova. Questo vale per i fattori come per tutto il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo mostra alpha positivo rispetto al CAPM, ma ha molta esposizione al fattore value. Che cosa si può sospettare?"
+  options={[
+    "Che parte dell'alpha sia in realtà premio del fattore value, ottenibile a costo più basso",
+    "Che il gestore sia sicuramente molto abile",
+    "Che il fondo non abbia rischi",
+    "Che il CAPM funzioni sempre perfettamente",
+  ]}
+  answer={0}
+  explain="Il CAPM non include il fattore value: ciò che resta come alpha può essere esposizione a quel fattore. Non lo prova, ma obbliga a controllare prima di parlare di abilità."
+/>
+
+<Say who="assistente">Quando senti «alpha», chiedi: rispetto a quale modello?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli a più fattori e domande sul loro significato. Numeri fittizi.
+
+<Practice generator="h03-fattori" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai distinguere un talento da un'esposizione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I fattori (mercato, size, value, momentum) sono caratteristiche comuni a molti titoli che spiegano parte dei rendimenti.
+- Rendimento atteso a più fattori = tasso privo di rischio + somma di (esposizione x premio).
+- I premi sono medie storiche non garantite: parte dell'alpha può essere esposizione a fattori, e alcuni fattori possono essere solo frutto del caso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa misura SMB?", a: "Piccole aziende meno grandi aziende" },
+    { q: "Che cosa misura HML?", a: "Titoli value (prezzo basso rispetto al valore contabile) meno titoli growth" },
+    { q: "Esposizione 0,5 a un premio del 4%: contributo?", a: "2%" },
+    { q: "I premi dei fattori sono garantiti?", a: "No, sono medie storiche" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: i limiti di tutti questi modelli.</Say>
+</Scene>

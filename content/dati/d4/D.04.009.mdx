@@ -1,0 +1,227 @@
+---
+id: D.04.009
+course: dati
+module: 4
+title: "Salvare i risultati e primi grafici"
+belt: gialla
+duration_min: 9
+prerequisites: [D.04.008]
+objectives:
+  - "Salvare una tabella con to_csv scegliendo index, separatore e decimale"
+  - "Disegnare un grafico a barre da un riepilogo con matplotlib in poche righe"
+  - "Rendere un notebook riproducibile: ordine, riavvio, versioni e valori casuali fissati"
+video:
+  provider: youtube
+  id: "H9Y7nkSuWro"
+  start: 0
+  end: 555
+  channel: "Claudio Cama"
+  title: "Corso completo di pandas (Lezione 14): Grafici"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d04-salvare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Salvare con l'indice e ritrovare una colonna Unnamed: 0 alla lettura successiva"
+  - "Credere che il file sopravviva alla chiusura di Colab: va scaricato o salvato su Drive"
+  - "Consegnare un notebook che funziona solo con le celle eseguite in un certo ordine"
+commands: []
+---
+
+<Scene title="Il file per Giulia">
+Il lavoro è quasi finito: hai il riepilogo delle vendite per città. Giulia ti chiede due cose: «Mandami il riepilogo in un file, lo apro in Excel. E voglio un grafico, che i numeri mi fanno venire il mal di testa».
+
+Un'analisi che resta dentro il notebook non serve a nessuno. Il risultato deve **uscire**: un file per chi lavora sui numeri, un grafico per chi decide.
+
+Partiamo dal riepilogo, sempre calcolato dagli ordini delle lezioni scorse:
+
+```python
+riepilogo = ordini.groupby("citta")["importo"].sum().reset_index()
+print(riepilogo)
+```
+
+```text
+    citta  importo
+0  Milano     50.0
+1    Roma    110.0
+2  Torino     20.0
+```
+
+La domanda del caso: **come si salva, come si disegna, e come si fa in modo che chiunque possa rifarlo uguale?**
+
+<Say who="sensei">Il risultato che nessuno può rifare è un'opinione. Il risultato che chiunque può rifare è un'analisi. Lavoriamo per la seconda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="to_csv e il trabocchetto dell'indice">
+Per salvare una tabella in un file CSV si usa `to_csv`. Se non scrivi il nome del file, pandas **restituisce il testo**, e questo ci permette di vedere il contenuto:
+
+```python
+print(riepilogo.to_csv(index=False), end="")
+print(riepilogo.to_csv(), end="")
+```
+
+```text
+citta,importo
+Milano,50.0
+Roma,110.0
+Torino,20.0
+,citta,importo
+0,Milano,50.0
+1,Roma,110.0
+2,Torino,20.0
+```
+
+Il primo è il file giusto. Il secondo contiene anche l'**indice** (0, 1, 2) come prima colonna, senza nome. Quando qualcuno lo rilegge con `read_csv`, quella colonna riappare e si chiama `Unnamed: 0`:
+
+```python
+riepilogo.to_csv("riepilogo.csv", index=False)
+```
+
+La regola pratica: quasi sempre `index=False`, a meno che l'indice non contenga informazioni vere (per esempio le città, dopo un groupby senza `reset_index`).
+
+Per Giulia, che usa **Excel in italiano**, servono le sue abitudini: punto e virgola come separatore e virgola decimale.
+
+```python
+print(riepilogo.to_csv(index=False, sep=";", decimal=","), end="")
+```
+
+```text
+citta;importo
+Milano;50,0
+Roma;110,0
+Torino;20,0
+```
+
+Se nel testo ci sono lettere accentate che Excel mostra male, aggiungi `encoding="utf-8-sig"`: è UTF-8 con una piccola firma iniziale che Excel riconosce.
+
+<Say who="assistente">Salva con index=False. Se qualcuno ti scrive «cos'è Unnamed: 0?», sai già la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove finisce il file?">
+`to_csv("riepilogo.csv")` scrive nella **cartella di lavoro**, la stessa dove `read_csv` cerca i file: lo hai visto due lezioni fa. E **sovrascrive** senza chiedere: se esiste già un `riepilogo.csv`, il vecchio è perso.
+
+In **Google Colab** c'è un'avvertenza in più. Il computer di Colab è temporaneo: quando chiudi il notebook o la sessione scade, **i file creati lì spariscono**. Dopo `to_csv` bisogna:
+
+- scaricare il file dal pannello dei file a sinistra (con i tre puntini accanto al nome), oppure
+- collegare Google Drive e salvare il file lì.
+
+Su Jupyter locale il file resta sul tuo disco, nella cartella di lavoro.
+
+Esistono anche altri formati: `to_excel` (serve una libreria in più) e `to_json`. Il CSV resta il più semplice e il più leggibile da tutti i programmi.
+
+<Callout kind="attenzione">
+Se il file contiene dati di persone, ricorda che lo stai creando e conservando tu: dove sta, chi lo può leggere, per quanto tempo. È una responsabilità prevista dal GDPR, non una formalità.
+</Callout>
+
+<Say who="sensei">Nomi chiari e date nei file. «riepilogo_2026-10-19.csv» si ritrova, «dati_finale_v2_def.csv» no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un grafico in due righe">
+pandas disegna grafici appoggiandosi a **matplotlib**, la libreria di grafici di Python. Per un grafico a barre del riepilogo basta questo:
+
+```python
+import matplotlib.pyplot as plt
+
+riepilogo.plot(x="citta", y="importo", kind="bar", title="Vendite per città")
+plt.show()
+```
+
+Compare un grafico con tre barre, in ordine alfabetico: **Milano** (50), **Roma** (110, la più alta) e **Torino** (20). Il nome «plt» è la convenzione per matplotlib.pyplot, come «pd» per pandas.
+
+Le prime cose da aggiungere, tutte in una riga:
+
+```python
+riepilogo.plot(x="citta", y="importo", kind="bar", title="Vendite per città", legend=False, rot=0)
+plt.ylabel("Vendite (euro)")
+plt.savefig("vendite.png")
+plt.show()
+```
+
+- `legend=False` toglie la legenda, inutile con una sola serie;
+- `rot=0` tiene i nomi delle barre dritti, leggibili;
+- `plt.ylabel(...)` scrive cosa misura l'asse: **sempre con l'unità**;
+- `plt.savefig(...)` salva l'immagine: va **prima** di `plt.show()`.
+
+Altri tipi con `kind`: `"line"` per l'andamento nel tempo, `"hist"` per la distribuzione, `"scatter"` (con `x` e `y`) per il rapporto tra due numeri. Nel modulo sulla visualizzazione impareremo a scegliere il grafico giusto.
+
+<Callout kind="regola">
+Un grafico senza titolo, senza unità sugli assi e senza una frase che dica «cosa devo vedere» non è finito. Prima di inviarlo, chiediti cosa capisce Giulia in cinque secondi.
+</Callout>
+
+<Say who="assistente">Un grafico a barre per confrontare categorie, una linea per il tempo. Se hai dubbi, parti da qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riproducibilità: chiunque deve rifarlo uguale">
+Fra un mese Giulia ti dirà: «Rifai l'analisi con i dati nuovi». Oppure un collega aprirà il tuo notebook. Se il risultato dipende da come l'hai usato, hai un problema. Cinque abitudini:
+
+1. **Ordine**: le celle funzionano eseguite dall'alto in basso. Prima di consegnare: «Riavvia ed esegui tutto».
+2. **Niente ritocchi a mano**: se correggi un dato, fallo **nel codice** con un commento, non nel file originale. Il file originale resta intatto.
+3. **Valori casuali fissati**: se usi numeri casuali (per esempio per estrarre un campione), fissa il **seme**, ad esempio `rng = np.random.default_rng(42)`: ogni esecuzione darà gli stessi numeri.
+4. **Versioni**: annota con quali versioni hai lavorato, per esempio stampando `pd.__version__`. Un risultato può cambiare tra una versione e l'altra.
+5. **Percorsi e commenti**: usa percorsi relativi (non «C:/Users/marco/...») e scrivi in una cella di testo cosa fa ogni parte e da dove vengono i dati.
+
+Vuoi vedere come si fanno i grafici da pandas, con un'altra voce?
+
+<Video />
+
+<Say who="sensei">Riproducibile significa: se domani sparissi, un altro riaprirebbe il notebook e otterrebbe gli stessi numeri. È la qualità che distingue un analista da uno che ha avuto fortuna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Rileggi con read_csv un file salvato con riepilogo.to_csv('r.csv') e trovi una colonna 'Unnamed: 0' con 0, 1, 2. Perché?"
+  options={["Il file contiene anche l'indice, perché non è stato usato index=False", "Il file è corrotto e va rigenerato con un'altra codifica", "read_csv aggiunge sempre una colonna numerata", "Le città hanno un nome non valido"]}
+  answer={0}
+  explain="to_csv scrive di default anche l'indice come prima colonna, senza nome. read_csv la rilegge come una colonna normale e le dà il nome Unnamed: 0. Si evita salvando con index=False."
+/>
+
+<Say who="assistente">Salva con index=False, e se te ne dimentichi riconosci il sintomo: una colonna numerata senza nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su `to_csv`, grafici e riproducibilità: cosa contiene il file, quale opzione serve, perché il notebook non è riproducibile. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d04-salvare" pass="4/5" retries={3} />
+
+<Say who="sensei">Ultimo ostacolo del modulo. Chi lo supera sa leggere, trasformare e consegnare una tabella: è già il lavoro quotidiano di un analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- `df.to_csv("file.csv", index=False)` salva una tabella; per Excel italiano `sep=";"`, `decimal=","` e, se servono gli accenti, `encoding="utf-8-sig"`. In Colab il file va scaricato o salvato su Drive.
+- Un grafico: `df.plot(x=..., y=..., kind="bar", title=...)`, poi `plt.ylabel(...)`, `plt.savefig(...)` prima di `plt.show()`. Titolo, unità e una frase che dica cosa guardare.
+- Riproducibilità: ordine di esecuzione, riavvia ed esegui tutto, nessun ritocco a mano, seme fissato, versioni annotate, percorsi relativi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché si usa index=False in to_csv?", a: "Per non salvare l'indice, che alla rilettura diventa la colonna Unnamed: 0" },
+    { q: "Che cosa succede ai file creati in Colab alla chiusura della sessione?", a: "Spariscono: vanno scaricati o salvati su Drive" },
+    { q: "Dove si mette plt.savefig rispetto a plt.show?", a: "Prima di plt.show" },
+    { q: "Come si ottengono sempre gli stessi numeri casuali?", a: "Fissando il seme, ad esempio default_rng(42)" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo è chiuso: notebook, Python, NumPy, pandas, file, filtri, gruppi, join e grafici. Prossimo passo: la statistica, per capire cosa dicono davvero i numeri che sai già calcolare.</Say>
+</Scene>

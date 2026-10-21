@@ -1,0 +1,182 @@
+---
+id: D.07.001
+course: dati
+module: 7
+title: "Scegliere il grafico giusto"
+belt: arancione
+duration_min: 8
+prerequisites: [D.06.008]
+objectives:
+  - "Riconoscere le cinque domande che un grafico può rispondere"
+  - "Abbinare a ogni domanda il grafico adatto"
+  - "Scegliere il grafico partendo dalla domanda e non dal programma"
+video:
+  provider: youtube
+  id: "fY3Oo4yFdZ8"
+  start: 0
+  end: 450
+  channel: "Adriano Gilardone"
+  title: "I 5 GRAFICI più utilizzati in statistica spiegati in modo semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-grafici
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Si sceglie il grafico più vistoso invece di partire dalla domanda"
+  - "Si usano le linee per categorie che non hanno un ordine (città, prodotti)"
+  - "Si usa la torta quando le parti sono molte o quasi uguali"
+commands: []
+---
+
+<Scene title="Cinque domande, un solo grafico">
+Marta lavora alla **Bottega Verde**, un negozio di piante con una vetrina online. Il titolare le manda cinque richieste in un'ora:
+
+- «Quale negozio vende di più?»
+- «Le vendite online stanno salendo?»
+- «Quanta parte delle vendite sono piante da interno?»
+- «Quanti giorni ci mettiamo a consegnare, di solito?»
+- «Chi spende di più in pubblicità vende di più?»
+
+Marta ha dati ovunque e un programma che fa trenta tipi di grafico. La domanda della lezione: **come si sceglie quello giusto?**
+
+<Say who="sensei">Non si comincia dal programma. Non si comincia dai colori. Si comincia dalla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La mappa a cinque strade">
+Quasi ogni domanda sui dati cade in una di cinque famiglie. Ognuna ha il suo grafico di partenza.
+
+| Famiglia | La domanda tipo | Grafico di partenza |
+| --- | --- | --- |
+| Confronto | Quale è più grande tra queste categorie? | Barre |
+| Tendenza | Come cambia nel tempo? | Linee |
+| Composizione | Quanto pesa ogni parte sul totale? | Barra impilata o torta (poche parti) |
+| Distribuzione | Come si spargono i valori? | Istogramma o box plot |
+| Relazione | Due misure vanno insieme? | Dispersione (scatter) |
+
+<Callout kind="regola">
+Prima scrivi la domanda in una frase. Poi scegli la famiglia. Poi il grafico. Mai nell'ordine inverso.
+</Callout>
+
+<Say who="assistente">Una tabella di questo tipo si impara in cinque minuti. Tienila vicino alla tastiera: ti servirà molto spesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Confronto e tendenza">
+**Confronto.** Le vendite di tre negozi in marzo: Centro 82, Stazione 64, Parco 47 (migliaia di euro). Una barra per negozio, lunghezza uguale al valore. Il confronto si legge in un secondo.
+
+**Tendenza.** Le vendite online degli ultimi quattro mesi:
+
+| Mese | Ordini online |
+| --- | --- |
+| Gennaio | 120 |
+| Febbraio | 135 |
+| Marzo | 150 |
+| Aprile | 170 |
+
+I mesi hanno un ordine, quindi si uniscono con una **linea**: la pendenza racconta la salita.
+
+<Callout kind="attenzione">
+Non unire con una linea cose che non hanno un ordine. Una linea tra «Centro», «Stazione» e «Parco» suggerisce un andamento che non esiste.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di otto minuti, con i tipi di grafico più usati:
+
+<Video />
+
+<Say who="sensei">Barre per confrontare. Linee per seguire il tempo. Due regole, mille usi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Composizione, distribuzione, relazione">
+**Composizione.** Delle 400 vendite di aprile, 240 sono piante da interno: 240 su 400 fa il 60%. Con due o tre parti una torta o una barra impilata vanno bene. Con dodici fette no: l'occhio non confronta gli angoli.
+
+**Distribuzione.** I tempi di consegna di 12 ordini, in giorni: 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 5, 9. Un istogramma conta quanti ordini cadono in ogni fascia:
+
+| Fascia | Ordini |
+| --- | --- |
+| 1-2 giorni | 4 |
+| 3-4 giorni | 6 |
+| 5-6 giorni | 1 |
+| 7-8 giorni | 0 |
+| 9-10 giorni | 1 |
+
+La massa sta tra 3 e 4 giorni, e c'è un caso lontano da tutti: 9 giorni. Una sola media (circa 3,4) non lo avrebbe mostrato.
+
+**Relazione.** Ogni punto è una campagna: spesa in pubblicità sull'asse x, vendite sull'asse y. Se i punti salgono insieme c'è una relazione. Ma attenzione: vedere una relazione non prova una causa.
+
+<Say who="assistente">Quando i punti formano una nuvola che sale da sinistra a destra, le due misure vanno insieme. Quando sono sparsi a caso, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il titolare chiede: «Le vendite di ogni mese del 2024 stanno salendo?». Quale grafico scegli?"
+  options={["Un grafico a linee, con i mesi sull'asse x", "Una torta con dodici fette, una per mese", "Una dispersione con i nomi dei mesi sull'asse y", "Un istogramma dei nomi dei mesi"]}
+  answer={0}
+  explain="La domanda è di tendenza nel tempo: i mesi hanno un ordine e la linea ne mostra la pendenza. La torta serve per le parti di un totale e con dodici fette sarebbe illeggibile."
+/>
+
+<Say who="sensei">Famiglia prima, grafico dopo. Se sbagli la famiglia, nessun colore ti salva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prova a ragionare">
+Un collega propone: «Per confrontare quattro città facciamo un grafico a linee, così sembra più dinamico».
+
+<Guided
+  steps={[
+    "La domanda è: quale delle quattro città vende di più? È un confronto tra categorie.",
+    "Le città non hanno un ordine naturale: Milano non viene «prima» di Torino nel tempo.",
+    "Una linea tra le città inventa una tendenza che non c'è: chi legge vede una salita dove non c'è.",
+    "Meglio quattro barre, ordinate dalla più alta alla più bassa. Il grafico è meno «dinamico» ma dice la verità.",
+  ]}
+/>
+
+<Say who="sensei">Un grafico non deve sembrare vivace. Deve rispondere alla domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Nuove domande del titolare, nuovi dati, nuovi grafici da scegliere. Cinque risposte giuste su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-grafici" pass="5/5" retries={3} />
+
+<Say who="sensei">Se hai sbagliato, torna alla tabella delle cinque famiglie. Quasi sempre l'errore è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Cinque famiglie di domande: confronto, tendenza, composizione, distribuzione, relazione.
+- Barre per confrontare, linee per il tempo, torta o barra impilata per poche parti, istogramma per la distribuzione, dispersione per la relazione.
+- Si parte dalla domanda, mai dal programma o dal colore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale grafico per «come cambia nel tempo»?", a: "Linee" },
+    { q: "Quale grafico per «due misure vanno insieme?»", a: "Dispersione (scatter)" },
+    { q: "Perché non unire con una linea quattro città?", a: "Non hanno un ordine: la linea inventa una tendenza" },
+    { q: "Quale grafico per «come si spargono i tempi di consegna?»", a: "Istogramma" },
+  ]}
+/>
+
+<Say who="sensei">Ora sai scegliere. Prossima lezione: barre, linee e torte, e quando funzionano davvero.</Say>
+</Scene>

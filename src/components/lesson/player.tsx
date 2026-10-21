@@ -127,7 +127,10 @@ export function LessonPlayer({
               })}
             </ol>
           </nav>
-          <p className="mt-auto text-xs text-muted">Frecce ← → della tastiera per muoverti tra le schermate.</p>
+          <Link href={`/dojo?lezione=${lessonId}`} className="btn btn-ghost mt-auto min-h-11 text-sm">
+            Chiedi al Sensei su questa lezione
+          </Link>
+          <p className="text-xs text-muted">Frecce ← → della tastiera per muoverti tra le schermate.</p>
         </aside>
 
         <div className="flex min-h-dvh min-w-0 flex-col lg:h-dvh lg:min-h-0">
@@ -156,6 +159,9 @@ export function LessonPlayer({
             <p className="truncate font-mono text-xs uppercase tracking-widest text-muted">
               {lessonId} · {title}
             </p>
+            <Link href={`/dojo?lezione=${lessonId}`} className="flex min-h-11 w-fit items-center text-sm font-semibold text-primary underline underline-offset-2">
+              Chiedi al Sensei su questa lezione
+            </Link>
           </header>
 
           {/* PC: barra sobria con percorso e avanzamento */}

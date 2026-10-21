@@ -1,0 +1,283 @@
+---
+id: D.19.003
+course: dati
+module: 19
+title: "Il tidyverse"
+belt: blu
+duration_min: 9
+prerequisites: [D.19.002]
+objectives:
+  - "Usare select, filter, mutate, arrange e summarise di dplyr per interrogare una tabella"
+  - "Calcolare statistiche per gruppo con group_by e summarise"
+  - "Concatenare i passaggi con la pipe e leggere il risultato"
+video:
+  provider: youtube
+  id: "Gvhkp-Yw65U"
+  start: 0
+  end: 600
+  channel: "Dataslice"
+  title: "Dplyr Essentials (easy data manipulation in R): select, mutate, filter, group_by, summarise, & more"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d19-tidyverse
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere = invece di == dentro filter(): il primo dà un nome, il secondo confronta"
+  - "Dimenticare group_by prima di summarise: si ottiene un solo numero per tutta la tabella"
+  - "Credere che le funzioni modifichino la tabella originale: restituiscono una nuova tabella, da salvare con <-"
+commands: []
+---
+
+<Scene title="Le domande di Giulia">
+Giulia ti scrive: «Voglio solo gli ordini di Roma. Poi i totali per città. Poi i quattro ordini più alti». Sono tre domande sulla stessa tabella.
+
+Con le parentesi quadre della lezione scorsa si può fare, ma il codice diventa subito illeggibile. Il **tidyverse** è un insieme di pacchetti pensati per scrivere analisi che si leggono come frasi. Il cuore è **dplyr**, con pochi verbi:
+
+- `select()` sceglie le **colonne**;
+- `filter()` sceglie le **righe**;
+- `mutate()` crea o cambia una colonna;
+- `arrange()` ordina;
+- `summarise()` riassume molte righe in un numero;
+- `group_by()` dice «fai il calcolo per ogni gruppo».
+
+La domanda del caso: **come si risponde a tre domande senza scrivere tre pagine di codice?**
+
+<Say who="sensei">Un verbo, un'azione. Se sai dire a voce cosa vuoi fare, sai già scrivere il codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pipe, select e filter">
+La **pipe** passa il risultato di un passaggio al successivo. Si scrive `|>` e si legge «poi». Dati di partenza (una tabella tibble, come nella lezione scorsa):
+
+```r
+library(tidyverse)
+
+ordini <- tibble(
+  cliente = c("Anna", "Bruno", "Carla", "Dario", "Elena", "Fabio"),
+  citta   = c("Roma", "Milano", "Roma", "Torino", "Milano", "Roma"),
+  importo = c(40, 20, 40, 10, 30, 40)
+)
+
+ordini |> filter(citta == "Roma")
+```
+
+```text
+# A tibble: 3 × 3
+  cliente citta importo
+  <chr>   <chr>   <dbl>
+1 Anna    Roma       40
+2 Carla   Roma       40
+3 Fabio   Roma       40
+```
+
+Con `select()` tieni solo alcune colonne:
+
+```r
+ordini |> select(cliente, importo)
+```
+
+```text
+# A tibble: 6 × 2
+  cliente importo
+  <chr>     <dbl>
+1 Anna         40
+2 Bruno        20
+3 Carla        40
+4 Dario        10
+5 Elena        30
+6 Fabio        40
+```
+
+Vuoi vedere i verbi in azione in un'altra lezione? Il video è in inglese, con sottotitoli attivabili, e usa gli stessi verbi su una tabella diversa:
+
+<Video />
+
+<Say who="assistente">Nota la riga di intestazione: la tabella dice quante righe e colonne ha e il tipo di ogni colonna. chr è testo, dbl è un numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mutate e arrange">
+`mutate()` crea una nuova colonna dai dati che hai già. Giulia vuole il prezzo con il 10% di sconto:
+
+```r
+ordini |> mutate(sconto = importo * 0.9)
+```
+
+```text
+# A tibble: 6 × 4
+  cliente citta  importo sconto
+  <chr>   <chr>    <dbl>  <dbl>
+1 Anna    Roma        40     36
+2 Bruno   Milano      20     18
+3 Carla   Roma        40     36
+4 Dario   Torino      10      9
+5 Elena   Milano      30     27
+6 Fabio   Roma        40     36
+```
+
+`arrange()` ordina, `desc()` mette dal più alto al più basso. Le due cose si concatenano con la pipe. I quattro ordini più alti:
+
+```r
+ordini |>
+  arrange(desc(importo)) |>
+  slice_head(n = 4)
+```
+
+```text
+# A tibble: 4 × 3
+  cliente citta  importo
+  <chr>   <chr>    <dbl>
+1 Anna    Roma        40
+2 Carla   Roma        40
+3 Fabio   Roma        40
+4 Elena   Milano      30
+```
+
+A parità di importo, le righe restano nell'ordine in cui erano.
+
+<Callout kind="attenzione">
+Nessuna di queste funzioni cambia `ordini`. Ognuna **restituisce una nuova tabella**. Se la vuoi tenere, assegnala: `ordini <- ordini |> mutate(...)`.
+</Callout>
+
+<Say who="sensei">Prima hai la domanda, poi scegli il verbo. Non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Raggruppare e riassumere">
+`summarise()` da sola riassume tutta la tabella. Con `group_by()` prima, riassume **ogni gruppo**. Totale e media per città:
+
+```r
+ordini |>
+  group_by(citta) |>
+  summarise(totale = sum(importo), media = mean(importo))
+```
+
+```text
+# A tibble: 3 × 3
+  citta  totale media
+  <chr>   <dbl> <dbl>
+1 Milano     50    25
+2 Roma      120    40
+3 Torino     10    10
+```
+
+Controlla a mano: a Roma 40 + 40 + 40 = 120, media 40. A Milano 20 + 30 = 50, media 25. A Torino un solo ordine da 10.
+
+Per contare le righe di ogni gruppo c'è la scorciatoia `count()`:
+
+```r
+ordini |> count(citta)
+```
+
+```text
+# A tibble: 3 × 2
+  citta      n
+  <chr>  <int>
+1 Milano     2
+2 Roma       3
+3 Torino     1
+```
+
+I gruppi escono in ordine alfabetico. Per l'ordine per media: `arrange(desc(media))`.
+
+<Callout kind="trucco">
+Una pipeline lunga si legge dall'alto in basso, una riga per verbo. Se non capisci il risultato, **togli le ultime righe** e guarda cosa c'era prima.
+</Callout>
+
+<Say who="assistente">Group_by non cambia i numeri: cambia il modo in cui summarise li guarda. Prima raggruppa, poi riassumi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due pipe e un errore classico">
+Fino a qui abbiamo usato `|>`, la pipe **nativa** di R (dalla versione 4.1, non serve nessun pacchetto). Nei tutorial più vecchi trovi `%>%`, la pipe del pacchetto magrittr, caricata da tidyverse. Per i casi semplici fanno la stessa cosa:
+
+```r
+ordini |> filter(importo >= 30) |> summarise(n = n(), media = mean(importo))
+```
+
+```text
+# A tibble: 1 × 2
+      n media
+  <int> <dbl>
+1     4  37.5
+```
+
+Quattro ordini da almeno 30 euro: 40, 40, 30, 40, somma 150, media 37,5. Con `|>` la funzione che segue deve avere sempre le parentesi (`|> sum()` va bene, `|> sum` no).
+
+L'errore classico di filter è scrivere un solo `=`:
+
+```r
+ordini |> filter(citta = "Roma")
+```
+
+```text
+Error in `filter()`:
+! We detected a named input.
+ℹ This usually means that you've used `=` instead of `==`.
+ℹ Did you mean `citta == "Roma"`?
+```
+
+Un `=` significa «dai questo nome», due `==` significano «sono uguali?». È lo stesso errore che si fa in Python.
+
+<Say who="sensei">Il messaggio dice già la soluzione. Impara a leggere gli errori di R: sono più gentili di quanto sembrano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale pipeline restituisce la media dell'importo per ogni città, dalla più alta alla più bassa?"
+  options={[
+    "ordini |> group_by(citta) |> summarise(media = mean(importo)) |> arrange(desc(media))",
+    "ordini |> summarise(media = mean(importo)) |> group_by(citta)",
+    "ordini |> filter(citta) |> mean(importo)",
+    "ordini |> arrange(desc(importo)) |> select(media)",
+  ]}
+  answer={0}
+  explain="Servono tre passaggi nell'ordine giusto: raggruppare per città, riassumere con la media, ordinare. Nella seconda risposta summarise viene prima di group_by e riduce tutto a un numero. Nella terza filter vuole una condizione e mean non lavora su una tabella. Nella quarta la colonna media non esiste."
+/>
+
+<Say who="assistente">Parti dal risultato che vuoi: una riga per città. Quel «per» ti dice di usare group_by.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui verbi di dplyr, sui gruppi e sulla pipe. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d19-tidyverse" pass="4/5" retries={3} />
+
+<Say who="sensei">Leggi il codice una riga alla volta, come una frase. Se una riga non ha senso, il risultato non lo avrà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `select()` sceglie le colonne, `filter()` le righe, `mutate()` crea colonne, `arrange()` ordina.
+- `group_by()` più `summarise()` calcolano un riassunto per ogni gruppo; `count()` conta le righe.
+- La pipe `|>` (o `%>%`) concatena i passaggi; nessun verbo modifica la tabella originale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa filter(citta == \"Roma\")?", a: "Tiene solo le righe di Roma" },
+    { q: "Che cosa serve prima di summarise per avere un risultato per gruppo?", a: "group_by()" },
+    { q: "Come si legge la pipe |> ?", a: "Come «poi»: passa il risultato al passaggio dopo" },
+    { q: "Perché filter(citta = \"Roma\") dà errore?", a: "Serve == per confrontare; = dà un nome" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: i dati veri sono sporchi. Si leggono, si puliscono, si uniscono.</Say>
+</Scene>

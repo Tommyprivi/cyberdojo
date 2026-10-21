@@ -1,0 +1,156 @@
+---
+id: T.09.002
+course: trading
+module: 9
+title: "Tornare alla media"
+belt: verde
+duration_min: 9
+prerequisites: [T.09.001]
+objectives:
+  - "Spiegare l'idea di mean reversion e calcolare uno z-score semplice"
+  - "Scrivere una regola di ingresso basata sulla distanza dalla media"
+  - "Riconoscere il rischio principale: il prezzo che non torna indietro"
+video:
+  provider: youtube
+  id: "ThH075heC4E"
+  start: 0
+  end: 291
+  channel: "Algovibes"
+  title: "Mean Reversion: The Math Behind the Market Magnet"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t09-mean-reversion
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «è sceso tanto» voglia dire «deve risalire»"
+  - "Dimenticare che la media stessa può spostarsi: il prezzo cambia livello"
+  - "Non fissare in anticipo quando uscire se la scommessa va male"
+commands: []
+---
+
+<Scene title="L'elastico">
+**Luca** guarda il prezzo fittizio di «Beta SpA»: oscilla da settimane intorno a 100. Oggi è a 90, di colpo.
+
+«Si è allontanato troppo. Come un elastico teso, tornerà indietro!» pensa. Ma è davvero così?
+
+La domanda del caso: **come si trasforma l'idea dell'elastico in una regola? E che cosa succede se l'elastico si rompe?**
+
+<Callout kind="attenzione">
+Si può perdere denaro, anche tutto. Questa è un'idea da studiare, non un consiglio: il corso non è consulenza finanziaria.
+</Callout>
+
+<Say who="sensei">Un prezzo non ha obbligo di tornare da nessuna parte. Studiamo l'idea, poi la sua trappola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la mean reversion">
+**Mean reversion** vuol dire «ritorno alla media». L'idea: se il prezzo si allontana molto dal suo livello abituale, spesso torna verso di esso.
+
+La strategia è il contrario del trend following:
+
+- prezzo **molto sotto** la media: si pensa «è basso, può risalire» e si cerca di comprare;
+- prezzo **molto sopra** la media: si pensa «è alto, può scendere».
+
+Funziona in situazioni in cui il livello abituale esiste davvero e resta stabile. In altre, è un'illusione.
+
+<Callout kind="regola">
+Trend following = «continuerà». Mean reversion = «tornerà». Due scommesse opposte: nessuna è giusta sempre.
+</Callout>
+
+Un'altra voce, in inglese con sottotitoli, spiega l'idea con la matematica:
+
+<Video />
+
+<Say who="assistente">Se il tuo elastico è in realtà un treno che parte, la scommessa sul ritorno perde tutto in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare la distanza: lo z-score">
+«Molto lontano» quanto? Si misura con lo **z-score**: quante **deviazioni standard** (la misura tipica di quanto il prezzo ondeggia) il prezzo dista dalla media.
+
+zscore = (prezzo - media) / deviazione standard
+
+Esempio fittizio: media 100, deviazione standard 5.
+
+| prezzo | calcolo | z-score |
+|---|---|---|
+| 104 | (104 - 100) / 5 | 0,8 |
+| 95 | (95 - 100) / 5 | -1,0 |
+| 90 | (90 - 100) / 5 | -2,0 |
+| 110 | (110 - 100) / 5 | 2,0 |
+
+Una regola d'esempio: «cerca di comprare se lo z-score è sotto -2; esci quando torna a 0».
+
+<PythonTerminal code={"media = 100\ndev = 5\nfor prezzo in [104, 95, 90, 110]:\n    z = (prezzo - media) / dev\n    print(prezzo, z)"} />
+
+<Log lines={[
+  "104 0.8",
+  "95 -1.0",
+  "90 -2.0",
+  "110 2.0",
+]} />
+
+<Say who="sensei">Uno z-score di -2 dice «è lontano dalla media». Non dice «tornerà». Sono due cose diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando l'elastico si rompe">
+Torniamo a Luca. Il prezzo è a 90, z = -2: la regola dice di comprare. Scenari **fittizi**:
+
+- **torna a 100**: guadagno di 10 punti per azione. Bene.
+- **continua a scendere a 70**: perdita di 20 punti. Il prezzo non era «basso»: era in un nuovo trend discendente, magari per una notizia vera sull'azienda.
+
+<Callout kind="attenzione">
+Il guaio della mean reversion: **tante piccole vincite e, ogni tanto, una perdita enorme** quando il prezzo non torna. Per questo serve decidere in anticipo **dove si esce se si sbaglia**.
+</Callout>
+
+<Quiz
+  question="Un titolo ha media 100 e deviazione standard 5, oggi vale 85. Che cosa dice lo z-score e che cosa NON dice?"
+  options={["z = -3: è molto lontano dalla media, ma non garantisce che torni", "z = -3: tornerà sicuramente a 100 entro pochi giorni", "z = +3: è sopra la media e quindi conviene vendere", "z = -15: il prezzo è crollato per un errore"]}
+  answer={0}
+  explain="(85 - 100) / 5 = -15 / 5 = -3. Dice quanto è lontano, non che tornerà: il livello medio potrebbe essere cambiato. Chi risponde «tornerà sicuramente» trasforma una misura in una promessa."
+/>
+
+<Say who="assistente">Prima di entrare, chiediti: se mi sbaglio, dove esco? Se non lo sai, non hai una regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Z-score da calcolare e scenari da giudicare. Servono **cinque giuste su cinque**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t09-mean-reversion" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La media è una fotografia del passato, non una legge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La mean reversion scommette che il prezzo lontano dalla media tenda a tornarci; è l'opposto del trend following.
+- Lo z-score = (prezzo - media) / deviazione standard misura la distanza, non prevede il ritorno.
+- Rischio tipico: tante piccole vincite e una perdita grande quando il prezzo non torna. Serve decidere in anticipo l'uscita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo z-score?", a: "Quante deviazioni standard il prezzo dista dalla media" },
+    { q: "Media 100, deviazione 5, prezzo 90: z-score?", a: "-2" },
+    { q: "Rischio tipico della mean reversion?", a: "Il prezzo non torna: una perdita grande dopo tante piccole vincite" },
+    { q: "Z-score di -3 vuol dire che il prezzo risalirà?", a: "No, dice solo che è lontano dalla media" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il momentum. Comprare ciò che è salito di più: davvero?</Say>
+</Scene>

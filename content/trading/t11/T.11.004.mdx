@@ -1,0 +1,158 @@
+---
+id: T.11.004
+course: trading
+module: 11
+title: "La validazione temporale"
+belt: blu
+duration_min: 9
+prerequisites: [T.11.003]
+objectives:
+  - "Spiegare perché i dati di mercato non si mescolano a caso tra addestramento e test"
+  - "Leggere l'output di TimeSeriesSplit e calcolare le finestre a mano"
+  - "Descrivere la validazione walk-forward e il ruolo del gap"
+video:
+  provider: youtube
+  id: "_TbzrO9jErU"
+  start: 0
+  end: 399
+  channel: "The NextGen Ai Frontier"
+  title: "Time Series Cross Validation Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t11-validazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mescolare a caso le righe e prevedere il passato con il futuro"
+  - "Guardare il test molte volte e ritoccare il modello: il test non è più una prova onesta"
+  - "Fidarsi di una sola finestra di test, che può essere fortunata"
+commands: []
+---
+
+<Scene title="Il test truccato">
+Marta addestra un modello su due anni di dati fittizi. Per provarlo, **mescola tutte le righe** e ne mette il 20% da parte come test. Risultato: ottimo.
+
+Poi lo prova davvero, sul mese **dopo**. Risultato: una moneta.
+
+La domanda del caso: **che cosa ha reso «facile» il primo test?**
+
+<Say who="sensei">Nel mercato il tempo ha una direzione. Chi la ignora si inganna da solo. Ricorda: educazione, non consulenza; si può perdere denaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il futuro non si pesca">
+Se mescoli le righe a caso, nell'addestramento finiscono giorni **dopo** quelli del test. Il modello vede il futuro vicino e lo usa per «prevedere» il passato: una forma di perdita di dati.
+
+Nella realtà si fa sempre il contrario: **si prevede il futuro con il passato**. La prova deve fare lo stesso.
+
+<Callout kind="regola">
+Addestramento **prima** nel tempo, test **dopo**. Mai il contrario, mai mescolati.
+</Callout>
+
+La divisione più semplice: i primi 400 giorni su 500 per addestrare (l'80%), gli ultimi 100 per provare.
+
+<Say who="assistente">È come studiare per l'esame: puoi usare i compiti già fatti, non le domande che ancora non ci sono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più finestre: TimeSeriesSplit">
+Una sola finestra di test può essere fortunata o sfortunata. Meglio provare su **più finestre** che avanzano nel tempo. In scikit-learn c'è `TimeSeriesSplit`.
+
+```python
+import numpy as np
+from sklearn.model_selection import TimeSeriesSplit
+
+giorni = np.arange(10)          # giorni 0..9
+for train, test in TimeSeriesSplit(n_splits=3).split(giorni):
+    print("train", train.tolist(), "test", test.tolist())
+```
+
+<Log lines={[
+  "train [0, 1, 2, 3] test [4, 5]",
+  "train [0, 1, 2, 3, 4, 5] test [6, 7]",
+  "train [0, 1, 2, 3, 4, 5, 6, 7] test [8, 9]",
+]} />
+
+Come si calcola: 10 giorni, 3 finestre di prova, quindi si divide in 4 parti uguali (10 diviso 4, parte intera, fa 2 giorni a finestra). Gli ultimi 3 × 2 = 6 giorni sono i test; quello che resta (4 giorni) è il primo addestramento. A ogni giro l'addestramento **cresce** e include tutto il passato.
+
+Vuoi vederlo spiegato da un'altra voce? Meno di sette minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Guarda l'output: il test viene sempre dopo l'addestramento. Se non è così, la prova è falsa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Walk-forward e gap">
+Questa idea si chiama **walk-forward** («camminare in avanti»): addestra sul passato, prova sul periodo successivo, avanza, ripeti.
+
+Se il target guarda **5 giorni avanti**, gli ultimi giorni dell'addestramento condividono informazioni con i primi del test. Per evitarlo si lascia un **gap**, un buco di qualche giorno tra i due. In scikit-learn: `TimeSeriesSplit(n_splits=3, gap=5)`.
+
+<Callout kind="attenzione">
+Il test è una prova **onesta** solo se lo guardi una volta. Se lo guardi, cambi il modello, lo riguardi, lo cambi ancora, il test è diventato parte della scelta: ti racconta solo che ti sei adattato a lui.
+</Callout>
+
+<Callout kind="trucco">
+Guarda **tutte** le finestre, anche la peggiore. Un modello che va bene in cinque finestre su sei e malissimo in una ti dice che il mercato può cambiare faccia.
+</Callout>
+
+<Say who="assistente">Il test è il bigliettino con la risposta: se lo guardi prima, hai già barato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con 10 giorni numerati 0-9 e TimeSeriesSplit(n_splits=3), che cosa c'è nel PRIMO test e quanto è lungo l'addestramento dell'ultimo giro?"
+  options={[
+    "Test: giorni 4 e 5. Ultimo addestramento: 8 giorni (da 0 a 7)",
+    "Test: giorni 0 e 1. Ultimo addestramento: 4 giorni",
+    "Test: giorni 8 e 9. Ultimo addestramento: 10 giorni",
+    "Test: giorni 4 e 5. Ultimo addestramento: 4 giorni",
+  ]}
+  answer={0}
+  explain="Le parti sono 4 da 2 giorni: il primo test sta dopo i primi 4 giorni (4 e 5). L'addestramento cresce a ogni giro: nell'ultimo ha tutti i giorni fino al 7, cioè 8 giorni. Chi risponde 4 dimentica che l'addestramento si allunga."
+/>
+
+<Say who="sensei">Fai i conti sulle dita se serve. Capire la finestra è più utile che imparare il comando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su divisioni temporali, finestre e gap.
+
+<Practice generator="t11-validazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nel trading, una prova onesta vale più di cento prove belle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Nelle serie temporali l'addestramento sta prima del test, mai mescolati: si prevede il futuro con il passato.
+- TimeSeriesSplit e il walk-forward provano il modello su più finestre che avanzano; l'addestramento cresce a ogni giro.
+- Il gap evita sovrapposizioni con target su più giorni; il test si guarda una volta sola, e si guardano tutte le finestre, anche la peggiore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché non si mescolano le righe nel test?", a: "Perché il modello userebbe il futuro per prevedere il passato" },
+    { q: "Che cos'è il walk-forward?", a: "Addestrare sul passato, provare sul periodo dopo e avanzare nel tempo" },
+    { q: "A cosa serve il gap?", a: "A separare addestramento e test quando i target su più giorni si sovrappongono" },
+    { q: "Che cosa succede se guardi il test più volte e ritocchi il modello?", a: "Il test perde valore: è diventato parte della scelta" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il primo modello vero, semplice, di classificazione. E con il confronto onesto alla baseline.</Say>
+</Scene>

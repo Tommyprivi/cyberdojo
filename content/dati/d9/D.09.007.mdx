@@ -1,0 +1,165 @@
+---
+id: D.09.007
+course: dati
+module: 9
+title: "Qualità e monitoraggio"
+belt: arancione
+duration_min: 8
+prerequisites: [D.09.006]
+objectives:
+  - "Scrivere controlli semplici sui dati: duplicati, valori mancanti, intervalli"
+  - "Distinguere i controlli di freschezza e di volume"
+  - "Spiegare che cos'è l'osservabilità dei dati e come evitare gli avvisi inutili"
+video:
+  provider: youtube
+  id: "HDNPI0vegwI"
+  start: 0
+  end: 600
+  channel: "Software Engineering With Scott Moore"
+  title: "Data Observability Explained: The Key to Trusted Data Pipelines"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d09-qualita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Considerare i dati corretti perché la pipeline è «verde»: può finire senza errori e produrre numeri sbagliati"
+  - "Impostare soglie di avviso troppo sensibili: troppi allarmi e nessuno li guarda più"
+  - "Controllare solo la forma (colonne presenti) e non il contenuto (valori plausibili)"
+commands: []
+---
+
+<Scene title="Tutto verde, numeri sbagliati">
+Giovedì il capo di **Tavola Bella** vede che le vendite sono crollate: **12 ordini** invece dei soliti mille. Giulia controlla l'orchestratore: tutti i compiti sono **verdi**, nessun errore.
+
+Il giorno dopo si scopre che il sito aveva smesso di mandare ordini per un guasto: la pipeline aveva copiato, correttamente, quasi niente.
+
+La domanda del caso: **come si accorge una pipeline che i dati sono sbagliati, anche se non c'è alcun errore?**
+
+<Say who="sensei">Una pipeline può essere perfetta e il dato inutile. Verde vuol dire «ha girato», non «è giusto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Test sui dati">
+Come il codice si prova con i test, anche i **dati** si controllano. Controlli classici:
+
+- **non vuoto**: il campo `id` non deve mai mancare;
+- **unico**: lo stesso `id` non compare due volte;
+- **intervallo**: il totale non è negativo, l'età non è 250;
+- **valori ammessi**: lo stato è solo «nuovo», «spedito» o «annullato»;
+- **coerenza**: ogni ordine ha un cliente che esiste.
+
+Esempio: cerchiamo duplicati in questi ordini.
+
+| id | citta | totale |
+|----|--------|--------|
+| 1 | Roma | 20 |
+| 2 | Milano | 35 |
+| 3 | Roma | 15 |
+| 3 | Roma | 15 |
+| 4 | Torino | 40 |
+
+<Log lines={[
+  "SELECT id, COUNT(*) AS n",
+  "FROM ordini",
+  "GROUP BY id",
+  "HAVING COUNT(*) > 1;",
+  "",
+  "id  n",
+  "--  -",
+  "3   2",
+]} />
+
+Un test che trova righe **ha fallito**: il risultato giusto è una tabella vuota.
+
+<Say who="assistente">Il test è una domanda a cui vuoi sentirti rispondere «niente da segnalare».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Freschezza e volume">
+Due controlli rispondono al caso del giovedì:
+
+- **Freschezza**: quanto è vecchio l'ultimo dato? Se il sito dovrebbe mandare ordini ogni minuto e l'ultimo è di 6 ore fa, qualcosa non va.
+- **Volume**: quante righe sono arrivate oggi rispetto al solito? Mille al giorno e oggi dodici: allarme.
+
+<Callout kind="trucco">
+Per il volume non usare un numero fisso: confronta con lo **storico** (stesso giorno della settimana, ultime settimane). Il sabato è diverso dal lunedì.
+</Callout>
+
+Un'altra voce parla di tutto questo come di **osservabilità dei dati**:
+
+<Video />
+
+<Say who="sensei">Fresco e pieno: due domande semplici, che avrebbero salvato il giovedì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Osservabilità e avvisi">
+L'**osservabilità dei dati** è la capacità di vedere in ogni momento **lo stato di salute** dei dati: freschezza, volume, forma delle tabelle (colonne cambiate?), distribuzione dei valori e **da dove vengono** (la «linea di discendenza»).
+
+Quando qualcosa non va, parte un **avviso** (email, messaggio in chat) a una persona precisa.
+
+<Callout kind="attenzione">
+Troppi avvisi inutili e la squadra smette di leggerli. È come il pastore che gridava «al lupo»: quando il lupo arriva davvero, nessuno guarda. Meglio pochi avvisi, importanti, con un **responsabile** e un **che cosa fare**.
+</Callout>
+
+<Say who="assistente">Un avviso utile dice: che cosa si è rotto, da quanto, chi se ne occupa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Ogni sera una pipeline carica gli incassi. Un giorno la valuta del file cambia da euro a centesimi senza avviso: i totali risultano 100 volte più grandi, ma nessun compito va in errore. Quale controllo l'avrebbe scoperto?"
+  options={[
+    "Un controllo sull'intervallo o sulla distribuzione dei totali rispetto allo storico",
+    "Un controllo sul fatto che la pipeline sia terminata",
+    "Un controllo sul numero di colonne",
+    "Nessuno: sono cose che non si possono scoprire",
+  ]}
+  answer={0}
+  explain="Le colonne e il numero di righe sono corretti, e la pipeline finisce senza errori. Solo guardare il contenuto (totali ben oltre il solito) rivela il problema."
+/>
+
+<Say who="sensei">Guarda il dato, non solo il tubo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari: quale controllo avrebbe scoperto il guaio, e che cosa è andato storto.
+
+<Practice generator="d09-qualita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Fidarsi dei dati va guadagnato ogni giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pipeline «verde» può produrre dati sbagliati: servono test sul contenuto.
+- Controlli utili: non vuoto, unico, intervalli, valori ammessi, coerenza, freschezza, volume.
+- Pochi avvisi, chiari, con un responsabile: troppi avvisi non vengono più letti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un controllo di freschezza?", a: "Verifica quanto è vecchio l'ultimo dato arrivato" },
+    { q: "Che cos'è un controllo di volume?", a: "Confronta quante righe sono arrivate con il solito" },
+    { q: "Perché confrontare il volume con lo storico?", a: "Il normale cambia con il giorno e il periodo" },
+    { q: "Che cos'è l'osservabilità dei dati?", a: "Vedere in ogni momento la salute dei dati: freschezza, volume, forma, origine" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: chi può vedere i dati, e quanto costano. Costi e sicurezza.</Say>
+</Scene>

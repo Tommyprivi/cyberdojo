@@ -1,0 +1,177 @@
+---
+id: T.04.005
+course: trading
+module: 4
+title: "Autocorrelazione e rumore"
+belt: gialla
+duration_min: 8
+prerequisites: [T.04.004]
+objectives:
+  - "Spiegare che cos'è l'autocorrelazione di ordine 1 e leggerne il valore"
+  - "Distinguere l'autocorrelazione dei prezzi (quasi sempre alta) da quella dei rendimenti (di solito vicina a zero)"
+  - "Usare la soglia di rumore di circa 2 diviso la radice di n per non credere a un segnale casuale"
+video:
+  provider: youtube
+  id: "vK5sWRmhVgk"
+  start: 0
+  end: 227
+  channel: "Practical stats"
+  title: "What is Autocorrelation? Time Series Intuition, Stationarity With Examples"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: t04-autocorrelazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare l'autocorrelazione sui prezzi: viene sempre alta e non dice niente di utile"
+  - "Vedere uno schema nel grafico dove c'è solo rumore"
+  - "Credere che un valore piccolo, come 0,1 su cento giorni, sia un segnale"
+commands: []
+---
+
+<Scene title="Ieri sale, oggi sale?">
+Lucia ha un'idea: «Se un titolo fittizio sale oggi, è più probabile che salga anche domani. Costruisco una regola su questo».
+
+Ma i primi giorni sembra funzionare, poi smette. Prova a scommettere sul contrario, e succede lo stesso.
+
+La domanda del caso: **come si misura se il rendimento di oggi dipende da quello di ieri, e come si distingue un segnale da un po' di fortuna?**
+
+<Callout kind="attenzione">
+Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. Dati inventati e nessun uso di soldi veri.
+</Callout>
+
+<Say who="sensei">I mercati non regalano niente. Chi vede uno schema in ogni grafico trova segnali ovunque, anche dove non c'è niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'autocorrelazione">
+L'**autocorrelazione** di ordine 1 è la correlazione di una serie **con se stessa, spostata di un giorno**: il rendimento di oggi contro quello di ieri.
+
+- **Positiva**: dopo un giorno su, tende a seguire un altro su (e dopo uno giù, un altro giù). Si chiama **trend**.
+- **Negativa**: dopo un giorno su tende a seguire uno giù. Si chiama **inversione**.
+- **Vicina a zero**: ieri non dice niente su oggi.
+
+Esempio estremo, rendimenti fittizi che si alternano:
+
+<PythonTerminal code={"import statistics\n\nr = [1, -1, 1, -1, 1, -1]\noggi = r[1:]\nieri = r[:-1]\nprint(round(statistics.correlation(oggi, ieri), 2))"} />
+
+Stampa −1.0: dopo un +1 viene sempre un −1.
+
+<Say who="assistente">Il trucco è nel codice: la serie di oggi parte dal secondo giorno, quella di ieri finisce un giorno prima. Si appaiano giorni vicini.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I prezzi mentono">
+Tieni a mente la trappola: l'autocorrelazione dei **prezzi** è quasi sempre altissima.
+
+Prezzi fittizi: 100, 101, 102, 103, 104, 105. Ieri e oggi sono sempre molto simili: autocorrelazione **+1**. Ma è solo perché il prezzo di oggi è il prezzo di ieri più un piccolo cambiamento.
+
+<Log lines={[
+  "prezzi:    100 101 102 103 104 105",
+  "autocorr. dei prezzi: 1.0 (inutile)",
+  "rendimenti: +1% +0,99% +0,98% ...  (quelli da guardare)",
+]} />
+
+<Callout kind="regola">
+L'autocorrelazione si calcola sui **rendimenti**, non sui prezzi. Nei mercati liquidi, quella dei rendimenti giornalieri è di solito **molto vicina a zero**: ieri aiuta pochissimo a prevedere oggi.
+</Callout>
+
+<Say who="sensei">Un prezzo che somiglia a quello di ieri non è una scoperta. È il minimo sindacale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La volatilità viene a ondate">
+Anche se il **segno** dei rendimenti è difficile da prevedere, la loro **ampiezza** no. Dopo un giorno molto mosso, di solito ne seguono altri mossi. Dopo giorni calmi, giorni calmi. Si chiama **volatilità a grappoli** (volatility clustering).
+
+Quindi: i rendimenti sono poco autocorrelati, ma il loro **valore assoluto** (o il quadrato) lo è molto di più.
+
+<Callout kind="curiosita">
+Per questo, nella lezione sulla volatilità, la regola della radice di 252 era solo un'approssimazione: i giorni non sono davvero indipendenti nell'ampiezza.
+</Callout>
+
+Vuoi sentire l'idea da un'altra voce? Meno di quattro minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Non sai se domani sale o scende, ma puoi aspettarti che, se oggi è stato un giorno agitato, domani lo sia ancora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rumore">
+Con pochi dati, anche una serie **casuale** mostra un'autocorrelazione diversa da zero, per pura fortuna. Come distinguere?
+
+Regola pratica (approssimata, per rendimenti indipendenti): l'autocorrelazione è «rumore» se sta tra −2/√n e +2/√n, con n numero di giorni. Più precisamente il limite è 1,96/√n.
+
+<Log lines={[
+  "n = 100 giorni:  limite = 1,96 / 10 = 0,196",
+  "n = 400 giorni:  limite = 1,96 / 20 = 0,098",
+  "n = 10.000 giorni: limite = 1,96 / 100 = 0,0196",
+]} />
+
+Quindi con 100 giorni un'autocorrelazione di **0,10** è **dentro il rumore**: non è un segnale. Con 400 giorni, invece, 0,10 sta appena fuori, ma da solo non basta per costruire una strategia: i costi la mangerebbero facilmente.
+
+<Callout kind="attenzione">
+Se provi molti ritardi (lag 1, 2, 3, … 20), qualcuno uscirà dal limite per caso: circa 1 su 20, al 95%. È il tema della prossima lezione.
+</Callout>
+
+<Say who="sensei">Un numero che sembra grande può essere rumore. Guarda sempre quanti giorni hai e quanto rumore ti devi aspettare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Su 100 giorni di rendimenti, un'autocorrelazione di ordine 1 vale 0,12. Il limite del rumore è circa 0,196. Che cosa concludi?"
+  options={[
+    "Il valore è dentro il rumore: non è un segnale affidabile",
+    "È un segnale forte: si può costruire una strategia",
+    "La serie è sicuramente trend, perché 0,12 è positivo",
+    "Si deve ripetere il calcolo sui prezzi, che è più preciso",
+  ]}
+  answer={0}
+  explain="0,12 è minore di 0,196: con soli 100 giorni una serie casuale può dare facilmente un valore così. Calcolare sui prezzi darebbe un valore alto e inutile."
+/>
+
+<Say who="sensei">Un valore dentro il rumore non è un'informazione. È un'illusione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su autocorrelazione, prezzi contro rendimenti e soglia di rumore. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="t04-autocorrelazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Saper dire «è solo rumore» ti risparmia molte strategie inutili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Autocorrelazione di ordine 1: correlazione tra il rendimento di oggi e quello di ieri; si calcola sui rendimenti, non sui prezzi.
+- I rendimenti giornalieri sono di solito poco autocorrelati, ma la volatilità viene a grappoli.
+- Dentro ±1,96/√n (circa ±2/√n) si è nel rumore: con 100 giorni, ±0,196.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'autocorrelazione di ordine 1?", a: "La correlazione di una serie con se stessa spostata di un giorno" },
+    { q: "Perché non si calcola sui prezzi?", a: "Perché è quasi sempre alta e non dice niente di utile" },
+    { q: "Limite del rumore con n = 100 giorni?", a: "Circa 0,196 (1,96 / 10)" },
+    { q: "Che cosa vuol dire volatilità a grappoli?", a: "Giorni agitati seguiti da giorni agitati, calmi da calmi" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: campioni e significatività. Quanti dati servono per credere a un risultato?</Say>
+</Scene>

@@ -1,0 +1,153 @@
+---
+id: D.10.003
+course: dati
+module: 10
+title: "Funnel e retention"
+belt: verde
+duration_min: 8
+prerequisites: [D.10.002]
+objectives:
+  - "Calcolare i tassi passo-passo di un imbuto di conversione"
+  - "Trovare il passaggio in cui si perde di più"
+  - "Calcolare e leggere la ritenzione (retention)"
+video:
+  provider: youtube
+  id: "5igY4JpkF34"
+  start: 0
+  end: 600
+  channel: "Alice Marmieri"
+  title: "Cos'è il Funnel di Conversione?"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d10-funnel
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Calcolare ogni tasso sul totale iniziale invece che sul passo precedente"
+  - "Concentrarsi sul passo con più persone perse invece che sul tasso peggiore (o sul più facile da migliorare)"
+  - "Confondere la ritenzione (chi torna) con la conversione (chi compra la prima volta)"
+commands: []
+---
+
+<Scene title="Dove spariscono">
+Marzo, **Tavola Bella**: 10.000 persone visitano il sito, ma solo 300 comprano. Le altre 9.700 dove si fermano? Alla pagina del prodotto? Al carrello? Alla cassa?
+
+Giulia non sa dove intervenire, e senza saperlo ogni idea è una scommessa. La domanda del caso: **in quale passaggio si perdono più clienti?**
+
+<Say who="sensei">Non si ripara «il sito». Si trova il buco preciso. Per trovarlo serve un imbuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'imbuto">
+Il **funnel** («imbuto») è la strada che un cliente percorre, a passi. Ad ogni passo qualcuno si ferma, quindi i numeri scendono sempre.
+
+<Log lines={[
+  "Passo                          Persone",
+  "1  Visitano il sito             10.000",
+  "2  Guardano un prodotto          4.000",
+  "3  Mettono nel carrello          1.000",
+  "4  Arrivano al pagamento           400",
+  "5  Completano l'acquisto           300",
+]} />
+
+Vuoi vederlo spiegato da un'altra voce? In italiano, usa solo i primi minuti:
+
+<Video />
+
+<Say who="assistente">Cinque passi, cinque numeri. Il primo è sempre il più grande: l'imbuto si restringe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tassi passo-passo">
+Il **tasso di passaggio** si calcola sul passo **prima**, non sul totale di partenza.
+
+- Da 1 a 2: 4.000 ÷ 10.000 = **40%**
+- Da 2 a 3: 1.000 ÷ 4.000 = **25%**
+- Da 3 a 4: 400 ÷ 1.000 = **40%**
+- Da 4 a 5: 300 ÷ 400 = **75%**
+
+Il **tasso complessivo** è la conversione di tutto l'imbuto: 300 ÷ 10.000 = **3%**.
+
+<Callout kind="attenzione">
+Errore classico: dividere 400 per 10.000 e dire «il pagamento è al 4%». Quello è il tasso sul totale, non il tasso del passaggio. Il passaggio da 3 a 4 vale 40%.
+</Callout>
+
+<Say who="sensei">Ogni passo si misura contro il suo precedente. Altrimenti i numeri più in basso sembrano sempre disastrosi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove intervenire">
+Il tasso più basso è il **25%**: da «guardano un prodotto» a «mettono nel carrello». Tre persone su quattro guardano e se ne vanno.
+
+<Quiz
+  question="Nell'imbuto di Tavola Bella, qual è il passaggio con il tasso più basso?"
+  options={["Dal prodotto al carrello (25%)", "Dalla visita al prodotto (40%)", "Dal pagamento all'acquisto (75%)", "Dal carrello al pagamento (40%)"]}
+  answer={0}
+  explain="25% è il più basso. Chi sbaglia spesso sceglie la visita (che perde 6.000 persone, il numero assoluto più alto) ma il tasso di quel passo è 40%, migliore."
+/>
+
+<Callout kind="trucco">
+Guarda i **tassi** per trovare il punto debole, poi gli **assoluti** per capire quanto vale sistemarlo.
+</Callout>
+
+<Say who="assistente">Un indizio: un prodotto guardato e non messo nel carrello può voler dire foto poco chiare o prezzo sorprendente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La ritenzione">
+Fin qui abbiamo visto chi compra la **prima** volta. Ma un negozio vive di chi **torna**. La **ritenzione** (retention) è la percentuale di clienti che tornano dopo un certo tempo.
+
+Esempio: 100 clienti nuovi a gennaio.
+
+- A febbraio ne comprano ancora 40 → ritenzione a 1 mese: **40%**
+- A marzo ne comprano 30 → ritenzione a 2 mesi: **30%**
+
+Il numero è sempre calcolato sul gruppo di partenza (100), non su quelli del mese prima.
+
+<Callout kind="curiosita">
+Il contrario della ritenzione è l'**abbandono** (in inglese *churn*): se la ritenzione è 40%, l'abbandono è 60%.
+</Callout>
+
+<Say who="sensei">Un cliente che torna costa meno di uno nuovo. Per questo la ritenzione conta quanto la conversione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Ricontrolla i numeri: in giugno un altro imbuto, con numeri che tornano.
+
+<Practice generator="d10-funnel" pass="5/5" retries={3} />
+
+<Say who="sensei">Tassi sul passo precedente, ritenzione sul gruppo di partenza. Sono le due regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il funnel è una sequenza di passi: ogni tasso si calcola sul passo precedente.
+- Il tasso più basso indica il punto debole; i numeri assoluti dicono quanto vale intervenire.
+- La ritenzione è la quota del gruppo di partenza che torna; l'abbandono è il suo contrario.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "1.000 al carrello, 400 al pagamento: tasso del passaggio?", a: "40%" },
+    { q: "Come si trova il punto debole di un funnel?", a: "Si cerca il tasso di passaggio più basso" },
+    { q: "100 clienti, 40 tornano: ritenzione?", a: "40%" },
+    { q: "Ritenzione 40%: quanto è l'abbandono?", a: "60%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: guardare la ritenzione per gruppi di iscritti nello stesso mese. Si chiama analisi di coorte.</Say>
+</Scene>

@@ -1,0 +1,223 @@
+---
+id: D.21.006
+course: dati
+module: 21
+title: "Metriche coerenti e rapporto con la BI"
+belt: marrone
+duration_min: 10
+prerequisites: [D.21.005]
+objectives:
+  - "Spiegare che cos'è un livello semantico e perché dà una definizione unica a ogni metrica"
+  - "Comunicare un cambiamento di un modello senza sorprendere chi lo usa"
+  - "Riconoscere i segnali di osservabilità (freschezza, test, volumi) e le cause di costo di una query"
+video:
+  provider: youtube
+  id: "DS7Ub_CmBR0"
+  start: 0
+  end: 600
+  channel: "dbt Labs"
+  title: "dbt Product Spotlight: dbt Semantic Layer"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d21-metriche
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Definire la stessa metrica dentro ogni dashboard: al primo cambio di regola i numeri divergono"
+  - "Rinominare o togliere una colonna di un mart senza avvisare: le dashboard si rompono in silenzio"
+  - "Usare SELECT * su tabelle enormi: si pagano e si aspettano anche le colonne che non servono"
+commands: []
+---
+
+<Scene title="Il ritorno dei due ricavi">
+Torniamo ai ricavi di marzo. Ora il progetto dbt è in ordine: modelli, test, revisioni. Eppure lunedì la dashboard del capo dice **90,00** e il foglio finanza dice **82,50**.
+
+Che cosa è successo? Nella dashboard, un grafico somma l'importo di **tutti** gli ordini: 12,50 + 18,00 + 7,50 + 30,00 + 22,00 = 90,00. Il mart `fct_ordini` conteneva già solo i pagati (82,50), ma qualcuno ha ricostruito il calcolo dalla tabella degli ordini grezzi dentro lo strumento di BI.
+
+La domanda del caso: **come si fa perché ogni strumento usi la stessa definizione di «ricavi»?**
+
+<Say who="sensei">I modelli puliti non bastano se la regola si può riscrivere dentro ogni grafico. Il problema è l'ultimo metro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il livello semantico">
+Il **livello semantico** è un posto dove si definiscono **una volta** le metriche (ricavi, clienti attivi, ordini medi) e le dimensioni con cui si possono tagliare (mese, città). Gli strumenti di BI chiedono la metrica per nome e il livello semantico scrive la query.
+
+Con dbt questo si fa con **MetricFlow**, in file YAML accanto ai modelli. Sintassi per dbt Core 1.8:
+
+<Log lines={[
+  "semantic_models:",
+  "  - name: ordini",
+  "    model: ref('fct_ordini')",
+  "    defaults:",
+  "      agg_time_dimension: data_ordine",
+  "    entities:",
+  "      - name: ordine",
+  "        type: primary",
+  "        expr: id_ordine",
+  "    dimensions:",
+  "      - name: data_ordine",
+  "        type: time",
+  "        type_params:",
+  "          time_granularity: day",
+  "      - name: citta",
+  "        type: categorical",
+  "    measures:",
+  "      - name: importo_totale",
+  "        agg: sum",
+  "        expr: importo",
+  "",
+  "metrics:",
+  "  - name: ricavi",
+  "    label: Ricavi",
+  "    description: Somma degli importi degli ordini pagati, in euro.",
+  "    type: simple",
+  "    type_params:",
+  "      measure: importo_totale",
+]} caption="La metrica «ricavi» è definita qui, e solo qui." />
+
+Chi chiede `ricavi` per mese riceve **82,50** per marzo; per città, Torino 60,50 e Bari 22,00 (la somma torna: 60,50 + 22,00 = 82,50). Nessuno riscrive la regola.
+
+<Callout kind="attenzione">
+La sintassi del livello semantico è cambiata più volte tra le versioni di dbt (le versioni recenti la rivedono). Il concetto resta lo stesso; la sintassi esatta va controllata nella documentazione della **versione che usi**. Inoltre, collegare il livello semantico direttamente agli strumenti di BI è una funzione del servizio a pagamento dbt Cloud; con dbt Core si può usare MetricFlow da riga di comando.
+</Callout>
+
+<Callout kind="curiosita">
+Non serve sempre uno strumento nuovo: anche senza livello semantico si ottiene molto con un **mart pulito** e una regola: «in BI si leggono solo i marts, mai le tabelle grezze». Alternative gratuite per la BI: Metabase e Looker Studio.
+</Callout>
+
+<Video />
+
+<Say who="assistente">Il video di dbt Labs presenta l'idea del livello semantico. È in inglese: usa i sottotitoli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Comunicare i cambiamenti">
+Una definizione unica ha un effetto collaterale: se la cambi, cambia **per tutti**. Si deve dire prima.
+
+Un buon avviso risponde a quattro domande:
+
+- **Che cosa** cambia («ricavi» ora esclude i rimborsi).
+- **Perché** (la finanza li considera storni).
+- **Da quando** e che effetto ha sui numeri di prima (marzo passa da 82,50 a 79,50 se il rimborso è di 3,00 euro).
+- **Chi** contattare per domande.
+
+Per un cambio che rompe qualcosa (togliere o rinominare una colonna) dbt permette le **versioni dei modelli**, con una data di ritiro:
+
+<Log lines={[
+  "models:",
+  "  - name: fct_ordini",
+  "    latest_version: 2",
+  "    versions:",
+  "      - v: 1",
+  "        deprecation_date: 2027-01-31",
+  "      - v: 2",
+]} caption="La versione 1 resta disponibile fino al 31 gennaio 2027: chi la usa ha il tempo di passare alla 2." />
+
+<Callout kind="regola">
+Mai togliere una colonna usata da altri senza un periodo di preavviso. Prima si avvisa, poi si affianca la versione nuova, infine si ritira la vecchia.
+</Callout>
+
+<Say who="sensei">Il tuo modello è un servizio, e chi lo usa è un cliente. Si avvisa prima, non dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Osservabilità: accorgersi prima degli altri">
+Un modello perfetto che non si aggiorna da due giorni è un modello sbagliato. L'**osservabilità** è guardare lo stato dei dati, non solo del codice. Quattro segnali:
+
+| Segnale | Domanda | Come con dbt |
+|---|---|---|
+| **freschezza** | i dati sono recenti? | `dbt source freshness` |
+| **test** | le regole valgono? | `dbt build`, avvisi alla squadra se falliscono |
+| **volumi** | ci sono più o meno righe del solito? | test sul numero di righe |
+| **esecuzioni** | i modelli girano e in quanto tempo? | file `run_results.json`, prodotto a ogni esecuzione |
+
+La freschezza si dichiara sulla sorgente:
+
+<Log lines={[
+  "sources:",
+  "  - name: negozio",
+  "    tables:",
+  "      - name: ordini",
+  "        loaded_at_field: caricato_il",
+  "        freshness:",
+  "          warn_after: {count: 12, period: hour}",
+  "          error_after: {count: 24, period: hour}",
+]} caption="Avviso dopo 12 ore senza dati nuovi, errore dopo 24." />
+
+<Say who="assistente">Il test che scatta alle sei del mattino ti fa risparmiare la telefonata delle nove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il costo delle query">
+Nel magazzino cloud ogni query ha un costo: in alcuni (BigQuery) si paga per **quantità di dati letti**, in altri (Snowflake) per il **tempo di calcolo**. Tre abitudini fanno la differenza:
+
+- **Leggere solo le colonne che servono**: `select id_ordine, importo` costa meno di `select *` su una tabella con cinquanta colonne.
+- **Filtrare per data**: leggere solo marzo costa meno che leggere tre anni e poi filtrare.
+- **Scegliere bene la materializzazione**: un modello pesante letto cento volte al giorno conviene come **table** (si calcola una volta); un modello enorme che cresce ogni giorno conviene **incremental**; uno quasi mai letto può restare **view**.
+
+<Callout kind="trucco">
+Prima di ottimizzare, misura: guarda quali modelli durano di più nei risultati dell'esecuzione. Di solito pochi modelli causano quasi tutto il costo.
+</Callout>
+
+<Say who="sensei">Ottimizza ciò che pesa, non ciò che ti sembra brutto. Prima i numeri, poi il codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La finanza decide che i ricavi devono escludere i rimborsi. Tre dashboard in BI calcolano i ricavi ognuna con una propria formula. Che cosa avrebbe evitato il problema?"
+  options={[
+    "Definire «ricavi» una volta nel livello semantico (o in un mart) e far leggere la metrica a tutte le dashboard",
+    "Chiedere a ogni autore di aggiornare la propria formula con più attenzione",
+    "Togliere i rimborsi dalla dashboard più importante e lasciare le altre",
+    "Spostare le dashboard su un altro strumento di BI",
+  ]}
+  answer={0}
+  explain="Con la formula ripetuta in tre posti, ogni cambio di regola richiede tre modifiche e basta dimenticarne una. Una definizione unica si cambia una volta e tutti la ereditano. Cambiare strumento non risolve: la regola resterebbe copiata."
+/>
+
+<Say who="sensei">Una metrica ha un indirizzo solo. Dove abita, lo sanno tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Metriche, avvisi, controlli e costi: scenari da team di dati.
+
+<Practice generator="d21-metriche" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Questo è un lavoro di fiducia: i numeri giusti, e uguali per tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il livello semantico definisce ogni metrica una volta sola (con MetricFlow in dbt): gli strumenti di BI la leggono per nome e non riscrivono la regola.
+- Un cambio di definizione si comunica prima: che cosa, perché, da quando, effetto sui numeri passati. I cambiamenti che rompono si fanno con versioni e data di ritiro.
+- Osservabilità (freschezza, test, volumi, esecuzioni) e costo (colonne, filtri, materializzazione) si misurano prima di ottimizzare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve il livello semantico?", a: "A definire una metrica una volta e farla usare da tutti gli strumenti" },
+    { q: "Che cosa si comunica quando una metrica cambia?", a: "Che cosa, perché, da quando, effetto sui numeri passati, chi contattare" },
+    { q: "Che cosa controlla la freschezza di una sorgente?", a: "Da quanto tempo non arrivano dati nuovi" },
+    { q: "Come si riduce il costo di una query?", a: "Leggendo solo le colonne necessarie e filtrando per data" },
+  ]}
+/>
+
+<Say who="sensei">Hai finito il ramo di analytics engineering. Giulia e Paolo ora avrebbero lo stesso numero, e saprebbero perché. Questo è il mestiere.</Say>
+</Scene>

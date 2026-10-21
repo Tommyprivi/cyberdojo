@@ -1,0 +1,223 @@
+---
+id: F.04.006
+course: fondamenta
+module: 4
+title: "Bash scripting 2: cicli, funzioni, script prudenti"
+belt: gialla
+duration_min: 10
+prerequisites: [F.04.005]
+objectives:
+  - "Usare gli argomenti $1 e $#, i cicli for e while e le funzioni"
+  - "Leggere un codice di uscita con $? e restituirlo con exit"
+  - "Scrivere script prudenti con set -euo pipefail e il quoting"
+video:
+  provider: youtube
+  id: "OKy685Ze5Oc"
+  start: 0
+  end: 600
+  channel: "The Linux Nerd"
+  title: "scripting Bash: i cicli negli script Bash"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-bash2
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Il codice di uscita 0 significa «tutto bene», qualunque altro numero significa errore: è il contrario di come si pensa al «vero» e «falso»"
+  - "Senza virgolette, una variabile con spazi diventa più argomenti: usa sempre \"$variabile\""
+  - "Con set -e uno script si ferma al primo comando che fallisce, anche un grep -c che trova zero righe: va gestito con || true"
+commands: []
+---
+
+<Scene title="Uno script per tutti i log">
+Lo script della scorsa lezione funziona solo con `accessi.log`. Ma al SOC i log sono tanti: uno per ogni server. Vuoi **un solo script** a cui dire quale file guardare.
+
+Inoltre vuoi che si comporti bene quando qualcosa va storto: file mancante, nome sbagliato, comando che fallisce. Uno script che continua come se niente fosse può combinare guai.
+
+<Say who="sensei">Uno script serio fa tre cose: prende i dati da fuori, controlla che siano buoni, e si ferma se qualcosa non torna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Argomenti e codici di uscita">
+Quello che scrivi dopo il nome dello script sono gli **argomenti**. Dentro lo script: **`$1`** è il primo, **`$2`** il secondo, **`$#`** dice **quanti** sono, **`$0`** è il nome dello script.
+
+Ogni comando, quando finisce, lascia un **codice di uscita**: **0 = tutto bene**, **qualsiasi altro numero = errore**. Si legge con **`$?`**. Lo script lo restituisce con **`exit N`**.
+
+<Log lines={[
+  "studente@lab:~$ grep -q FALLITO accessi.log; echo $?",
+  "0",
+  "studente@lab:~$ grep -q ZZZ accessi.log; echo $?",
+  "1",
+  "studente@lab:~$ grep -q FALLITO accessi.log && echo \"trovato\"",
+  "trovato",
+]} caption="-q = silenzioso. Con && il secondo comando parte solo se il primo ha avuto successo (codice 0)." />
+
+<Callout kind="attenzione">
+Qui lo zero vuol dire **successo**, non «falso». Un comando che finisce con 0 è andato bene; 1, 2, 127... sono errori diversi.
+</Callout>
+
+<Say who="assistente">Il codice di uscita è la risposta in una parola del comando: «tutto bene» oppure «qualcosa è andato storto, e questo è il numero».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cicli for e while">
+Il ciclo **`for`** ripete dei comandi per **ogni elemento** di un elenco. Il ciclo **`while`** ripete **finché una condizione è vera**.
+
+<Log lines={[
+  "studente@lab:~$ for p in FALLITO OK web; do echo \"Cerco $p\"; done",
+  "Cerco FALLITO",
+  "Cerco OK",
+  "Cerco web",
+  "studente@lab:~$ n=1; while [ \"$n\" -le 3 ]; do echo \"Giro $n\"; n=$((n + 1)); done",
+  "Giro 1",
+  "Giro 2",
+  "Giro 3",
+  "studente@lab:~$ while read -r ora ip resto; do echo \"$ora -> $ip\"; done < accessi.log | head -n 2",
+  "03:01 -> 203.0.113.9",
+  "03:02 -> 203.0.113.9",
+]} caption="Il terzo while legge il file riga per riga, spezzando in campi." />
+
+Dentro `$(( ))` bash fa i **calcoli**: `n=$((n + 1))` aumenta n di uno. Se la condizione del `while` non diventa mai falsa, il ciclo non finisce mai: **Ctrl+C** lo interrompe.
+
+<Say who="sensei">for quando sai cosa ripetere. while quando sai quando fermarti. E ricorda sempre di far avanzare il contatore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Funzioni">
+Una **funzione** è un blocco di comandi con un nome. La definisci una volta, la richiami quante volte vuoi. Gli argomenti della funzione sono, di nuovo, `$1`, `$2`...
+
+<Log lines={[
+  "studente@lab:~$ saluta() { echo \"Ciao $1\"; }",
+  "studente@lab:~$ saluta Mario",
+  "Ciao Mario",
+  "studente@lab:~$ saluta Lucia",
+  "Ciao Lucia",
+]} caption="Una funzione con un solo argomento." />
+
+<Callout kind="trucco">
+Una funzione serve quando ripeti lo stesso gruppo di comandi: la scrivi una volta sola, e se devi correggerla lo fai in un posto solo.
+</Callout>
+
+<Say who="assistente">Come una ricetta con un nome: «saluta», «conta». Da quel momento basta chiamarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Script prudenti">
+Ecco lo script completo, `analizza.sh`, con le difese in cima:
+
+<Log lines={[
+  "studente@lab:~$ cat analizza.sh",
+  "#!/bin/bash",
+  "set -euo pipefail",
+  "",
+  "if [ $# -lt 1 ]; then",
+  "  echo \"Uso: $0 file-di-log\" >&2",
+  "  exit 1",
+  "fi",
+  "",
+  "LOG=\"$1\"",
+  "if [ ! -f \"$LOG\" ]; then",
+  "  echo \"File non trovato: $LOG\" >&2",
+  "  exit 2",
+  "fi",
+  "",
+  "conta() {",
+  "  grep -c \"$1\" \"$LOG\" || true",
+  "}",
+  "",
+  "for parola in FALLITO OK; do",
+  "  echo \"$parola: $(conta \"$parola\")\"",
+  "done",
+]} caption="Gli errori vanno su stderr (>&2) con un codice di uscita diverso da 0." />
+
+<Log lines={[
+  "studente@lab:~$ ./analizza.sh accessi.log",
+  "FALLITO: 4",
+  "OK: 4",
+  "studente@lab:~$ ./analizza.sh",
+  "Uso: ./analizza.sh file-di-log",
+  "studente@lab:~$ echo $?",
+  "1",
+  "studente@lab:~$ ./analizza.sh manca.log",
+  "File non trovato: manca.log",
+  "studente@lab:~$ echo $?",
+  "2",
+]} caption="Ogni errore ha il suo codice: 1 mancano gli argomenti, 2 file inesistente." />
+
+<Say who="sensei">Prima i controlli, poi il lavoro. Se i dati sono sbagliati, lo script si ferma e lo dice. Meglio un errore chiaro che un risultato falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre difese e tocca a te">
+La riga `set -euo pipefail` attiva tre protezioni:
+
+<Guided
+  steps={[
+    "-e: lo script si ferma al primo comando che fallisce. Senza, un cd sbagliato non ferma niente: i comandi dopo lavorano nella cartella sbagliata.",
+    "-u: usare una variabile che non esiste è un errore. Senza, un nome scritto male diventa una stringa vuota in silenzio.",
+    "-o pipefail: in una pipeline, se un comando in mezzo fallisce, l'errore non si perde.",
+    "|| true dopo un comando dice «un fallimento qui è normale»: serve con grep -c, che esce con 1 se non trova niente.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+**Le virgolette (quoting) sono la quarta difesa.** Se `f` contiene «mio file.txt», `ls $f` lo spezza in due argomenti. Con `ls "$f"` resta uno solo.
+</Callout>
+
+Un'altra voce sui cicli, circa dieci minuti:
+
+<Video />
+
+<Quiz
+  question="Uno script finisce dopo aver eseguito exit 3. Cosa significa per chi lo ha lanciato?"
+  options={["Lo script è terminato con un errore, codice 3", "Lo script è terminato senza problemi", "Lo script ha eseguito tre comandi", "Lo script verrà rilanciato tre volte"]}
+  answer={0}
+  explain="Il codice di uscita 0 significa successo; qualsiasi altro numero è un errore, e il numero lo sceglie chi scrive lo script. Chi risponde «senza problemi» confonde 3 con 0."
+/>
+
+<Say who="assistente">Quasi tutti i guai negli script nascono da due cose: uno spazio nel nome, o un comando fallito ignorato.</Say>
+
+<Say who="sensei">Un numero diverso da zero è un messaggio al mondo: «qualcosa non va». Chi lo riceve, può reagire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su argomenti, cicli, funzioni e codici di uscita: cosa stampa, cosa succede se. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-bash2" pass="4/5" retries={3} />
+
+<Say who="sensei">Un cattivo script è peggio di nessuno script. Uno buono è un collega che non si stanca mai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `$1`, `$2` sono gli argomenti, `$#` quanti sono; `for` ripete per ogni elemento, `while` finché la condizione è vera; le funzioni raggruppano comandi.
+- Codice di uscita: 0 = successo, altro = errore; si legge con `$?` e si restituisce con `exit N`.
+- Script prudenti: `set -euo pipefail`, controlli iniziali, errori su stderr (`>&2`) e sempre virgolette attorno alle variabili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa contiene $#?", a: "Il numero di argomenti passati allo script" },
+    { q: "Cosa significa codice di uscita 0?", a: "Il comando è andato a buon fine" },
+    { q: "Cosa fa set -e?", a: "Ferma lo script al primo comando che fallisce" },
+    { q: "Perché scrivere \"$f\" tra virgolette?", a: "Perché se il valore contiene spazi resti un solo argomento" },
+  ]}
+/>
+
+<Say who="sensei">Sai scrivere script che lavorano e si fermano quando devono. Ultima lezione del modulo: farli partire da soli, a ora fissata, con cron.</Say>
+</Scene>

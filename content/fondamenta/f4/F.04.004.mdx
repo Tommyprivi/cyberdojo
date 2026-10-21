@@ -1,0 +1,198 @@
+---
+id: F.04.004
+course: fondamenta
+module: 4
+title: "sed e awk in breve"
+belt: gialla
+duration_min: 9
+prerequisites: [F.04.003]
+objectives:
+  - "Sostituire testo con sed 's/vecchio/nuovo/'"
+  - "Stampare o eliminare righe con sed -n e sed d"
+  - "Estrarre colonne e contare con awk"
+video:
+  provider: youtube
+  id: "fV3eLIXoEp0"
+  start: 0
+  end: 600
+  channel: "Franco Bugnano"
+  title: "Le basi di SED, GREP e AWK - Impariamo la linea di comando"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: f04-sed-awk
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "sed 's/a/b/' cambia solo la prima occorrenza di ogni riga: per tutte serve la g finale"
+  - "sed -i modifica il file davvero: si prova prima senza -i, oppure su una copia"
+  - "In awk $1 è la prima colonna e $0 è l'intera riga: si parte da 1, non da 0"
+commands: []
+---
+
+<Scene title="Pulire un rapporto">
+Devi preparare un rapporto per il capo. Parti dal solito `accessi.log`, ma il capo vuole due cose:
+
+- la parola **FALLITO** sostituita con **NEGATO**, perché è il termine usato nei documenti ufficiali;
+- solo **ora e utente** di ogni riga, senza il resto.
+
+<Log lines={[
+  "03:01 203.0.113.9 ssh FALLITO admin",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "03:02 198.51.100.7 web OK -",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:07 192.168.1.66 ssh OK mario",
+  "03:09 198.51.100.7 web OK -",
+  "03:12 198.51.100.7 ssh FALLITO test",
+  "03:15 192.168.1.20 ssh OK lucia",
+]} caption="Il file di partenza, che non vogliamo toccare." />
+
+Due attrezzi fanno al caso tuo: **`sed`** modifica il testo, **`awk`** lavora per colonne. Qui ne vediamo solo gli usi di base: sono due linguaggi interi, ma per ora ti bastano tre o quattro mosse.
+
+<Say who="sensei">Impara poche mosse e falle bene. sed e awk sono potentissimi, ma l'80 per cento del lavoro si fa con quattro frasi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="sed: sostituire">
+**`sed`** (stream editor) legge il testo, lo modifica e lo stampa. La mossa più usata è la **sostituzione**: `s/vecchio/nuovo/`.
+
+<Log lines={[
+  "studente@lab:~$ sed 's/FALLITO/NEGATO/' accessi.log | head -n 2",
+  "03:01 203.0.113.9 ssh NEGATO admin",
+  "03:02 203.0.113.9 ssh NEGATO root",
+  "studente@lab:~$ echo \"ciao ciao\" | sed 's/ciao/hey/'",
+  "hey ciao",
+  "studente@lab:~$ echo \"ciao ciao\" | sed 's/ciao/hey/g'",
+  "hey hey",
+]} caption="Senza g si cambia solo la prima occorrenza in ogni riga." />
+
+Il file `accessi.log` **non è cambiato**: sed stampa il risultato sullo schermo. Per salvare lo metti in un nuovo file con `>`.
+
+<Callout kind="attenzione">
+L'opzione **`-i`** modifica il file **sul posto**, senza chiedere. Prima prova senza `-i`, oppure lavora su una **copia** del file.
+</Callout>
+
+<Say who="assistente">Tre parti separate dalle barre: s per «sostituisci», poi cosa cercare, poi con cosa rimpiazzarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="sed: scegliere le righe">
+sed può anche scegliere righe per numero o per contenuto:
+
+- **`-n 'Np'`**: stampa solo la riga numero N (con `-n` si zittisce il resto). Anche un intervallo: `3,5p`.
+- **`'/testo/d'`**: **elimina** (delete) le righe che contengono il testo, nell'output.
+
+<Log lines={[
+  "studente@lab:~$ sed -n '2p' accessi.log",
+  "03:02 203.0.113.9 ssh FALLITO root",
+  "studente@lab:~$ sed -n '3,5p' accessi.log",
+  "03:02 198.51.100.7 web OK -",
+  "03:05 203.0.113.9 ssh FALLITO admin",
+  "03:07 192.168.1.66 ssh OK mario",
+  "studente@lab:~$ sed '/web/d' accessi.log | wc -l",
+  "6",
+]} caption="Togliendo le 2 righe web restano 6 righe." />
+
+<Callout kind="curiosita">
+`d` qui non cancella dal file: toglie la riga dal risultato stampato. Il file originale resta com'era, a meno che tu non usi `-i`.
+</Callout>
+
+<Say who="sensei">Se vuoi solo guardare, sed è innocuo. Se aggiungi -i, è una modifica vera. Decidi consapevolmente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="awk: le colonne">
+**`awk`** divide ogni riga in **campi** (di solito separati da spazi). `$1` è il primo, `$2` il secondo, e così via. `$0` è tutta la riga. La mossa base: `awk '{print $1, $5}' file`.
+
+<Log lines={[
+  "studente@lab:~$ awk '{print $1, $5}' accessi.log | head -n 3",
+  "03:01 admin",
+  "03:02 root",
+  "03:02 -",
+  "studente@lab:~$ awk '{print NR, $3}' accessi.log | head -n 2",
+  "1 ssh",
+  "2 ssh",
+  "studente@lab:~$ echo \"mario:1001:/home/mario\" | awk -F: '{print $3}'",
+  "/home/mario",
+]} caption="NR è il numero della riga. Con -F: il separatore diventa i due punti." />
+
+Ecco la seconda richiesta del capo: **ora e utente** si ottengono con `awk '{print $1, $5}'`.
+
+<Say who="assistente">Come cut, ma più comodo: capisce da solo gli spazi multipli, e puoi stampare le colonne nell'ordine che vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="awk: condizioni e conteggi">
+Prima delle graffe puoi mettere una **condizione**: awk esegue l'azione solo sulle righe che la rispettano. Con **`END`** si agisce a fine file, utile per i totali.
+
+<Log lines={[
+  "studente@lab:~$ awk '$4 == \"FALLITO\" {print $2}' accessi.log",
+  "203.0.113.9",
+  "203.0.113.9",
+  "203.0.113.9",
+  "198.51.100.7",
+  "studente@lab:~$ awk '$4 == \"FALLITO\" {n++} END {print n}' accessi.log",
+  "4",
+]} caption="Gli indirizzi dei tentativi falliti, poi il loro numero totale." />
+
+Quando `grep` e `cut` bastano, usali: sono più semplici. Quando serve una condizione su una colonna precisa, awk è lo strumento giusto.
+
+Un'altra voce per rivedere sed, grep e awk, circa dieci minuti:
+
+<Video />
+
+<Say who="sensei">Grep per cercare. Cut per tagliare. Sed per sostituire. Awk quando il problema ha una colonna e una condizione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa stampa: echo 'rosso rosso blu' | sed 's/rosso/verde/' ?"
+  options={["verde rosso blu", "verde verde blu", "rosso rosso blu", "verde blu"]}
+  answer={0}
+  explain="Senza la g finale sed sostituisce solo la prima occorrenza di ogni riga. Per ottenere «verde verde blu» serviva 's/rosso/verde/g'. Chi risponde «rosso rosso blu» pensa che sed non modifichi niente: invece modifica lo stream, non il file."
+/>
+
+<Say who="assistente">Conta le occorrenze nella riga. Quante ne sostituisce sed, se non gli dici «g» di globale?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sed e awk: cosa stampa, quale comando estrae la colonna. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="f04-sed-awk" pass="4/5" retries={3} />
+
+<Say who="sensei">Non devi saperli a memoria in ogni dettaglio. Devi sapere che esistono, e riconoscere cosa fanno. Il resto si cerca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `sed 's/vecchio/nuovo/g'` sostituisce testo (senza g solo la prima occorrenza per riga); `-i` modifica il file davvero.
+- `sed -n '2p'` stampa una riga, `sed '/testo/d'` toglie le righe che contengono il testo.
+- `awk '{print $2}'` stampa colonne; con una condizione e `END` conta e somma.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa fa sed 's/a/b/g'?", a: "Sostituisce ogni a con b, in tutte le righe" },
+    { q: "Cosa indica $1 in awk?", a: "Il primo campo (colonna) della riga" },
+    { q: "Cosa fa awk -F: '{print $1}'?", a: "Stampa il primo campo usando i due punti come separatore" },
+    { q: "Perché prudenza con sed -i?", a: "Modifica il file sul posto, senza chiedere" },
+  ]}
+/>
+
+<Say who="sensei">Hai gli attrezzi per leggere i log. Ora li imbottigli in uno script: prossima lezione, il tuo primo programma bash.</Say>
+</Scene>

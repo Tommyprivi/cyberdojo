@@ -1,0 +1,201 @@
+---
+id: D.07.007
+course: dati
+module: 7
+title: "Gli strumenti"
+belt: arancione
+duration_min: 9
+prerequisites: [D.07.006]
+objectives:
+  - "Scrivere e leggere piccoli grafici con matplotlib e seaborn"
+  - "Scegliere tra Power BI, Tableau, Looker Studio e Metabase in base al bisogno"
+  - "Applicare in codice le regole del modulo: zero, ordine, titolo, enfasi"
+video:
+  provider: youtube
+  id: "7V8GkYEnlWk"
+  start: 0
+  end: 371
+  channel: "Edoardo Midali"
+  title: "Introduzione a Matplotlib - Matplotlib Python Tutorial Italiano 01"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: d07-strumenti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Passare liste di lunghezza diversa a plt.bar (etichette e valori)"
+  - "Dimenticare plt.show() o scriverlo prima di titolo ed etichette"
+  - "Scegliere lo strumento prima di aver capito il bisogno"
+commands: []
+---
+
+<Scene title="Dallo schema al grafico">
+Marta ha deciso cosa mostrare: i resi per canale, barre ordinate, una sola barra evidenziata. Ora deve disegnarlo. Può farlo in Python o con un programma a finestre. Quale scegliere?
+
+Questa è l'ultima lezione del modulo: dopo le regole, gli attrezzi. La domanda: **quale strumento si sceglie, e come si traducono le regole in poche righe di codice?**
+
+<Say who="sensei">Gli strumenti cambiano ogni anno. Le regole che hai imparato no. Prima il ragionamento, poi l'attrezzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo grafico in matplotlib">
+**matplotlib** è la libreria di Python per disegnare grafici. Si importa quasi sempre così: `import matplotlib.pyplot as plt`.
+
+Le vendite online dei primi quattro mesi:
+
+<Log lines={[
+  "import matplotlib.pyplot as plt",
+  "",
+  "mesi = ['Gen', 'Feb', 'Mar', 'Apr']",
+  "ordini = [120, 135, 150, 170]",
+  "",
+  "plt.plot(mesi, ordini, marker='o')",
+  "plt.title('Ordini online in crescita: +42% da gennaio ad aprile')",
+  "plt.ylabel('Ordini')",
+  "plt.show()",
+]} />
+
+Cosa fa, riga per riga: `plt.plot` disegna la linea con un cerchietto su ogni punto; `plt.title` e `plt.ylabel` scrivono titolo ed etichetta; `plt.show()` apre il grafico. Il titolo dice la conclusione: da 120 a 170 è +42% (170 diviso 120 fa circa 1,42).
+
+<Say who="assistente">plt.show() va in fondo: tutto ciò che scrivi dopo non finisce nel grafico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole del modulo in codice">
+Barre ordinate, partenza da zero, colore di enfasi. I resi per canale sono: Centro 5%, Stazione 4%, Parco 12%, Online 6%.
+
+<Log lines={[
+  "import matplotlib.pyplot as plt",
+  "",
+  "negozi = ['Centro', 'Stazione', 'Parco', 'Online']",
+  "resi = [5, 4, 12, 6]",
+  "",
+  "coppie = sorted(zip(negozi, resi), key=lambda c: c[1], reverse=True)",
+  "nomi = [c[0] for c in coppie]",
+  "valori = [c[1] for c in coppie]",
+  "colori = ['#d95f02' if n == 'Parco' else '#999999' for n in nomi]",
+  "",
+  "plt.bar(nomi, valori, color=colori)",
+  "plt.ylim(0, 14)",
+  "plt.title('Parco ha il tasso di reso più alto: 12%')",
+  "plt.ylabel('Resi sugli ordini (%)')",
+  "plt.show()",
+]} />
+
+`sorted(..., reverse=True)` mette le barre dalla più alta alla più bassa (Parco 12, Online 6, Centro 5, Stazione 4). `plt.ylim(0, 14)` fissa l'asse da zero. La lista `colori` dà arancione a Parco e grigio agli altri.
+
+<Callout kind="attenzione">
+`plt.bar` vuole liste di uguale lunghezza. Con tre etichette e due valori, Python si ferma con un errore (ValueError).
+</Callout>
+
+Per un'introduzione a voce, un'altra persona che spiega i primi passi di matplotlib in meno di sette minuti:
+
+<Video />
+
+<Say who="sensei">Ogni riga ha una ragione. Se non sai spiegare una riga, non è ancora tua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Annotare, salvare, seaborn">
+**Annotare.** Un'annotazione con una freccia sul punto chiave:
+
+<Log lines={[
+  "x = [1, 2, 3, 4]",
+  "plt.plot(x, ordini, marker='o')",
+  "plt.xticks(x, mesi)",
+  "plt.annotate('Campagna social', xy=(3, 150), xytext=(1, 160), arrowprops=dict(arrowstyle='->'))",
+]} />
+
+`xy` è il punto indicato, `xytext` dove va il testo. Qui i mesi sono posizioni 1, 2, 3, 4 e `plt.xticks` ci scrive sopra i nomi.
+
+**Salvare** prima di `plt.show()`: `plt.savefig('grafico.png', dpi=150, bbox_inches='tight')`.
+
+**seaborn** si appoggia a matplotlib e accorcia i grafici statistici. Una dispersione tra spesa in pubblicità e ordini:
+
+<Log lines={[
+  "import matplotlib.pyplot as plt",
+  "import seaborn as sns",
+  "import pandas as pd",
+  "",
+  "df = pd.DataFrame({'spesa': [100, 200, 300, 400, 500], 'ordini': [30, 45, 60, 70, 90]})",
+  "sns.scatterplot(data=df, x='spesa', y='ordini')",
+  "plt.show()",
+]} />
+
+<Say who="assistente">seaborn legge direttamente le colonne di una tabella pandas: dici quale colonna va su x e quale su y.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli strumenti a finestre">
+Non sempre serve il codice. Per dashboard condivise da molte persone, esistono programmi dove si trascinano i campi con il mouse.
+
+| Strumento | Costo | Quando lo scegli |
+| --- | --- | --- |
+| Power BI | Desktop gratuito, condivisione a pagamento | Azienda che usa già Microsoft |
+| Tableau | Versione pubblica gratuita, resto a pagamento | Esplorazione visiva molto ricca |
+| Looker Studio | Gratuito (Google) | Report collegati a Fogli Google e altri servizi Google |
+| Metabase | Versione open source installabile da soli | Dashboard su un database aziendale, senza costi di licenza |
+| matplotlib / seaborn | Gratuiti | Analisi già in Python, grafici riproducibili dal codice |
+
+<Callout kind="regola">
+Si sceglie dal bisogno: chi legge, dove sono i dati, chi mantiene la dashboard, quanto costa. Non dal nome più famoso.
+</Callout>
+
+<Say who="sensei">Un grafico fatto con le regole giuste in matplotlib batte uno sbagliato in Tableau. Lo strumento non fa l'analista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Cosa succede eseguendo `plt.bar(['A', 'B', 'C'], [3, 5])`?"
+  options={["Python segnala un errore (ValueError): tre etichette e solo due valori", "Disegna tre barre e l'ultima è vuota", "Disegna due barre e ignora la C", "Disegna tre barre con altezze 3, 5 e 5"]}
+  answer={0}
+  explain="Etichette e valori devono avere la stessa lunghezza. Con 3 e 2 elementi matplotlib non indovina niente: si ferma con un errore (ValueError, forme non compatibili)."
+/>
+
+<Say who="sensei">Un errore chiaro è un favore. Leggilo, non temerlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Righe di codice da leggere, strumenti da scegliere. Cinque risposte giuste su cinque.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="d07-strumenti" pass="5/5" retries={3} />
+
+<Say who="sensei">Se esiti su una riga di codice, rileggila una parola alla volta. È sempre un nome e un'azione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- matplotlib disegna: `plt.plot`, `plt.bar`, `plt.title`, `plt.ylim`, `plt.show`; seaborn semplifica i grafici statistici sopra matplotlib.
+- Le regole del modulo si scrivono in codice: ordine, asse da zero, titolo-conclusione, un colore di enfasi.
+- Power BI, Tableau, Looker Studio e Metabase si scelgono dal bisogno: chi legge, dove sono i dati, costo e manutenzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale riga fa partire l'asse y da 0 a 35?", a: "plt.ylim(0, 35)" },
+    { q: "Quale strumento gratuito collega Fogli Google?", a: "Looker Studio" },
+    { q: "Cosa succede con plt.bar di 3 etichette e 2 valori?", a: "ValueError: lunghezze diverse" },
+    { q: "Una dashboard open source su database aziendali?", a: "Metabase" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Hai le regole e gli attrezzi: ora si passa al prossimo passo del corso.</Say>
+</Scene>
