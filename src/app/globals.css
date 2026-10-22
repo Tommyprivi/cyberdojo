@@ -222,7 +222,41 @@ h1, h2, h3 {
   .field:focus-visible {
     border-color: var(--primary);
   }
+
+  /* Testo lungo (pagine legali, documenti): righe corte e titoli che si leggono. */
+  .legal-body {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 68ch;
+  }
+  .legal-body h2 {
+    font-size: 1.3rem;
+    margin-top: 1.6rem;
+    scroll-margin-top: 5rem;
+  }
+  .legal-body h3 {
+    font-size: 1.08rem;
+    margin-top: 1rem;
+  }
+  .legal-body ul,
+  .legal-body ol {
+    display: grid;
+    gap: 0.4rem;
+    padding-left: 1.3rem;
+  }
+  .legal-body ul { list-style: disc; }
+  .legal-body ol { list-style: decimal; }
+  .legal-body li { padding-left: 0.2rem; }
+  .legal-body a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal-body strong { font-weight: 700; }
+  .legal-body dt { font-weight: 700; margin-top: 0.6rem; }
+  .legal-body dd { margin-left: 0; }
 }
+
 
 /* ---- Animazioni leggere (Percorso). Ogni stato finale coincide con lo stato a riposo,
    così «riduci movimento» le porta direttamente a fine corsa senza lasciare nulla nascosto. ---- */

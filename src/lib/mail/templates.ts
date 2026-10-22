@@ -122,3 +122,39 @@ export function passwordResetEmail({ name, email, url }: { name: string | null; 
     footer: SERVICE_FOOTER,
   });
 }
+
+/** Messaggio arrivato dal modulo di contatto: bug, domande, richieste sui dati. */
+export function contactEmail({
+  kind,
+  name,
+  email,
+  subject,
+  message,
+  where,
+}: {
+  kind: string;
+  name: string | null;
+  email: string;
+  subject: string;
+  message: string;
+  where: string | null;
+}): Mail {
+  const blocks: EmailContent["blocks"] = [
+    { type: "p", text: `Tipo di richiesta: ${kind}` },
+    { type: "p", text: `Chi scrive: ${name || "nome non indicato"} <${email}>` },
+    { type: "p", text: `Oggetto: ${subject}` },
+    { type: "p", text: message },
+  ];
+  if (where) blocks.push({ type: "p", text: `Dove: ${where}` });
+  blocks.push({ type: "note", text: "Rispondi a questa email per rispondere a chi ha scritto." });
+
+  return build({
+    subject: `[CyberDojo · ${kind}] ${subject}`,
+    preheader: "Messaggio ricevuto dal modulo di contatto del sito.",
+    banner: banner("intestazione"),
+    title: subject,
+    blocks,
+    footer: [{ text: "Messaggio inviato dal modulo di contatto di CyberDojo. Non rispondere se non ti aspettavi questa email." }],
+  });
+}
+

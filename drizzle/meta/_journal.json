@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "7",
   "dialect": "postgresql",
   "entries": [
@@ -21,6 +21,13 @@
       "version": "7",
       "when": 1792077683355,
       "tag": "0002_reminders-function",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792613468606,
+      "tag": "0003_legal-consents",
       "breakpoints": true
     }
   ]

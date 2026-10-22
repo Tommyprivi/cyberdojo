@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+## Lingua
+Rispondi SEMPRE e SOLO in italiano. 
+Tutti i commenti, le spiegazioni, i commit message e la documentazione in italiano, a meno che l'utente non chieda esplicitamente l'inglese.
+Non correggere i typo italiani dell'utente, capisci l'intento.

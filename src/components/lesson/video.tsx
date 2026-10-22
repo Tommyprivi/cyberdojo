@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useConsent } from "../consent/consent-provider";
 import { PlayIcon } from "../icons";
 import { usePlayer } from "./player-context";
 
@@ -8,12 +9,15 @@ import { usePlayer } from "./player-context";
  * Video della lezione, preso dal frontmatter (`video:`), mai dalle props dell'MDX.
  * - Player ufficiale YouTube su dominio nocookie, con inizio e fine.
  * - Si carica solo al clic: prima del clic non parte nessuna richiesta verso YouTube.
+ * - Se non hai autorizzato i contenuti di terze parti, il clic apre il banner dei cookie
+ *   invece di caricare il video: la scelta resta tua.
  * - Il link "Apri su YouTube" resta sempre visibile: serve se l'incorporamento è disattivato
  *   o se il video sparisce (il controllo periodico è nell'epic E9).
  * - Il canale è sempre citato.
  */
 export function Video() {
   const { video } = usePlayer();
+  const { thirdParty, ask } = useConsent();
   const [loaded, setLoaded] = useState(false);
   if (!video) return null;
 
@@ -42,7 +46,7 @@ export function Video() {
         ) : (
           <button
             type="button"
-            onClick={() => setLoaded(true)}
+            onClick={() => (thirdParty ? setLoaded(true) : ask())}
             className="absolute inset-0 grid place-items-center gap-2 p-4 text-center text-deep-fg"
           >
             <span className="grid size-20 place-items-center rounded-full bg-primary text-primary-fg">
@@ -53,6 +57,11 @@ export function Video() {
               circa {minutes} min · {video.channel}
               {video.lang === "en" ? " · in inglese, sottotitoli in italiano" : ""} · si carica da YouTube solo se clicchi
             </span>
+            {!thirdParty ? (
+              <span className="text-sm opacity-90">
+                Per guardarlo qui ti serve autorizzare i video di YouTube: il banner spiega cosa comporta.
+              </span>
+            ) : null}
           </button>
         )}
       </div>

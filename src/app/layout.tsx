@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Shippori_Mincho } from "next/font/google";
+import { ConsentBanner } from "@/components/consent/consent-banner";
+import { ConsentProvider } from "@/components/consent/consent-provider";
 import { ThemeSync } from "@/components/theme-toggle";
 import { SITE } from "@/lib/config";
 import "./globals.css";
@@ -37,7 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />
-        {children}
+        <ConsentProvider>
+          {children}
+          <ConsentBanner />
+        </ConsentProvider>
       </body>
     </html>
   );

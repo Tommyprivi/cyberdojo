@@ -1,4 +1,5 @@
 ﻿import Link from "next/link";
+import { ConsentButton } from "./consent/consent-button";
 import { SITE } from "@/lib/config";
 import { Seal } from "./seal";
 
@@ -27,10 +28,23 @@ export function SiteFooter() {
           </nav>
         ))}
       </div>
-      <p className="border-t border-border px-4 py-5 text-center text-sm text-muted">
-        Le voci del Sensei e dell&apos;Assistente sono sintetiche. Le tecniche di attacco si praticano solo in laboratori isolati, mai su sistemi reali.
-      </p>
+      <div className="border-t border-border px-4 py-5">
+        <nav aria-label="Informazioni legali" className="mx-auto flex max-w-[1680px] flex-wrap items-center gap-x-4 gap-y-2 text-sm lg:px-14">
+          <Link href="/aggiornamenti" className="w-fit hover:underline">Aggiornamenti</Link>
+          <Link href="/privacy" className="w-fit hover:underline">Privacy</Link>
+          <Link href="/termini" className="w-fit hover:underline">Termini</Link>
+          <Link href="/cookie" className="w-fit hover:underline">Cookie</Link>
+          <Link href="/minori" className="w-fit hover:underline">Minori</Link>
+          <Link href="/laboratorio" className="w-fit hover:underline">Laboratori</Link>
+          <Link href="/crediti" className="w-fit hover:underline">Crediti</Link>
+          <Link href="/accessibilita" className="w-fit hover:underline">Accessibilità</Link>
+          <Link href="/contatti" className="w-fit hover:underline">Contatti</Link>
+          <ConsentButton />
+        </nav>
+        <p className="mt-4 text-center text-sm text-muted">
+          Le voci del Sensei e dell&apos;Assistente sono sintetiche. Le tecniche di attacco si praticano solo in laboratori isolati, mai su sistemi reali.
+        </p>
+      </div>
     </footer>
   );
 }
-

@@ -90,11 +90,13 @@ export async function exportMyData(): Promise<{ ok: true; json: string; filename
       profilo: profile ?? null,
       lezioni: await tx.select().from(schema.lessonProgress).where(eq(schema.lessonProgress.userId, user.id)),
       tentativi: await tx.select().from(schema.attempts).where(eq(schema.attempts.userId, user.id)),
+      esami: await tx.select().from(schema.examAttempts).where(eq(schema.examAttempts.userId, user.id)),
       xp: await tx.select().from(schema.xpEvents).where(eq(schema.xpEvents.userId, user.id)),
       serie: await tx.select().from(schema.streaks).where(eq(schema.streaks.userId, user.id)),
       ripasso: await tx.select().from(schema.reviewItems).where(eq(schema.reviewItems.userId, user.id)),
       note: await tx.select().from(schema.notes).where(eq(schema.notes.userId, user.id)),
       certificati: await tx.select().from(schema.certificates).where(eq(schema.certificates.userId, user.id)),
+      consensi: await tx.select().from(schema.legalConsents).where(eq(schema.legalConsents.userId, user.id)),
     };
   });
 
@@ -112,6 +114,12 @@ export async function deleteMyAccount(confirmEmail: string): Promise<ActionResul
   if (confirmEmail.trim().toLowerCase() !== user.email.toLowerCase()) {
     return { ok: false, error: "L'email non coincide: l'account non è stato cancellato." };
   }
-  await withUser(user.id, (tx) => tx.delete(schema.user).where(eq(schema.user.id, user.id)));
+  await withUser(user.id, async (tx) => {
+    // La tabella dei token non ha collegamenti con l'utente: senza questo passaggio resterebbero
+    // email e token di verifica dell'account cancellato (dato personale che deve sparire).
+    await tx.delete(schema.verification).where(eq(schema.verification.identifier, user.email));
+    await tx.delete(schema.verification).where(eq(schema.verification.value, user.id));
+    await tx.delete(schema.user).where(eq(schema.user.id, user.id));
+  });
   return { ok: true };
 }

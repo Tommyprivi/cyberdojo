@@ -216,17 +216,21 @@ export const examAttempts = pgTable(
   () => [ownRow("user_id")],
 ).enableRLS();
 
-export const certificates = pgTable("certificates", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  course: text("course").notNull(),
-  belt: text("belt").notNull(),
-  issuedAt: timestamp("issued_at").notNull().defaultNow(),
-  // Codice pubblico non indovinabile per il link di verifica.
-  publicCode: text("public_code").notNull().unique(),
-});
+export const certificates = pgTable(
+  "certificates",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    course: text("course").notNull(),
+    belt: text("belt").notNull(),
+    issuedAt: timestamp("issued_at").notNull().defaultNow(),
+    // Codice pubblico non indovinabile per il link di verifica.
+    publicCode: text("public_code").notNull().unique(),
+  },
+  () => [ownRow("user_id")],
+).enableRLS();
 
 export const notes = pgTable(
   "notes",
@@ -249,3 +253,22 @@ export const audioAssets = pgTable("audio_assets", {
   url: text("url").notNull(),
   durationS: real("duration_s"),
 });
+
+// Traccia degli accettazioni: quale documento, in che versione, e quando.
+// Serve a dimostrare che l'utente ha accettato (art. 7 GDPR). Nessun dato oltre
+// l'identificativo del documento, la versione e la data.
+export const legalConsents = pgTable(
+  "legal_consents",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    doc: text("doc", {
+      enum: ["privacy", "termini", "cookie", "minori", "laboratorio"],
+    }).notNull(),
+    version: text("version").notNull(),
+    acceptedAt: timestamp("accepted_at").notNull().defaultNow(),
+  },
+  (t) => [index("consents_user_idx").on(t.userId), ownRow("user_id")],
+).enableRLS();
