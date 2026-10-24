@@ -1,0 +1,194 @@
+---
+id: C.21.003
+course: cybersecurity
+module: 21
+title: "Enumerare e valutare"
+belt: marrone
+duration_min: 10
+prerequisites: [C.21.002]
+objectives:
+  - "Distinguere enumerazione, valutazione delle vulnerabilità e penetration test"
+  - "Mettere in ordine di priorità i risultati usando gravità e contesto del cliente"
+  - "Riconoscere un falso positivo e dire come si verifica con il minimo impatto"
+video:
+  provider: youtube
+  id: "IW4Vz9_-Brc"
+  start: 0
+  end: 600
+  channel: "Tech Data Security"
+  title: "Differences Between a Vulnerability Assessment and a Penetration Test"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-valutazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il punteggio di gravità basti a decidere la priorità, senza guardare il contesto"
+  - "Trattare ogni voce dello scanner come un problema certo, senza verificare i falsi positivi"
+  - "Verificare una debolezza con un'azione che può danneggiare il servizio"
+commands: []
+---
+
+<Scene title="Duecento voci, tre giorni">
+Nel laboratorio di prova che Marta ha costruito per un corso (una rete di macchine virtuali di sua proprietà, isolata da tutto), un controllo automatico restituisce **duecento voci**. Un'allieva dice: «Quindi è tutto rotto?»
+
+Marta risponde: «Non lo sappiamo ancora. Una lista non è un risultato».
+
+La domanda del caso: **come si passa da duecento voci a un elenco utile?**
+
+<Say who="sensei">Tutto quello che segue si fa solo nel tuo laboratorio o con permesso scritto. Altrove è accesso abusivo, art. 615-ter c.p.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre attività, tre domande">
+Si confondono spesso tre cose diverse:
+
+- **Enumerazione**: elencare in modo ordinato che cosa c'è (macchine, servizi, versioni). Domanda: *che cosa esiste?*
+- **Valutazione delle vulnerabilità**: confrontare ciò che c'è con le debolezze note e dare un ordine di importanza. Domanda: *che cosa potrebbe essere debole?*
+- **Penetration test**: dimostrare, col minimo impatto concordato, che una debolezza è reale e che cosa comporterebbe. Domanda: *che cosa succede davvero?*
+
+Un'altra voce, in inglese, sulla differenza tra valutazione e test: guardalo come spiegazione del metodo.
+
+<Video />
+
+<Callout kind="trucco">
+La valutazione è **larga e poco profonda**. Il penetration test è **stretto e profondo**. Spesso si usano insieme: la prima guida il secondo.
+</Callout>
+
+<Say who="assistente">Pensa a un medico: prima la visita generale, poi gli esami mirati dove qualcosa non torna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa significa enumerare">
+Enumerare è come fare l'**inventario di un magazzino**: non si compra niente, non si sposta niente, si annota che cosa c'è, dove, in che stato.
+
+Per ogni sistema dell'ambito si annotano, per esempio:
+
+- che cosa offre (un sito, la posta, la condivisione dei file);
+- che versione del programma usa;
+- chi può raggiungerlo (da Internet o solo dalla rete interna).
+
+Un esempio di inventario **fittizio**, da un laboratorio di proprietà:
+
+| Sistema | Servizio | Versione | Raggiungibile da |
+|---|---|---|---|
+| lab-web | Sito web | 2.4 | Rete di laboratorio |
+| lab-file | Condivisione file | 3.0 | Rete di laboratorio |
+| lab-posta | Posta | 1.8 (fine supporto) | Rete di laboratorio |
+
+<Callout kind="attenzione">
+Enumerare fa **rumore**: genera molte richieste e finisce nei registri di chi le riceve. Per questo si fa solo dentro l'ambito e, se l'accordo lo prevede, nelle finestre orarie concordate.
+</Callout>
+
+<Say who="sensei">L'inventario non ti dice che cosa è rotto. Ti dice dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dalle versioni alle debolezze">
+Con l'inventario in mano si confrontano le **versioni** con gli elenchi pubblici di debolezze note. Ogni debolezza nota ha un codice (**CVE**) e un punteggio di gravità (**CVSS**) da 0 a 10:
+
+| Punteggio | Gravità |
+|---|---|
+| 0,1 – 3,9 | Bassa |
+| 4,0 – 6,9 | Media |
+| 7,0 – 8,9 | Alta |
+| 9,0 – 10,0 | Critica |
+
+Ma il punteggio è **generico**: non sa niente del tuo cliente.
+
+<Callout kind="regola">
+Priorità = **gravità** della debolezza **×** **quanto vale** il sistema **×** **quanto è raggiungibile**. Una debolezza «critica» su un sistema isolato e senza dati può contare meno di una «media» su un server esposto con i dati dei clienti.
+</Callout>
+
+<Say who="assistente">Il numero è il punto di partenza, non la risposta. La risposta dipende da dove sta il sistema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: dall'elenco alla priorità">
+Tre risultati dal laboratorio fittizio. Ragionamento passo per passo:
+
+<Guided
+  steps={[
+    "Voce A: lab-posta usa una versione fuori supporto; gravità alta (7,5). È raggiungibile solo dalla rete di laboratorio.",
+    "Voce B: lab-web ha un'impostazione che espone un pannello di gestione; gravità media (5,3), ma il pannello è raggiungibile da tutta la rete e dietro c'è il «database clienti» di prova.",
+    "Voce C: lab-file mostra una versione che per un controllo automatico sarebbe debole (gravità critica, 9,1), ma la versione è stata corretta dal produttore con un aggiornamento che mantiene lo stesso numero: probabile falso positivo.",
+    "Priorità: prima B (valore alto, molto raggiungibile), poi A (fuori supporto, da pianificare), per ultima C solo dopo averla verificata.",
+  ]}
+/>
+
+La voce C mostra il **falso positivo**: il controllo segnala un problema che non esiste. Va verificato prima di scrivere nel rapporto che esiste.
+
+<Say who="sensei">Un rapporto con falsi positivi toglie credibilità a tutto il resto. Verifica, poi scrivi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verificare senza fare danni">
+Per capire se una voce è vera si usa il **minimo impatto**:
+
+1. Si controlla prima la **documentazione del produttore** sulla versione e sulle correzioni.
+2. Si cerca una **prova indiretta** (un'informazione che il sistema mostra volentieri) prima di qualsiasi azione.
+3. Se serve una prova più forte, la si concorda per iscritto col cliente: quale test, quando, con chi di reperibile.
+4. Se compare un segnale di instabilità, **ci si ferma** e si chiama il contatto.
+
+<Callout kind="attenzione">
+Mai una verifica che possa **bloccare il servizio o alterare dati**. Se il cliente non ha detto di sì, la risposta è no: la voce resta «da verificare» nel rapporto, con l'indicazione di come farlo in sicurezza.
+</Callout>
+
+<Say who="assistente">«Da verificare» è una risposta onesta. «Vulnerabile» senza prova è un'accusa.</Say>
+
+<Quiz
+  question="Un controllo segnala come «critica» (9,8) una debolezza su un computer del laboratorio che non è collegato a niente e non contiene dati. Un'altra, «media» (5,0), è su un server raggiungibile da tutti con l'archivio clienti. Quale tratti per prima?"
+  options={[
+    "La «media» sul server esposto con l'archivio clienti: valore e raggiungibilità pesano più del solo numero",
+    "La «critica», perché ha il punteggio più alto",
+    "Nessuna delle due: prima si aspetta che lo scanner finisca tutte le voci",
+    "Quella che richiede meno tempo, per chiudere più voci possibile",
+  ]}
+  answer={0}
+  explain="La priorità non è solo il punteggio: conta quanto vale il sistema e quanto è raggiungibile. Un sistema isolato e senza dati rende la debolezza meno urgente. Fare prima ciò che costa meno tempo è comodo ma non riduce il rischio."
+/>
+
+<Say who="assistente">Il punteggio ti dice quanto è grave in generale. Il contesto ti dice quanto è grave per questo cliente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su enumerazione, valutazione, priorità e falsi positivi. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-valutazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai trasformato un elenco in un ordine di lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Enumerare è fare l'inventario di che cosa c'è; valutare è confrontarlo con le debolezze note; il penetration test dimostra col minimo impatto che sono reali.
+- La priorità dipende da gravità, valore del sistema e raggiungibilità, non solo dal punteggio.
+- Un falso positivo si verifica con il minimo impatto; senza accordo scritto, la voce resta «da verificare».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'enumerazione?", a: "L'inventario ordinato di che cosa c'è nell'ambito: sistemi, servizi, versioni" },
+    { q: "Che cos'è il CVSS?", a: "Un punteggio da 0 a 10 che indica la gravità generica di una debolezza nota" },
+    { q: "Che cos'è un falso positivo?", a: "Un problema segnalato dallo strumento che in realtà non esiste" },
+    { q: "Perché il solo punteggio non decide la priorità?", a: "Perché non tiene conto del valore del sistema e di quanto è raggiungibile" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando un accesso è stato dimostrato, che cosa si fa e che cosa non si fa. Rischi per il cliente.</Say>
+</Scene>

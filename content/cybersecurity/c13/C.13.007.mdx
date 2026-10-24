@@ -1,0 +1,174 @@
+---
+id: C.13.007
+course: cybersecurity
+module: 13
+title: "Scrivere il rapporto di analisi"
+belt: blu
+duration_min: 9
+prerequisites: [C.13.006]
+objectives:
+  - "Strutturare un rapporto di analisi di rete: sintesi, ambito, metodo, cronologia, evidenze, valutazione, raccomandazioni"
+  - "Separare fatti, ipotesi e livello di confidenza, e dichiarare i limiti dell'analisi"
+  - "Proteggere la prova e i dati personali contenuti nella cattura"
+video:
+  provider: youtube
+  id: "fMWUDZOkRR4"
+  start: 0
+  end: 600
+  channel: "RSAC Cybersecurity"
+  title: "How to Keep Your Cool and Write Powerful Incident Response Reports"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-rapporto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un rapporto pieno di screenshot e senza una frase di sintesi per chi decide"
+  - "Mescolare fatti e opinioni, o dare certezze che le prove non giustificano"
+  - "Dimenticare di citare l'autorizzazione, l'hash della cattura e i limiti dell'analisi"
+commands: []
+---
+
+<Scene title="Il lettore che ha due minuti">
+Hai finito l'analisi del computer 192.168.1.30 del laboratorio di Officina Verdi. Hai tre pagine di appunti, venti screenshot e la testa piena di dettagli.
+
+Il titolare dell'azienda non sa cos'è un SYN. Ha due minuti. Deve decidere **se spendere soldi e fermare il lavoro**.
+
+La domanda del caso: **come si scrive un rapporto che lui capisce e che un altro tecnico può verificare?**
+
+<Say who="sensei">Un'analisi non scritta è un'analisi mai fatta. E un rapporto illeggibile è un'analisi sprecata. Impariamo a scrivere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sette parti, in quest'ordine">
+Un rapporto di analisi di rete ha sempre la stessa forma. In quest'ordine:
+
+1. **Sintesi** (3-5 righe): che cosa è successo, quanto è grave, che cosa fare. Scritta per chi non è tecnico.
+2. **Ambito e autorizzazione**: che cosa è stato analizzato, chi ha dato il permesso, su quale rete (il laboratorio).
+3. **Metodo**: strumenti e versioni (Wireshark, Zeek), nome del file di cattura e la sua **impronta (hash)**.
+4. **Cronologia**: eventi con l'ora **UTC**.
+5. **Evidenze**: fatti visti, con riferimenti (numero del pacchetto, riga del log).
+6. **Valutazione**: ipotesi con il **livello di confidenza** (basso, medio, alto) e i **limiti**.
+7. **Raccomandazioni**: azioni concrete, in ordine di priorità.
+
+<Callout kind="regola">
+La sintesi si scrive **per ultima** ma si mette **per prima**. Chi legge solo quella deve poter decidere.
+</Callout>
+
+<Say who="assistente">Sette parti, sempre uguali. Il lettore sa dove trovare ciò che cerca, e tu non dimentichi niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fatti, ipotesi, confidenza">
+La parte più delicata è la **valutazione**. Ogni affermazione ha un peso diverso.
+
+<Log
+  lines={[
+    "FATTO       Alle 14:02:14 il computer .30 ha scaricato foglio-prezzi.zip (1,8 MB) da 203.0.113.90 via HTTP. [pacchetto 6]",
+    "FATTO       Dalle 14:04 contatti da 212 byte ogni 60 s verso 198.51.100.33. [pacchetti 44-300]",
+    "IPOTESI     Il file scaricato ha avviato i contatti periodici. Confidenza: MEDIA.",
+    "IPOTESI     Il computer è infetto. Confidenza: MEDIA-BASSA (manca l'esame del computer).",
+    "LIMITE      La cattura non mostra se il file è stato aperto né il contenuto cifrato dei contatti.",
+  ]}
+  caption="Estratto inventato dalla sezione «Valutazione»"
+/>
+
+La **confidenza** dice quanto sono forti le prove. Si scrive con parole semplici e si giustifica: «media, perché c'è la coincidenza temporale ma manca l'esame del computer».
+
+<Callout kind="attenzione">
+Scrivere «il computer è sicuramente infetto» quando hai solo una cattura è l'errore più grave: una falsa certezza può far licenziare qualcuno o fermare un'azienda per niente.
+</Callout>
+
+<Say who="sensei">Dichiara quanto sei sicuro e perché. Chi legge saprà quanto fidarsi, e ti stimerà di più per questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Proteggere la prova e le persone">
+Una cattura è una **prova** e insieme un file con **dati personali** (siti visitati, nomi, orari). Si trattano entrambe le cose.
+
+- **Prova**: file originale intatto e mai modificato, con hash; le analisi si fanno su una **copia**; si annota chi l'ha avuta in mano e quando (**catena di custodia**).
+- **Privacy**: nel rapporto non mettere dati personali che non servono (nomi di utenti, contenuti di messaggi); usa «postazione A» o un identificativo. Rispetta il GDPR: accesso limitato, conservazione breve.
+- **Legge**: l'analisi si fa solo sulla rete di cui si è responsabili o con permesso scritto, e il rapporto lo dichiara. Fuori da questo spazio entrano in gioco reati come l'intercettazione abusiva (art. 617-quater) e l'accesso abusivo (art. 615-ter).
+
+Vuoi sentire come si scrive un rapporto di incidente che si fa leggere, da un'altra voce? In inglese:
+
+<Video />
+
+<Say who="assistente">Il rapporto serve a chi decide e a chi verifica. Se metti dati personali inutili, rischi di creare un nuovo problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: la sintesi">
+Ecco la sintesi del caso, scritta per il titolare.
+
+<Guided
+  steps={[
+    "Primo tentativo, da non fare: «Analizzato pcap, rilevati SYN e beaconing TLS verso IP esterno, probabile malware.» Troppo tecnico, troppo sicuro.",
+    "Secondo tentativo, corretto: «Il 14 ottobre, alle 14:02 UTC, il computer di prova 192.168.1.30 ha scaricato un file da un sito sconosciuto. Da due minuti dopo contatta ogni minuto un indirizzo esterno, in modo regolare.»",
+    "Aggiungi la valutazione: «Il comportamento è coerente con un'infezione, ma la sola cattura non basta a provarla (confidenza media).»",
+    "Aggiungi l'azione: «Si consiglia di isolare il computer dalla rete, esaminarlo e bloccare l'indirizzo 198.51.100.33 sul firewall. Nessun dato aziendale risulta uscito dalla cattura.»",
+    "Controllo finale: un non tecnico capisce? Un tecnico può verificare? Se entrambe le risposte sono sì, il rapporto è pronto.",
+  ]}
+/>
+
+<Say who="sensei">Chiaro per il titolare, verificabile per il tecnico. È la doppia prova di un buon rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Sei al termine di un'analisi e hai una cattura con tracce regolari verso un indirizzo esterno, ma nessun esame del computer. Quale frase della valutazione è la più corretta?"
+  options={[
+    "Il comportamento è coerente con un'infezione; la confidenza è media perché manca l'esame del computer",
+    "Il computer è infetto con certezza assoluta",
+    "Non emerge nulla di rilevante, perché il traffico è cifrato",
+    "L'utente ha agito con dolo e va sanzionato",
+  ]}
+  answer={0}
+  explain="La valutazione deve dire che cosa i fatti permettono di concludere e con quale sicurezza. La certezza assoluta non è giustificata dalla sola cattura; ignorare i fatti perché il traffico è cifrato è un errore; attribuire dolo a una persona è una conclusione che nessuna cattura può provare."
+/>
+
+<Say who="assistente">Prima i fatti, poi la confidenza, poi i limiti. Nessuna accusa a persone: solo ciò che la cattura prova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul rapporto di analisi: struttura, confidenza, prova e privacy. Cinque su cinque.
+
+<Practice generator="c13-rapporto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: sai catturare, filtrare, leggere, valutare e scrivere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il rapporto ha sette parti: sintesi, ambito e autorizzazione, metodo (con hash), cronologia UTC, evidenze, valutazione con confidenza e limiti, raccomandazioni.
+- Fatti, ipotesi e confidenza si tengono separati; nessuna certezza che le prove non giustificano e nessuna accusa a persone.
+- La cattura è una prova e contiene dati personali: copia di lavoro, catena di custodia, minimizzazione (GDPR) e permesso scritto dichiarato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la prima parte di un rapporto e per chi è scritta?", a: "La sintesi, scritta per chi decide e non è tecnico" },
+    { q: "Che cosa si scrive nella sezione «Metodo»?", a: "Strumenti e versioni, nome del file di cattura e il suo hash" },
+    { q: "Che cos'è il livello di confidenza?", a: "Quanto sono forti le prove a sostegno di un'ipotesi, spiegato a parole" },
+    { q: "Che cosa è la catena di custodia?", a: "Il registro di chi ha avuto la prova in mano e quando, per dimostrare che non è stata alterata" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Sai analizzare il traffico del tuo laboratorio e raccontarlo con onestà. Questo è il mestiere dell'analista di rete.</Say>
+</Scene>

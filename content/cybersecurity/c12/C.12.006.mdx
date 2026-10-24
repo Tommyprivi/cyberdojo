@@ -1,0 +1,187 @@
+---
+id: C.12.006
+course: cybersecurity
+module: 12
+title: "Il firewall del server: ufw e nftables"
+belt: blu
+duration_min: 10
+prerequisites: [C.12.005]
+objectives:
+  - "Impostare un firewall prudente con ufw: nega per impostazione predefinita, consenti solo il necessario"
+  - "Leggere un semplice insieme di regole nftables (tabella, catena, policy, regole)"
+  - "Evitare gli errori classici: chiudersi fuori da SSH, ordine delle regole, regole mai provate"
+video:
+  provider: youtube
+  id: "_A-Q6yTMX0g"
+  start: 0
+  end: 600
+  channel: "quidsup"
+  title: "Getting Started with nftables Firewall in Debian"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-firewall
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Attivare il firewall prima di aver permesso SSH e perdere l'accesso al server"
+  - "Usare insieme ufw e regole nftables scritte a mano senza sapere che si sovrappongono"
+  - "Dimenticare lo stato delle connessioni: bloccare anche le risposte al traffico legittimo"
+commands: [ufw, nft]
+---
+
+<Scene title="Il server che risponde a tutti">
+Il server di prova della «Moretti Studio» ha il portale web e SSH. Un'analisi di rete mostra che risponde anche su porte che non dovrebbe: un database e una pagina di amministrazione.
+
+<Log lines={[
+  "$ ss -tlnp",
+  "LISTEN 0.0.0.0:22     sshd",
+  "LISTEN 0.0.0.0:443    nginx",
+  "LISTEN 0.0.0.0:3306   mysqld   (database: solo per l'app, sullo stesso server)",
+  "LISTEN 0.0.0.0:8080   admin    (pannello: solo per la sede)",
+]} caption="Il database è raggiungibile da chiunque, il pannello da ogni indirizzo." />
+
+La domanda del caso: **come si lascia entrare solo ciò che deve entrare, anche quando il servizio sarebbe già in ascolto?**
+
+<Say who="sensei">Il firewall di rete difende il perimetro. Quello del server è l'ultima porta prima dei dati. Se il perimetro cede, resta lei.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola di base">
+Un firewall prudente ha una politica semplice: **tutto il traffico in ingresso è bloccato, salvo ciò che permetto esplicitamente**. Si chiama *default deny*.
+
+Gli strumenti su Linux:
+
+- **netfilter** è la parte del kernel che filtra i pacchetti;
+- **nftables** è il linguaggio moderno per scrivere le regole (ha sostituito il vecchio iptables);
+- **ufw** («Uncomplicated Firewall») è un programma semplice, diffuso su Ubuntu, che scrive le regole per te.
+
+Vuoi vedere nftables partire da zero? Il video è in inglese, attiva i sottotitoli.
+
+<Video />
+
+<Callout kind="regola">
+Il firewall è **stateful**: tiene traccia delle connessioni. Se un utente avvia una connessione verso l'esterno, le risposte devono poter rientrare. La regola «established, related» serve proprio a questo.
+</Callout>
+
+<Say who="assistente">Bloccare tutto e aprire solo ciò che serve è più facile da controllare che aprire tutto e provare a chiudere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="ufw: la strada semplice">
+Un esempio svolto, nell'ordine giusto:
+
+<Log lines={[
+  "$ sudo ufw default deny incoming",
+  "$ sudo ufw default allow outgoing",
+  "$ sudo ufw allow 22/tcp",
+  "$ sudo ufw allow 443/tcp",
+  "$ sudo ufw allow from 203.0.113.0/24 to any port 8080 proto tcp",
+  "$ sudo ufw enable",
+  "$ sudo ufw status verbose",
+]} caption="203.0.113.0/24 è un indirizzo d'esempio che rappresenta la sede." />
+
+Cosa succede:
+
+- tutto il traffico in ingresso è bloccato, quello in uscita permesso;
+- SSH e HTTPS sono aperti a tutti;
+- il pannello sulla porta 8080 è raggiungibile **solo dalla sede**;
+- il database 3306 non è aperto: resta usabile **dallo stesso server** (traffico locale), ma non da fuori.
+
+<Callout kind="attenzione">
+Prima di `ufw enable`, controlla **sempre** di aver permesso SSH. Altrimenti, collegato da remoto, ti chiudi fuori e per rientrare serve un accesso fisico o la console del fornitore.
+</Callout>
+
+<Say who="sensei">L'ordine è questo: prima la porta per te, poi chiudi il resto. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="nftables: leggere le regole">
+Per vedere cosa c'è sotto, ecco un file di regole minimo, in forma nftables:
+
+<Log lines={[
+  "table inet filter {",
+  "  chain input {",
+  "    type filter hook input priority 0; policy drop;",
+  "    ct state established,related accept",
+  "    iif lo accept",
+  "    tcp dport 22 accept",
+  "    tcp dport 443 accept",
+  "  }",
+  "}",
+]} caption="Una tabella, una catena di ingresso, politica «drop», quattro regole." />
+
+Come si legge:
+
+- **tabella** (`table inet filter`): il contenitore, valido per IPv4 e IPv6;
+- **catena** (`chain input`): il percorso dei pacchetti **in ingresso**;
+- **policy drop**: ciò che nessuna regola permette viene scartato;
+- **regole**: si valutano **dall'alto in basso**; la prima che corrisponde decide.
+
+Comandi utili: `sudo nft list ruleset` per vedere ciò che è attivo, e `sudo nft -c -f file.nft` per **controllare la sintassi** senza applicare.
+
+<Callout kind="curiosita">
+ufw e nftables lavorano sullo stesso filtro del kernel. Se scrivi regole a mano **e** usi ufw, rischi che si pestino i piedi. Scegli uno strumento per macchina e annota quale.
+</Callout>
+
+<Say who="assistente">La riga dello stato e quella del traffico locale (lo) vanno in cima: senza, il server non riceve neanche le risposte che ha chiesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amministratore applica da remoto regole con policy drop in ingresso, ma ha dimenticato la regola per la porta 22. Che cosa succede?"
+  options={[
+    "La sessione SSH aperta può restare un momento (traffico già stabilito), ma le nuove connessioni falliscono: rischia di restare fuori",
+    "Non cambia niente: SSH è sempre permesso dal sistema",
+    "Il server si spegne per sicurezza",
+    "Il firewall ignora la policy finché non c'è almeno una regola di accept",
+  ]}
+  answer={0}
+  explain="Con la policy drop e senza regola per la 22, le nuove connessioni sono scartate. La sessione già stabilita può resistere perché c'è una regola sullo stato, ma al primo scollegamento non si rientra. Per questo si prova sempre con una seconda sessione aperta."
+/>
+
+<LinuxTerminal goal="Stampa a schermo con echo la regola tcp dport 22 accept, come promemoria." scenario="base" />
+
+<Say who="sensei">La regola dimenticata più costosa del mondo è la porta 22. Non essere il prossimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di firewall: default deny, ordine delle regole, ufw e nftables.
+
+<Practice generator="c12-firewall" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il server ha porte giuste, permessi giusti e un registro. Ora serve un controllo che lo ripeta ogni settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Default deny: si blocca tutto in ingresso e si apre solo ciò che serve, restringendo (per esempio per indirizzo) le porte di amministrazione.
+- ufw è la strada semplice; in nftables si leggono tabella, catena, policy e regole in ordine, con la regola sullo stato in cima.
+- Si prova con una sessione di riserva, si controlla la sintassi (`nft -c`) e non si mescolano ufw e regole a mano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire default deny?", a: "Tutto bloccato in ingresso, tranne ciò che è permesso esplicitamente" },
+    { q: "A cosa serve la regola «established, related»?", a: "Fa rientrare le risposte alle connessioni già avviate" },
+    { q: "Come si controlla un file nftables senza applicarlo?", a: "sudo nft -c -f file.nft" },
+    { q: "Qual è il rischio di ufw enable senza regola per SSH?", a: "Chiudersi fuori dal server" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: uno script che controlla da solo la configurazione e ti dice cosa è cambiato.</Say>
+</Scene>

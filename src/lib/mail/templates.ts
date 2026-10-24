@@ -123,6 +123,32 @@ export function passwordResetEmail({ name, email, url }: { name: string | null; 
   });
 }
 
+/** Avviso di sicurezza: la verifica in due passaggi è stata attivata o disattivata. Serve a far accorgere chi non è stato lui. */
+export function twoFactorChangedEmail({ name, email, enabled }: { name: string | null; email: string; enabled: boolean }): Mail {
+  const first = firstName({ name, email });
+  const base = siteUrl();
+  return build({
+    subject: enabled ? "Verifica in due passaggi attivata" : "Verifica in due passaggi disattivata",
+    preheader: enabled ? "Da ora, per entrare serve anche il codice della tua app." : "Per entrare bastano di nuovo email e password.",
+    banner: banner("intestazione"),
+    title: enabled ? "Il tuo account è più protetto" : "Protezione in due passaggi disattivata",
+    blocks: [
+      {
+        type: "p",
+        text: enabled
+          ? `Ciao ${first}, hai attivato la verifica in due passaggi. D'ora in poi, per accedere con email e password servirà anche il codice a 6 cifre della tua app di autenticazione.`
+          : `Ciao ${first}, hai disattivato la verifica in due passaggi. Per accedere bastano di nuovo email e password.`,
+      },
+      { type: "button", label: enabled ? "Apri le impostazioni di sicurezza" : "Riattivala dal profilo", url: `${base}/profilo` },
+      {
+        type: "note",
+        text: "Non sei stato tu? Cambia subito la password dalla pagina «Password dimenticata» e scrivici dal modulo di contatto del sito.",
+      },
+    ],
+    footer: SERVICE_FOOTER,
+  });
+}
+
 /** Messaggio arrivato dal modulo di contatto: bug, domande, richieste sui dati. */
 export function contactEmail({
   kind,

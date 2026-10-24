@@ -1,0 +1,176 @@
+---
+id: C.12.005
+course: cybersecurity
+module: 12
+title: "Utenti e sudo: poteri su misura"
+belt: blu
+duration_min: 10
+prerequisites: [C.12.004]
+objectives:
+  - "Gestire account in modo sicuro: gruppi, account di servizio, blocco e scadenze"
+  - "Scrivere una regola sudo limitata a un solo comando, con visudo e /etc/sudoers.d"
+  - "Riconoscere le regole sudo pericolose (ALL, NOPASSWD, editor e caratteri jolly)"
+video:
+  provider: youtube
+  id: "Uv-Koo60sTc"
+  start: 0
+  end: 600
+  channel: "ScrivoCodice"
+  title: "Come Aggiungere un Utente al Gruppo Sudo su Linux"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-sudo
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Usare usermod -G senza -a: l'utente perde tutti gli altri gruppi"
+  - "Modificare /etc/sudoers con un editor normale invece che con visudo"
+  - "Dare «ALL» o NOPASSWD per comodità: ogni utente diventa un possibile amministratore completo"
+commands: [usermod, visudo, sudo]
+---
+
+<Scene title="Il tecnico che serve un solo comando">
+Alla «Ferri Trasporti» il tecnico esterno Davide deve riavviare il servizio web quando si blocca, ma **solo quello**. Il capo sistemista, per fare in fretta, lo ha aggiunto a `sudo`: ora Davide può fare qualsiasi cosa come root.
+
+<Log lines={[
+  "$ sudo -l -U davide",
+  "User davide may run the following commands on web01:",
+  "    (ALL : ALL) ALL",
+]} caption="Davide può eseguire qualsiasi comando come amministratore." />
+
+La domanda del caso: **come si dà a Davide solo il potere di cui ha bisogno?**
+
+<Say who="sensei">Dare sudo completo a chi deve riavviare un servizio è come dare le chiavi dell'intero palazzo al fattorino che deve entrare nell'atrio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Account e gruppi, bene">
+Ripasso rapido, poi si va oltre. Gli account stanno in `/etc/passwd` (nome, id, cartella, shell), le password cifrate in `/etc/shadow` (leggibile solo dall'amministratore), i gruppi in `/etc/group`.
+
+Regole di pulizia:
+
+- **un account per persona**: niente account condivisi, altrimenti non si sa chi ha fatto cosa;
+- **account di servizio** (per programmi, non per persone): senza shell di login, con `usermod -s /usr/sbin/nologin nome`;
+- **aggiungere a un gruppo**: `sudo usermod -aG gruppo utente`. La `-a` (append) è essenziale: senza, l'utente **perde tutti gli altri gruppi**;
+- **blocco** di un account (per esempio chi lascia l'azienda): `sudo passwd -l utente` o `sudo usermod -L utente`;
+- **scadenze**: `sudo chage -l utente` mostra le scadenze della password.
+
+<Callout kind="attenzione">
+`usermod -G sviluppo marta` e `usermod -aG sviluppo marta` sembrano uguali. La prima **sostituisce** i gruppi di Marta con il solo «sviluppo»: il giorno dopo non può più usare ciò che prima poteva.
+</Callout>
+
+Vuoi sentire come si gestisce il gruppo sudo da un'altra voce? Il video è in italiano.
+
+<Video />
+
+<Say who="assistente">Il segno + di append è una lettera sola, ma evita un lunedì di telefonate.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="sudo con il righello">
+Il file che dice chi può usare `sudo` e per fare cosa è `/etc/sudoers`. Non si modifica con un editor normale: si usa **`sudo visudo`**, che controlla la sintassi prima di salvare. Un errore in quel file può togliere sudo a tutti.
+
+Meglio ancora: scrivere regole in file separati dentro `/etc/sudoers.d/`, aperti con `sudo visudo -f /etc/sudoers.d/davide`.
+
+La forma di una regola: **chi, da quale macchina, come quale utente, quale comando**.
+
+<Log lines={[
+  "# /etc/sudoers.d/davide",
+  "davide web01 = (root) /usr/bin/systemctl restart nginx",
+]} caption="Davide, sulla macchina web01, può essere root solo per eseguire questo comando preciso." />
+
+Per controllare cosa può fare un utente: `sudo -l -U davide`. Per togliere l'accesso: si elimina il file o si toglie l'utente dal gruppo (`sudo` su Debian e Ubuntu, `wheel` su Red Hat).
+
+<Callout kind="regola">
+Nome del comando **con percorso completo**, argomenti precisi, utente di destinazione chiaro. Più la regola è stretta, meno spazio c'è per gli abusi.
+</Callout>
+
+<Say who="sensei">Una regola sudo si scrive come una procura: per questo atto, e non per altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole che sembrano sicure e non lo sono">
+Alcune regole sudo, a prima vista innocue, sono porte aperte:
+
+<Log lines={[
+  "davide ALL=(ALL) NOPASSWD: ALL                  # tutto, senza password",
+  "davide ALL=(root) /usr/bin/vim /etc/nginx/*     # editor: da vim si apre una shell",
+  "davide ALL=(root) /usr/bin/systemctl *          # tutto systemctl, compreso spegnere i controlli",
+  "davide ALL=(root) /bin/cp * /etc/nginx/         # il carattere jolly consente di copiare altro",
+]} caption="Quattro regole da evitare." />
+
+Perché:
+
+- **ALL con NOPASSWD**: senza controllo, un account rubato diventa root immediato;
+- **editor e pager** (vim, less, nano): consentono di lanciare una shell o aprire altri file, quindi equivalgono a root;
+- **caratteri jolly** (`*`): spesso permettono più di quanto chi scrive la regola pensasse;
+- **programmi generici** (interpreti, `find`, `tar`): possono eseguire altri comandi.
+
+Alternativa all'editor: un comando che modifica **solo** ciò che serve, o `sudoedit`, che apre il file con i **tuoi** poteri e lo salva con quelli giusti.
+
+<Callout kind="curiosita">
+Ogni uso di sudo viene registrato (in `/var/log/auth.log` su Debian e Ubuntu, nel journal su altre distribuzioni). Insieme ad `auid` di auditd, sai chi ha fatto cosa.
+</Callout>
+
+<Say who="assistente">Il test è semplice: se il comando può lanciarne un altro, la regola è larga quanto «ALL».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Davide deve solo riavviare nginx. Qual è la regola sudo più sicura?"
+  options={[
+    "davide web01 = (root) /usr/bin/systemctl restart nginx",
+    "davide ALL=(ALL) NOPASSWD: ALL",
+    "davide ALL=(root) /usr/bin/systemctl *",
+    "davide ALL=(root) /usr/bin/vim /etc/nginx/nginx.conf",
+  ]}
+  answer={0}
+  explain="La prima limita macchina, utente di destinazione e comando preciso con argomenti. La seconda è root completo senza password, la terza permette qualsiasi azione di systemctl, la quarta apre un editor dal quale si può uscire verso una shell."
+/>
+
+<LinuxTerminal goal="Scopri con quale utente stai lavorando e a quali gruppi appartieni con id." scenario="base" />
+
+<Say who="sensei">Chiediti sempre: se questo account venisse rubato domattina, quanto danno farebbe? Quella è la misura della regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su gruppi, account di servizio, `usermod`, `visudo` e regole sudo.
+
+<Practice generator="c12-sudo" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora i poteri si danno con il contagocce. Manca la porta di rete: il firewall.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un account per persona; account di servizio senza shell (`nologin`); `usermod -aG` per aggiungere gruppi, mai `-G` da solo.
+- Regole sudo in `/etc/sudoers.d/`, modificate con `visudo -f`: macchina, utente di destinazione e comando preciso con percorso completo.
+- Da evitare: ALL, NOPASSWD generalizzato, editor, caratteri jolly e programmi generici; si controlla con `sudo -l -U utente`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché usare visudo e non un editor normale?", a: "Controlla la sintassi prima di salvare, evitando di togliere sudo a tutti" },
+    { q: "Che cosa fa usermod -G senza -a?", a: "Sostituisce tutti i gruppi dell'utente con quelli indicati" },
+    { q: "Perché concedere sudo su un editor è pericoloso?", a: "Dall'editor si può aprire una shell o altri file: equivale a root" },
+    { q: "Come si vede cosa può fare un utente con sudo?", a: "sudo -l -U nomeutente" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il firewall del server, con ufw e nftables.</Say>
+</Scene>

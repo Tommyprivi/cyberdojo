@@ -1,0 +1,170 @@
+---
+id: H.11.005
+course: hedge
+module: 11
+title: "Le lezioni: una lista di controllo"
+belt: blu
+duration_min: 8
+prerequisites: [H.11.004]
+objectives:
+  - "Usare una lista di controllo per valutare un fondo e per riconoscere un'offerta sospetta"
+  - "Collegare i casi LTCM, Madoff e Barings ai loro errori comuni"
+  - "Ricordare che il recupero da una grande perdita è molto più difficile della perdita stessa"
+video:
+  provider: youtube
+  id: "U47rMAyMCAw"
+  start: 0
+  end: 331
+  channel: "WolvesAndFinance"
+  title: "Lessons from Long-Term Capital Management"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h11-lezioni
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che fama e dimensioni di un fondo siano una garanzia"
+  - "Valutare un fondo solo dal rendimento dell'ultimo periodo"
+  - "Dimenticare che questo corso è educativo e non è consulenza finanziaria"
+commands: []
+---
+
+<Scene title="La proposta di un amico">
+Chiara, 17 anni, riceve un messaggio da un conoscente: «Un fondo **segreto** dà il **rendimento garantito del 3% al mese**. Se porti altri amici ricevi un premio. Si entra solo oggi».
+
+Chiara ricorda il modulo. Non ha soldi da investire, ma vuole imparare a ragionare.
+
+La domanda del caso: **quali controlli applica, prima di rispondere?**
+
+<Say who="sensei">Educazione, non consulenza: nel corso non si usa denaro reale, e nei mercati si può perdere tutto. I mercati non regalano niente. Costruiamo la lista di controllo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa hanno in comune i casi">
+Rivediamo i casi in poche righe.
+
+- **LTCM**: leva enorme, modelli del passato, nessun margine d'errore.
+- **Madoff**: rendimenti regolari, segreto, controlli non indipendenti. Un caso di frode (schema Ponzi).
+- **Barings**: un trader che registrava e controllava da solo le proprie operazioni.
+
+Il filo comune: **controlli deboli e fiducia eccessiva**, in persone o in modelli.
+
+<Callout kind="attenzione">
+Dimensioni e fama non sono controlli. Questi fondi e queste banche erano grandi e rispettati.
+</Callout>
+
+<Say who="assistente">Non era mancanza di intelligenza. Era mancanza di qualcuno che potesse dire no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lista di controllo per chi valuta un fondo">
+Prima di fidarti di un fondo, chiediti:
+
+1. **Chi è autorizzato?** Il gestore è negli elenchi ufficiali (Consob, Banca d'Italia)?
+2. **Chi controlla?** Gestore, custode, amministratore e revisore sono indipendenti tra loro?
+3. **Da dove vengono i rendimenti?** Li capisci? Sono troppo regolari o garantiti?
+4. **Qual è il caso peggiore?** Quanto posso perdere? Che cosa succede se chiedo il rimborso in una crisi?
+5. **Leva e liquidità?** Quanta leva usa? I titoli si vendono in fretta?
+6. **Che cosa dice un track record breve?** Può essere fortuna, o rischi non ancora emersi.
+
+<Callout kind="regola">
+Il tuo compito non è prevedere il futuro. È capire dove un fondo può spezzarsi.
+</Callout>
+
+<Say who="sensei">Sei domande. Se una resta senza risposta, la risposta è no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lista di controllo per chi gestisce">
+Chi gestisce un fondo ha una lista più dura:
+
+- **Limiti di leva e di liquidità** scritti, decisi in anticipo e verificati da chi non è pagato sui profitti.
+- **Stress test** con scenari estremi, in cui le correlazioni salgono.
+- **Separazione dei compiti** tra chi opera e chi registra e controlla.
+- **Comunicazione onesta**, anche nei mesi negativi.
+- **Incentivi** che non premiano il rischio senza penale.
+
+Una voce in inglese su quello che ha insegnato LTCM, circa cinque minuti:
+
+<Video />
+
+<Say who="sensei">Prudenza non vuol dire paura. Vuol dire restare in gioco abbastanza a lungo da imparare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perdere pesa più che guadagnare">
+Una regola da ricordare: le perdite grandi sono **molto più difficili da recuperare**.
+
+<Log lines={[
+  "Perdita 10%: serve un guadagno dell'11,1% per tornare pari",
+  "Perdita 50%: serve un guadagno del 100%",
+  "Perdita 80%: da 100 a 20, serve un guadagno del 400%",
+]} />
+
+Controllo: da 20 a 100 sono 80 in più su 20, cioè 400%.
+
+<Callout kind="curiosita">
+Per questo i fondi prudenti pensano prima a **non perdere troppo**. Il rendimento viene dopo.
+</Callout>
+
+<Say who="assistente">Più scendi, più ripida è la salita. Non si fa in proporzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico ti propone un investimento «segreto», con rendimento alto e un premio se porti altri amici. Qual è la scelta più prudente?"
+  options={[
+    "Rifiutare, controllare se chi offre è autorizzato e, se serve, segnalarlo alle autorità",
+    "Investire una piccola somma per provare",
+    "Accettare, ma solo se anche altri amici partecipano",
+    "Accettare, se il premio è in contanti",
+  ]}
+  answer={0}
+  explain="Segreto, rendimento alto e premio per i nuovi iscritti sono segnali tipici di truffa. Provare con poco o seguire gli altri non sostituisce le verifiche."
+/>
+
+<Say who="assistente">Segnali in fila: segreto, rendimento, premio, fretta. Quattro su quattro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Un'ultima batteria di scenari sul modulo, con la lista di controllo.
+
+<Practice generator="h11-lezioni" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: il corso è educativo, non è consulenza finanziaria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- LTCM, Madoff e Barings: controlli deboli e fiducia eccessiva in persone o modelli.
+- Per valutare un fondo: autorizzazioni, controlli indipendenti, origine dei rendimenti, caso peggiore, leva e liquidità.
+- Le grandi perdite sono difficili da recuperare: -80% richiede +400%.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa accomuna LTCM, Madoff e Barings?", a: "Controlli deboli e fiducia eccessiva" },
+    { q: "Una domanda per capire il rischio di un fondo?", a: "Quanto posso perdere nel caso peggiore e che cosa succede se chiedo il rimborso in una crisi?" },
+    { q: "-80%: quanto serve per tornare pari?", a: "+400%" },
+    { q: "Un rendimento garantito alto che cosa è?", a: "Un segnale d'allarme" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Nel prossimo, passiamo dall'altra parte: come si costruisce un fondo, con onestà.</Say>
+</Scene>

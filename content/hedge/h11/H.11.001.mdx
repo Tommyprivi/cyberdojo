@@ -1,0 +1,159 @@
+---
+id: H.11.001
+course: hedge
+module: 11
+title: "Perché i fondi falliscono"
+belt: blu
+duration_min: 8
+prerequisites: [H.10.005]
+objectives:
+  - "Elencare le cause principali di fallimento di un fondo: leva, liquidità, concentrazione, costi, errori operativi, frode"
+  - "Calcolare come la leva trasforma un piccolo calo dei prezzi in una grande perdita di capitale"
+  - "Riconoscere la combinazione più fragile: leva alta, titoli poco liquidi, investitori che escono in fretta"
+video:
+  provider: youtube
+  id: "TAvmzbgUNgw"
+  start: 0
+  end: 600
+  channel: "The Case HQ"
+  title: "Lehman Brothers Collapse Explained: Risk Management Failure Behind the Financial Crisis"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h11-perche-falliscono
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un fondo fallisca solo perché «ha sbagliato previsione»"
+  - "Dimenticare che con la leva basta un calo piccolo per azzerare il capitale"
+  - "Credere che «alla lunga i prezzi tornano» salvi chi è costretto a vendere prima"
+commands: []
+---
+
+<Scene title="Cento diventano zero">
+**Cima Capital** è un fondo fittizio. Ha **100 milioni** di capitale proprio e ne prende **900 milioni in prestito**: investe in tutto **1.000 milioni**.
+
+Una settimana difficile: i titoli scendono del **10%**. Il portafoglio vale 900 milioni. Ma i 900 milioni presi in prestito vanno restituiti.
+
+La domanda del caso: **quanto resta del capitale di Cima Capital?**
+
+<Say who="sensei">Educazione, non consulenza: nei mercati si può perdere denaro, anche tutto. I mercati non regalano niente. Cominciamo dai conti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La leva fa da moltiplicatore">
+La **leva** è denaro preso in prestito per investire più di quanto si ha. Il portafoglio ora vale 900. Si restituiscono i 900 del prestito. Restano **0**: il capitale proprio è azzerato, con un calo di soli 10%.
+
+Regola semplice: con leva *L* a 1, un calo di circa **1/L** azzera il capitale.
+
+| Leva | Capitale su 1.000 investiti | Calo che azzera il capitale |
+|------|-----------------------------|-----------------------------|
+| 2 a 1 | 500 | 50% |
+| 5 a 1 | 200 | 20% |
+| 10 a 1 | 100 | 10% |
+
+<Callout kind="attenzione">
+La leva ingrandisce i guadagni, ma ingrandisce anche le perdite. Con leva 10 a 1, un calo del 5% fa perdere il 50% del capitale proprio.
+</Callout>
+
+<Say who="assistente">Indizio: la perdita sul portafoglio si divide per il capitale proprio, non per il portafoglio intero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le richieste di garanzia e i rimborsi">
+Chi presta soldi a un fondo vuole garanzie. Se i prezzi scendono, può chiedere **altre garanzie** (si dice **margin call**, «richiesta di margine»). Se il fondo non le ha, deve **vendere in fretta**, anche in perdita.
+
+C'è poi la **liquidità**: un titolo è liquido se si vende in fretta senza muovere il prezzo. Se molti investitori chiedono il **rimborso** insieme e i titoli sono difficili da vendere, il fondo vende a prezzi bassi e danneggia anche chi resta.
+
+Un'altra voce, in inglese: il crollo di una grande banca nel 2008, che mostra come leva e finanziamento a breve termine abbiano reso fragile un colosso:
+
+<Video />
+
+<Say who="sensei">Avere ragione «alla lunga» non basta. Se ti costringono a vendere oggi, la perdita di oggi è definitiva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le altre cause">
+La leva non è l'unica strada verso il fallimento. In sintesi, le cause tipiche:
+
+- **Concentrazione**: troppo rischio su un solo mercato o su una sola idea.
+- **Costi e dimensioni**: un fondo piccolo con costi fissi alti non si regge. Esempio fittizio: 10 milioni di attivi, commissione 1% = 100.000 euro; se i costi sono 300.000, il fondo chiude.
+- **Errori operativi**: ordini sbagliati, dati sbagliati, nessuno che controlla chi opera.
+- **Frode**: documenti falsi e rendimenti inventati (ne parleremo in due lezioni).
+
+<Callout kind="regola">
+Molti fondi non chiudono in modo spettacolare: chiudono in silenzio, perché i conti non tornano. Nessuna di queste cause è un «evento raro» da guardare in tv.
+</Callout>
+
+<Say who="sensei">Quando un fondo muore, di solito le cause sono più d'una. Si sommano, come i buchi in una barca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha 200 euro di capitale proprio e investe 1.000 euro fittizi (leva 5 a 1). I titoli scendono del 4%. Quanto perde il capitale proprio?"
+  options={["20%", "4%", "8%", "40%"]}
+  answer={0}
+  explain="Il portafoglio perde 4% di 1.000 = 40 euro. Il capitale proprio è 200: 40 su 200 = 20%. Chi risponde 4% dimentica la leva."
+/>
+
+<Say who="assistente">Perdita in euro divisa per il capitale proprio. Sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il fondo più fragile">
+Ragioniamo come un controllore del rischio, passo per passo.
+
+<Guided
+  steps={[
+    "Domanda: quale fondo fittizio è più fragile in una crisi?",
+    "Fondo A: leva alta, titoli poco liquidi, investitori che possono uscire in pochi giorni.",
+    "Fondo B: nessuna leva, titoli liquidi, rimborsi con lungo preavviso.",
+    "Il fondo A può essere costretto a vendere in perdita e senza tempo. Il fondo B può aspettare.",
+    "Conclusione: la fragilità nasce dalla combinazione, non da un solo fattore.",
+  ]}
+/>
+
+<Say who="sensei">Un fondo sopravvive se ha tempo. Leva, scarsa liquidità e rimborsi veloci gli tolgono tutto il tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su leva, liquidità e cause di fallimento. Tutti i conti sono con cifre fittizie.
+
+<Practice generator="h11-perche-falliscono" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa fare questi conti smette di cercare soltanto il rendimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La leva ingrandisce le perdite: con leva 10 a 1 un calo del 10% azzera il capitale proprio.
+- Margin call, rimborsi e poca liquidità costringono a vendere in perdita: il tempo è una risorsa.
+- Concentrazione, costi troppo alti, errori operativi e frodi sono altre cause di fallimento.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Leva 10 a 1: quale calo azzera il capitale?", a: "Circa il 10%" },
+    { q: "Che cos'è un margin call?", a: "La richiesta di altre garanzie da parte di chi presta al fondo" },
+    { q: "Perché la poca liquidità è un rischio?", a: "Per pagare i rimborsi si vende in fretta a prezzi bassi" },
+    { q: "Un fondo perde il 50%: quanto serve per tornare pari?", a: "Un guadagno del 100%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: un fondo con due premi Nobel e una leva enorme. Si chiama LTCM.</Say>
+</Scene>

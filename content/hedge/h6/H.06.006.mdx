@@ -1,0 +1,146 @@
+---
+id: H.06.006
+course: hedge
+module: 6
+title: "Il rischio di controparte"
+belt: verde
+duration_min: 8
+prerequisites: [H.06.005]
+objectives:
+  - "Definire il rischio di controparte e riconoscerlo in un contratto"
+  - "Calcolare esposizione, collaterale, compensazione e perdita attesa in esempi semplici"
+  - "Elencare le difese: collaterale, limiti, più controparti, camera di compensazione"
+video:
+  provider: youtube
+  id: "uE9c8i7Jf04"
+  start: 0
+  end: 600
+  channel: "Professor Capko"
+  title: "What is Counterparty Risk?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-controparte
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Considerare una grande banca come una controparte senza rischio"
+  - "Confondere il rischio di mercato (prezzi) con quello di controparte (pagamenti)"
+  - "Concentrare tutti i contratti su una sola controparte"
+commands: []
+---
+
+<Scene title="Lo swap che non paga">
+Il fondo fittizio Aquila Credito ha uno **swap** (un contratto per scambiarsi flussi di denaro) con la banca X. Il contratto vale a favore del fondo **5 milioni di euro**: la banca dovrebbe pagarli.
+
+Poi la banca X fallisce. Il prezzo dei mercati non c'entra: l'altra parte semplicemente **non può pagare**.
+
+La domanda del caso: **come ci si protegge da chi ti deve dei soldi?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. Numeri inventati, mercati che non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è">
+Il **rischio di controparte** è il rischio che l'altra parte di un contratto non paghi o non consegni quanto dovuto.
+
+Differenza con il rischio di mercato:
+
+- **Mercato**: i prezzi si muovono contro di te.
+- **Controparte**: l'altra parte non paga.
+
+Anche una banca enorme può fallire: **Lehman Brothers**, nel 2008, era una delle più grandi banche d'investimento del mondo.
+
+<Say who="assistente">Un indizio: ogni volta che qualcuno ti deve dei soldi domani, hai un rischio di controparte oggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esposizione e perdita">
+L'**esposizione** è quanto la controparte ti deve, meno ciò che hai già in garanzia.
+
+<Log lines={[
+  "contratto a favore del fondo: 4 milioni",
+  "collaterale ricevuto:         3 milioni",
+  "esposizione residua:          1 milione",
+  "",
+  "esposizione 8 milioni, nessuna garanzia, recupero 40% (fittizio):",
+  "perdita = 8 x (1 - 0,40) = 4,8 milioni",
+]} />
+
+<Callout kind="curiosita">
+Con la **compensazione** (netting) i contratti con la stessa banca si sommano: A vale +6 e B vale -4, l'esposizione è 2 milioni, non 6.
+</Callout>
+
+<Say who="sensei">Esposizione, garanzie, recupero. Tre numeri, un'unica domanda: quanto perdo se questa banca salta domani?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le difese">
+- **Collaterale**: attività messe a garanzia, che si tengono se l'altra parte non paga.
+- **Limiti**: un massimo di esposizione per ogni controparte.
+- **Più controparti**: se una fallisce, la perdita riguarda solo una parte.
+- **Camera di compensazione** (controparte centrale): si interpone tra le parti, chiede margini e riduce il rischio.
+- **Monitoraggio**: se il costo dell'assicurazione contro il fallimento (CDS) sale, è un segnale d'allarme.
+
+Vuoi sentire la definizione da un'altra voce? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Callout kind="attenzione">
+Il **prime broker** (la banca che tiene i titoli e presta al fondo) può riutilizzare i titoli come garanzia propria: se fallisce, il fondo può non riaverli subito.
+</Callout>
+
+<Say who="sensei">Mai tutti i contratti con la stessa banca, per quanto grande sia. Il nome non è una garanzia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con la banca Y il fondo ha un contratto A che vale +6 milioni e un contratto B che vale -4 milioni. Con la compensazione (netting), quanto vale l'esposizione?"
+  options={["2 milioni", "6 milioni", "10 milioni", "4 milioni"]}
+  answer={0}
+  explain="Con il netting i valori si sommano: 6 - 4 = 2 milioni. Chi risponde 6 ignora che parte del debito della banca è compensata da ciò che il fondo le deve."
+/>
+
+<Say who="assistente">Somma con il segno: ciò che ti devono e ciò che devi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Esposizione, collaterale, netting e difese. Numeri fittizi.
+
+<Practice generator="h06-controparte" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai imparato a guardare non solo ai prezzi, ma anche a chi sta dall'altra parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio di controparte è che l'altra parte non paghi; non dipende dai prezzi di mercato.
+- Esposizione = quanto ti devono meno le garanzie; il netting somma i contratti con lo stesso segno e riduce l'esposizione.
+- Difese: collaterale, limiti, più controparti, camera di compensazione e monitoraggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Contratto 4 milioni, garanzia 3: esposizione?", a: "1 milione" },
+    { q: "Esposizione 8, recupero 40%: perdita?", a: "4,8 milioni" },
+    { q: "Che cos'è il netting?", a: "Compensare i contratti con la stessa controparte: si somma con il segno" },
+    { q: "Perché una grande banca non è senza rischio?", a: "Anche le grandi possono fallire, come Lehman Brothers nel 2008" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: LTCM, il fondo dei premi Nobel che mise insieme tutti questi rischi.</Say>
+</Scene>

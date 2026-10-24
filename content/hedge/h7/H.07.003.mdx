@@ -1,0 +1,154 @@
+---
+id: H.07.003
+course: hedge
+module: 7
+title: "Risk parity: dividere il rischio"
+belt: verde
+duration_min: 9
+prerequisites: [H.07.002]
+objectives:
+  - "Spiegare l'idea del risk parity: contributi uguali al rischio, non capitale uguale"
+  - "Calcolare pesi inversi alla volatilità e contributi al rischio con correlazione zero"
+  - "Descrivere perché serve la leva e quali rischi comporta"
+video:
+  provider: youtube
+  id: "ZEyfPtAvXWs"
+  start: 0
+  end: 600
+  channel: "Invest with Wesley"
+  title: "The Risk Parity Portfolio, The Billionaires Secret To Investing"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-risk-parity
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che pesi uguali di capitale significhino rischio uguale"
+  - "Credere che la leva del risk parity elimini il rischio"
+  - "Usare i pesi inversi alla volatilità anche quando le correlazioni sono molto diverse da zero"
+commands: []
+---
+
+<Scene title="Il 50/50 che non è 50/50">
+Il fondo fittizio **Rondine Capital** ha un portafoglio con obbligazioni (volatilità 5%) e azioni (volatilità 15%), diviso 50/50. «Equilibrato», dice il gestore.
+
+Marta fa un calcolo veloce: quasi tutto il rischio viene dalle azioni. Metà del capitale, ma una fetta enorme dell'oscillazione.
+
+La domanda del caso: **si può dividere il rischio, invece del capitale?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Equilibrio di soldi non vuol dire equilibrio di rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quanto pesa ciascuno nel rischio">
+Convenzione: correlazione zero tra i due asset. Il contributo di un asset alla **varianza** (volatilità al quadrato) è peso² × volatilità².
+
+<Guided
+  steps={[
+    "Obbligazioni: 0,5² × 5² = 0,25 × 25 = 6,25.",
+    "Azioni: 0,5² × 15² = 0,25 × 225 = 56,25.",
+    "Varianza totale: 6,25 + 56,25 = 62,5.",
+    "Quota delle azioni: 56,25 / 62,5 = 90%. Con metà del capitale, danno il 90% del rischio.",
+  ]}
+/>
+
+<Say who="assistente">Il capitale è metà e metà. Il rischio è novanta e dieci. Capisci il problema?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Risk parity: contributi uguali">
+Il **risk parity** (parità di rischio) sceglie i pesi in modo che ogni componente contribuisca **allo stesso modo** al rischio. Con correlazione zero, basta dare pesi **inversi alla volatilità**.
+
+<Log lines={[
+  "vol 5% e 15%  -> pesi proporzionali a 1/5 e 1/15",
+  "1/5 = 0,200   1/15 = 0,0667   somma = 0,2667",
+  "obbligazioni 75%   azioni 25%",
+  "varianza: 0,75² x 25 = 14,06   0,25² x 225 = 14,06",
+  "contributi: 50% e 50%",
+]} />
+
+Vuoi sentirlo da un'altra voce? Un video in inglese, con sottotitoli, sull'idea del risk parity (il titolo è un po' da copertina, il contenuto è la parte che interessa):
+
+<Video />
+
+<Callout kind="regola">
+Meno volatile = più peso. Più volatile = meno peso. Il rischio si divide, il capitale no.
+</Callout>
+
+<Say who="sensei">Chi oscilla di più parla meno. È giusto così.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La leva e i suoi pericoli">
+Il portafoglio 75/25 ha una volatilità di circa 5,3%: molto bassa, ma anche il rendimento atteso è basso. Allora i fondi risk parity spesso usano la **leva** per portare il rischio al livello voluto.
+
+Con numeri semplici: portafoglio con volatilità 5%, obiettivo 10%, esposizione totale **2 volte** il capitale.
+
+<Callout kind="attenzione">
+La leva non elimina il rischio: lo moltiplica. Se obbligazioni e azioni scendono insieme (per esempio quando i tassi salgono in fretta), la correlazione sale e le perdite sono amplificate dalla leva.
+</Callout>
+
+<Callout kind="curiosita">
+I pesi inversi alla volatilità sono corretti con correlazione zero. Se le correlazioni sono molto diverse da zero, servono calcoli più completi (e la volatilità stimata dal passato può cambiare).
+</Callout>
+
+<Say who="sensei">Risk parity non vuol dire sicuro. Vuol dire che il rischio è distribuito, non che sia piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Tre asset hanno volatilità 10%, 20% e 20% (correlazione trascurabile). Quali pesi dà il metodo dei pesi inversi alla volatilità?"
+  options={[
+    "33%, 33%, 33%",
+    "20%, 40%, 40%",
+    "50%, 25%, 25%",
+    "25%, 25%, 50%",
+  ]}
+  answer={2}
+  explain="Pesi proporzionali a 1/10, 1/20 e 1/20, cioè a 2, 1 e 1: la somma è 4, quindi 50%, 25% e 25%. Chi risponde 33% ha diviso il capitale in parti uguali, ma non il rischio."
+/>
+
+<Say who="assistente">Un indizio: l'asset meno volatile vale il doppio degli altri due, quindi pesa il doppio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi, correlazione dichiarata: pesi inversi, contributi al rischio, leva. Hai 3 tentativi.
+
+<Practice generator="h07-risk-parity" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente, nemmeno a chi usa formule eleganti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Capitale uguale non vuol dire rischio uguale: con 5% e 15% di volatilità, il 50/50 dà il 90% del rischio alle azioni.
+- Risk parity: ogni componente contribuisce in modo uguale al rischio; con correlazione zero i pesi sono inversi alla volatilità.
+- La leva non elimina il rischio: se gli asset scendono insieme, le perdite si amplificano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Idea del risk parity?", a: "Ogni componente contribuisce in modo uguale al rischio" },
+    { q: "Volatilità 5% e 15%, correlazione zero: pesi risk parity?", a: "75% e 25%" },
+    { q: "Perché spesso si usa la leva?", a: "Portare un portafoglio poco rischioso al livello di rischio voluto" },
+    { q: "Rischio principale con la leva?", a: "Se gli asset scendono insieme, le perdite sono amplificate" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: esposizione netta e lorda, per sapere quanto mercato abbiamo davvero addosso.</Say>
+</Scene>

@@ -1,0 +1,193 @@
+---
+id: C.13.005
+course: cybersecurity
+module: 13
+title: "Leggere una cattura sospetta"
+belt: blu
+duration_min: 12
+prerequisites: [C.13.004]
+objectives:
+  - "Ricostruire una cronologia dai pacchetti di una cattura (descritta nel testo)"
+  - "Estrarre gli indicatori utili (indirizzi, nomi, orari) senza saltare a conclusioni"
+  - "Distinguere ciò che la cattura prova da ciò che resta da verificare"
+video:
+  provider: youtube
+  id: "M8yoYmiL7rA"
+  start: 0
+  end: 600
+  channel: "Simply Cyber - Gerald Auger, PhD"
+  title: "SOC Analyst Skills - Wireshark Malicious Traffic Analysis"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-cattura-sospetta
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Partire dall'ultimo pacchetto «spettacolare» invece che dall'ordine cronologico"
+  - "Dimenticare di annotare l'ora di ogni evento: senza cronologia il rapporto non si può verificare"
+  - "Aprire o eseguire file scaricati trovati in una cattura di traffico malevolo fuori da una macchina virtuale isolata"
+commands: []
+---
+
+<Scene title="La cattura che nessuno vuole aprire">
+Un'azienda fittizia, **Officina Verdi**, ti manda un file di cattura di **sei minuti** del computer di prova **192.168.1.30**, registrato nel proprio laboratorio con permesso scritto. Il capo dice: «Il computer ha fatto qualcosa tra le 14:02 e le 14:08. Ricostruiscimi la storia».
+
+Per questa lezione la cattura è **descritta nel testo**, con righe inventate. Nella pratica reale si usano file di esempio pubblici, aperti in una **macchina virtuale isolata** del tuo laboratorio, mai sul computer di tutti i giorni.
+
+<Callout kind="regola">
+Si analizza solo traffico del proprio laboratorio o file di esempio pubblicati per imparare. Non si ascolta mai la rete altrui: in Italia è reato (intercettazione abusiva, art. 617-quater, e accesso abusivo, art. 615-ter, del codice penale).
+</Callout>
+
+<Say who="sensei">Una storia si legge dall'inizio. Si comincia dall'ora più vecchia e si va avanti, riga dopo riga. Niente salti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo in quattro mosse">
+Davanti a una cattura sospetta si lavora sempre allo stesso modo.
+
+1. **Panorama**: gerarchia dei protocolli e conversazioni (lezione 1).
+2. **Cronologia**: si ordina per tempo e si segnano gli eventi importanti, con l'ora UTC.
+3. **Indicatori**: si annotano indirizzi IP, nomi DNS, porte, nomi di file, orari. Sono i dati che altri potranno cercare nei propri log.
+4. **Fatti e ipotesi**: ciò che si vede in una colonna, ciò che si pensa nell'altra.
+
+<Callout kind="trucco">
+Un foglio con due colonne, «Fatto visto» e «Ipotesi», vale più di cento schermate. Si riempie mentre si legge, non dopo.
+</Callout>
+
+Vuoi vedere un'analisi di traffico sospetto fatta da un'altra voce? In inglese:
+
+<Video />
+
+<Say who="assistente">Annota sempre l'ora, anche quando ti sembra ovvia. Domani non lo sarà più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Atto primo: 14:02 – 14:03">
+Ecco le prime righe della cattura inventata.
+
+<Log
+  lines={[
+    "14:02:10  192.168.1.30 -> 192.168.1.1     DNS   Richiesta  A  offerte-viaggi.example",
+    "14:02:10  192.168.1.1  -> 192.168.1.30    DNS   Risposta   A  203.0.113.90",
+    "14:02:11  192.168.1.30 -> 203.0.113.90     TCP   porta 49200 -> 80   [SYN]",
+    "14:02:11  203.0.113.90 -> 192.168.1.30     TCP   porta 80 -> 49200   [SYN, ACK]",
+    "14:02:12  192.168.1.30 -> 203.0.113.90     HTTP  GET /download/foglio-prezzi.zip",
+    "14:02:14  203.0.113.90 -> 192.168.1.30     HTTP  200 OK (application/zip, 1,8 MB)",
+  ]}
+  caption="Cattura inventata, primo tratto"
+/>
+
+Fatti: il computer ha chiesto il nome «offerte-viaggi.example», si è collegato su HTTP (porta 80, **in chiaro**) e ha scaricato un file **zip da 1,8 MB**.
+
+Ipotesi: l'utente ha cliccato un link in un messaggio. **Non lo sappiamo**: la cattura non mostra il messaggio.
+
+<Say who="sensei">Un file scaricato da un sito sconosciuto, in HTTP, è il primo punto della cronologia. Segnalo. Non lo apro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Atto secondo: 14:03 – 14:06">
+Passa un minuto. Il comportamento cambia.
+
+<Log
+  lines={[
+    "14:03:30  192.168.1.30 -> 192.168.1.1     DNS   Richiesta  A  k3j9x0qpz1.controllo-esempio.example",
+    "14:03:30  192.168.1.1  -> 192.168.1.30    DNS   Risposta   Nome inesistente (NXDOMAIN)",
+    "14:03:45  192.168.1.30 -> 192.168.1.1     DNS   Richiesta  A  m8d2v7ahw4.controllo-esempio.example",
+    "14:03:45  192.168.1.1  -> 192.168.1.30    DNS   Risposta   Nome inesistente (NXDOMAIN)",
+    "14:04:00  192.168.1.30 -> 198.51.100.33    TLSv1.2  Client Hello (SNI: aggiorna-esempio.example)",
+    "14:05:00  192.168.1.30 -> 198.51.100.33    TLSv1.2  Dati applicativi, 212 byte",
+    "14:06:00  192.168.1.30 -> 198.51.100.33    TLSv1.2  Dati applicativi, 212 byte",
+  ]}
+  caption="Cattura inventata, secondo tratto"
+/>
+
+Fatti: due nomi casuali sotto lo stesso dominio, senza risposta (NXDOMAIN); poi un contatto cifrato verso 198.51.100.33, con **dati di 212 byte ogni minuto**.
+
+Ipotesi: la regolarità richiama il **beaconing** della lezione precedente. Ma anche un programma legittimo si comporta così.
+
+<Callout kind="attenzione">
+Due eventi vicini nel tempo non provano un legame. Qui la vicinanza (14:02 download, 14:03 comportamento nuovo) è un indizio, non una dimostrazione.
+</Callout>
+
+<Say who="assistente">Il sospetto cresce, ma resta un sospetto. Il rapporto dovrà dire «coerente con», non «prova che».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: dalla cattura al quadro">
+Rimettiamo tutto in ordine.
+
+<Guided
+  steps={[
+    "Cronologia UTC (supponiamo ora locale = UTC): 14:02 download zip via HTTP; 14:03 nomi DNS casuali, NXDOMAIN; 14:04 primo contatto TLS; 14:05, 14:06 invii da 212 byte.",
+    "Indicatori: 203.0.113.90 (sito del download), offerte-viaggi.example, controllo-esempio.example, 198.51.100.33, aggiorna-esempio.example, nome del file foglio-prezzi.zip.",
+    "Fatti: tutto ciò che è nella tabella sopra. Ipotesi: file scaricato → attività successiva; beaconing; possibile infezione.",
+    "Ciò che la cattura NON mostra: che cosa conteneva lo zip, se è stato aperto, quale programma ha generato i contatti, quali dati sono stati inviati.",
+    "Prossimi passi: verificare il computer di prova (isolato dalla rete), controllare i processi, fare l'hash del file e cercarlo in un servizio di reputazione, bloccare gli indirizzi nel firewall del laboratorio.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Un file trovato in una cattura **non si apre sul computer normale** e non si esegue mai: si analizza solo in una macchina virtuale isolata, o più semplicemente si calcola il suo hash e lo si cerca. Meglio non toccare ciò che non serve.
+</Callout>
+
+<Say who="sensei">Il quadro è coerente con un'infezione. Ma io scrivo «coerente», non «certo». E dico che cosa mi manca per esserlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai ricostruito la cronologia del caso. Il capo chiede: «Quindi l'utente ha aperto lo zip e si è infettato?». Qual è la risposta corretta?"
+  options={[
+    "La cattura è coerente con questo, ma non lo prova: non mostra se il file è stato aperto, serve esaminare il computer",
+    "Sì, certamente: il download e i contatti successivi lo dimostrano",
+    "No, certamente: il traffico è cifrato e quindi innocuo",
+    "Non si può dire niente, perché il file è stato cancellato",
+  ]}
+  answer={0}
+  explain="La rete mostra sequenza e tempi, non cosa è successo dentro il computer. Download e contatti regolari sono coerenti con un'infezione, ma per provarla serve il computer (processi, file, log). Dire «certamente» in un senso o nell'altro è un salto non giustificato."
+/>
+
+<Say who="assistente">«Coerente con», «non esclude», «da verificare». Sono le tre frasi che salvano un analista dalle figuracce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di lettura di catture inventate: cronologia, indicatori, fatti e ipotesi. Cinque su cinque.
+
+<Practice generator="c13-cattura-sospetta" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai letto la storia nell'ordine giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Metodo: panorama, cronologia (in UTC), indicatori, fatti separati dalle ipotesi.
+- Due eventi vicini nel tempo sono un indizio, non una dimostrazione di un legame.
+- La cattura mostra la rete, non l'interno del computer: i file trovati non si aprono fuori da un ambiente isolato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le quattro mosse davanti a una cattura sospetta?", a: "Panorama, cronologia, indicatori, fatti separati dalle ipotesi" },
+    { q: "Che cos'è un indicatore?", a: "Un dato (IP, nome DNS, porta, file, orario) che altri possono cercare nei propri log" },
+    { q: "Che cosa non mostra una cattura di rete?", a: "Che cosa succede dentro il computer: processi, file aperti" },
+    { q: "Che cosa si fa di un file trovato in una cattura?", a: "Non lo si apre sul computer normale: si calcola l'hash o lo si analizza in una macchina virtuale isolata" },
+  ]}
+/>
+
+<Say who="sensei">Sai leggere una cattura sospetta. Prossima lezione: quando il traffico è troppo per leggerlo a mano. Zeek e NetFlow.</Say>
+</Scene>

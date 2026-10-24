@@ -1,0 +1,172 @@
+---
+id: H.08.002
+course: hedge
+module: 8
+title: "La custodia dei beni"
+belt: verde
+duration_min: 8
+prerequisites: [H.08.001]
+objectives:
+  - "Spiegare che cosa fa il custode e perché i beni del fondo sono tenuti separati"
+  - "Descrivere la riconciliazione tra i registri del gestore e quelli del custode"
+  - "Collegare la custodia indipendente alla lezione del caso Madoff e al ruolo del depositario"
+video:
+  provider: youtube
+  id: "uhpxOHgg_zY"
+  start: 0
+  end: 338
+  channel: "Simple Explain"
+  title: "Custodian: What It Means in Banking and Finance"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-custodia
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la custodia protegga dalle perdite di mercato: protegge dalla sparizione dei beni"
+  - "Fidarsi di un gestore che tiene tutto da solo"
+  - "Non confrontare mai i registri del gestore con quelli del custode"
+commands: []
+---
+
+<Scene title="«Fidati, sono da me»">
+Un investitore di **Lucciola Capital**, fondo fittizio, chiede al gestore: «Dove sono i titoli del fondo?». Risposta: «Da me. Fidati.»
+
+Nessun estratto conto di una banca. Nessuno che controlli. L'investitore sente un campanello d'allarme, ma non sa spiegare perché.
+
+La domanda del caso: **dove dovrebbero stare i titoli di un fondo, e chi li deve tenere?**
+
+Nota: educazione, non consulenza. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">Un gestore onesto non si offende se gli chiedi dove sono i soldi. Un gestore che si offende, lo annoti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il custode">
+Il **custode** (in inglese *custodian*) è una banca che **conserva i titoli e il denaro** del fondo e **registra ogni movimento**. Non decide che cosa comprare.
+
+Una regola chiave è la **segregazione**: i beni dei clienti sono tenuti **separati** da quelli della banca. Se la banca ha problemi, i beni dei clienti non sono i suoi.
+
+<Callout kind="regola">
+Chi **decide** gli acquisti non deve essere chi **custodisce** i beni. Così nessuno può da solo spostarli o farli sparire.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Pensa alla cassetta di sicurezza: la banca custodisce, ma non decide che cosa ci metti dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa fa ogni giorno">
+Il custode non si limita a «tenere». Fa anche:
+
+- **regolamento**: quando il fondo compra un titolo, i titoli passano al fondo e il denaro al venditore;
+- **incasso di dividendi e interessi**;
+- **gestione degli eventi societari** (*corporate action*): dividendi, frazionamenti e simili.
+
+Esempio: il fondo ha in custodia **40.000 azioni** e la società paga **0,50 euro** per azione.
+
+<Log lines={[
+  "Azioni in custodia:   40.000",
+  "Dividendo per azione:  0,50",
+  "Incasso: 40.000 x 0,50 = 20.000 euro",
+]} />
+
+<Say who="sensei">Un dividendo che non arriva, o che arriva in meno, è un indizio. Se nessuno guarda, nessuno se ne accorge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La riconciliazione">
+Il gestore ha il suo registro. Il custode ha il suo. Ogni giorno si **confrontano**: è la **riconciliazione**.
+
+<Log lines={[
+  "Titolo        Gestore   Custode   Esito",
+  "Alfa SpA       1.000     1.000    ok",
+  "Beta SpA       2.500     2.500    ok",
+  "Gamma SpA      1.000       900    DIFFERENZA: 100",
+]} />
+
+Quando i numeri non coincidono, non si ignora e non si «sistema» a occhio: si **indaga finché si capisce da dove viene** la differenza. Può essere un semplice ritardo di regolamento, oppure un errore, oppure peggio.
+
+<Callout kind="trucco">
+Una differenza piccola e spiegata è normale. Una differenza piccola e **mai spiegata** è un campanello d'allarme.
+</Callout>
+
+<Say who="assistente">Un indizio: se due registri indipendenti dicono la stessa cosa, è difficile che sbaglino insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La regola dei due e il caso Madoff">
+Per muovere denaro dal conto del fondo serve la **doppia autorizzazione**: due persone approvano e il custode controlla l'ordine. Una sola persona con tutte le password è un rischio, anche contro le truffe esterne.
+
+Il caso **Madoff**, in sintesi: fu uno schema Ponzi scoperto nel 2008. Tra i segnali, secondo le ricostruzioni, c'era la mancanza di un soggetto esterno che verificasse che i titoli esistessero davvero.
+
+In Europa la normativa sui fondi alternativi (**AIFMD**) prevede in sintesi un **depositario** che custodisce le attività e controlla alcune regole del fondo. Dato valido in sintesi a ottobre 2026: verifica le fonti ufficiali.
+
+<Callout kind="attenzione">
+La custodia protegge dalla **sparizione dei beni**, non dalle **perdite di mercato**. Un fondo con custode può perdere comunque.
+</Callout>
+
+<Say who="sensei">Ruoli separati, controlli incrociati. Sembra burocrazia, ma è ciò che ha impedito a molte truffe di nascere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il registro del gestore dice 1.000 azioni di Gamma SpA, ma il custode ne mostra 900. Che cosa si fa?"
+  options={[
+    "Si indaga subito sulla differenza finché si capisce da dove viene",
+    "Si ignora: conta solo il registro del gestore",
+    "Si corregge il registro del custode senza controlli",
+    "Si aspetta la fine dell'anno per esaminarla",
+  ]}
+  answer={0}
+  explain="Due registri indipendenti servono proprio a scoprire gli errori. Una differenza va spiegata subito: aspettare o ignorarla lascia crescere il problema."
+/>
+
+<Say who="assistente">Chiediti: chi controlla chi? Se la risposta è «nessuno», è un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su custodia, riconciliazione e ruoli. Numeri fittizi.
+
+<Practice generator="h08-custodia" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ricorda: i beni li custodisce chi non li gestisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il custode conserva titoli e denaro del fondo, tenuti separati dai beni della banca, e registra i movimenti. Chi decide non deve essere chi custodisce.
+- Ogni giorno si fa la riconciliazione: le differenze si spiegano, non si ignorano.
+- La custodia indipendente protegge dalla sparizione dei beni, non dalle perdite di mercato. Il caso Madoff mostra il rischio di non avere un controllo esterno.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa il custode?", a: "Conserva titoli e denaro e registra i movimenti" },
+    { q: "Che cos'è la segregazione?", a: "I beni dei clienti sono separati da quelli della banca" },
+    { q: "Che cos'è la riconciliazione?", a: "Il confronto tra i registri del gestore e quelli del custode" },
+    { q: "La custodia protegge dalle perdite di mercato?", a: "No, protegge dalla sparizione dei beni" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi conta davvero i numeri del fondo. L'amministratore.</Say>
+</Scene>

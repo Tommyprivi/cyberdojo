@@ -1,0 +1,151 @@
+---
+id: H.05.006
+course: hedge
+module: 5
+title: "Gli swap: scambiarsi i flussi"
+belt: verde
+duration_min: 9
+prerequisites: [H.05.005]
+objectives:
+  - "Spiegare che cos'è uno swap e che cos'è il capitale nozionale"
+  - "Calcolare i flussi di uno swap di tasso fisso contro variabile"
+  - "Descrivere il rischio di controparte degli swap fuori borsa"
+video:
+  provider: youtube
+  id: "_hOjLz6h7t8"
+  start: 0
+  end: 458
+  channel: "Edspira"
+  title: "What is an Interest Rate Swap?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-swap
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il capitale nozionale venga davvero pagato o scambiato"
+  - "Confondere chi paga il fisso con chi paga il variabile"
+  - "Dimenticare che uno swap fuori borsa ha rischio di controparte"
+commands: []
+---
+
+<Scene title="Il mutuo che cambia ogni mese">
+La **Ceramiche Rondine** è un'azienda fittizia. Ha preso in prestito **1.000.000 di euro** a tasso **variabile**: paga il tasso di riferimento più 1%. Se i tassi salgono, le rate salgono. Il direttore, Luca, dorme male.
+
+La banca gli propone: «Facciamo uno **swap**: tu paghi un tasso fisso, noi ti diamo il variabile».
+
+La domanda del caso: **come si trasforma un tasso variabile in fisso, e che rischi restano?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Anche gli swap hanno un altro lato, e quel lato può guadagnare sulle tue perdite.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è uno swap">
+Uno **swap** («scambio») è un contratto in cui due parti si scambiano **flussi di denaro** nel tempo, secondo regole fissate oggi.
+
+Nello swap di tasso più comune:
+
+- una parte paga un tasso **fisso** (per esempio 3%),
+- l'altra paga un tasso **variabile** (il tasso di riferimento del momento),
+- entrambi calcolati su un **capitale nozionale**, cioè una cifra di riferimento. Il nozionale **non viene scambiato**: serve solo per calcolare gli interessi.
+
+<Callout kind="regola">
+Si scambiano di solito solo i **differenziali**: chi deve di più paga la differenza.
+</Callout>
+
+<Say who="assistente">Come due vicini che si scambiano le bollette: non ti do i miei soldi, ci diciamo quanto deve pagare ciascuno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I numeri di Luca">
+Luca fa lo swap: **paga il 3% fisso, riceve il variabile**, sul nozionale di 1.000.000. Il prestito costa variabile + 1%.
+
+<Guided
+  steps={[
+    "Variabile al 4%: prestito 5% = 50.000 euro. Swap: riceve 4% (40.000) e paga 3% (30.000): +10.000. Costo totale 40.000.",
+    "Variabile al 2%: prestito 3% = 30.000 euro. Swap: riceve 2% (20.000) e paga 3% (30.000): -10.000. Costo totale 40.000.",
+    "In entrambi i casi il costo è 40.000, cioè 4%: fisso 3% più il 1% del prestito.",
+    "Luca ha un costo certo. Ha perso la possibilità di pagare meno se i tassi scendono.",
+  ]}
+/>
+
+Un'altra voce, in inglese con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Lo swap non ha tolto il rischio: lo ha spostato. Se i tassi scendono, Luca paga più del mercato. Si chiama costo di opportunità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altri swap e il rischio di controparte">
+Ci sono altri tipi di swap, descritti qui in sintesi:
+
+- **Swap di valute**: si scambiano flussi in due valute diverse.
+- **Credit default swap (CDS)**: chi compra paga un premio periodico e riceve un rimborso se un debitore non paga; è come un'assicurazione sul debito.
+
+Gli swap sono per lo più **fuori borsa** (OTC), cioè contratti privati tra due parti, quindi c'è il **rischio di controparte**: l'altra parte potrebbe non pagare quando ti deve dei soldi.
+
+<Callout kind="attenzione">
+Uno swap può passare da valore positivo a negativo: quando i tassi si muovono contro di te, devi pagare. E se la controparte fallisce, il guadagno che ti spettava può svanire.
+</Callout>
+
+<Say who="assistente">Prima di fare uno swap chiediti: ho davvero un rischio da coprire? E chi sta dall'altra parte, può pagare?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda ha un prestito variabile e fa uno swap: paga il 3% fisso e riceve il variabile, su 1.000.000 di nozionale. Il variabile è 5%. Quanto incassa (netto) dallo swap in un anno?"
+  options={[
+    "20.000 euro: riceve 50.000 e paga 30.000",
+    "30.000 euro: il tasso fisso che paga",
+    "50.000 euro: il variabile che riceve",
+    "1.000.000 euro: il nozionale"
+  ]}
+  answer={0}
+  explain="Riceve il 5% (50.000) e paga il 3% (30.000): netto +20.000. Il nozionale non viene mai scambiato, è solo la base di calcolo. Chi risponde 50.000 dimentica di pagare il fisso."
+/>
+
+<Say who="sensei">Calcola entrambe le gambe, poi fai la differenza. Mai una gamba sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sugli swap di tasso e domande sul rischio di controparte. Numeri fittizi.
+
+<Practice generator="h05-swap" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Uno swap è un contratto lungo: se non sai spiegarlo, non lo firmare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Uno swap è uno scambio di flussi di denaro nel tempo; il capitale nozionale serve per il calcolo e non viene scambiato.
+- Swap di tasso: chi paga il fisso e riceve il variabile trasforma un debito variabile in fisso. Rinuncia a pagare meno se i tassi scendono.
+- Gli swap sono per lo più fuori borsa: c'è rischio di controparte e il valore può diventare negativo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il nozionale?", a: "La cifra di riferimento per calcolare gli interessi, non scambiata" },
+    { q: "Paga 3% fisso, riceve 4% variabile su 1.000.000: flusso netto?", a: "+10.000 euro" },
+    { q: "Che cos'è un CDS?", a: "Un'assicurazione sul debito: si paga un premio e si riceve un rimborso se il debitore non paga" },
+    { q: "Che cos'è il rischio di controparte?", a: "L'altra parte potrebbe non pagare" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: i rischi dei derivati. Tutto quello che abbiamo visto, con il conto da pagare.</Say>
+</Scene>

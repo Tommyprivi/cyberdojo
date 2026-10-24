@@ -1,0 +1,153 @@
+---
+id: H.04.006
+course: hedge
+module: 4
+title: "Confronto tra aziende"
+belt: arancione
+duration_min: 8
+prerequisites: [H.04.005]
+objectives:
+  - "Costruire un gruppo di aziende confrontabili e usare la mediana dei multipli"
+  - "Ricavare un valore implicito dai multipli dei confrontabili"
+  - "Spiegare perché il confronto relativo non prova che un'azienda sia conveniente"
+video:
+  provider: youtube
+  id: "nDa-hjtXC3M"
+  start: 0
+  end: 600
+  channel: "Eric Andrews"
+  title: "Business Valuation 101: The Comparables Analysis Method"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-confronto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Confrontare aziende di settori, dimensioni o paesi molto diversi"
+  - "Usare la media quando c'è un valore anomalo"
+  - "Concludere che un'azienda è conveniente solo perché costa meno delle altre, quando tutto il settore può essere caro"
+commands: []
+---
+
+<Scene title="Costa meno delle altre">
+Marta ha il DCF di Officine Lumi (fittizia), ma vuole una seconda opinione: **come la valuta il mercato rispetto ad aziende simili?**
+
+La domanda del caso: **come si confrontano le aziende in modo onesto?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Due metodi che concordano valgono più di uno solo. Due che discordano insegnano ancora di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il gruppo di confronto">
+Si sceglie un gruppo di aziende **confrontabili** (le *comps*): stesso settore, dimensioni simili, mercati simili, bilanci con le **stesse regole contabili** e gli **stessi periodi**.
+
+Poi si guardano i loro multipli. Importi fittizi, EV/EBITDA di tre aziende:
+
+<Log lines={[
+  "Luce Nord        4",
+  "Faro Verde       6",
+  "Ottica Sole      8",
+  "Mediana          6",
+]} />
+
+<Callout kind="trucco">
+Con un valore anomalo si usa la **mediana**: nei numeri 4, 5, 6 e 30 la mediana è 5,5, la media 11,25.
+</Callout>
+
+<Say who="assistente">Un indizio: la mediana è il valore che sta in mezzo, la media si lascia spingere dai casi estremi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal multiplo al valore">
+Applichiamo il multiplo mediano 6 a Officine Lumi, con EBITDA 40, debito netto 50 e 10 milioni di azioni:
+
+<Guided
+  steps={[
+    "EV implicito = 6 x 40 = 240 milioni.",
+    "Valore dei soci = 240 - 50 = 190 milioni.",
+    "Per azione: 190 / 10 = 19 euro.",
+    "Il DCF dava circa 14,5, il prezzo è 15, i multipli suggeriscono 19. Tre numeri diversi: è un intervallo, non una verità.",
+  ]}
+/>
+
+Un'altra voce, in inglese con i sottotitoli, spiega il metodo:
+
+<Video />
+
+<Say who="sensei">Se i metodi non concordano, non scegliere quello che ti piace. Cerca perché non concordano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti del confronto">
+<Callout kind="attenzione">
+Il confronto è **relativo**: dice che l'azienda costa meno o più delle altre, non che il prezzo sia giusto. Se tutto il settore è caro, essere «nella media» non è un affare.
+</Callout>
+
+Altre cose da controllare:
+
+- **Crescita e margini**: due aziende con lo stesso P/E ma crescita diversa non sono uguali.
+- **Debito**: per questo si usa spesso l'EV/EBITDA.
+- **Criteri contabili e periodi** diversi cambiano i numeri.
+
+Esempio con i margini: Lumi ha EBIT 25 su ricavi 200 (12,5%); un'altra azienda ha EBIT 40 su ricavi 400 (10%). La prima è più redditizia, anche se guadagna meno in assoluto.
+
+<Say who="sensei">Un confronto fatto bene riduce gli errori. Non li elimina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Azienda X: EV 300 milioni ed EBITDA 50 milioni. Azienda Y: EV 240 milioni ed EBITDA 60 milioni. Quale costa meno per euro di EBITDA?"
+  options={[
+    "Y, con multiplo 4 contro 6",
+    "X, con multiplo 6 contro 4",
+    "Sono uguali",
+    "X, perché ha l'EV più alto",
+  ]}
+  answer={0}
+  explain="X: 300 / 50 = 6. Y: 240 / 60 = 4. Un EV più alto da solo non dice niente: va diviso per quello che l'azienda produce."
+/>
+
+<Say who="assistente">Dividi sempre prima di confrontare: i numeri assoluti ingannano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sul confronto tra aziende. Numeri fittizi.
+
+<Practice generator="h04-confronto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Confronta mele con mele.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si scelgono aziende confrontabili e si usa la mediana dei multipli, meno sensibile ai casi estremi.
+- Dal multiplo si ricava un EV implicito, poi, tolto il debito netto, il valore per azione.
+- Il confronto è relativo: non prova che un'azienda sia conveniente se tutto il settore è caro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Mediana di 4, 5, 6, 30?", a: "5,5" },
+    { q: "EBITDA 40, multiplo 6: EV implicito?", a: "240" },
+    { q: "Perché confrontare aziende dello stesso settore?", a: "Margini, crescita e rischi dipendono dal settore" },
+    { q: "«Costa come le altre»: è un affare?", a: "Non necessariamente: tutto il settore può essere caro" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: le trappole di valutazione.</Say>
+</Scene>

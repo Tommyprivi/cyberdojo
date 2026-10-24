@@ -1,0 +1,172 @@
+---
+id: C.17.002
+course: cybersecurity
+module: 17
+title: "Le chiavi di casa: IAM e minimo privilegio"
+belt: blu
+duration_min: 10
+prerequisites: [C.17.001]
+objectives:
+  - "Spiegare che cos'è l'IAM e che cosa significa minimo privilegio"
+  - "Leggere una policy di permessi fittizia e riconoscere quella troppo ampia"
+  - "Descrivere le difese principali: MFA, ruoli temporanei, revisione degli accessi"
+video:
+  provider: youtube
+  id: "IEfvO3WymXg"
+  start: 0
+  end: 600
+  channel: "Cloud Explainers"
+  title: "IAM for Developers: Policy Evaluation and Least Privilege"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-iam
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Dare permessi ampi «per far funzionare le cose» e non toglierli più"
+  - "Usare chiavi fisse scritte nel codice invece di credenziali temporanee"
+  - "Condividere un solo account amministratore tra più persone"
+commands: []
+---
+
+<Scene title="L'account di Marta">
+Nella software house **Pixel Nord** (fittizia), Marta passa dal reparto contabilità al magazzino. Nessuno le toglie i vecchi permessi. Un giorno la sua password finisce in un'email di phishing e un estraneo entra con il suo account.
+
+<Log lines={[
+  "identità: marta.b",
+  "permessi: lettura fatture, scrittura bonifici, gestione magazzino, cancellazione archivi",
+  "ultimo uso permesso «scrittura bonifici»: 11 mesi fa",
+]} caption="Quanti di questi permessi servono oggi a Marta?" />
+
+La domanda del caso: **come si dà a ciascuno solo ciò che gli serve, e come si scoprono i permessi di troppo?**
+
+<Say who="sensei">Un account con troppi permessi è una chiave che apre dieci porte. Ne serve una sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'IAM">
+**IAM** sta per *Identity and Access Management*, gestione di identità e accessi. Risponde a due domande: **chi sei** (identità) e **che cosa puoi fare** (permessi).
+
+Le identità sono di più tipi:
+
+- **utenti**: persone;
+- **gruppi**: insiemi di utenti, come «contabilità»;
+- **ruoli**: insiemi di permessi che si assumono per un compito;
+- **account di servizio**: identità usate da un programma, non da una persona.
+
+Ogni fornitore usa nomi propri: in AWS si parla di utenti, ruoli e policy IAM; in Azure di assegnazioni di ruolo (RBAC); in Google Cloud di associazioni di ruoli. L'idea è la stessa.
+
+<Callout kind="regola">
+**Minimo privilegio**: ogni identità riceve solo i permessi che servono al suo lavoro, per il tempo che servono.
+</Callout>
+
+<Say who="assistente">Pensa al portachiavi di un custode: non ha la chiave della cassaforte, solo quelle delle stanze da pulire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere una policy">
+Una **policy** è un elenco di regole in forma di testo. Ecco due esempi fittizi, in stile neutro rispetto al fornitore:
+
+<Log lines={[
+  "POLICY A — account del programma di backup",
+  "  consenti: leggere",
+  "  su: archivio «backup-clienti»",
+  "",
+  "POLICY B — account del programma di backup",
+  "  consenti: tutte le azioni",
+  "  su: tutte le risorse",
+]} caption="Stesso compito, due policy molto diverse." />
+
+La **A** permette una sola azione su una sola risorsa. La **B** permette tutto su tutto: se quell'account viene rubato, chi lo ha può cancellare ogni dato, creare macchine, leggere ogni archivio.
+
+<Callout kind="attenzione">
+Un asterisco al posto dell'azione o della risorsa («tutto») è quasi sempre un campanello d'allarme. Si usa solo se c'è un motivo scritto.
+</Callout>
+
+<Say who="sensei">Quando non sai quali permessi servono, parti da nessuno e aggiungi. Non parti da tutti per toglierne poi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le difese">
+Le difese di base per un'identità:
+
+- **Autenticazione a più fattori (MFA)** su ogni persona, e soprattutto sull'account amministratore (in AWS l'utente *root*): anche se la password è rubata, manca il secondo fattore.
+- **Credenziali temporanee**: un programma che assume un ruolo riceve chiavi che scadono dopo poco. Una chiave fissa scritta nel codice vale per sempre, finché qualcuno non la nota.
+- **Gruppi e ruoli**: i permessi si danno al gruppo, non a mano persona per persona.
+- **Account distinti**: niente account amministratore condiviso. Altrimenti nel registro non si sa chi ha fatto cosa.
+- **Revisione periodica**: ogni tanto si confrontano i permessi concessi con quelli usati davvero e si tolgono quelli inutili.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese:
+
+<Video />
+
+<Callout kind="attenzione">
+Provare a indovinare password o usare account non tuoi per «vedere cosa si può fare» è reato (accesso abusivo, art. 615-ter del codice penale). I permessi si studiano solo nel tuo account di prova, o con un permesso scritto.
+</Callout>
+
+<Say who="assistente">La revisione degli accessi è noiosa e salva molte aziende. Mettila in calendario, come il controllo dell'auto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un programma di backup deve solo leggere i file di un archivio. Quale policy è la più adatta?"
+  options={["Permesso di sola lettura su quell'archivio specifico", "Permesso di amministratore su tutto l'account", "Permesso di scrittura e cancellazione su tutti gli archivi", "Nessun controllo, basta che funzioni"]}
+  answer={0}
+  explain="Il minimo privilegio dice: solo l'azione che serve, solo sulla risorsa che serve. Chi sceglie l'amministratore «per sicurezza» confonde la comodità con la protezione."
+/>
+
+Ragiona sul caso di Marta:
+
+<Guided
+  steps={[
+    "Marta ora lavora in magazzino: i permessi di contabilità non servono più.",
+    "Il permesso «scrittura bonifici» non è usato da 11 mesi: è un candidato alla rimozione.",
+    "Con l'account rubato, un estraneo potrebbe far partire bonifici: il rischio è reale.",
+    "Soluzione: togliere i permessi non necessari e rendere obbligatoria la MFA.",
+  ]}
+/>
+
+<Say who="sensei">Nessuno ha sbagliato apposta. Il problema era che nessuno controllava. Si corregge con un processo, non con una ramanzina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su permessi, ruoli e casi di accessi. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-iam" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Nel cloud i permessi sono il nuovo perimetro: chi li gestisce bene dorme meglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- IAM risponde a due domande: chi sei e che cosa puoi fare. Il minimo privilegio dà solo ciò che serve.
+- Un permesso «tutto su tutto» è un allarme; MFA, ruoli temporanei e account distinti riducono i danni.
+- Gli accessi si rivedono ogni tanto, confrontando permessi concessi e permessi usati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa minimo privilegio?", a: "Solo i permessi che servono, per il tempo che servono" },
+    { q: "Perché meglio un ruolo con credenziali temporanee di una chiave fissa?", a: "Perché scade e non resta in giro per sempre" },
+    { q: "Qual è il rischio di un account amministratore condiviso?", a: "Non si sa chi ha fatto cosa" },
+    { q: "Come si trovano i permessi inutili?", a: "Con una revisione periodica basata sull'uso reale" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il secchio aperto. Gli archivi esposti per errore e perché fanno più notizia degli attacchi veri.</Say>
+</Scene>

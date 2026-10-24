@@ -1,0 +1,163 @@
+---
+id: C.16.006
+course: cybersecurity
+module: 16
+title: "Limitare le richieste e fermare gli abusi"
+belt: blu
+duration_min: 10
+prerequisites: [C.16.005]
+objectives:
+  - "Spiegare a che cosa serve il rate limiting e che cosa significa la risposta 429"
+  - "Confrontare finestra fissa, finestra scorrevole e secchio di gettoni"
+  - "Scegliere chiavi e limiti sensati (per utente, per chiave, per azione costosa) evitando di bloccare i clienti onesti"
+video:
+  provider: youtube
+  id: "9CIjoWPwAhU"
+  start: 0
+  end: 600
+  channel: "Be A Better Dev"
+  title: "What is Rate Limiting / API Throttling? | System Design Concepts"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-rate-limit
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Mettere il limite solo per indirizzo IP: dietro una stessa rete ci sono molti utenti onesti, e chi abusa cambia indirizzo"
+  - "Dimenticare i limiti sulle azioni costose o sensibili (login, ricerca, esportazioni)"
+  - "Rispondere con errori vaghi, senza Retry-After, e rendere impossibile ai client onesti regolarsi"
+commands: []
+---
+
+<Scene title="Diecimila tentativi in un minuto">
+Nel registro di **PrenotaSale** (sistema fittizio) compare questo schema:
+
+<Log lines={[
+  "12:01:00  POST /login  utente=elena.r   401",
+  "12:01:00  POST /login  utente=marco.b   401",
+  "12:01:00  POST /login  utente=sara.t    401",
+  "... (altre 9.990 righe nello stesso minuto, da 40 indirizzi diversi) ...",
+  "12:01:59  POST /login  utente=luca.m    200",
+]} />
+
+Il programma sta provando **coppie di nome e password già uscite da altri furti di dati**, sperando che qualcuno le abbia riusate. Alle 12:01:59 un account è stato aperto.
+
+La domanda del caso: **che cosa avrebbe reso questo tentativo lento e inutile?**
+
+<Say who="sensei">Un cancello che lascia passare diecimila persone in un minuto non è un cancello. Serve un contatore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rate limiting">
+Il **rate limiting** («limitazione della frequenza») fissa **quante richieste** può fare un chiamante in un certo tempo. Oltre il limite, il server risponde **429 Too Many Requests** («troppe richieste»), di solito con l'intestazione **Retry-After**, che dice quando riprovare.
+
+Serve contro più problemi:
+
+- **Indovinare password** o codici a tentativi (login, recupero password, codici monouso).
+- **Raccogliere in massa dati** (richieste a ripetizione su tutti gli identificativi).
+- **Sovraccarico**: anche un cliente onesto con un programma difettoso può mandare giù il servizio.
+- **Costi**: ogni richiesta costa tempo, denaro o chiamate a servizi a pagamento.
+
+<Callout kind="regola">
+Il limite non rende le password sicure. Rende **costoso e lento** l'attacco a tentativi, e dà il tempo di accorgersene.
+</Callout>
+
+<Say who="assistente">Come il bancomat: dopo tre PIN sbagliati ti trattiene la carta. Un limite alla pazienza di chi prova a indovinare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre modi di contare">
+<Guided
+  steps={[
+    "**Finestra fissa**: «100 richieste a ogni minuto, il contatore riparte a :00». Semplice, ma chi arriva a :59 con 100 richieste e a :00 con altre 100 ne fa 200 in due secondi.",
+    "**Finestra scorrevole**: si contano le richieste degli ultimi 60 secondi, a ogni istante. Più giusta, costa un po' di memoria in più.",
+    "**Secchio di gettoni (token bucket)**: un secchio che si riempie di un gettone al secondo fino a un massimo; ogni richiesta ne consuma uno. Permette brevi raffiche, ma non una frequenza media più alta.",
+    "Scegli in base al caso: login = limite severo e con attese crescenti; lettura di dati pubblici = limite largo con raffiche ammesse.",
+  ]}
+/>
+
+<Say who="sensei">Non esiste il metodo migliore in assoluto. Esiste quello che ferma l'abuso senza far arrabbiare chi paga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi si conta, e che cosa si limita">
+Per applicare il limite serve una **chiave**: «chi sto contando?».
+
+- **Per utente o per chiave API**: la scelta migliore, quando il chiamante è identificato.
+- **Per indirizzo IP**: utile prima del login, ma da solo è debole. Dietro la rete di un ufficio o di una scuola ci sono molti utenti onesti con lo stesso indirizzo, e chi abusa può cambiare indirizzo.
+- **Per azione**: limiti diversi per login, recupero password, esportazioni o ricerche costose, perché non costano e non rischiano uguale.
+
+Altri accorgimenti contro gli abusi:
+
+- **Limiti di dimensione**: massimo di elementi per pagina, dimensione massima del corpo, tempo massimo di esecuzione.
+- **Blocchi progressivi** sul login: attese sempre più lunghe, e **avviso** all'utente. Il blocco definitivo dell'account può diventare esso stesso un modo di fare danno (impedire l'accesso a un utente onesto), quindi si preferisce rallentare.
+- **Secondo fattore** e controlli di anomalia (nuovo paese, nuovo dispositivo).
+
+<Callout kind="attenzione">
+Mettere sotto stress un servizio che non è tuo è un reato (tra gli altri, accesso abusivo e danneggiamento, art. 615-ter e seguenti del codice penale). I test di carico si fanno solo su sistemi tuoi, o con permesso scritto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Chiediti due cose: chi sto contando, e che cosa mi costerebbe di più se lo facessero diecimila volte?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="PrenotaSale applica il limite di 10 login al minuto per indirizzo IP. Una scuola con 300 studenti, tutti dietro lo stesso indirizzo, non riesce ad accedere alle 08:00. Che cosa conviene cambiare?"
+  options={[
+    "Aggiungere un limite per nome utente e per dispositivo, e rivedere il limite per IP per le reti condivise",
+    "Togliere ogni limite sul login",
+    "Bloccare per sempre l'indirizzo della scuola",
+    "Rispondere 200 OK anche quando si supera il limite"
+  ]}
+  answer={0}
+  explain="Il solo limite per IP penalizza chi condivide la rete e non ferma chi cambia indirizzo. Si combinano chiavi diverse (utente, dispositivo, IP) e si regola il limite alle reti condivise, senza togliere la protezione."
+/>
+
+<Say who="assistente">Indizio: quante persone possono stare dietro a un solo indirizzo?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su limiti, chiavi e risposte 429: scegli la risposta giusta.
+
+<Practice generator="c16-rate-limit" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un buon limite è come una buona porta: ferma chi non deve entrare e non intralcia chi sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rate limiting fissa quante richieste per chiamante e tempo; oltre il limite si risponde 429, con Retry-After.
+- Finestra fissa, finestra scorrevole e secchio di gettoni contano in modi diversi: si sceglie in base al caso.
+- Il limite si applica con chiavi sensate (utente, chiave API, azione) e non solo per IP; il blocco dell'account va usato con cautela.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa 429?", a: "Troppe richieste: hai superato il limite, riprova più tardi" },
+    { q: "A che cosa serve Retry-After?", a: "Dice al client quanto aspettare prima di riprovare" },
+    { q: "Perché il solo limite per IP è debole?", a: "Molti utenti onesti condividono un IP, e chi abusa ne può cambiare" },
+    { q: "Che cos'è il secchio di gettoni?", a: "Un contatore che si riempie nel tempo; ogni richiesta consuma un gettone e sono ammesse brevi raffiche" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: i registri. Chi non guarda i log scopre l'incidente dai clienti.</Say>
+</Scene>

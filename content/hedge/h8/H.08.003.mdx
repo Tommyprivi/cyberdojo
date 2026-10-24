@@ -1,0 +1,164 @@
+---
+id: H.08.003
+course: hedge
+module: 8
+title: "L'amministratore del fondo"
+belt: verde
+duration_min: 8
+prerequisites: [H.08.002]
+objectives:
+  - "Spiegare perché il NAV lo calcola un amministratore indipendente dal gestore"
+  - "Descrivere la divisione dei ruoli: gestore decide, custode conserva, amministratore calcola"
+  - "Calcolare quote emesse e rimborsate a un dato NAV per quota"
+video:
+  provider: youtube
+  id: "yM4XVpKIjqA"
+  start: 0
+  end: 220
+  channel: "TaliMar Financial"
+  title: "What is a Fund Administrator?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-amministratore
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'amministratore scelga gli investimenti"
+  - "Credere che il gestore possa fissare da solo il valore dei titoli"
+  - "Confondere l'amministratore, che calcola e registra, con il custode, che conserva"
+commands: []
+---
+
+<Scene title="La formula sbagliata">
+**Aurora Capital**, fondo fittizio, calcola il proprio valore con un foglio di calcolo fatto in casa. Un mese una formula conta due volte lo stesso titolo: il valore delle quote risulta più alto dell'**1%** rispetto al reale.
+
+Nel frattempo nuovi investitori sono entrati a quel prezzo gonfiato e le commissioni sono state calcolate su un valore troppo alto. Nessuno se n'è accorto per settimane.
+
+La domanda del caso: **chi dovrebbe controllare i numeri, se il gestore ha interesse a mostrarli belli?**
+
+Nota: educazione, non consulenza. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">I mercati non regalano niente, e i fogli di calcolo nemmeno: gli errori costano. Serve un terzo che conti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un terzo che conta">
+L'**amministratore del fondo** è una società indipendente dal gestore. Si occupa del lavoro «di cassa e di carta»:
+
+- **calcola il NAV** (il valore netto, che vedremo nella prossima lezione);
+- **tiene il registro degli investitori** e delle quote;
+- **elabora sottoscrizioni e rimborsi**;
+- **fa la contabilità** e prepara i dati per il bilancio;
+- spesso aiuta con i controlli sugli investitori (conosci il cliente e antiriciclaggio), ma la responsabilità resta del fondo.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di quattro minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Pensa all'arbitro di una partita: non gioca, ma conta i punti che nessun giocatore deve contare da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre ruoli, tre controlli">
+Il fondo si regge su **tre ruoli separati**:
+
+| Ruolo | Che cosa fa |
+|---|---|
+| Gestore | Decide gli investimenti |
+| Custode | Conserva titoli e denaro |
+| Amministratore | Calcola il NAV e registra le quote |
+
+<Callout kind="regola">
+Nessuno dei tre controlla da solo tutto. Ognuno può controllare gli altri: l'amministratore confronta i suoi conti con quelli del custode e del gestore.
+</Callout>
+
+<Say who="sensei">Un fondo dove un solo soggetto decide, custodisce e calcola è un fondo dove nessuno può dire se i numeri sono veri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi dà il prezzo">
+Per un titolo **quotato in borsa**, l'amministratore usa **prezzi di fonti indipendenti**, come i prezzi ufficiali di chiusura. Non quelli indicati dal gestore.
+
+Per titoli **non quotati o poco scambiati** il prezzo di mercato manca. Serve una **stima**: l'amministratore segue la **politica di valutazione** del fondo e può usare perizie indipendenti. Se il gestore propone un valore molto più alto della perizia, la scelta va **documentata e spiegata**.
+
+<Callout kind="attenzione">
+Qui nascono i conflitti di interesse: il gestore guadagna di più se i valori sono alti. Per questo il prezzo dei titoli difficili non può decidere lui.
+</Callout>
+
+<Say who="assistente">Un indizio: più un titolo è difficile da vendere, più il suo valore è una stima e meno un fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quote in entrata e in uscita">
+L'amministratore elabora **sottoscrizioni** (entrate) e **rimborsi** (uscite) al **NAV per quota**.
+
+<Guided
+  steps={[
+    "Sottoscrizione: un investitore versa 50.000 euro, NAV per quota 100. Quote = 50.000 / 100 = 500.",
+    "Rimborso: un investitore ha 300 quote, NAV per quota 120. Riceve 300 × 120 = 36.000 euro (senza commissioni di uscita).",
+    "Controllo: attività 6.000.000, passività 1.000.000, quote 50.000. NAV = 5.000.000; per quota 5.000.000 / 50.000 = 100.",
+    "Se il NAV per quota è sbagliato, qualcuno riceve troppe quote o troppo denaro, a danno degli altri.",
+  ]}
+/>
+
+<Say who="sensei">Ricontrolla sempre una divisione. Un errore di una cifra sul NAV è un errore su ogni investitore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Perché è meglio che il NAV non lo calcoli solo il gestore?"
+  options={[
+    "Perché il gestore ha interesse a mostrare valori alti, che fanno salire risultati apparenti e commissioni",
+    "Perché il gestore non sa fare i calcoli",
+    "Perché il gestore non conosce i prezzi di mercato",
+    "Perché la legge vieta al gestore di conoscere il NAV",
+  ]}
+  answer={0}
+  explain="Non è questione di competenza: è un conflitto di interesse. Chi guadagna da un numero alto non dovrebbe essere l'unico a calcolarlo."
+/>
+
+<Say who="assistente">Chiediti sempre: chi guadagna se questo numero è più alto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sull'amministratore, con qualche calcolo di quote. Numeri fittizi.
+
+<Practice generator="h08-amministratore" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un amministratore indipendente non garantisce profitti: garantisce occhi in più sui numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'amministratore, indipendente dal gestore, calcola il NAV, tiene il registro degli investitori e delle quote ed elabora sottoscrizioni e rimborsi.
+- Gestore decide, custode conserva, amministratore calcola: tre ruoli separati che si controllano.
+- L'amministratore non protegge dalle perdite di mercato: controlla e registra i numeri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il compito più noto dell'amministratore?", a: "Calcolare il NAV in modo indipendente dal gestore" },
+    { q: "50.000 euro a NAV per quota 100: quante quote?", a: "500" },
+    { q: "300 quote a NAV 120: quanto si riceve?", a: "36.000 euro" },
+    { q: "Perché il prezzo dei titoli difficili non lo decide il gestore?", a: "Per il conflitto di interesse: guadagna di più con valori alti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il numero che l'amministratore calcola ogni volta. Il NAV, passo per passo.</Say>
+</Scene>

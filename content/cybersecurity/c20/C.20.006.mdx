@@ -1,0 +1,173 @@
+---
+id: C.20.006
+course: cybersecurity
+module: 20
+title: "Esercitazioni di tavolo"
+belt: marrone
+duration_min: 10
+prerequisites: [C.20.005]
+objectives:
+  - "Spiegare cos'è un esercizio di tavolo (tabletop) e a cosa serve"
+  - "Preparare uno scenario con partecipanti, regole e «inserti» che aggiungono novità"
+  - "Trasformare ciò che emerge in azioni con responsabile e scadenza, senza cercare colpevoli"
+video:
+  provider: youtube
+  id: "vXAJOpJzOzY"
+  start: 0
+  end: 255
+  channel: "Rapid7"
+  title: "Whiteboard Wednesday: Incident Response—Tabletop Exercises"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-tabletop
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Fare dell'esercizio un esame che mette in difficoltà le persone"
+  - "Coinvolgere solo i tecnici: direzione, legale e comunicazione devono esserci"
+  - "Chiudere la riunione senza azioni scritte, con responsabile e data"
+commands: []
+---
+
+<Scene title="Il piano alla prova">
+Bianchi Logistica (azienda fittizia) ora ha playbook, runbook, un portavoce, un'assicurazione e un piano di ripristino. Ma funzionano davvero? La direttrice propone: «Proviamo, a tavolino, un giovedì pomeriggio».
+
+Dieci persone si siedono attorno a un tavolo con un foglio: «**Lunedì mattina il server documenti è cifrato**. Che cosa fate?». Nessuno tocca un computer.
+
+La domanda del caso: **come si prova una crisi senza avere la crisi?**
+
+<Say who="sensei">Un piano non provato è una promessa. Si prova quando non costa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cos'è un esercizio di tavolo">
+Un **esercizio di tavolo** (in inglese *tabletop*) è una **discussione guidata** di uno scenario di incidente. Le persone dicono **che cosa farebbero**, **chi decide**, **chi chiamano**. Non si usano sistemi veri.
+
+Che cosa fa emergere:
+
+- buchi nel piano («chi ha il numero dell'assicurazione?»);
+- ruoli poco chiari («chi decide di staccare la produzione?»);
+- dipendenze nascoste («la telefonata ai clienti la fa chi non ha il numero»).
+
+È diverso da un **test tecnico** (si prova il ripristino davvero) e da un **red team** (qualcuno simula un attaccante). Il tavolo è il più semplice, il meno costoso, e coinvolge **persone non tecniche**.
+
+<Say who="assistente">Non si valuta chi risponde bene. Si valuta se il piano regge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si prepara">
+Un esercizio ben fatto ha quattro ingredienti:
+
+1. **Obiettivi**: cosa si vuole provare (per esempio: la decisione sulla notifica, la comunicazione ai clienti).
+2. **Scenario plausibile**: parte da un caso verosimile per l'organizzazione, con dati fittizi.
+3. **Partecipanti giusti**: tecnici, **direzione**, **legale**, comunicazione, risorse umane, a volte un fornitore. Un **facilitatore** conduce e un **segretario** annota tutto.
+4. **Regole**: nessuna colpa, nessuna valutazione personale, si dice «non lo so» senza vergogna. Durata tipica: due o tre ore.
+
+<Callout kind="regola">
+La regola d'oro è la stessa del post-mortem senza colpe (C.09.006): si cerca **dove il processo ha un buco**, non chi ha sbagliato.
+</Callout>
+
+<Say who="sensei">Se qualcuno esce dalla stanza imbarazzato, hai condotto male. Se esce con tre cose da sistemare, hai condotto bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli inserti: la crisi si complica">
+Il facilitatore non racconta tutto subito. Rilascia a poco a poco **inserti** (in inglese *injects*): notizie nuove che cambiano la situazione. Esempio fittizio:
+
+<Log lines={[
+  "14:00  Scenario: lunedi' 06:50, file cifrati sul server documenti",
+  "14:15  Inserto 1: i log mostrano un trasferimento di dati nella notte",
+  "14:30  Inserto 2: un giornalista chiama il centralino e chiede un commento",
+  "14:45  Inserto 3: il backup piu' recente risulta incompleto",
+  "15:00  Inserto 4: un cliente importante scrive di aver ricevuto una mail strana a nome vostro",
+  "15:15  Inserto 5: l'assicurazione risponde che serve un fornitore diverso da quello scelto",
+]} caption="Ogni inserto mette alla prova un pezzo diverso del piano." />
+
+Notare come ogni inserto riporta a una lezione: il **furto** di dati (notifica, lezione 5), il **giornalista** (portavoce, lezione 2), il **backup incompleto** (ripristino, lezione 3), il **cliente** (comunicazione), l'**assicurazione** (lezione 5).
+
+Vuoi sentirlo spiegare da un'altra voce? Pochi minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Gli inserti sono la parte divertente. Ogni nuova notizia fa dire: «Ah, questo non l'avevamo previsto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dopo: azioni, non verbali">
+Alla fine, mezz'ora di **debriefing**: che cosa ha funzionato, che cosa no, che cosa ci ha sorpreso. Si scrive un breve rapporto con **azioni concrete**.
+
+Una tabella fittizia, uscita dall'esercizio di Bianchi Logistica:
+
+| Problema emerso | Azione | Responsabile | Entro |
+|---|---|---|---|
+| Nessuno aveva il numero della polizza | Mettere i numeri in una scheda stampata e in un telefono aziendale | Amministrazione | 15 giorni |
+| Il backup non era mai stato ripristinato | Fare un ripristino di prova e annotare il tempo | Responsabile IT | 30 giorni |
+| Il portavoce non aveva un sostituto | Nominare un sostituto e formarlo | Direzione | 15 giorni |
+
+Senza **responsabile e data**, un'azione non esiste. Si controlla alla riunione dopo, e si **ripete** l'esercizio ogni anno, o dopo cambiamenti importanti (nuovo fornitore, nuova sede).
+
+<Callout kind="attenzione">
+I rapporti dell'esercizio possono contenere punti deboli. Si trattano come documenti riservati.
+</Callout>
+
+<Say who="sensei">Un tavolo senza elenco di azioni è una chiacchierata. Con l'elenco diventa un miglioramento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Al debriefing emerge che nessuno sa chi decide di avvisare i clienti. Il facilitatore scrive: «Marco non ha saputo rispondere». Cosa non va, e come si corregge?"
+  options={[
+    "Si indica una persona invece di un buco di processo: va scritto «il playbook non assegna la decisione di avvisare i clienti», con un'azione, un responsabile e una data",
+    "Va benissimo: così Marco impara a studiare il piano",
+    "Va tolto dal rapporto, perché i problemi emersi non si scrivono",
+    "Va rimandato al prossimo esercizio, quando ci sarà più tempo",
+  ]}
+  answer={0}
+  explain="L'esercizio cerca i buchi del processo, non i colpevoli. Se chi risponde male viene esposto, la volta dopo le persone nasconderanno i dubbi. Il problema va scritto come lacuna del piano e trasformato in un'azione con responsabile e scadenza."
+/>
+
+<Say who="assistente">Indizio: la domanda giusta è sempre «che cosa nel sistema ha permesso questo?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di esercitazioni di tavolo: preparazione, inserti, partecipanti e azioni.
+
+<Practice generator="c20-tabletop" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: un piano scritto, provato e migliorato nel tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un esercizio di tavolo è una discussione guidata di uno scenario, senza sistemi veri: serve a trovare buchi nel piano e nei ruoli.
+- Si prepara con obiettivi, scenario plausibile, partecipanti giusti (anche direzione e legale), facilitatore, regole senza colpe e inserti che complicano la situazione.
+- Si chiude con azioni scritte, con responsabile e data, e si ripete ogni anno o dopo cambiamenti importanti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un esercizio di tavolo?", a: "Una discussione guidata di uno scenario di incidente, senza usare sistemi veri" },
+    { q: "Che cos'è un inserto?", a: "Una notizia nuova che il facilitatore aggiunge per complicare lo scenario" },
+    { q: "Chi deve partecipare, oltre ai tecnici?", a: "Direzione, legale, comunicazione, risorse umane, a volte fornitori" },
+    { q: "Quando un'azione esiste davvero?", a: "Quando ha un responsabile e una scadenza" },
+  ]}
+/>
+
+<Say who="sensei">Hai concluso l'incident response avanzata. Un team che prova insieme, risponde meglio quando conta.</Say>
+</Scene>

@@ -1,0 +1,172 @@
+---
+id: C.19.006
+course: cybersecurity
+module: 19
+title: "Le metriche del SOC"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.005]
+objectives:
+  - "Calcolare e interpretare tempo medio di rilevamento (MTTD) e di risposta (MTTR)"
+  - "Scegliere metriche che misurano la qualità e non solo la quantità del lavoro"
+  - "Riconoscere i modi in cui una metrica può essere falsata o usata male"
+video:
+  provider: youtube
+  id: "KfywUb7CVjw"
+  start: 0
+  end: 600
+  channel: "CodeLucky"
+  title: "Incident Metrics Explained: MTTD, MTTR & Volume KPIs"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-metriche
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Misurare solo quanti allarmi si chiudono: si premia la fretta, non la qualità"
+  - "Confondere MTTD (quanto ci si mette a vedere) con MTTR (quanto ci si mette a rispondere), o non specificare quale «R» si intende"
+  - "Fidarsi di una media senza guardare i casi estremi: un solo incidente lunghissimo la sposta molto"
+commands: []
+---
+
+<Scene title="Il SOC è bravo? Quanto?">
+Alla fine dell'anno, la direttrice della «Rossi Forniture» chiede: «Il SOC funziona meglio dell'anno scorso?»
+
+Il responsabile risponde: «Abbiamo chiuso 4.000 allarmi, il 30% in più». La direttrice non è convinta: chiudere tanti allarmi è un bene o vuol dire che ce ne sono troppi?
+
+La domanda del caso: **quali numeri dicono davvero se un SOC lavora bene?**
+
+<Say who="sensei">Ciò che misuri, lo ottieni. Misura la cosa sbagliata e otterrai la cosa sbagliata, molto bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="MTTD e MTTR">
+Le due metriche più note misurano **il tempo**:
+
+- **MTTD** (*Mean Time To Detect*, tempo medio di rilevamento): dal momento in cui l'attacco **comincia** al momento in cui il SOC **se ne accorge**.
+- **MTTR** (*Mean Time To Respond*, tempo medio di risposta): dal momento in cui il SOC se ne accorge al momento in cui l'attacco è **contenuto**.
+
+Si dice «medio» perché si calcola la media di molti incidenti. Esempio con tre incidenti fittizi (in ore):
+
+| Incidente | Inizio → rilevato (MTTD) | Rilevato → contenuto (MTTR) |
+|---|---|---|
+| A | 2 | 1 |
+| B | 10 | 3 |
+| C | 6 | 2 |
+
+MTTD = (2 + 10 + 6) / 3 = 18 / 3 = **6 ore**. MTTR = (1 + 3 + 2) / 3 = 6 / 3 = **2 ore**.
+
+<Callout kind="attenzione">
+La sigla MTTR ha più significati: *respond* (rispondere), *resolve* (risolvere), *restore* (ripristinare). Quando leggi un rapporto, chiedi sempre quale si intende, altrimenti confronti numeri diversi.
+</Callout>
+
+<Say who="assistente">Il nemico lavora mentre aspetti. Più basso è l'MTTD, meno tempo ha per fare danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La media può ingannare">
+Un secondo esempio con cinque incidenti, tempi di rilevamento in ore: 1, 2, 2, 3, 92.
+
+Media: (1 + 2 + 2 + 3 + 92) / 5 = 100 / 5 = **20 ore**. Ma quattro incidenti su cinque sono stati rilevati in 3 ore o meno! Un solo caso eccezionale ha spostato tutta la media.
+
+Per questo si guarda anche la **mediana**, il valore di mezzo quando i numeri sono in ordine: 1, 2, **2**, 3, 92. La mediana è **2 ore**.
+
+<Callout kind="regola">
+Una media dice «quanto in tutto», una mediana dice «cosa succede di solito». Si guardano **insieme**, e si guarda sempre il caso peggiore: è lì che sta il rischio vero.
+</Callout>
+
+Vuoi sentire come si leggono queste metriche? Un video in inglese (attiva i sottotitoli):
+
+<Video />
+
+<Say who="sensei">Dietro un 20 c'è un 92. Non fermarti al numero: chiediti da dove viene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metriche di qualità, non solo di quantità">
+Oltre ai tempi, un SOC misura la **qualità** delle regole e del lavoro:
+
+- **Precisione delle regole** (lezione precedente): quanti allarmi sono veri.
+- **Copertura**: quante delle tecniche importanti (ATT&CK) hanno una regola **provata**.
+- **Tempo di vita di un allarme**: quanto resta in coda prima che qualcuno lo guardi.
+- **Percentuale di allarmi chiusi come falsi**: se è altissima, le regole vanno riviste.
+- **Cacce completate** che si sono trasformate in nuove regole.
+
+Metriche di sola **quantità** (allarmi chiusi, ticket aperti) sono utili per capire il carico di lavoro, ma sono le meno adatte a giudicare la bravura.
+
+<Callout kind="trucco">
+Una buona metrica risponde a una domanda che qualcuno si pone: «Ci accorgiamo in fretta di un attacco?» → MTTD. «Reagiamo in fretta?» → MTTR. «Ci fidiamo dei nostri allarmi?» → precisione.
+</Callout>
+
+<Say who="assistente">Parti dalla domanda, poi scegli il numero. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando la metrica inganna">
+Appena un numero diventa un **obiettivo**, le persone lo ottimizzano, anche a scapito dello scopo. Tre trappole comuni:
+
+- **Premio alla chiusura**: se si premia chi chiude più allarmi, gli analisti chiudono in fretta senza leggere. L'MTTR scende e la qualità crolla.
+- **MTTD abbellito**: se l'inizio dell'attacco si stabilisce a posteriori e solo per gli incidenti scoperti, gli attacchi mai scoperti non entrano nella media. Il numero sembra ottimo e non lo è.
+- **Numeri senza contesto**: «300 allarmi in meno» può voler dire meno rumore, oppure una regola che si è spenta.
+
+<Callout kind="attenzione">
+Un SOC non può misurare gli attacchi che **non ha visto**. Per questo servono anche **esercitazioni** (lezione successiva) che iniettano un attacco finto per scoprire se e in quanto tempo viene visto.
+</Callout>
+
+<Say who="sensei">Un numero che migliora troppo in fretta va controllato prima di essere festeggiato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il SOC della «Rossi Forniture» ha questi tempi di rilevamento in ore per quattro incidenti: 2, 4, 6, 8. Il tempo di risposta, dopo il rilevamento, è stato in ore: 1, 1, 2, 4.
+
+<Quiz
+  question="Quanto valgono MTTD e MTTR?"
+  options={[
+    "MTTD 5 ore, MTTR 2 ore",
+    "MTTD 4 ore, MTTR 2 ore",
+    "MTTD 5 ore, MTTR 1 ora",
+    "MTTD 20 ore, MTTR 8 ore",
+  ]}
+  answer={0}
+  explain="MTTD = (2 + 4 + 6 + 8) / 4 = 20 / 4 = 5 ore. MTTR = (1 + 1 + 2 + 4) / 4 = 8 / 4 = 2 ore. Le somme 20 e 8 sono i totali, non le medie: bisogna dividere per il numero di incidenti."
+/>
+
+<Say who="assistente">La media si calcola in due mosse: somma, poi divisione. Chi si ferma alla somma sbaglia di quattro volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari sulle metriche del SOC. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-metriche" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- MTTD è il tempo medio per accorgersi di un attacco, MTTR il tempo medio per rispondere: si calcolano con somma e divisione, e si chiarisce sempre quale «R» si intende.
+- Una media può ingannare: si guardano anche la mediana e il caso peggiore; accanto ai tempi servono metriche di qualità.
+- Ogni metrica diventata obiettivo può essere falsata: si sceglie partendo da una domanda e si verifica con esercitazioni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa misura l'MTTD?", a: "Il tempo medio tra l'inizio di un attacco e il momento in cui il SOC se ne accorge" },
+    { q: "Perché guardare anche la mediana?", a: "Perché un solo caso eccezionale sposta molto la media e nasconde ciò che succede di solito" },
+    { q: "Perché «allarmi chiusi» è una metrica debole?", a: "Misura la quantità, non la qualità, e può spingere a chiudere in fretta senza leggere" },
+    { q: "Che cosa non può misurare un SOC da solo?", a: "Gli attacchi che non ha visto: servono esercitazioni per scoprirli" },
+  ]}
+/>
+
+<Say who="sensei">Per misurare davvero, serve un attacco finto e controllato. Ultima lezione: il purple team.</Say>
+</Scene>

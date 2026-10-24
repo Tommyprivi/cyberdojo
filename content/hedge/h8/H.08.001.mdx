@@ -1,0 +1,167 @@
+---
+id: H.08.001
+course: hedge
+module: 8
+title: "Il prime broker"
+belt: verde
+duration_min: 8
+prerequisites: [H.07.006]
+objectives:
+  - "Elencare i servizi di un prime broker: finanziamento, prestito di titoli, regolamento e rendiconto unico"
+  - "Calcolare la leva e l'effetto di un calo dei prezzi sul capitale proprio di un fondo"
+  - "Spiegare il rischio di controparte e perché un fondo può usare più prime broker"
+video:
+  provider: youtube
+  id: "NNVgNhjh1B0"
+  start: 0
+  end: 348
+  channel: "WallStreetMojo"
+  title: "Prime brokerage: Easy explanation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-prime-broker
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il prime broker decida gli investimenti: li decide il gestore"
+  - "Dimenticare che la leva amplifica anche le perdite, non solo i guadagni"
+  - "Pensare che la controparte non possa fallire"
+commands: []
+---
+
+<Scene title="L'idea che costa troppo">
+**Aurora Capital** è un fondo fittizio con **10 milioni** di euro propri. Davide, il gestore, ha un'idea: comprare titoli per **15 milioni** e vendere allo scoperto altri titoli, cioè venderli dopo averli presi in prestito.
+
+Ma i 5 milioni mancanti chi li presta? E chi presta i titoli da vendere? E chi tiene in ordine tutte queste operazioni, che passano da molti intermediari?
+
+La domanda del caso: **a chi si rivolge un hedge fund per tutto questo?**
+
+Nota: questo corso è educazione, non consulenza finanziaria. In finanza si può perdere denaro, anche tutto.
+
+<Say who="sensei">I mercati non regalano niente. Prima di parlare di strategie, parliamo di chi rende possibile farle: il prime broker.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un pacchetto di servizi">
+Il **prime broker** è una grande banca o un intermediario che offre a un hedge fund un **pacchetto di servizi**:
+
+- **finanziamento**: presta denaro per comprare più titoli di quelli che il fondo possiede;
+- **prestito di titoli**: presta i titoli che servono per vendere allo scoperto;
+- **regolamento e compensazione**: fa passare titoli e denaro dalle mani giuste dopo ogni operazione;
+- **rendiconto unico**: un solo documento con posizioni, garanzie e finanziamenti.
+
+<Callout kind="regola">
+Il prime broker **non decide che cosa comprare**. Decide il gestore. Il prime broker presta, regola e controlla le garanzie.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Pensa a un grande negozio che ti presta il carrello, la strada per arrivare e ti fa il conto finale. Ma tu scegli la spesa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Finanziamento e leva">
+Aurora ha 10 milioni propri, compra titoli per 15 milioni e prende a prestito **5 milioni** dal prime broker.
+
+<Guided
+  steps={[
+    "Leva lorda = titoli divisi per capitale proprio = 15 / 10 = 1,5.",
+    "Interessi: se il tasso annuo fittizio è il 4%, 5 milioni × 0,04 = 200.000 euro all'anno.",
+    "Se i titoli scendono del 10%, perdono 1,5 milioni (10% di 15).",
+    "Sul capitale proprio la perdita è 1,5 / 10 = 15%: la leva ha amplificato il calo dal 10% al 15%.",
+    "Gli interessi di 200.000 euro si pagano comunque, anche se i titoli scendono.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+La leva amplifica **sia i guadagni sia le perdite**. Con numeri fittizi come questi si vede bene: un calo del 10% diventa una perdita del 15% sul capitale proprio.
+</Callout>
+
+<Say who="sensei">Prestare costa. Il prime broker incassa gli interessi qualunque cosa succeda al fondo. Tu no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Titoli in prestito e garanzie">
+Per **vendere allo scoperto** il fondo deve prima **prendere in prestito** i titoli, di solito dal prime broker. Poi li vende; se il prezzo scende, li ricompra a meno e li restituisce.
+
+In cambio il prime broker chiede una **garanzia**, detta **margine**. Esempio: titoli per 20 milioni, margine richiesto del 25%.
+
+<Log lines={[
+  "Valore dei titoli:        20.000.000",
+  "Margine richiesto (25%):   5.000.000",
+  "20.000.000 x 0,25 = 5.000.000",
+]} />
+
+Se i titoli perdono valore e la garanzia scende sotto il minimo, arriva la **richiesta di margine** (*margin call*): il fondo deve **aggiungere garanzie** o **ridurre le posizioni**.
+
+<Say who="assistente">Un indizio: la richiesta di margine arriva proprio quando i prezzi scendono, cioè quando al fondo servirebbe più respiro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rischio di controparte">
+Un fondo che lascia titoli e liquidità presso il prime broker dipende da lui. Questo è il **rischio di controparte**: l'altra parte potrebbe non rispettare i suoi impegni, per esempio per un fallimento.
+
+Un caso noto, in sintesi: nel **2008**, con il fallimento di Lehman Brothers, alcuni fondi clienti si trovarono con titoli e liquidità **bloccati per molto tempo**.
+
+<Callout kind="trucco">
+Per questo molti fondi usano **più prime broker** e leggono bene il contratto: quali garanzie possono essere riutilizzate dal prime broker, e quali no.
+</Callout>
+
+<Say who="sensei">Non mettere tutto nella stessa casa, per quanto grande sia la banca. Una controparte può inciampare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha 10 milioni propri e titoli per 15 milioni. I titoli scendono del 10%. Quanto perde il fondo sul capitale proprio, senza contare gli interessi?"
+  options={["15%", "10%", "5%", "1,5%"]}
+  answer={0}
+  explain="La perdita è il 10% di 15 milioni, cioè 1,5 milioni. Divisa per il capitale proprio di 10 milioni fa 15%. Chi risponde 10% dimentica la leva."
+/>
+
+<Say who="assistente">Guarda sempre su quale base si calcola la perdita: sul valore dei titoli o sul capitale proprio?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sul prime broker, con qualche calcolo di leva e di margine. Numeri fittizi.
+
+<Practice generator="h08-prime-broker" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi non capisce la leva la subisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il prime broker offre un pacchetto: finanziamento, prestito di titoli, regolamento e rendiconto unico. Non decide gli investimenti.
+- La leva amplifica guadagni e perdite: con leva 1,5 un calo del 10% dei titoli diventa una perdita del 15% sul capitale proprio.
+- Il prime broker è una controparte: il rischio di controparte esiste, e per questo si usano più prime broker e contratti letti con attenzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa offre un prime broker?", a: "Finanziamento, prestito di titoli, regolamento e rendiconto unico" },
+    { q: "Leva con 10 propri e 15 di titoli?", a: "1,5" },
+    { q: "Che cos'è una richiesta di margine?", a: "La richiesta di aggiungere garanzie o ridurre le posizioni" },
+    { q: "Che cos'è il rischio di controparte?", a: "Il rischio che l'altra parte non rispetti gli impegni" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove stanno davvero i titoli del fondo. La custodia.</Say>
+</Scene>

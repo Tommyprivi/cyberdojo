@@ -1,0 +1,167 @@
+---
+id: H.11.002
+course: hedge
+module: 11
+title: "Il caso LTCM"
+belt: blu
+duration_min: 9
+prerequisites: [H.11.001]
+objectives:
+  - "Riassumere la storia di LTCM: strategia, leva, crisi russa del 1998, salvataggio"
+  - "Calcolare come una piccola perdita su posizioni enormi consuma il capitale"
+  - "Spiegare il rischio di modello: eventi rari e correlazioni che cambiano in crisi"
+video:
+  provider: youtube
+  id: "UbryvB60Tuc"
+  start: 0
+  end: 591
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "The Hedge Fund That Nearly Froze the Financial System | LTCM"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h11-ltcm
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che LTCM sia fallito per ignoranza: era pieno di esperti"
+  - "Credere che i modelli basati sul passato escludano gli eventi rari"
+  - "Dimenticare che i salvataggi del 1998 furono privati e coordinati, non pagati dallo Stato"
+commands: []
+---
+
+<Scene title="Un fondo di geni">
+Nel 1994 nasce **Long-Term Capital Management (LTCM)**, un hedge fund americano. Tra i soci ci sono ex operatori di una grande banca e due studiosi che nel 1997 vinceranno il premio Nobel per l'economia. I primi anni vanno molto bene.
+
+Nel 1998 però, in meno di quattro mesi, il fondo perde circa **4,6 miliardi di dollari**. Nel settembre 1998 un gruppo di 14 banche lo ricapitalizza, con la regia della Federal Reserve Bank di New York.
+
+La domanda del caso: **come ha fatto un fondo di esperti a rischiare di trascinare con sé mezzo mercato?**
+
+<Say who="sensei">Sintesi di fatti ben noti, scritta a ottobre 2026: controlla sempre le fonti ufficiali. E ricorda: educazione, non consulenza. Si può perdere denaro, anche tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Piccole differenze, posizioni enormi">
+LTCM faceva **convergenza**: cercava due titoli molto simili con prezzi leggermente diversi e scommetteva che la differenza si sarebbe ridotta. Pensa a due negozi che vendono lo stesso prodotto a 100 e 100,5 euro: compri dal primo, vendi dal secondo, e aspetti.
+
+La differenza è piccola. Per ricavarne un guadagno rilevante servono posizioni **molto grandi**:
+
+<Log lines={[
+  "Differenza di prezzo: 0,5%",
+  "Posizione: 100 milioni di euro (fittizi)",
+  "Se la differenza si annulla a favore: 0,5% di 100 milioni = 500.000 euro",
+]} />
+
+<Callout kind="attenzione">
+Quando i guadagni attesi sono piccoli, la tentazione è usare la **leva**. È la stessa che hai visto nella lezione precedente.
+</Callout>
+
+<Say who="assistente">Piccolo guadagno per euro investito, quindi tantissimi euro investiti. Chiediti: e se la differenza invece si allarga?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La leva fa i conti">
+Il fondo, in un periodo del 1998, aveva posizioni per oltre **20 volte** il proprio capitale (cifra approssimata: leggi le fonti). Facciamo un esempio fittizio.
+
+<Log lines={[
+  "Capitale proprio: 4 milioni",
+  "Posizione: 100 milioni (leva 25 a 1)",
+  "Se la posizione perde il 2%: perdita = 2 milioni",
+  "2 milioni su 4 milioni di capitale = 50% del capitale",
+]} />
+
+<Callout kind="regola">
+Con leva 25 a 1, un calo del **4%** sulle posizioni azzera il capitale. Ecco perché i margini di errore sono minuscoli.
+</Callout>
+
+<Say who="sensei">Un errore del 2% non sembra un errore. Con questa leva è metà del fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Agosto 1998">
+Nell'agosto 1998 la **Russia** annuncia di non poter pagare una parte del suo debito. Gli investitori di tutto il mondo si spaventano e corrono verso i titoli più sicuri.
+
+Per le scommesse di convergenza è il contrario di ciò che serviva: le differenze di prezzo **si allargano** invece di ridursi. Il fondo perde, deve fornire altre garanzie, vende in fretta, e vendere fa allargare ancora le differenze.
+
+Vuoi sentirlo raccontare da un'altra voce? Meno di dieci minuti, in inglese:
+
+<Video />
+
+<Say who="sensei">Un'unica scintilla, e posizioni che sembravano diverse perdono tutte insieme. Così funzionano le crisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il salvataggio e le lezioni">
+Il fondo era così grande, con tanti contratti con molte banche, che una vendita forzata avrebbe fatto crollare i prezzi e danneggiato anche loro. Perciò, nel settembre 1998, **14 banche** ricapitalizzarono il fondo, su iniziativa della Federal Reserve Bank di New York. Il salvataggio fu **privato**. Il fondo fu poi liquidato in modo ordinato, all'inizio del 2000.
+
+Le lezioni, in sintesi:
+
+- **Leva**: poco capitale, posizioni enormi, nessun margine d'errore.
+- **Rischio di modello**: i modelli usavano dati del passato e consideravano quasi impossibili eventi che invece accaddero.
+- **Correlazioni**: in crisi cose indipendenti perdono insieme.
+- **Stress test**: serve provare scenari estremi, non solo quelli recenti.
+
+<Callout kind="curiosita">
+I modelli di LTCM erano costruiti da persone bravissime. Il problema non era la poca intelligenza, ma la troppa fiducia.
+</Callout>
+
+<Say who="sensei">Competenza e arroganza possono convivere. La seconda ti fa dimenticare i limiti della prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="I modelli del fondo giudicavano quasi impossibile ciò che poi accadde. Qual è la lezione principale?"
+  options={[
+    "Eventi rari e correlazioni che cambiano in crisi vanno messi negli stress test",
+    "Bisogna fidarsi di più del modello",
+    "Gli eventi rari non meritano attenzione",
+    "Serve più leva per compensare le perdite",
+  ]}
+  answer={0}
+  explain="I modelli descrivono il passato. Chi li usa deve provare anche scenari estremi, con correlazioni che salgono. Più leva e più fiducia nel modello sono proprio gli errori del caso."
+/>
+
+<Say who="assistente">Un modello è una mappa. Utile, ma non è il territorio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sul caso LTCM, con numeri fittizi.
+
+<Practice generator="h11-ltcm" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce LTCM guarda con sospetto ogni «non può succedere».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- LTCM faceva convergenza con posizioni enormi e molta leva: piccoli errori diventano grandi perdite.
+- La crisi russa del 1998 allargò le differenze di prezzo; il salvataggio fu privato, con 14 banche.
+- Lezioni: leva, rischio di modello, correlazioni in crisi, stress test.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa faceva LTCM?", a: "Scommetteva sulla riduzione di piccole differenze di prezzo tra titoli simili" },
+    { q: "Perché serviva molta leva?", a: "Le differenze di prezzo erano piccole: servivano posizioni enormi" },
+    { q: "Che cosa accadde ad agosto 1998?", a: "Il default russo spinse tutti verso i titoli sicuri e le differenze si allargarono" },
+    { q: "Chi pagò il salvataggio?", a: "Un gruppo di 14 banche, con la regia della Fed di New York" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: un fallimento di tipo diverso. Qui i soldi erano stati investiti. Nel prossimo caso, a quanto pare, no.</Say>
+</Scene>

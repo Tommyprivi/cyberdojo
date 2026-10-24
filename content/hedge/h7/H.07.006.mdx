@@ -1,0 +1,149 @@
+---
+id: H.07.006
+course: hedge
+module: 7
+title: "Il monitoraggio del portafoglio"
+belt: verde
+duration_min: 8
+prerequisites: [H.07.005]
+objectives:
+  - "Elencare gli indicatori di un cruscotto di monitoraggio (volatilità, drawdown, esposizioni, concentrazione, liquidità)"
+  - "Calcolare giorni per liquidare, volatilità annualizzata e drawdown con numeri semplici"
+  - "Spiegare soglie di allerta, limiti e indipendenza del controllo"
+video:
+  provider: youtube
+  id: "2tL_Ud5Bwhk"
+  start: 0
+  end: 600
+  channel: "Will Media"
+  title: "Ho investito... e adesso? Tutto sul monitoraggio del portafoglio"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-monitoraggio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Guardare solo il rendimento e ignorare leva, concentrazione e liquidità"
+  - "Reagire solo quando il limite è già violato"
+  - "Lasciare il controllo a chi ha interesse nella performance"
+commands: []
+---
+
+<Scene title="Il cruscotto di Marta">
+Ogni mattina Marta di **Rondine Capital** (fondo fittizio) apre un cruscotto con pochi numeri: volatilità, drawdown, esposizione netta e lorda, posizioni maggiori, giorni per liquidare.
+
+Un giorno il rendimento è ottimo, ma tre numeri sono diventati gialli. Il gestore dice: «Stiamo guadagnando, perché guardare il resto?»
+
+La domanda del caso: **che cosa si controlla ogni giorno, e perché il rendimento non basta?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Un'auto che corre con la spia accesa non va bene, anche se corre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli indicatori">
+Un cruscotto semplice contiene:
+
+- **volatilità realizzata** rispetto all'obiettivo;
+- **drawdown** rispetto ai limiti;
+- **esposizione netta e lorda** rispetto ai limiti;
+- **concentrazione**: peso delle posizioni maggiori;
+- **liquidità**: quanti giorni servono per uscire;
+- **attribuzione**: da dove viene il rendimento (abilità, esposizione al mercato, fattori di rischio).
+
+Vuoi sentire come si monitora un portafoglio, da un'altra voce? Un video in italiano pensato per chi investe, con i concetti base:
+
+<Video />
+
+<Say who="assistente">Il rendimento è il punteggio. Il cruscotto dice come stai giocando.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro calcoli">
+Convenzioni: numeri fittizi, 252 giorni di borsa all'anno, drawdown dal massimo.
+
+<Guided
+  steps={[
+    "Giorni per liquidare: posizione da 5 milioni, volume giornaliero 1 milione, si vende al massimo il 20% del volume. Ogni giorno 0,2 milioni: 5 / 0,2 = 25 giorni.",
+    "Volatilità annualizzata: deviazione standard giornaliera 1%, annua 1% × √252 ≈ 1% × 15,9 ≈ 16%.",
+    "Drawdown: massimo 80 milioni, oggi 72. Perdita 8 su 80 = 10%.",
+    "Concentrazione: le cinque posizioni maggiori valgono 30 milioni su un fondo da 200. 30 / 200 = 15%.",
+  ]}
+/>
+
+<Callout kind="regola">
+Giorni per liquidare = valore della posizione divisi la quantità che si riesce a vendere ogni giorno senza muovere il prezzo.
+</Callout>
+
+<Say who="sensei">Se ci vogliono venticinque giorni per uscire, non hai una posizione. Hai un matrimonio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Soglie e indipendenza">
+Per ogni indicatore si fissano due livelli: una soglia di **allerta** (giallo) e un **limite** (rosso).
+
+Esempio: allerta del drawdown a 8%, blocco a 12%. Con un drawdown del 10% il fondo è sopra l'allerta e sotto il blocco: si segnala e si decide che cosa fare, prima di arrivare al limite.
+
+<Callout kind="attenzione">
+Il controllo del rischio dovrebbe essere affidato anche a una funzione **indipendente dal gestore**: chi guadagna dalla performance può avere un conflitto di interessi. Se un limite è violato (per esempio netta al 32% con limite 30%), si segnala, si documenta e si riporta nei limiti. Non si alza il limite di nascosto.
+</Callout>
+
+<Say who="sensei">Un limite che si sposta quando ti fa comodo è un'opinione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Rimborsi richiesti pari al 20% del capitale, da pagare entro 30 giorni. Le posizioni vendibili in 30 giorni valgono il 15% del capitale. Che cosa si nota?"
+  options={[
+    "Va tutto bene: 15% è abbastanza",
+    "Mancano 5 punti percentuali del capitale: c'è un problema di liquidità",
+    "Si hanno 5 punti percentuali in più del necessario",
+    "Basta comprare altre posizioni poco scambiate",
+  ]}
+  answer={1}
+  explain="Servono il 20% e se ne può vendere il 15%: mancano 5 punti. Il monitoraggio serve a vederlo prima. Comprare altre posizioni illiquide peggiora il problema."
+/>
+
+<Say who="assistente">Un indizio: confronta quanto serve con quanto puoi davvero vendere nel tempo che hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi: giorni per liquidare, volatilità, drawdown, soglie e controlli. Hai 3 tentativi.
+
+<Practice generator="h07-monitoraggio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: chi guarda il cruscotto ogni giorno perde meno spesso a sorpresa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il cruscotto contiene volatilità, drawdown, esposizioni, concentrazione, liquidità e attribuzione: il rendimento da solo non basta.
+- Soglie di allerta prima dei limiti danno il tempo di agire; le violazioni si segnalano e si documentano.
+- Il controllo dovrebbe essere anche indipendente dal gestore, per evitare conflitti di interesse.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Posizione 5 milioni, si vende 0,2 milioni al giorno: giorni per liquidare?", a: "25 giorni" },
+    { q: "Volatilità giornaliera 1%: volatilità annua circa?", a: "Circa 16% (1% × √252)" },
+    { q: "Perché una soglia di allerta prima del limite?", a: "Per avere il tempo di agire prima di violarlo" },
+    { q: "Perché un controllo indipendente?", a: "Per evitare il conflitto di interessi di chi guadagna dalla performance" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso: obiettivi, allocazione, risk parity, esposizioni, ribilanciamento, monitoraggio. Prossimo modulo: come funziona un fondo dietro le quinte.</Say>
+</Scene>

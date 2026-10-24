@@ -1,0 +1,152 @@
+---
+id: C.16.005
+course: cybersecurity
+module: 16
+title: "OWASP API Security Top 10"
+belt: blu
+duration_min: 11
+prerequisites: [C.16.004]
+objectives:
+  - "Nominare i rischi principali della lista OWASP API Security Top 10 (edizione 2023)"
+  - "Distinguere controllo a livello di oggetto, di proprietà e di funzione"
+  - "Collegare ogni rischio alla difesa corrispondente"
+video:
+  provider: youtube
+  id: "bGkl6YQ19iE"
+  start: 0
+  end: 600
+  channel: "Hello InfoSec"
+  title: "OWASP API Security Top-10(2023): Essential Deep Dive"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-owasp-api
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Controllare chi sei (autenticazione) ma non se l'oggetto richiesto è davvero tuo"
+  - "Restituire l'intero oggetto del database e lasciare al cliente il compito di nascondere i campi"
+  - "Dimenticare le vecchie versioni dell'API e gli endpoint di prova ancora online"
+commands: []
+---
+
+<Scene title="L'ordine numero 5521">
+**Tavola Bella** ha una API per l'app dei clienti. Marta consulta il suo ordine: la richiesta è `GET /ordini/5521`. Il giorno dopo il suo ordine è il 5530. Per curiosità, un tecnico del supporto in un laboratorio di prova chiede `GET /ordini/5522` con la sessione di Marta e riceve **l'ordine di un altro cliente**, con nome e indirizzo.
+
+La sessione era valida e Marta era autenticata. Eppure l'API ha mostrato dati non suoi.
+
+La domanda del caso: **quale controllo manca, e quali altri errori simili conosce la sicurezza delle API?**
+
+<Say who="sensei">Sapere chi sei non basta. Bisogna chiedersi se quella cosa è tua. È l'errore più frequente nelle API.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché le API hanno una lista tutta loro">
+Un'**API** è la porta di servizio di un'applicazione: le app, i siti e altri programmi parlano con lei. A differenza di una pagina web, l'API espone **direttamente** gli oggetti dei dati (ordini, utenti, fatture) e le azioni sopra di loro.
+
+Per questo **OWASP** (l'organizzazione che pubblica le liste dei rischi, già incontrata nel modulo C5) ha una lista separata: la **API Security Top 10**, edizione **2023**. Non devi impararla a memoria come una poesia: devi capire **i gruppi**.
+
+<Callout kind="regola">
+Quasi tutti i rischi API sono domande che il server dimentica di fare: «chi sei?», «questo è tuo?», «puoi fare questa azione?», «quanto stai chiedendo?».
+</Callout>
+
+<Say who="assistente">Una API ben fatta ripete le stesse domande a ogni richiesta, senza fidarsi di quanto detto prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi sull'accesso">
+Il primo gruppo riguarda chi può vedere o fare che cosa:
+
+- **API1 – Broken Object Level Authorization (BOLA)**: l'API non controlla che l'oggetto richiesto appartenga all'utente. È il caso dell'ordine 5522. **Difesa**: a ogni richiesta, verificare lato server che l'utente abbia diritto a **quell'oggetto**; identificativi non indovinabili aiutano, ma non sostituiscono il controllo.
+- **API2 – Broken Authentication**: login, token e recupero password fatti male (nessun limite ai tentativi, token deboli, scadenze assenti). Si lega alle lezioni 1-3.
+- **API3 – Broken Object Property Level Authorization**: l'utente può vedere o cambiare **campi** che non dovrebbe, per esempio il campo `ruolo` o `sconto` dentro il suo profilo. **Difesa**: elenco esplicito dei campi leggibili e modificabili, mai «restituisci tutto l'oggetto».
+- **API5 – Broken Function Level Authorization**: un utente comune può chiamare una funzione da amministratore (per esempio `DELETE /utenti/12`). **Difesa**: permessi controllati per ogni funzione, con rifiuto di default.
+
+<Log lines={[
+  "Esempio descritto (fittizio), controllo mancante a livello di funzione:",
+  "  Utente 'cliente' chiede: DELETE /admin/utenti/12",
+  "  API risponde: 200 OK (eliminato)",
+  "  Corretto: 403 Forbidden, e un avviso nel registro degli eventi",
+]} />
+
+<Say who="sensei">Tre livelli: l'oggetto, il campo, la funzione. Chi controlla solo il login, lascia tutte e tre le porte aperte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi su risorse, flussi e configurazione">
+Gli altri rischi della lista del 2023:
+
+- **API4 – Unrestricted Resource Consumption**: nessun limite a richieste, dimensioni, pagine o costi. Si risolve con limiti e quote (lezione 6).
+- **API6 – Unrestricted Access to Sensitive Business Flows**: un flusso utile, come acquistare biglietti o creare account, viene usato in massa da programmi automatici. Difesa: limiti, controlli sui comportamenti anomali, passaggi di verifica.
+- **API7 – Server Side Request Forgery (SSRF)**: l'API scarica un indirizzo scelto dall'utente e così può essere spinta a raggiungere servizi interni. Difesa: elenco di destinazioni ammesse e rete interna non raggiungibile.
+- **API8 – Security Misconfiguration**: messaggi d'errore troppo dettagliati, CORS aperto, funzioni di debug accese, componenti non aggiornati.
+- **API9 – Improper Inventory Management**: nessuno sa quali API esistono. Vecchie versioni (`/v1`) e ambienti di prova restano online, senza controlli.
+- **API10 – Unsafe Consumption of APIs**: la tua API si fida troppo dei dati ricevuti da un'altra API (di un fornitore). Difesa: trattare i dati dei partner come input non fidato e convalidarli.
+
+<Callout kind="attenzione">
+Provare queste debolezze su servizi che non sono tuoi è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo o per cui hai un permesso scritto, in un laboratorio isolato.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Se hai dubbi su un caso, chiediti quale domanda il server ha dimenticato di fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'API di una clinica fittizia restituisce, a ogni utente, tutti i campi del profilo, comprese le note interne dei medici, e l'app mobile «nasconde» le note. Qual è il problema?"
+  options={[
+    "Esposizione di campi a livello di proprietà: l'API deve restituire solo i campi permessi, perché chi chiama direttamente l'API vede tutto",
+    "Nessun problema: se l'app non le mostra, i dati sono al sicuro",
+    "Il problema è solo che le note sono troppo lunghe",
+    "È un caso di limitazione delle richieste, da risolvere con 429"
+  ]}
+  answer={0}
+  explain="Nascondere un dato nell'app non lo protegge: chiunque chiami l'API direttamente riceve l'intera risposta. La difesa è filtrare i campi sul server, con un elenco esplicito di ciò che ogni ruolo può leggere o modificare."
+/>
+
+<Say who="assistente">Indizio: dove deve avvenire il filtro, nel posto che controlli tu o in quello che controlla il cliente?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su rischi e difese della lista OWASP per le API: scegli la risposta giusta.
+
+<Practice generator="c16-owasp-api" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una lista dei rischi non si recita: si usa per fare le domande giuste a ogni endpoint.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio numero uno delle API è l'accesso agli oggetti non propri (BOLA): si controlla il diritto sull'oggetto a ogni richiesta, lato server.
+- Oltre all'oggetto si controllano i campi (proprietà) e le funzioni; il filtro non va lasciato all'app.
+- Risorse senza limiti, flussi abusati, SSRF, configurazioni errate, inventario confuso e fiducia nei partner chiudono la lista.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il BOLA?", a: "Un'API che non controlla se l'oggetto richiesto appartiene all'utente" },
+    { q: "Perché nascondere un campo nell'app non basta?", a: "Chi chiama l'API direttamente riceve tutta la risposta" },
+    { q: "Che cos'è l'inventario improprio (API9)?", a: "Non sapere quali API e versioni esistono, e lasciare online vecchie versioni senza controlli" },
+    { q: "Qual è la difesa di base contro il controllo di funzione mancante?", a: "Permessi per ogni funzione, con rifiuto di default" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: limitare le richieste, per fermare gli abusi senza fermare i clienti.</Say>
+</Scene>

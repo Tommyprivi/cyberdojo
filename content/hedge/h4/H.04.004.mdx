@@ -1,0 +1,144 @@
+---
+id: H.04.004
+course: hedge
+module: 4
+title: "Il valore intrinseco"
+belt: arancione
+duration_min: 8
+prerequisites: [H.04.003]
+objectives:
+  - "Distinguere prezzo e valore intrinseco"
+  - "Stimare il valore di un flusso costante o crescente con la formula della perpetuità"
+  - "Spiegare il margine di sicurezza e calcolarlo"
+video:
+  provider: youtube
+  id: "CoUyYEf0OFU"
+  start: 0
+  end: 600
+  channel: "Davide D'Isidoro - Value Investing"
+  title: "IL VALORE INTRINSECO DI UN'AZIONE: spiegazione semplice"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-valore-intrinseco
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il valore intrinseco sia un numero esatto"
+  - "Confondere il patrimonio netto a bilancio con il valore intrinseco"
+  - "Dimenticare che piccole variazioni del tasso cambiano molto il risultato"
+commands: []
+---
+
+<Scene title="Prezzo e valore">
+In borsa Officine Lumi (fittizia) vale 15 euro per azione. Ieri ne valeva 12, a luglio 18. Il valore dell'azienda cambia così spesso?
+
+La domanda del caso: **esiste un valore «vero» di un'azienda, diverso dal prezzo del giorno?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Il prezzo è ciò che paghi, il valore è ciò che ottieni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il valore dei soldi futuri">
+Un'azienda vale ciò che **produrrà in futuro**. Il **valore intrinseco** è la stima di quanto valgono **oggi** i flussi di cassa futuri.
+
+Perché «oggi»? Perché un euro tra un anno vale meno di un euro in mano: lo si potrebbe usare o investire. Il **tasso di sconto** misura questa differenza, e include il rischio.
+
+<Callout kind="regola">
+Più il tasso di sconto è alto, **più i flussi futuri valgono poco oggi**.
+</Callout>
+
+<Say who="assistente">Un indizio: se mi prometti 100 euro tra un anno, oggi te ne do meno di 100.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una formula semplice">
+Se un'azienda produce un flusso **F per sempre**, con tasso di sconto **r**, vale **F / r**.
+
+<Guided
+  steps={[
+    "Flusso 8 milioni l'anno per sempre, tasso 10%: valore = 8 / 0,10 = 80 milioni.",
+    "Se il flusso cresce del 2% l'anno (g): valore = F1 / (r - g) = 8 / (0,10 - 0,02) = 100 milioni.",
+    "Con tasso 12% e crescita 2%: 8 / 0,10 = 80 milioni. Due punti di tasso in più, un quinto di valore in meno.",
+    "La crescita g deve restare sotto r: nessuna azienda cresce per sempre più dell'economia.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+La formula è **molto sensibile** alle ipotesi. Per questo il valore intrinseco è un **intervallo**, non un numero esatto.
+</Callout>
+
+<Say who="sensei">Se cambiare un'ipotesi di due punti sposta il risultato di un quinto, quel risultato è un'opinione, non un fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il margine di sicurezza">
+Poiché le stime sono incerte, chi investe con metodo pretende un **margine di sicurezza**: compra solo se il prezzo è **ben sotto** il valore stimato.
+
+Valore stimato 20 euro, prezzo 15 euro: margine di sicurezza = (20 - 15) / 20 = **25%**.
+
+Se si pretende un margine del 30% su un valore di 100 euro, il prezzo massimo è 100 x 0,70 = **70 euro**.
+
+Un'altra voce, in italiano, spiega il valore intrinseco:
+
+<Video />
+
+<Say who="sensei">Il margine di sicurezza non garantisce niente. Serve a sopravvivere ai propri errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il prezzo di un'azione scende del 30% senza notizie sull'azienda. Il valore intrinseco è sceso del 30%?"
+  options={[
+    "Non necessariamente: il prezzo si muove anche per emozioni e liquidità, il valore dipende dai flussi attesi",
+    "Sì, prezzo e valore coincidono sempre",
+    "Sì, ma solo se il calo dura un anno",
+    "No: il valore è sceso del 60%",
+  ]}
+  answer={0}
+  explain="Il prezzo è l'umore del mercato; il valore intrinseco è una stima dei flussi futuri. Possono allontanarsi a lungo, in entrambe le direzioni. Per questo il confronto tra i due è il cuore di questo mestiere, ma senza garanzie."
+/>
+
+<Say who="assistente">Quando il prezzo scende, chiediti prima di tutto: è cambiata l'azienda o solo l'umore?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di valore e di margine di sicurezza. Numeri fittizi.
+
+<Practice generator="h04-valore-intrinseco" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. E ricorda: il risultato è una stima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il valore intrinseco è il valore attuale dei flussi di cassa futuri, scontati a un tasso che include il rischio.
+- Flusso costante F con tasso r: F / r; con crescita g: F1 / (r - g), e g deve restare sotto r.
+- Il margine di sicurezza (valore - prezzo) / valore protegge dagli errori di stima, senza garantire nulla.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Flusso 8 per sempre, tasso 10%: valore?", a: "80" },
+    { q: "Flusso 8, crescita 2%, tasso 10%: valore?", a: "100" },
+    { q: "Valore 20, prezzo 15: margine di sicurezza?", a: "25%" },
+    { q: "Se il tasso sale e i flussi restano uguali, il valore?", a: "Scende" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il DCF, cioè questa idea applicata anno per anno.</Say>
+</Scene>

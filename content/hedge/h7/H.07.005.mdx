@@ -1,0 +1,153 @@
+---
+id: H.07.005
+course: hedge
+module: 7
+title: "Il ribilanciamento"
+belt: verde
+duration_min: 8
+prerequisites: [H.07.004]
+objectives:
+  - "Calcolare come cambiano i pesi dopo un movimento dei prezzi e quanto va negoziato per tornare al target"
+  - "Distinguere ribilanciamento a calendario e a soglia"
+  - "Valutare costi e rischi di ribilanciare troppo spesso o troppo di rado"
+video:
+  provider: youtube
+  id: "DaNkGn25SAA"
+  start: 0
+  end: 600
+  channel: "The Bull"
+  title: "Come e quando ribilanciare il tuo portafoglio"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-ribilanciamento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il ribilanciamento garantisca guadagni"
+  - "Ribilanciare ogni giorno senza considerare i costi"
+  - "Non ribilanciare mai e ritrovarsi con un rischio diverso da quello voluto"
+commands: []
+---
+
+<Scene title="Il portafoglio che cambia da solo">
+Il fondo fittizio **Rondine Capital** ha un portafoglio 50/50: 50 in azioni e 50 in obbligazioni, su 100. Dopo un anno le azioni sono salite del 50% e le obbligazioni sono rimaste ferme.
+
+Nessuno ha comprato o venduto niente. Eppure il portafoglio non è più 50/50.
+
+La domanda del caso: **che cosa è successo ai pesi, e che cosa si fa?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Il portafoglio che hai deciso ieri non è quello che hai oggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La deriva dei pesi">
+Le azioni valgono 50 × 1,5 = 75. Le obbligazioni valgono ancora 50. Il totale è 125.
+
+<Log lines={[
+  "azioni        75  ->  75 / 125 = 60%",
+  "obbligazioni  50  ->  50 / 125 = 40%",
+  "target era 50/50: le azioni pesano di più, e anche il loro rischio",
+]} />
+
+Per tornare a 50/50 ogni parte deve valere 125 / 2 = 62,5. Quindi si vendono **12,5** di azioni (75 - 62,5) e si comprano 12,5 di obbligazioni.
+
+<Callout kind="regola">
+Ribilanciare = riportare i pesi al target, vendendo ciò che è salito e comprando ciò che è sceso (o è salito meno).
+</Callout>
+
+<Say who="assistente">Non è una previsione. È manutenzione: riporti il rischio dove l'avevi deciso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando ribilanciare">
+Ci sono due modi principali. Un'altra voce, in italiano, li spiega con esempi per chi investe:
+
+<Video />
+
+- **A calendario**: a date fisse (ogni trimestre, ogni anno). Facile da organizzare.
+- **A soglia**: solo quando un peso esce da una **banda**. Esempio: peso obiettivo 40% con banda di ±5 punti, cioè tra 35% e 45%. Se un asset arriva al 47%, si ribilancia; al 43%, no.
+
+<Callout kind="attenzione">
+Il video parla di investitori privati; un fondo ha in più regole, costi e limiti di liquidità. Il principio resta lo stesso.
+</Callout>
+
+<Say who="sensei">Una banda è una promessa: «finché resto qui dentro, non tocco niente».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Costi e rischi">
+Ribilanciare costa: commissioni e differenze tra prezzo di acquisto e vendita. Convenzione: costo in percentuale del valore scambiato.
+
+<Guided
+  steps={[
+    "Un ribilanciamento muove 20 milioni e il costo è 0,05% del valore scambiato.",
+    "20.000.000 × 0,0005 = 10.000. Ogni ribilanciamento costa 10.000 (fittizi).",
+    "Troppo spesso: i costi si accumulano. Troppo di rado: il portafoglio si allontana dal target e prende più rischio del voluto.",
+    "Se un'azione sale per mesi, vendere una parte può ridurre i guadagni; in cambio il rischio resta quello deciso.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Ribilanciare non crea guadagni da solo. In un mercato in crisi può essere anche difficile vendere o comprare a prezzi corretti, perché mancano compratori o venditori.
+</Callout>
+
+<Say who="sensei">Il ribilanciamento è disciplina, non magia. Non lo vendere come magia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Portafoglio 50/50 da 200 (100 azioni e 100 obbligazioni). Le azioni scendono del 40%, le obbligazioni restano ferme. Che cosa serve per tornare a 50/50?"
+  options={[
+    "Vendere 20 di azioni e comprare 20 di obbligazioni",
+    "Non fare nulla: i pesi si sistemano da soli",
+    "Vendere 40 di obbligazioni e tenere i soldi fermi",
+    "Vendere 20 di obbligazioni e comprare 20 di azioni",
+  ]}
+  answer={3}
+  explain="Azioni 60, obbligazioni 100: totale 160, quindi il target è 80 e 80. Mancano 20 alle azioni e ne avanzano 20 alle obbligazioni. Le azioni pesano ora il 37,5%, non il 50%."
+/>
+
+<Say who="assistente">Un indizio: il totale è cambiato, quindi ogni metà non è più 100. Calcola prima il nuovo totale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi: pesi dopo i movimenti, bande, costi, calendario e soglia. Hai 3 tentativi.
+
+<Practice generator="h07-ribilanciamento" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: nemmeno a chi ribilancia con puntualità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I pesi cambiano con i prezzi: dopo un rialzo le azioni pesano più del target, e anche il loro rischio.
+- Si ribilancia a calendario o a soglia (banda); si calcola il nuovo totale e poi quanto negoziare.
+- Ribilanciare costa e non garantisce guadagni: serve a tenere il rischio dove era stato deciso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Azioni 75 e obbligazioni 50: quanto pesano le azioni?", a: "60%" },
+    { q: "Ribilanciamento a soglia?", a: "Si agisce solo quando un peso esce da una banda" },
+    { q: "Rischio di ribilanciare troppo spesso?", a: "I costi di negoziazione si accumulano" },
+    { q: "Il ribilanciamento garantisce guadagni?", a: "No: tiene i pesi e il rischio sul target" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: il monitoraggio, cioè come si controlla ogni giorno che tutto resti nei limiti.</Say>
+</Scene>

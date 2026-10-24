@@ -1,0 +1,168 @@
+---
+id: H.11.004
+course: hedge
+module: 11
+title: "La cultura del rischio"
+belt: blu
+duration_min: 8
+prerequisites: [H.11.003]
+objectives:
+  - "Spiegare perché gli incentivi e l'indipendenza dei controlli contano più delle regole scritte"
+  - "Calcolare l'effetto di un bonus sui profitti senza penale sulle perdite"
+  - "Riconoscere segnali di buona e cattiva cultura del rischio"
+video:
+  provider: youtube
+  id: "8Wb6Su9WrZI"
+  start: 0
+  end: 600
+  channel: "Investiamo"
+  title: "La crisi del 2008 spiegata bene ft @StartingFinance"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h11-cultura-rischio
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che basti avere un manuale di regole"
+  - "Pensare che il responsabile dei rischi possa essere sottoposto al gestore"
+  - "Ignorare gli incentivi: le persone seguono ciò che viene premiato"
+commands: []
+---
+
+<Scene title="Il responsabile dei rischi che non conta">
+**Ponte Alto** è un fondo fittizio. Il responsabile dei rischi, Luca, segnala che una posizione è troppo grande. Il gestore risponde: «Il bonus di tutti dipende da questa posizione. Non toccarla». Luca risponde al gestore, e tace.
+
+Dopo alcuni mesi la posizione perde molto. Nei verbali, tutti i limiti scritti erano rispettati sulla carta.
+
+La domanda del caso: **perché le regole c'erano, ma non hanno funzionato?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Un manuale non è una cultura. La cultura è ciò che le persone fanno quando nessuno guarda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli incentivi">
+Le persone seguono ciò che viene **premiato**. Supponi che un trader prenda il **10% dei profitti** ma non paghi mai le perdite.
+
+Una scommessa fittizia: 50% di probabilità di guadagnare 100, 50% di perdere 100.
+
+<Log lines={[
+  "Trader: 0,5 × 10 (10% di 100) + 0,5 × 0 = +5",
+  "Fondo: 0,5 × (100 - 10) + 0,5 × (-100) = 45 - 50 = -5",
+]} />
+
+Per il fondo la scommessa vale **-5**, per il trader **+5**. Il trader ha ogni interesse a ripeterla.
+
+<Callout kind="attenzione">
+Quando i guadagni sono miei e le perdite sono di altri, il rischio sale. Nessuna persona è «cattiva»: è matematica degli incentivi.
+</Callout>
+
+<Say who="assistente">Chiediti sempre: chi guadagna se va bene? Chi paga se va male?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indipendenza e separazione dei compiti">
+Due principi semplici:
+
+- **Il controllo indipendente**: chi controlla il rischio non deve dipendere da chi guadagna dalle operazioni, e deve poter dire **no**.
+- **La separazione dei compiti**: chi esegue un'operazione non deve poterla anche registrare e controllare da solo.
+
+Un esempio storico, in sintesi: nel 1995 la banca britannica **Barings** fallì dopo perdite nascoste da un trader, che di fatto registrava e controllava da solo le proprie operazioni. Mancava proprio la separazione dei compiti.
+
+<Callout kind="regola">
+Un controllo senza il potere di fermare un'operazione è solo un verbale.
+</Callout>
+
+<Say who="sensei">Chi controlla non deve temere per il proprio posto. Altrimenti smette di controllare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnali di cultura sana e malata">
+| Segnale | Cultura sana | Cultura malata |
+|---|---|---|
+| Limiti di rischio | Scritti, misurabili, rispettati | Superati ogni settimana senza conseguenze |
+| Cattive notizie | Si dicono subito | Si nascondono, chi le porta viene escluso |
+| Rischio e profitto | Il responsabile dei rischi ha voce | Non viene invitato alle riunioni |
+| Errori sfiorati | Si analizzano e si correggono le procedure | Si ignorano «perché non è successo nulla» |
+| Mese negativo | Si spiega, con numeri | Si parla solo dei mesi positivi |
+
+Vuoi vedere dove una cultura sbagliata ha portato una crisi intera? Un'altra voce, in italiano, sulla crisi del 2008:
+
+<Video />
+
+<Say who="sensei">Una cultura si legge dagli incentivi e dai limiti superati, non dalle frasi sul sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="I vertici dicono «prima la prudenza», ma promuovono solo chi fa più profitti. Che cosa conta davvero per le persone?"
+  options={[
+    "Ciò che viene premiato, non ciò che viene dichiarato",
+    "Ciò che è scritto nel manuale",
+    "Ciò che dicono i vertici nelle riunioni",
+    "Ciò che dicono le autorità nei comunicati",
+  ]}
+  answer={0}
+  explain="Le persone imparano da chi viene promosso. Se la prudenza non è premiata, restano slogan. Il manuale e le riunioni contano meno degli incentivi."
+/>
+
+<Say who="assistente">Guarda chi viene promosso: lì vedi la cultura vera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un mese negativo, detto bene">
+Ragioniamo sulla comunicazione onesta agli investitori dopo un mese negativo.
+
+<Guided
+  steps={[
+    "Primo: dire la cifra della perdita, senza giri di parole.",
+    "Secondo: spiegare le cause, anche quelle che dipendono da scelte del fondo.",
+    "Terzo: dire che cosa cambia nel fondo: limiti, posizioni, controlli.",
+    "Mai: parlare solo dei mesi positivi, cambiare periodo per far sembrare meglio il rendimento, o dare la colpa al mercato senza numeri.",
+  ]}
+/>
+
+<Say who="sensei">Una cattiva notizia detta presto costa poco. La stessa notizia nascosta costa tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su incentivi, controlli e comunicazione.
+
+<Practice generator="h11-cultura-rischio" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La cultura del rischio è fatta di piccole scelte ripetute.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le persone seguono ciò che è premiato: bonus sui profitti senza penale sulle perdite spingono a rischiare di più.
+- Servono controlli indipendenti con il potere di dire no, e separazione dei compiti.
+- Segnali sani: limiti rispettati, cattive notizie dette subito, errori sfiorati analizzati, comunicazione onesta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché un bonus senza penale spinge a rischiare?", a: "Perché i guadagni sono miei e le perdite sono di altri" },
+    { q: "Che cos'è la separazione dei compiti?", a: "Chi esegue non registra e non controlla da solo" },
+    { q: "Che cosa deve poter fare il responsabile dei rischi?", a: "Dire no e fermare una posizione troppo grande" },
+    { q: "Che cosa è un near miss?", a: "Una perdita evitata per un soffio, da analizzare per correggere le procedure" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: la lista di controllo con tutto quello che abbiamo imparato.</Say>
+</Scene>

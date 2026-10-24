@@ -1,0 +1,176 @@
+---
+id: H.08.005
+course: hedge
+module: 8
+title: "Il rapporto agli investitori"
+belt: verde
+duration_min: 8
+prerequisites: [H.08.004]
+objectives:
+  - "Elencare che cosa contiene un buon rapporto agli investitori"
+  - "Calcolare il rendimento netto da quello lordo con commissioni di gestione e di performance"
+  - "Riconoscere un rapporto poco onesto: solo mesi positivi, promesse, ritardi"
+video:
+  provider: youtube
+  id: "OZLv600XrZY"
+  start: 0
+  end: 275
+  channel: "JioBlackRock Mutual Fund"
+  title: "How to read a Factsheet?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-reporting
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Guardare il rendimento lordo e dimenticare quello netto"
+  - "Giudicare un fondo da un solo mese o da un solo anno"
+  - "Fidarsi di un rapporto che mostra solo i risultati positivi"
+commands: []
+---
+
+<Scene title="Il mese da +6%">
+Giulia investe in **Aurora Capital** (fondo fittizio). Riceve una lettera: «Mese eccellente, **+6%**!». Non dice se è lordo o netto, non confronta con nessun indice, non parla dei mesi andati male.
+
+Giulia si chiede: **che cosa dovrebbe contenere un rapporto davvero utile?**
+
+Nota: educazione, non consulenza. Si può perdere denaro, anche tutto. I numeri della lezione sono fittizi.
+
+<Say who="sensei">I mercati non regalano niente. Chi ti scrive solo le buone notizie ti sta facendo pubblicità, non un rapporto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa contiene un buon rapporto">
+Un rapporto, mensile o trimestrale, di solito comprende:
+
+- **rendimento del periodo**, lordo e **netto**, con il confronto con un **benchmark** (un indice di riferimento);
+- **posizioni principali** ed **esposizione**, cioè quanto rischio si sta correndo;
+- **leva** usata e andamento dei **cali** dal massimo (drawdown);
+- **commento del gestore**: che cosa ha funzionato e che cosa no;
+- **commissioni e spese** applicate.
+
+Una volta l'anno c'è il **bilancio**, controllato da un **revisore indipendente**.
+
+Qui sotto, un video su come si legge la scheda di un fondo (è un fondo comune, non un hedge fund, ma la logica è simile). In inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Pensa a una pagella: i voti, ma anche le note e le assenze. Se manca una parte, qualcosa non quadra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal lordo al netto">
+Il **rendimento lordo** è quello prima delle commissioni. Il **netto** è ciò che resta a chi investe.
+
+Convenzione: commissione di gestione 2%; commissione di performance 20% sul rendimento **dopo** la commissione di gestione (di solito si paga solo sopra il massimo precedente del valore: qui lo ignoriamo).
+
+<Guided
+  steps={[
+    "Rendimento lordo 8%. Commissione di gestione 2%: resta 8% − 2% = 6%.",
+    "Commissione di performance: 20% di 6% = 1,2%.",
+    "Rendimento netto = 6% − 1,2% = 4,8%.",
+    "Con lordo 10%: 10% − 2% = 8%; 20% di 8% = 1,6%; netto = 8% − 1,6% = 6,4%.",
+    "Il netto è sempre più basso del lordo: è il netto che finisce all'investitore.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Chi mostra solo il rendimento lordo mostra un numero che l'investitore non incassa. Chiedi sempre il netto.
+</Callout>
+
+<Say who="sensei">Il lordo è il numero che piace al gestore. Il netto è quello che conta per te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere i cali">
+NAV per quota nei primi tre mesi (fittizio): **100, 110, 99, 108,9**.
+
+| Mese | NAV per quota | Variazione |
+|---|---|---|
+| 0 | 100 | |
+| 1 | 110 | +10% |
+| 2 | 99 | −10% (110 × 0,9 = 99) |
+| 3 | 108,9 | +10% (99 × 1,1 = 108,9) |
+
+- Tre variazioni di ±10% non si annullano: in tutto, da 100 a 108,9, il rendimento è **+8,9%**.
+- Il **calo massimo dal massimo precedente** (drawdown) è da 110 a 99: 11 / 110 = **10%**.
+
+<Callout kind="trucco">
+Un rapporto onesto mostra anche il drawdown: quanto si è perso al peggio prima di risalire.
+</Callout>
+
+<Say who="assistente">Un indizio: guarda il punto più basso, non solo l'ultimo numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Comunicazione onesta e segnali d'allarme">
+Un investitore prudente fa attenzione a questi segnali:
+
+- il rapporto mostra **solo i mesi positivi**;
+- parla di **rendimento garantito**: nessun fondo può garantire rendimenti;
+- arriva con **mesi di ritardo** e senza spiegazioni;
+- non indica **chi calcola il NAV** (amministratore) né **chi custodisce i beni**;
+- non spiega **perché** ha guadagnato o perso.
+
+Se vedi questi segnali, chiedi spiegazioni **per iscritto** e controlla amministratore e revisore. Il **rendimento passato** non è una promessa sul futuro.
+
+<Callout kind="regola">
+La fiducia si costruisce con numeri verificabili e comunicazioni regolari, soprattutto nei mesi cattivi.
+</Callout>
+
+<Say who="sensei">Un buon gestore ti scrive anche quando ha sbagliato. Anzi, soprattutto allora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Rendimento lordo 8%, commissione di gestione 2%, commissione di performance del 20% sul rendimento dopo la gestione. Qual è il rendimento netto?"
+  options={["4,8%", "6,0%", "4,4%", "8,0%"]}
+  answer={0}
+  explain="Dopo la gestione resta 6%. La performance è il 20% di 6%, cioè 1,2%. Netto: 6% − 1,2% = 4,8%. Chi risponde 4,4% ha calcolato la performance sull'8% lordo (1,6%) invece che sul 6%."
+/>
+
+<Say who="assistente">Segui i passi: prima la gestione, poi la performance sul risultato rimasto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su rapporti, rendimento netto e segnali d'allarme. Numeri fittizi.
+
+<Practice generator="h08-reporting" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un rapporto si legge con la matita in mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un buon rapporto mostra rendimento lordo e netto, benchmark, posizioni, esposizione, leva, drawdown, commento e commissioni.
+- Il netto è ciò che resta all'investitore: dal lordo si tolgono commissioni di gestione e di performance.
+- Segnali d'allarme: solo mesi positivi, rendimenti garantiti, ritardi senza spiegazioni, nessun controllo esterno.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Lordo 8%, gestione 2%, performance 20% dopo la gestione: netto?", a: "4,8%" },
+    { q: "NAV per quota 100, 110, 99: drawdown massimo?", a: "10% (da 110 a 99)" },
+    { q: "Perché confrontare con un benchmark?", a: "Per capire se il merito è del gestore o del mercato" },
+    { q: "Un fondo promette un rendimento garantito. Che cosa significa?", a: "Segnale d'allarme: nessun fondo può garantirlo" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: che cosa succede se il fondo si ferma. La continuità operativa.</Say>
+</Scene>

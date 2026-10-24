@@ -1,0 +1,190 @@
+---
+id: C.12.004
+course: cybersecurity
+module: 12
+title: "auditd: chi ha toccato quel file?"
+belt: blu
+duration_min: 10
+prerequisites: [C.12.003]
+objectives:
+  - "Spiegare a cosa serve il sistema di audit di Linux e in che cosa differisce dai log normali"
+  - "Scrivere e leggere una regola di audit su un file (auditctl -w) e cercare gli eventi con ausearch"
+  - "Rendere le regole permanenti e scegliere con giudizio cosa tracciare"
+video:
+  provider: youtube
+  id: "YfMXAAvJuUY"
+  start: 0
+  end: 600
+  channel: "Liv4IT"
+  title: "How to monitor file access on Linux with auditd"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-auditd
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Tracciare tutto: il log diventa enorme e il segnale si perde nel rumore"
+  - "Scrivere regole con auditctl e credere che restino dopo il riavvio: vanno nei file di /etc/audit/rules.d"
+  - "Tenere il log di audit solo sul server stesso: chi lo compromette può cancellarlo"
+commands: [auditctl, ausearch, aureport]
+---
+
+<Scene title="Chi ha cambiato quel file?">
+Alla «Gialli Software» un lunedì mattina l'amministratrice Elena trova una riga in più nel file `/etc/passwd`: esiste un utente `supporto2` che nessuno ricorda di aver creato.
+
+<Log lines={[
+  "$ tail -2 /etc/passwd",
+  "elena:x:1001:1001::/home/elena:/bin/bash",
+  "supporto2:x:1005:1005::/home/supporto2:/bin/bash",
+]} caption="Un utente comparso nel weekend." />
+
+I log normali dicono che qualcuno ha usato `sudo`, ma non **quale file è stato toccato**, né da quale processo.
+
+La domanda del caso: **come si registra, in modo preciso, ogni modifica ai file importanti?**
+
+<Say who="sensei">Un buon difensore non si chiede soltanto «cosa è cambiato», ma «chi, quando e con quale programma». Per rispondere serve un registro fatto apposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è auditd">
+**auditd** è il demone del **sistema di audit** di Linux: una funzione del kernel che registra eventi precisi (accessi ai file, comandi eseguiti, cambi di identità) in `/var/log/audit/audit.log`.
+
+Differenza dai log già visti (lezione F.03.008 e modulo C7): i log normali sono scritti **dai programmi** e raccontano quello che il programma vuole dire. L'audit è scritto **dal kernel** e registra ciò che accade davvero, anche se il programma non lo dice.
+
+<Callout kind="regola">
+Audit risponde a domande da indagine: chi, quando, quale file, con quale programma, con quale esito.
+</Callout>
+
+Vuoi vedere come si monitora l'accesso a un file? Il video è in inglese, attiva i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Il log normale è il racconto del programma. L'audit è la telecamera del kernel.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La prima regola: sorvegliare un file">
+Si scrive una regola con `auditctl`. Per sorvegliare `/etc/passwd`:
+
+<Log lines={[
+  "$ sudo auditctl -w /etc/passwd -p wa -k identita",
+]} caption="-w = file da sorvegliare · -p wa = scrittura (w) e cambio attributi (a) · -k = etichetta della regola." />
+
+I permessi tracciabili con `-p` sono quattro: **r** lettura, **w** scrittura, **x** esecuzione, **a** cambio di attributi (per esempio permessi o proprietario).
+
+La **chiave** (`-k`) è un'etichetta scelta da te: serve a ritrovare dopo tutti gli eventi della regola.
+
+<Callout kind="attenzione">
+Tracciare la **lettura** di file molto usati (come `/etc/passwd`, che il sistema legge di continuo) riempie il log di eventi normali. Meglio tracciare scrittura e attributi dei file critici.
+</Callout>
+
+<Say who="sensei">Una regola, un obiettivo. Sorveglia ciò che conta e dagli un nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere gli eventi">
+Dopo la regola, qualcuno modifica `/etc/passwd`. Per cercare gli eventi:
+
+<Log lines={[
+  "$ sudo ausearch -k identita -i",
+  "type=SYSCALL ... success=yes exit=0 ... auid=elena uid=root comm=\"useradd\" exe=\"/usr/sbin/useradd\" key=\"identita\"",
+  "type=PATH ... name=\"/etc/passwd\" ... nametype=NORMAL",
+]} caption="-i traduce i numeri in nomi; auid è l'utente che ha fatto il login originale." />
+
+Come si legge:
+
+- `auid`: l'identità con cui la persona è **entrata** nel sistema (resta anche dopo `sudo`);
+- `uid`: l'identità con cui il processo ha **lavorato** (qui root, per via di sudo);
+- `comm` ed `exe`: il comando e il programma.
+
+<Callout kind="curiosita">
+`auid` è il dettaglio più prezioso di un'indagine: se qualcuno entra con un account e poi diventa root con `sudo`, il registro ricorda **chi era all'inizio**.
+</Callout>
+
+Per un riassunto: `sudo aureport -au` (accessi) o `sudo aureport -f` (file).
+
+<Say who="assistente">Se l'utente che vedi in auid non è chi ti aspetti, il caso si apre davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole permanenti e log al sicuro">
+Le regole date con `auditctl` **spariscono al riavvio**. Quelle permanenti si scrivono in `/etc/audit/rules.d/`, in un file `.rules`, e si caricano con `sudo augenrules --load`:
+
+<Log lines={[
+  "# /etc/audit/rules.d/identita.rules",
+  "-w /etc/passwd -p wa -k identita",
+  "-w /etc/shadow -p wa -k identita",
+  "-w /etc/sudoers -p wa -k privilegi",
+  "-w /etc/sudoers.d/ -p wa -k privilegi",
+]} caption="File critici sorvegliati in scrittura." />
+
+Due precauzioni da professionista:
+
+- **Spedire una copia** del log di audit su un altro server: chi entra nella macchina può cancellare il registro locale.
+- **Scegliere con giudizio**: poche regole mirate (identità, privilegi, configurazioni critiche) fanno vedere gli eventi che contano. Troppe regole nascondono il segnale nel rumore.
+
+<Say who="sensei">Un registro che l'intruso può cancellare non è un registro. Una copia fuori dal server è parte del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo a Elena e a `supporto2`. Elena attiva la regola `identita`. Poco dopo compare un secondo utente anomalo e ausearch mostra `auid=marco uid=root comm="useradd"`.
+
+<Quiz
+  question="Che cosa dice davvero quella riga e qual è il prossimo passo sensato?"
+  options={[
+    "Marco è entrato con il suo account e poi ha usato i privilegi di root: si verifica con lui e si controlla il resto della sua attività (stesso auid)",
+    "Un utente di sistema chiamato root ha creato l'account: non c'è nessuno da chiamare",
+    "Il kernel ha creato l'account da solo: è un guasto",
+    "L'evento è falso, perché auditd non registra mai useradd",
+  ]}
+  answer={0}
+  explain="auid conserva l'identità di login originale anche dopo sudo: root è solo il livello di privilegio usato. Il passo giusto è parlare con Marco e ricostruire tutto ciò che ha fatto con quello stesso auid. Non è un guasto e non è un falso."
+/>
+
+<LinuxTerminal goal="Con grep cerca la parola Failed nel file di log del sistema di prova." scenario="logs" />
+
+<Say who="assistente">auid non è un'accusa: è una pista. La conferma viene dal confronto con la persona e con gli altri log.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su auditd: regole, chiavi, lettura degli eventi, scelte sensate su cosa tracciare.
+
+<Practice generator="c12-auditd" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora il server non dimentica. Resta da decidere chi può comandarlo: utenti e sudo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- auditd è il registro del kernel: registra accessi ai file e comandi in `/var/log/audit/audit.log`, anche quando il programma non lo dice.
+- Una regola si scrive con `auditctl -w file -p wa -k chiave` e si legge con `ausearch -k chiave -i`; `auid` indica chi è entrato davvero.
+- Le regole permanenti stanno in `/etc/audit/rules.d/`; poche regole mirate, e una copia del log fuori dal server.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Cosa significa -p wa in una regola di audit?", a: "Registra scrittura (w) e cambio di attributi (a)" },
+    { q: "A cosa serve la chiave -k?", a: "A ritrovare con ausearch tutti gli eventi di quella regola" },
+    { q: "Che cos'è auid?", a: "L'identità con cui la persona è entrata, anche dopo sudo" },
+    { q: "Dove si salvano le regole permanenti?", a: "In /etc/audit/rules.d/, poi sudo augenrules --load" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: utenti e sudo avanzati. Chi può fare cosa, e come lo si dimostra.</Say>
+</Scene>

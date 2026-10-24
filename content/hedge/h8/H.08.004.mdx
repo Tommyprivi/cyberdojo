@@ -1,0 +1,175 @@
+---
+id: H.08.004
+course: hedge
+module: 8
+title: "Il valore netto del fondo (NAV)"
+belt: verde
+duration_min: 9
+prerequisites: [H.08.003]
+objectives:
+  - "Calcolare il NAV come attività meno passività e il NAV per quota"
+  - "Includere nel calcolo le commissioni maturate e non ancora pagate"
+  - "Spiegare perché un NAV non aggiornato o stimato male danneggia gli investitori"
+video:
+  provider: youtube
+  id: "kbH5wiTejGk"
+  start: 0
+  end: 172
+  channel: "Financial Edge Training"
+  title: "Net Asset Value (NAV) Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-nav
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare le passività, comprese le commissioni maturate e non pagate"
+  - "Confondere il NAV totale con il NAV per quota"
+  - "Credere che il NAV sia un prezzo certo anche per i titoli difficili da vendere"
+commands: []
+---
+
+<Scene title="Quanto vale la mia quota?">
+Sara è un'investitrice di **Aurora Capital** (fondo fittizio). Ha 500 quote e vuole sapere quanto valgono oggi. Il gestore risponde: «Hai fatto un bel mese». Ma lei chiede un **numero preciso**, non un'impressione.
+
+Quel numero si chiama **NAV per quota**.
+
+La domanda del caso: **come si calcola quanto vale una quota del fondo?**
+
+Convenzioni di questa lezione: euro, numeri fittizi, rendimenti semplici. Nota: educazione, non consulenza; si può perdere denaro, anche tutto.
+
+<Say who="sensei">I mercati non regalano niente. Un numero preciso vale più di cento aggettivi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La formula del NAV">
+**NAV** vuol dire *Net Asset Value*, valore netto. È il valore di tutto ciò che il fondo possiede, **meno** tutto ciò che il fondo deve:
+
+**NAV = attività − passività**
+
+**NAV per quota = NAV diviso il numero di quote.**
+
+Le **attività** sono titoli, liquidità e altro. Le **passività** sono prestiti, commissioni da pagare e altri debiti.
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di tre minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Come il conto della tua paghetta: quello che hai, meno quello che devi. Il resto è tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un calcolo completo">
+Aurora, all'inizio del mese (numeri fittizi):
+
+| Voce | Euro |
+|---|---|
+| Titoli | 9.100.000 |
+| Liquidità | 1.500.000 |
+| **Attività** | **10.600.000** |
+| Prestito dal prime broker | 500.000 |
+| Commissioni da pagare | 100.000 |
+| **Passività** | **600.000** |
+
+<Guided
+  steps={[
+    "NAV = 10.600.000 − 600.000 = 10.000.000 euro.",
+    "Quote in circolazione: 100.000.",
+    "NAV per quota = 10.000.000 / 100.000 = 100 euro.",
+    "A fine mese i titoli valgono 9.900.000 (+800.000): attività 11.400.000, passività 600.000, NAV 10.800.000.",
+    "NAV per quota = 10.800.000 / 100.000 = 108 euro. Rendimento del mese: 108 / 100 − 1 = 8%.",
+  ]}
+/>
+
+<Say who="sensei">Ricalcola sempre due volte. E ricorda: l'8% è un esempio fittizio, non una previsione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le commissioni maturate">
+La **commissione di gestione** matura giorno dopo giorno anche se non è ancora stata pagata. In questa lezione la contiamo in **dodicesimi mensili**.
+
+<Guided
+  steps={[
+    "Commissione di gestione: 2% annuo su un NAV di 10.800.000 = 216.000 euro all'anno.",
+    "Un mese è un dodicesimo: 216.000 / 12 = 18.000 euro.",
+    "Questi 18.000 euro sono dovuti: entrano tra le passività.",
+    "NAV dopo la commissione = 10.800.000 − 18.000 = 10.782.000 euro.",
+    "NAV per quota = 10.782.000 / 100.000 = 107,82 euro.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Se ci si dimentica di una commissione maturata, il NAV risulta **troppo alto** e gli investitori vedono un valore che non è davvero loro.
+</Callout>
+
+<Say who="assistente">Un indizio: se una cosa è dovuta, è una passività, anche se non hai ancora pagato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando il NAV è sbagliato">
+Il NAV è il prezzo a cui gli investitori **entrano ed escono**. Se è sbagliato, qualcuno ci guadagna e qualcun altro ci perde.
+
+- NAV **troppo basso** a un'entrata: il nuovo investitore riceve **troppe quote**. Gli investitori già presenti vengono **diluiti**: perdono valore a suo favore.
+- NAV **troppo alto** a un'uscita: chi esce incassa **troppo**, a spese di chi resta.
+- Con titoli **poco liquidi** non c'è un prezzo ogni giorno: il NAV si basa su una **stima**, e una stima può essere discutibile.
+
+<Callout kind="regola">
+Il NAV non è una verità assoluta: è un calcolo fatto con **prezzi e stime**. Per questo conta chi lo calcola e come.
+</Callout>
+
+<Say who="sensei">Un NAV non si ammira, si verifica. Chiedi quali prezzi sono stati usati e da chi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha titoli per 9.000.000 e liquidità per 1.500.000. Ha un prestito di 500.000 e commissioni da pagare per 100.000. Quanto vale il NAV?"
+  options={["9.900.000 euro", "10.500.000 euro", "10.000.000 euro", "10.400.000 euro"]}
+  answer={0}
+  explain="Attività: 9.000.000 + 1.500.000 = 10.500.000. Passività: 500.000 + 100.000 = 600.000. NAV = 10.500.000 − 600.000 = 9.900.000. Chi risponde 10.400.000 ha tolto solo le commissioni, chi risponde 10.000.000 solo il prestito."
+/>
+
+<Say who="assistente">Prima somma tutte le attività, poi tutte le passività. Poi sottrai. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sul NAV, sul NAV per quota e sulle quote. Numeri puliti e fittizi.
+
+<Practice generator="h08-nav" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un NAV sbagliato sposta soldi da una tasca all'altra degli investitori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- NAV = attività − passività; NAV per quota = NAV diviso quote. Le commissioni maturate e non pagate sono passività.
+- Un NAV sbagliato danneggia qualcuno: gli investitori presenti (diluizione) o chi resta dopo un'uscita.
+- Per i titoli poco liquidi il NAV si basa su stime: conta chi lo calcola e con quali prezzi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Formula del NAV?", a: "Attività − passività" },
+    { q: "NAV 10.000.000 e 100.000 quote: NAV per quota?", a: "100 euro" },
+    { q: "Commissione 2% annua su 10.800.000: quanto matura al mese?", a: "18.000 euro (216.000 / 12)" },
+    { q: "Perché una commissione maturata riduce il NAV?", a: "È dovuta, quindi è una passività" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come questo numero arriva agli investitori. Il reporting.</Say>
+</Scene>

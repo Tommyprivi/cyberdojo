@@ -42,7 +42,9 @@ Stato al 20 ottobre 2026. Legenda: **[fatto]**, **[in corso]**, **[da fare]**, *
 - [da fare] Pagine legali: privacy, termini, cookie
 - [tuo] Voci di Sensei e Assistente (ElevenLabs: scelta delle voci)
 
-## Aggiornamenti futuri (corsi in coda, piani in docs/brief-approfondimenti.md)
+## Da finire oggi (richiesto dal titolare il 2026-10-24: NON rimandare; piani in docs/brief-approfondimenti.md)
+- [da fare] Priorità 1: dominio e messa online (vedi docs/messa-online.md)
+- [da fare] Priorità 2: Hedge fund H4–H12 (agenti ripresi), poi H13–H24, e un corso collegato a trading e Python (finanza quantitativa con Python)
 - [da fare] Cybersecurity C22–C30: IoT e OT, governance e conformità, DevSecOps, sicurezza e IA, social engineering, privacy engineering, sicurezza fisica, sicurezza mobile, progetto avanzato
 - [da fare] Hedge fund H13–H24: reddito fisso, opzioni, fattori, credito, macro, event driven, materie prime, cripto, contabilità, tecnologia, casi di studio, professione
 - [da fare] Trading T15–T18: opzioni e volatilità, portafogli di strategie, dati alternativi, microstruttura

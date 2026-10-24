@@ -1,0 +1,151 @@
+---
+id: H.04.005
+course: hedge
+module: 4
+title: "Flussi di cassa scontati (DCF)"
+belt: arancione
+duration_min: 9
+prerequisites: [H.04.004]
+objectives:
+  - "Attualizzare un flusso futuro con un tasso di sconto"
+  - "Costruire un DCF semplice con tre anni di flussi e un valore terminale"
+  - "Passare dall'enterprise value al valore per azione e riconoscere i limiti del metodo"
+video:
+  provider: youtube
+  id: "V1OCkIcIEZI"
+  start: 0
+  end: 600
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "DCF Analysis Explained Simply | A Brief Intro to Discounted Cash Flow Valuation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-dcf
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il DCF dia un valore certo perché ha molti decimali"
+  - "Dimenticare di sottrarre il debito netto per arrivare al valore delle azioni"
+  - "Non vedere che il valore terminale pesa gran parte del risultato"
+commands: []
+---
+
+<Scene title="Un modello con molti decimali">
+Un analista di Delta Sereno (fondo fittizio) presenta un modello che dà **14,53 euro** per azione di Officine Lumi. Marta chiede: «Quanto ti fidi dell'ultimo decimale?»
+
+La domanda del caso: **come funziona un DCF, e perché i decimali ingannano?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Un modello preciso non è un modello giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Attualizzare un flusso">
+Il **DCF** (flussi di cassa scontati, *discounted cash flow*) applica anno per anno l'idea della lezione scorsa. Un flusso che arriva tra **n** anni si divide per **(1 + r)** elevato a n.
+
+Con tasso **r = 10%** (flussi a fine anno):
+
+<Guided
+  steps={[
+    "Flusso 11 tra un anno: 11 / 1,1 = 10.",
+    "Flusso 12,1 tra due anni: 12,1 / 1,21 = 10.",
+    "Flusso 13,31 tra tre anni: 13,31 / 1,331 = 10.",
+    "Flussi diversi, stesso valore oggi: aspettare costa, e il tasso misura quanto.",
+  ]}
+/>
+
+<Say who="assistente">Un indizio: più il flusso è lontano, più il divisore è grande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il valore terminale">
+Nessuno prevede i flussi per sempre. Si stimano **pochi anni** (qui tre) e poi si calcola un **valore terminale**: il valore di tutti i flussi dopo l'ultimo anno, con la formula della lezione scorsa.
+
+Con flusso del quarto anno 13,31, crescita 0% e tasso 10%:
+
+**Valore terminale a fine anno 3 = 13,31 / 0,10 = 133,1.** Oggi vale 133,1 / 1,331 = **100**.
+
+Se i flussi dei primi tre anni valgono 10 + 10 + 10 = 30 oggi, l'**enterprise value** è 30 + 100 = **130**.
+
+Un'altra voce, in inglese con i sottotitoli, mostra il metodo:
+
+<Video />
+
+<Say who="sensei">Guarda quanto pesa il valore terminale: 100 su 130. Il «lontano futuro» è la parte più incerta, e vale di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dall'EV all'azione">
+Per arrivare al valore delle **azioni**, si toglie il debito netto. Con Officine Lumi: debiti finanziari 60, cassa 10, **debito netto 50**.
+
+<Guided
+  steps={[
+    "Enterprise value: ipotizziamo 195 (flussi attualizzati 15 + 15 + 15, valore terminale attualizzato 150).",
+    "Valore del capitale dei soci = EV - debito netto = 195 - 50 = 145 milioni.",
+    "Per azione (10 milioni di azioni): 145 / 10 = 14,5 euro.",
+    "Il prezzo di mercato è 15: il modello dice «circa il prezzo», non «affare».",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Il valore terminale pesa di solito la **maggior parte** del risultato. Un tasso di sconto più basso di due punti, a parità di flusso, può far salire quella parte del 25% (10 / 0,08 invece di 10 / 0,10: 125 contro 100).
+</Callout>
+
+<Say who="sensei">Un DCF si legge con scenari: tasso più alto, crescita più bassa. Se il giudizio cambia, il modello era fragile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un DCF dà 14,53 euro per azione. Come lo si legge con prudenza?"
+  options={[
+    "Come un punto in un intervallo, da verificare con scenari e con altri metodi",
+    "Come un prezzo certo a cui comprare",
+    "Come una previsione del prezzo di domani",
+    "Come un valore più affidabile del bilancio",
+  ]}
+  answer={0}
+  explain="Il DCF è un insieme di ipotesi trasformate in un numero. I decimali danno precisione apparente. Si provano più scenari e si confronta con altri metodi, come i multipli."
+/>
+
+<Say who="assistente">Cambia il tasso di sconto di un punto e guarda cosa succede al risultato: è un buon test.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli di attualizzazione, valore terminale e valore per azione. Numeri fittizi.
+
+<Practice generator="h04-dcf" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Metodo rigoroso, ipotesi umili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un flusso tra n anni si divide per (1 + r) elevato a n: 11 tra un anno al 10% vale 10 oggi.
+- DCF = flussi dei primi anni attualizzati + valore terminale attualizzato; poi si toglie il debito netto.
+- Il valore terminale pesa molto: il risultato va letto con scenari, mai come numero esatto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "13,31 tra tre anni al 10%: valore oggi?", a: "10" },
+    { q: "Flusso 20, crescita 0%, tasso 10%: valore terminale?", a: "200" },
+    { q: "Da EV a valore dei soci?", a: "Si toglie il debito netto" },
+    { q: "Perché il valore terminale è delicato?", a: "Pesa molto e dipende da tasso e crescita" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: confrontare un'azienda con le sue concorrenti.</Say>
+</Scene>

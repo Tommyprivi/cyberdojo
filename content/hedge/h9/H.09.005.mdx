@@ -1,0 +1,172 @@
+---
+id: H.09.005
+course: hedge
+module: 9
+title: "Segnalazioni e controlli"
+belt: blu
+duration_min: 8
+prerequisites: [H.09.004]
+objectives:
+  - "Descrivere in sintesi le tre linee di difesa"
+  - "Spiegare a che cosa servono le segnalazioni alle autorità e la conservazione dei registri"
+  - "Capire perché serve un canale protetto per segnalare irregolarità"
+video:
+  provider: youtube
+  id: "Sa5HCcbrcgY"
+  start: 0
+  end: 600
+  channel: "European Institute of Management and Finance (EIMF)"
+  title: "The Compliance Function in Financial Institutions"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-controlli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che i controlli siano compito di una sola persona"
+  - "Correggere un errore in silenzio, senza informare chi è stato danneggiato"
+  - "Credere che segnalare alle autorità serva solo quando le cose vanno male"
+commands: []
+---
+
+<Scene title="L'errore nel valore">
+Nova Capital, il gestore fittizio, scopre un errore: per due settimane il **valore delle quote** del fondo è stato calcolato troppo alto. Alcuni investitori sono entrati pagando di più del dovuto.
+
+Un dirigente suggerisce: «Correggiamo il numero in silenzio, nessuno se ne accorgerà.»
+
+La domanda del caso: **chi deve accorgersi dell'errore, e che cosa deve succedere dopo?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. Fatti normativi in sintesi, ottobre 2026: controlla le fonti ufficiali.
+
+<Say who="sensei">Un errore è umano. Nasconderlo è una scelta. Le regole servono a rendere la seconda impossibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le tre linee di difesa">
+Una società finanziaria seria organizza i controlli su **tre livelli**:
+
+1. **Prima linea**: chi lavora (i gestori, le operazioni) controlla il proprio lavoro.
+2. **Seconda linea**: funzioni di controllo indipendenti dal business, come il **risk management** (misura i rischi) e la **compliance** (verifica il rispetto delle regole).
+3. **Terza linea**: la **revisione interna** (internal audit), che controlla anche le altre due e risponde agli organi di vertice.
+
+<Callout kind="regola">
+Chi controlla non deve dipendere da chi è controllato. L'**indipendenza** è la regola d'oro.
+</Callout>
+
+Un video in inglese sul ruolo della compliance, con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Se chi controlla ricevesse il bonus dal controllato, il controllo sarebbe una finzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa fanno rischio e compliance">
+- Il **risk management** fissa limiti (per esempio di leva) e li monitora. Se un limite è superato, segnala e si agisce secondo la procedura: ridurre l'esposizione o ottenere un'approvazione **documentata**.
+- La **compliance** verifica le regole: conflitti di interesse, antiriciclaggio, comunicazioni ai clienti, operazioni personali. Fa **test a campione** e formazione.
+- La **revisione interna** controlla che i controlli funzionino davvero.
+
+<Callout kind="attenzione">
+Un limite che si cambia in silenzio quando viene superato non è un limite. Ogni eccezione si approva e si scrive.
+</Callout>
+
+<Say who="sensei">Un limite serve quando fa male rispettarlo. Altrimenti non è un limite, è un consiglio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Segnalazioni e registri">
+Le autorità ricevono **segnalazioni periodiche**: in sintesi, i gestori di fondi alternativi comunicano dati su portafoglio, leva, rischi e liquidità, secondo modelli e scadenze fissate.
+
+Altre comunicazioni tipiche:
+- **posizioni corte** (vendite allo scoperto) nette sopra certe soglie, in Europa, ai regolatori e in certi casi al pubblico;
+- **operazioni sospette** (antiriciclaggio e abusi di mercato).
+
+E poi i **registri**: email, ordini e decisioni si conservano per anni, per poter ricostruire che cosa è accaduto e dimostrare di aver rispettato le regole.
+
+<Callout kind="trucco">
+Se non è scritto e conservato, per un controllo è come se non fosse successo.
+</Callout>
+
+<Say who="assistente">Anche chi lavora bene ha bisogno dei registri: sono la sua prova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi parla e come">
+Che cosa succede se un dipendente nota una pratica scorretta ma ha paura a parlare? Una società seria offre un **canale di segnalazione protetto** (in inglese whistleblowing): chi segnala in buona fede è tutelato.
+
+Se invece nessuno può parlare, i problemi crescono in silenzio.
+
+<Quiz
+  question="Nova Capital scopre un errore nel valore delle quote che ha danneggiato alcuni investitori. Che cosa è corretto?"
+  options={[
+    "Correggere, informare chi è coinvolto e, se previsto, le autorità, e documentare le cause",
+    "Correggere il numero senza dirlo a nessuno",
+    "Aspettare che qualcuno se ne accorga",
+    "Dare la colpa al sistema informatico e non fare altro",
+  ]}
+  answer={0}
+  explain="Un errore va corretto, spiegato a chi ne ha subito le conseguenze e registrato, per capire come evitarlo. Correggere in silenzio o aspettare peggiora la situazione e può diventare una violazione."
+/>
+
+<Say who="sensei">Gli investitori perdonano un errore dichiarato. Non perdonano uno nascosto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il limite di leva superato">
+Il responsabile del rischio segnala: la leva del fondo ha superato il limite interno.
+
+<Guided
+  steps={[
+    "Primo passo: registrare la segnalazione, con data e dati.",
+    "Secondo passo: seguire la procedura: ridurre l'esposizione oppure ottenere un'approvazione scritta da chi ne ha il potere.",
+    "Terzo passo: informare la compliance e, se previsto, gli organi di vertice.",
+    "Quarto passo: verificare perché è accaduto e come evitare che si ripeta.",
+  ]}
+/>
+
+<Say who="sensei">Mai cancellare il messaggio, mai cambiare il limite di nascosto. Chi lo fa non ha capito il mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su segnalazioni e controlli: scegli che cosa è corretto fare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-controlli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un buon sistema di controlli non si nota finché serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Tre linee di difesa: chi opera, le funzioni di controllo (rischio e compliance), la revisione interna indipendente.
+- Segnalazioni alle autorità e registri conservati servono a dimostrare il rispetto delle regole.
+- Errori e limiti superati si dichiarano, si documentano e si correggono: mai in silenzio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Le tre linee di difesa?", a: "Chi opera; rischio e compliance; revisione interna indipendente" },
+    { q: "Che cosa fa la compliance?", a: "Verifica che la società rispetti leggi e regole interne" },
+    { q: "Che cos'è il whistleblowing?", a: "Un canale protetto per segnalare irregolarità in buona fede" },
+    { q: "Perché si conservano i registri?", a: "Per ricostruire i fatti e dimostrare il rispetto delle regole" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: Consob e Banca d'Italia, chi vigila su chi.</Say>
+</Scene>

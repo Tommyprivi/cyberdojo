@@ -1,0 +1,180 @@
+---
+id: C.17.007
+course: cybersecurity
+module: 17
+title: "Regole e bollette: governance e costi"
+belt: blu
+duration_min: 9
+prerequisites: [C.17.006]
+objectives:
+  - "Spiegare che cos'è la governance del cloud e perché serve"
+  - "Usare etichette, responsabili, ambienti separati e policy preventive per tenere in ordine un cloud"
+  - "Collegare controllo dei costi e sicurezza, e ricordare gli aspetti legali (GDPR, sede dei dati)"
+video:
+  provider: youtube
+  id: "gWDTRf_kGHI"
+  start: 0
+  end: 300
+  channel: "Anglepoint"
+  title: "FinOps Explained in 5 Minutes | What is FinOps?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-governance
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare che ogni reparto apra servizi cloud per conto suo (shadow IT)"
+  - "Non assegnare un responsabile a ogni risorsa, che resta accesa e dimenticata"
+  - "Guardare i costi e la sicurezza come due problemi separati"
+commands: []
+---
+
+<Scene title="L'inventario che non c'è">
+**Lumen Servizi** (fittizia) ha 40 dipendenti e un cloud cresciuto «a macchia d'olio». Nessuno sa dire quanti servizi ci siano. Ecco cosa trova un controllo:
+
+<Log lines={[
+  "account: 6 (nessuno con responsabile indicato)",
+  "macchine accese senza etichette: 31",
+  "ambiente di prova con dati reali dei clienti: 1",
+  "servizio di archiviazione aperto dal reparto commerciale: nessuno ne era a conoscenza",
+  "spesa del mese: +45% rispetto al precedente",
+]} caption="Nessuno ha fatto niente di grave. Ma nessuno governa niente." />
+
+La domanda del caso: **come si tiene in ordine un cloud, per sicurezza e per costi?**
+
+<Say who="sensei">Un cloud senza regole è una cantina dove tutti mettono scatoloni. Poi qualcuno cerca una cosa e non la trova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la governance">
+La **governance del cloud** è l'insieme di **regole, ruoli e controlli** con cui un'azienda usa il cloud. Risponde a: chi può creare cosa, dove, con quali regole, chi paga e chi risponde.
+
+Gli strumenti di base:
+
+- **proprietario (owner)**: ogni account, progetto e risorsa ha una persona che ne risponde, anche per la chiusura quando non serve;
+- **etichette (tag)**: «reparto», «ambiente», «responsabile», «scadenza»; permettono di sapere cosa è e quanto costa;
+- **ambienti separati**: sviluppo, test e produzione in account o progetti diversi, per limitare i danni di un errore;
+- **inventario**: un elenco di ciò che esiste, aggiornato in automatico.
+
+<Callout kind="regola">
+Una risorsa senza proprietario e senza etichette è una risorsa **che nessuno protegge e che nessuno spegne**.
+</Callout>
+
+<Say who="assistente">Un'etichetta costa dieci secondi. Ritrovare di chi è una macchina dopo un anno, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Policy preventive e controlli">
+Dirlo a voce non basta. Il cloud permette di **imporre** le regole con policy a livello di organizzazione: in AWS le *Service Control Policy*, in Azure *Azure Policy*, in Google Cloud le *Organization Policy*.
+
+Esempi di regole preventive, scritti in stile neutro:
+
+<Log lines={[
+  "REGOLA 1: vietato creare archivi con accesso pubblico",
+  "REGOLA 2: ogni risorsa deve avere le etichette «responsabile» e «ambiente»",
+  "REGOLA 3: nuove risorse solo in regioni europee",
+  "REGOLA 4: i registri di audit non possono essere disattivati",
+]} />
+
+Accanto, **controlli di conformità** automatici segnalano ciò che è fuori regola (per esempio un archivio già pubblico creato prima della regola).
+
+Anche la **sede dei dati** conta per la legge: la regione scelta influisce su quali norme si applicano e su eventuali trasferimenti fuori dallo Spazio economico europeo. Per i dati personali, il fornitore va nominato **responsabile del trattamento** con un accordo scritto (lezione 1). E conviene pensare a una **strategia di uscita**: come riprendere i dati se si cambia fornitore.
+
+<Say who="sensei">Una regola che si può aggirare è un consiglio. Una regola imposta dal sistema è una regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Costi e sicurezza vanno insieme">
+Il controllo dei costi si chiama **FinOps** (finanza e operazioni del cloud): ingegneria, amministrazione e responsabili lavorano insieme per sapere cosa si spende e perché.
+
+Perché interessa alla sicurezza:
+
+- un **picco di spesa** può voler dire risorse create da un estraneo con un account rubato (lezione 5);
+- le risorse **dimenticate** costano, e restano accese, con permessi e dati, senza che nessuno le sorvegli;
+- un **budget con allarmi** avvisa prima che la fattura diventi un problema.
+
+Anche lo **shadow IT**, cioè servizi cloud usati da un reparto senza che l'ufficio informatico lo sappia, è un problema doppio: costo fuori controllo e dati fuori controllo.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese, di cinque minuti:
+
+<Video />
+
+<Say who="assistente">La bolletta è un sensore. Se sale e nessuno sa perché, c'è qualcosa da guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rimettere ordine a Lumen">
+Che cosa fa Lumen Servizi, in ordine?
+
+<Guided
+  steps={[
+    "Un inventario automatico: elenco di account, risorse e proprietari.",
+    "Assegnare un responsabile a ogni account e progetto; chi non risponde, lo si spegne dopo un avviso.",
+    "Etichette obbligatorie, imposte da una policy: niente etichette, niente nuove risorse.",
+    "Ambienti separati: i dati reali dei clienti non stanno più nell'ambiente di prova.",
+    "Regole preventive: niente archivi pubblici, log sempre attivi, solo regioni europee.",
+    "Budget con allarmi, e una revisione mensile di ciò che è acceso e perché.",
+    "Un elenco dei servizi usati dai reparti, con una via semplice per chiedere nuovi servizi, così non si apre shadow IT.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Per le aziende italiane ed europee la governance serve anche a rispondere alle richieste di clienti, revisori e autorità (come la direttiva NIS2, vista in sintesi nel modulo di governance): sapere cosa si ha è il primo passo per dimostrare di proteggerlo.
+</Callout>
+
+<Say who="sensei">Sette passi, nessuno geniale. Funzionano perché li ripeti ogni mese.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un reparto commerciale apre per conto proprio un servizio di archiviazione per condividere listini e dati di clienti. Qual è il rischio principale?"
+  options={["Dati dei clienti fuori da ogni controllo e da ogni regola dell'azienda", "Nessuno: i listini sono pubblici", "Il fornitore blocca da solo i dati sensibili", "L'azienda risparmia sicuramente"]}
+  answer={0}
+  explain="È shadow IT: nessuno sa che il servizio esiste, quindi nessuno ne controlla permessi, cifratura e accessi, e il GDPR resta un obbligo dell'azienda. Chi pensa che il fornitore blocchi i dati sensibili dimentica la responsabilità condivisa."
+/>
+
+<Say who="sensei">Vietare non basta: offri una strada facile e sicura. Altrimenti la gente ne trova una da sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su governance, costi e aspetti legali. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-governance" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: da chi protegge cosa fino a chi paga cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- La governance impone ruoli, etichette, ambienti separati e policy preventive, così ogni risorsa ha un responsabile.
+- Costi e sicurezza vanno insieme: picchi di spesa e risorse dimenticate sono segnali di rischio.
+- Con il GDPR l'azienda resta responsabile dei dati: servono accordo con il fornitore, scelta della regione e strategia di uscita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa servono le etichette sulle risorse?", a: "A sapere di chi sono, a cosa servono e quanto costano" },
+    { q: "Che cos'è lo shadow IT?", a: "Servizi cloud usati senza che l'ufficio informatico li conosca" },
+    { q: "Perché separare sviluppo, test e produzione?", a: "Per limitare i danni di un errore a un solo ambiente" },
+    { q: "Perché un picco di spesa riguarda la sicurezza?", a: "Può indicare risorse create da un estraneo" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Sai chi protegge cosa, chi può fare cosa, cosa è esposto, cosa si vede e quanto costa. Il cloud ora lo leggi da difensore.</Say>
+</Scene>

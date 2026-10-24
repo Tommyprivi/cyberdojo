@@ -1,0 +1,197 @@
+---
+id: C.21.006
+course: cybersecurity
+module: 21
+title: "Carriera e certificazioni"
+belt: marrone
+duration_min: 9
+prerequisites: [C.21.005]
+objectives:
+  - "Descrivere i ruoli di chi lavora nei test di sicurezza e le competenze che servono"
+  - "Orientarsi tra le certificazioni più citate senza affidarsi alle promesse di guadagno"
+  - "Costruire un portfolio pulito, nel rispetto di legge ed etica"
+video:
+  provider: youtube
+  id: "0NokYglAoYY"
+  start: 0
+  end: 600
+  channel: "TryHackMe"
+  title: "How to Become a Penetration Tester in 2026"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-carriera
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una certificazione basti da sola a trovare lavoro"
+  - "Fidarsi di chi promette guadagni facili o scorciatoie"
+  - "Costruire un portfolio con prove fatte su sistemi altrui senza permesso"
+commands: []
+---
+
+<Scene title="«Voglio fare l'hacker etico»">
+Giorgio, 17 anni, ha seguito il corso fino qui. Un amico gli dice: **«Prendi una certificazione e dopo un mese guadagni tremila euro».** Un altro: **«Metti online le prove che hai fatto sul sito della scuola, così ti notano»**.
+
+Giorgio è confuso. Una di queste frasi è una promessa vuota. L'altra è un reato.
+
+La domanda del caso: **come si costruisce davvero una carriera nei test di sicurezza?**
+
+<Say who="sensei">Un buon professionista si costruisce con anni di pratica pulita. Chi promette scorciatoie vende qualcosa. Chi prova sistemi altrui, rischia l'art. 615-ter del codice penale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi lavora in questo campo">
+I ruoli più comuni, descritti in sintesi:
+
+- **Penetration tester / consulente di sicurezza offensiva**: fa i test autorizzati per i clienti e scrive i rapporti.
+- **Analista di vulnerabilità**: valuta e classifica le debolezze, spesso con strumenti automatici e processi continui.
+- **Red team**: simula un avversario in modo più ampio e più lungo, con obiettivi concordati; è un lavoro di squadra.
+- **Sicurezza delle applicazioni (AppSec)**: lavora con gli sviluppatori per trovare e correggere debolezze nel software.
+- **Blue team / SOC**: difende e rileva; molti bravi tester partono da qui.
+
+Un'altra voce, in inglese, sul percorso per diventare penetration tester:
+
+<Video />
+
+<Callout kind="curiosita">
+La metà del mestiere è **scrivere e spiegare**. I bravi tester sono spesso bravi comunicatori.
+</Callout>
+
+<Say who="assistente">Guarda il video per farti un'idea del percorso. Confronta sempre ciò che senti con più fonti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le basi che servono">
+Prima delle certificazioni, vengono le **fondamenta**. Un percorso tipico:
+
+1. **Reti e sistemi**: come funzionano davvero (il corso Fondamenta e i primi moduli).
+2. **Programmazione di base**: leggere e scrivere piccoli script.
+3. **Difesa**: capire log, rilevamento e risposta, perché per testare bene devi sapere come si difende.
+4. **Laboratorio personale**: macchine virtuali **tue**, isolate, dove provare e sbagliare.
+5. **Scrittura**: rapporti chiari e riservati.
+6. **Legge ed etica**: permesso scritto, ambito, riservatezza, protezione dei dati.
+
+<Callout kind="regola">
+Si prova solo ciò che è tuo o per cui hai un permesso scritto. Questo vale quando hai 15 anni e quando hai 40, nei concorsi e nei programmi pubblici (nel rispetto delle loro regole).
+</Callout>
+
+<Say who="sensei">Chi salta le fondamenta e va dritto agli strumenti costruisce sulla sabbia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il panorama delle certificazioni (ottobre 2026)">
+Una **certificazione** è un attestato che dimostra di aver superato un esame. Le più citate nel campo, in sintesi:
+
+| Certificazione | Ente | Per chi, in breve |
+|---|---|---|
+| **CompTIA Security+** | CompTIA | Base generale di sicurezza |
+| **CompTIA PenTest+** | CompTIA | Introduzione ai test, con domande e prove pratiche |
+| **eJPT** | INE | Primo livello pratico, per chi inizia |
+| **PNPT** | TCM Security | Percorso pratico con simulazione e rapporto |
+| **CPTS** | Hack The Box | Pratica approfondita, con rapporto professionale |
+| **OSCP** | OffSec | Molto citata: esame pratico lungo e impegnativo |
+| **GPEN** | GIAC (SANS) | Test di penetrazione, costosa, spesso finanziata dall'azienda |
+
+<Callout kind="attenzione">
+Il mercato delle certificazioni **cambia in fretta**: nomi, costi, formato dell'esame e requisiti si aggiornano. Prima di scegliere, **leggi sempre il sito ufficiale** e gli annunci di lavoro che ti interessano. Questa tabella è un panorama, non una raccomandazione.
+</Callout>
+
+<Say who="assistente">Una certificazione apre un colloquio. Ma è ciò che sai fare, e come lo racconti, a farti assumere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il portfolio pulito">
+Un **portfolio** è la raccolta di ciò che hai fatto e imparato. Per un tester serve a mostrare **come ragioni** e **come scrivi**. Che cosa metterci:
+
+- **rapporti di prova** su laboratori tuoi o su aziende fittizie;
+- **spiegazioni** di che cosa hai imparato in un esercizio di laboratorio o in una gara didattica (CTF);
+- **strumenti o appunti** scritti da te per studiare;
+- **segnalazioni** fatte in un programma pubblico, solo se le regole del programma lo permettono.
+
+Che cosa **non** metterci:
+
+- prove su sistemi altrui senza permesso;
+- dati, password o informazioni di persone o aziende reali;
+- rapporti di clienti (sono riservati).
+
+<Callout kind="trucco">
+Un buon rapporto di prova su un laboratorio tuo, scritto bene, vale più di cento ore passate a «provare cose» senza documentare.
+</Callout>
+
+<Say who="sensei">Chi ti assumerà guarderà prima di tutto se sei una persona di cui ci si può fidare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: due percorsi a confronto">
+Due ragazzi, entrambi appassionati.
+
+<Guided
+  steps={[
+    "Anna: studia reti e sistemi, costruisce un laboratorio di macchine virtuali, partecipa a gare didattiche (CTF), scrive un rapporto di prova su un'azienda fittizia.",
+    "Anna: lavora in un SOC o come tecnico sistemista per due anni, poi passa a un ruolo di sicurezza offensiva, intanto prende una certificazione pratica.",
+    "Luca: scarica strumenti, li prova sul sito della scuola «per vedere se funziona» e mette uno screenshot sui social.",
+    "Luca: ha violato il diritto penale (art. 615-ter c.p.), rischia una denuncia e una macchia che lo segue nei colloqui.",
+    "Conclusione: la competenza è la stessa all'inizio; la differenza sta in permesso, ambito e condotta.",
+  ]}
+/>
+
+Chi vuole fare pratica **ha molte strade legali**: laboratori propri, piattaforme didattiche, gare per studenti e programmi di segnalazione con regole e ambito scritti.
+
+<Say who="assistente">Se non sei sicuro che una cosa sia permessa, fermati e chiedi. Non c'è nulla di brutto nel chiedere.</Say>
+
+<Quiz
+  question="Un annuncio promette: «Con il nostro corso e la certificazione guadagnerai 4000 euro al mese in tre mesi, senza esperienza». Come lo valuti?"
+  options={[
+    "Come una promessa poco credibile: nel campo contano esperienza, pratica pulita e fiducia, e i guadagni dipendono dal ruolo",
+    "Come un'ottima occasione, perché con la certificazione basta poco tempo",
+    "Come credibile se il corso costa molto, perché il prezzo garantisce la qualità",
+    "Come credibile se l'annuncio mostra tante persone sorridenti con il diploma",
+  ]}
+  answer={0}
+  explain="Nessuna certificazione garantisce un posto o uno stipendio: contano pratica, esperienza e condotta. Un prezzo alto o delle foto non provano la qualità. Per valutare un corso si guardano programma, ente, requisiti e annunci di lavoro reali."
+/>
+
+<Say who="assistente">Quando una promessa suona troppo bella, cerca chi ha davvero fatto quel percorso e chiedi a lui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ruoli, percorso, certificazioni e portfolio. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-carriera" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai il quadro di un mestiere onesto e difficile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I ruoli vanno dal penetration tester al red team, dall'analista di vulnerabilità alla sicurezza delle applicazioni; molti partono dal lato difesa.
+- Prima delle certificazioni servono fondamenta, laboratorio proprio, scrittura, legge ed etica; le certificazioni cambiano, si controllano sempre i siti ufficiali.
+- Il portfolio contiene solo lavori su laboratori propri o aziende fittizie; provare sistemi altrui senza permesso è accesso abusivo (art. 615-ter c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è una buona strada per fare pratica legalmente?", a: "Laboratorio proprio, piattaforme didattiche, gare per studenti, programmi con regole e ambito scritti" },
+    { q: "Una certificazione garantisce un posto di lavoro?", a: "No: apre un colloquio, ma contano pratica, esperienza e condotta" },
+    { q: "Che cosa non va mai in un portfolio?", a: "Prove su sistemi altrui senza permesso, dati reali, rapporti riservati dei clienti" },
+    { q: "Dove controlli requisiti e costi di una certificazione?", a: "Sul sito ufficiale dell'ente, perché cambiano spesso" },
+  ]}
+/>
+
+<Say who="sensei">Il modulo è concluso: standard, ambito, valutazione, condotta, rapporto, carriera. Un mestiere dove la fiducia pesa più dell'abilità. Il prossimo passo lo scegli tu.</Say>
+</Scene>

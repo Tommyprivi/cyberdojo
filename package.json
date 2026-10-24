@@ -25,6 +25,7 @@
     "gray-matter": "^4.0.3",
     "next": "16.4.0",
     "next-mdx-remote": "^6.0.0",
+    "qrcode-generator": "^2.0.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "remark-gfm": "^4.0.1",

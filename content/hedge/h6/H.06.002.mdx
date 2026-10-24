@@ -1,0 +1,164 @@
+---
+id: H.06.002
+course: hedge
+module: 6
+title: "Volatilità e VaR"
+belt: verde
+duration_min: 10
+prerequisites: [H.06.001]
+objectives:
+  - "Calcolare la volatilità di una piccola serie di rendimenti e annualizzarla con la radice del tempo"
+  - "Calcolare un VaR storico e un VaR semplificato"
+  - "Dire che cosa il VaR non dice: la gravità delle perdite oltre la soglia"
+video:
+  provider: youtube
+  id: "2SMkbMDypXI"
+  start: 0
+  end: 600
+  channel: "Ryan O'Connell, CFA, FRM"
+  title: "Value at Risk Explained in 5 Minutes"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-var
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Leggere il VaR come la perdita massima possibile"
+  - "Annualizzare la volatilità moltiplicando per il tempo invece che per la sua radice"
+  - "Dimenticare che il VaR storico dipende dal periodo scelto"
+commands: []
+---
+
+<Scene title="La domanda del capo">
+Luca lavora nel team rischi di Rondine Capital (fondo fittizio). Ogni mattina il capo gli chiede: **«Quanto possiamo perdere oggi?»**
+
+Una risposta onesta non è un numero secco. È una frase del tipo: «Nel 95% dei giorni non più di tanto».
+
+La domanda del caso: **come si trasforma questa frase in un numero?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Numeri inventati, mercati che non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La volatilità, con i conti">
+La **volatilità** è la deviazione standard dei rendimenti: dice di quanto, in media, i rendimenti si allontanano dalla loro media.
+
+Convenzioni di questa lezione: rendimenti semplici, numeri fittizi, deviazione standard sull'intera serie (si divide per n).
+
+<Guided
+  steps={[
+    "Quattro rendimenti: 2%, 4%, -4%, 10%. Somma 12, media 12 / 4 = 3%.",
+    "Scarti dalla media: -1, +1, -7, +7.",
+    "Quadrati: 1, 1, 49, 49. Somma 100. Varianza = 100 / 4 = 25.",
+    "Volatilità = radice di 25 = 5%.",
+  ]}
+/>
+
+<Say who="assistente">Due passi da ricordare: prima i quadrati degli scarti, poi la radice. Senza la radice hai la varianza, non la volatilità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal giorno all'anno">
+La volatilità cambia con il periodo. Se i rendimenti sono indipendenti, scala con la **radice del tempo**, non con il tempo.
+
+<Log lines={[
+  "volatilità trimestrale 5%  ->  annua = 5% x radice di 4 = 5% x 2 = 10%",
+  "volatilità giornaliera 1%  ->  annua = 1% x radice di 256 = 1% x 16 = 16%",
+  "(si usa 256 al posto di 252 giorni di borsa solo per avere numeri puliti)",
+]} />
+
+<Callout kind="attenzione">
+Quattro trimestri non fanno 4 volte la volatilità: ne fanno 2 volte. Il rischio si somma più lentamente del tempo.
+</Callout>
+
+<Say who="sensei">Radice del tempo. Scrivila sul quaderno. È l'errore più comune di chi comincia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il VaR">
+Il **VaR** (Value at Risk, «valore a rischio») è una soglia di perdita, con un livello di confidenza e un orizzonte:
+
+«VaR a un giorno al 95% = 20.000 euro» vuol dire: **in circa 95 giorni su 100 la perdita non dovrebbe superare 20.000 euro. Nel restante 5% può essere più grande.**
+
+Il **VaR storico** si calcola dai rendimenti passati: si ordinano dal peggiore, si scartano le n x (1 - livello) perdite peggiori e il VaR è la perdita successiva.
+
+Esempio: 20 giorni, livello 95%. Il 5% di 20 è 1 giorno, quindi si scarta la perdita peggiore. Le quattro peggiori sono -4%, -3%, -2%, -2%: il VaR al 95% è **3%**.
+
+Vuoi vederlo spiegato da un'altra voce? Cinque minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Il VaR non è la perdita massima. È la soglia oltre la quale comincia la zona che non conosci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="VaR semplificato e limiti">
+Per un calcolo rapido: **VaR = 2 x volatilità x valore**, con rendimento medio zero e rendimenti più o meno a campana. Con 500.000 euro e volatilità giornaliera 1,5%: 2 x 0,015 x 500.000 = **15.000 euro**.
+
+Per più giorni, radice del tempo: VaR a 1 giorno 10.000 euro, a 16 giorni 10.000 x 4 = 40.000 euro.
+
+<Callout kind="attenzione">
+Tre limiti: guarda il passato che hai scelto (se non c'erano crisi, le ignora); non dice quanto vale la perdita oltre la soglia; lavora in condizioni normali. Per le crisi servono gli stress test, nella prossima lezione.
+</Callout>
+
+<Say who="assistente">Due fondi con lo stesso VaR possono avere code diversissime: uno perde il 3% nei casi peggiori, l'altro il 40%.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un VaR a un giorno al 99% è 50.000 euro. Quale frase è corretta?"
+  options={[
+    "In circa 99 giorni su 100 la perdita non dovrebbe superare 50.000 euro, ma nel restante 1% non c'è un limite indicato",
+    "La perdita massima possibile in un giorno è 50.000 euro",
+    "Il fondo perderà 50.000 euro un giorno su cento, mai di più",
+    "Nel 99% dei giorni il fondo guadagna almeno 50.000 euro",
+  ]}
+  answer={0}
+  explain="Il VaR è una soglia: oltre quella soglia non dice nulla sulla gravità. Chi risponde «perdita massima» scambia la soglia con il tetto."
+/>
+
+<Say who="sensei">Se ti dicono «VaR 50.000, siamo tranquilli», chiedi: e nell'1% che resta?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Volatilità, annualizzazione, VaR storico e semplificato. Tutti numeri fittizi, conti puliti.
+
+<Practice generator="h06-var" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai usato lo strumento più usato, e più frainteso, del mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La volatilità è la deviazione standard dei rendimenti; si annualizza con la radice del tempo (4 trimestri: x 2).
+- Il VaR è una soglia di perdita con confidenza e orizzonte (95%, un giorno): non è la perdita massima.
+- Il VaR dipende dal periodo scelto e non dice nulla sulle perdite oltre la soglia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Rendimenti 2%, 4%, -4%, 10%: volatilità (divisore n)?", a: "5%" },
+    { q: "Volatilità trimestrale 5%: quella annua?", a: "10% (radice di 4 = 2)" },
+    { q: "Che cosa vuol dire VaR 95% a un giorno?", a: "In circa 95 giorni su 100 la perdita non supera la soglia" },
+    { q: "Che cosa il VaR non dice?", a: "Quanto è grave la perdita nel 5% dei casi peggiori" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: gli stress test. Il VaR guarda i giorni normali; il test guarda le notti peggiori.</Say>
+</Scene>

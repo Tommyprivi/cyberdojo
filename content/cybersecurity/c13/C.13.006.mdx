@@ -1,0 +1,186 @@
+---
+id: C.13.006
+course: cybersecurity
+module: 13
+title: "Zeek e NetFlow: guardare la rete in grande"
+belt: blu
+duration_min: 9
+prerequisites: [C.13.005]
+objectives:
+  - "Spiegare la differenza tra cattura completa, log di Zeek e record NetFlow"
+  - "Leggere una riga di conn.log di Zeek e un record di flusso"
+  - "Scegliere lo strumento adatto alla domanda: contenuto, contesto o panorama"
+video:
+  provider: youtube
+  id: "PYekUOCBBrY"
+  start: 0
+  end: 600
+  channel: "Zeek"
+  title: "Zeek in Action, Video 10, Examining the Four Types of Network Security Monitoring Data"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-zeek-netflow
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che NetFlow contenga il contenuto dei pacchetti: registra solo chi, quando, quanto"
+  - "Credere che Zeek sostituisca Wireshark: servono a cose diverse"
+  - "Conservare tutte le catture complete per mesi: costano spazio e contengono dati personali"
+commands: []
+---
+
+<Scene title="Troppo traffico">
+Officina Verdi è cresciuta: ora ha 200 computer e una connessione veloce. Una cattura completa di un solo giorno pesa **centinaia di gigabyte**. Nessuno può aprirla in Wireshark, e conservarla a lungo sarebbe costoso e pericoloso per la privacy.
+
+Eppure, quando succede qualcosa, qualcuno chiederà: **«chi ha parlato con quell'indirizzo la settimana scorsa?»**
+
+Servono strumenti che tengano **un riassunto** del traffico, non tutto il traffico.
+
+<Say who="sensei">Non puoi registrare ogni parola detta in un edificio. Ma puoi tenere il registro di chi è entrato, quando e per quanto. È l'idea di questa lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre livelli di dettaglio">
+Immagina un edificio con una portineria.
+
+- **Cattura completa (pcap)**: la registrazione video di ogni stanza. Si vede tutto, ma pesa tantissimo e si conserva poco tempo.
+- **Log di Zeek**: il portiere che annota ogni visita **con il contesto**: chi, a che ora, quale richiesta fatta, con quale esito.
+- **NetFlow**: il registro all'ingresso: chi è entrato, quando, per quanto, quanti pacchi ha portato. Niente sul contenuto.
+
+<Callout kind="regola">
+Più dettaglio vuol dire più spazio e più dati personali da proteggere. Ogni livello risponde a domande diverse: si sceglie quello che serve, non il massimo possibile.
+</Callout>
+
+<Say who="assistente">Non esiste il livello migliore. Esiste il livello giusto per la domanda che hai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="NetFlow: il registro dei flussi">
+Un **flusso** è l'insieme dei pacchetti con lo stesso indirizzo di origine e di destinazione, le stesse porte e lo stesso protocollo. **NetFlow** (nato in Cisco; esistono formati simili come IPFIX) lo riassume in **un record**, di solito prodotto da router e switch.
+
+<Log
+  lines={[
+    "Inizio    Durata  Protocollo  Origine:porta          Destinazione:porta       Pacchetti  Byte",
+    "09:12:01  312 s   TCP         192.168.1.20:51234     203.0.113.80:443         4 210      5 200 000",
+    "09:12:05  44 s    TCP         192.168.1.20:51300     198.51.100.250:443       61         38 000 000",
+    "09:13:00  1 s     UDP         192.168.1.20:50400     192.168.1.1:53           2          180",
+  ]}
+  caption="Record di flusso inventati"
+/>
+
+Con i flussi puoi rispondere a: **chi parla con chi, quanto e quando**. Non puoi rispondere a: **che cosa si sono detti**. Ma per una rete grande il panorama è prezioso, perché occupa poco ed è facile da cercare.
+
+<Callout kind="curiosita">
+In pratica un record di flusso pesa poche decine di byte, un pacchetto catturato anche mille. Per questo i flussi si conservano per mesi, le catture complete per giorni.
+</Callout>
+
+<Say who="sensei">NetFlow è un grande aiuto per il «chi e quanto». Non ti dirà mai il «che cosa».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Zeek: un analista che prende appunti">
+**Zeek** (già chiamato Bro) è un programma gratuito che **guarda il traffico** (dalla rete o da un file pcap) e lo trasforma in **log di testo**, uno per tipo di protocollo.
+
+- `conn.log`: una riga per **ogni connessione** (origine, destinazione, durata, byte, stato).
+- `dns.log`: le richieste DNS e le risposte.
+- `http.log`: le richieste HTTP (metodo, sito, percorso, codice).
+- `ssl.log`: le connessioni TLS (versione, nome del server).
+
+<Log
+  lines={[
+    "ts          id.orig_h      id.resp_h       proto  service  duration  orig_bytes  resp_bytes  conn_state",
+    "1760437921  192.168.1.20   203.0.113.80    tcp    ssl      312.0     120400      5079600     SF",
+    "1760437925  192.168.1.77   192.168.1.50    tcp    -        0.0       0           0           S0",
+    "1760437960  192.168.1.20   192.168.1.1     udp    dns      0.014     41          97          SF",
+  ]}
+  caption="Estratto inventato di conn.log (ts = secondi dal 1970)"
+/>
+
+Lo stato **SF** vuol dire connessione normale, aperta e chiusa. **S0** vuol dire un SYN **senza risposta**: se ne vedi centinaia dallo stesso computer, è la scansione di cui parlavamo nella lezione 4.
+
+Vuoi sentire come si distinguono i quattro tipi di dati di monitoraggio, da un'altra voce? In inglese:
+
+<Video />
+
+<Say who="assistente">Zeek è come avere un analista che, mentre guarda la rete, scrive un quaderno ordinato. Tu leggi il quaderno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: dal sospetto al log">
+Il caso: nella lezione 5 hai scoperto che 198.51.100.33 era sospetto. Chi altro, in Officina Verdi, ha parlato con lui negli ultimi 30 giorni?
+
+<Guided
+  steps={[
+    "Con le sole catture complete non puoi rispondere: sono conservate solo per 3 giorni.",
+    "Nei flussi NetFlow, che si conservano 90 giorni, cerchi tutti i record con destinazione 198.51.100.33.",
+    "Risultato (inventato): due computer, il 192.168.1.30 e il 192.168.1.64, con contatti regolari da 18 giorni.",
+    "In dns.log e ssl.log di Zeek, conservati 30 giorni, trovi i nomi richiesti: «aggiorna-esempio.example» da entrambi.",
+    "Conclusione: gli interessati sono due, non uno. Si estende l'indagine al secondo computer.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Zeek e NetFlow raccolgono dati sul traffico dei dipendenti: serve un'informativa chiara, una conservazione limitata e un accesso ristretto (GDPR). Lo scopo è la sicurezza, non controllare le persone.
+</Callout>
+
+<Say who="sensei">Con tre livelli, una domanda che sembrava impossibile ha avuto risposta. Ecco perché si tengono tutti e tre, ma ciascuno per il giusto tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In un conn.log vedi 400 righe in un minuto dallo stesso computer interno verso porte diverse dello stesso server, tutte con stato S0. Che cosa ne deduci?"
+  options={[
+    "Sono molti SYN senza risposta verso porte diverse: coerente con una scansione di porte, da verificare se è lo scanner autorizzato",
+    "Sono 400 connessioni concluse correttamente: tutto normale",
+    "Il server ha risposto con 400 errori HTTP",
+    "Il computer sta usando TLS in modo non valido",
+  ]}
+  answer={0}
+  explain="S0 indica un SYN senza risposta. Tante connessioni S0 verso porte diverse in pochissimo tempo sono la firma tipica di una scansione. Prima di dare l'allarme si verifica se non sia lo scanner di vulnerabilità autorizzato dell'azienda."
+/>
+
+<Say who="assistente">Leggi lo stato: SF va bene, S0 no. È la prima colonna da guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su cattura completa, Zeek e NetFlow: quale strumento serve e che cosa dice un record. Cinque su cinque.
+
+<Practice generator="c13-zeek-netflow" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Strumento giusto, domanda giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Cattura completa: tutto il contenuto, costosa, breve nel tempo. Zeek: log con il contesto di ogni connessione. NetFlow: riassunto di chi, quando, quanto, senza contenuto.
+- In conn.log lo stato SF è una connessione normale, S0 un SYN senza risposta: tanti S0 verso porte diverse sono coerenti con una scansione.
+- Più dettaglio vuol dire più dati personali da proteggere: si conserva solo ciò che serve, per il tempo necessario.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa è un flusso (flow)?", a: "L'insieme dei pacchetti con stessi indirizzi, porte e protocollo, riassunto in un record" },
+    { q: "NetFlow contiene il contenuto dei pacchetti?", a: "No: solo chi, quando, per quanto tempo e quanti dati" },
+    { q: "Che cosa significa lo stato S0 in conn.log di Zeek?", a: "Un SYN senza risposta: nessuna connessione stabilita" },
+    { q: "Perché non si conservano tutte le catture complete per mesi?", a: "Costano molto spazio e contengono molti dati personali" },
+  ]}
+/>
+
+<Say who="sensei">Sai guardare la rete in grande. Ultima lezione: mettere tutto nero su bianco, nel rapporto di analisi.</Say>
+</Scene>

@@ -1,0 +1,152 @@
+---
+id: H.07.002
+course: hedge
+module: 7
+title: "Allocare il capitale tra le strategie"
+belt: verde
+duration_min: 8
+prerequisites: [H.07.001]
+objectives:
+  - "Calcolare rendimento atteso e volatilità di un portafoglio di due strategie con numeri semplici"
+  - "Spiegare perché la correlazione tra strategie conta quanto i pesi"
+  - "Riconoscere i rischi di allocare inseguendo il rendimento passato"
+video:
+  provider: youtube
+  id: "2_mjlmw0cAw"
+  start: 0
+  end: 600
+  channel: "Gianni Russo - Investire per Vivere"
+  title: "Come DIVERSIFICARE il Portafoglio - Asset Allocation"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-allocazione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Dare più capitale alla strategia che ha reso di più di recente"
+  - "Pensare che stesso capitale significhi stesso rischio"
+  - "Dimenticare che le correlazioni possono salire in crisi"
+commands: []
+---
+
+<Scene title="Quattro strategie, un solo capitale">
+**Rondine Capital** ha 200 milioni e quattro strategie tra cui scegliere: long/short azionario, macro, event driven, quantitativa. Il gestore propone: «Mettiamo tutto su quella che ha reso di più l'anno scorso».
+
+Marta scuote la testa: «E se quest'anno è la peggiore?»
+
+La domanda del caso: **come si divide il capitale tra strategie diverse, senza inseguire il passato?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Chi alloca guardando solo lo specchietto retrovisore, prima o poi sbatte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendimento: una media pesata">
+Il rendimento atteso del portafoglio è la **media pesata** di quello delle strategie. Numeri fittizi, rendimenti semplici annui, nessuna previsione.
+
+<Log lines={[
+  "40% x 8%  = 3,2%",
+  "30% x 6%  = 1,8%",
+  "20% x 5%  = 1,0%",
+  "10% x 10% = 1,0%",
+  "totale     = 7,0%",
+]} />
+
+<Callout kind="regola">
+I pesi sommano **100%** (senza leva). Se sommano 110%, qualcuno ha preso in prestito e va dichiarato.
+</Callout>
+
+<Say who="assistente">La media pesata è facile. Il rischio, invece, non si calcola con una media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rischio dipende dalla correlazione">
+Due strategie con volatilità 6% e 8%, pesi 50/50. La **correlazione** dice quanto si muovono insieme (+1 sempre insieme, 0 indipendenti, -1 in direzioni opposte).
+
+<Guided
+  steps={[
+    "Correlazione +1: nessuna protezione, la volatilità è la media: (6% + 8%) / 2 = 7%.",
+    "Correlazione 0: varianza = 0,25 × 36 + 0,25 × 64 = 9 + 16 = 25. La volatilità è la radice di 25, cioè 5%.",
+    "Correlazione -1 con due strategie da 10% e pesi 50/50: le oscillazioni si cancellano e la volatilità arriva a 0%.",
+    "Conclusione: a parità di pesi, meno correlazione significa meno rischio.",
+  ]}
+/>
+
+Un'altra voce, in italiano, spiega come la diversificazione tra investimenti diversi riduce il rischio:
+
+<Video />
+
+<Say who="sensei">Non diversifichi contando le strategie. Diversifichi contando quanto sono diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pesi uguali, pesi per rischio">
+Come si scelgono i pesi?
+
+- **Pesi uguali**: 200 milioni su 4 strategie fanno 50 milioni ciascuna. Semplice, ma una strategia molto volatile pesa molto di più nel rischio.
+- **Pesi in base al rischio**: più capitale a chi oscilla meno. Con volatilità 5% e 10% i pesi inversi sono 66,7% e 33,3%. Ne parliamo meglio nella prossima lezione.
+- **Pesi dietro al rendimento passato**: la scelta più pericolosa.
+
+<Callout kind="attenzione">
+In crisi le correlazioni possono salire verso +1: la protezione calcolata nei tempi calmi diminuisce proprio quando serve. Per questo si mettono anche limiti per strategia, per esempio non oltre il 30% del capitale.
+</Callout>
+
+<Say who="sensei">Un limite per strategia è la rete di sicurezza. Se la tua previsione era sbagliata, il danno resta piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il limite per una singola strategia è il 30% del capitale. La strategia macro oggi pesa 36 su 100 milioni. Che cosa è corretto dire?"
+  options={[
+    "Rispetta il limite, perché 36 è meno di 100",
+    "Ha superato il limite di 6 punti percentuali: va riportata dentro",
+    "Ha superato il limite di 36 punti percentuali",
+    "Non si può dire senza conoscere il suo rendimento passato",
+  ]}
+  answer={1}
+  explain="Il peso è 36 su 100, cioè 36%. Il limite è 30%, quindi l'eccesso è di 6 punti percentuali. Chi risponde 36 punti ha confuso il peso con l'eccesso."
+/>
+
+<Say who="assistente">Un indizio: confronta sempre il peso in percentuale con il limite in percentuale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi: rendimenti pesati, volatilità con correlazioni dichiarate, pesi e limiti. Hai 3 tentativi.
+
+<Practice generator="h07-allocazione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: la diversificazione si costruisce, non si spera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rendimento atteso del portafoglio è la media pesata di quelli delle strategie; i pesi sommano 100% (senza leva).
+- Il rischio dipende dai pesi e dalla correlazione: meno correlazione, meno volatilità. In crisi le correlazioni possono salire.
+- Non si alloca inseguendo il rendimento passato; si usano limiti per strategia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Strategie con volatilità 6% e 8%, correlazione 0, pesi 50/50: volatilità del portafoglio?", a: "5%" },
+    { q: "Con correlazione +1, che volatilità ha il portafoglio?", a: "La media pesata delle volatilità: nessuna protezione" },
+    { q: "Perché un limite per strategia?", a: "Per limitare il danno se la previsione sul peso era sbagliata" },
+    { q: "Stesso capitale significa stesso rischio?", a: "No: la strategia più volatile pesa molto di più" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il risk parity, cioè dividere il rischio e non il capitale.</Say>
+</Scene>

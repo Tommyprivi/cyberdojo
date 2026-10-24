@@ -1,0 +1,180 @@
+---
+id: C.19.004
+course: cybersecurity
+module: 19
+title: "Threat hunting: caccia a ipotesi"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.003]
+objectives:
+  - "Spiegare la differenza tra aspettare un allarme e cercare attivamente una minaccia"
+  - "Formulare un'ipotesi di caccia verificabile con i dati disponibili"
+  - "Chiudere la caccia trasformando ciò che si è trovato in una regola o in un miglioramento"
+video:
+  provider: youtube
+  id: "mOa2vQmln80"
+  start: 0
+  end: 600
+  channel: "Studio29"
+  title: "Threat Hunting Essentials: A Step-by-Step Approach from Hypothesis to Remediation"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-hunting
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Andare a caccia senza un'ipotesi: guardare i log «per vedere cosa c'è» fa perdere tempo e non lascia nulla di riutilizzabile"
+  - "Considerare fallita una caccia che non trova nulla: anche «non c'è» è un risultato, se l'ipotesi era testabile"
+  - "Non trasformare i risultati in una regola: la stessa caccia andrebbe rifatta a mano ogni volta"
+commands: []
+---
+
+<Scene title="Nessun allarme, e allora?">
+Da tre mesi il SIEM della «Rossi Forniture» non segnala nulla di grave. Il SOC è contento. Poi arriva una notizia: un'azienda simile, fornitrice dello stesso software, ha scoperto che qualcuno era dentro la sua rete **da otto mesi**, senza che alcun allarme suonasse.
+
+Silenzio non vuol dire sicurezza. Può voler dire che **le regole non conoscono quella mossa**.
+
+La domanda del caso: **come si cerca ciò per cui nessuna regola ha ancora suonato?**
+
+<Say who="sensei">Un allarme ti dice che qualcosa è successo. La caccia ti dice se qualcosa sta succedendo senza che tu lo sappia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il threat hunting">
+Il **threat hunting** («caccia alle minacce») è la ricerca **attiva e umana** di attaccanti che hanno superato le difese e non hanno fatto scattare nessuna regola.
+
+Due modi di lavorare:
+
+- **Reattivo**: aspetti l'allarme, poi indaghi. È il lavoro normale del SOC.
+- **Proattivo**: parti tu, dai dati, senza allarme. È la caccia.
+
+La caccia migliore non è «guardare i log a caso». È un lavoro con un metodo: si parte da una **ipotesi**.
+
+<Callout kind="regola">
+Un'ipotesi di caccia è una frase che si può **verificare o smentire** con i dati che hai: «Se un attaccante avesse rubato un account, allora vedrei X nei log».
+</Callout>
+
+<Say who="assistente">Non è fortuna. È come il medico: non fa esami a caso, parte da un sospetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove nascono le ipotesi">
+Le ipotesi arrivano da tre fonti:
+
+- **Notizie e threat intelligence**: «un gruppo attacca i fornitori del nostro software con questa tecnica».
+- **La mappa ATT&CK**: un punto cieco nella copertura (lezione precedente) è un'ottima ipotesi: «se qualcuno usasse T1059 qui, non lo vedremmo».
+- **Anomalie notate**: «alcuni account entrano da luoghi insoliti».
+
+Una buona ipotesi è **specifica**, **testabile** con i log che esistono, e **legata a un comportamento**. Confronta:
+
+<Log lines={[
+  "CATTIVA:  «Cerchiamo se ci sono hacker nella rete»",
+  "          (troppo vaga: non si sa che cosa guardare)",
+  "BUONA:    «Un attaccante con una password rubata entrerebbe",
+  "           da un indirizzo mai visto, fuori orario d'ufficio»",
+  "          (si sa quali dati guardare e che cosa cercare)",
+]} caption="Un'ipotesi buona dice già dove guardare." />
+
+<Say who="sensei">Se non sai dove guardare, non hai un'ipotesi. Hai un'ansia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una caccia svolta">
+Prendiamo la buona ipotesi e andiamo a verificarla sul registro degli accessi del piccolo ufficio. Cerchiamo gli accessi **riusciti** da indirizzi esterni (quelli che non cominciano con 10.0.0.).
+
+<SqlPlayground db="log" query="SELECT data_ora, ip, utente, servizio FROM accessi WHERE esito = 'riuscito' AND ip NOT LIKE '10.0.0.%' ORDER BY data_ora;" height={420} />
+
+Ora ragiona sull'elenco, come un cacciatore:
+
+1. Quali accessi da fuori sono **normali**? Per esempio un dipendente che lavora da casa, di giorno.
+2. Quali sono **strani**? Un accesso di notte, a un account amministratore, da un indirizzo mai visto.
+3. Ogni accesso strano va **verificato**: chiedere al proprietario dell'account, controllare cosa ha fatto dopo.
+
+Se trovi il caso strano, hai un'**intrusione da gestire**. Se non lo trovi, non hai perso tempo: hai **dimostrato** che quell'ipotesi, con quei dati, non ha trovato nulla.
+
+<Callout kind="attenzione">
+Quei dati sono fittizi, in un laboratorio. Cercare tracce nei log della tua azienda è difesa. Entrare nei sistemi altrui è reato (in Italia, art. 615-ter del codice penale): si agisce solo su ciò che è tuo o con permesso scritto.
+</Callout>
+
+<Say who="assistente">Anche «non ho trovato nulla» è un risultato, se sai cosa hai cercato e dove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiudere il cerchio">
+La caccia non finisce quando hai guardato i dati. Finisce quando **lasci qualcosa di riutilizzabile**. Tre esiti possibili:
+
+- **Trovato un attaccante**: apri un incidente e passi la mano alla risposta agli incidenti.
+- **Trovato un comportamento sospetto ma innocuo**: scrivi perché è normale (diventerà un filtro).
+- **Trovato un modo di vedere la minaccia**: lo trasformi in una **regola automatica** (lezione 1 e 2), così il SIEM lo cerca da solo la prossima volta.
+
+Ecco il ciclo completo:
+
+<Log lines={[
+  "1. IPOTESI    da intelligence, ATT&CK o anomalia",
+  "2. DATI       quali log servono? esistono?",
+  "3. RICERCA    interrogazioni sui dati",
+  "4. ANALISI    normale, strano, da verificare",
+  "5. ESITO      incidente, filtro o NUOVA REGOLA",
+]} caption="Il ciclo della caccia: ogni giro rende il SOC un po' più bravo." />
+
+Vuoi vedere un esempio dall'ipotesi al risultato? Un video in inglese (attiva i sottotitoli):
+
+<Video />
+
+<Say who="sensei">Una caccia che non diventa regola si rifà da capo ogni volta. Una che diventa regola lavora per te anche di notte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un analista della «Rossi Forniture» dice: «Mi prendo il pomeriggio per esplorare i log del server e vedere se salta fuori qualcosa di strano».
+
+<Quiz
+  question="Che cosa manca di più a questo piano per essere una vera caccia?"
+  options={[
+    "Un'ipotesi specifica e verificabile, che dica cosa cercare e in quali dati",
+    "Un computer più potente per leggere i log più in fretta",
+    "Il permesso di bloccare subito qualsiasi indirizzo sospetto",
+    "Un elenco di tutti i dipendenti dell'azienda",
+  ]}
+  answer={0}
+  explain="Senza ipotesi si naviga a vista: non si sa cosa cercare, quindi non si sa quando si è finito né cosa si è imparato. La potenza del computer non è il problema, e bloccare indirizzi a caso farebbe danni."
+/>
+
+<Say who="assistente">Prima la domanda, poi i dati. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari sulla caccia alle minacce. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-hunting" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- Il threat hunting cerca attivamente attaccanti che nessuna regola ha ancora visto; parte da un'ipotesi, non dall'esplorazione a caso.
+- Una buona ipotesi è specifica, verificabile con i log disponibili e legata a un comportamento.
+- Ogni caccia termina con un esito riutilizzabile: un incidente, un filtro o una nuova regola.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il threat hunting?", a: "La ricerca attiva, guidata da un'ipotesi, di minacce che non hanno fatto scattare nessun allarme" },
+    { q: "Da dove nascono le ipotesi di caccia?", a: "Da threat intelligence, da punti ciechi nella mappa ATT&CK, da anomalie notate" },
+    { q: "Una caccia che non trova nulla è fallita?", a: "No: se l'ipotesi era testabile, ha dimostrato che con quei dati non c'è nulla" },
+    { q: "Come finisce una buona caccia?", a: "Con un incidente aperto, un filtro scritto o una nuova regola automatica" },
+  ]}
+/>
+
+<Say who="sensei">Le regole nuove portano nuovi allarmi, e non tutti sono veri. Prossima lezione: i falsi positivi.</Say>
+</Scene>

@@ -1,0 +1,147 @@
+---
+id: H.04.003
+course: hedge
+module: 4
+title: "Indici e multipli"
+belt: arancione
+duration_min: 8
+prerequisites: [H.04.002]
+objectives:
+  - "Calcolare capitalizzazione, utile per azione, P/E e enterprise value"
+  - "Calcolare EV/EBITDA, P/B, P/S e ROE"
+  - "Leggere un multiplo con prudenza, senza considerarlo un verdetto"
+video:
+  provider: youtube
+  id: "WYN7GOz63N8"
+  start: 0
+  end: 600
+  channel: "Il Sole 24 ORE"
+  title: "Cos'è il price earning (p/e ratio)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-indici-multipli
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un P/E basso sia sempre un affare"
+  - "Confrontare multipli di settori o di aziende con debiti molto diversi"
+  - "Dimenticare il debito quando si calcola il valore dell'azienda"
+commands: []
+---
+
+<Scene title="Quanto costa un euro di utile">
+Officine Lumi (fittizia) vale in borsa molto più dell'utile di un anno. Marta si chiede: **è caro o è economico?** Un numero da solo non risponde: serve un **rapporto**.
+
+La domanda del caso: **come si mette il prezzo accanto ai numeri del bilancio?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Un multiplo è una domanda ben posta, non una risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prezzo, utile, P/E">
+Dati fittizi: **10 milioni di azioni** a **15 euro**; utile netto **15 milioni**.
+
+<Guided
+  steps={[
+    "Capitalizzazione di borsa = prezzo x numero di azioni = 15 x 10 = 150 milioni.",
+    "Utile per azione = 15 / 10 = 1,5 euro.",
+    "P/E = prezzo / utile per azione = 15 / 1,5 = 10.",
+    "Il P/E dice: per ogni euro di utile annuo, il mercato paga 10 euro. Il suo inverso, 10%, è il «rendimento degli utili».",
+  ]}
+/>
+
+<Say who="assistente">Un indizio: se il prezzo raddoppia e l'utile no, il P/E raddoppia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il debito conta: EV">
+La capitalizzazione ignora i debiti. Chi comprasse l'intera azienda dovrebbe prendersi anche quelli, ma si terrebbe la cassa. Si usa l'**enterprise value (EV)**:
+
+**EV = capitalizzazione + debiti finanziari - cassa = 150 + 60 - 10 = 200.**
+
+Con l'EBITDA di 40: **EV/EBITDA = 200 / 40 = 5**.
+
+<Callout kind="regola">
+L'**EV/EBITDA** confronta meglio aziende con debiti diversi del P/E, perché guarda tutta l'azienda, non solo la parte dei soci.
+</Callout>
+
+Un'altra voce, in italiano, spiega il P/E:
+
+<Video />
+
+<Say who="sensei">Chi compra un'azienda compra anche i suoi debiti. Chi lo dimentica, paga di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli altri indici">
+Sempre con Officine Lumi (patrimonio netto 120, ricavi 200, dividendo 0,30 euro per azione):
+
+- **P/B** (prezzo / patrimonio netto) = 150 / 120 = **1,25**.
+- **P/S** (prezzo / ricavi) = 150 / 200 = **0,75**.
+- **ROE** (utile netto / patrimonio netto) = 15 / 120 = **12,5%**.
+- **Rendimento da dividendo** = 0,30 / 15 = **2%**.
+
+<Callout kind="attenzione">
+Un **ROE** alto non è sempre un buon segno: può dipendere da molto debito. E un P/E basso può essere un segnale d'allarme, non un affare.
+</Callout>
+
+<Say who="sensei">Un indice senza il confronto con qualcosa è un numero senza significato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Due aziende dello stesso settore: la prima ha P/E 10, la seconda P/E 20. Qual è la lettura più prudente?"
+  options={[
+    "La prima costa meno per euro di utile: può essere un'occasione o avere problemi, serve capire perché",
+    "La prima è sicuramente un affare",
+    "La seconda è sicuramente sopravvalutata",
+    "I due P/E non dicono nulla",
+  ]}
+  answer={0}
+  explain="Un multiplo più basso indica che il mercato paga meno ogni euro di utile. Può essere un'occasione, ma di solito c'è una ragione: crescita bassa, debiti, utili in calo. Le risposte secche sono il tipico errore di chi cerca scorciatoie."
+/>
+
+<Say who="assistente">Quando un numero sembra troppo bello, chiedi: «che cosa sa il mercato che io non so?»</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli su multipli e indici. Numeri fittizi: 10 milioni di azioni, prezzo 15 euro, importi in milioni.
+
+<Practice generator="h04-indici-multipli" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Prima i conti, poi il giudizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- P/E = prezzo / utile per azione; l'EV aggiunge il debito e toglie la cassa; EV/EBITDA confronta bene aziende con debiti diversi.
+- P/B, P/S, ROE e rendimento da dividendo guardano l'azienda da angolature diverse.
+- Un multiplo basso o alto è una domanda, non un verdetto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Prezzo 15, utile per azione 1,5: P/E?", a: "10" },
+    { q: "Capitalizzazione 150, debiti 60, cassa 10: EV?", a: "200" },
+    { q: "Perché usare EV/EBITDA?", a: "Tiene conto del debito: confronta meglio aziende con debiti diversi" },
+    { q: "Un ROE molto alto è sempre buono?", a: "No, può dipendere da molto debito" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il valore intrinseco. Che cosa vale davvero un'azienda?</Say>
+</Scene>

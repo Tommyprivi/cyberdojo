@@ -1,0 +1,146 @@
+---
+id: H.06.004
+course: hedge
+module: 6
+title: "La leva"
+belt: verde
+duration_min: 8
+prerequisites: [H.06.003]
+objectives:
+  - "Calcolare la leva come attività totali diviso capitale proprio"
+  - "Calcolare l'effetto della leva su guadagni e perdite, anche con il costo del prestito"
+  - "Spiegare che cos'è una richiesta di margine e perché la leva può costringere a vendere"
+video:
+  provider: youtube
+  id: "iUw1ahWAssQ"
+  start: 0
+  end: 600
+  channel: "Farhat Lectures. The # 1 CPA & Accounting Courses"
+  title: "Buying Stocks on Margin | Margin Calls & Leveraged Return Examples"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-leva
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la leva amplifichi solo i guadagni"
+  - "Dimenticare il costo degli interessi sul prestito"
+  - "Credere che un'idea giusta sia al sicuro anche con molta leva"
+commands: []
+---
+
+<Scene title="Quattro volte il capitale">
+Il fondo fittizio Gufo Capital ha 25 milioni di euro suoi e ne ha presi in prestito altri 75 dalle banche. In tutto ha posizioni per **100 milioni**.
+
+Un giorno i prezzi scendono del 5%: il fondo perde 5 milioni... ma ne aveva solo 25 di suoi. Ha perso il **20% del capitale** con un calo che sembrava piccolo.
+
+La domanda del caso: **che cosa fa la leva ai nostri conti?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Numeri inventati, mercati che non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la leva">
+**Leva** = attività totali diviso capitale proprio.
+
+Con 25 milioni tuoi e posizioni per 100: leva = 100 / 25 = **4 volte**.
+
+Una regola da ricordare: se la leva è L, un calo del mercato di 1/L azzera il capitale. Con leva 4, bastano **-25%**; con leva 10, **-10%**; con leva 25, **-4%**.
+
+<Callout kind="regola">
+La leva amplifica tutto in proporzione: guadagni e perdite. Non crea rendimento, lo ingrandisce.
+</Callout>
+
+<Say who="assistente">Come una lente: ingrandisce quello che c'è, bello o brutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I conti">
+Leva 5 volte, interessi ignorati:
+
+<Log lines={[
+  "portafoglio +4%   ->  capitale +20%   (4% x 5)",
+  "portafoglio -10%  ->  capitale -50%   (-10% x 5)",
+]} />
+
+Ora con il costo del prestito. Capitale 100, prestito 100 al 3%, posizioni da 200:
+
+<Log lines={[
+  "posizioni +8%:  guadagno 16, interessi 3  ->  +13 su 100 = +13%",
+  "posizioni -5%:  perdita 10, interessi 3   ->  -13 su 100 = -13%",
+]} />
+
+<Callout kind="attenzione">
+Gli interessi si pagano sempre, vada bene o male. Nella perdita si sommano; nel guadagno si sottraggono.
+</Callout>
+
+<Say who="sensei">Ricontrolla: 8% x 2 fa 16, meno 3 fa 13. Se scrivi 19, hai sbagliato il segno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La richiesta di margine">
+Chi presta soldi vuole **garanzie**. Se il valore delle posizioni scende, il prestatore chiede più garanzie: è la **richiesta di margine** (margin call). Se il fondo non può pagarle, deve **vendere**, anche a prezzi bassi.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Callout kind="attenzione">
+Anche se l'idea è giusta, ma arriva troppo presto, la leva può costringere a vendere prima che il prezzo torni. L'idea si avvera, ma il fondo non c'è più.
+</Callout>
+
+<Say who="sensei">Avere ragione troppo presto, con la leva, è un modo elegante di avere torto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha leva 4 volte. Di quanto deve scendere il valore delle posizioni per azzerare il capitale proprio?"
+  options={["25%", "4%", "40%", "100%"]}
+  answer={0}
+  explain="Con leva 4 il capitale è 1/4 delle posizioni: un calo del 25% lo cancella. Chi risponde 100% pensa che serva perdere tutto il valore, ma si perde prima il capitale proprio."
+/>
+
+<Say who="assistente">Parti da 1 diviso la leva: è la soglia della catastrofe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Leva, rendimenti amplificati, interessi e margini. Numeri fittizi.
+
+<Practice generator="h06-leva" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora la leva la leggi per quello che è: un moltiplicatore, non un regalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Leva = attività totali / capitale proprio; amplifica guadagni e perdite.
+- Con leva L un calo di 1/L azzera il capitale (leva 10: -10%).
+- Gli interessi si pagano sempre e le richieste di margine possono costringere a vendere in perdita.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Capitale 10, posizioni 50: leva?", a: "5 volte" },
+    { q: "Leva 5, portafoglio -10%: capitale?", a: "-50%" },
+    { q: "Che cos'è una richiesta di margine?", a: "La richiesta di più garanzie, o di ridurre le posizioni, se il valore è sceso" },
+    { q: "Leva 25: quale calo azzera il capitale?", a: "-4%" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la liquidità e i rimborsi. Perché a volte non si riesce a uscire.</Say>
+</Scene>

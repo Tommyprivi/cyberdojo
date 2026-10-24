@@ -1,0 +1,174 @@
+---
+id: H.06.001
+course: hedge
+module: 6
+title: "Misurare il rischio"
+belt: verde
+duration_min: 8
+prerequisites: [H.05.007]
+objectives:
+  - "Elencare i principali tipi di rischio di un fondo: mercato, liquidità, controparte, operativo"
+  - "Calcolare un drawdown e il rendimento necessario per recuperare una perdita"
+  - "Spiegare perché un solo numero non basta a descrivere il rischio"
+video:
+  provider: youtube
+  id: "_ven6bf-Ya0"
+  start: 0
+  end: 600
+  channel: "The Decode Project"
+  title: "Financial Risks & it's types | Market, Credit, Liquidity, Legal, Operational & Currency Risk"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-misurare
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il rischio sia soltanto la volatilità"
+  - "Credere che dopo una perdita del 50% basti un guadagno del 50% per tornare in pari"
+  - "Fidarsi di un solo numero e dimenticare liquidità, leva e controparti"
+commands: []
+---
+
+<Scene title="Un fondo «tranquillo»">
+Rondine Capital, un fondo fittizio, mostra agli investitori un grafico quasi piatto: piccole oscillazioni, mese dopo mese. «Rischio basso», dice la presentazione.
+
+Poi, in una sola settimana, il fondo perde il 20%. Il grafico piatto non l'aveva fatto sospettare.
+
+La domanda del caso: **come si misura davvero il rischio di un fondo?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. I numeri qui sono inventati e i mercati non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il rischio">
+Nella vita di tutti i giorni «rischio» vuol dire pericolo. In finanza vuol dire **incertezza sul risultato**: il rendimento può essere diverso da quello sperato, in meglio o in peggio.
+
+Per un fondo contano soprattutto le **perdite**. E i modi di perdere sono molti: per questo si parla di **tipi di rischio**.
+
+<Callout kind="regola">
+Misurare il rischio vuol dire rispondere a tre domande: quanto posso perdere, quanto è probabile, quanto in fretta potrei doverlo accettare.
+</Callout>
+
+<Say who="assistente">Un indizio: se una risposta è un numero solo, di solito manca qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tipi di rischio">
+Quattro rischi da conoscere subito:
+
+- **Rischio di mercato**: i prezzi si muovono contro di te (azioni giù, tassi su).
+- **Rischio di liquidità**: non riesci a vendere senza far crollare il prezzo.
+- **Rischio di controparte**: l'altra parte di un contratto non paga.
+- **Rischio operativo**: errori, guasti, frodi interne.
+
+Questa lezione li presenta; nelle prossime li vedrai uno per uno.
+
+Vuoi sentirli elencare da un'altra voce? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Un fondo non muore quasi mai per un rischio solo. Muore quando due o tre arrivano insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il drawdown">
+Il **drawdown** è il calo dal massimo precedente al punto più basso successivo. Dice quanto si è sofferto, non solo quanto si oscilla.
+
+Valore fittizio di un fondo in cinque date:
+
+<Log lines={[
+  "data   valore",
+  "1      100",
+  "2      120   <- massimo",
+  "3       90   <- punto più basso",
+  "4      110",
+  "5      130",
+  "drawdown = (90 - 120) / 120 = -25%",
+]} />
+
+<Callout kind="attenzione">
+Non si parte dall'inizio ma dal **massimo precedente**: da 100 a 90 sarebbe solo -10%, ma chi ha comprato a 120 ha perso il 25%.
+</Callout>
+
+<Say who="sensei">Il drawdown lo senti sulla pelle. Gli investitori ricordano quello, non la media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché le perdite pesano di più">
+Dopo una perdita, per tornare in pari serve un guadagno **più grande**:
+
+<Log lines={[
+  "perdita -20%  ->  100 diventa 80   ->  serve +25%  (80 x 1,25 = 100)",
+  "perdita -50%  ->  100 diventa 50   ->  serve +100% (50 x 2 = 100)",
+  "perdita -75%  ->  100 diventa 25   ->  serve +300% (25 x 4 = 100)",
+]} />
+
+<Quiz
+  question="Un fondo perde il 50%. Quale guadagno serve per tornare al valore di partenza?"
+  options={["+100%", "+50%", "+75%", "+25%"]}
+  answer={0}
+  explain="Da 100 a 50: per tornare a 100 bisogna raddoppiare, cioè +100%. Chi risponde +50% somma le percentuali, ma il guadagno si applica a una base più piccola."
+/>
+
+<Say who="assistente">Perdere poco è più importante che guadagnare tanto: la salita dopo una caduta è sempre più ripida.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un numero non basta">
+Rondine ha una volatilità del 10% all'anno. Un altro fondo fittizio, Gufo Capital, pure 10%. Ma:
+
+| Fondo | Volatilità | Drawdown massimo |
+|-------|-----------|------------------|
+| Rondine | 10% | -12% |
+| Gufo | 10% | -45% |
+
+Stessa volatilità, sofferenza molto diversa. E la tabella non mostra ancora **liquidità**, **leva** e **controparti**.
+
+<Callout kind="regola">
+Si usano più misure insieme: volatilità, drawdown, VaR, stress test, liquidità, leva. Ognuna vede un pezzo.
+</Callout>
+
+<Say who="sensei">Chi ti mostra un solo numero ti sta nascondendo qualcosa, o non lo sa. Nei dubbi, chiedi il peggio che è già successo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Drawdown, recuperi e tipi di rischio. Numeri fittizi: pochi conti, da ricontrollare due volte.
+
+<Practice generator="h06-misurare" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai iniziato dal posto giusto: sapere dove si può perdere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rischio è incertezza sul risultato; ci sono tipi diversi: mercato, liquidità, controparte, operativo.
+- Il drawdown misura il calo dal massimo; per recuperare una perdita serve un guadagno maggiore (-50% richiede +100%).
+- Un solo numero non basta: si usano più misure insieme.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il drawdown?", a: "Il calo dal massimo precedente al punto più basso successivo" },
+    { q: "Dopo -20% quanto serve per tornare in pari?", a: "+25%" },
+    { q: "Quattro tipi di rischio?", a: "Mercato, liquidità, controparte, operativo" },
+    { q: "Perché la volatilità non basta?", a: "Non mostra drawdown profondi, leva, liquidità e controparti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la volatilità e il VaR, con i conti. Matita pronta.</Say>
+</Scene>

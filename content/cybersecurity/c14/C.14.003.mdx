@@ -1,0 +1,171 @@
+---
+id: C.14.003
+course: cybersecurity
+module: 14
+title: "Active Directory: l'anagrafe dell'azienda"
+belt: blu
+duration_min: 11
+prerequisites: [C.14.002]
+objectives:
+  - "Descrivere che cosa sono dominio, controller di dominio, unità organizzative e foresta"
+  - "Spiegare come le GPO applicano regole a molti computer e in che ordine"
+  - "Riconoscere perché i controller di dominio e i gruppi amministrativi sono il bersaglio da proteggere di più"
+video:
+  provider: youtube
+  id: "w5FagMjg2os"
+  start: 0
+  end: 600
+  channel: "I zuky"
+  title: "Come configurare i Criteri di Gruppo GPO su Controller di Dominio Windows Server"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-ad
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che Active Directory sia solo un elenco di utenti: decide accessi e impostazioni di tutta l'azienda"
+  - "Usare l'account di Domain Admin per le attività di tutti i giorni, posta compresa"
+  - "Dimenticare gli account di ex dipendenti, che restano attivi e nessuno guarda"
+commands: []
+---
+
+<Scene title="Cinquecento computer, una regola">
+La **Bianchi Logistica** ha 500 computer e 400 dipendenti. Il responsabile della sicurezza decide: **le password devono avere almeno 14 caratteri**.
+
+Andare computer per computer richiederebbe settimane. Eppure, il giorno dopo, la regola vale ovunque.
+
+La domanda del caso: **come si cambia una regola su 500 computer senza toccarne uno?**
+
+<Say who="sensei">In un'azienda vera nessuno gestisce i computer a mano. Gestisce un sistema che li gestisce. Quel sistema si chiama Active Directory.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dominio e controller di dominio">
+**Active Directory** (AD) è il servizio di Microsoft che tiene l'**anagrafe** dell'azienda: utenti, gruppi, computer, stampanti.
+
+- Il **dominio** è il recinto che raggruppa tutto questo, con un nome (per esempio «bianchi.example»).
+- Il **controller di dominio** (**DC**) è il server che custodisce l'anagrafe e controlla chi sei quando fai l'accesso.
+- Di solito i DC sono almeno due, che si copiano a vicenda.
+- La **foresta** è l'insieme di uno o più domini che condividono la stessa struttura di base.
+
+<Callout kind="curiosita">
+Il database di AD è un file, **NTDS.dit**, sul controller di dominio. Contiene gli account e le informazioni per verificarne le password. Per questo i DC sono i computer da proteggere più di tutti.
+</Callout>
+
+<Say who="assistente">Il DC è l'ufficio anagrafe e la portineria insieme. Se qualcuno lo controlla, controlla tutta l'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ordine con le OU">
+Le **unità organizzative** (**OU**) sono cartelle dentro il dominio, dove si mettono utenti e computer per raggrupparli: «Amministrazione», «Magazzino», «Server».
+
+A che cosa servono?
+
+- a **organizzare**;
+- ad applicare **regole diverse** a gruppi diversi;
+- a **delegare**: dare a una persona il potere di gestire una sola OU, senza darle il dominio intero.
+
+<Callout kind="trucco">
+Delegare è minimo privilegio applicato: un responsabile del magazzino può reimpostare le password del suo reparto senza poter toccare i server.
+</Callout>
+
+<Say who="sensei">Chi può fare tutto è un rischio. Chi può fare solo il suo pezzo è un lavoratore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le GPO: le regole per tutti">
+Una **GPO** (Group Policy Object) è un insieme di impostazioni che AD distribuisce a computer e utenti. Per esempio:
+
+- lunghezza minima delle password;
+- blocco dello schermo dopo 10 minuti;
+- programmi permessi o vietati;
+- impostazioni del firewall e degli aggiornamenti.
+
+La GPO si **collega** a un sito, al dominio o a una OU. I computer la scaricano e la applicano da soli, in modo periodico.
+
+<Callout kind="regola">
+Ordine di applicazione: **Locale, Sito, Dominio, OU**. L'ultima applicata, di solito, prevale (l'OU più vicina all'oggetto vince).
+</Callout>
+
+Vuoi vederlo fare da un'altra voce? Un video in italiano, solo i primi dieci minuti:
+
+<Video />
+
+<Say who="assistente">Una GPO è come un cartello affisso in ogni ufficio. Lo scrivi una volta, lo leggono tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te: quale account usi?">
+Marco è un amministratore di sistema. Ogni mattina apre la posta e naviga sul web con il suo account **Domain Admin**, perché «così fa prima».
+
+<Quiz
+  question="Quale rischio crea questa abitudine?"
+  options={[
+    "Se un allegato malevolo viene aperto, chi attacca eredita subito i diritti totali sul dominio",
+    "Nessun rischio, perché il dominio ha un antivirus",
+    "Il computer di Marco diventa più lento",
+    "La posta di Marco si cancella da sola",
+  ]}
+  answer={0}
+  explain="Un account con diritti totali, usato per la posta e per il web, espone tutto il dominio a un solo clic sbagliato. La regola è: un account normale per la posta e il web, un account amministrativo separato solo per amministrare."
+/>
+
+<Say who="sensei">L'amministratore deve avere due identità: quella di tutti i giorni e quella dei lavori delicati. Non devono mai incontrarsi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa proteggere, che cosa controllare">
+Tre cose da fare in un dominio.
+
+1. **Pochi** membri nei gruppi più potenti (**Domain Admins**, **Enterprise Admins**, **Schema Admins**). Se un gruppo ha 20 persone, 18 non servono.
+2. **Disattivare** subito gli account di chi se ne va, e rivederli: un account dimenticato è una porta aperta e nessuno nota se qualcuno la usa.
+3. **Proteggere i DC**: pochi accessi, niente navigazione o posta sui DC, aggiornamenti, backup provati.
+
+<Callout kind="attenzione">
+Il **DNS** è indispensabile: i computer trovano i controller di dominio attraverso di esso. Se il DNS si ferma, gli accessi al dominio falliscono.
+</Callout>
+
+<Say who="assistente">Tre abitudini: pochi amministratori, nessun account dimenticato, controller di dominio trattati come casseforti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su domini, OU, GPO e gruppi amministrativi.
+
+<Practice generator="c14-ad" pass="5/5" retries={3} />
+
+<Say who="sensei">Un dominio ben ordinato è già una difesa. Uno disordinato è un regalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Active Directory è l'anagrafe dell'azienda: i controller di dominio custodiscono account e verificano gli accessi, e vanno protetti più di tutto.
+- OU e GPO servono a ordinare, delegare e applicare regole a molti computer insieme (ordine: Locale, Sito, Dominio, OU).
+- Pochi amministratori, account amministrativi separati da quelli di tutti i giorni, account dei vecchi dipendenti disattivati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un controller di dominio?", a: "Il server che custodisce Active Directory e verifica gli accessi" },
+    { q: "A che cosa serve una GPO?", a: "A distribuire impostazioni a molti computer e utenti insieme" },
+    { q: "In che ordine si applicano le GPO?", a: "Locale, Sito, Dominio, OU" },
+    { q: "Perché non si legge la posta con un account Domain Admin?", a: "Un solo allegato malevolo darebbe a chi attacca i diritti totali sul dominio" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: come fa Active Directory a fidarsi di te senza che la password giri sulla rete. Kerberos e NTLM.</Say>
+</Scene>

@@ -1,0 +1,178 @@
+---
+id: C.14.007
+course: cybersecurity
+module: 14
+title: "Hardening di Windows e del dominio"
+belt: blu
+duration_min: 11
+prerequisites: [C.14.006]
+objectives:
+  - "Spiegare che cos'è l'hardening e come le baseline di sicurezza guidano le scelte"
+  - "Collegare ogni difesa (LAPS, Credential Guard, SMB signing, livelli amministrativi) all'attacco che riduce"
+  - "Introdurre le modifiche in modo graduale e verificarle"
+video:
+  provider: youtube
+  id: "MIAaL2WzG2w"
+  start: 0
+  end: 600
+  channel: "Tech With Tilan"
+  title: "Secure Windows Servers using Microsoft Security Baselines"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-hardening
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Applicare una baseline a tutti in un colpo solo, senza prove: qualcosa smette di funzionare"
+  - "Considerare l'hardening un lavoro finito: va ripetuto con aggiornamenti e verifiche"
+  - "Proteggere i PC e dimenticare i controller di dominio e i backup"
+commands: []
+---
+
+<Scene title="Il giorno dopo l'incidente">
+Alla **Bianchi Logistica**, dopo l'incidente delle lezioni precedenti, la direzione chiede: **«Che cosa cambiamo, perché non succeda più?»**
+
+L'analista ha una lista di quello che è andato storto: password locale uguale su tutti i PC, amministratori di dominio che aprono la posta, NTLM ovunque, controller di dominio aggiornati ogni sei mesi.
+
+La domanda del caso: **da dove si comincia, e come si evita di rompere l'azienda mentre la si protegge?**
+
+<Say who="sensei">Si comincia dalle porte aperte più larghe, non da quelle più affascinanti. E si cambia un pezzo alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'hardening">
+**Hardening** significa «irrobustire»: ridurre la superficie d'attacco **spegnendo ciò che non serve** e **configurando bene ciò che resta**.
+
+Non si parte da zero. Esistono lavori già fatti:
+
+- le **baseline di sicurezza di Microsoft**: configurazioni consigliate per Windows e Windows Server, applicabili anche con **GPO**;
+- i **CIS Benchmark** (li hai visti nel modulo 7): elenchi di impostazioni sicure con spiegazione e verifica.
+
+<Callout kind="regola">
+Una baseline è un **punto di partenza**, non una legge. Si applica, si prova, si adatta alle esigenze reali dell'azienda.
+</Callout>
+
+Vuoi vedere come si usano le baseline in un dominio? Video in inglese, i primi dieci minuti:
+
+<Video />
+
+<Say who="assistente">Non devi inventare tutto. Qualcuno ha già scritto l'elenco. Il tuo lavoro è adattarlo e verificarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ogni difesa per un attacco">
+Ricollega ciò che hai imparato. Ogni difesa riduce un rischio preciso.
+
+- **LAPS**: password di amministratore locale diversa su ogni PC. Riduce lo spostamento con hash riutilizzati.
+- **Credential Guard**: isola le credenziali in memoria. Rende più difficile rubarle da lsass.
+- **Protected Users**: gli account membri non usano NTLM né credenziali in cache. Riduce il furto di ticket e hash.
+- **SMB signing**: prova che i messaggi dei file condivisi non sono stati alterati.
+- **Disattivare SMBv1, LLMNR e NetBIOS** quando non servono: tolgono protocolli vecchi e facili da ingannare.
+- **Limitare NTLM**, con audit prima e blocco poi.
+- **AppLocker o WDAC**: fanno girare solo programmi autorizzati.
+
+<Callout kind="trucco">
+Una scheda a due colonne vale più di cento pagine: **attacco → difesa**. Se non sai dire quale rischio riduce una modifica, forse non serve.
+</Callout>
+
+<Say who="sensei">Ogni impostazione costa fatica e ha un prezzo. Pagala solo se compra una protezione che ti serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Livelli e patch">
+Due abitudini che contano più di molte impostazioni.
+
+**Il modello a livelli (tiering).** Si separano gli accessi in tre livelli:
+
+- **Livello 0**: controller di dominio e identità. Solo account del livello 0.
+- **Livello 1**: server.
+- **Livello 2**: PC e dispositivi degli utenti.
+
+Un account di livello 0 **non fa mai l'accesso** su un PC di livello 2: le sue credenziali non devono restare in memoria dove sono più facili da rubare.
+
+**Aggiornamenti.** Le falle note sono le prime sfruttate. Patchare ogni 8 mesi è lasciare la porta aperta per 8 mesi. Serve un ciclo regolare e più rapido per le falle gravi.
+
+<Callout kind="attenzione">
+Controller di dominio e **backup** sono il bersaglio più delicato: proteggi il backup (accesso limitato, copie fuori dal dominio) e **provane il ripristino** ogni tanto. Un backup mai provato è una speranza.
+</Callout>
+
+<Say who="assistente">Il livello 0 è la cassaforte, il livello 2 è il bancone. Le chiavi della cassaforte non vanno lasciate sul bancone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cambiare senza rompere">
+Una baseline applicata a tutti in un colpo rompe cose: una stampante vecchia che usa un protocollo disattivato, un programma che richiede NTLM.
+
+Il metodo sicuro:
+
+<Guided
+  steps={[
+    "1. Misura: attiva gli audit (per esempio sull'uso di NTLM) per capire che cosa c'è davvero.",
+    "2. Prova: applica la modifica a un piccolo gruppo di computer (una OU di prova).",
+    "3. Osserva: che cosa ha smesso di funzionare? Parla con chi usa quei sistemi.",
+    "4. Estendi: allarga a gruppi più grandi, con data e piano di ritorno indietro.",
+    "5. Verifica e ripeti: controlla le differenze rispetto alla baseline ogni tanto, perché la configurazione cambia nel tempo.",
+  ]}
+/>
+
+<Say who="sensei">Il difensore che rompe l'azienda perde la fiducia della direzione. Senza fiducia, la prossima richiesta di sicurezza non passa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Le password dell'amministratore locale sono uguali su tutti i 500 PC. Quale intervento riduce di più il rischio di spostamento da un PC all'altro con hash rubati?"
+  options={[
+    "Adottare LAPS, così ogni PC ha una password locale diversa, cambiata periodicamente",
+    "Allungare la password uguale per tutti i PC",
+    "Dare a tutti gli utenti i diritti di amministratore locale",
+    "Disattivare il firewall interno per semplificare",
+  ]}
+  answer={0}
+  explain="Il problema è la password identica: una rubata apre tutte le porte. LAPS dà a ogni PC una password diversa, quindi un hash rubato vale solo su quel PC. Allungare la password, ma uguale per tutti, non risolve il riuso."
+/>
+
+<Say who="assistente">Quando una stessa chiave apre tutto, il problema non è quanto è lunga. È che è una sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di hardening: scegli la difesa giusta e il metodo giusto di introduzione.
+
+<Practice generator="c14-hardening" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hardening vuol dire scelte, non una lista da spuntare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- L'hardening riduce la superficie d'attacco partendo da baseline (Microsoft, CIS) da adattare, non da applicare alla cieca.
+- Ogni difesa risponde a un attacco: LAPS agli hash riutilizzati, Credential Guard al furto di credenziali, livelli amministrativi e patch regolari ai percorsi più comuni.
+- Si introduce in modo graduale (misura, prova, osserva, estendi, verifica) e si proteggono i controller di dominio e i backup.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una baseline di sicurezza?", a: "Una configurazione consigliata da cui partire, da provare e adattare" },
+    { q: "Che cosa fa LAPS?", a: "Dà a ogni PC una password di amministratore locale diversa e la cambia nel tempo" },
+    { q: "Che cosa dice il modello a livelli?", a: "Gli account di livello 0 non fanno mai l'accesso su macchine di livello inferiore" },
+    { q: "Qual è il modo sicuro di applicare una nuova impostazione?", a: "Misurare, provare su un gruppo ristretto, osservare, estendere, verificare" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Hai visto Windows e Active Directory come li vede chi difende. Il prossimo passo è provarli in un laboratorio tuo.</Say>
+</Scene>

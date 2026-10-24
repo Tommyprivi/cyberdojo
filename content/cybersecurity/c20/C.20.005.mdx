@@ -1,0 +1,173 @@
+---
+id: C.20.005
+course: cybersecurity
+module: 20
+title: "Autorità e assicurazioni"
+belt: marrone
+duration_min: 10
+prerequisites: [C.20.004]
+objectives:
+  - "Distinguere la notifica di una violazione (Garante, autorità di settore) dalla denuncia alle forze dell'ordine"
+  - "Descrivere in sintesi i tempi del GDPR e della direttiva NIS2, sapendo dove controllare le fonti ufficiali"
+  - "Spiegare perché si avvisa subito l'assicurazione cyber e cosa si rischia a non farlo"
+video:
+  provider: youtube
+  id: "Zup89-xXWOM"
+  start: 0
+  end: 212
+  channel: "Diritto al Digitale"
+  title: "La comunicazione di un data breach secondo il Garante privacy"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-autorita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che una sola comunicazione basti per tutte le autorità: ognuna ha le sue regole e i suoi tempi"
+  - "Avvisare l'assicurazione dopo aver già incaricato fornitori non approvati dalla polizza"
+  - "Non conservare il diario con le ore: serve a dimostrare quando si è venuti a conoscenza della violazione"
+commands: []
+---
+
+<Scene title="Chi si avvisa, e quando">
+Bianchi Logistica (azienda fittizia) ha avuto il ransomware con furto di dati: tra i file ci sono nomi e indirizzi di clienti. La direzione chiede: «Dobbiamo dirlo a qualcuno? A chi? E la nostra assicurazione?».
+
+<Log lines={[
+  "mer 09:00  il Responsabile IR conferma: dati di clienti usciti (nomi, indirizzi)",
+  "mer 09:30  inizio conteggio: 'consapevolezza della violazione' annotata nel diario",
+  "mer 10:00  avvisati: direzione, legale, assicurazione (numero verde della polizza)",
+  "mer 15:00  contattata la Polizia Postale per la denuncia",
+  "gio 12:00  bozza di notifica al Garante, in attesa di conferma sul rischio",
+]} caption="Un diario con le ore: serve a tutti." />
+
+La domanda del caso: **a chi si scrive, con quali tempi, e chi decide?**
+
+<Say who="sensei">Non c'è un unico telefono da chiamare. Ci sono più strade, con regole diverse. Si conoscono prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Notificare e denunciare">
+Sono due cose **diverse**:
+
+- **Notificare** una violazione è un **obbligo di legge**, verso un'autorità di controllo: per i dati personali in Italia il **Garante per la protezione dei dati personali**; per certi settori e organizzazioni altre autorità.
+- **Denunciare** un reato (accesso abusivo, estorsione) è una segnalazione alle **forze dell'ordine**, in Italia per esempio la **Polizia Postale**, specializzata nei reati informatici.
+
+Non si sostituiscono: la denuncia **non** vale come notifica al Garante, e viceversa.
+
+<Callout kind="attenzione">
+Tutto questo è un **quadro di sintesi** (ottobre 2026). Le norme cambiano e dipendono dal settore e dalla dimensione dell'organizzazione: nei casi reali si controllano le **fonti ufficiali** (per esempio i siti del Garante e dell'Agenzia per la cybersicurezza nazionale) e si coinvolge il legale.
+</Callout>
+
+<Say who="assistente">Una regola semplice: «violazione» si notifica a chi controlla, «reato» si denuncia a chi indaga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="GDPR e NIS2 in sintesi">
+**GDPR** (regolamento europeo sulla protezione dei dati). Se c'è una **violazione di dati personali** che comporta un **rischio per le persone**, il titolare del trattamento notifica al Garante **entro 72 ore** da quando ne è venuto **a conoscenza**. Se il rischio è **alto**, informa anche gli **interessati** (le persone coinvolte), in modo chiaro. Non tutte le violazioni vanno notificate: se è improbabile un rischio, basta **registrarla** in un registro interno e **motivare** la scelta.
+
+**NIS2** (direttiva europea sulla sicurezza di reti e sistemi, recepita in Italia). Si applica a certi soggetti, detti «essenziali» e «importanti», di settori come energia, trasporti, sanità, acqua, servizi digitali e altri. In sintesi, per un **incidente significativo** è previsto un **preallarme entro 24 ore**, una **notifica entro 72 ore** e una **relazione finale entro un mese**, all'autorità nazionale competente (in Italia l'Agenzia per la cybersicurezza nazionale, tramite il suo CSIRT). Quali soggetti rientrano e come si comunica va **verificato sulle fonti ufficiali**.
+
+<Callout kind="regola">
+Una stessa vicenda può fare scattare **più obblighi**: GDPR per i dati personali, NIS2 se l'organizzazione rientra, e anche contratti con i clienti. Il legale li elenca.
+</Callout>
+
+<Say who="sensei">Le ore partono dalla conoscenza. Per questo il diario con l'ora esatta è un documento serio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La notifica, passo per passo">
+Una notifica al Garante, in sintesi, descrive:
+
+- la **natura della violazione** (che cosa è successo, categorie e numero approssimativo di persone e di dati);
+- il **referente** a cui rivolgersi (il responsabile della protezione dei dati, se c'è);
+- le **probabili conseguenze**;
+- le **misure** adottate o previste.
+
+Se non si sa ancora tutto, si può notificare **per fasi**: si manda quello che si sa e si completa dopo.
+
+Vuoi ascoltare come ne parla il Garante? Pochi minuti, in italiano:
+
+<Video />
+
+<Callout kind="trucco">
+Il testo della notifica è coerente con il **messaggio ai clienti** (lezione 2): stessi fatti, stessi tempi. Due versioni diverse creano un problema in più.
+</Callout>
+
+<Say who="assistente">Notifica per fasi significa: dì quello che sai ora, e completa quando lo saprai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'assicurazione cyber">
+Molte organizzazioni hanno una **polizza cyber**. Copre, a seconda del contratto, costi come esperti di indagine, consulenza legale, ripristino, interruzione dell'attività, a volte la gestione della comunicazione.
+
+Tre regole pratiche:
+
+1. **Avvisa subito**, come dice la polizza: spesso c'è un termine per la denuncia di sinistro e un **numero di emergenza** attivo giorno e notte.
+2. **Usa i fornitori indicati dalla polizza**: assumere un consulente non approvato può far perdere il rimborso.
+3. **Leggi le esclusioni** in anticipo: requisiti minimi (per esempio autenticazione a più fattori o backup) senza i quali la polizza può non pagare.
+
+<Callout kind="curiosita">
+L'assicurazione non sostituisce la sicurezza: rimborsa alcuni costi, ma non restituisce la fiducia dei clienti né i dati persi.
+</Callout>
+
+<Say who="sensei">Cerca la polizza e il numero di telefono oggi, non il giorno dell'incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Venerdì alle 09:00 scopri che un intruso ha copiato nomi e indirizzi di clienti. L'indagine finirà fra dieci giorni. Che cosa fai riguardo ad autorità e assicurazione?"
+  options={[
+    "Annoto l'ora di conoscenza, avviso subito assicurazione e legale, valuto la notifica al Garante entro 72 ore anche per fasi, e valuto la denuncia alle forze dell'ordine come cosa a parte",
+    "Aspetto la fine dell'indagine e poi faccio una sola comunicazione a tutti",
+    "Faccio solo la denuncia alla Polizia Postale, che vale anche come notifica al Garante",
+    "Assumo subito un consulente di fiducia e avviso l'assicurazione a lavori finiti, per presentare un conto più completo",
+  ]}
+  answer={0}
+  explain="Le 72 ore partono dalla conoscenza, non dalla fine dell'indagine; si può notificare per fasi. Denuncia e notifica sono cose diverse. L'assicurazione va avvisata subito e i consulenti vanno concordati con lei, altrimenti il rimborso può saltare."
+/>
+
+<Say who="assistente">Indizio: quando parte il tempo? Da quando lo sai, non da quando hai finito di capirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su notifiche, denunce, GDPR, NIS2 in sintesi e assicurazioni.
+
+<Practice generator="c20-autorita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Per i casi reali, ricordalo: si controllano le fonti ufficiali e si chiama il legale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Notificare una violazione (obbligo di legge) e denunciare un reato (forze dell'ordine) sono due cose diverse; una non sostituisce l'altra.
+- GDPR: notifica al Garante entro 72 ore dalla conoscenza se c'è rischio per le persone, anche per fasi. NIS2, in sintesi: preallarme 24 ore, notifica 72 ore, relazione finale un mese, per i soggetti che rientrano. Si controllano le fonti ufficiali.
+- La polizza cyber si attiva subito, con i fornitori che indica, e si leggono prima i requisiti minimi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da quando partono le 72 ore del GDPR?", a: "Da quando si viene a conoscenza della violazione" },
+    { q: "La denuncia alla Polizia Postale vale come notifica al Garante?", a: "No: sono due cose diverse" },
+    { q: "Preallarme, notifica, relazione finale nella NIS2 in sintesi?", a: "24 ore, 72 ore, un mese" },
+    { q: "Perché avvisare subito l'assicurazione?", a: "Ci sono termini e fornitori concordati; ritardi e scelte autonome possono far perdere il rimborso" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione: come si prova tutto questo prima che accada. Gli esercizi di tavolo.</Say>
+</Scene>

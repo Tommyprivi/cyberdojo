@@ -1,0 +1,142 @@
+---
+id: H.04.007
+course: hedge
+module: 4
+title: "Trappole di valutazione"
+belt: arancione
+duration_min: 8
+prerequisites: [H.04.006]
+objectives:
+  - "Riconoscere una trappola del valore (value trap) e un utile gonfiato da eventi una tantum"
+  - "Elencare le trappole tipiche: ciclo, debiti nascosti, ricavi non incassati, ancoraggio, precisione apparente"
+  - "Usare scenari e più metodi invece di un solo numero"
+video:
+  provider: youtube
+  id: "bGGrmcC1Zf0"
+  start: 0
+  end: 600
+  channel: "One Minute Finance"
+  title: "Inside the Value Trap: Why Cheap Stocks Stay Cheap"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-trappole
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi di un P/E basso senza guardare la qualità degli utili"
+  - "Usare un solo metodo e un solo scenario"
+  - "Restare ancorati al prezzo di acquisto o alla prima stima"
+commands: []
+---
+
+<Scene title="Il P/E di 4">
+Un titolo fittizio, **Ferro Antico**, ha capitalizzazione di 80 milioni e utile di 20 milioni: **P/E 4**. «Un affare!» dice il collega di Marta.
+
+Marta guarda meglio il conto economico: 12 milioni vengono dalla vendita di un immobile, una volta sola.
+
+La domanda del caso: **come si evita di cadere nelle trappole dei numeri belli?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. I mercati non regalano niente: un prezzo troppo basso ha quasi sempre una ragione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Utili che non si ripetono">
+Con l'utile ricorrente di 8 milioni, il P/E diventa 80 / 8 = **10**, non 4.
+
+Una **trappola del valore** (*value trap*) è un'azienda che sembra a buon mercato per i multipli, ma i cui utili si stanno deteriorando: il multiplo basso anticipa il peggio.
+
+<Callout kind="regola">
+Prima di fidarti di un multiplo, chiediti: **l'utile si ripete l'anno prossimo?**
+</Callout>
+
+Un'altra voce, in inglese con i sottotitoli, racconta perché le azioni «a buon prezzo» restano a buon prezzo:
+
+<Video />
+
+<Say who="sensei">Se è troppo bello, controlla il conto economico riga per riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le trappole classiche">
+- **Il ciclo**: nei settori ciclici (siderurgia, costruzioni) un P/E bassissimo arriva proprio nell'anno di massimi utili, che poi calano.
+- **Ricavi non incassati**: ricavi che salgono, crediti che salgono di più, flusso di cassa operativo negativo.
+- **Debiti nascosti**: impegni che compaiono solo nelle note.
+- **Dividendo molto alto**: un rendimento del 12% può segnalare che il mercato si aspetta un taglio.
+- **P/B sotto 1**: gli attivi potrebbero valere meno di quanto scritto a bilancio.
+
+<Say who="assistente">Un indizio: quando utile e flusso di cassa vanno in direzioni opposte, fidati della cassa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le trappole di chi valuta">
+Anche l'analista ha i suoi inganni:
+
+- **Precisione apparente**: 14,53 euro non è più giusto di «tra 12 e 17».
+- **Ancoraggio**: restare attaccati al prezzo d'acquisto o alla prima stima, senza aggiornare.
+- **Sopravvivenza**: confrontare l'azienda solo con quelle che non sono fallite.
+- **Un solo scenario**: portare la crescita di lungo periodo dal 2% al 3% in un DCF può cambiare il valore di molto.
+
+<Callout kind="trucco">
+Rimedio: **scenari** (pessimista, base, ottimista), **almeno due metodi** (DCF e multipli) e un **margine di sicurezza**.
+</Callout>
+
+<Say who="sensei">Il modello non ti protegge dalla tua testa. Se vuoi che un'azione sia un affare, lo troverai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda quota il 50% in meno delle concorrenti dello stesso settore. Qual è la lettura più prudente?"
+  options={[
+    "Capire perché: può essere un'occasione, ma di solito esiste una ragione",
+    "È sicuramente un affare",
+    "È sicuramente una truffa",
+    "I multipli non si possono confrontare mai",
+  ]}
+  answer={0}
+  explain="Un grande sconto è una domanda: utili in calo, debiti nascosti, rischio di settore, contabilità dubbia. Può anche essere un'occasione, ma prima si cerca la ragione."
+/>
+
+<Say who="assistente">Chi vende è spesso informato. Chiediti perché lo fa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Casi e calcoli sulle trappole di valutazione. Numeri fittizi.
+
+<Practice generator="h04-trappole" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Dubitare dei numeri belli è una competenza, non un difetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un multiplo basso può nascondere utili una tantum, un ciclo al massimo o un'azienda in declino (value trap).
+- Controlla flussi di cassa, ricavi non incassati, debiti nelle note e dividendi troppo alti.
+- Contro le proprie trappole: scenari, almeno due metodi, margine di sicurezza e umiltà sui decimali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Capitalizzazione 80, utile ricorrente 8: P/E?", a: "10" },
+    { q: "Che cos'è una value trap?", a: "Azienda che sembra a buon mercato ma con utili in deterioramento" },
+    { q: "Rimedio contro la precisione apparente?", a: "Intervalli e scenari, non un solo numero" },
+    { q: "Dividendo del 12%: che cosa può segnalare?", a: "Un taglio atteso dal mercato" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossimo: i derivati e la copertura del rischio.</Say>
+</Scene>

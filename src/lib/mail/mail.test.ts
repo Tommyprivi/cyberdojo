@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { esc } from "./layout";
 import { isReminderDue, localHour, type ReminderCandidate } from "./reminders";
-import { magicLinkEmail, reminderEmail, welcomeEmail } from "./templates";
+import { magicLinkEmail, reminderEmail, twoFactorChangedEmail, welcomeEmail } from "./templates";
 import { makeUnsubscribeToken, verifyUnsubscribeToken } from "./token";
 
 beforeAll(() => {
@@ -56,6 +56,22 @@ describe("modelli di email", () => {
     expect(reminderEmail({ ...base, streak: 7 }).subject).toBe("La tua serie di 7 giorni ti aspetta");
     expect(reminderEmail({ ...base, streak: 0 }).subject).toBe("Il Sensei ti aspetta: un caso oggi?");
     expect(reminderEmail({ ...base, streak: 0 }).text).not.toMatch(/serie di 0/);
+  });
+
+  it("l'avviso sul 2FA dice se è stato attivato o disattivato e porta al profilo", () => {
+    const on = twoFactorChangedEmail({ name: "Ada Lovelace", email: "a@example.com", enabled: true });
+    const off = twoFactorChangedEmail({ name: "Ada Lovelace", email: "a@example.com", enabled: false });
+    expect(on.subject).toMatch(/attivata/);
+    expect(off.subject).toMatch(/disattivata/);
+    expect(on.html).toContain("https://cyberdojo.example/profilo");
+    expect(off.text).toContain("https://cyberdojo.example/profilo");
+    expect(on.text).toMatch(/Non sei stato tu/);
+  });
+
+  it("l'avviso sul 2FA neutralizza il nome", () => {
+    const m = twoFactorChangedEmail({ name: "<b>x</b>", email: "x@example.com", enabled: true });
+    expect(m.html).not.toContain("<b>x</b>");
+    expect(m.html).toContain("&lt;b&gt;");
   });
 
   it("ogni email ha HTML valido a grandi linee e un testo non vuoto", () => {

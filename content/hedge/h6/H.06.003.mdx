@@ -1,0 +1,150 @@
+---
+id: H.06.003
+course: hedge
+module: 6
+title: "Stress test e scenari"
+belt: verde
+duration_min: 8
+prerequisites: [H.06.002]
+objectives:
+  - "Distinguere scenario storico, scenario ipotetico e reverse stress test"
+  - "Calcolare la perdita di un portafoglio in uno scenario dato"
+  - "Spiegare perché lo stress test serve a trovare i punti deboli, non a rassicurare"
+video:
+  provider: youtube
+  id: "CIG3hkjGsg0"
+  start: 0
+  end: 600
+  channel: "Simple Explain"
+  title: "What Is a Bank Stress Test? How It Works, Benefits, and Criticism"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-stress
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere scenari troppo miti per far «passare» il test"
+  - "Provare solo gli eventi già accaduti"
+  - "Ignorare uno scenario perché è improbabile"
+commands: []
+---
+
+<Scene title="Il giorno che non c'era nei dati">
+Il VaR di Rondine Capital (fondo fittizio) è tranquillo: 2% al giorno. Ma Marta, la responsabile rischi, si fa una domanda scomoda: **«E se arrivasse un giorno che nei nostri dati non c'è?»**
+
+Il VaR guarda i giorni normali. Per i giorni anormali serve un altro strumento: lo **stress test**.
+
+La domanda del caso: **come si prova un portafoglio contro una crisi che non si è ancora vista?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. Numeri inventati, mercati che non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è uno stress test">
+Uno **stress test** prende un portafoglio e gli applica uno **scenario**: una serie di shock (azioni -30%, tassi +2 punti, un paese in crisi). Poi si calcola la perdita.
+
+Tre tipi di scenario:
+
+- **Storico**: rifare oggi un evento già avvenuto (come la crisi del 2008) sul portafoglio di oggi.
+- **Ipotetico**: inventare uno shock plausibile mai visto.
+- **Reverse stress test**: si parte dalla perdita che non si vuole subire e si chiede quale scenario la causerebbe.
+
+<Callout kind="regola">
+Il VaR risponde «quanto in un giorno normale?». Lo stress test risponde «che cosa succede se va male sul serio?».
+</Callout>
+
+<Say who="assistente">Il reverse stress test è il mio preferito: parte dal problema e cerca la causa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un calcolo di scenario">
+Portafoglio fittizio: 60% azioni, 40% obbligazioni. Scenario: azioni -30%, obbligazioni -5%.
+
+<Log lines={[
+  "azioni:        0,60 x (-30%) = -18%",
+  "obbligazioni:  0,40 x ( -5%) =  -2%",
+  "portafoglio:                   -20%",
+  "con 2.000.000 di euro: perdita = 400.000 euro",
+]} />
+
+Un fondo long/short: long per 80 milioni, short per 40. Il mercato scende del 10%: il long perde 8, lo short guadagna 4. **Perdita netta: 4 milioni.**
+
+<Callout kind="curiosita">
+Nel 2008 molte correlazioni salirono insieme: titoli che sembravano indipendenti scesero tutti. Un buon scenario lo mette in conto.
+</Callout>
+
+<Say who="sensei">Ricontrolla i conti due volte. Lo scenario è una moltiplicazione: peso per shock, e poi la somma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi fa gli stress test">
+Gli stress test li fanno i fondi sul proprio portafoglio, ma anche le autorità di vigilanza sulle banche, per vedere se hanno capitale sufficiente a resistere a una crisi grave.
+
+Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Callout kind="attenzione">
+Uno stress test non prevede il futuro. Dice solo: «se accadesse questo, perderemmo tanto». Il valore sta nella domanda, non nella cifra.
+</Callout>
+
+<Say who="sensei">Un buon test fa paura. Se non ne ha fatta, probabilmente hai scelto scenari troppo gentili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Lo stress test mostra una perdita del 30%, mentre il limite interno tollerabile è 15%. Che cosa dovrebbe fare il gestore?"
+  options={[
+    "Ridurre posizioni o leva, oppure coprirsi, finché lo scenario rientra nel limite",
+    "Ignorare lo scenario perché è improbabile",
+    "Cambiare lo scenario finché la perdita scende sotto il 15%",
+    "Aumentare la leva per recuperare in fretta",
+  ]}
+  answer={0}
+  explain="Il test serve ad agire: se lo scenario supera il limite si riduce il rischio. Cambiare lo scenario per farlo passare è un uso scorretto, e aumentare la leva peggiora la situazione."
+/>
+
+<Say who="assistente">Se uno scenario ti sembra improbabile, chiediti quanto costerebbe se invece accadesse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari, perdite e usi corretti dello stress test. Numeri fittizi.
+
+<Practice generator="h06-stress" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai imparato a immaginare il peggio senza esserne spaventato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lo stress test applica uno scenario estremo a un portafoglio; il VaR descrive i giorni normali.
+- Gli scenari possono essere storici, ipotetici o rovesciati (reverse stress test).
+- Il test serve a trovare i punti deboli e a ridurre il rischio, non a rassicurare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "60% azioni (-30%), 40% obbligazioni (-5%): perdita?", a: "-20%" },
+    { q: "Che cos'è un reverse stress test?", a: "Parte da una perdita inaccettabile e cerca lo scenario che la causerebbe" },
+    { q: "Perché non bastano gli scenari storici?", a: "La prossima crisi può essere diversa dalle precedenti" },
+    { q: "Che cosa fai se lo scenario supera il limite?", a: "Riduci posizioni o leva, o ti copri" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la leva. L'acceleratore che trasforma un graffio in una caduta.</Say>
+</Scene>

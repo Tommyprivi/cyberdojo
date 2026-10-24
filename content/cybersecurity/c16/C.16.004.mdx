@@ -1,0 +1,173 @@
+---
+id: C.16.004
+course: cybersecurity
+module: 16
+title: "CORS e CSRF: le regole del browser"
+belt: blu
+duration_min: 10
+prerequisites: [C.16.003]
+objectives:
+  - "Spiegare la same-origin policy e che cosa cambia con CORS"
+  - "Descrivere come funziona un attacco CSRF e perché i cookie lo rendono possibile"
+  - "Scegliere le difese: SameSite, token anti-CSRF, controllo dell'Origin, configurazione prudente di CORS"
+video:
+  provider: youtube
+  id: "FHSo97k230I"
+  start: 0
+  end: 600
+  channel: "Dario Capozzi"
+  title: "CSRF e CORS spiegati con un esempio pratico di attacco"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-cors-csrf
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che CORS protegga il server: è una regola che applica il browser, non un controllo di accesso"
+  - "Configurare Access-Control-Allow-Origin per ripetere qualunque origine ricevuta"
+  - "Pensare che basti usare POST o HTTPS per essere al sicuro dal CSRF"
+commands: []
+---
+
+<Scene title="Il clic sul sito dei gattini">
+Giulia ha aperto in una scheda la sua **banca online fittizia**, BancaNord, ed è ancora collegata. In un'altra scheda visita un sito di foto di gattini. Un'immagine invisibile di quel sito contiene una richiesta verso BancaNord: «cambia l'IBAN di riferimento».
+
+Il browser, per abitudine, **allega il cookie di sessione di BancaNord** a ogni richiesta verso BancaNord, anche se parte da un altro sito. La banca vede una richiesta con una sessione valida e la esegue.
+
+La domanda del caso: **come si impedisce che un sito qualunque faccia fare cose al tuo posto su un altro sito?**
+
+<Say who="sensei">Il browser è un cameriere zelante: porta il tuo badge ovunque tu lo mandi, anche dove non volevi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Origine e same-origin policy">
+Un'**origine** è la combinazione di tre cose: **schema** (https), **nome del sito** e **porta**. Per esempio, `https://banca.example` e `https://banca.example:8443` sono origini diverse; anche `http` e `https` lo sono.
+
+La **same-origin policy** è la regola di fondo del browser: **uno script di una pagina non può leggere le risposte di un'altra origine**. Il sito dei gattini non può leggere il tuo conto.
+
+Ma la regola riguarda la **lettura**. Mandare richieste verso altri siti, per esempio caricando un'immagine o un modulo, il browser lo fa comunque.
+
+<Callout kind="regola">
+Same-origin policy: gli script non **leggono** le risposte di altre origini. Non vuol dire che le richieste non partano.
+</Callout>
+
+<Say who="assistente">Pensa a due appartamenti nello stesso palazzo: puoi suonare al campanello, ma non entri a leggere la posta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CORS: aprire una porta, con giudizio">
+A volte serve che il sito `https://app.example` legga i dati di `https://api.example`. Il server dell'API può dirlo al browser con un'intestazione, e questo meccanismo si chiama **CORS** (Cross-Origin Resource Sharing).
+
+<Log lines={[
+  "Richiesta (dal browser, pagina su https://app.example):",
+  "  GET /profilo   Origin: https://app.example",
+  "Risposta (dall'API):",
+  "  Access-Control-Allow-Origin: https://app.example",
+  "  Access-Control-Allow-Credentials: true",
+  "-> il browser lascia leggere la risposta agli script di app.example, e solo a loro",
+]} />
+
+Errori tipici di configurazione:
+
+- **Ripetere qualunque origine** ricevuta nell'Origin: è come scrivere «benvenuti tutti».
+- **Usare l'asterisco** (`*`) su dati riservati: il browser non lo accetta insieme alle credenziali, ma su dati pubblici va bene, su dati privati no.
+- **Fidarsi di domini con un nome «simile»** o di sottodomini non controllati.
+
+Per le richieste «delicate» il browser fa prima una domanda preliminare (**preflight**, un controllo `OPTIONS`): «posso mandare questa richiesta?». Ma attenzione.
+
+<Callout kind="attenzione">
+**CORS non protegge il server.** È il browser a rispettarlo. Uno strumento da riga di comando o un altro programma ignora CORS: l'API deve **sempre** controllare chi sei e che cosa puoi fare.
+</Callout>
+
+<Say who="sensei">CORS decide chi può leggere nel browser. L'autorizzazione resta compito del server.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="CSRF: la richiesta con il tuo badge">
+**CSRF** (Cross-Site Request Forgery, «falsificazione di richiesta tra siti») è proprio il caso di Giulia. Funziona se tre cose sono vere insieme:
+
+1. Il sito si fida di un **cookie** che il browser allega da solo.
+2. Esiste un'azione che **cambia qualcosa** (cambio IBAN, cambio email, bonifico).
+3. Un estraneo può **indovinare tutti i parametri** della richiesta.
+
+Le difese si mettono su uno di questi tre punti:
+
+- **Cookie `SameSite`** (Lax o Strict): il browser non allega il cookie alle richieste partite da altri siti.
+- **Token anti-CSRF**: un valore casuale legato alla sessione, inserito nei moduli e controllato dal server. L'estraneo non può conoscerlo.
+- **Controllo di Origin o Referer** sulle azioni che modificano dati.
+- Azioni importanti che richiedono una **conferma** (per esempio il codice monouso, la password di nuovo).
+
+Una richiesta che cambia dati non va mai fatta con GET: GET deve solo leggere.
+
+<Callout kind="curiosita">
+Se la sessione viaggia in un'intestazione `Authorization` che l'app aggiunge a mano, il browser non la allega da solo: il CSRF classico non funziona. Ma ricorda la lezione precedente: lì il rischio si sposta sul furto del token (XSS).
+</Callout>
+
+<Callout kind="attenzione">
+Preparare pagine per far agire utenti reali su siti reali è un reato (tra gli altri, accesso abusivo, art. 615-ter del codice penale). Si studia solo su applicazioni tue, nel laboratorio, o con permesso scritto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in italiano:
+
+<Video />
+
+<Say who="assistente">Per il CSRF chiediti: «posso dimostrare che questa richiesta è partita davvero dal mio sito?»</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'API risponde sempre con Access-Control-Allow-Origin uguale all'origine ricevuta, anche con credenziali. Un amministratore dice: «Almeno ci protegge CORS». Che cosa è vero?"
+  options={[
+    "Così qualunque sito può far leggere nel browser dell'utente i dati riservati: la configurazione va ristretta a origini note",
+    "È una configurazione sicura, perché il browser controlla tutto",
+    "Il problema è solo che manca HTTPS",
+    "CORS blocca anche gli strumenti da riga di comando, quindi non c'è rischio"
+  ]}
+  answer={0}
+  explain="Ripetere qualunque origine con le credenziali equivale ad aprire la porta a tutti. CORS è una regola del browser, non uno scudo del server: va configurato con un elenco di origini fidate, e l'API deve comunque controllare l'identità e i permessi."
+/>
+
+<Say who="assistente">Indizio: quando scrivi «qualunque origine», chi hai invitato?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su same-origin, CORS e CSRF: scegli la difesa o la spiegazione giusta.
+
+<Practice generator="c16-cors-csrf" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sapere chi legge e chi scrive al posto tuo è metà della sicurezza di un sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Same-origin policy: gli script non leggono risposte di altre origini; CORS apre eccezioni, ma è una regola del browser, non un controllo del server.
+- CSRF sfrutta i cookie allegati in automatico: si difende con SameSite, token anti-CSRF, controllo dell'Origin e conferme.
+- CORS va configurato con origini precise; le azioni che modificano dati non usano GET.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'origine?", a: "Schema + nome del sito + porta" },
+    { q: "CORS protegge il server?", a: "No: lo applica il browser; il server deve sempre autorizzare" },
+    { q: "Perché il CSRF funziona con i cookie?", a: "Il browser li allega da solo a ogni richiesta verso quel sito" },
+    { q: "Due difese contro il CSRF?", a: "Cookie SameSite e token anti-CSRF controllato dal server" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: la lista dei difetti tipici delle API, la OWASP API Top 10.</Say>
+</Scene>

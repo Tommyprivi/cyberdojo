@@ -1,0 +1,138 @@
+---
+id: H.06.005
+course: hedge
+module: 6
+title: "Liquidità e rimborsi"
+belt: verde
+duration_min: 8
+prerequisites: [H.06.004]
+objectives:
+  - "Spiegare che cos'è la liquidità di un'attività e il costo di uscire in fretta"
+  - "Calcolare l'importo dei rimborsi e quanto va venduto per pagarli"
+  - "Descrivere lock-up, preavviso e gate come difese contro la corsa ai rimborsi"
+video:
+  provider: youtube
+  id: "74KT-aqAGxk"
+  start: 0
+  end: 600
+  channel: "Bank & Finance Consulting Group"
+  title: "Episode 15 — What Is Liquidity?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h06-liquidita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un titolo con un prezzo si possa sempre vendere a quel prezzo"
+  - "Dimenticare che chi esce prima può avvantaggiarsi a spese di chi resta"
+  - "Promettere rimborsi frequenti con attività che si vendono in mesi"
+commands: []
+---
+
+<Scene title="Tutti vogliono uscire">
+Il fondo fittizio Aquila Credito vale 100 milioni di euro. Ha 20 milioni in liquidità e 80 in obbligazioni poco scambiate. Dopo una brutta notizia, gli investitori chiedono il rimborso del **30%**: 30 milioni.
+
+La liquidità copre 20. Ne mancano **10**. Per pagarli Aquila deve vendere obbligazioni che quasi nessuno compra.
+
+La domanda del caso: **a che prezzo si vende, quando tutti vogliono vendere?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro. Numeri inventati, mercati che non regalano niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è la liquidità">
+Un'attività è **liquida** se si vende in fretta senza muovere il prezzo (un titolo molto scambiato). È **poco liquida** se per venderla in fretta devi accettare uno sconto (un'obbligazione rara, un immobile).
+
+Due modi di misurarla:
+
+- **Sconto di uscita**: vendere 10 milioni di titoli con sconto del 5% fa incassare 9,5 milioni.
+- **Giorni per uscire**: posizione di 5 milioni di titoli, se ne vendono 500.000 al giorno senza disturbare il prezzo: **10 giorni**.
+
+<Callout kind="regola">
+Il prezzo che vedi sullo schermo vale per le quantità piccole. Per quelle grandi, il prezzo lo fa chi compra.
+</Callout>
+
+<Say who="assistente">Anche solo la differenza tra prezzo di acquisto e di vendita è un costo: se compri a 100 e rivendi a 98, il giro costa il 2%.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il disallineamento">
+Il vero pericolo nasce dal **disallineamento**: agli investitori si promette di poter uscire spesso, ma le attività si vendono lentamente.
+
+Chi esce **per primo** incassa al valore di ieri; chi resta si ritrova con i titoli peggiori, venduti a sconto. Per questo, appena si sente puzza di crisi, tutti vogliono essere i primi: è la **corsa ai rimborsi**.
+
+Vuoi sentire la parola «liquidità» spiegata da un'altra voce? Il video è in inglese, con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Un fondo che promette rimborsi mensili con immobili in pancia ha costruito una trappola, e ci siedono dentro anche i suoi clienti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le difese">
+I fondi usano regole per far coincidere i tempi:
+
+- **Lock-up**: un periodo iniziale in cui non si può uscire.
+- **Preavviso di rimborso**: bisogna avvisare 30, 60, 90 giorni prima.
+- **Gate**: un limite alla quota di fondo rimborsabile in un periodo.
+- In casi estremi, la **sospensione** dei rimborsi, se il regolamento la prevede.
+
+<Callout kind="attenzione">
+Queste regole proteggono chi resta, ma limitano chi vuole uscire. Prima di investire in un fondo bisogna leggerle: sono parte del rischio.
+</Callout>
+
+<Say who="sensei">Un lucchetto non è una brutta notizia. La brutta notizia è un fondo che non lo ha e promette tutto a tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo vale 200 milioni e gli investitori chiedono il 15% di rimborsi. Quanto deve pagare?"
+  options={["30 milioni", "15 milioni", "185 milioni", "3 milioni"]}
+  answer={0}
+  explain="15% di 200 milioni è 0,15 x 200 = 30 milioni. Chi risponde 185 sottrae il 15% al fondo invece di calcolarne il valore."
+/>
+
+<Say who="assistente">Poi chiediti: quanta liquidità ho in cassa, e quanto devo vendere del resto?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Rimborsi, sconti, giorni per uscire e difese. Numeri fittizi.
+
+<Practice generator="h06-liquidita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. La liquidità non si vede finché non manca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'attività poco liquida si vende in fretta solo con uno sconto; il prezzo sullo schermo vale per piccole quantità.
+- Il pericolo è il disallineamento tra rimborsi promessi e tempi di vendita, e la corsa ai rimborsi.
+- Lock-up, preavviso, gate e sospensione proteggono chi resta, ma limitano chi vuole uscire.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "100 milioni, liquidità 20, rimborsi 30%: quanto vendere d'altro?", a: "10 milioni" },
+    { q: "Che cos'è un gate?", a: "Un limite alla quota rimborsabile in un periodo" },
+    { q: "Posizione 5 milioni, vendibili 500.000 al giorno: giorni per uscire?", a: "10" },
+    { q: "Perché chi esce prima ha un vantaggio?", a: "Incassa prima che i titoli difficili siano venduti a sconto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il rischio di controparte. Che cosa succede se l'altra parte non paga.</Say>
+</Scene>

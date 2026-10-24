@@ -1,0 +1,181 @@
+---
+id: C.19.005
+course: cybersecurity
+module: 19
+title: "Ridurre i falsi positivi"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.004]
+objectives:
+  - "Distinguere falso positivo, falso negativo, vero positivo e vero negativo"
+  - "Ridurre il rumore di una regola con contesto, soglie e filtri precisi senza accecarla"
+  - "Spiegare perché troppi falsi allarmi sono un rischio di sicurezza"
+video:
+  provider: youtube
+  id: "hSlhXaVYMXU"
+  start: 0
+  end: 600
+  channel: "Intelligence Quest"
+  title: "False Positives & False Negatives in Cybersecurity | Detection Errors Explained!"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-falsi-positivi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Spegnere una regola rumorosa invece di migliorarla: si elimina anche il rilevamento"
+  - "Alzare la soglia fino a far sparire i falsi positivi e con loro anche gli attacchi lenti (falsi negativi)"
+  - "Escludere un intero utente o un'intera macchina dalla regola: l'attaccante userà proprio quella"
+commands: []
+---
+
+<Scene title="Duecento allarmi, nessuno li guarda">
+Un SOC riceve ogni giorno duecento allarmi dalla stessa regola: «accesso da un indirizzo nuovo». Quasi tutti sono dipendenti in trasferta o a casa. Dopo due mesi gli analisti chiudono questi allarmi in tre secondi, senza leggerli.
+
+Un giorno, in mezzo agli altri, c'è un accesso vero di un intruso. Viene chiuso in tre secondi come gli altri.
+
+La domanda del caso: **perché una regola troppo rumorosa è pericolosa, e come si rimedia senza spegnerla?**
+
+<Say who="sensei">Chi grida sempre «al lupo» insegna agli altri a non ascoltare. Il lupo vero arriva in mezzo al rumore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro risultati possibili">
+Ogni volta che una regola guarda un evento, può succedere una di quattro cose:
+
+| | C'è un attacco vero | Non c'è attacco |
+|---|---|---|
+| **La regola suona** | **Vero positivo**: giusto | **Falso positivo**: falso allarme |
+| **La regola tace** | **Falso negativo**: attacco perso | **Vero negativo**: giusto |
+
+- Il **falso positivo** costa tempo e fiducia degli analisti.
+- Il **falso negativo** è peggio: un attacco passa senza che nessuno lo veda.
+
+<Callout kind="attenzione">
+Ridurre i falsi positivi tende ad aumentare i falsi negativi. Alzando troppo la soglia, il rumore sparisce, ma spariscono anche gli attacchi lenti e discreti. L'obiettivo è un **equilibrio**, non il silenzio.
+</Callout>
+
+<Say who="assistente">Un allarme silenzioso non è un successo. Se la regola tace perché è cieca, hai solo un falso negativo in più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: il rumore dagli accessi">
+Torniamo al registro degli accessi. Una regola ingenua dice: «avvisa a ogni accesso fallito». Guarda quanti allarmi produrrebbe, e per quali utenti.
+
+<SqlPlayground db="log" query="SELECT utente, COUNT(*) AS falliti FROM accessi WHERE esito = 'fallito' GROUP BY utente ORDER BY falliti DESC;" height={420} />
+
+Osserva: alcuni account con pochi fallimenti sono utenti veri che hanno sbagliato la password. Altri con molti fallimenti, o che nemmeno esistono, sono tentativi di indovinare. Una regola «un fallimento = un allarme» tratta tutti allo stesso modo e inonda il SOC.
+
+Il miglioramento sta nel **contesto**: contare, confrontare, aggiungere informazioni.
+
+<Say who="sensei">La domanda giusta non è «è fallito?». È «è fallito troppe volte, da dove, e poi che cosa è successo?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cinque modi per ridurre il rumore">
+1. **Soglie e finestre**: non un errore, ma «cinque errori in cinque minuti».
+2. **Combinare segnali**: errori **e poi** accesso riuscito (lezione 1).
+3. **Contesto**: l'indirizzo è nell'elenco della sede o della VPN? L'utente è in ferie? L'indirizzo è tra quelli segnalati come malevoli?
+4. **Filtri precisi**: escludere un caso legittimo noto, scritto con più condizioni (programma **e** utente **e** percorso).
+5. **Priorità diverse**: invece di scartare, un segnale debole va a un livello basso, che si guarda in blocco una volta al giorno.
+
+Un esempio di filtro buono contro uno pericoloso:
+
+<Log lines={[
+  "FILTRO BUONO:      escludi se programma = backup-agent.exe",
+  "                   E utente = svc_backup",
+  "                   E percorso = C:\\Program Files\\Backup\\",
+  "",
+  "FILTRO PERICOLOSO: escludi tutto ciò che fa l'utente svc_backup",
+  "                   (un attaccante con quell'account non fa più rumore)",
+]} caption="Più il filtro è preciso, meno spazio lascia per nascondersi." />
+
+<Callout kind="regola">
+Ogni filtro è una **porta lasciata aperta di proposito**. Si scrive stretta, si documenta il perché, si riesamina ogni tanto.
+</Callout>
+
+<Say who="assistente">Meglio cinque filtri piccoli e precisi che uno grande e comodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Misurare per correggere">
+Per sapere se una regola è rumorosa si misura. Un numero molto usato è la **precisione**: tra tutti gli allarmi che la regola ha dato, quanti erano veri?
+
+Esempio. In un mese una regola ha dato 50 allarmi. Gli analisti ne hanno confermati 5 come veri. La precisione è 5 su 50, cioè il **10%**: nove allarmi su dieci sono falsi.
+
+<Log lines={[
+  "allarmi totali:       50",
+  "veri (confermati):     5",
+  "falsi:                45",
+  "precisione = 5 / 50 = 10%",
+]} caption="Un solo numero dice se la regola merita attenzione." />
+
+Dopo aver aggiunto un filtro preciso, il mese successivo gli allarmi sono 12 e i veri sono ancora 5: precisione 5 su 12, circa il **42%**. Gli attacchi veri sono sempre cinque, il rumore è calato di molto: la correzione è riuscita.
+
+La verifica importante è proprio questa: **i veri sono ancora tutti lì?** Se erano 5 e ora sono 2, hai accecato la regola.
+
+Vuoi vedere i concetti spiegati da un'altra voce? Un video in inglese (attiva i sottotitoli):
+
+<Video />
+
+<Say who="sensei">Dopo ogni correzione, contare due cose: quanti falsi sono spariti e quanti veri sono rimasti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Una regola dà 40 allarmi al mese, solo 2 sono veri. Il responsabile propone: «Alziamo la soglia da 3 a 50 errori, così non scatta quasi mai».
+
+<Quiz
+  question="Qual è il rischio principale di questa correzione?"
+  options={[
+    "Gli attaccanti lenti, che provano poche password alla volta, non farebbero più scattare la regola",
+    "Il SIEM non riuscirebbe più a leggere le soglie così alte",
+    "Gli utenti legittimi non potrebbero più sbagliare la password",
+    "Diminuirebbero i vantaggi della regola per i veri positivi",
+  ]}
+  answer={0}
+  explain="Una soglia molto alta fa sparire i falsi positivi ma anche gli attacchi discreti: aumentano i falsi negativi. Meglio aggiungere contesto (per esempio errori seguiti da un accesso riuscito, o indirizzi mai visti) e filtri precisi."
+/>
+
+<Callout kind="curiosita">
+Tutto questo è difesa. Provare password sui sistemi altrui è reato: in Italia, accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo o per cui hai un permesso scritto.
+</Callout>
+
+<Say who="assistente">Quando un rimedio fa sparire tutto, controlla che non abbia fatto sparire anche ciò che cercavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari sui falsi allarmi. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-falsi-positivi" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- Falso positivo: allarme senza attacco. Falso negativo: attacco senza allarme, ed è il peggiore. Ridurre i primi può aumentare i secondi.
+- Si riduce il rumore con soglie, segnali combinati, contesto, filtri precisi e priorità diverse, non spegnendo la regola.
+- Dopo ogni correzione si misura: la precisione deve salire e i veri positivi devono restare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un falso positivo?", a: "Un allarme che suona quando non c'è nessun attacco" },
+    { q: "Perché troppi falsi positivi sono pericolosi?", a: "Gli analisti smettono di leggere gli allarmi e può sfuggirne uno vero" },
+    { q: "Come si calcola la precisione di una regola?", a: "Allarmi veri divisi per tutti gli allarmi dati" },
+    { q: "Come deve essere un filtro per essere sicuro?", a: "Preciso, con più condizioni, documentato e riesaminato nel tempo" },
+  ]}
+/>
+
+<Say who="sensei">Abbiamo un numero per una regola. Ma un SOC si giudica su molti numeri. Prossima lezione: le metriche.</Say>
+</Scene>

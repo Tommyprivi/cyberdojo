@@ -1,0 +1,189 @@
+---
+id: C.21.005
+course: cybersecurity
+module: 21
+title: "Il rapporto avanzato"
+belt: marrone
+duration_min: 10
+prerequisites: [C.21.004]
+objectives:
+  - "Scrivere una sintesi per la direzione e una sezione tecnica per chi corregge"
+  - "Valutare il rischio combinando gravità, probabilità e impatto sul cliente"
+  - "Riconoscere una catena di debolezze e proporre rimedi ordinati nel tempo"
+video:
+  provider: youtube
+  id: "J34DnrX7dTo"
+  start: 0
+  end: 600
+  channel: "HackerSploit"
+  title: "How To Write A Penetration Testing Report"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-rapporto
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un solo documento per lettori diversi, che nessuno dei due capisce"
+  - "Dare il punteggio di gravità senza spiegare l'impatto per quel cliente"
+  - "Elencare i rimedi senza ordine di priorità, responsabile e scadenza"
+commands: []
+---
+
+<Scene title="Due lettori, un rapporto">
+Marta ha finito il lavoro per la **Bianchi Logistica Srl** (fittizia). Consegna un rapporto di sessanta pagine. Il titolare legge due righe e lo mette in un cassetto. L'amministratore di sistema, invece, cerca per ore il punto che gli dice **che cosa correggere per primo**.
+
+La domanda del caso: **come si scrive un rapporto per due lettori che cercano cose diverse?**
+
+<Say who="sensei">Nel modulo C8 hai imparato la struttura base del rapporto. Qui la si porta a livello professionale. Ricorda sempre ambito e permesso in testa al documento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due documenti in uno">
+Un rapporto avanzato ha **due livelli**:
+
+- **Sintesi per la direzione** (una o due pagine): obiettivo, che cosa si è fatto, i risultati principali in parole semplici, cosa fare per primo, quanto è grave nel complesso.
+- **Parte tecnica** (il resto): ogni finding con evidenza, causa, rimedio dettagliato.
+
+Chi decide legge solo la sintesi. Chi corregge legge la parte tecnica. Se mescoli le due cose, nessuno trova ciò che cerca.
+
+Un'altra voce, in inglese, sul modo di scrivere un rapporto di penetration test:
+
+<Video />
+
+<Callout kind="regola">
+In testa al rapporto vanno sempre **ambito, permesso, date, metodo seguito**: senza questa riga, il documento non ha valore.
+</Callout>
+
+<Say who="assistente">Scrivi la sintesi per tua nonna o per il titolare: se la capiscono, è fatta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si valuta il rischio">
+Il punteggio **CVSS** (visto nella lezione 3) misura la gravità **generica**. Nel rapporto si valuta il **rischio per quel cliente**, mettendo insieme:
+
+- **probabilità**: quanto è facile che qualcuno sfrutti la debolezza (è raggiungibile da Internet? serve già un accesso?);
+- **impatto**: che cosa si perderebbe (dati dei clienti, fermo del servizio, soldi, reputazione);
+- **contesto**: che controlli ci sono già (monitoraggio, copie di sicurezza, segmentazione).
+
+| Probabilità | Impatto | Rischio |
+|---|---|---|
+| Alta | Alto | **Alto**: da correggere subito |
+| Alta | Basso | Medio: da pianificare |
+| Bassa | Alto | Medio: da pianificare, con controlli intermedi |
+| Bassa | Basso | Basso: da annotare |
+
+<Callout kind="trucco">
+Scrivi sempre **perché** hai dato quel livello. «Alto perché raggiungibile da Internet e dietro ci sono i dati dei clienti» convince. «Alto» da solo no.
+</Callout>
+
+<Say who="sensei">Un punteggio senza spiegazione è un'opinione. Con la spiegazione è un'analisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le catene di debolezze">
+A volte tre debolezze **piccole** insieme valgono quanto una grande. Esempio fittizio:
+
+<Guided
+  steps={[
+    "Debolezza 1 (bassa): il sito mostra messaggi d'errore troppo dettagliati, con il nome del programma usato.",
+    "Debolezza 2 (media): un pannello di gestione è raggiungibile da tutta la rete degli uffici.",
+    "Debolezza 3 (media): per il pannello vale una password semplice, mai cambiata.",
+    "Insieme: chi conosce il programma, raggiunge il pannello e indovina la password può gestire il sito.",
+    "Nel rapporto: tre finding separati, più un finding «catena» che spiega l'impatto combinato e che correggere uno qualsiasi dei tre anelli spezza la catena.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Mostrare la catena aiuta il cliente a capire perché correggere anche le debolezze «basse»: da sole sembrano innocue, insieme no.
+</Callout>
+
+<Say who="assistente">Quando elenchi i problemi, chiediti: «Si possono collegare tra loro?». Spesso è lì che sta il vero rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rimedi nel tempo">
+Un buon elenco di rimedi ha **ordine, responsabile, scadenza**. Per esempio:
+
+| Quando | Che cosa | Chi |
+|---|---|---|
+| **Subito** (entro giorni) | Limitare il pannello alla sola rete di amministrazione | Amministratore di sistema |
+| **Breve** (entro un mese) | Cambiare le password e attivare un secondo fattore | Amministratore e responsabile |
+| **Medio** (1-3 mesi) | Aggiornare il programma e ridurre i messaggi d'errore | Fornitore del sito |
+| **Lungo** (oltre) | Rivedere la separazione delle reti | Responsabile IT con la direzione |
+
+Dopo i rimedi, si concorda una **verifica successiva** (*retest*): si ripete il controllo, sempre dentro l'ambito concordato, e si annota che il problema è sparito.
+
+<Callout kind="attenzione">
+Nel rapporto indica anche **cosa va bene**: controlli che hanno funzionato e allarmi che sono scattati. Dà al cliente un quadro onesto e serve a non buttare il lavoro già fatto.
+</Callout>
+
+<Say who="sensei">Un rapporto non dà la colpa a nessuno. Descrive la situazione e indica la strada.</Say>
+
+Il rapporto è **riservato**: va solo a chi ha dato l'incarico, per un canale sicuro. Valgono alcune regole:
+
+- evidenze **minime**, senza password vere né dati di persone;
+- il documento ha un **livello di riservatezza** scritto in testa;
+- si stabilisce **quanto tempo** si conservano le evidenze e come si **distruggono** al termine, come previsto nel contratto;
+- il rapporto non si usa come vanto né si mostra ad altri: nei portfolio personali si usano solo rapporti su laboratori propri o su aziende fittizie.
+
+<Say who="assistente">Il rapporto è come una cartella clinica: lo vede chi deve, e nessun altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un finding dice: «Pannello di gestione raggiungibile da tutta la rete. Gravità CVSS 5,3.» Che cosa manca per renderlo utile al titolare?"
+  options={[
+    "L'impatto per l'azienda, il perché del livello di rischio, e un rimedio con responsabile e scadenza",
+    "Un punteggio più alto, per attirare l'attenzione",
+    "Una copia delle password trovate, come prova",
+    "Nulla: il punteggio basta a decidere la priorità",
+  ]}
+  answer={0}
+  explain="Il punteggio è solo il punto di partenza. Serve dire che cosa rischia l'azienda, perché il livello è quello e che cosa fare, chi lo fa, entro quando. Gonfiare il numero e allegare password vere sono errori: il primo falsa il quadro, il secondo espone dati sensibili."
+/>
+
+<Say who="assistente">Controlla sempre se il finding risponde a tre domande: che cosa rischio, perché, che cosa faccio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sintesi, rischio, catene e rimedi. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-rapporto" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un rapporto chiaro vale più di mille scansioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il rapporto ha due livelli: sintesi per chi decide, parte tecnica per chi corregge; in testa sempre ambito, permesso, date e metodo.
+- Il rischio combina probabilità, impatto e contesto; il punteggio CVSS è solo l'inizio e va sempre spiegato.
+- Le debolezze si possono concatenare; i rimedi hanno ordine, responsabile e scadenza, e si chiudono con un retest.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Chi legge la sintesi e chi la parte tecnica?", a: "La sintesi chi decide (direzione); la parte tecnica chi corregge" },
+    { q: "Da che cosa dipende il rischio per un cliente?", a: "Da probabilità, impatto e contesto, non solo dal punteggio CVSS" },
+    { q: "Che cos'è una catena di debolezze?", a: "Più debolezze piccole che insieme causano un impatto più grave" },
+    { q: "Che cos'è un retest?", a: "La verifica successiva ai rimedi, dentro l'ambito, che conferma che il problema è sparito" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: la carriera. Che cosa studiare, quali certificazioni esistono e come costruirsi una reputazione pulita.</Say>
+</Scene>

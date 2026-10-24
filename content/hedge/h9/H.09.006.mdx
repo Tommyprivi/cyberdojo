@@ -1,0 +1,168 @@
+---
+id: H.09.006
+course: hedge
+module: 9
+title: "Consob e Banca d'Italia"
+belt: blu
+duration_min: 8
+prerequisites: [H.09.005]
+objectives:
+  - "Distinguere in sintesi i compiti di Consob e Banca d'Italia"
+  - "Collocare ESMA e UIF nel quadro delle autorità"
+  - "Sapere dove verificare se un intermediario è autorizzato"
+video:
+  provider: youtube
+  id: "ixN7N5Ybk-o"
+  start: 0
+  end: 600
+  channel: "Banca d'Italia - Eurosistema"
+  title: "Che cosa fa la Banca d'Italia"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-autorita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la vigilanza rimborsi le perdite: controlla le regole, non copre il rischio di mercato"
+  - "Confondere i compiti: Consob guarda trasparenza e correttezza, Banca d'Italia stabilità e sana gestione"
+  - "Fidarsi solo del sito del gestore per sapere se è autorizzato"
+commands: []
+---
+
+<Scene title="Chi guarda chi">
+Marco riceve un'offerta di investimento da una società che non conosce. Il sito dice: «Controllati dalle autorità». Quali autorità? E chi lo dice?
+
+La domanda del caso: **chi vigila sui gestori di fondi in Italia, e come posso controllare se una società è davvero autorizzata?**
+
+Ricorda: il corso è educazione, non consulenza legale. Si può perdere denaro, anche tutto. Quadro in sintesi, ottobre 2026: controlla sempre i siti ufficiali delle autorità.
+
+<Say who="sensei">«Siamo controllati» è una frase. L'elenco ufficiale è un fatto. Cerca il fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Consob">
+**Consob** (Commissione nazionale per le società e la Borsa) è l'autorità italiana che, in sintesi, si occupa di:
+
+- **tutela degli investitori**;
+- **trasparenza e correttezza** dei comportamenti nei mercati e degli intermediari;
+- vigilanza su informazioni, offerte al pubblico e abusi di mercato.
+
+In pratica: guarda se ti dicono la verità e se si comportano in modo corretto.
+
+<Callout kind="regola">
+Consob: **trasparenza e correttezza**. Come ti trattano e che cosa ti dicono.
+</Callout>
+
+<Say who="assistente">Pensa a Consob come a chi controlla l'etichetta e il comportamento del venditore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Banca d'Italia">
+**Banca d'Italia** è la banca centrale italiana, parte dell'Eurosistema. Tra i suoi compiti c'è la **vigilanza** su banche, SGR e altri intermediari, per la **stabilità** e la **sana e prudente gestione**.
+
+In pratica: guarda se l'intermediario è solido e organizzato. In Italia ospita anche la **UIF**, l'unità che riceve le segnalazioni antiriciclaggio.
+
+Un video istituzionale della Banca d'Italia, in italiano:
+
+<Video />
+
+<Callout kind="attenzione">
+I compiti sono divisi ma si coordinano. Per i gestori di fondi, in sintesi, Banca d'Italia guarda solidità e organizzazione, Consob trasparenza e correttezza. I dettagli sono nel testo unico della finanza (TUF) e nelle norme attuative: controlla le fonti ufficiali.
+</Callout>
+
+<Say who="sensei">Una guarda se la casa è solida, l'altra se il venditore è onesto. Servono tutte e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Europa e Italia">
+Le regole di base nascono spesso in Europa (direttive come AIFMD e MiFID II) e in Italia le **autorità nazionali** le applicano.
+
+Il livello europeo: **ESMA** è l'autorità europea dei mercati finanziari. Favorisce regole e prassi comuni tra i Paesi, ma non gestisce i fondi italiani.
+
+Che cosa possono fare le autorità, in generale: chiedere correzioni, applicare **sanzioni** e, nei casi gravi, **limitare o revocare** l'autorizzazione.
+
+<Callout kind="curiosita">
+Una SGR che vuole lanciare un hedge fund in Italia ha bisogno di un'autorizzazione, e le autorità verificano organizzazione, requisiti e controlli.
+</Callout>
+
+<Say who="assistente">Nel quadro europeo ogni Paese applica le regole con le sue autorità: è un lavoro a squadre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vigilato non vuol dire garantito">
+Ricordiamolo ancora, perché è l'errore più comune.
+
+<Quiz
+  question="Un investitore perde soldi in un fondo di un gestore regolarmente autorizzato e senza irregolarità. L'autorità deve rimborsarlo?"
+  options={[
+    "No: la vigilanza controlla il rispetto delle regole, non copre le perdite di mercato",
+    "Sì, l'autorità rimborsa sempre",
+    "Sì, entro 30 giorni",
+    "Sì, ma solo se il fondo era italiano",
+  ]}
+  answer={0}
+  explain="La vigilanza serve a far rispettare regole di trasparenza, organizzazione e correttezza. Le perdite dovute al mercato restano a carico dell'investitore: per questo servono prudenza e comprensione del rischio."
+/>
+
+<Say who="sensei">Le autorità ti difendono dalle scorrettezze. Dal rischio ti difendi tu, capendolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove controllare">
+Torniamo a Marco e all'offerta sospetta.
+
+<Guided
+  steps={[
+    "Primo passo: non fidarsi del solo sito della società o di chi propone l'investimento.",
+    "Secondo passo: cercare la società negli elenchi ufficiali di Consob e Banca d'Italia e, se serve, nei registri delle autorità europee.",
+    "Terzo passo: diffidare di promesse di rendimento garantito, fretta e pressioni.",
+    "Quarto passo: in caso di dubbio, usare gli strumenti di segnalazione delle autorità e parlare con un professionista indipendente.",
+  ]}
+/>
+
+<Say who="sensei">Se non trovi la società in un elenco ufficiale, la risposta è già un'indicazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui ruoli delle autorità: scegli che cosa è corretto.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-autorita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: regole, controlli e autorità fanno parte dello stesso sistema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Consob guarda trasparenza e correttezza e tutela gli investitori; Banca d'Italia guarda stabilità e sana gestione degli intermediari.
+- ESMA è l'autorità europea; la UIF presso la Banca d'Italia riceve le segnalazioni antiriciclaggio.
+- Vigilato non vuol dire garantito: si controllano gli elenchi ufficiali e si può comunque perdere denaro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Compito principale della Consob?", a: "Trasparenza e correttezza nei mercati, tutela degli investitori" },
+    { q: "Compito della Banca d'Italia nella vigilanza?", a: "Stabilità e sana e prudente gestione degli intermediari" },
+    { q: "Che cos'è l'ESMA?", a: "L'autorità europea dei mercati finanziari" },
+    { q: "La vigilanza rimborsa le perdite di mercato?", a: "No: controlla le regole, non copre il rischio" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossima tappa: gli investitori, e come si valuta un fondo con occhi critici.</Say>
+</Scene>

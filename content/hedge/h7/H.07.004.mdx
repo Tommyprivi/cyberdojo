@@ -1,0 +1,155 @@
+---
+id: H.07.004
+course: hedge
+module: 7
+title: "Esposizione netta e lorda"
+belt: verde
+duration_min: 8
+prerequisites: [H.07.003]
+objectives:
+  - "Calcolare esposizione netta e lorda in percentuale del capitale"
+  - "Spiegare che cosa dice la netta (rischio di mercato) e che cosa dice la lorda (leva)"
+  - "Riconoscere il rischio delle posizioni corte e verificare un limite di esposizione"
+video:
+  provider: youtube
+  id: "nxlh0Rq6Xhg"
+  start: 0
+  end: 600
+  channel: "iConnections"
+  title: "What Is Net Exposure? How Hedge Funds Control Market Risk | Alts Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h07-esposizione
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Sommare lunghe e corte per calcolare la netta"
+  - "Credere che netta zero significhi nessun rischio"
+  - "Pensare che le posizioni corte abbiano una perdita massima uguale a quanto venduto"
+commands: []
+---
+
+<Scene title="Il fondo che «non rischia»">
+Il fondo fittizio **Rondine Capital** compra azioni per 80 e ne vende allo scoperto per 80, su un capitale di 100. «Siamo neutrali: il mercato non ci riguarda», dice il gestore.
+
+Marta chiede: «E la leva? Hai 160 di posizioni su 100 di capitale».
+
+La domanda del caso: **che cosa dicono due numeri diversi, netta e lorda?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. «Neutrale» è una parola. I numeri sono un'altra cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lunghe e corte">
+Una posizione **lunga** guadagna se il prezzo sale. Una posizione **corta** (vendita allo scoperto: si vende un titolo preso in prestito, sperando di ricomprarlo più in basso) guadagna se il prezzo scende.
+
+Convenzione: tutto in percentuale del capitale (NAV).
+
+<Callout kind="regola">
+**Netta** = lunghe meno corte. **Lorda** = lunghe più corte. La leva lorda è la lorda divisa per 100%.
+</Callout>
+
+<Log lines={[
+  "capitale 100   lunghe 120   corte 70",
+  "netta  = 120 - 70 =  50%",
+  "lorda  = 120 + 70 = 190%",
+  "leva lorda = 1,9 volte il capitale",
+]} />
+
+<Say who="assistente">Due somme diverse, due domande diverse. La prima: quanto mercato ho addosso? La seconda: quanta leva?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice la netta">
+La netta misura il **rischio di mercato**: di quanto si muove il fondo se tutto il mercato sale o scende.
+
+Esempio con titoli che si muovono come il mercato (beta 1): netta 50%, mercato -10%. Il fondo perde circa 50% × 10% = **5%**.
+
+Un'altra voce, in inglese con sottotitoli, spiega come i fondi controllano l'esposizione netta:
+
+<Video />
+
+<Callout kind="attenzione">
+Netta zero non vuol dire nessun rischio: lunghe e corte possono muoversi in modo diverso. Il gestore può aver scelto male i titoli da comprare o da vendere.
+</Callout>
+
+<Say who="sensei">Neutrale rispetto al mercato non vuol dire neutrale rispetto agli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice la lorda e le corte">
+La lorda dice quanta **leva** si usa e quante posizioni sono in gioco. Netta 0% e lorda 160% sono diverse da netta 0% e lorda 20%: nel primo caso gli errori di selezione costano molto di più.
+
+<Callout kind="attenzione">
+Una posizione corta ha un rischio particolare: se si vende per 10 milioni, il prezzo può salire oltre il doppio. La perdita teorica può superare i 10 milioni e non ha un tetto, perché il prezzo di un titolo può salire senza limite.
+</Callout>
+
+<Guided
+  steps={[
+    "Limite di netta: 30% del capitale. Il fondo ha capitale 100, lunghe 110 e corte 60.",
+    "Netta = 110 - 60 = 50%. Lorda = 170%.",
+    "50% è oltre il limite di 30%: il fondo è fuori regola di 20 punti percentuali.",
+    "Si segnala, si riporta la netta dentro il limite e si documenta quello che è successo.",
+  ]}
+/>
+
+<Say who="sensei">Un limite scritto e non controllato è una frase decorativa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un fondo ha capitale 200 milioni, lunghe per 260 e corte per 60. Quanto vale l'esposizione netta sul capitale?"
+  options={[
+    "130%",
+    "160%",
+    "100%",
+    "30%",
+  ]}
+  answer={2}
+  explain="Netta = lunghe meno corte = 260 - 60 = 200 milioni, cioè il 100% del capitale (200). 160% è la lorda: (260 + 60) / 200. Chi risponde 130% ha diviso solo le lunghe per il capitale."
+/>
+
+<Say who="assistente">Un indizio: prima fai la sottrazione in milioni, poi dividi per il capitale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Numeri fittizi: netta, lorda, limiti e rischio delle posizioni corte. Hai 3 tentativi.
+
+<Practice generator="h07-esposizione" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. I mercati non regalano niente: nemmeno a chi sa scrivere «neutrale» su una presentazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Netta = lunghe meno corte (rischio di mercato); lorda = lunghe più corte (leva); entrambe in percentuale del capitale.
+- Netta zero non è assenza di rischio: restano il rischio di selezione e la leva.
+- Le posizioni corte possono perdere più del valore venduto; i limiti di esposizione vanno controllati e rispettati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si calcola l'esposizione netta?", a: "Lunghe meno corte, in percentuale del capitale" },
+    { q: "E la lorda?", a: "Lunghe più corte, in percentuale del capitale" },
+    { q: "Lunghe 120, corte 70, capitale 100: netta e lorda?", a: "Netta 50% e lorda 190%" },
+    { q: "Perché una posizione corta può perdere più del valore venduto?", a: "Perché il prezzo può salire senza limite" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il ribilanciamento, cioè come si riportano i pesi dove devono stare.</Say>
+</Scene>

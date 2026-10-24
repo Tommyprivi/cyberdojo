@@ -1,0 +1,183 @@
+---
+id: C.14.006
+course: cybersecurity
+module: 14
+title: "Il registro eventi di Windows: leggere le orme"
+belt: blu
+duration_min: 11
+prerequisites: [C.14.005]
+objectives:
+  - "Orientarsi tra i registri (Security, System, Application) e leggere gli eventi chiave (4624, 4625, 4672, 4688, 4720, 4740, 1102)"
+  - "Interpretare il tipo di accesso di un evento 4624 e riconoscere anomalie"
+  - "Spiegare perché servono audit attivati, conservazione e raccolta centrale dei log"
+video:
+  provider: youtube
+  id: "VV3HI8nS5RI"
+  start: 0
+  end: 466
+  channel: "Vixen Hack"
+  title: "Windows Event Viewer Explained | Learn Logs, Event IDs & Custom Views (English Subtitles)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-eventi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che Windows registri tutto da solo: molti audit vanno attivati"
+  - "Guardare solo il codice dell'evento e non il tipo di accesso, l'account e l'origine"
+  - "Lasciare i log solo sulla macchina compromessa, dove chi attacca può cancellarli"
+commands: []
+---
+
+<Scene title="Il registro cancellato">
+Alla **Bianchi Logistica** un server di file ha comportamenti strani. L'analista apre il registro di sicurezza e trova pochissimo: un evento per tutta la notte.
+
+<Log lines={[
+  "03:52  1102  Il registro di controllo è stato cancellato   utente: admin.temp",
+  "03:55  4624  accesso riuscito  tipo 10  utente: admin.temp  origine: 10.0.4.77",
+]} caption="Prima la cancellazione, poi un accesso remoto." />
+
+La domanda del caso: **che cosa è successo, e che cosa non possiamo più sapere?**
+
+<Say who="sensei">Chi cancella il registro ammette di avere qualcosa da nascondere. L'evento 1102 è la confessione. Il resto è da ricostruire altrove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I registri e dove si guarda">
+L'**Event Viewer** (Visualizzatore eventi) mostra i diari di Windows. I tre principali:
+
+- **Security**: accessi, creazione di account, uso dei privilegi, cambi di permessi. Il registro della sicurezza.
+- **System**: avvio e arresto di servizi, driver, errori del sistema.
+- **Application**: messaggi dei programmi.
+
+Ogni evento ha un **ID**, un'**ora**, l'**account**, e dettagli come il **computer di origine**.
+
+<Callout kind="regola">
+Nel dominio i controller di dominio hanno il quadro più utile: sul registro **Security dei DC** si leggono gli accessi di tutti gli utenti del dominio.
+</Callout>
+
+Vuoi sentirlo da un'altra voce? Meno di otto minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Il registro Security è il diario di bordo della sicurezza. Se non lo scrivi o non lo leggi, la nave è senza memoria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli ID da sapere">
+Una piccola lista, da tenere sempre sotto mano.
+
+<Log lines={[
+  "4624  accesso riuscito",
+  "4625  accesso fallito",
+  "4634  disconnessione",
+  "4648  accesso con credenziali esplicite",
+  "4672  privilegi speciali assegnati (tipico degli amministratori)",
+  "4688  creazione di un processo (con la riga di comando, se abilitata)",
+  "4720  account utente creato",
+  "4728  membro aggiunto a un gruppo globale di sicurezza",
+  "4740  account bloccato",
+  "4768  richiesto un TGT (Kerberos)",
+  "4769  richiesto un ticket di servizio (Kerberos)",
+  "1102  registro di controllo cancellato",
+]} />
+
+<Callout kind="trucco">
+Non imparare i numeri a memoria: tieni una scheda. Impara invece le **domande**: chi? da dove? a che ora? con quali privilegi?
+</Callout>
+
+<Say who="sensei">Il numero ti dice che cosa è successo. Il contesto ti dice se è un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tipo di accesso">
+L'evento **4624** contiene il **tipo di accesso** (Logon Type). I principali:
+
+- **2**: interattivo, con tastiera e schermo del computer;
+- **3**: di rete (per esempio aprire una cartella condivisa);
+- **4**: batch (attività pianificata);
+- **5**: servizio;
+- **10**: interattivo remoto, per esempio **Desktop remoto (RDP)**.
+
+Torna al caso: dopo la cancellazione del registro, un accesso **tipo 10** con un account **admin.temp**, da un computer interno insolito. Un'anomalia chiara.
+
+<Callout kind="attenzione">
+Un account amministrativo che entra alle 03:55 in remoto, da un PC che non usa mai, va sempre guardato. Può esserci una spiegazione normale, ma va cercata.
+</Callout>
+
+<Say who="assistente">Chi? Admin.temp. Come? Desktop remoto. Quando? Di notte. Da dove? Un PC mai visto. Quattro risposte, un allarme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Accendere, conservare, centralizzare">
+Tre lavori prima di avere un incidente.
+
+1. **Accendere gli audit.** Molti eventi non vengono registrati se la **politica di audit** non li abilita (per esempio la creazione dei processi con riga di comando, 4688). Si imposta con una **GPO**.
+2. **Conservare.** Un registro piccolo si riempie e sovrascrive i vecchi eventi: servono spazio e tempi di conservazione adeguati.
+3. **Centralizzare.** Inviare i log a un sistema centrale (un **SIEM**, lo hai incontrato nel modulo 7). Così chi compromette un PC e cancella il registro locale non cancella anche la copia.
+
+<Callout kind="curiosita">
+**Sysmon** è uno strumento gratuito di Microsoft che aggiunge dettagli (processi, connessioni di rete, modifiche ai file) in un registro proprio. Utile quando i log standard non bastano.
+</Callout>
+
+<Say who="sensei">Una prova che esiste solo sul computer del sospettato non è una prova. Ricorda la copia fuori dalla porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vedi 400 eventi 4625 in 5 minuti da un solo IP su molti account diversi, seguiti da un 4624 riuscito dallo stesso IP. Qual è la lettura più ragionevole e il passo successivo?"
+  options={[
+    "Probabile tentativo di indovinare le password andato a segno su un account: isolare l'origine, bloccare l'account e cercare le sue attività successive",
+    "Un normale avvio del mattino: non serve fare nulla",
+    "Un errore di stampa: riavviare la stampante",
+    "Un aggiornamento di Windows: aspettare la fine",
+  ]}
+  answer={0}
+  explain="Molti fallimenti, da un solo IP, su account diversi, e poi un accesso riuscito dalla stessa origine, sono il quadro tipico di un tentativo di indovinare password che ha funzionato. Il passo successivo è contenere (origine e account) e cercare che cosa ha fatto l'account dopo."
+/>
+
+<Say who="sensei">Non fermarti al codice dell'evento. La storia sta nella sequenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul registro eventi: ID, tipi di accesso, conservazione e raccolta centrale.
+
+<Practice generator="c14-eventi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il log è la memoria dell'azienda. Impara a leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Il registro Security (soprattutto sui controller di dominio) conserva gli eventi chiave: 4624, 4625, 4672, 4688, 4720, 4740, 4768, 4769, 1102.
+- Per un 4624 conta il tipo di accesso (3 di rete, 10 remoto), l'account, l'origine e l'ora: il contesto dice se è un problema.
+- Servono audit attivi, conservazione adeguata e raccolta centrale: un log cancellato solo sulla macchina compromessa è un'indagine perduta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa indica l'evento 1102?", a: "Il registro di controllo è stato cancellato" },
+    { q: "Che cosa vuol dire tipo di accesso 10 in un 4624?", a: "Accesso interattivo remoto, per esempio Desktop remoto" },
+    { q: "Che cosa registra il 4740?", a: "Un account bloccato per troppi tentativi falliti" },
+    { q: "Perché inviare i log a un sistema centrale?", a: "Perché chi cancella il log locale non cancella anche la copia" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: come si rende Windows più difficile da attaccare. L'hardening.</Say>
+</Scene>

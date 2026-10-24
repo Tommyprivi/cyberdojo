@@ -1,0 +1,166 @@
+---
+id: C.17.001
+course: cybersecurity
+module: 17
+title: "Chi protegge cosa: la responsabilità condivisa"
+belt: blu
+duration_min: 9
+prerequisites: [C.04.006]
+objectives:
+  - "Spiegare la differenza tra sicurezza «del» cloud e sicurezza «nel» cloud"
+  - "Indicare chi si occupa di cosa in IaaS, PaaS e SaaS"
+  - "Individuare le zone grigie in un caso di migrazione al cloud"
+video:
+  provider: youtube
+  id: "ndV2oq2QggQ"
+  start: 0
+  end: 600
+  channel: "Mindset Cyber"
+  title: "Cloud Shared Responsibility Model Explained – What You're Still Accountable For?"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-responsabilita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che spostare tutto nel cloud significhi consegnare al fornitore anche la sicurezza"
+  - "Dimenticare che dati, utenti e permessi restano sempre del cliente"
+  - "Non scrivere chi gestisce ogni controllo, lasciando zone grigie"
+commands: []
+---
+
+<Scene title="«Ci pensa il fornitore»">
+Lo studio di commercialisti **Rossi & Neri** (nomi fittizi) ha spostato il suo gestionale su una **macchina virtuale** nel cloud: un computer simulato, affittato a ore. Il titolare dice a tutti: «Ora la sicurezza è un problema del fornitore».
+
+Tre mesi dopo, un estraneo entra nel gestionale. Dai registri risulta questo:
+
+<Log lines={[
+  "macchina: gestionale-rossi-neri    sistema operativo: versione di 4 anni fa",
+  "aggiornamenti di sicurezza: mai installati",
+  "accesso remoto: aperto a tutta Internet",
+  "fornitore cloud: data center e hardware in regola, nessun guasto",
+]} caption="Il fornitore ha fatto il suo. Eppure l'estraneo è entrato." />
+
+La domanda del caso: **chi era responsabile di cosa?**
+
+<Say who="sensei">«Nel cloud» non vuol dire «non è affar mio». Cambia chi tiene le chiavi di ogni porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Del cloud e nel cloud">
+Il **cloud** è l'insieme di computer di un fornitore (per esempio AWS, Microsoft Azure o Google Cloud) che si affittano via Internet.
+
+Il **modello di responsabilità condivisa** divide i compiti in due:
+
+- **Sicurezza «del» cloud**: tocca al fornitore. Edifici, corrente, raffreddamento, server fisici, rete di base.
+- **Sicurezza «nel» cloud**: tocca al cliente. Dati, utenti, permessi, configurazioni e (a seconda del servizio) sistema operativo e applicazioni.
+
+<Callout kind="regola">
+Il fornitore protegge **il cloud**. Tu proteggi **ciò che ci metti dentro** e **come lo configuri**.
+</Callout>
+
+Pensa a un **condominio**: l'amministratore cura portone e tetto. La porta del tuo appartamento, la chiudi tu.
+
+<Say who="assistente">Il portone è del fornitore. La tua porta di casa è tua. Se la lasci aperta, il condominio non c'entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IaaS, PaaS, SaaS">
+Il confine si sposta secondo il **modello di servizio**:
+
+- **IaaS** (*infrastruttura come servizio*): affitti macchine virtuali e rete. Il fornitore gestisce hardware e virtualizzazione; **tu** sistema operativo, aggiornamenti, applicazioni, dati, accessi.
+- **PaaS** (*piattaforma come servizio*): porti il tuo programma su una piattaforma pronta. Il fornitore gestisce anche sistema operativo e piattaforma; **tu** codice, dati, accessi.
+- **SaaS** (*software come servizio*): usi un'applicazione già fatta (posta, fogli di calcolo). Il fornitore gestisce quasi tutto; **tu** utenti, password, permessi, quali dati inserisci.
+
+| Compito | IaaS | PaaS | SaaS |
+|---|---|---|---|
+| Data center e hardware | fornitore | fornitore | fornitore |
+| Sistema operativo | **cliente** | fornitore | fornitore |
+| Applicazione e codice | **cliente** | **cliente** | fornitore |
+| Dati, utenti, permessi | **cliente** | **cliente** | **cliente** |
+
+<Callout kind="attenzione">
+L'ultima riga non cambia mai: **dati, identità e permessi sono sempre del cliente**. Anche con il servizio più «chiavi in mano».
+</Callout>
+
+<Say who="sensei">Più il servizio è pronto, meno cose gestisci. Ma quella riga in fondo resta tua, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Zone grigie e responsabilità legale">
+Spesso i guai nascono nelle **zone grigie**: due parti che pensano ciascuna che «se ne occupi l'altra». Esempi: chi aggiorna il sistema operativo, chi attiva i log, chi fa il backup dei dati.
+
+Un buon fornitore pubblica il suo documento di responsabilità condivisa. Si legge **prima** di migrare e si trasforma in una tabella interna: controllo, responsabile, come lo verifichiamo.
+
+Anche per la legge conta: con il **GDPR**, se metti dati di clienti nel cloud, resti tu il **titolare del trattamento**. Il fornitore è il *responsabile del trattamento* e va nominato con un accordo scritto. Se i dati escono, rispondi tu verso le persone.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese, con sottotitoli attivabili:
+
+<Video />
+
+<Say who="assistente">Una tabella con un nome accanto a ogni controllo. Brutta da vedere, bellissima nel giorno dell'incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda usa un servizio SaaS di posta. Un dipendente usa la password «123456» e un estraneo entra nella sua casella. Di chi è la responsabilità principale?"
+  options={["Dell'azienda cliente, che gestisce utenti e password", "Del fornitore, perché il servizio è suo", "Di nessuno: è un guasto del servizio", "Del fornitore di connessione a Internet"]}
+  answer={0}
+  explain="Anche in un SaaS, utenti e password restano del cliente. Chi risponde «del fornitore» ha dimenticato la riga in fondo alla tabella: dati, identità e permessi sono sempre del cliente."
+/>
+
+Torniamo al caso dello studio. Ricostruiamolo:
+
+<Guided
+  steps={[
+    "Data center e server fisici: del fornitore. Sono in regola.",
+    "Sistema operativo non aggiornato: in IaaS tocca al cliente. Qui è mancato.",
+    "Accesso remoto aperto a tutta Internet: configurazione del cliente. Un altro errore.",
+    "Conclusione: l'incidente nasce da due scelte del cliente, non da un guasto del fornitore.",
+  ]}
+/>
+
+<Say who="sensei">Il fornitore non ha sbagliato niente. Per questo dire «è colpa sua» non porta a nessuna correzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su chi gestisce cosa e su come si leggono i casi. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-responsabilita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa dove finisce il proprio compito sa anche dove cominciare a proteggere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il fornitore protegge il cloud; il cliente protegge ciò che ci mette dentro e come lo configura.
+- IaaS lascia più compiti al cliente, SaaS meno; ma dati, utenti e permessi sono sempre del cliente.
+- Le zone grigie si chiudono con una tabella: controllo, responsabile, verifica.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Sicurezza «del» cloud o «nel» cloud: quale tocca al cliente?", a: "Quella «nel» cloud: dati, accessi, configurazioni" },
+    { q: "In IaaS, chi aggiorna il sistema operativo?", a: "Il cliente" },
+    { q: "Che cosa non passa mai al fornitore?", a: "Dati, identità e permessi" },
+    { q: "Come si evitano le zone grigie?", a: "Con una tabella dei controlli e dei responsabili" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le chiavi di casa. Chi può fare che cosa nel cloud, e perché «amministratore per tutti» è una pessima idea.</Say>
+</Scene>

@@ -1,0 +1,164 @@
+---
+id: H.08.006
+course: hedge
+module: 8
+title: "La continuità operativa"
+belt: verde
+duration_min: 8
+prerequisites: [H.08.005]
+objectives:
+  - "Distinguere continuità operativa e disaster recovery"
+  - "Usare RPO e RTO con numeri semplici per giudicare un piano"
+  - "Elencare i punti deboli tipici: persone chiave, fornitori, attacchi informatici, piani mai provati"
+video:
+  provider: youtube
+  id: "GOxZmvypC0g"
+  start: 0
+  end: 391
+  channel: "business.govt.nz"
+  title: "Continuity and contingency plans"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h08-continuita
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un piano e non provarlo mai"
+  - "Dipendere da una sola persona o da un solo fornitore"
+  - "Tenere i backup nello stesso posto dei dati originali"
+commands: []
+---
+
+<Scene title="Il martedì dei computer fermi">
+Alle 9 di un martedì, con i mercati aperti, il sistema degli ordini di **Aurora Capital** (fondo fittizio) si blocca. L'ultimo backup è di ieri sera. Davide, il gestore, ha le posizioni in testa ma non sui computer. Gli investitori non sanno nulla.
+
+La domanda del caso: **che cosa avrebbe dovuto essere già pronto?**
+
+Nota: educazione, non consulenza. Si può perdere denaro, anche tutto.
+
+<Say who="sensei">I mercati non regalano niente, e nemmeno aspettano. Il piano si scrive e si prova prima del guasto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Continuità e recupero">
+Il **piano di continuità operativa** dice come l'azienda **continua le attività essenziali** dopo un guasto, un blackout, un incendio o un attacco informatico.
+
+Il **disaster recovery** è la parte del piano che **rimette in funzione i sistemi informatici**: dati, programmi, collegamenti.
+
+<Callout kind="regola">
+Continuità = tutta l'attività (persone, sede, fornitori, comunicazioni). Disaster recovery = i sistemi informatici.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sette minuti, in inglese con i sottotitoli (è un video per piccole imprese, ma i concetti sono gli stessi):
+
+<Video />
+
+<Say who="assistente">Pensa all'uscita di sicurezza della scuola: non serve ogni giorno, ma deve funzionare il giorno che serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due numeri: RPO e RTO">
+Due sigle aiutano a giudicare un piano:
+
+- **RPO** (*recovery point objective*): quanti **dati** puoi permetterti di perdere, misurato in tempo.
+- **RTO** (*recovery time objective*): quanto **tempo** puoi permetterti di restare fermo.
+
+<Guided
+  steps={[
+    "Backup ogni 4 ore: nel caso peggiore perdi fino a 4 ore di dati. RPO reale = 4 ore.",
+    "Se l'obiettivo è 4 ore, va bene. Con backup ogni 6 ore, no: nel caso peggiore perdi 6 ore, più delle 4 accettate.",
+    "RTO obiettivo 2 ore. Una prova di ripristino ne impiega 5: il piano non rispetta l'obiettivo.",
+    "Conclusione: i numeri reali si misurano con una prova, non si indovinano.",
+  ]}
+/>
+
+<Say who="sensei">Un obiettivo scritto sulla carta non è un risultato. Misura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I punti deboli">
+Dove si rompono più spesso i piani:
+
+- **Persone chiave**: se un'attività dipende da una sola persona, quando manca tutto si ferma. Servono sostituti e istruzioni scritte.
+- **Fornitori critici**: amministratore, prime broker, custode. Il fondo deve sapere che piano hanno e che cosa fa se si fermano.
+- **Attacchi informatici**: un virus che blocca i computer e chiede un riscatto. Aiutano **backup separati o offline**, già provati.
+- **Backup nello stesso posto**: se un incendio brucia i dati e le copie, non resta niente. Regola **3-2-1**: 3 copie, su 2 supporti diversi, di cui 1 fuori sede.
+
+<Callout kind="curiosita">
+Per la sicurezza informatica in generale, nel corso di cybersecurity trovi password, backup e difesa dagli attacchi spiegati dall'inizio.
+</Callout>
+
+<Say who="assistente">Un indizio: chiediti «che cosa succede se questa persona o questo fornitore sparisce domani?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare e comunicare">
+Un piano mai provato è debole. Le prove mostrano se i backup si ripristinano davvero e se le persone sanno cosa fare: **ripristino dei dati**, **simulazione di un giorno senza ufficio**, **telefonate di emergenza**.
+
+Il piano prevede anche la **comunicazione**: chi avvisa gli investitori e le controparti, entro quanto tempo, con quali parole. Una comunicazione chiara e tempestiva protegge la fiducia; negare il problema o tacere la distrugge.
+
+<Callout kind="attenzione">
+Dopo ogni prova o incidente il piano si aggiorna: si annotano gli errori, si correggono i tempi, si cambia ciò che non ha funzionato.
+</Callout>
+
+<Say who="sensei">Nessun piano sopravvive intatto al primo guasto vero. Il tuo deve almeno essere stato provato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="I backup si fanno ogni 6 ore e l'RPO richiesto è di 4 ore. Il piano è adeguato?"
+  options={[
+    "No: nel caso peggiore si perderebbero 6 ore di dati, più delle 4 accettate",
+    "Sì: 6 è più di 4, quindi va bene",
+    "Sì: l'RPO non dipende dai backup",
+    "No, ma solo se il fondo è molto piccolo",
+  ]}
+  answer={0}
+  explain="L'RPO è la quantità massima di dati persi, misurata in tempo. Con backup ogni 6 ore il caso peggiore è 6 ore, oltre le 4 accettate: servono backup più frequenti."
+/>
+
+<Say who="assistente">RPO fa rima con «punto»: da quale punto nel passato si riparte. RTO con «tempo»: quanto ci vuole per ripartire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande su continuità, RPO, RTO e punti deboli. Numeri fittizi.
+
+<Practice generator="h08-continuita" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un fondo serio si prepara a ciò che non vuole che accada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La continuità operativa riguarda tutta l'attività; il disaster recovery rimette in funzione i sistemi informatici.
+- RPO misura quanti dati si possono perdere, RTO quanto tempo si può restare fermi: si verificano con prove vere.
+- Punti deboli tipici: persone chiave, fornitori critici, attacchi informatici, backup nello stesso posto, piani mai provati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'RPO?", a: "Quanti dati si possono perdere, misurato in tempo" },
+    { q: "Che cos'è l'RTO?", a: "Quanto tempo si può restare fermi" },
+    { q: "Regola dei backup 3-2-1?", a: "3 copie, su 2 supporti diversi, 1 fuori sede" },
+    { q: "Perché provare il piano?", a: "Perché solo la prova mostra se funziona davvero" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Prossimo: regolamentazione e compliance, le regole che tengono in piedi tutto questo.</Say>
+</Scene>

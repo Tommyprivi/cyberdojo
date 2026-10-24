@@ -1,0 +1,177 @@
+---
+id: C.19.007
+course: cybersecurity
+module: 19
+title: "Esercitazioni purple team"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.006]
+objectives:
+  - "Spiegare che cos'è una esercitazione purple team e in che cosa differisce da red e blue team separati"
+  - "Pianificare un esercizio in laboratorio: tecnica scelta, risultato atteso, regola da verificare"
+  - "Trasformare i risultati in miglioramenti: nuova regola, filtro o log mancante"
+video:
+  provider: youtube
+  id: "6s-G7u0w-wc"
+  start: 0
+  end: 600
+  channel: "SANS Institute"
+  title: "Purple Teaming Explained"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-purple
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Eseguire l'esercizio su sistemi di produzione o altrui, invece che in un laboratorio isolato o con un permesso scritto preciso"
+  - "Misurare solo «l'allarme è scattato» senza chiedere se qualcuno lo ha visto e che cosa ha fatto"
+  - "Fare l'esercitazione una volta e dimenticarla: le regole cambiano e vanno riprovate"
+commands: []
+---
+
+<Scene title="Le regole funzionano davvero?">
+Hai scritto regole, le hai collegate ad ATT&CK, hai misurato la precisione. La direttrice della «Rossi Forniture» fa la domanda che nessuno vuole sentire: **«Se domani qualcuno ci attacca davvero, le regole scatteranno?»**
+
+Finora hai solo provato le regole sui log già raccolti. Ma l'unico modo per sapere se un allarme suona è **farlo suonare apposta**.
+
+La domanda del caso: **come si prova una regola senza aspettare un vero attacco?**
+
+<Say who="sensei">Un estintore non provato è una speranza appesa al muro. Si prova prima che serva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rosso, blu e viola">
+Nel mondo della sicurezza i ruoli hanno colori:
+
+- **Red team** (rosso): simula un attaccante, con un permesso scritto.
+- **Blue team** (blu): difende: sorveglia, rileva, risponde.
+- **Purple team** (viola): **non è una squadra in più**. È un modo di lavorare in cui rosso e blu **collaborano in tempo reale**. Il rosso esegue una tecnica, il blu dice subito se l'ha vista, e insieme migliorano.
+
+Nelle esercitazioni «classiche» il red team attacca di nascosto e consegna il rapporto settimane dopo. Nel purple team l'obiettivo non è vincere: è **migliorare il rilevamento**.
+
+<Callout kind="regola">
+Purple team = **attacco simulato + osservazione insieme + correzione subito**. Chi attacca e chi difende si siedono allo stesso tavolo.
+</Callout>
+
+<Say who="assistente">Non è una gara tra squadre. È un'officina: si prova, si guarda cosa non funziona, si ripara.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Legge e regole d'ingaggio">
+Prima di tutto, le regole che non si negoziano.
+
+<Callout kind="attenzione">
+Simulare un attacco su sistemi che non sono tuoi è reato: in Italia, accesso abusivo a sistema informatico (art. 615-ter del codice penale). Un'esercitazione si fa **solo** in un laboratorio isolato e di tua proprietà, oppure su sistemi dell'azienda con un **permesso scritto** che dice: cosa si può fare, dove, quando e chi è avvisato.
+</Callout>
+
+Un buon esercizio ha sempre:
+
+- un **ambito**: quali macchine, quali orari, quali tecniche;
+- **limiti**: niente di distruttivo, niente dati reali di persone;
+- un **responsabile** che può fermare tutto in qualsiasi momento;
+- un laboratorio **isolato dalla rete di produzione**.
+
+In questo corso non si descrivono procedure di attacco: si descrive come **provare le difese**. Le tecniche si scelgono dalla mappa ATT&CK e si eseguono solo con strumenti di test riconosciuti, in laboratorio.
+
+<Say who="sensei">Senza permesso scritto e senza laboratorio isolato non c'è esercitazione. C'è un problema legale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esercizio, passo per passo">
+Pianifichiamo un esercizio sul caso della cancellazione delle copie di ripristino (regola della lezione 2). Ecco la **scheda di esercizio**:
+
+<Log lines={[
+  "TECNICA:      T1490 Inhibit System Recovery",
+  "AMBIENTE:     laboratorio isolato, 1 computer Windows di prova",
+  "PERMESSO:     firmato dal responsabile, valido il 12/11 dalle 14 alle 16",
+  "AZIONE:       si esegue il comando sul computer di prova",
+  "ATTESO:       la regola Sigma scatta entro 5 minuti, priorità alta",
+  "DA VERIFICARE: l'allarme arriva al SOC? qualcuno lo apre? che cosa fa?",
+]} caption="Una scheda di esercizio: tecnica, ambiente, permesso, atteso e verifiche." />
+
+Durante l'esercizio il blue team guarda il SIEM. Tre esiti possibili:
+
+- **Visto e giusto**: l'allarme scatta ed è chiaro. Si segna come «provato».
+- **Visto ma confuso**: scatta, ma il testo non spiega cosa fare. Si migliora la descrizione.
+- **Non visto**: nessun allarme. Si cerca perché.
+
+<Say who="assistente">Il «non visto» è il risultato più prezioso: ti mostra un buco mentre il nemico non c'è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché non l'ha visto?">
+Quando l'esercizio non genera un allarme, si risale la catena, come un idraulico che cerca la perdita:
+
+1. **Il log esiste?** Forse il computer non registra la creazione dei processi.
+2. **Il log arriva al SIEM?** Forse l'agente che lo invia è fermo.
+3. **I campi sono giusti?** Forse la conversione della regola Sigma usa nomi sbagliati (lezione 2).
+4. **La regola è troppo stretta?** Forse un filtro esclude proprio il caso provato.
+5. **L'allarme è stato visto?** Forse è scattato, ma è finito in coda e nessuno l'ha aperto.
+
+Ogni «perché» dà una correzione concreta: accendere un log, riparare l'invio, sistemare i campi, allentare il filtro, cambiare la priorità.
+
+Vuoi sentire il concetto spiegato da un esperto? Un video in inglese di un istituto di formazione molto noto (attiva i sottotitoli):
+
+<Video />
+
+<Callout kind="trucco">
+Dopo la correzione si **ripete l'esercizio**. Una regola riparata e non riprovata è ancora una speranza.
+</Callout>
+
+<Say who="sensei">Si ripara e si riprova. Finché l'allarme non suona, il lavoro non è finito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Durante un esercizio in laboratorio, il red team esegue la tecnica concordata. Il blue team non vede nessun allarme. Il responsabile del SOC dice: «Pazienza, nella realtà un attacco simile non succederà mai. Chiudiamo l'esercizio».
+
+<Quiz
+  question="Qual è la risposta migliore?"
+  options={[
+    "Indagare perché non è scattato: log, invio, campi della regola, filtri; poi correggere e ripetere l'esercizio",
+    "Aumentare il numero di regole nel SIEM e non ripetere l'esercizio",
+    "Spegnere il laboratorio e cancellare i log dell'esercizio per non confonderli",
+    "Ripetere l'esercizio sul sistema di produzione per vedere se lì funziona",
+  ]}
+  answer={0}
+  explain="Un esercizio che non genera allarme ha trovato un buco: va cercato nella catena log, invio, campi, filtri, e poi riprovato. Aggiungere regole senza capire il motivo non risolve, e provare sulla produzione senza permesso è proprio ciò che non si deve fare."
+/>
+
+<Say who="assistente">Quando un esercizio fallisce, ha già fatto il suo lavoro: ti ha mostrato dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari sulle esercitazioni purple team. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-purple" pass="5/5" retries={3} />
+
+<Recap xp={30}>
+- Il purple team è un modo di lavorare in cui chi simula l'attacco e chi difende collaborano in tempo reale per migliorare il rilevamento.
+- Si fa solo in un laboratorio isolato o con permesso scritto, con ambito, limiti e un responsabile che può fermare tutto.
+- Se l'allarme non scatta si risale la catena (log, invio, campi, filtri, coda) e si ripete l'esercizio dopo la correzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un purple team?", a: "Un modo di lavorare in cui red e blue team collaborano in tempo reale per migliorare il rilevamento" },
+    { q: "Dove si fa un'esercitazione?", a: "In un laboratorio isolato e di proprietà, o su sistemi aziendali con permesso scritto" },
+    { q: "Se l'allarme non scatta, che cosa si controlla?", a: "Se il log esiste e arriva al SIEM, se i campi e i filtri sono giusti, se qualcuno vede l'allarme" },
+    { q: "Dopo aver corretto una regola, che cosa si fa?", a: "Si ripete l'esercizio per verificare che ora funzioni" },
+  ]}
+/>
+
+<Say who="sensei">Hai chiuso il modulo. Sai scrivere una regola, condividerla, mapparla, cercare ciò che sfugge, ridurre il rumore, misurare e provare. Questo è detection engineering.</Say>
+</Scene>

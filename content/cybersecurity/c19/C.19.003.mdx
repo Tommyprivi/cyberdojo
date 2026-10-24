@@ -1,0 +1,190 @@
+---
+id: C.19.003
+course: cybersecurity
+module: 19
+title: "MITRE ATT&CK in pratica"
+belt: marrone
+duration_min: 10
+prerequisites: [C.19.002]
+objectives:
+  - "Leggere la matrice ATT&CK: tattiche, tecniche e identificatori"
+  - "Collegare ogni regola di rilevamento a una tecnica e ricavarne una mappa di copertura"
+  - "Usare la mappa per trovare i punti ciechi senza scambiare «copertura» per «sicurezza»"
+video:
+  provider: youtube
+  id: "IPI0ABULzkQ"
+  start: 0
+  end: 600
+  channel: "Cyb3r_0verwatch"
+  title: "MITRE ATT&CK Explained: Understanding its Practical Use"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c19-attack
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «coprire una tecnica» con una regola significhi essere al sicuro da quella tecnica"
+  - "Cercare di coprire tutta la matrice invece di partire dalle minacce più probabili per la propria azienda"
+  - "Confondere tattica (l'obiettivo) con tecnica (il modo per raggiungerlo)"
+commands: []
+---
+
+<Scene title="Quante regole bastano?">
+La direttrice della «Rossi Forniture» chiede al tuo team: «Abbiamo quaranta regole di rilevamento. Sono abbastanza?»
+
+Nessuno sa rispondere. Quaranta contro cosa? Quaranta regole sulla stessa cosa, o su quaranta cose diverse? Senza una **mappa**, contare le regole non dice nulla.
+
+La domanda del caso: **come si misura che cosa il SOC è in grado di vedere?**
+
+<Say who="sensei">Contare regole è come contare le serrature senza sapere quante porte ha la casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tattiche e tecniche">
+Nella lezione C.07.006 hai incontrato **MITRE ATT&CK**, il catalogo pubblico dei comportamenti degli attaccanti osservati nella realtà. Ora lo usiamo come strumento di lavoro.
+
+Ha due livelli:
+
+- **Tattica**: l'**obiettivo** dell'attaccante in una fase. Per esempio: *Accesso iniziale*, *Esecuzione*, *Persistenza*, *Accesso alle credenziali*, *Movimento laterale*, *Esfiltrazione*, *Impatto*.
+- **Tecnica**: il **modo** concreto per raggiungere quell'obiettivo. Ha un codice che comincia con T, per esempio T1110 «Brute Force» (provare molte password) sotto la tattica *Accesso alle credenziali*.
+
+<Callout kind="regola">
+Tattica = **perché** (l'obiettivo). Tecnica = **come** (il metodo). Una tattica contiene molte tecniche.
+</Callout>
+
+Alcuni esempi che ritroverai spesso:
+
+<Log lines={[
+  "T1566  Phishing                    (Accesso iniziale)",
+  "T1078  Valid Accounts              (Accesso iniziale, Persistenza, ...)",
+  "T1059  Command and Scripting Interpreter (Esecuzione)",
+  "T1110  Brute Force                 (Accesso alle credenziali)",
+  "T1021  Remote Services             (Movimento laterale)",
+  "T1486  Data Encrypted for Impact   (Impatto)",
+]} caption="Alcune tecniche, con il loro codice. Non si imparano a memoria: si consultano." />
+
+<Say who="assistente">Il catalogo è pubblico e gratuito. Non devi ricordare i codici: devi saper cercare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ogni regola ha una tecnica">
+Il trucco per misurare è semplice: **ogni regola di rilevamento dichiara a quale tecnica corrisponde**. Lo hai visto in Sigma, nel campo `tags` (per esempio `attack.t1110`).
+
+Con questa etichetta si costruisce una **tabella di copertura**. Esempio fittizio della «Rossi Forniture»:
+
+| Tecnica | Regole | Stato |
+|---|---|---|
+| T1110 Brute Force | 3 | coperta |
+| T1566 Phishing | 1 | coperta (solo allegati) |
+| T1059 Scripting | 0 | **punto cieco** |
+| T1021 Remote Services | 1 | coperta |
+| T1486 Impatto (cifratura) | 0 | **punto cieco** |
+
+Il risultato non è «quaranta regole», ma una frase utile: **«Non vediamo l'esecuzione di script e la cifratura dei file»**. Ora la direttrice può decidere dove investire.
+
+<Callout kind="trucco">
+Per vedere la mappa colorata esiste *ATT&CK Navigator*, uno strumento gratuito del MITRE: carichi l'elenco delle tecniche coperte e ottieni la matrice con le caselle colorate.
+</Callout>
+
+<Say who="sensei">Un buco dichiarato si può chiudere. Un buco ignorato si scopre durante l'incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Attenzione: copertura non è protezione">
+Una casella colorata dice: «esiste almeno una regola per questa tecnica». Non dice:
+
+- che la regola **funzioni** davvero (l'hai provata?);
+- che copra **tutti i modi** di fare la tecnica: ogni tecnica ha spesso molte varianti;
+- che i **log** arrivino davvero al SIEM;
+- che qualcuno **risponda** all'allarme.
+
+<Callout kind="attenzione">
+Il verde sulla mappa è una promessa, non una prova. Un fornitore che dichiara «copriamo il 100% di ATT&CK» sta usando le parole in modo ingannevole: coprire una casella non vuol dire fermare ogni variante di quella tecnica.
+</Callout>
+
+Un buon SOC attribuisce a ogni casella anche un **livello di fiducia**: «regola scritta», «provata su dati passati», «provata con un test in laboratorio». Solo l'ultimo vale davvero molto.
+
+Vuoi sentire come si usa ATT&CK nel lavoro quotidiano? Un video in inglese (attiva i sottotitoli):
+
+<Video />
+
+<Say who="assistente">Quando vedi una casella verde, chiediti: «come lo so che funziona?». Se non sai rispondere, è gialla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove cominciare">
+La matrice ha centinaia di tecniche: coprirle tutte è impossibile e inutile. Si parte dalle **minacce più probabili per la propria azienda**.
+
+Esempio svolto. La «Rossi Forniture» è una piccola azienda con posta elettronica, un sito e un accesso remoto. Le minacce più realistiche sono:
+
+1. phishing contro i dipendenti (T1566);
+2. furto o indovinamento delle password (T1110, T1078);
+3. ransomware (T1486, preceduto da T1490, la cancellazione delle copie di ripristino).
+
+Si coprono **prima queste**, e solo dopo le tecniche rare, tipiche di gruppi sofisticati che raramente prendono di mira una piccola azienda.
+
+<Callout kind="regola">
+Priorità = **probabilità** per la tua azienda × **danno** se succede. Non tutte le caselle valgono lo stesso.
+</Callout>
+
+<Say who="sensei">Una mappa serve a scegliere dove andare, non a visitare ogni angolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il responsabile del SOC mostra una matrice con il 70% delle caselle colorate e dice alla direzione: «Siamo coperti al 70%, possiamo stare tranquilli».
+
+<Quiz
+  question="Qual è l'obiezione più corretta a questa frase?"
+  options={[
+    "Le caselle colorate dicono che esiste una regola, non che sia provata né che copra ogni variante della tecnica",
+    "Il 70% è un numero troppo basso: bisogna colorare il 100% delle caselle prima di fare qualsiasi valutazione",
+    "La matrice ATT&CK non serve a misurare nulla, quindi qualsiasi percentuale è inutile",
+    "Le caselle vanno colorate solo per le tecniche usate dai gruppi più famosi",
+  ]}
+  answer={0}
+  explain="La copertura mostra dove c'è almeno una regola, non quanto sia efficace. Un buon rapporto aggiunge quali regole sono state provate. Puntare al 100% è irrealistico, e la matrice serve eccome a trovare i punti ciechi."
+/>
+
+<Callout kind="curiosita">
+ATT&CK descrive come ragionano gli attaccanti per aiutare chi difende. Usare quei comportamenti contro sistemi altrui è invece reato (in Italia, art. 615-ter del codice penale: accesso abusivo a sistema informatico). Si prova solo ciò che è tuo o per cui hai un permesso scritto.
+</Callout>
+
+<Say who="assistente">Una percentuale senza spiegazione è pericolosa: rassicura chi dovrebbe preoccuparsi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica e rapporto finale">
+Cinque scenari su ATT&CK e copertura. Servono **cinque risposte giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c19-attack" pass="5/5" retries={3} />
+
+<Recap xp={25}>
+- ATT&CK ha tattiche (l'obiettivo) e tecniche (il metodo, con codice T). Ogni regola dichiara la sua tecnica.
+- La tabella di copertura mostra i punti ciechi, ma una casella colorata non prova che la regola funzioni.
+- Si parte dalle tecniche più probabili e dannose per la propria azienda, non da tutta la matrice.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra tattica e tecnica in ATT&CK?", a: "La tattica è l'obiettivo, la tecnica è il modo concreto per raggiungerlo" },
+    { q: "Che cosa è un punto cieco nella mappa di copertura?", a: "Una tecnica per cui non esiste nessuna regola di rilevamento" },
+    { q: "Perché «copriamo il 100%» è una frase ingannevole?", a: "Una regola per una tecnica non ferma tutte le sue varianti né prova che funzioni" },
+    { q: "Da dove si parte per scegliere quali tecniche coprire?", a: "Dalle minacce più probabili e dannose per la propria azienda" },
+  ]}
+/>
+
+<Say who="sensei">Hai la mappa. Ma le regole vedono solo ciò che già conosci. Prossima lezione: andare a caccia di ciò che non conosci. Threat hunting.</Say>
+</Scene>

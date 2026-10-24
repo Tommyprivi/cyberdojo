@@ -1,0 +1,194 @@
+---
+id: C.12.007
+course: cybersecurity
+module: 12
+title: "Uno script che controlla il server"
+belt: blu
+duration_min: 11
+prerequisites: [C.12.006]
+objectives:
+  - "Scrivere uno script di controllo che legge la configurazione e stampa PASS o FAIL, senza modificare nulla"
+  - "Controllare permessi, account, SSH, firewall e programmi setuid con comandi di sola lettura"
+  - "Pianificare il controllo e confrontare i risultati nel tempo"
+video:
+  provider: youtube
+  id: "xMQz9xH--EY"
+  start: 0
+  end: 600
+  channel: "ITPro Today"
+  title: "Linux Security Auditing with Lynis // Step-by-Step Guide"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c12-script
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere uno script di controllo che anche «corregge»: un controllo deve solo leggere e riferire"
+  - "Fidarsi di un controllo senza provarlo su un caso che deve fallire"
+  - "Eseguire il controllo una volta e dimenticarlo: serve ripeterlo e confrontare"
+commands: [stat, awk, find, sshd]
+---
+
+<Scene title="Il controllo che nessuno ripete">
+Alla «Colombo Servizi» l'hardening del server è stato fatto con cura a gennaio. A ottobre un controllo a campione trova: accesso root via SSH di nuovo permesso, un account con UID 0 in più, un file di password leggibile da tutti. Nessuno ricorda di aver cambiato niente.
+
+La domanda del caso: **come si scopre una configurazione che «deriva» nel tempo, senza controllare tutto a mano ogni settimana?**
+
+<Say who="sensei">La sicurezza di un server non si fa una volta. Si fa, si misura, si rifà. Una macchina che non si controlla tende a tornare insicura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di un buon controllo">
+Uno script di controllo (in inglese *audit script*) dovrebbe essere:
+
+- di **sola lettura**: non cambia mai la configurazione, riferisce e basta (la correzione la fa una persona, con un permesso);
+- **chiaro**: stampa una riga per ogni controllo, con PASS o FAIL e il motivo;
+- **ripetibile**: dà lo stesso risultato se non è cambiato niente;
+- **confrontabile**: scrive un file con data, da confrontare con quello della settimana prima.
+
+Sono le idee dei benchmark CIS (lezione 2) trasformate in codice: ogni regola diventa una domanda con risposta sì o no.
+
+Esistono anche strumenti già pronti, come **Lynis** (controllo di sicurezza gratuito per Linux) e **OpenSCAP**. Vuoi vedere Lynis all'opera? Il video è in inglese, attiva i sottotitoli.
+
+<Video />
+
+<Say who="assistente">Lo script è una checklist che non si stanca e non dimentica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il primo controllo e la sua struttura">
+Una funzione per ogni controllo, con lo stesso formato di uscita:
+
+<Log lines={[
+  "#!/usr/bin/env bash",
+  "set -u                          # errore se uso una variabile mai definita",
+  "",
+  "esito() {                        # uso: esito PASS|FAIL \"descrizione\"",
+  "  printf '%-5s %s\\n' \"$1\" \"$2\"",
+  "}",
+  "",
+  "# 1. Il file delle password cifrate non deve essere leggibile da «altri»",
+  "perm=$(stat -c '%a' /etc/shadow)",
+  "if [ \"${perm: -1}\" = \"0\" ]; then",
+  "  esito PASS \"/etc/shadow non accessibile agli altri ($perm)\"",
+  "else",
+  "  esito FAIL \"/etc/shadow ha permessi $perm\"",
+  "fi",
+]} caption="`stat -c '%a'` stampa i permessi in numero; l'ultima cifra riguarda «altri»." />
+
+Il controllo **legge** soltanto. Non c'è nessun `chmod`, nessuna correzione.
+
+<Callout kind="trucco">
+`set -u` è una prudenza economica: se sbagli il nome di una variabile, lo script si ferma invece di andare avanti con un valore vuoto e un controllo falso.
+</Callout>
+
+<Say who="sensei">Una sola funzione per stampare l'esito. Così le righe sono tutte uguali e si possono confrontare con un diff.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altri controlli utili">
+Altri esempi, tutti di lettura:
+
+<Log lines={[
+  "# 2. Solo root deve avere UID 0",
+  "n=$(awk -F: '$3 == 0 {print $1}' /etc/passwd | grep -vc '^root$')",
+  "[ \"$n\" -eq 0 ] && esito PASS \"nessun altro account con UID 0\" || esito FAIL \"altri account con UID 0: $n\"",
+  "",
+  "# 3. Accesso root via SSH (configurazione effettiva, richiede root)",
+  "r=$(sshd -T 2>/dev/null | awk '$1 == \"permitrootlogin\" {print $2}')",
+  "[ \"$r\" = \"no\" ] && esito PASS \"SSH: root non può entrare\" || esito FAIL \"SSH: permitrootlogin = ${r:-sconosciuto}\"",
+  "",
+  "# 4. Elenco dei programmi setuid da confrontare con quello precedente",
+  "find /usr -xdev -perm -4000 -type f 2>/dev/null | sort > \"setuid-$(date +%F).txt\"",
+]} caption="Quattro controlli: UID 0, SSH, setuid." />
+
+Alcune osservazioni:
+
+- `sshd -T` stampa la configurazione **effettiva**, non solo quella scritta nel file;
+- `grep -vc` conta le righe che **non** corrispondono: qui, gli account diversi da root;
+- l'elenco setuid, salvato con la data, si confronta con quello della settimana scorsa: `diff setuid-2026-10-17.txt setuid-2026-10-24.txt`.
+
+<Callout kind="attenzione">
+Lo script gira solo sul **tuo** server o su quelli per cui hai un incarico. Controllare configurazioni di macchine altrui senza permesso è accesso abusivo a sistema informatico (art. 615-ter del codice penale), anche se «si legge soltanto».
+</Callout>
+
+<Say who="assistente">Il confronto con la settimana precedente è la parte più preziosa: ciò che cambia è quasi sempre ciò che interessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare, pianificare, riferire">
+Un controllo non provato non vale niente. Il test giusto: **fallo fallire apposta** in una macchina di prova.
+
+<Guided
+  steps={[
+    "Su una macchina di prova (una tua macchina virtuale) imposta un valore sbagliato, per esempio `PermitRootLogin yes`.",
+    "Esegui lo script: deve stampare FAIL su quella riga. Se stampa PASS, il controllo è sbagliato.",
+    "Ripristina il valore corretto: ora deve stampare PASS.",
+    "Pianifica lo script con cron (modulo F4): un'esecuzione a settimana, con l'uscita salvata in un file con la data.",
+    "Alla fine del mese guarda cosa è cambiato tra un file e l'altro: ogni differenza spiegata è una conferma, ogni differenza inspiegata è un'indagine.",
+  ]}
+/>
+
+<LinuxTerminal goal="Con grep cerca la parola root nel file /etc/passwd del sistema di prova." scenario="scripting" />
+
+<Say who="sensei">Un controllo che non ha mai detto FAIL non è un controllo: è un'ipotesi. Provalo fino a vederlo fallire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Lo script di controllo segnala FAIL su «SSH: permitrootlogin = yes». Che cosa fa il responsabile?"
+  options={[
+    "Verifica perché è cambiato (chi, quando, per quale motivo), poi corregge con un cambio autorizzato e annotato, e rilancia il controllo",
+    "Fa correggere lo script in automatico a ogni esecuzione, senza chiedere a nessuno",
+    "Cancella la riga FAIL dal rapporto per far tornare i conti",
+    "Spegne il server SSH per sempre, anche se serve agli amministratori",
+  ]}
+  answer={0}
+  explain="Il controllo riferisce; poi una persona indaga la causa (con auditd si vede chi ha cambiato il file), corregge con un cambio annotato e rilancia lo script. Una correzione automatica nasconde la causa e può rompere ciò che serve, cancellare le righe falsifica il rapporto, spegnere SSH toglie l'accesso agli amministratori."
+/>
+
+<Say who="assistente">Il rapporto serve a decidere, non a fare bella figura: i FAIL stanno lì perché qualcuno li guardi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sullo script di controllo: sola lettura, esito, confronto nel tempo.
+
+<Practice generator="c12-script" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai chiuso il modulo: permessi, hardening, MAC, audit, sudo, firewall e controllo ripetuto. È il lavoro di un amministratore attento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Uno script di controllo è di sola lettura, stampa PASS o FAIL con il motivo ed è ripetibile.
+- Controlli tipici: permessi di `/etc/shadow` (`stat -c '%a'`), account con UID 0, `sshd -T`, programmi setuid con `find -perm -4000`.
+- Si prova facendolo fallire, si pianifica con cron e si confrontano i risultati nel tempo; la correzione la fa una persona, con un cambio annotato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché uno script di controllo non deve correggere?", a: "Deve solo riferire: la correzione richiede un permesso e una persona che capisca la causa" },
+    { q: "Che cosa mostra sshd -T?", a: "La configurazione SSH effettiva in uso" },
+    { q: "Come si prova che un controllo funziona?", a: "Facendolo fallire apposta su una macchina di prova" },
+    { q: "Perché salvare l'esito con la data?", a: "Per confrontarlo con quello precedente e vedere cosa è cambiato" },
+  ]}
+/>
+
+<Say who="sensei">Modulo concluso. Ora sai tenere un server Linux in ordine e dimostrarlo. Prossimo passo: scegli un altro ramo di specializzazione.</Say>
+</Scene>

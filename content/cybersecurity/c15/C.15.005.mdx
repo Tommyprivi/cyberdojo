@@ -1,0 +1,174 @@
+---
+id: C.15.005
+course: cybersecurity
+module: 15
+title: "Dischi e backup chiusi a chiave"
+belt: blu
+duration_min: 10
+prerequisites: [C.15.004]
+objectives:
+  - "Spiegare da quali rischi protegge la cifratura del disco (dati a riposo) e da quali no"
+  - "Distinguere BitLocker, FileVault e LUKS e capire il ruolo di TPM e chiave di ripristino"
+  - "Progettare backup cifrati con chiavi separate e un ripristino provato"
+video:
+  provider: youtube
+  id: "xrJsf3uO-vE"
+  start: 0
+  end: 600
+  channel: "Tom Olzak"
+  title: "BitLocker: Why and How"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-dischi-backup
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il disco cifrato protegga anche quando il computer è acceso e sbloccato"
+  - "Salvare la chiave di ripristino sullo stesso computer che protegge"
+  - "Cifrare il disco ma lasciare i backup in chiaro su un disco esterno"
+commands: []
+---
+
+<Scene title="Il portatile dimenticato sul treno">
+Marta lavora per **Studio Ferri** e dimentica sul treno il portatile aziendale. Dentro ci sono le pratiche dei clienti: codici fiscali, bilanci, contratti.
+
+Lo studio deve capire in fretta se è una **violazione dei dati personali** da notificare al Garante (il GDPR impone di valutarlo e, se serve, di notificare entro 72 ore). Il portatile aveva un disco **cifrato**? Allora i dati sono illeggibili per chi lo trova, e il rischio è molto più basso.
+
+La domanda del caso: **che cosa protegge davvero la cifratura del disco, e che cosa lascia scoperto?**
+
+<Say who="sensei">Un portatile perso non è una disgrazia se è cifrato. È una disgrazia se non lo è. La differenza si decide mesi prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati a riposo">
+I dati hanno tre stati: **in transito** (sulla rete, lo protegge TLS), **in uso** (nella memoria mentre il programma lavora) e **a riposo** (salvati su disco). La cifratura del disco protegge quest'ultimo stato.
+
+Se qualcuno toglie il disco e lo collega a un altro computer, vede solo dati senza senso. Gli strumenti più diffusi:
+
+- **BitLocker** su Windows (nelle edizioni professionali e aziendali; su alcuni dispositivi recenti una cifratura di dispositivo è attiva in modo più semplice);
+- **FileVault** su macOS;
+- **LUKS** su Linux, in genere con `dm-crypt`.
+
+Usano di norma **AES**, in modalità pensate per i dischi (per esempio **XTS**).
+
+<Callout kind="regola">
+Disco cifrato = protegge **a computer spento o bloccato** dal furto fisico. Non protegge un computer **acceso e sbloccato**: lì i dati sono già accessibili a chi usa la sessione, o a un malware che gira.
+</Callout>
+
+<Say who="assistente">È come una cassaforte: solo chiusa serve. Se la lasci aperta mentre vai a prendere un caffè, non ti difende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="TPM, PIN e chiave di ripristino">
+Dove sta la chiave che apre il disco? Su molti computer sta nel **TPM**, un piccolo chip sicuro sulla scheda madre. Il TPM la rilascia solo se l'avvio del computer è **quello atteso** (nessun componente di avvio manomesso).
+
+Per aumentare la protezione si aggiunge un **PIN** o una password prima dell'avvio. Un malintenzionato che ha il computer, senza il PIN, non va oltre.
+
+C'è poi la **chiave di ripristino**, un codice lungo che serve se il TPM si guasta o si cambia la scheda madre. Va custodita **fuori** dal computer protetto: in un gestore aziendale delle chiavi (per BitLocker, l'account aziendale o Active Directory), non su un foglietto attaccato allo schermo e non in un file sul disco stesso.
+
+<Callout kind="attenzione">
+Salvare la chiave di ripristino **dentro** il disco che protegge è un errore classico: se il disco non si apre, non puoi leggere neanche la chiave che serve ad aprirlo.
+</Callout>
+
+Vuoi sentire come funziona BitLocker da un'altra voce? In inglese, con sottotitoli:
+
+<Video />
+
+<Say who="sensei">Due chiavi, due luoghi: quella di tutti i giorni sul computer, quella di emergenza altrove. E si prova a usare quella di emergenza, prima che serva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I backup sono dati come gli altri">
+Il portatile è cifrato, ma i **backup**? Se la copia dei dati su un disco esterno è in chiaro, il ladro prende quella.
+
+Regole per i backup:
+
+- **Cifrarli** sempre, prima che lascino l'azienda o finiscano nel cloud.
+- Usare una **chiave diversa** da quella del disco di origine, tenuta altrove (lezione precedente): se un attaccante entra nel sistema, non deve trovare anche la chiave del backup.
+- Seguire la regola **3-2-1**: tre copie, su due supporti diversi, una fuori sede. Una delle copie dovrebbe essere **non modificabile** o scollegata, per resistere ai ransomware.
+- **Provare il ripristino** a intervalli regolari. Un backup che non si riesce a riaprire non è un backup.
+
+<Callout kind="curiosita">
+Se una chiave di backup si perde, i backup sono persi: è il lato oscuro della cifratura. Per questo la chiave ha un proprio backup protetto, con due persone autorizzate.
+</Callout>
+
+<Say who="assistente">Un backup è il piano B. Un backup cifrato di cui hai perso la chiave è un piano B che non esiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un portatile con disco cifrato BitLocker viene rubato mentre è spento. Che cosa è più vero?"
+  options={[
+    "Chi lo ha non può leggere i dati senza la chiave, quindi il rischio per i dati è molto ridotto",
+    "I dati sono comunque leggibili, perché la cifratura vale solo su rete",
+    "I dati sono leggibili appena si accende, qualunque sia la protezione",
+    "La cifratura del disco serve solo contro i virus",
+  ]}
+  answer={0}
+  explain="La cifratura del disco serve proprio contro il furto fisico del dispositivo spento o bloccato. Con un PIN di avvio la protezione è ancora migliore. Non serve invece contro un malware o contro chi usa il computer acceso e sbloccato."
+/>
+
+<Say who="sensei">Il disco cifrato risponde a una domanda precisa: che cosa vede chi ha il mio computer in mano e non ha la chiave? Quasi niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rimettere in ordine lo studio">
+<Guided
+  steps={[
+    "Inventario: quali portatili e telefoni hanno dati dei clienti? Su ognuno si verifica che la cifratura del disco sia attiva, non solo che esista.",
+    "Chiavi di ripristino: si salvano nel sistema aziendale di gestione, con accesso solo al reparto informatico; si prova un ripristino su un computer di prova.",
+    "Avvio: sui portatili più sensibili si aggiunge un PIN prima dell'avvio, oltre al TPM.",
+    "Backup: si cifrano con una chiave separata, si applica la 3-2-1 con una copia non modificabile e si ripristina una pratica a campione ogni trimestre.",
+    "Procedura di perdita: se un dispositivo sparisce, si blocca da remoto, si cambiano le password collegate e si decide con il responsabile della protezione dei dati se notificare.",
+  ]}
+/>
+
+<Callout kind="regola">
+La cifratura del disco è una riduzione del rischio, non una cancellazione: va documentata. In caso di perdita, aiuta a dimostrare che i dati non erano leggibili. Le prove di recupero si fanno sempre su dischi e macchine propri.
+</Callout>
+
+<Say who="sensei">Marta ha perso il portatile ma non i clienti. Cifratura attiva, chiave altrove. È questo il lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su disco cifrato, TPM, chiavi di ripristino e backup.
+
+<Practice generator="c15-dischi-backup" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai dove la cifratura del disco ti difende e dove no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La cifratura del disco (BitLocker, FileVault, LUKS) protegge i dati a riposo dal furto del dispositivo spento o bloccato, non da un computer acceso e sbloccato.
+- La chiave sta nel TPM, con PIN per più sicurezza; la chiave di ripristino va custodita fuori dal computer protetto.
+- I backup si cifrano con una chiave separata, secondo la regola 3-2-1, con una copia non modificabile e ripristino provato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sono i dati a riposo?", a: "I dati salvati su un supporto, per esempio un disco, non in transito né in uso" },
+    { q: "Che cos'è il TPM?", a: "Un chip sicuro sul computer che conserva la chiave e la rilascia solo se l'avvio non è stato manomesso" },
+    { q: "Dove si tiene la chiave di ripristino?", a: "Fuori dal computer protetto, in un sistema di gestione delle chiavi o in un luogo sicuro" },
+    { q: "Che cosa dice la regola 3-2-1?", a: "Tre copie, su due supporti diversi, una fuori sede" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: le password. Il gestore e le passkey, che le stanno sostituendo.</Say>
+</Scene>

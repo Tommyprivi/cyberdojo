@@ -1,0 +1,167 @@
+---
+id: C.14.002
+course: cybersecurity
+module: 14
+title: "Chi può aprire che cosa: gruppi e permessi NTFS"
+belt: blu
+duration_min: 10
+prerequisites: [C.14.001]
+objectives:
+  - "Leggere i permessi NTFS e calcolare il permesso effettivo tra gruppi, Consenti e Nega"
+  - "Distinguere permessi di condivisione e permessi NTFS e dire quale vale"
+  - "Organizzare gli accessi con i gruppi (modello AGDLP) e rivederli nel tempo"
+video:
+  provider: youtube
+  id: "R3vFY9AjsHk"
+  start: 0
+  end: 439
+  channel: "PcPrimiPassi"
+  title: "Gestire le autorizzazioni utente sulle cartelle di Windows"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-ntfs
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «Consenti» di un gruppo possa annullare il «Nega» di un altro: il «Nega» vince"
+  - "Sommare permessi di condivisione e NTFS: vale il più restrittivo dei due"
+  - "Dare permessi ai singoli utenti invece che ai gruppi, e non rivederli mai"
+commands: []
+---
+
+<Scene title="La cartella dei contratti">
+Alla **Bianchi Logistica** la cartella «Contratti» è su un file server. Un giorno un tirocinante, Luca, riesce ad aprire un contratto riservato dei fornitori.
+
+<Log lines={[
+  "Cartella: D:\\Dati\\Contratti",
+  "Condivisione  (rete):  Tutti → Lettura",
+  "NTFS:  Amministrazione → Modifica",
+  "NTFS:  Tirocinanti    → Lettura",
+  "NTFS:  Tutti          → Lettura",
+]} caption="Luca è nel gruppo Tirocinanti." />
+
+La domanda del caso: **perché Luca può leggere i contratti? Chi ha sbagliato?**
+
+<Say who="sensei">Nessuno ha rubato niente. Qualcuno ha dato permessi larghi e non li ha più guardati. È l'errore più comune.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I permessi NTFS">
+**NTFS** è il file system di Windows. A differenza dei vecchi sistemi, associa a ogni file e cartella un elenco di chi può fare che cosa (**ACL**).
+
+I livelli principali:
+
+- **Lettura**: aprire e leggere.
+- **Lettura ed esecuzione**: come Lettura, più far partire i programmi.
+- **Scrittura**: creare e cambiare i file.
+- **Modifica**: leggere, scrivere e cancellare.
+- **Controllo completo**: tutto, compreso **cambiare i permessi**.
+
+<Callout kind="attenzione">
+Il «Controllo completo» dà anche il potere di riscrivere i permessi. Chi lo ha può darselo su tutto il resto. Da assegnare con molta cautela.
+</Callout>
+
+Vuoi vedere dove si trovano queste impostazioni? Un video breve in italiano:
+
+<Video />
+
+<Say who="assistente">Pensa a un elenco all'ingresso di un palazzo: accanto a ogni porta ci sono i nomi di chi può entrare. È l'ACL.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Consenti, Nega, ereditarietà">
+Tre regole da sapere a memoria.
+
+1. **I permessi si sommano** tra i gruppi: se sei in due gruppi, hai l'insieme dei loro «Consenti».
+2. **Il «Nega» vince sul «Consenti»**: un solo «Nega» basta a togliere quel permesso.
+3. **Ereditarietà**: file e sottocartelle nuovi prendono i permessi della cartella che li contiene.
+
+<Callout kind="regola">
+Meglio pochi «Nega» e ben pensati: rendono i permessi difficili da leggere e da correggere. Meglio dare «Consenti» solo a chi serve.
+</Callout>
+
+Per controllare il risultato, la scheda **Accesso effettivo** di Windows mostra il permesso finale di un utente dopo aver sommato i gruppi e applicato i divieti.
+
+<Say who="sensei">Non ragionare sul singolo gruppo. Ragiona sul risultato: tutti i gruppi di quell'utente, tutti i «Nega». Poi decidi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Condivisione e NTFS: vale il più stretto">
+Una cartella in rete ha **due strati**:
+
+- il permesso di **condivisione**, che vale solo per chi arriva dalla rete;
+- il permesso **NTFS**, che vale sempre.
+
+Per chi arriva dalla rete conta il **più restrittivo** dei due.
+
+<Guided
+  steps={[
+    "Condivisione: Tutti → Modifica. NTFS: Amministrazione → Lettura.",
+    "Una persona dell'Amministrazione apre la cartella dalla rete. Il primo strato permette Modifica, il secondo solo Lettura.",
+    "Vale il più restrittivo: può solo leggere.",
+    "Torna al caso di Luca: il problema è che «Tutti → Lettura» su NTFS apre i contratti anche ai Tirocinanti. La condivisione larga non l'ha causato, ma ha lasciato la porta aperta.",
+  ]}
+/>
+
+<Say who="assistente">Due porte in fila. Per passare devi aprirle tutte e due. Se una è chiusa, ti fermi lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gruppi, non persone: il modello AGDLP">
+Dare permessi a ogni singola persona diventa ingestibile. Quando Luca finisce il tirocinio, in quante cartelle devi toglierlo?
+
+La soluzione sono i **gruppi**. Nei domini si usa spesso **AGDLP**:
+
+- **A**ccount (le persone) vanno nei gruppi **G**lobali (per ruolo: «Amministrazione», «Tirocinanti»);
+- i gruppi Globali vanno nei gruppi **D**omain **L**ocali (per risorsa: «Contratti-Modifica», «Contratti-Lettura»);
+- i **P**ermessi si danno ai gruppi di dominio locali.
+
+<Callout kind="trucco">
+Se Luca cambia ruolo, cambi **un** gruppo. Se arriva una nuova cartella, crei **un** gruppo di risorsa. I permessi restano leggibili.
+</Callout>
+
+Poi serve la **revisione periodica**: ogni trimestre chiedi ai responsabili «questi sono i membri del gruppo: sono ancora giusti?». Gli accessi dimenticati si accumulano.
+
+<Say who="sensei">Un permesso dato e mai riesaminato è un debito. Prima o poi qualcuno lo paga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di permessi: calcola il permesso effettivo e scegli la gestione giusta dei gruppi.
+
+<Practice generator="c14-ntfs" pass="5/5" retries={3} />
+
+<Say who="sensei">Chi sa leggere un permesso effettivo trova gli errori prima dell'incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- I permessi NTFS si sommano tra i gruppi, il «Nega» vince, e i file ereditano dalla cartella; la scheda «Accesso effettivo» mostra il risultato.
+- Per chi accede dalla rete vale il più restrittivo tra permesso di condivisione e permesso NTFS.
+- I permessi si danno ai gruppi (AGDLP) e si rivedono ogni tanto: il minimo privilegio non è un'impostazione, è una manutenzione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale vince, «Consenti» o «Nega»?", a: "Il «Nega»" },
+    { q: "Condivisione Lettura e NTFS Modifica: che cosa può fare chi arriva dalla rete?", a: "Solo leggere: vale il più restrittivo" },
+    { q: "Che cosa significa AGDLP?", a: "Account nei gruppi Globali, nei gruppi Domain Locali, a cui si danno i Permessi" },
+    { q: "Perché il Controllo completo è delicato?", a: "Perché permette anche di cambiare i permessi" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove vivono utenti e gruppi in un'azienda vera. Active Directory.</Say>
+</Scene>

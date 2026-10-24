@@ -37,6 +37,8 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull().default(false),
   image: text("image"),
+  // Plugin twoFactor: vale true solo dopo che l'utente ha confermato il primo codice.
+  twoFactorEnabled: boolean("two_factor_enabled").default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -80,6 +82,27 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+// Verifica in due passaggi (plugin twoFactor). `secret` e `backup_codes` sono CIFRATI da Better Auth
+// con BETTER_AUTH_SECRET: nel database non c'è mai la chiave in chiaro.
+// Niente RLS, come le altre tabelle di Better Auth (user, session, account, verification): la libreria
+// le legge anche prima che esista una sessione (secondo passo dell'accesso), quando non c'è
+// alcun `app.user_id` da impostare. La protezione è la cifratura e l'accesso solo da codice del server.
+export const twoFactor = pgTable(
+  "two_factor",
+  {
+    id: text("id").primaryKey(),
+    secret: text("secret").notNull(),
+    backupCodes: text("backup_codes").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    verified: boolean("verified").default(true),
+    failedVerificationCount: integer("failed_verification_count").default(0),
+    lockedUntil: timestamp("locked_until"),
+  },
+  (t) => [index("two_factor_user_idx").on(t.userId)],
+);
 
 // ---------- Dati CyberDojo ----------
 

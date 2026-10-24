@@ -1,0 +1,165 @@
+---
+id: C.17.003
+course: cybersecurity
+module: 17
+title: "Il secchio aperto: storage esposti"
+belt: blu
+duration_min: 9
+prerequisites: [C.17.002]
+objectives:
+  - "Spiegare perché un archivio cloud pubblico per errore è una causa comune di fughe di dati"
+  - "Elencare le difese: accesso privato, blocco dell'accesso pubblico, cifratura, controlli automatici"
+  - "Descrivere i primi passi e gli obblighi dopo un'esposizione di dati personali"
+video:
+  provider: youtube
+  id: "ZO2XuKD1pLQ"
+  start: 0
+  end: 600
+  channel: "LufSec Cyber Security"
+  title: "AWS S3 Bucket Breaches: What Went Wrong & How to Secure Your Data"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-storage
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un archivio sia protetto perché nessuno conosce il suo indirizzo"
+  - "Cancellare i log dopo la scoperta invece di usarli per capire cosa è uscito"
+  - "Correggere il singolo archivio senza regole che impediscano di ripetere l'errore"
+commands: []
+---
+
+<Scene title="Il listino che era pubblico">
+**Officina Verde** (fittizia) vende piante online. Un tecnico crea un archivio nel cloud per condividere un listino con un fornitore. Per fare in fretta, lo imposta come **pubblico**. Nello stesso archivio finiscono, più tardi, anche le copie dei documenti d'identità dei clienti.
+
+Mesi dopo, un ricercatore di sicurezza scrive all'azienda: «Il vostro archivio è leggibile da chiunque». Dall'impostazione:
+
+<Log lines={[
+  "archivio: officina-verde-condivisione",
+  "accesso pubblico: consentito (lettura)",
+  "cifratura a riposo: disattivata",
+  "registro degli accessi: non attivo",
+]} caption="Quattro impostazioni, quattro problemi." />
+
+La domanda del caso: **come si impedisce che succeda, e che cosa si fa quando è già successo?**
+
+<Say who="sensei">Non serve un attaccante geniale. Basta un'impostazione sbagliata e qualcuno che passa di lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché succede">
+Un **archivio di oggetti** (*storage*) è come un grande armadio di file nel cloud. In AWS si chiama bucket (secchio), in Azure contenitore di blob, in Google Cloud bucket.
+
+Le fughe di dati da archivi esposti sono tra le cause più frequenti di incidenti nel cloud. Quasi sempre è **un errore di configurazione**, non un difetto del servizio:
+
+- si imposta «pubblico» per provare e ci si dimentica;
+- si copia una configurazione da Internet senza capirla;
+- nessuno controlla cosa è stato creato.
+
+<Callout kind="attenzione">
+«Nessuno conosce l'indirizzo» non è una protezione. Esistono servizi che cercano in automatico, sulla rete, archivi lasciati aperti.
+</Callout>
+
+Per la responsabilità condivisa (lezione 1), la scelta «pubblico o privato» è **del cliente**.
+
+<Say who="assistente">Un armadio con la porta aperta in strada non è «nascosto». È solo non ancora notato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le difese">
+Le difese, dalla più importante:
+
+- **Privato per impostazione predefinita**: l'accesso è per identità autorizzate (lezione 2).
+- **Blocco dell'accesso pubblico**: i fornitori offrono una funzione che impedisce di rendere pubblici gli archivi di un account (in AWS «Block Public Access»; in Azure si disattiva l'accesso anonimo ai blob; in Google Cloud c'è la «prevenzione dell'accesso pubblico»).
+- **Condivisione puntuale**: per dare un file a un fornitore si usa un link temporaneo (URL firmato) che vale per un solo file e scade.
+- **Cifratura a riposo**: se i dati finiscono in mani sbagliate senza la chiave, restano illeggibili.
+- **Registro degli accessi** e **versionamento**: sapere chi ha letto e poter recuperare versioni precedenti.
+- **Controlli automatici** della configurazione: un servizio che segnala subito un archivio pubblico.
+
+Un esempio di regola di un controllo automatico, fittizia:
+
+<Log lines={[
+  "REGOLA: nessun archivio può avere accesso pubblico",
+  "se un archivio diventa pubblico  →  avvisa il responsabile e rendilo privato",
+]} />
+
+<Say who="sensei">La difesa migliore è rendere difficile sbagliare. Un divieto a livello di account vale più di mille raccomandazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dopo la scoperta">
+Officina Verde ha ricevuto la segnalazione. Che cosa fa, in ordine?
+
+<Guided
+  steps={[
+    "Chiudere subito l'accesso pubblico. Prima si ferma l'emorragia.",
+    "Conservare i log, non cancellarli: servono a capire chi ha letto cosa, e per quanto tempo.",
+    "Valutare quali dati c'erano: qui, documenti d'identità di clienti, dati personali di rischio alto.",
+    "Con il GDPR: valutare la violazione e, se c'è rischio per le persone, notificarla al Garante per la protezione dei dati personali entro 72 ore da quando se ne è avuta conoscenza; avvisare gli interessati se il rischio è alto.",
+    "Correggere la causa: regole che vietano gli archivi pubblici, controlli automatici, formazione.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Legge ed etica: se trovi un archivio aperto di un'azienda, **non scaricare** i dati «per verificare». Accedere e copiare senza permesso può essere reato (art. 615-ter del codice penale). Si segnala al titolare o al CERT, senza copiare nulla.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese:
+
+<Video />
+
+<Say who="assistente">Segnalare non è un favore: è il comportamento di chi vuole davvero la sicurezza degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda scopre che un suo archivio pubblico conteneva dati personali. Quale passo è corretto per primo?"
+  options={["Chiudere l'accesso pubblico e verificare i log per capire chi ha letto i dati", "Cancellare i log per evitare problemi", "Aspettare la fine del mese per intervenire", "Non fare nulla se non ci sono segnalazioni"]}
+  answer={0}
+  explain="Prima si chiude l'esposizione, poi si usano i log per capire l'estensione del danno. Cancellare i log nasconde i fatti e peggiora la posizione dell'azienda, anche davanti al Garante."
+/>
+
+<Say who="sensei">Prima chiudi la porta, poi guardi cosa è uscito. Mai l'ordine inverso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su archivi esposti, difese e obblighi. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-storage" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Un archivio chiuso e cifrato non fa notizia. È proprio quello che vogliamo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli archivi cloud esposti nascono quasi sempre da una configurazione sbagliata del cliente, non da difetti del fornitore.
+- Difese: privato di default, blocco dell'accesso pubblico, link temporanei, cifratura, registro degli accessi, controlli automatici.
+- Dopo l'esposizione: chiudere, conservare i log, valutare i dati, notificare entro 72 ore se serve, correggere la causa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "«Nessuno conosce l'indirizzo» è una protezione?", a: "No: esistono strumenti che cercano archivi aperti" },
+    { q: "Qual è il primo passo dopo la scoperta di un archivio aperto?", a: "Chiudere l'accesso pubblico, conservando i log" },
+    { q: "Entro quanto si notifica una violazione di dati al Garante, se c'è rischio?", a: "Entro 72 ore dalla scoperta" },
+    { q: "Come si condivide un file con un fornitore senza renderlo pubblico?", a: "Con un link temporaneo valido per quel solo file" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: le stanze virtuali. Reti e sottoreti nel cloud, per tenere ogni cosa al posto giusto.</Say>
+</Scene>

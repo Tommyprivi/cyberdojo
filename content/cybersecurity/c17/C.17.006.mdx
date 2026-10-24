@@ -1,0 +1,186 @@
+---
+id: C.17.006
+course: cybersecurity
+module: 17
+title: "Chiavi e segreti: cifratura e gestione dei segreti"
+belt: blu
+duration_min: 9
+prerequisites: [C.17.005]
+objectives:
+  - "Distinguere cifratura a riposo e in transito e spiegare il ruolo di un servizio di gestione delle chiavi (KMS)"
+  - "Spiegare perché i segreti non vanno nel codice e come si custodiscono"
+  - "Descrivere che cosa fare quando una chiave viene esposta"
+video:
+  provider: youtube
+  id: "so0W0BMLZUQ"
+  start: 0
+  end: 600
+  channel: "CodeLucky"
+  title: "AWS KMS Tutorial: Key Management Service Explained for Beginners | AWS Security Series"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-segreti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere chiavi e password dentro il codice o in un repository condiviso"
+  - "Tenere la chiave di cifratura insieme ai dati cifrati"
+  - "Cancellare il file con la chiave e credere di aver risolto, senza revocarla"
+commands: []
+---
+
+<Scene title="La chiave nel repository">
+Un giovane sviluppatore di **Bottega Dati** (fittizia) scrive, per provare, nel file di configurazione di un progetto:
+
+<Log lines={[
+  "database_password = \"Estate2026!\"",
+  "chiave_accesso_cloud = \"CHIAVE-DI-ESEMPIO-0000\"",
+]} caption="Valori inventati per l'esempio. Il progetto viene poi caricato su un repository pubblico." />
+
+Nel giro di poche ore, strumenti automatici che cercano chiavi nei repository pubblici le trovano. Dal registro del cloud: nuove risorse create da un indirizzo sconosciuto.
+
+La domanda del caso: **dove si tengono le chiavi e le password dei programmi, e che cosa si fa quando sfuggono?**
+
+<Say who="sensei">Un segreto nel codice non è più un segreto. È un messaggio con una password dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un segreto">
+Un **segreto** è un dato riservato che un programma usa per entrare in qualcosa: una password di database, una chiave di accesso, un token.
+
+Regole di base:
+
+- **mai nel codice**, mai in file di configurazione caricati su repository condivisi;
+- **mai nei log**, né nei messaggi di errore;
+- **mai condivisi per posta o chat**;
+- ogni applicazione ha **le sue** credenziali, così se una è compromessa si revoca solo quella.
+
+Un'alternativa migliore: se il programma gira nel cloud, usa una **identità del servizio** con credenziali temporanee (lezione 2). Così non c'è nessun segreto da custodire.
+
+<Callout kind="regola">
+Il modo migliore di proteggere un segreto è **non averne bisogno**. Il secondo modo è custodirlo in un servizio fatto apposta.
+</Callout>
+
+<Say who="assistente">Una password nel codice è come la chiave di casa sotto lo zerbino. Prima o poi qualcuno solleva lo zerbino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il gestore di segreti">
+Un **gestore di segreti** custodisce i segreti **cifrati**, li consegna solo a identità autorizzate e registra chi li ha chiesti. In AWS si chiama Secrets Manager, in Azure Key Vault, in Google Cloud Secret Manager.
+
+Funzioni utili:
+
+- **permessi minimi**: solo l'applicazione giusta legge il suo segreto;
+- **rotazione**: il segreto si cambia a intervalli, in automatico;
+- **registro degli accessi**: si vede chi ha letto cosa.
+
+Esempio di accesso, fittizio:
+
+<Log lines={[
+  "applicazione-ordini  →  chiede  «password-database-ordini»",
+  "gestore di segreti   →  verifica identità e permessi",
+  "gestore di segreti   →  consegna il valore (cifrato nel trasporto)",
+  "registro             →  10:42  applicazione-ordini ha letto «password-database-ordini»",
+]} />
+
+Un'attenzione in più: una **scansione dei segreti** sui repository (esistono strumenti automatici) trova chiavi dimenticate nel codice prima che lo faccia qualcun altro.
+
+<Say who="sensei">Il segreto sta in una cassaforte, non in un cassetto. E la cassaforte tiene un registro di chi la apre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cifrare i dati e gestire le chiavi">
+Ci sono due momenti in cui si cifrano i dati (richiamo del modulo di crittografia, C.02):
+
+- **a riposo**: i dati salvati su disco o archivio sono cifrati; chi ruba il disco senza la chiave vede solo dati illeggibili;
+- **in transito**: i dati che viaggiano in rete usano un canale cifrato (HTTPS/TLS).
+
+Le chiavi di cifratura si custodiscono in un **servizio di gestione delle chiavi** (**KMS**, *Key Management Service*): crea le chiavi, le usa per cifrare e decifrare, e non le consegna in chiaro. Il cliente decide **chi** può usarle.
+
+<Callout kind="attenzione">
+Se la chiave sta nello stesso posto dei dati cifrati, chi ruba l'archivio ruba anche la chiave. Cifrare è inutile se la chiave non è custodita altrove.
+</Callout>
+
+Il KMS permette anche di **ruotare** e **revocare** le chiavi, e separa i ruoli: chi amministra le chiavi non coincide con chi legge i dati.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese:
+
+<Video />
+
+<Say who="assistente">Cifrare è metà del lavoro. L'altra metà è sapere dove sta la chiave e chi può usarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una chiave è sfuggita">
+Torniamo a Bottega Dati. La chiave è finita in un repository pubblico. In che ordine si agisce?
+
+<Guided
+  steps={[
+    "Revocare subito la chiave esposta: disattivarla nel cloud. Non basta cancellare il file dal repository, perché la storia del repository e le copie restano.",
+    "Crearne una nuova e distribuirla tramite il gestore di segreti, non nel codice.",
+    "Controllare i log per usi sospetti: macchine create, dati letti, nuove identità.",
+    "Se sono usciti dati personali, valutare gli obblighi del GDPR (lezione 3).",
+    "Attivare la scansione dei segreti e una regola che impedisca di caricare chiavi nei repository.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Legge ed etica: se trovi la chiave di qualcun altro in un repository pubblico, **non usarla**, nemmeno «per provare»: sarebbe accesso abusivo (art. 615-ter c.p.). Si segnala al proprietario.
+</Callout>
+
+<Say who="sensei">Revoca prima, poi pulisci. Una chiave esposta va considerata già rubata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una chiave finisce in un repository pubblico. Cosa è corretto fare?"
+  options={["Revocare la chiave, crearne una nuova e controllare i log", "Cancellare il file dal repository e basta", "Aspettare che qualcuno la usi", "Non fare nulla: le chiavi non scadono"]}
+  answer={0}
+  explain="Una chiave esposta va considerata compromessa. Cancellare il file non basta: la storia del repository e le copie restano. Chi aspetta di vedere se qualcuno la usa dà tempo all'attaccante."
+/>
+
+<Say who="sensei">Quando il dubbio è «l'avranno vista?», la risposta è sì. Cambia la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su segreti, chiavi e cifratura. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-segreti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai dove tenere i segreti, e che cosa fare quando sfuggono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I segreti non vanno nel codice, nei log o in chat; si usano identità del servizio o un gestore di segreti.
+- La cifratura protegge i dati a riposo e in transito, ma la chiave va custodita in un KMS, separata dai dati.
+- Se una chiave sfugge: revocarla, sostituirla, controllare i log, valutare gli obblighi di legge.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove NON si scrive mai una chiave di accesso?", a: "Nel codice o in un repository condiviso" },
+    { q: "Che cosa fa un KMS?", a: "Crea e custodisce le chiavi di cifratura e le usa senza consegnarle in chiaro" },
+    { q: "Chiave esposta: basta cancellare il file?", a: "No: va revocata e sostituita" },
+    { q: "Cifratura a riposo e in transito: differenza?", a: "Protegge i dati salvati e quelli che viaggiano in rete" },
+  ]}
+/>
+
+<Say who="sensei">Ultima lezione del modulo: regole e bollette. Governance e costi, per tenere in ordine un cloud che cresce.</Say>
+</Scene>

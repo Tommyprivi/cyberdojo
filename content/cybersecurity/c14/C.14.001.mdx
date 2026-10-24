@@ -1,0 +1,179 @@
+---
+id: C.14.001
+course: cybersecurity
+module: 14
+title: "Dentro Windows: processi, utenti e privilegi"
+belt: blu
+duration_min: 10
+prerequisites: [C.07.006]
+objectives:
+  - "Distinguere modalità utente e modalità kernel e dire perché la separazione protegge il sistema"
+  - "Spiegare che cosa sono SID, token di accesso e UAC e come decidono che cosa un programma può fare"
+  - "Riconoscere i processi di sistema chiave (lsass, svchost, services) e le zone dove cercare chi vuole restare nel sistema"
+video:
+  provider: youtube
+  id: "8RGY5lRY254"
+  start: 0
+  end: 380
+  channel: "StudyPalz"
+  title: "Operating System Architecture Explained (Made Simple)"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-architettura
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che svchost.exe sia sempre sospetto: è normale, conta da dove parte e chi lo avvia"
+  - "Pensare che «amministratore» significhi che ogni programma gira già con tutti i poteri: l'UAC serve proprio a evitarlo"
+  - "Confondere il nome dell'account con il SID: Windows decide i permessi con il SID"
+commands: []
+---
+
+<Scene title="Un processo che non torna">
+Nella **Bianchi Logistica**, azienda fittizia di trasporti, un analista guarda l'elenco dei processi di un PC dell'amministrazione.
+
+<Log lines={[
+  "svchost.exe   padre: services.exe        C:\\Windows\\System32",
+  "svchost.exe   padre: services.exe        C:\\Windows\\System32",
+  "svchost.exe   padre: explorer.exe        C:\\Users\\Public",
+  "lsass.exe     padre: wininit.exe         C:\\Windows\\System32",
+]} caption="Quattro righe. Una non torna." />
+
+La domanda del caso: **quale riga è sospetta, e come fai a dirlo?**
+
+<Say who="sensei">Per riconoscere l'anomalia devi conoscere la normalità. Oggi impari come è fatto Windows dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due mondi: utente e kernel">
+Windows divide il lavoro in due livelli.
+
+- **Modalità utente**: ci girano i programmi normali (browser, Word). Ogni programma ha la sua memoria e non può toccare quella degli altri.
+- **Modalità kernel**: ci gira il **kernel**, il cuore del sistema, con i **driver**. Ha accesso a tutto, hardware compreso.
+
+Pensa a una banca: i clienti stanno nella sala, il caveau è dietro una porta blindata. Il cliente chiede, il cassiere decide.
+
+<Callout kind="regola">
+Un programma in modalità utente chiede al kernel di fare le cose per lui. Se il programma si blocca, il sistema resta in piedi. Se si blocca il kernel, si ferma tutto.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Un driver gira nel caveau. Per questo un driver difettoso o malevolo è molto più grave di un programma qualunque.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I processi che devi conoscere">
+Alcuni processi di Windows sono sempre gli stessi. Conoscerli è come conoscere i volti dei colleghi.
+
+- **wininit.exe** avvia i servizi essenziali all'accensione.
+- **services.exe** avvia e gestisce i **servizi**, cioè i programmi che girano in sottofondo.
+- **svchost.exe** è un **contenitore** che ospita molti servizi: per questo ne vedi decine. È normale.
+- **lsass.exe** gestisce l'autenticazione locale e tiene in memoria le credenziali di chi ha fatto l'accesso.
+- **explorer.exe** è il desktop dell'utente.
+
+<Callout kind="trucco">
+Per un processo di sistema controlla tre cose: **il padre** (chi l'ha avviato), **la cartella** da cui parte (di solito System32) e **l'account** con cui gira.
+</Callout>
+
+Torna al caso: il terzo svchost ha come padre **explorer.exe** e parte da **C:\Users\Public**. Un vero svchost parte da System32, avviato da services.exe. Quella riga è un **impostore**.
+
+<Say who="sensei">Il nome è facile da copiare. Il padre e la cartella no. Guarda sempre quelli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi sei: SID e token">
+Windows non usa il nome «mario» per decidere i permessi. Usa un **SID** (Security Identifier): un codice unico per ogni account e per ogni gruppo.
+
+Quando fai l'accesso, Windows crea il tuo **token di accesso**: una sorta di **tesserino** che ogni programma avviato da te si porta dietro. Dentro ci sono:
+
+- il tuo **SID**,
+- i **gruppi** di cui fai parte,
+- i tuoi **privilegi** (cose speciali che puoi fare, come spegnere il sistema).
+
+<Callout kind="curiosita">
+L'account **SYSTEM** ha un SID noto (S-1-5-18) e ha il massimo potere sulla macchina locale. Molti servizi girano con SYSTEM. Se un servizio così viene compromesso, chi lo controlla ottiene quel potere.
+</Callout>
+
+<Say who="assistente">Quando un programma tenta di aprire un file, Windows guarda il tesserino e lo confronta con i permessi del file. Il nome non c'entra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Amministratore, ma con prudenza">
+Un amministratore ha un token molto potente. Se ogni programma ne ereditasse tutti i poteri, aprire un allegato sbagliato sarebbe una catastrofe.
+
+L'**UAC** (Controllo dell'account utente) lo evita: anche un amministratore, di solito, lavora con un token **limitato**. Per azioni che richiedono più potere compare la finestra di conferma.
+
+Questo è il **minimo privilegio** (lo hai visto nel modulo 3): ognuno e ogni programma ha **solo** i poteri che gli servono.
+
+<Callout kind="attenzione">
+Disattivare l'UAC «perché dà fastidio» toglie una protezione, non un fastidio. Se serve un'azione da amministratore, meglio un account amministrativo separato, usato solo per quello.
+</Callout>
+
+<Say who="sensei">La finestra di conferma è una porta. Chi la toglie lascia la porta aperta a tutti i programmi, anche a quelli che non hai invitato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te: dove si nasconde chi vuole restare">
+Chi si introduce in un PC di solito vuole **restare** anche dopo il riavvio. Per questo il registro di sistema e le attività pianificate sono tra le prime cose da controllare.
+
+Il **registro di sistema** (Registry) è un grande archivio organizzato ad albero con le impostazioni di Windows, dei programmi e degli utenti.
+
+<Quiz
+  question="Un PC dell'amministrazione si comporta in modo strano dopo un allegato aperto per sbaglio. Dove controlli per primo se qualcosa è stato impostato per ripartire a ogni accensione?"
+  options={[
+    "Le chiavi di avvio automatico del registro, le cartelle di avvio e le attività pianificate",
+    "Solo la cartella Immagini dell'utente",
+    "Il cestino e lo sfondo del desktop",
+    "L'impostazione della luminosità dello schermo",
+  ]}
+  answer={0}
+  explain="Per ripartire a ogni accensione un programma deve essere registrato in un punto di avvio: chiavi di avvio del registro, cartella Esecuzione automatica, servizi o attività pianificate. Sono i posti da guardare per primi."
+/>
+
+<Say who="assistente">Per restare, deve lasciarsi un modo di ripartire. Cerca quel modo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su processi, privilegi e token.
+
+<Practice generator="c14-architettura" pass="5/5" retries={3} />
+
+<Say who="sensei">Conoscere la normalità: è metà del lavoro di chi difende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Modalità utente e kernel sono separate: ciò che sta nel kernel ha accesso a tutto, perciò driver e kernel vanno protetti di più.
+- Il token di accesso, con SID, gruppi e privilegi, decide che cosa un programma può fare; l'UAC lo limita anche per gli amministratori.
+- Dei processi di sistema controlla padre, cartella e account: lsass, services e svchost sono normali, un impostore di solito parte da un luogo sbagliato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un SID?", a: "L'identificatore unico di un account o gruppo, usato da Windows per i permessi" },
+    { q: "Che cosa contiene un token di accesso?", a: "SID dell'utente, gruppi e privilegi" },
+    { q: "Che cosa fa lsass.exe?", a: "Autenticazione locale; tiene in memoria le credenziali di chi ha fatto l'accesso" },
+    { q: "Tre controlli per un processo sospetto?", a: "Il padre, la cartella di partenza e l'account con cui gira" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi può aprire quale cartella. Account, gruppi e permessi NTFS.</Say>
+</Scene>

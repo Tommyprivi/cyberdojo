@@ -1,0 +1,188 @@
+---
+id: C.13.004
+course: cybersecurity
+module: 13
+title: "Riconoscere le anomalie nel traffico"
+belt: blu
+duration_min: 10
+prerequisites: [C.13.003]
+objectives:
+  - "Riconoscere in una cattura i segni di scansione, comunicazione periodica (beaconing), DNS anomalo e invio di molti dati"
+  - "Distinguere un'anomalia da un comportamento strano ma normale"
+  - "Dire quale dato aggiuntivo serve prima di trarre una conclusione"
+video:
+  provider: youtube
+  id: "ysr-t-TKVSg"
+  start: 0
+  end: 600
+  channel: "Cybersecurity Academy - CertificationHUB"
+  title: "Detecting Network Intrusions with Wireshark: A Step-by-Step Guide"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c13-anomalie
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Chiamare «attacco» ogni cosa insolita: molte anomalie sono aggiornamenti, backup o errori di configurazione"
+  - "Guardare un solo pacchetto invece di un andamento nel tempo"
+  - "Non avere una linea di base: senza sapere cosa è normale, tutto sembra strano o niente lo sembra"
+commands: []
+---
+
+<Scene title="Che cosa è «normale»?">
+Il responsabile di Officina Verdi ti mostra due grafici del laboratorio. Nel primo il traffico sale la mattina e scende la sera. Nel secondo, **ogni 60 secondi esatti**, una piccola raffica verso un indirizzo esterno. Anche alle 03:00 di notte, anche nel weekend.
+
+«Questo è un attacco?» chiede.
+
+La risposta onesta è: **non lo so ancora**. Ma so da dove cominciare. Si comincia dal chiedersi che cosa è **normale** in quella rete.
+
+<Say who="sensei">Un'anomalia è una differenza dalla normalità. Se non conosci la normalità, non riconosci nulla. Prima la linea di base.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La linea di base">
+La **linea di base** è la descrizione del traffico di una rete nei giorni tranquilli: quali protocolli, quanti dati, a che ora, verso dove. Si ricava da catture e statistiche fatte **nel tuo laboratorio o nella tua rete autorizzata**, in momenti in cui sai che va tutto bene.
+
+<Callout kind="regola">
+Senza linea di base si possono fare solo ipotesi. Con la linea di base si può dire: «questo è diverso dal solito, e in questo modo».
+</Callout>
+
+Un aggiornamento automatico ogni notte, un backup ogni domenica, la posta che parte la mattina: sono **abitudini**, non anomalie. Va annotato che cosa le spiega.
+
+<Say who="assistente">Chiedi sempre: c'è un motivo normale? Se c'è, annotalo e vai avanti. Se non c'è, indaga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro segni da conoscere">
+Ecco quattro anomalie classiche. Per ciascuna, **che cosa si vede** e **quale spiegazione normale** va esclusa.
+
+**1. Scansione di porte.** Un computer manda SYN a tante porte diverse dello stesso destinatario (o a tanti indirizzi), spesso senza completare la connessione. Spiegazione normale: lo scanner di vulnerabilità dell'azienda, autorizzato.
+
+<Log
+  lines={[
+    "10:20:01.001  192.168.1.77 -> 192.168.1.50  TCP  porta 51000 -> 21   [SYN]",
+    "10:20:01.002  192.168.1.77 -> 192.168.1.50  TCP  porta 51001 -> 22   [SYN]",
+    "10:20:01.003  192.168.1.77 -> 192.168.1.50  TCP  porta 51002 -> 23   [SYN]",
+    "10:20:01.003  192.168.1.50 -> 192.168.1.77  TCP  porta 23 -> 51002   [RST, ACK]",
+    "10:20:01.004  192.168.1.77 -> 192.168.1.50  TCP  porta 51003 -> 25   [SYN]",
+  ]}
+  caption="Tanti SYN in pochi millisecondi verso porte diverse: una scansione"
+/>
+
+**2. Comunicazione periodica (beaconing).** Un computer contatta un indirizzo esterno a intervalli molto regolari, con dati piccoli e simili. Gli esseri umani non sono così regolari: i programmi sì. Spiegazione normale: un controllo aggiornamenti, un orologio di rete, un programma di monitoraggio.
+
+**3. DNS anomalo.** Nomi molto lunghi, casuali, sotto un unico dominio sconosciuto; tante richieste NXDOMAIN; risposte di tipo TXT molto grosse. Può indicare un uso improprio del DNS per far passare dati. Spiegazione normale: certi servizi di sicurezza o di posta usano nomi lunghi.
+
+**4. Tanti dati verso l'esterno.** Un computer manda molti più byte di quanti ne riceve, verso un indirizzo mai visto. Spiegazione normale: backup in cloud, caricamento di un video.
+
+<Say who="sensei">Quattro segni. Per ognuno, un colpevole possibile e un innocente possibile. Il tuo lavoro è decidere tra i due, con le prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il segno del tempo">
+Un solo pacchetto non è mai un'anomalia. Lo è un **andamento nel tempo**. Il beaconing si vede così:
+
+<Log
+  lines={[
+    "Ora          Destinazione      Byte",
+    "02:00:00     198.51.100.33     212",
+    "02:01:00     198.51.100.33     212",
+    "02:02:00     198.51.100.33     212",
+    "02:03:00     198.51.100.33     212",
+    "02:04:00     198.51.100.33     212",
+  ]}
+  caption="Esempio inventato: stessa destinazione, stessa dimensione, ogni 60 secondi"
+/>
+
+Come lo trovi? In Wireshark con il **grafico I/O** (Statistiche), oppure ordinando le conversazioni e guardando il tempo tra un pacchetto e il successivo (`frame.time_delta_displayed`).
+
+<Callout kind="trucco">
+Regolarità = programma. Esempio: ogni 60 secondi, sempre 212 byte. Una persona che naviga è irregolare: pause, picchi, silenzi.
+</Callout>
+
+Vuoi vedere come si cercano le intrusioni in una cattura, da un'altra voce? In inglese:
+
+<Video />
+
+<Say who="assistente">Un programma legittimo può essere regolare quanto uno malevolo. Quindi la regolarità ti dice «guarda qui», non «è colpa sua».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: tre segnali, una conclusione prudente">
+Nel laboratorio di prova osservi tre cose sul computer 192.168.1.30.
+
+<Guided
+  steps={[
+    "Segnale 1: ogni 300 secondi, 180 byte verso 198.51.100.33, giorno e notte.",
+    "Segnale 2: richieste DNS per nomi tipo «x7q2k9a0.prova-esempio.example», tutte diverse, una ventina in un minuto.",
+    "Segnale 3: nessun grande invio di dati: i byte inviati sono pochi.",
+    "Spiegazioni normali da escludere: aggiornamenti automatici? un programma di monitoraggio installato? Si controlla l'elenco dei programmi del computer di prova.",
+    "Conclusione prudente: «comportamento anomalo da approfondire»; non «computer compromesso». Prossimi dati da raccogliere: processo che apre quelle connessioni, reputazione dell'indirizzo, log del DNS dell'azienda.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+La conclusione «è un attacco» richiede più prove di quelle che dà la sola rete. La rete mostra il **sintomo**; la **causa** si cerca sul computer e nei log.
+</Callout>
+
+<Say who="sensei">Sintomo non è diagnosi. Il medico non opera perché hai la febbre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una cattura mostra il computer 192.168.1.45 che ogni notte alle 03:00 invia 800 MB verso un indirizzo esterno, sempre lo stesso, da due settimane. Che cosa è più sensato fare per primo?"
+  options={[
+    "Verificare se c'è un backup notturno programmato verso un servizio autorizzato: è la spiegazione normale più probabile",
+    "Dichiarare un furto di dati e staccare l'intera azienda da Internet",
+    "Ignorare il fatto, perché capita sempre alla stessa ora",
+    "Cancellare la cattura, perché contiene dati sensibili",
+  ]}
+  answer={0}
+  explain="La regolarità (stessa ora, stessa destinazione, due settimane) è tipica di un'attività programmata, come un backup. Prima si esclude la spiegazione normale. Se nessuno conosce quel trasferimento, allora diventa un caso da approfondire. Dichiarare un furto senza prove, o ignorare il fatto, sono entrambi errori."
+/>
+
+<Say who="assistente">Prima l'innocente più probabile. Se non regge, passi all'ipotesi successiva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di anomalie: riconosci il segno e scegli la mossa prudente. Cinque su cinque.
+
+<Practice generator="c13-anomalie" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sospettare è facile: sospettare bene è un mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Senza linea di base non si riconoscono le anomalie: prima si descrive il traffico «normale» del proprio laboratorio o della rete autorizzata.
+- Quattro segni: scansione (tanti SYN a porte diverse), beaconing (contatti regolari), DNS anomalo (nomi lunghi e casuali) e grandi invii verso l'esterno.
+- Ogni segno ha una spiegazione normale da escludere; la conclusione è prudente: «da approfondire», non «attacco».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la linea di base?", a: "La descrizione del traffico normale di una rete nei giorni tranquilli" },
+    { q: "Che cosa è il beaconing?", a: "Contatti molto regolari, a intervalli fissi, verso lo stesso indirizzo" },
+    { q: "Come appare una scansione di porte in una cattura?", a: "Tanti SYN a porte diverse in pochissimo tempo, spesso con molti RST" },
+    { q: "La rete mostra il sintomo o la causa?", a: "Il sintomo: la causa si cerca sul computer e nei log" },
+  ]}
+/>
+
+<Say who="sensei">Sai riconoscere i segni. Prossima lezione: una cattura sospetta intera, da leggere dall'inizio alla fine.</Say>
+</Scene>

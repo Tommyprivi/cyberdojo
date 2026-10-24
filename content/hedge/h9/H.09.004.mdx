@@ -1,0 +1,171 @@
+---
+id: H.09.004
+course: hedge
+module: 9
+title: "Conflitti di interesse"
+belt: blu
+duration_min: 8
+prerequisites: [H.09.003]
+objectives:
+  - "Riconoscere un conflitto di interessi in un fondo"
+  - "Descrivere come si gestisce: regole scritte, informazione, separazione"
+  - "Capire perché commissioni, valutazioni e operazioni personali sono aree delicate"
+video:
+  provider: youtube
+  id: "SQkbECQE214"
+  start: 0
+  end: 600
+  channel: "Polimi OpenKnowledge"
+  title: "La banca e il suo cliente: trasparenza e conflitti di interesse (Michele Bonollo)"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h09-conflitti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un conflitto di interessi sia sempre una colpa: spesso non si può evitare, si deve gestire"
+  - "Tacere il conflitto sperando che nessuno se ne accorga"
+  - "Credere che la commissione di performance allinei sempre gestore e investitore"
+commands: []
+---
+
+<Scene title="Due fondi, un'occasione">
+Il gestore fittizio Nova Capital gestisce **due fondi**: il fondo Alfa, che paga al gestore commissioni di performance alte, e il fondo Beta, con commissioni basse. Arriva un'occasione di investimento molto buona, ma **limitata**: basta per uno solo dei due.
+
+Il gestore pensa: «Alfa mi rende di più…»
+
+La domanda del caso: **che cosa non deve fare, e come si decide in modo corretto?**
+
+Ricorda: il corso è educazione, non consulenza. Si può perdere denaro, anche tutto. Fatti normativi in sintesi, ottobre 2026: controlla le fonti ufficiali.
+
+<Say who="sensei">Quando l'interesse tuo e quello del cliente tirano in direzioni diverse, comincia il vero lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il conflitto">
+Un **conflitto di interessi** c'è quando l'interesse di chi gestisce (o di qualcuno nel fondo) **può entrare in contrasto** con quello degli investitori.
+
+Non è un reato per sé. È una **situazione di rischio**: tentazione di favorire se stessi.
+
+Le regole europee (AIFMD, MiFID II) chiedono di **individuare, prevenire e gestire** i conflitti, e se non si possono evitare, **informare** chi è coinvolto.
+
+<Callout kind="regola">
+Tre mosse: **individuare** i conflitti possibili, **gestirli** con regole scritte, **informare** quando non si possono evitare.
+</Callout>
+
+Un video in italiano su trasparenza e conflitti, da un'altra voce:
+
+<Video />
+
+<Say who="assistente">Un conflitto dichiarato e gestito è molto meno pericoloso di uno nascosto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove nascono i conflitti">
+Nei fondi, quattro zone tipiche:
+
+- **Ripartizione delle operazioni** tra più fondi: chi riceve le occasioni migliori?
+- **Commissioni di performance**: possono spingere a rischi eccessivi, perché il gestore partecipa ai guadagni ma non allo stesso modo alle perdite.
+- **Valutazione** di attività poco scambiate: se il compenso dipende dal valore, c'è la tentazione di gonfiarlo.
+- **Operazioni personali** dei dipendenti: comprare per sé gli stessi titoli del fondo.
+
+<Callout kind="attenzione">
+Regali costosi e inviti da parte dei broker sono un'altra zona delicata: servono limiti, un registro e a volte un rifiuto.
+</Callout>
+
+<Say who="sensei">Dove entrano soldi e discrezione, entra il rischio di conflitto. Guarda lì per primo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si gestiscono">
+Strumenti concreti, in sintesi:
+
+- **Politiche scritte** di ripartizione, uguali per tutti i fondi e documentate.
+- **Barriere informative** («muraglie cinesi») tra uffici, per tenere separate le informazioni riservate.
+- **Regole sulle operazioni personali**: autorizzazione preventiva, divieti nei periodi sensibili.
+- **Valutazione indipendente** o controlli sui prezzi delle attività poco liquide.
+- **Registro dei conflitti** e della loro gestione, a disposizione dei controlli interni ed esterni.
+
+<Callout kind="trucco">
+Domanda guida: «Se domani questa decisione finisse sul giornale, riuscirei a spiegarla all'investitore?»
+</Callout>
+
+<Say who="assistente">Scrivere le regole prima, quando nessuno ha ancora un interesse in gioco, è il metodo più onesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nova Capital ha un'occasione limitata e due fondi. Che cosa è corretto?"
+  options={[
+    "Applicare regole di ripartizione scritte e uguali per tutti, documentando come si decide",
+    "Darla al fondo che paga la commissione di performance più alta",
+    "Darla al fondo più simpatico",
+    "Decidere dopo, in base a come si muove il prezzo",
+  ]}
+  answer={0}
+  explain="La ripartizione deve seguire regole fissate prima e documentate. Favorire il fondo che rende di più al gestore danneggia gli investitori dell'altro; decidere dopo, guardando il prezzo, permette di scegliere il fondo vincente a posteriori."
+/>
+
+<Say who="sensei">Regola scritta prima, scelta dopo. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un caso in più">
+Un analista di Nova Capital vuole comprare per sé le azioni che il fondo sta per acquistare.
+
+<Guided
+  steps={[
+    "Primo passo: riconoscere il conflitto. Se il fondo compra, il prezzo può salire e l'analista guadagna grazie a informazioni del fondo.",
+    "Secondo passo: guardare la politica sulle operazioni personali. Chiede autorizzazione preventiva e vieta di operare nei periodi sensibili.",
+    "Terzo passo: chiedere l'autorizzazione al responsabile della compliance, non decidere da solo.",
+    "Quarto passo: se è negata, non si compra, né a nome proprio né di parenti.",
+  ]}
+/>
+
+<Say who="sensei">Comprare a nome di un parente non cancella il conflitto. Lo rende solo più grave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sui conflitti di interesse: scegli che cosa è corretto fare.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="h09-conflitti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi sa riconoscere un conflitto sa già come difendersene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un conflitto di interessi è una situazione in cui l'interesse del gestore può contrastare con quello degli investitori.
+- Si individua, si gestisce con regole scritte e separazione, e si informa quando non si può evitare.
+- Zone tipiche: ripartizione delle operazioni, commissioni di performance, valutazioni, operazioni personali, regali.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un conflitto di interessi?", a: "Una situazione in cui l'interesse del gestore può contrastare con quello degli investitori" },
+    { q: "Che cos'è una muraglia cinese?", a: "Una barriera che tiene separate le informazioni riservate tra uffici" },
+    { q: "Come si ripartiscono le occasioni tra più fondi?", a: "Con regole scritte, uguali per tutti e documentate" },
+    { q: "Un conflitto che non si può evitare, che cosa richiede?", a: "Gestione con regole e informazione chiara a chi è coinvolto" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: segnalazioni e controlli. Chi controlla chi controlla il fondo?</Say>
+</Scene>

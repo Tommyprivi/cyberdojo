@@ -1,0 +1,181 @@
+---
+id: C.15.006
+course: cybersecurity
+module: 15
+title: "Password manager e passkey"
+belt: blu
+duration_min: 10
+prerequisites: [C.15.005]
+objectives:
+  - "Spiegare come un password manager protegge le password con una sola chiave principale"
+  - "Descrivere come funziona una passkey (coppia di chiavi legata al sito) e perché resiste al phishing"
+  - "Scegliere tra password, password manager e passkey nei diversi scenari, compreso il recupero dell'accesso"
+video:
+  provider: youtube
+  id: "IB4D5hE8wvE"
+  start: 0
+  end: 600
+  channel: "TuttoTech"
+  title: "Dite ADDIO alle PASSWORD! La RIVOLUZIONE delle PASSKEY spiegata bene!"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-passkey
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Riusare la stessa password su più siti, anche se «forte»"
+  - "Scegliere una chiave principale debole o scritta vicino al computer"
+  - "Attivare le passkey senza pensare a come recuperare l'accesso se si perde il telefono"
+commands: []
+---
+
+<Scene title="La password di tutti i siti">
+**Elena** lavora allo Studio Ferri. Usa la stessa password, «Primavera2024!», per posta, banca e gestionale. Un sito di ricette dove si era iscritta anni fa subisce una fuga di dati: le password finiscono in rete.
+
+Poche ore dopo qualcuno prova a entrare, con la stessa password, nella sua posta di lavoro. Questa tecnica si chiama **credential stuffing**: si prendono credenziali rubate in un posto e si provano ovunque.
+
+La domanda del caso: **come si evita che un errore di un sito apra tutti gli altri, e perché le passkey nascono per risolvere il problema alla radice?**
+
+<Say who="sensei">La password è un segreto condiviso: lo sa l'utente e lo sa il sito. Se il sito lo perde, il segreto non è più tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il password manager">
+Una persona non ricorda cento password lunghe e diverse. Un **password manager** le ricorda per lei.
+
+È un archivio, il **vault**, **cifrato** con una sola **chiave principale** (la password principale). I dati sono cifrati sul dispositivo prima di essere sincronizzati: nei gestori ben progettati il fornitore non può leggerli. La password principale non viene usata direttamente come chiave: passa per una **funzione di derivazione** lenta (come Argon2 o PBKDF2) che rende costosissimo provarne tante.
+
+Vantaggi:
+
+- una password **diversa e casuale** per ogni sito, quindi una fuga non si propaga;
+- compilazione automatica solo sul **sito giusto**: se la pagina è un finto sito, il gestore non compila, e questo è già un allarme;
+- generatore di password casuali lunghe.
+
+<Callout kind="regola">
+La password principale è **lunga** (una frase di parole scelte a caso va bene), **unica** e accompagnata da una verifica in due passaggi sull'account del gestore. Non si scrive vicino al computer.
+</Callout>
+
+<Say who="assistente">Se ricordi un solo segreto, ricordalo bene. Tutto il resto lo ricorda la macchina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La passkey: niente segreto da rubare">
+Una **passkey** cambia il modello. Non c'è più una password condivisa: c'è una **coppia di chiavi** (come hai visto nel modulo C2).
+
+1. Quando crei la passkey per un sito, il tuo dispositivo genera una coppia di chiavi **solo per quel sito**.
+2. Al sito va la **chiave pubblica**. La **chiave privata** resta nel tuo dispositivo (o nel tuo gestore) e non viene mai inviata.
+3. Per accedere, il sito manda una **sfida** casuale. Il dispositivo la **firma** con la chiave privata, dopo che tu ti sei sbloccato con impronta, volto o PIN del dispositivo.
+4. Il sito controlla la firma con la chiave pubblica.
+
+Lo standard si chiama **WebAuthn** (parte della famiglia **FIDO2**).
+
+<Log lines={[
+  "sito → dispositivo: sfida casuale, per esempio 7c1e...",
+  "dispositivo: «sblocco con impronta» → firma la sfida con la chiave privata di questo sito",
+  "dispositivo → sito: firma",
+  "sito: verifica con la chiave pubblica → accesso consentito",
+]} />
+
+<Callout kind="curiosita">
+La firma include il **nome del sito** vero. Se finisci su un sito falso che somiglia alla banca, la passkey **non funziona**, perché è legata al dominio autentico: il phishing perde la sua arma principale.
+</Callout>
+
+Vuoi sentirlo spiegare da un'altra voce? In italiano:
+
+<Video />
+
+<Say who="sensei">Se il sito perde i suoi dati, trova solo chiavi pubbliche: inutili a chi vuole entrare. È questo il salto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I punti deboli delle passkey">
+Nessuna soluzione è perfetta. Alcune domande vanno poste.
+
+- **Dove vivono le passkey?** Possono essere **legate a un dispositivo** (una chiave di sicurezza fisica, o il telefono) oppure **sincronizzate** tramite il tuo account Apple, Google, Microsoft o un password manager. La sincronizzazione è comoda, ma sposta la fiducia sull'account: va protetto bene.
+- **E se perdo il telefono?** Serve un **piano di recupero**: più dispositivi registrati, una chiave fisica di riserva, codici di recupero conservati in un luogo sicuro. Il recupero via SMS o email è il tallone d'Achille: l'attaccante cercherà proprio quello.
+- **Tutti i siti le supportano?** No, non ancora. Per questo si usano insieme: passkey dove ci sono, password manager con password uniche negli altri casi, e verifica in due passaggi.
+
+<Callout kind="attenzione">
+Una passkey protegge dal phishing della password, ma non dal furto del dispositivo sbloccato né da un account di recupero debole. La catena è forte quanto il suo anello più debole.
+</Callout>
+
+<Say who="assistente">Prima di buttare le password, chiediti: se domani perdo il telefono, come entro? Se non lo sai, non sei pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Elena riceve un'email con un link a un sito che sembra identico a quello della sua banca. Con una passkey registrata sulla banca vera, che cosa succede sul sito falso?"
+  options={[
+    "La passkey non viene proposta né funziona, perché è legata al dominio autentico della banca",
+    "La passkey funziona e il sito falso ottiene la chiave privata",
+    "La passkey funziona, ma solo se Elena digita anche la password",
+    "Il sito falso ottiene la chiave pubblica e con quella può entrare",
+  ]}
+  answer={0}
+  explain="La passkey è legata al sito vero: il dispositivo non risponde a una sfida di un dominio diverso. E la chiave privata non lascia mai il dispositivo. La chiave pubblica non permette di entrare: serve solo a verificare firme."
+/>
+
+<Say who="sensei">Un buon sistema non si fida dell'attenzione dell'utente. Fa fallire l'inganno da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mettere in sicurezza Elena">
+<Guided
+  steps={[
+    "Subito: si cambia la password della posta di lavoro e di ogni altro sito dove usava «Primavera2024!», partendo dagli account più importanti (posta, banca). Si attiva la verifica in due passaggi.",
+    "Si installa un password manager scelto dall'azienda e si crea una password principale lunga e unica, conservata solo nella memoria di Elena e in un piano di recupero custodito con cura.",
+    "Per ogni sito, il gestore crea una password casuale diversa. Dove è possibile, si registra anche una passkey.",
+    "Piano di recupero: due dispositivi registrati e una chiave di sicurezza fisica di riserva in un cassetto chiuso a chiave. Si evitano recuperi basati solo su SMS.",
+    "Controllo: il gestore segnala le password già comparse in fughe di dati; si cambiano quelle indicate.",
+  ]}
+/>
+
+<Callout kind="regola">
+Si prova a entrare solo nei **propri** account e con le proprie credenziali. Provare password rubate o indovinate su account altrui è accesso abusivo a sistema informatico (art. 615-ter c.p.), anche «per scherzo».
+</Callout>
+
+<Say who="sensei">Modulo chiuso. Hai visto la catena intera: certificati, TLS, chiavi, firme, dischi, accessi. La crittografia vera è questo: usata bene, in ogni anello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su password manager, passkey, recupero e phishing.
+
+<Practice generator="c15-passkey" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai finito il modulo: scegli e spiega la protezione giusta per ogni caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Un password manager cifra il vault con una chiave principale lunga e unica e dà una password diversa a ogni sito, contro il credential stuffing.
+- Una passkey è una coppia di chiavi per sito: la privata resta sul dispositivo, la firma include il dominio e il phishing non funziona.
+- Servono un piano di recupero (più dispositivi, chiave di riserva, niente solo SMS) e la verifica in due passaggi dove le passkey non ci sono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il credential stuffing?", a: "Provare su molti siti credenziali rubate in un'altra fuga di dati" },
+    { q: "Dove resta la chiave privata di una passkey?", a: "Nel dispositivo (o nel gestore) dell'utente: non viene mai inviata al sito" },
+    { q: "Perché una passkey resiste al phishing?", a: "Perché è legata al dominio vero del sito: su un sito falso non risponde" },
+    { q: "Qual è il punto debole da preparare con le passkey?", a: "Il recupero dell'accesso se si perde il dispositivo" },
+  ]}
+/>
+
+<Say who="sensei">Modulo C15 finito. La prossima tappa la scegli tu: la crittografia è alla base di quasi tutto ciò che viene dopo.</Say>
+</Scene>

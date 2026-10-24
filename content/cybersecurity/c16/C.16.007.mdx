@@ -1,0 +1,189 @@
+---
+id: C.16.007
+course: cybersecurity
+module: 16
+title: "Log e rilevamento per le API"
+belt: blu
+duration_min: 11
+prerequisites: [C.16.006]
+objectives:
+  - "Dire che cosa registrare in una API e che cosa non va mai scritto nei log"
+  - "Riconoscere schemi sospetti nei log: tentativi in serie, scansione di identificativi, volumi anomali"
+  - "Descrivere regole di allarme sensate e che cosa fare quando scattano"
+video:
+  provider: youtube
+  id: "Wl8Uq4Btga8"
+  start: 0
+  end: 600
+  channel: "The Security Insider"
+  title: "How SIEM Architecture Works: A Guide to Security Monitoring and Incident Response"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c16-log-rilevamento
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere nei log password, token o dati personali non necessari"
+  - "Raccogliere log che nessuno guarda: senza allarmi e responsabili non servono"
+  - "Non sincronizzare gli orologi dei sistemi, così gli eventi non si mettono in ordine"
+commands: []
+---
+
+<Scene title="L'incidente scoperto dai clienti">
+Un lunedì mattina i clienti di **Tavola Bella** (azienda fittizia) scrivono: «Ho ricevuto l'email di un ordine mai fatto». L'azienda controlla: durante il fine settimana qualcuno ha letto gli ordini di centinaia di clienti usando una sola sessione.
+
+Nessun allarme è scattato. Ma, rileggendo il registro, la storia c'era tutta:
+
+<Log lines={[
+  "sab 02:14  token=T-81  GET /ordini/5001  200",
+  "sab 02:14  token=T-81  GET /ordini/5002  403",
+  "sab 02:14  token=T-81  GET /ordini/5003  403",
+  "sab 02:14  token=T-81  GET /ordini/5004  200",
+  "... (altre 700 righe simili in 6 minuti) ...",
+]} />
+
+La domanda del caso: **che cosa bisognava registrare e guardare, per accorgersene il sabato notte e non il lunedì?**
+
+<Say who="sensei">Un registro non guardato è un diario. Un registro con allarmi è una telecamera con qualcuno davanti allo schermo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa registrare">
+Per una API, un **evento utile** risponde a: **chi, che cosa, quando, da dove, con quale esito**. Si registrano soprattutto:
+
+- **Accessi**: login riusciti e falliti, cambi di password, uso del recupero account, nuovi dispositivi.
+- **Rifiuti**: 401 (non identificato) e 403 (non permesso), 429 (limite superato).
+- **Azioni sensibili**: operazioni da amministratore, cambi di permessi o di email, esportazioni di dati, eliminazioni.
+- **Errori del server** e richieste malformate in quantità insolita.
+- Un **identificativo di richiesta** (correlation ID) che segue la richiesta attraverso i vari servizi, così ricostruisci tutta la storia.
+
+<Callout kind="regola">
+Ogni riga deve avere **orario sincronizzato** (tutti i sistemi con lo stesso orologio di riferimento, in un formato unico), **utente o chiave**, **azione** ed **esito**.
+</Callout>
+
+<Say who="assistente">Pensa al sinistro stradale: ti servono luogo, ora, chi c'era e che cosa è successo, non la vita di tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa NON registrare">
+Il registro è una **fonte di dati sensibili** a sua volta. Non si scrivono mai:
+
+- **Password**, anche sbagliate.
+- **Token, chiavi API, identificativi di sessione completi**: chi legge il log li userebbe. Se serve, si salva solo un frammento o un'impronta.
+- **Dati personali non necessari** (documenti, numeri di carta, dati sanitari): per il GDPR vale la **minimizzazione**.
+
+Inoltre:
+
+- Gli input dell'utente vanno **ripuliti prima di scriverli**: un testo con a capo e simboli strani potrebbe falsare le righe del log (lo trovi come «log injection»).
+- I log vanno **protetti**: accesso limitato, copie su un sistema separato, in modo che chi entra in un server non possa cancellare le tracce.
+- Si decide per quanto tempo si conservano (**retention**), tenendo conto di sicurezza e privacy.
+
+<Callout kind="attenzione">
+Un log con token completi è un secondo punto debole: chi lo legge può usarli. Il log deve aiutare chi difende, non chi attacca.
+</Callout>
+
+<Say who="sensei">Prima di scrivere una riga, chiediti: se la leggesse un estraneo, che danno farebbe?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Schemi che insospettiscono">
+I log dicono molto, se si cercano gli **schemi**. Alcuni per le API:
+
+<Guided
+  steps={[
+    "**Molti 401 in poco tempo** sullo stesso utente o da molti utenti: tentativi di indovinare password o riuso di credenziali.",
+    "**Molti 403/404 a catena su identificativi vicini** (5001, 5002, 5003…) con la stessa sessione: qualcuno prova se può vedere oggetti non suoi. È il caso del sabato notte.",
+    "**Volume anomalo**: un utente che di solito fa 20 richieste al giorno ne fa 5.000, o scarica l'intera anagrafica.",
+    "**Accesso insolito**: paese, orario o dispositivo mai visti, seguito da un'azione sensibile (cambio email, esportazione).",
+    "**Un 200 dopo una lunga serie di 401** sullo stesso account: forse è entrato qualcuno che non dovrebbe.",
+  ]}
+/>
+
+Dall'osservazione si passa a una **regola di allarme**, per esempio: «più di 20 risposte 403 con la stessa sessione in 5 minuti». La regola va **tarata**: troppi falsi allarmi e nessuno li guarda più; troppo pochi e l'incidente passa.
+
+<Callout kind="attenzione">
+Controllare i log di sistemi che non sono tuoi, o provare a provocare questi schemi su servizi altrui, è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si fa nel laboratorio tuo o con permesso scritto.
+</Callout>
+
+<Say who="assistente">I 403 a catena su identificativi vicini sono il rumore di una porta provata una per una. Imparalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dall'allarme alla risposta">
+Un allarme senza un piano è un campanello senza portiere. Per ogni regola devi sapere **chi** viene avvisato e **che cosa fa**.
+
+<Log lines={[
+  "ALLARME  02:20  sessione T-81: 120 risposte 403 in 5 minuti su /ordini/*",
+  "Primo passo : controllare nel registro che cosa è stato letto con 200",
+  "Contenimento: invalidare la sessione T-81, bloccare l'utente, aumentare i limiti per quell'endpoint",
+  "Correzione  : aggiungere il controllo di proprietà dell'ordine (lezione 5, BOLA)",
+  "Comunicazione: se sono stati letti dati personali, valutare con il responsabile la notifica al Garante entro 72 ore",
+]} />
+
+I **SIEM** sono sistemi che raccolgono log da molte fonti, li mettono in ordine di tempo e fanno scattare allarmi sulle regole. Non sono magici: funzionano quanto i log che ricevono e le regole che scrivi.
+
+Vuoi sentirlo spiegare da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Registrare, osservare, avvisare, rispondere, correggere. Se salti un anello, la catena non regge.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Per aiutare il supporto, uno sviluppatore decide di scrivere nel log ogni richiesta completa, comprese le intestazioni con i token di accesso. Qual è il problema principale?"
+  options={[
+    "Chi legge i log può riusare i token e agire come gli utenti: nei log non vanno scritti token completi",
+    "Il log occupa troppo spazio, ma per il resto va benissimo",
+    "I token nei log aiutano a bloccare gli attacchi, quindi è una buona idea",
+    "Nessun problema: i log sono sempre accessibili solo agli sviluppatori"
+  ]}
+  answer={0}
+  explain="Un token scritto nel log vale come una chiave: chiunque abbia accesso ai log (o li copi) può usarlo. Si registrano chi, che cosa, quando ed esito, con al massimo un frammento o un'impronta del token."
+/>
+
+<Say who="assistente">Indizio: cosa fa un estraneo che trova un token valido in un file?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su log, schemi sospetti e risposta: scegli la risposta giusta.
+
+<Practice generator="c16-log-rilevamento" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi registra bene e guarda bene vince il tempo, e il tempo decide un incidente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si registrano accessi, rifiuti (401, 403, 429), azioni sensibili ed errori, con orario sincronizzato, utente, azione ed esito.
+- Mai password, token completi o dati personali superflui nei log; i log si proteggono e si conservano per un tempo deciso.
+- Schemi come 403 a catena su identificativi vicini o volumi anomali diventano regole di allarme, con un piano di risposta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa non va scritto nei log?", a: "Password, token e chiavi completi, dati personali non necessari" },
+    { q: "Che cosa suggeriscono molti 403 su identificativi vicini?", a: "Qualcuno prova se può vedere oggetti non suoi (rischio BOLA)" },
+    { q: "A che cosa serve l'identificativo di richiesta?", a: "A seguire la stessa richiesta tra più servizi e ricostruire la storia" },
+    { q: "Perché tarare le regole di allarme?", a: "Troppi falsi allarmi non vengono più letti, troppo pochi lasciano passare gli incidenti" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai visto come si autentica, come si autorizza, come si limita e come si osserva una API. Ora tocca a te metterlo in pratica, solo su ciò che è tuo.</Say>
+</Scene>

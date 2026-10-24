@@ -1,0 +1,182 @@
+---
+id: C.14.005
+course: cybersecurity
+module: 14
+title: "Gli attacchi ad Active Directory visti da chi difende"
+belt: blu
+duration_min: 12
+prerequisites: [C.14.004]
+objectives:
+  - "Descrivere a livello concettuale cinque abusi tipici di un dominio (spraying, attacco ai ticket di servizio, hash riutilizzati, replica, ticket falsi)"
+  - "Dire per ciascuno che cosa lascia nei log e quale controllo lo impedisce o lo limita"
+  - "Riconoscere un percorso di attacco come una sequenza e non come un evento isolato"
+video:
+  provider: youtube
+  id: "EOUOvcsEj2g"
+  start: 0
+  end: 600
+  channel: "Michele Vese"
+  title: "Sicurezza Dominio Active Directory"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c14-attacchi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Guardare un evento alla volta: un attacco a un dominio si vede nella sequenza di più eventi"
+  - "Credere che il blocco dell'account fermi lo spraying: ogni account riceve pochi tentativi"
+  - "Cercare solo strumenti noti: conta il comportamento che resta nei log"
+commands: []
+---
+
+<Scene title="Una notte nei log">
+Alla **Bianchi Logistica** il SOC apre i log del controller di dominio dopo un allarme.
+
+<Log lines={[
+  "02:11  4625  accesso fallito   utente: a.rossi      origine: 10.0.4.77",
+  "02:11  4625  accesso fallito   utente: b.verdi      origine: 10.0.4.77",
+  "02:12  4625  accesso fallito   utente: c.neri       origine: 10.0.4.77",
+  "02:12  4624  accesso riuscito  utente: d.gialli     origine: 10.0.4.77",
+  "02:40  4769  richiesto ticket servizio: svc-db  (molti servizi in pochi minuti)",
+]} caption="Frammenti di una notte, dalla stessa origine." />
+
+La domanda del caso: **sono guasti sparsi o la traccia di un percorso?**
+
+<Say who="sensei">Un attacco ad AD non è un gesto. È una scala: un gradino alla volta, e ogni gradino lascia un'orma. Oggi impari a riconoscere le orme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Legge ed etica, prima di tutto">
+In questa lezione si spiegano gli attacchi **solo per difendersi**: che cosa sono, che cosa lasciano nei log, come si impediscono. Non ci sono comandi né strumenti da usare.
+
+In Italia entrare in un sistema informatico senza permesso è reato (**accesso abusivo, art. 615-ter del codice penale**). Si prova solo ciò che è proprio, in un laboratorio isolato, o per cui si ha un **permesso scritto**.
+
+<Callout kind="regola">
+Si prova solo ciò che è tuo o per cui hai un permesso scritto. Senza eccezioni, nemmeno «per studio».
+</Callout>
+
+<Say who="sensei">Chi capisce l'attacco per difendere è un professionista. Chi lo prova sugli altri è un imputato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Indovinare e farsi dare i ticket">
+**1. Password spraying.** Chi attacca prova **poche password molto comuni su moltissimi account**, per non far scattare il blocco.
+
+- Nei log: molti **4625** (accesso fallito) o errori Kerberos (**4771**, **4776** per NTLM), per **account diversi**, da **una stessa origine**, in poco tempo.
+- Difese: **autenticazione a più fattori**, password lunghe, lista di password vietate, **allarme** su molti fallimenti dalla stessa origine.
+
+**2. Attacco ai ticket di servizio.** Un utente qualunque del dominio può chiedere un ticket per un servizio. Quel ticket è cifrato con una chiave derivata dalla **password dell'account del servizio**. Chi lo chiede può tentare di indovinarla **senza più toccare la rete**.
+
+- Nei log: un account che chiede in poco tempo ticket (**4769**) per **molti servizi**, spesso con cifratura debole.
+- Difese: **account di servizio gestiti (gMSA)** o password lunghe e casuali; cifratura AES; pochi privilegi agli account di servizio.
+
+<Callout kind="trucco">
+Nel primo caso il segnale è **«troppi fallimenti da una origine»**. Nel secondo è **«troppi ticket di servizio da un account»**.
+</Callout>
+
+Vuoi sentire come si mette in sicurezza un dominio? Un video in italiano, i primi dieci minuti:
+
+<Video />
+
+<Say who="assistente">Due domande che il SOC può fare ai log: «chi ha fallito troppo?» e «chi ha chiesto troppi ticket?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hash riutilizzati e replica">
+**3. Hash riutilizzati («pass the hash»).** Con NTLM basta l'**hash** di una password per presentarsi come l'utente, senza conoscerla. Chi ha rubato un hash da un computer lo prova su altri.
+
+- Nei log: accessi di rete (**4624, tipo 3**) con NTLM, di un account amministrativo, da computer che non lo avevano mai usato.
+- Difese: **LAPS** (password di amministratore locale diversa su ogni PC), **Credential Guard**, pochi amministratori locali, limitare NTLM, gruppo **Protected Users**.
+
+**4. Copia illecita dei dati degli account («DCSync»).** Un account con i **diritti di replica** si fa passare per un controller di dominio e chiede i dati degli account.
+
+- Nei log: operazioni sull'oggetto di dominio (**4662**) con diritti di replica, richieste da un computer **che non è un DC**.
+- Difese: i diritti di replica **solo ai DC**; controllare chi li possiede; pochissimi account potenti.
+
+<Say who="sensei">Un hash è una chiave copiata. Ogni PC con la stessa password locale è una porta con la stessa serratura. Cambia le serrature: una diversa per ogni PC.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ticket falsi e la sequenza">
+**5. Ticket falsificati («golden ticket»).** Chi possiede la chiave dell'account **krbtgt** può fabbricarsi TGT per qualsiasi utente, con durate lunghe a piacere.
+
+- Nei log: richieste di ticket di servizio (**4769**) **senza** un TGT richiesto prima (**4768**) dal DC; ticket con durate anomale; account che non esistono.
+- Difese: proteggere i DC; **cambiare due volte** la password di krbtgt dopo una compromissione; limitare i diritti di replica.
+
+<Callout kind="attenzione">
+L'attacco ai ticket falsi è difficile da vedere con un solo evento: il segnale è una **mancanza** (un 4769 senza 4768). Serve correlare più eventi, anche di macchine diverse.
+</Callout>
+
+Mettiamo insieme una sequenza tipica, in ordine:
+
+<Guided
+  steps={[
+    "Spraying: un account debole cade (4625 ripetuti, poi un 4624).",
+    "Con quell'account si richiedono ticket di servizio per molti servizi (4769 in serie).",
+    "Si ottiene un account di servizio con troppi poteri e lo si usa su altri PC (4624, tipo 3).",
+    "Si arriva a un account di dominio con diritti di replica o alla chiave krbtgt: ticket falsi, copia degli account.",
+    "Ogni gradino lascia un'orma nei log: se i log sono accesi, conservati e controllati, la scala si vede.",
+  ]}
+/>
+
+<Say who="assistente">Ogni gradino è un'occasione per fermarli. Più in basso li fermi, meno costa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nei log del DC vedi molti 4625 per una trentina di account diversi, tutti dalla stessa origine, in 10 minuti, nessuno oltre i 2 tentativi. L'allarme del blocco account non è scattato. Che cosa concludi?"
+  options={[
+    "Probabile password spraying: pochi tentativi per account evitano il blocco; si indaga sull'origine e si valuta l'MFA",
+    "Tutto normale: senza blocco non c'è problema",
+    "Un guasto del DNS, da risolvere riavviando il DC",
+    "Un attacco ai ticket falsi, da risolvere cambiando il colore delle finestre",
+  ]}
+  answer={0}
+  explain="Il segno tipico dello spraying è il numero di account diversi con pochi tentativi ciascuno, da una sola origine: il blocco non scatta. La risposta è indagare sull'origine, cercare un 4624 riuscito dalla stessa origine e rafforzare le difese (MFA, password vietate, allarmi sui fallimenti)."
+/>
+
+<Say who="sensei">Se il blocco non scatta, non significa che sia tutto a posto. Significa che chi attacca conosce il blocco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su abusi di un dominio: che cosa lasciano nei log e quale difesa li ferma.
+
+<Practice generator="c14-attacchi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi conosce le orme trova chi è passato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Spraying, ticket di servizio, hash riutilizzati, replica e ticket falsi: ciascuno lascia un'orma nei log (4625, 4769, 4624 tipo 3, 4662, 4769 senza 4768).
+- Ogni abuso ha una difesa precisa: MFA, account gestiti (gMSA), LAPS e Credential Guard, diritti di replica solo ai DC, protezione di krbtgt.
+- Un attacco è una sequenza: si ferma con log accesi, conservati e guardati, e con un permesso scritto si prova solo in laboratorio (art. 615-ter c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Firma dello spraying nei log?", a: "Molti 4625 per account diversi, da una sola origine, con pochi tentativi ciascuno" },
+    { q: "Difesa principale contro l'attacco ai ticket di servizio?", a: "Account gMSA o password lunghe e casuali, e cifratura AES" },
+    { q: "Firma dei ticket falsi?", a: "Un 4769 senza un 4768 corrispondente, o ticket con durata anomala" },
+    { q: "Chi può avere i diritti di replica?", a: "Solo i controller di dominio" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dove leggere tutte queste orme. Il registro eventi di Windows.</Say>
+</Scene>

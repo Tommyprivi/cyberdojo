@@ -1,0 +1,161 @@
+---
+id: C.17.005
+course: cybersecurity
+module: 17
+title: "Chi ha fatto cosa: log e monitoraggio nel cloud"
+belt: blu
+duration_min: 9
+prerequisites: [C.17.004]
+objectives:
+  - "Spiegare a cosa serve un registro di audit nel cloud e che cosa contiene"
+  - "Leggere un estratto di log fittizio e riconoscere un comportamento sospetto"
+  - "Descrivere come proteggere i log e configurare allarmi utili"
+video:
+  provider: youtube
+  id: "XMAcsle03NE"
+  start: 0
+  end: 600
+  channel: "Indian Cyber Security Solutions"
+  title: "AWS CloudTrail & CloudWatch for Security Monitoring"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-log
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Raccogliere log che nessuno legge e nessun allarme controlla"
+  - "Tenere i log nello stesso posto che l'attaccante può modificare"
+  - "Scrivere password o chiavi nei log"
+commands: []
+---
+
+<Scene title="La spesa che sale">
+Il piccolo studio grafico **Tinta Blu** (fittizio) riceve la fattura mensile del cloud: sei volte più alta del solito. Nessuno ha creato nuove macchine. Il registro delle attività racconta:
+
+<Log lines={[
+  "03:12  accesso riuscito      identità: sviluppo-ci     da: indirizzo mai visto",
+  "03:14  creata risorsa        50 macchine virtuali      regione: lontana dalla solita",
+  "03:15  modificato registro   registrazione attività: DISATTIVATA",
+  "03:16  creata identità       nuovo-servizio-prova      permessi: amministratore",
+]} caption="Quattro righe che spiegano la bolletta." />
+
+La domanda del caso: **quali segnali si potevano vedere in tempo e chi doveva accorgersene?**
+
+<Say who="sensei">Un log è un diario. Serve solo a chi lo legge, o a chi ha messo un allarme al posto suo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il registro di audit">
+Ogni fornitore offre un **registro di audit**: chi ha fatto che cosa, quando e da dove. In AWS si chiama CloudTrail, in Azure Activity Log, in Google Cloud Cloud Audit Logs.
+
+Ogni voce risponde a poche domande:
+
+- **chi** (quale identità, utente o servizio);
+- **che cosa** (creato, modificato, cancellato, letto);
+- **su quale risorsa**;
+- **quando** e **da quale indirizzo**.
+
+Accanto c'è il **monitoraggio**: misure continue (traffico, errori, costi) con **allarmi** che scattano quando un valore supera una soglia.
+
+<Callout kind="regola">
+Registro di audit **sempre attivo**, in tutte le regioni, e conservato in un luogo che l'attaccante non possa modificare.
+</Callout>
+
+<Say who="assistente">Il registro è la telecamera. L'allarme è il guardiano che guarda lo schermo. Servono tutti e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere i segnali">
+Torniamo al log di Tinta Blu. Riga per riga:
+
+<Guided
+  steps={[
+    "03:12: un account «sviluppo-ci» (di un programma) entra da un indirizzo mai visto. Credenziali rubate? Da verificare.",
+    "03:14: cinquanta macchine in una regione insolita. Tipico di chi vuole sfruttare risorse a spese altrui (per esempio per calcolo o per attività illecite).",
+    "03:15: la registrazione viene disattivata. Un segnale gravissimo: chi lo fa vuole nascondersi.",
+    "03:16: un nuovo account amministratore. È la porta sul retro per tornare.",
+    "Allarmi utili: accesso da luogo nuovo, disattivazione dei log, nuovo amministratore, picco di spesa.",
+  ]}
+/>
+
+Alcune regole per allarmi che funzionano:
+
+- pochi e utili, con un responsabile che li riceve (troppi falsi allarmi finiscono ignorati);
+- le azioni **rare e gravi** (disattivare i log, creare un amministratore, modificare le policy) fanno scattare sempre un avviso;
+- un **allarme di spesa** è anche un allarme di sicurezza.
+
+<Say who="sensei">Tre allarmi su cinque righe. Bastava così poco per fermare tutto alle 03:15.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Proteggere i log">
+Gli attaccanti più bravi cercano di **cancellare le tracce**. Per questo:
+
+- si **centralizzano** i log in un luogo separato (per esempio un altro account) con accesso limitato e scrittura protetta;
+- si conservano per un tempo deciso in base a norme e bisogni: un incidente si scopre spesso mesi dopo;
+- si evita di scrivere **password, chiavi e dati personali** nei log: chi li legge potrebbe riusarli;
+- si collegano i log di servizi diversi per ricostruire la storia di un incidente.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese:
+
+<Video />
+
+<Callout kind="curiosita">
+Un log non protegge: **racconta**. Se nessuno lo legge, non ferma nulla. Per questo si affiancano allarmi e una persona responsabile di rispondere.
+</Callout>
+
+<Say who="assistente">Se i log stanno sulla macchina attaccata, l'attaccante li cancella con tutto il resto. Tienili altrove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un attaccante con un account rubato vuole nascondersi. Quale azione dovrebbe far scattare un allarme?"
+  options={["La disattivazione o la modifica del registro di audit", "La lettura di un manuale", "L'accesso di un utente in orario d'ufficio", "L'aggiornamento di un documento da parte del suo autore"]}
+  answer={0}
+  explain="Spegnere il registro serve solo a chi non vuole essere visto. Le altre azioni sono normali. Chi sceglie «accesso in orario d'ufficio» dimentica che il segnale è l'azione rara e grave, non l'attività di tutti i giorni."
+/>
+
+<Say who="sensei">Cerca l'azione fuori posto, non la folla. Una riga strana vale più di mille normali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su registri, allarmi e protezione dei log. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-log" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Chi vede cosa succede può reagire. Chi non vede, scopre tutto dalla fattura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il registro di audit dice chi ha fatto cosa, quando e da dove; va tenuto sempre attivo.
+- Gli allarmi devono scattare sulle azioni rare e gravi (spegnere i log, nuovo amministratore, spesa anomala).
+- I log si proteggono in un luogo separato, senza segreti scritti dentro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa dice un registro di audit?", a: "Chi ha fatto cosa, su quale risorsa, quando e da dove" },
+    { q: "Quale azione dell'attaccante è un segnale gravissimo?", a: "Disattivare la registrazione dei log" },
+    { q: "Dove conservare i log di sicurezza?", a: "In un luogo separato, con scrittura protetta" },
+    { q: "Perché un picco di spesa è un segnale di sicurezza?", a: "Può indicare risorse create da un estraneo" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chiavi e segreti. Come si custodiscono le password dei programmi e si cifrano i dati.</Say>
+</Scene>

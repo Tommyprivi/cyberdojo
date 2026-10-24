@@ -1,0 +1,169 @@
+---
+id: H.05.007
+course: hedge
+module: 5
+title: "I rischi dei derivati"
+belt: verde
+duration_min: 9
+prerequisites: [H.05.006]
+objectives:
+  - "Spiegare perché la leva può far perdere più del capitale versato"
+  - "Elencare i rischi principali dei derivati: leva, controparte, liquidità, complessità, modello"
+  - "Calcolare la perdita in percentuale del margine con numeri semplici"
+video:
+  provider: youtube
+  id: "dopJwQzg1EU"
+  start: 0
+  end: 600
+  channel: "Financial Researches"
+  title: "La leva finanziaria: opportunità, rischi e come gestirla efficacemente"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h05-rischi
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il margine versato sia la perdita massima"
+  - "Pensare che chi vende opzioni abbia solo vantaggi perché incassa il premio"
+  - "Sottovalutare il rischio di controparte e di liquidità"
+commands: []
+---
+
+<Scene title="Il richiamo di margine">
+Dario, un trader fittizio, ha aperto un future long sul grano: valore del contratto **2.000 euro**, margine **200 euro**. In una mattina il prezzo scende del **15%**. La banca gli scrive: «Versi subito altri 100 euro, altrimenti chiudiamo la posizione».
+
+Dario non ha quei soldi. La posizione viene chiusa, con una perdita più grande del suo deposito.
+
+La domanda del caso: **quali sono i rischi dei derivati, e come si riconoscono prima che arrivi il conto?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto, e con i derivati anche più di tutto. Oggi si guarda il lato brutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La leva">
+Il future vale 2.000 e il margine è 200: **leva 10 volte**.
+
+<Guided
+  steps={[
+    "Prezzo -10%: perdita 10% di 2.000 = 200 euro. È il 100% del margine, tutto sparito.",
+    "Prezzo -15%: perdita 300 euro. È il 150% del margine: si perde più di quanto versato.",
+    "Prezzo +10%: guadagno 200 euro, cioè il 100% del margine. La leva funziona in entrambe le direzioni.",
+    "Conclusione: la leva non crea valore, ingrandisce i risultati. Chi non sopporta una perdita doppia non deve usarla.",
+  ]}
+/>
+
+<Callout kind="attenzione">
+Futures, opzioni vendute allo scoperto e swap possono far perdere **più del capitale versato**. Le opzioni comprate no: lì si perde al massimo il premio.
+</Callout>
+
+<Say who="sensei">Un movimento del 10% in un giorno non è raro. Con leva 10, vuol dire azzerare il conto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il lato nascosto: perdite senza tetto">
+Chi **vende una call** incassa un premio, ma ha un obbligo. Esempio fittizio: call venduta con strike 100, premio 5, azione a 150 a scadenza: perdita 50 - 5 = **45 euro per azione**. Se l'azione sale ancora, la perdita sale ancora.
+
+Un'altra voce, in italiano, sulla leva e i suoi rischi:
+
+<Video />
+
+<Callout kind="regola">
+**Premio piccolo e rischio grande**: chi vende opzioni scoperte guadagna poco molte volte e può perdere moltissimo una volta sola.
+</Callout>
+
+<Say who="assistente">Quando vedi un guadagno regolare e piccolo, chiediti sempre: quale perdita rara e grande ci sta dietro?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli altri rischi">
+Oltre alla leva, i derivati portano altri rischi:
+
+- **Controparte**: negli swap e nei contratti fuori borsa, l'altra parte può non pagare.
+- **Liquidità**: se pochi vogliono comprare o vendere un contratto, uscire costa caro o non si riesce.
+- **Complessità e opacità**: un contratto che non capisci è un rischio. Se non sai spiegarlo, non lo usare.
+- **Rischio di modello**: i prezzi dipendono da modelli, che sbagliano (lo hai visto nel modulo H3).
+- **Rischio di base**: la copertura non segue esattamente ciò che copre.
+
+<Callout kind="curiosita">
+Nel 2008 il gruppo assicurativo AIG ebbe perdite enormi sui credit default swap e fu salvato con aiuti pubblici: un caso studiato in tutto il mondo. Ne riparleremo nei moduli sul rischio e sui fallimenti.
+</Callout>
+
+<Say who="sensei">Non è il derivato a essere cattivo. È l'uso senza limiti, senza capire e senza riserve a fare danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole e prudenza">
+Dopo la crisi del 2008 le regole sono cambiate, in sintesi (ottobre 2026, verifica le fonti ufficiali come ESMA, Consob e Banca d'Italia):
+
+- molti derivati standardizzati passano da una **controparte centrale** che garantisce i pagamenti;
+- le posizioni vanno **segnalate** alle autorità;
+- ai piccoli risparmiatori i prodotti più rischiosi sono limitati o accompagnati da avvisi sul rischio.
+
+Per chi studia o gestisce, regole semplici di prudenza:
+
+- non usare la leva massima: tieni liquidità per i richiami di margine;
+- conosci la **perdita peggiore** prima di aprire una posizione;
+- fai **prove di scenario**: «che cosa succede se il prezzo si muove del 20% contro di me?»;
+- mai denaro reale in questo corso: gli esercizi usano numeri fittizi.
+
+<Say who="assistente">Prima di aprire una posizione scrivi la perdita massima. Se non riesci a scriverla, non entrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un future vale 5.000 euro e il margine è 500. Il prezzo scende del 12%. Qual è la perdita e quanto è rispetto al margine?"
+  options={[
+    "600 euro, cioè il 120% del margine",
+    "500 euro, cioè il 100% del margine",
+    "60 euro, cioè il 12% del margine",
+    "600 euro, cioè il 12% del margine"
+  ]}
+  answer={0}
+  explain="12% di 5.000 fa 600. Rispetto al margine di 500 è 600/500 = 120%: si perde più di quanto versato. Il 12% si riferisce al valore del contratto, non al margine."
+/>
+
+<Say who="sensei">La percentuale si calcola sul valore del contratto. Poi confronti con il margine. Due passaggi, mai uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Domande sui rischi dei derivati, con piccoli calcoli. Numeri fittizi.
+
+<Practice generator="h05-rischi" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Modulo concluso: i derivati sono strumenti, non scorciatoie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La leva ingrandisce guadagni e perdite: con futures, swap e opzioni vendute scoperte si può perdere più del capitale versato.
+- Altri rischi: controparte, liquidità, complessità, modello e base. Chi vende opzioni scoperte ha guadagno limitato e perdita potenzialmente enorme.
+- Prudenza: conosci la perdita peggiore, tieni liquidità per i richiami di margine, fai prove di scenario.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Future da 2.000 con margine 200: prezzo -15%, perdita?", a: "300 euro, il 150% del margine" },
+    { q: "Qual è la perdita massima di chi compra una call?", a: "Il premio pagato" },
+    { q: "Che cos'è un richiamo di margine?", a: "La richiesta di versare altro denaro quando la posizione perde" },
+    { q: "Elenca due rischi dei derivati oltre alla leva", a: "Per esempio controparte e liquidità" },
+  ]}
+/>
+
+<Say who="sensei">Prossimo modulo: il rischio, come si misura davvero. Volatilità, VaR, stress test.</Say>
+</Scene>

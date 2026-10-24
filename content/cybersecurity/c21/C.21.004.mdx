@@ -1,0 +1,191 @@
+---
+id: C.21.004
+course: cybersecurity
+module: 21
+title: "Dopo l'accesso: rischi per il cliente"
+belt: marrone
+duration_min: 10
+prerequisites: [C.21.003]
+objectives:
+  - "Spiegare a che cosa serve il post-sfruttamento in un incarico autorizzato"
+  - "Elencare i limiti di condotta: prova minima, registro delle azioni, fermarsi e segnalare"
+  - "Valutare i rischi che un test può causare al cliente, ai suoi dati e a terzi"
+video:
+  provider: youtube
+  id: "xuuj9hQYlcs"
+  start: 0
+  end: 600
+  channel: "Appknox"
+  title: "The Rules of Engagement For Performing Penetration Testing"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-post
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che, una volta dentro, si possa guardare tutto «per capire»"
+  - "Lasciare nel sistema del cliente qualcosa di introdotto durante il test"
+  - "Aspettare il rapporto finale per segnalare un problema grave"
+commands: []
+---
+
+<Scene title="Dentro, e adesso?">
+Siamo in un incarico autorizzato per la **Bianchi Logistica Srl** (fittizia). Nella fase di prova, Marta ha dimostrato, col minimo impatto concordato, che una debolezza è reale. Ora il titolare chiede: **«Fin dove poteva arrivare un estraneo?»**
+
+Marta ha due strade: guardare tutto quello che può, per essere sicura. Oppure fermarsi e ragionare.
+
+La domanda del caso: **quanto si può e si deve fare dopo la prima prova?**
+
+<Say who="sensei">Dimostrare una debolezza non è un invito a girare per casa. Si dimostra, si ferma, si racconta. Sempre dentro permesso scritto e ambito: altrimenti è art. 615-ter c.p.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="A che cosa serve il post-sfruttamento">
+Il **post-sfruttamento** è la fase che risponde alla domanda **«che cosa comporterebbe questa debolezza per il cliente?»**. Non è esplorare per curiosità.
+
+Il cliente non ha bisogno di sapere «si può entrare»: vuole sapere **quanto danno** potrebbe fare un estraneo. Per esempio: un accesso a un computer dei dipendenti è grave? Dipende da che cosa quel computer permette di raggiungere.
+
+A livello di **ragionamento**, ci si chiede:
+
+- l'accesso dimostrato è **isolato** o può **estendersi** ad altri sistemi (in gergo, *movimento laterale*)?
+- che **dati** o **funzioni importanti** sono vicini?
+- quanto sarebbe **difficile accorgersene** per chi difende?
+
+Per un'altra voce sulle regole che guidano un test, in inglese: guardalo solo per le regole, non è un permesso.
+
+<Video />
+
+<Say who="assistente">Il cliente compra una risposta, non un'esplorazione. La risposta si può dare anche con una prova piccola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di condotta">
+In un incarico serio, dopo la prima dimostrazione valgono regole precise:
+
+1. **Prova minima**: si dimostra l'impatto con il minimo necessario, senza leggere né copiare dati veri oltre il necessario.
+2. **Niente modifiche né cancellazioni**: non si altera nulla di ciò che appartiene al cliente.
+3. **Registro delle azioni**: ogni cosa fatta ha **data, ora e motivo** annotati. Serve a te e al cliente.
+4. **Fermarsi dove concordato**: i limiti dell'ambito valgono anche dopo l'accesso.
+5. **Segnalare subito**: un problema critico si comunica al contatto del cliente **subito**, non nel rapporto di tre settimane dopo.
+6. **Lasciare tutto com'era**: ciò che il tester ha introdotto o modificato si ritira, e lo si dichiara nel rapporto.
+
+<Callout kind="regola">
+Il principio: **si lascia il sistema del cliente come lo si è trovato**. Chi lascia qualcosa dietro di sé (anche solo «per comodità») crea un rischio che prima non c'era.
+</Callout>
+
+<Say who="sensei">Un buon tester è come un ospite educato: guarda ciò che deve, non tocca ciò che non serve, e non lascia tracce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi per il cliente">
+Anche un test autorizzato ha dei **rischi**. Il cliente deve conoscerli prima, per iscritto:
+
+| Rischio | Esempio | Come lo si riduce |
+|---|---|---|
+| Interruzione del servizio | Un controllo troppo pesante rallenta o ferma il sito | Finestre orarie, tecniche vietate, condizioni di stop |
+| Perdita o alterazione di dati | Una prova che modifica un archivio | Niente modifiche, copie di sicurezza prima del test |
+| Esposizione di dati personali | Il tester vede dati di clienti | Visione minima, riservatezza, GDPR, distruzione delle evidenze |
+| Effetti su terzi | Un test che raggiunge i sistemi di un fornitore | Ambito che esclude i terzi senza loro consenso |
+| Allarmi e costi | Il personale reagisce a un «attacco» | Contatti informati, lettera di autorizzazione |
+
+<Callout kind="attenzione">
+Prima di un test su sistemi in produzione si chiede al cliente: **c'è una copia di sicurezza recente? E un piano per il ripristino?** Un test non sostituisce mai i backup.
+</Callout>
+
+<Say who="assistente">Il rischio non è un motivo per non fare il test. È un motivo per concordare bene come farlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: il registro delle azioni">
+Ecco un estratto di **registro delle azioni**, fittizio, di un test nel laboratorio della scuola:
+
+<Log lines={[
+  "09:10  Inizio finestra concordata. Contatto del cliente avvisato.",
+  "09:42  Prova di impatto sul sistema lab-web (nell'ambito). Esito: accesso dimostrato con prova minima.",
+  "09:50  Fermo la prova. Annoto: il sistema è vicino a un archivio di dati di prova.",
+  "09:55  Segnalato al contatto: problema ad alta priorità, descrizione inviata per canale sicuro.",
+  "10:20  Verifico che nulla sia rimasto sul sistema; ritiro la mia traccia di test. Annotato.",
+  "10:30  Fine finestra concordata.",
+]} caption="Registro delle azioni: data, ora, motivo, esito" />
+
+Chi legge il registro capisce che cosa è successo, che cosa si è fermato e perché. In caso di allarme del cliente, è la prova che si lavorava dentro le regole.
+
+<Say who="sensei">Se non è scritto nel registro, per il cliente non è successo, o è successo di nascosto. Scrivi sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un caso che mette alla prova">
+Durante il lavoro, accade qualcosa di imprevisto.
+
+<Guided
+  steps={[
+    "Marta, dopo la prova minima, nota nello stesso sistema una cartella con documenti dei dipendenti.",
+    "La tentazione è aprire un documento «per capire quanto è grave». La regola dice: prova minima, dati personali solo il necessario.",
+    "Marta annota che la cartella è raggiungibile e ne descrive il nome, senza aprire nulla.",
+    "Segnala subito al contatto: «una cartella con dati dei dipendenti è raggiungibile da questo accesso».",
+    "Nel rapporto scrive l'impatto potenziale e il rimedio. Il cliente capisce la gravità senza che nessun dato sia stato letto.",
+  ]}
+/>
+
+<Callout kind="curiosita">
+Spesso la prova più forte è **ciò che non si apre**: «avrei potuto raggiungere» vale quanto «ho letto», senza il rischio per le persone.
+</Callout>
+
+<Say who="assistente">Descrivere il rischio senza toccare i dati protegge le persone, il cliente e anche te.</Say>
+
+<Quiz
+  question="Dopo aver dimostrato l'accesso a un sistema (dentro l'ambito), il tester nota un archivio con dati personali dei clienti. Che cosa fa?"
+  options={[
+    "Annota che l'archivio è raggiungibile, non lo apre, e segnala subito al contatto del cliente",
+    "Ne copia una parte per allegarla al rapporto come prova",
+    "Lo apre per verificare che i dati siano veri, poi lo richiude",
+    "Aspetta il rapporto finale per parlarne, per non disturbare il cliente durante il test",
+  ]}
+  answer={0}
+  explain="La prova minima basta: dire che l'archivio è raggiungibile dimostra l'impatto senza esporre persone. Copiarlo o aprirlo senza necessità crea un rischio nuovo (GDPR, violazione degli accordi). Aspettare il rapporto ritarda una segnalazione che deve essere immediata."
+/>
+
+<Say who="assistente">Ricorda l'ordine: non toccare, annotare, segnalare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su post-sfruttamento, condotta e rischi per il cliente. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-post" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Sai fermarti nel punto giusto, che è la parte più difficile del mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il post-sfruttamento risponde a «quanto danno comporterebbe?» con la prova minima, senza esplorare per curiosità.
+- Condotta: nessuna modifica o cancellazione, registro delle azioni, fermarsi dove concordato, segnalare subito, lasciare il sistema come lo si è trovato.
+- Ogni test ha rischi (interruzione, dati, terzi): si concordano per iscritto, e i dati personali si trattano con il minimo necessario e nel rispetto del GDPR.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve il post-sfruttamento?", a: "A capire quanto danno comporterebbe una debolezza per il cliente, con la prova minima" },
+    { q: "Che cosa si fa con un archivio di dati personali raggiungibile?", a: "Si annota che è raggiungibile, non lo si apre, si segnala subito al contatto" },
+    { q: "Perché si tiene un registro delle azioni?", a: "Per dimostrare che cosa è stato fatto, quando e perché, a tutela di cliente e tester" },
+    { q: "Che cosa si fa di ciò che il tester ha introdotto nel sistema?", a: "Lo si ritira e lo si dichiara nel rapporto: il sistema resta com'era" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: il rapporto avanzato. Come si trasforma tutto questo in un documento che porta a correggere.</Say>
+</Scene>

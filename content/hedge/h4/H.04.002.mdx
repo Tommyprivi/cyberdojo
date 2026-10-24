@@ -1,0 +1,152 @@
+---
+id: H.04.002
+course: hedge
+module: 4
+title: "Conto economico e flussi di cassa"
+belt: arancione
+duration_min: 8
+prerequisites: [H.04.001]
+objectives:
+  - "Percorrere il conto economico da ricavi a utile netto"
+  - "Spiegare perché utile e cassa non coincidono"
+  - "Calcolare flusso operativo e flusso di cassa libero"
+video:
+  provider: youtube
+  id: "fKqMLVJkTAE"
+  start: 0
+  end: 600
+  channel: "TeamSystem"
+  title: "Cash Flow: che cosa è e come si calcola | TeamSystem"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: h04-conto-economico
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che utile e cassa siano la stessa cosa"
+  - "Pensare che l'ammortamento sia un'uscita di cassa"
+  - "Prendere per buono un utile gonfiato da un evento una tantum"
+commands: []
+---
+
+<Scene title="Utile sì, cassa no">
+Marta guarda Officine Lumi (azienda fittizia): utile netto di **15 milioni**. Ottimo. Poi il tesoriere dice: «L'anno scorso abbiamo quasi finito i soldi in cassa, nonostante l'utile».
+
+Com'è possibile? La domanda del caso: **dove vanno a finire gli utili, e come si legge una crescita vera?**
+
+<Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. L'utile è un'opinione contabile. La cassa è un fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dai ricavi all'utile">
+Il **conto economico** è un **film di un periodo** (un anno). Si legge dall'alto in basso, togliendo i costi un pezzo alla volta. Importi fittizi in milioni di euro:
+
+<Log lines={[
+  "Ricavi                               200",
+  "- Costo del venduto                  120",
+  "= Utile lordo (margine lordo 40%)     80",
+  "- Spese commerciali e generali        40",
+  "= EBITDA (margine 20%)                40",
+  "- Ammortamenti                        15",
+  "= EBIT (utile operativo)              25",
+  "- Interessi                            5",
+  "= Utile prima delle imposte           20",
+  "- Imposte (25%)                        5",
+  "= Utile netto (margine 7,5%)          15",
+]} />
+
+L'**EBITDA** è l'utile prima di interessi, imposte e ammortamenti; l'**EBIT** è l'utile operativo, dopo gli ammortamenti.
+
+<Say who="assistente">Un indizio: ogni riga toglie qualcosa. Il margine è sempre la riga divisa per i ricavi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ammortamento">
+Un macchinario costa 150 e dura 10 anni. Si paga **tutto subito**, ma il costo si distribuisce: **15 l'anno** di **ammortamento**.
+
+<Callout kind="attenzione">
+L'ammortamento riduce l'utile, ma **non è un'uscita di cassa** dell'anno: i soldi sono già usciti quando si è comprato il macchinario.
+</Callout>
+
+Per questo l'utile non basta: serve guardare i **flussi di cassa**.
+
+<Say who="sensei">Un costo non pagato oggi non è un costo che non esiste. L'ammortamento è la memoria di un acquisto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il rendiconto finanziario">
+Il **rendiconto finanziario** racconta la cassa in tre sezioni. Convenzione: flusso operativo = utile netto + ammortamenti + variazione del capitale circolante.
+
+<Guided
+  steps={[
+    "Operativa: utile netto 15 + ammortamenti 15 = 30. Ma crediti e magazzino sono cresciuti (assorbono cassa): variazione del circolante -5. Flusso operativo: 25.",
+    "Investimenti: l'azienda ha comprato impianti per 10. Flusso di cassa libero = 25 - 10 = 15.",
+    "Finanziamento: rimborso di debiti -6 e dividendi -3: totale -9.",
+    "Variazione della cassa: 25 - 10 - 9 = +6.",
+  ]}
+/>
+
+Un'altra voce spiega il flusso di cassa, in italiano:
+
+<Video />
+
+<Say who="sensei">Il flusso di cassa libero è ciò che resta, dopo aver tenuto in piedi l'azienda. È quello che interessa a chi la compra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'azienda ha un utile netto di 30 milioni, ma 20 milioni vengono dalla vendita una tantum di un immobile. Quanto vale l'utile ricorrente, quello su cui ragionare per il futuro?"
+  options={[
+    "10 milioni",
+    "30 milioni",
+    "20 milioni",
+    "50 milioni",
+  ]}
+  answer={0}
+  explain="La vendita dell'immobile non si ripeterà: l'utile ricorrente è 30 - 20 = 10. Chi usa 30 per ragionare sul futuro sopravvaluta l'azienda."
+/>
+
+<Say who="assistente">Chiediti: «Questo numero si ripete l'anno prossimo?»</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Calcoli sul conto economico e sul rendiconto. Numeri fittizi, in milioni di euro.
+
+<Practice generator="h04-conto-economico" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ogni riga che togli, la ricontrolli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il conto economico va da ricavi a utile netto: lordo, EBITDA, EBIT, utile prima delle imposte, utile netto.
+- Utile e cassa sono diversi: ammortamenti, crediti, magazzino e investimenti li separano.
+- Flusso operativo = utile + ammortamenti + circolante; flusso libero = operativo - investimenti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Ricavi 200, costo del venduto 120: margine lordo?", a: "40%" },
+    { q: "L'ammortamento è un'uscita di cassa?", a: "No, ripartisce un costo già pagato" },
+    { q: "Flusso operativo 25, investimenti 10: flusso libero?", a: "15" },
+    { q: "Che cos'è l'utile ricorrente?", a: "L'utile senza gli eventi una tantum" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: indici e multipli, per mettere un prezzo accanto ai numeri.</Say>
+</Scene>

@@ -1,0 +1,186 @@
+---
+id: C.21.002
+course: cybersecurity
+module: 21
+title: "Ambito e regole d'ingaggio"
+belt: marrone
+duration_min: 10
+prerequisites: [C.21.001]
+objectives:
+  - "Elencare le parti di una lettera di autorizzazione e di un documento di ambito"
+  - "Decidere se un sistema è dentro o fuori ambito, comprese le terze parti"
+  - "Gestire una richiesta di cambiare l'ambito durante il test"
+video:
+  provider: youtube
+  id: "f7Ym3I89QxI"
+  start: 0
+  end: 600
+  channel: "Cyber connect"
+  title: "Before You Pentest: Scope, Targets & Legal Boundaries"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c21-ambito
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «stessa azienda» voglia dire «stesso permesso»"
+  - "Dimenticare che cloud, hosting e fornitori hanno proprietari diversi e regole proprie"
+  - "Accettare a voce una modifica dell'ambito durante il test"
+commands: []
+---
+
+<Scene title="Il sito che non è del cliente">
+Marta, la consulente della lezione precedente, sta lavorando per la **Bianchi Logistica Srl** (fittizia). Il contratto cita «il sito www.bianchi-logistica.test e la rete degli uffici».
+
+A metà incarico, il titolare le scrive: **«Già che ci sei, prova anche il portale dei corrieri: è la nostra azienda, no?»** Ma il portale è gestito da una società esterna, la Rapida Software.
+
+La domanda del caso: **il permesso del titolare basta?**
+
+<Say who="sensei">Si può autorizzare solo ciò che è proprio. Il titolare non può dare un permesso su una casa che non è sua.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il documento di ambito">
+L'**ambito** (in inglese *scope*) è la descrizione scritta di che cosa si può provare. Un buon documento contiene:
+
+- **sistemi inclusi**, con nome preciso (il sito, una rete, un'applicazione);
+- **sistemi esclusi**, anch'essi per iscritto;
+- **periodo e orari** in cui si lavora;
+- **tipo di test**: dall'esterno, dall'interno, con più o meno informazioni fornite dal cliente;
+- **contatti** da chiamare, anche di notte, se qualcosa va storto.
+
+Un'altra voce, in inglese: il video parla di ambito, bersagli e limiti legali. Guardalo per capire il ragionamento, non per imitare nulla su sistemi altrui.
+
+<Video />
+
+<Callout kind="regola">
+Ciò che non è scritto tra i sistemi inclusi **è fuori ambito**. Il silenzio del documento non è un permesso.
+</Callout>
+
+<Say who="assistente">Nel dubbio, rileggi l'elenco. Se il nome non c'è, non si tocca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La lettera di autorizzazione">
+Oltre al contratto, serve una **lettera di autorizzazione**: un foglio breve, firmato da chi ha il potere di concedere il permesso, che dice «**questa persona o società è autorizzata a provare questi sistemi in queste date**».
+
+Perché? Se un sistema di monitoraggio o un fornitore vede il traffico del test e dà l'allarme, la lettera dimostra che **non è un attacco**.
+
+<Callout kind="curiosita">
+Nel gergo si chiama a volte «lettera salvacondotto»: la tieni sempre pronta. Ma attenzione: copre **solo** ciò che c'è scritto.
+</Callout>
+
+Chi firma deve avere il potere di farlo. Il dipendente di un'azienda non può concedere un permesso sui sistemi gestiti da altri. Ecco perché il portale della Rapida Software richiede **il permesso della Rapida Software**, non solo quello di Bianchi.
+
+<Say who="sensei">Nessuna lettera, nessun test. E se la lettera non copre un sistema, quel sistema non esiste per te.</Say>
+
+Molti sistemi non sono del cliente: **servizi in cloud**, **hosting**, **fornitori**, **portali di partner**. Prima di includerli si verifica:
+
+- chi ne è il **proprietario** e chi può autorizzare;
+- se il fornitore ha **regole proprie** per i test di sicurezza (molti le pubblicano);
+- se il contratto con il fornitore **permette** al cliente di farli fare.
+
+| Sistema | Proprietario | Che cosa serve |
+|---|---|---|
+| Sito dell'azienda su server propri | Bianchi | Firma di Bianchi |
+| Sito ospitato da un fornitore di hosting | Il fornitore | Consenso del fornitore, rispetto delle sue regole |
+| Portale dei corrieri | Rapida Software | Firma di Rapida Software |
+| Servizio cloud con regole pubbliche | Il fornitore del cloud | Attenersi alle sue regole di test |
+
+<Say who="assistente">Una domanda semplice ti salva: «Di chi è questo sistema?». Poi: «Quella persona può firmare?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole d'ingaggio avanzate">
+Le **regole d'ingaggio** dicono **come** si lavora dentro l'ambito. Oltre all'elenco dei sistemi, includono:
+
+- **tecniche vietate**: per esempio quelle che bloccherebbero il servizio o danneggerebbero i dati;
+- **finestre orarie**: lavori critici fuori dagli orari di punta;
+- **condizioni di stop**: se compare un segnale di instabilità, **ci si ferma** e si chiama il contatto;
+- **trattamento dei dati**: che cosa si può guardare, che cosa si conserva, per quanto tempo, come si distrugge;
+- **comunicazioni**: ogni quanto si aggiorna il cliente e come si segnala subito un problema grave.
+
+<Callout kind="attenzione">
+Se durante il test vedi **dati personali** (nomi, indirizzi, dati sanitari), il contratto deve già dire come trattarli secondo il GDPR. Si vede il **minimo**, si annota, non si copia.
+</Callout>
+
+<Say who="sensei">Le regole non frenano il lavoro: lo rendono sicuro per il cliente, e proteggono te se qualcosa va storto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempio svolto: la richiesta di cambiare">
+Torniamo al titolare che vuole aggiungere il portale dei corrieri. Marta ragiona:
+
+<Guided
+  steps={[
+    "Il portale è gestito dalla Rapida Software: non è nel contratto e non è del cliente.",
+    "Il titolare non può autorizzarlo. Marta risponde per iscritto: «Per includerlo serve il consenso scritto della Rapida Software.»",
+    "Il titolare chiede alla Rapida. Dopo qualche giorno arriva un consenso con sistemi, date e contatti.",
+    "Si fa una modifica scritta al documento di ambito e alla lettera, firmata da entrambe le parti.",
+    "Solo dopo la firma il portale entra nell'ambito. Marta annota data e ora della modifica.",
+  ]}
+/>
+
+Una modifica d'ambito fatta a voce o per messaggio informale **non vale**: crea la prova opposta, cioè che hai lavorato fuori dal documento.
+
+<Say who="sensei">L'ambito che cresce senza carta si chiama deriva. Ha rovinato più consulenti di qualunque errore tecnico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="A metà test scopri per caso che un server dell'ambito comunica con un servizio di un partner non incluso. Il titolare dice a voce: «Provalo pure, tanto conosco il responsabile del partner». Che cosa fai?"
+  options={[
+    "Non lo provo: chiedo per iscritto il consenso del partner e una modifica d'ambito firmata, e intanto segnalo la cosa al cliente",
+    "Lo provo con molta cautela, visto che il titolare lo ha autorizzato",
+    "Lo provo solo di notte, quando il traffico è basso e nessuno se ne accorge",
+    "Lo provo soltanto con strumenti passivi, così non si può parlare di attacco",
+  ]}
+  answer={0}
+  explain="Il titolare non può autorizzare un sistema di un altro, e un permesso a voce non protegge nessuno. Provare un sistema non incluso, anche con cautela, di notte o in modo «passivo» verso quel sistema, è fuori ambito e può configurare accesso abusivo (art. 615-ter c.p.)."
+/>
+
+<Say who="assistente">Ricorda: cautela, notte e strumenti leggeri non cambiano il documento. Cambia solo la firma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ambito, lettera di autorizzazione, terze parti e regole d'ingaggio. A ogni tentativo le domande cambiano.
+
+<Practice generator="c21-ambito" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Hai deciso bene chi può firmare e che cosa è scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'ambito elenca sistemi inclusi ed esclusi, periodo, tipo di test e contatti; ciò che non è scritto è fuori ambito.
+- La lettera di autorizzazione dev'essere firmata da chi ha il potere: per le terze parti serve il loro consenso, non solo quello del cliente.
+- Le modifiche d'ambito si fanno per iscritto prima di agire; provare un sistema fuori ambito può essere accesso abusivo (art. 615-ter c.p.).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene un buon documento di ambito?", a: "Sistemi inclusi ed esclusi, periodo e orari, tipo di test, contatti" },
+    { q: "A che cosa serve la lettera di autorizzazione?", a: "A dimostrare che chi testa è autorizzato dal proprietario, per esempio se qualcuno dà l'allarme" },
+    { q: "Il cliente può autorizzare il test di un servizio gestito da un fornitore?", a: "No: serve il consenso scritto del fornitore" },
+    { q: "Come si cambia l'ambito durante il test?", a: "Con una modifica scritta e firmata prima di lavorare sul nuovo sistema" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: dentro l'ambito, si guarda che cosa c'è. Enumerazione e valutazione, solo nel laboratorio e a livello di ragionamento.</Say>
+</Scene>

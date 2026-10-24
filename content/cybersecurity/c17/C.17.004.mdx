@@ -1,0 +1,166 @@
+---
+id: C.17.004
+course: cybersecurity
+module: 17
+title: "Le stanze virtuali: reti nel cloud"
+belt: blu
+duration_min: 9
+prerequisites: [C.17.003]
+objectives:
+  - "Spiegare che cos'è una rete virtuale e la differenza tra sottoreti pubbliche e private"
+  - "Leggere regole di rete fittizie e riconoscere quella troppo aperta"
+  - "Disporre una semplice applicazione a tre livelli in una rete virtuale"
+video:
+  provider: youtube
+  id: "bGDMeD6kOz0"
+  start: 0
+  end: 600
+  channel: "Academind"
+  title: "AWS VPC & Subnets | Amazon Web Services BASICS"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c17-reti
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Mettere il database in una sottorete pubblica «per comodità»"
+  - "Aprire una porta di accesso remoto a tutta Internet"
+  - "Dimenticare che anche il traffico in uscita va limitato"
+commands: []
+---
+
+<Scene title="Il database raggiungibile da tutti">
+**Nuvola Pasta** (fittizia) ha un sito di ordinazioni con tre pezzi: il sito web, il programma che gestisce gli ordini e il database con i dati dei clienti. Tutti e tre stanno nella stessa area della rete virtuale, con un indirizzo pubblico. Dalle regole di rete:
+
+<Log lines={[
+  "RISORSA: database-ordini",
+  "  indirizzo pubblico: sì",
+  "  regola in ingresso: consenti porta 5432 da 0.0.0.0/0",
+  "  regola in ingresso: consenti porta 22 da 0.0.0.0/0",
+]} caption="Il database è raggiungibile da qualunque computer di Internet." />
+
+La domanda del caso: **come si dispone una rete nel cloud perché ogni cosa sia raggiungibile solo da chi serve?**
+
+<Say who="sensei">Un database che parla con tutto Internet è un negozio senza porta. Costruiamo le stanze.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La rete virtuale">
+Nel cloud la rete si **costruisce con le impostazioni**. Una **rete virtuale** (in AWS *VPC*, in Azure *VNet*, in Google Cloud *VPC network*) è una rete privata logica, isolata dalle altre, dentro il tuo account.
+
+La si divide in **sottoreti**, come le stanze di un appartamento (richiamo di C.04.003, segmentazione e DMZ):
+
+- **sottorete pubblica**: ha un percorso diretto da e verso Internet. Ci sta ciò che deve essere raggiungibile da fuori, di solito un bilanciatore o un servizio web;
+- **sottorete privata**: nessun percorso diretto da Internet. Ci stanno applicazioni e database.
+
+<Callout kind="regola">
+Ciò che non deve essere raggiunto da Internet **non ha un indirizzo pubblico** e sta in una sottorete privata.
+</Callout>
+
+<Say who="assistente">Il cliente entra nel negozio, non in magazzino. Il magazzino ha la porta sul retro, riservata al personale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di rete">
+Le **regole di rete** dicono quale traffico può entrare o uscire da una risorsa. Si chiamano *security group* (AWS), *network security group* (Azure) e regole firewall della rete (Google Cloud). Un esempio fittizio ben fatto:
+
+<Log lines={[
+  "sito-web",
+  "  ingresso: consenti 443 (HTTPS) da qualunque indirizzo",
+  "applicazione",
+  "  ingresso: consenti 8080 solo dal «sito-web»",
+  "database",
+  "  ingresso: consenti 5432 solo dall'«applicazione»",
+  "  tutto il resto: negato",
+]} />
+
+Regole d'oro:
+
+- **Nega tutto, poi consenti ciò che serve** (come nel firewall di C.04.001).
+- Mai «da 0.0.0.0/0» (cioè da qualunque indirizzo) su porte di accesso remoto o di database.
+- Controlla anche il **traffico in uscita**: se una macchina è compromessa, limita ciò che può spedire fuori.
+
+Per l'accesso di amministrazione si evita di aprire la porta 22 a Internet: si usano servizi di accesso gestito con autenticazione forte, oppure si limita a indirizzi noti.
+
+<Say who="sensei">Ogni apertura ha un motivo scritto. Senza motivo, la regola non esiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre livelli, tre stanze">
+Riprendiamo l'applicazione a tre livelli di Nuvola Pasta.
+
+<Guided
+  steps={[
+    "Sito web: unico pezzo esposto, dietro un bilanciatore in sottorete pubblica. Può avere un WAF, un filtro che blocca le richieste che sembrano dannose.",
+    "Applicazione: in sottorete privata. Accetta traffico solo dal sito web.",
+    "Database: in sottorete privata, senza indirizzo pubblico. Accetta traffico solo dall'applicazione.",
+    "Servizi interni tra loro: collegamenti privati interni, non passando da Internet pubblica.",
+    "Uscita: consentita solo verso ciò che serve.",
+  ]}
+/>
+
+Se un attaccante riesce a sfruttare il sito web, la segmentazione gli rende molto più difficile arrivare al database. È lo stesso principio di C.04.003, in versione cloud.
+
+Vuoi sentirlo spiegare da un'altra voce? Un video in inglese:
+
+<Video />
+
+<Callout kind="attenzione">
+Legge ed etica: provare a scansionare o attaccare i servizi cloud di un'azienda senza permesso può essere reato (accesso abusivo, art. 615-ter c.p.). Si prova solo ciò che è tuo, o per cui hai un permesso scritto, in un account di prova.
+</Callout>
+
+<Say who="assistente">Una sola porta verso l'esterno, sorvegliata. Il resto del palazzo non ha neanche l'insegna.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una regola permette l'accesso remoto (porta 22) da «0.0.0.0/0». Qual è il problema?"
+  options={["Consente il tentativo di accesso da qualsiasi indirizzo di Internet", "Blocca ogni accesso", "Permette l'accesso solo dalla rete interna", "Cifra automaticamente il traffico"]}
+  answer={0}
+  explain="«0.0.0.0/0» significa qualunque indirizzo. Chiunque su Internet può tentare di entrare. Chi risponde che «cifra il traffico» confonde un'apertura di rete con una protezione."
+/>
+
+<Say who="sensei">Chiediti sempre: chi deve poter arrivare qui? Se la risposta è «tutti», rifletti due volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su reti virtuali, sottoreti e regole. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="c17-reti" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Una rete ben disegnata fa metà del lavoro del difensore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una rete virtuale è una rete privata logica, divisa in sottoreti pubbliche (esposte) e private (interne).
+- Le regole di rete partono da «nega tutto»; mai «da qualunque indirizzo» su accesso remoto o database.
+- Un'applicazione a tre livelli espone solo il sito web; applicazione e database stanno in sottoreti private.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove va un database con dati dei clienti?", a: "In una sottorete privata, senza indirizzo pubblico" },
+    { q: "Che cosa significa 0.0.0.0/0 in una regola?", a: "Qualunque indirizzo di Internet" },
+    { q: "Qual è la regola di partenza del traffico in ingresso?", a: "Negare tutto e consentire solo ciò che serve" },
+    { q: "Perché limitare anche il traffico in uscita?", a: "Per ridurre i danni se una macchina è compromessa" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chi ha fatto cosa. Log e monitoraggio nel cloud, per accorgersi quando qualcosa non va.</Say>
+</Scene>

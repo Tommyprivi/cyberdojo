@@ -1,0 +1,175 @@
+---
+id: C.15.004
+course: cybersecurity
+module: 15
+title: "Una firma sul software"
+belt: blu
+duration_min: 10
+prerequisites: [C.15.003]
+objectives:
+  - "Spiegare come funziona la firma del codice e che cosa garantisce (e che cosa no)"
+  - "Descrivere perché la chiave di firma va protetta come un tesoro e che cosa sono timestamp e firma senza chiavi (keyless)"
+  - "Collegare firme, hash e inventario dei componenti (SBOM) alla sicurezza della catena di fornitura"
+video:
+  provider: youtube
+  id: "tRSuuMEVdDk"
+  start: 0
+  end: 600
+  channel: "Harness"
+  title: "Software Supply Chain Explained: Risks, Stages, and How to Secure It"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c15-firma-codice
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Credere che «firmato» voglia dire «sicuro»: la firma dice chi l'ha firmato e che non è cambiato, non che sia privo di difetti"
+  - "Tenere la chiave di firma su un computer qualunque o in un repository"
+  - "Scaricare programmi da fonti non ufficiali e non controllare firma o hash pubblicati dall'autore"
+commands: []
+---
+
+<Scene title="L'aggiornamento che non veniva da loro">
+**Gestionale Verde**, software fittizio per ristoranti, manda aggiornamenti automatici ai clienti. Una mattina un cliente nota che l'aggiornamento è «diverso»: pesa il doppio e chiede permessi strani.
+
+Qualcuno è entrato nel computer dove si preparano gli aggiornamenti e ha infilato un pezzo di codice in più. I clienti si fidano dell'azienda, quindi lo installerebbero senza pensarci.
+
+La domanda del caso: **come può un computer capire che un programma è davvero quello dell'autore e non è stato toccato per strada?**
+
+<Say who="sensei">Si chiama attacco alla catena di fornitura: non colpisci la vittima, colpisci chi la rifornisce. Oggi vediamo la difesa principale, la firma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come funziona la firma">
+Nel modulo C2 hai visto la firma digitale. Applicata al software funziona così:
+
+1. L'autore calcola l'**hash** del programma (l'impronta: se cambia un solo bit, cambia tutta).
+2. Cifra quell'hash con la propria **chiave privata**: questa è la **firma**.
+3. Pubblica il programma, la firma e il **certificato** con la chiave pubblica.
+4. Chi installa ricalcola l'hash, decifra la firma con la chiave pubblica e confronta. Se coincidono, due cose sono vere: **il file non è stato modificato** e **è stato firmato da chi possiede quella chiave**.
+
+<Log lines={[
+  "hash(programma ricevuto)  = 9f2c...a41e",
+  "hash letto dalla firma    = 9f2c...a41e   → uguali: integro",
+  "firmatario nel certificato = Gestionale Verde Srl (catena valida)",
+]} />
+
+<Callout kind="regola">
+La firma garantisce **integrità** (non modificato) e **autenticità** (viene da chi dice). Non garantisce che il codice sia **privo di difetti** né **buono**.
+</Callout>
+
+<Say who="assistente">Il timbro della ceralacca: non dice che la lettera sia gentile, dice che nessuno l'ha aperta e chi l'ha mandata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La chiave di firma è un tesoro">
+Se qualcuno ruba la chiave di firma, può firmare **programmi dannosi che sembrano ufficiali**. È già successo in casi reali a grandi aziende.
+
+Per questo si protegge così:
+
+- La chiave sta in un **HSM** o in un servizio di firma gestito: i programmi chiedono la firma, ma non vedono la chiave (lezione precedente).
+- Pochi ruoli possono firmare, e solo dalla **pipeline di build** controllata, non dal portatile di uno sviluppatore.
+- Si firma con un **timestamp**, un'ora certificata da terzi: la firma resta valida anche dopo la scadenza del certificato, perché prova che è stata fatta quando il certificato era valido.
+- Si usa un certificato di firma **dedicato**, con una durata breve, e si può **revocare** se c'è un sospetto.
+
+<Callout kind="attenzione">
+Se una chiave di firma è compromessa, si revoca il certificato **e si avvisano i clienti**: le firme fatte con quella chiave non sono più affidabili da quel momento.
+</Callout>
+
+<Say who="sensei">Una chiave di firma sul portatile di uno sviluppatore è un'ordinanza di sequestro in attesa. Metti il tesoro in cassaforte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Firma senza chiavi, SBOM e dipendenze">
+Gestire chiavi di firma è difficile. Un approccio più recente, la **firma keyless** (progetto *Sigstore*), non fa conservare chiavi: lo sviluppatore si identifica con il proprio account, riceve un certificato **di pochi minuti**, firma e la firma viene scritta in un **registro pubblico non modificabile**. Chiunque può controllare chi ha firmato che cosa.
+
+Poi c'è il tema dei componenti. Un programma moderno è fatto per la maggior parte di **librerie altrui**. Per sapere che cosa c'è dentro si tiene una **SBOM** (*Software Bill of Materials*), l'elenco dei componenti con le versioni, come la lista degli ingredienti su un pacchetto. Quando esce una vulnerabilità in una libreria, la SBOM dice subito quali programmi sono toccati.
+
+Vuoi sentire come si ragiona sulla catena di fornitura, da un'altra voce? In inglese, con sottotitoli:
+
+<Video />
+
+<Callout kind="curiosita">
+Chi scarica un programma da un sito ufficiale trova spesso accanto un **hash** (per esempio SHA-256) o una firma: serve a controllare che il file ricevuto sia identico a quello pubblicato. Ma l'hash va preso da un luogo **diverso e fidato** dal file, altrimenti chi cambia il file cambia anche l'hash.
+</Callout>
+
+<Say who="assistente">Firma, hash, elenco degli ingredienti: sono tre controlli diversi che si aiutano. Nessuno, da solo, chiude tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un programma ha una firma valida di un'azienda nota, ma si scopre che conteneva una libreria con una vulnerabilità. Che cosa dimostra la firma?"
+  options={[
+    "Che il file è quello pubblicato dall'azienda e non è stato modificato, non che sia privo di difetti",
+    "Che il programma non può contenere vulnerabilità",
+    "Che la libreria con il difetto è stata controllata dalla firma",
+    "Che l'hash del programma coincide con quello di tutte le sue librerie",
+  ]}
+  answer={0}
+  explain="La firma prova origine e integrità, non qualità. Un difetto inserito prima della firma viene firmato insieme al resto. Per i difetti servono revisione del codice, test, scansione delle dipendenze e una SBOM aggiornata."
+/>
+
+<Say who="sensei">La firma risponde a «chi» e «è cambiato?». Non risponde a «è buono?». Sono domande diverse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Proteggere Gestionale Verde">
+<Guided
+  steps={[
+    "Ricostruzione: l'aggiornamento è stato modificato prima di essere firmato? Se la build gira su un computer compromesso, la firma sarebbe valida anche sul codice sbagliato.",
+    "Rimedio 1: la build avviene in un ambiente pulito, ricreato ogni volta e senza accessi manuali. Solo quella pipeline può chiedere la firma.",
+    "Rimedio 2: la chiave di firma si sposta in un HSM o servizio di firma, con registro d'uso e avvisi.",
+    "Rimedio 3: ogni aggiornamento ha una SBOM e un hash pubblicato su un canale separato; il programma sul computer del cliente verifica la firma prima di installare e rifiuta ciò che non torna.",
+    "Rimedio 4: se la chiave era stata esposta, si revoca il certificato, si genera una chiave nuova, si pubblica un avviso ai clienti.",
+  ]}
+/>
+
+<Callout kind="regola">
+Sistemi di firma e verifica si provano solo sui **propri** progetti e sui propri computer di prova. Alterare o far installare software ad altri senza permesso è reato (in Italia, tra l'altro, art. 615-ter e seguenti del codice penale).
+</Callout>
+
+<Say who="sensei">Protezione in due punti: dove nasce il software e dove viene installato. In mezzo, la firma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari su firma, chiavi di firma, hash e SBOM.
+
+<Practice generator="c15-firma-codice" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Ora sai che cosa vale una firma, e che cosa non vale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La firma del codice (hash firmato con la chiave privata) garantisce origine e integrità, non assenza di difetti.
+- La chiave di firma si protegge in un HSM o servizio dedicato, si firma solo dalla build controllata, con timestamp; se è compromessa si revoca e si avvisa.
+- SBOM, hash pubblicati e firma keyless aiutano a controllare che cosa c'è dentro i programmi e chi li ha firmati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa garantisce una firma del codice?", a: "Che il file non è stato modificato e che è stato firmato dal titolare della chiave" },
+    { q: "A che cosa serve il timestamp nella firma?", a: "A provare che la firma è stata fatta quando il certificato era valido, anche dopo la sua scadenza" },
+    { q: "Che cos'è una SBOM?", a: "L'elenco dei componenti e delle versioni di un programma, come gli ingredienti" },
+    { q: "Che cosa si fa se la chiave di firma è compromessa?", a: "Si revoca il certificato, si crea una chiave nuova e si avvisano i clienti" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: chiudere a chiave i dischi e i backup, perché un portatile perso non diventi un caso.</Say>
+</Scene>

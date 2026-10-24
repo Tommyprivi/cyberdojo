@@ -1,0 +1,178 @@
+---
+id: C.20.004
+course: cybersecurity
+module: 20
+title: "Forensics nel cloud"
+belt: marrone
+duration_min: 10
+prerequisites: [C.20.003]
+objectives:
+  - "Spiegare cosa cambia nelle prove quando i sistemi stanno nel cloud (responsabilità condivisa, risorse effimere)"
+  - "Elencare le fonti di prova di un account cloud: log delle azioni, log di rete, copie dei dischi"
+  - "Descrivere come si contiene un'istanza cloud senza distruggerne le prove"
+video:
+  provider: youtube
+  id: "oZ-BsE2V_PY"
+  start: 0
+  end: 191
+  channel: "Cado Security (Acquired by Darktrace)"
+  title: "AWS Forensics & Incident Response Training"
+  lang: en
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-cloud
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Eliminare l'istanza compromessa: con lei sparisce il disco e la memoria"
+  - "Dimenticare che i log del cloud hanno una durata limitata e vanno copiati"
+  - "Pensare che tutto sia responsabilità del fornitore del cloud"
+commands: []
+---
+
+<Scene title="Il server che non c'è più">
+Bianchi Logistica (azienda fittizia) usa un servizio cloud. Un martedì arriva l'avviso: una chiave di accesso è stata usata da un paese insolito per avviare **12 server virtuali** non richiesti, che calcolano di notte.
+
+Il tecnico, per fermare i costi, **cancella** i 12 server. Il giorno dopo, quando serve capire come la chiave sia stata rubata, i dischi e la memoria di quei server **non esistono più**.
+
+La domanda del caso: **come si indaga in un ambiente dove le macchine nascono e muoiono in un attimo?**
+
+<Say who="sensei">Nel cloud cancellare è un clic. Ricordarsi di conservare viene prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi è responsabile di cosa">
+Nel cloud c'è la **responsabilità condivisa**: il fornitore protegge l'infrastruttura (edifici, server fisici, rete di base). **Tu** proteggi ciò che ci metti: configurazioni, accessi, dati, sistemi che hai installato.
+
+Per la forensics significa due cose:
+
+- **Non puoi** prendere un disco fisico e portarlo in laboratorio: il disco non è tuo.
+- **Puoi** usare gli strumenti del fornitore: log delle azioni, copie istantanee dei dischi (**snapshot**), esportazioni dei log.
+
+<Callout kind="attenzione">
+Ogni contratto cloud ha regole su cosa il fornitore ti dà e per quanto tempo. Si leggono **prima** dell'incidente, non durante.
+</Callout>
+
+<Say who="assistente">Il fornitore ha le chiavi del palazzo. Tu hai le chiavi del tuo appartamento, e di ciò che c'è dentro rispondi tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le fonti di prova">
+Nel cloud le prove stanno in **registri** più che in dischi. Le fonti principali:
+
+| Fonte | Cosa racconta |
+|---|---|
+| **Log delle azioni sull'account** (il «piano di controllo»; per esempio CloudTrail in AWS, Activity Log in Azure) | Chi ha creato, modificato, cancellato risorse, da quale indirizzo e con quale chiave |
+| **Log di rete** (flussi, firewall virtuale) | Con chi comunicava una macchina e quando |
+| **Log degli accessi ai dati** (storage, database) | Chi ha letto o scaricato quali file |
+| **Snapshot dei dischi** | Una copia del contenuto di un disco virtuale, da analizzare in un posto sicuro |
+| **Log del sistema operativo e delle app** | Accessi e processi dentro la macchina, se raccolti |
+
+Il primo è spesso decisivo: dice **chi ha fatto che cosa**. Nel nostro caso mostrerebbe la chiave usata per creare i server.
+
+<Callout kind="regola">
+I log del cloud **scadono**: molti servizi conservano le informazioni per un tempo limitato. Si **copiano subito** in un posto separato, protetto, in sola lettura.
+</Callout>
+
+<Say who="sensei">Un log non esportato oggi può non esistere fra tre mesi. Salvalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Contenere senza distruggere">
+Un runbook cloud per un'istanza compromessa, in breve (fittizio):
+
+<Log lines={[
+  "RB-12  Istanza cloud sospetta",
+  "1. Annota ora, identificativo istanza, account e area (regione)",
+  "2. Isola: cambia il gruppo di sicurezza in 'quarantena' (nessun traffico, tranne analisi)",
+  "3. Se serve la RAM: acquisiscila con lo strumento previsto, prima di toccare altro",
+  "4. Crea snapshot di tutti i dischi e copiali nell'account forense separato",
+  "5. Calcola e annota l'hash di ogni copia",
+  "6. Revoca le chiavi e le sessioni usate; rigenera i segreti",
+  "7. Solo dopo la conferma del Responsabile IR: ferma l'istanza (non cancellarla)",
+  "Non fare: non terminare l'istanza; non analizzare sull'originale",
+]} caption="Isolare, copiare, mettere al sicuro: poi, e solo poi, fermare." />
+
+Le **identità** sono la nuova superficie: nel cloud la chiave rubata è spesso l'intera storia. Si **revocano** le credenziali sospette e si controllano tutte le risorse create con esse (come i 12 server).
+
+Vuoi vedere gli strumenti su un esempio reale? Pochi minuti, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="assistente">Cambiare le regole di rete dell'istanza è come chiudere la porta senza demolire la stanza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metodo e legge">
+Le regole della raccolta di prove (C.09.002) valgono anche qui:
+
+- **Account separato per l'analisi**: gli snapshot si copiano in un ambiente che l'intruso non può raggiungere;
+- **Catena di custodia e hash**: chi ha copiato che cosa, quando;
+- **Orari in UTC** e ora legale annotata: i log di regioni diverse hanno fusi diversi;
+- **Permessi**: si lavora solo sugli account e sulle risorse **dell'organizzazione** o per cui si ha un permesso scritto. Entrare in un account altrui, anche «per aiutare», è accesso abusivo a sistema informatico (art. 615-ter del codice penale);
+- **Dati personali**: i log contengono indirizzi e nomi di persone; si accede con il minimo necessario.
+
+<Callout kind="curiosita">
+I dati nel cloud possono trovarsi in **paesi diversi**. Per le comunicazioni con autorità e fornitore conta anche dove sono ospitati: lo si sa prima, dal contratto.
+</Callout>
+
+<Say who="sensei">Un buon analista cloud è paziente e ordinato. Il cloud perdona poco, ma lascia molte tracce se sai dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una chiave di accesso cloud risulta usata da un paese insolito per creare server. Vuoi fermare il danno e conservare le prove. Quale sequenza è giusta?"
+  options={[
+    "Copiare i log, isolare i server con regole di rete di quarantena, creare snapshot in un account separato, revocare la chiave e solo dopo fermare i server",
+    "Cancellare subito tutti i server e la chiave, così non c'è più nulla da attaccare",
+    "Riavviare i server per fermare i processi e aspettare il prossimo accesso dell'intruso",
+    "Aprire un caso al fornitore e non toccare nulla per giorni",
+  ]}
+  answer={0}
+  explain="Cancellare distrugge disco e memoria: non saprai come è entrato l'intruso. Riavviare cancella la RAM e non ferma la chiave rubata. Aspettare giorni lascia correre il danno. Si copia, si isola, si conserva, si revoca la credenziale, e solo alla fine si ferma."
+/>
+
+<Say who="assistente">Indizio: la parola chiave è «copia prima di cambiare».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari di forensics nel cloud: responsabilità, fonti di prova e contenimento.
+
+<Practice generator="c20-cloud" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il cloud si indaga coi registri: impara a leggerli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Nel cloud la responsabilità è condivisa e le prove stanno soprattutto nei registri e negli snapshot, non in dischi fisici.
+- I log di azione dell'account dicono chi ha fatto che cosa; scadono, quindi si copiano subito in un posto separato.
+- Si isola con regole di rete, si copiano i dischi in un account forense separato, si revocano le credenziali e solo dopo si ferma l'istanza, senza mai cancellarla.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è la responsabilità condivisa?", a: "Il fornitore protegge l'infrastruttura, tu proteggi configurazioni, accessi e dati" },
+    { q: "Qual è la prima fonte di prova nel cloud?", a: "Il log delle azioni sull'account: chi ha creato o cambiato cosa" },
+    { q: "Che cos'è uno snapshot?", a: "Una copia istantanea di un disco virtuale da analizzare altrove" },
+    { q: "Perché non si cancella l'istanza compromessa?", a: "Spariscono disco e memoria con le prove" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: autorità e assicurazioni. Chi avvisare, quando, e con quali parole.</Say>
+</Scene>

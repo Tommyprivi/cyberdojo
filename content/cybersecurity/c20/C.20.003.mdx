@@ -1,0 +1,178 @@
+---
+id: C.20.003
+course: cybersecurity
+module: 20
+title: "Ransomware: risposta e ripristino"
+belt: marrone
+duration_min: 11
+prerequisites: [C.20.002]
+objectives:
+  - "Descrivere le prime ore di un attacco ransomware: isolare, preservare, valutare l'estensione"
+  - "Spiegare perché un backup si deve provare e come si decide l'ordine del ripristino"
+  - "Riconoscere la doppia estorsione e i suoi effetti sugli obblighi di notifica"
+video:
+  provider: youtube
+  id: "NMff_TnBGys"
+  start: 0
+  end: 411
+  channel: "CYBEROO"
+  title: "Cosa accade in azienda durante un attacco hacker? | Guida alla resilienza | Cybersecurity"
+  lang: it
+  reviewed: false
+verification:
+  type: generated-numeric
+  generator: c20-ransomware
+  pass: "5/5"
+  retries: 3
+audio: true
+status: published
+approved: true
+human_reviewed: false
+known_pitfalls:
+  - "Spegnere tutto di colpa, perdendo prove e capacità di capire come l'intruso è entrato"
+  - "Ripristinare dal backup senza prima chiudere la porta da cui l'intruso è entrato"
+  - "Pensare che con il backup il problema sia finito: i dati rubati restano un incidente di violazione"
+commands: []
+---
+
+<Scene title="Il lunedì dei file cifrati">
+Lunedì alle **06:50** a Bianchi Logistica (azienda fittizia) il server dei documenti mostra file con estensione strana e un messaggio: «I tuoi dati sono cifrati. Paga per riaverli». È un **ransomware**: un programma che cifra i file e chiede un riscatto.
+
+<Log lines={[
+  "dom 23:40  accesso da indirizzo estero all'account di un fornitore (VPN)",
+  "dom 23:55  nuovo account amministratore creato",
+  "lun 02:10  grande trasferimento di dati verso un indirizzo esterno",
+  "lun 04:30  inizia la cifratura dei file sul server documenti",
+  "lun 06:50  messaggio di riscatto visibile, telefoni che squillano",
+]} caption="Ricostruzione dai log, a posteriori: la cifratura è solo l'ultimo atto." />
+
+La domanda del caso: **che cosa si fa nelle prime ore, e come si torna in servizio senza ricascarci?**
+
+<Say who="sensei">La cifratura è il momento in cui l'intruso ti fa accorgere di lui. Era in casa da ore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le prime ore">
+Senza panico, in questo ordine (vedi C.09 per i principi):
+
+1. **Dichiara l'incidente** e attiva il playbook: un responsabile, un diario con le ore.
+2. **Isola** i sistemi colpiti **dalla rete** (cavo, porta, segmento): non li **spegnere** col tasto, perché in memoria restano prove utili.
+3. **Valuta l'estensione**: quali server, quali utenti, da quando. Controlla gli altri sistemi per segni di cifratura in corso.
+4. **Preserva le prove**: log, copie dei sistemi, il messaggio di riscatto (una foto basta).
+5. **Cambia le credenziali** che l'intruso può aver usato, a partire da quelle amministrative, **dopo** aver capito come le ha ottenute.
+6. **Avvisa** chi serve: direzione, legale, assicurazione, autorità (lezione 5).
+
+<Callout kind="attenzione">
+Non ripristinare ancora. Se l'intruso ha ancora un accesso, cifrerà anche i dati ripristinati.
+</Callout>
+
+<Say who="assistente">Prima si ferma l'emorragia, poi si cura la ferita. Il ripristino viene dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Backup: la prova della verità">
+I backup sono la tua assicurazione, ma solo se rispettano tre condizioni:
+
+- **Separati**: una copia **offline** o **immutabile** (che nessuno può modificare o cancellare, nemmeno un amministratore compromesso). I ransomware moderni cercano e cancellano i backup raggiungibili dalla rete.
+- **Puliti**: l'ultimo backup **precedente** all'ingresso dell'intruso (la timeline lo dice: qui la sera di domenica).
+- **Provati**: si è davvero fatto un ripristino di prova, e si sa **quanto ci vuole**.
+
+Due sigle utili: **RPO** (quanti dati si possono perdere: «l'ultimo backup è di ieri sera, perdiamo al massimo un giorno») e **RTO** (quanto tempo si può restare fermi).
+
+<Callout kind="curiosita">
+Regola classica «3-2-1»: almeno **3** copie, su **2** tipi di supporto diversi, **1** fuori sede (o offline).
+</Callout>
+
+<Say who="sensei">Il backup non provato è una speranza. Il ransomware la mette alla prova nel peggior giorno possibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ripristino a ondate">
+Non si riaccende tutto insieme. Si decide un **ordine**, di solito per **importanza per l'attività**, tenendo conto delle dipendenze. Un piano fittizio per Bianchi Logistica:
+
+| Ondata | Cosa torna | Perché prima |
+|---|---|---|
+| 1 | Accesso (identità), rete pulita | Senza identità non si lavora, e va ricostruito con credenziali nuove |
+| 2 | Gestione ordini e spedizioni | Senza non si fatturano né si spediscono pacchi |
+| 3 | Server documenti | Importante, ma il lavoro urgente può ripartire senza |
+| 4 | Archivi storici e posta vecchia | Non bloccano l'attività |
+
+Ogni sistema ricostruito parte **da un'immagine pulita**, aggiornato, con il monitoraggio rafforzato (C.09.006). I dati si ripristinano dopo, e si **controllano**.
+
+Vuoi vedere come questo si vive in un'azienda? Pochi minuti, in italiano:
+
+<Video />
+
+<Say who="sensei">L'ordine lo decide l'attività, non la comodità dei tecnici. Chiedi alla direzione cosa serve per prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Doppia estorsione e riscatto">
+Nell'esempio il log mostra un trasferimento di dati **prima** della cifratura: è la **doppia estorsione**. I criminali minacciano di pubblicare i dati rubati anche se tu ripristini dai backup.
+
+Conseguenze:
+
+- il backup risolve il **blocco**, ma non il **furto**: resta una **violazione di dati** con eventuali obblighi di notifica (lezione 5);
+- bisogna capire **quali dati** sono usciti e se contengono dati personali.
+
+E il **riscatto**? Non è una scelta tecnica. Non c'è garanzia di riavere i dati, finanzia i criminali e può avere problemi legali. La decisione spetta alla **direzione**, con **consulenza legale**, in contatto con le **forze dell'ordine** e con l'**assicurazione**. Non è compito di chi sta di turno. Regola di buon senso: **non si contatta e non si negozia da soli**.
+
+<Callout kind="regola">
+Backup e ripristino riducono la pressione del riscatto. Ecco perché si preparano **prima**.
+</Callout>
+
+<Say who="assistente">Una domanda che salva: «Quali dati sono usciti?». Il backup non te lo dice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Bianchi Logistica ha un backup di domenica sera, pulito e provato. Lunedì il server è cifrato e i log mostrano l'ingresso dell'intruso domenica alle 23:40 da un account fornitore. Qual è la sequenza più sensata?"
+  options={[
+    "Isolare i sistemi, capire e chiudere l'accesso del fornitore, cambiare le credenziali, ricostruire da immagine pulita e ripristinare in ondate, valutando in parallelo la notifica per i dati usciti",
+    "Ripristinare subito dal backup di domenica sera per ripartire in fretta, poi indagare",
+    "Pagare il riscatto per recuperare i file più velocemente del backup",
+    "Spegnere tutti i computer dell'azienda e aspettare l'arrivo dei tecnici esterni",
+  ]}
+  answer={0}
+  explain="Se si ripristina prima di chiudere l'accesso del fornitore, l'intruso può cifrare di nuovo. Il backup di domenica sera è precedente all'ingresso (23:40), quindi utilizzabile. La notifica va valutata perché i log mostrano anche un furto di dati. Spegnere tutto perde prove; pagare non è una scelta tecnica né garantita."
+/>
+
+<Say who="sensei">Prima chiudi la porta, poi rimetti i mobili. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Scenari sul ransomware: prime ore, backup, ordine del ripristino e doppia estorsione.
+
+<Practice generator="c20-ransomware" pass="5/5" retries={3} />
+
+<Say who="sensei">Cinque su cinque. Il giorno del ransomware si vince nei mesi prima, con i backup.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Prime ore: dichiarare l'incidente, isolare (non spegnere), valutare l'estensione, preservare le prove, poi cambiare le credenziali e avvisare chi serve.
+- Backup separati, puliti e provati; si ripristina a ondate, seguendo l'importanza per l'attività, da immagini pulite, dopo aver chiuso la porta d'ingresso.
+- Con la doppia estorsione il backup non basta: i dati rubati restano una violazione da valutare; il riscatto è una decisione della direzione con il legale, non dei tecnici.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Isolare o spegnere un server cifrato?", a: "Isolare dalla rete: spegnere fa perdere le prove nella memoria" },
+    { q: "Che cosa significano RPO e RTO?", a: "RPO: quanti dati si possono perdere; RTO: quanto tempo si può restare fermi" },
+    { q: "Che cos'è la doppia estorsione?", a: "Cifratura più minaccia di pubblicare i dati rubati" },
+    { q: "Chi decide sul riscatto?", a: "La direzione, con il legale, le autorità e l'assicurazione: non il tecnico di turno" },
+  ]}
+/>
+
+<Say who="sensei">Prossima lezione: quando i sistemi stanno nel cloud, le prove non sono più nei dischi che puoi toccare.</Say>
+</Scene>
