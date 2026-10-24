@@ -58,6 +58,15 @@ Hai 10 azioni da 80 euro = 800 euro. Dopo lo split: 20 azioni da 40 euro = 800 e
 
 È come cambiare una banconota da 20 in due da 10: il valore non cambia.
 
+<Flow
+  caption="Uno split 2 per 1 cambia il numero di azioni, non il valore."
+  steps={[
+    { icon: "file", title: "Prima", text: "10 azioni da 80 euro: 800 euro" },
+    { icon: "gear", title: "Split 2 per 1", text: "Azioni doppie, prezzo dimezzato" },
+    { icon: "check", title: "Dopo", text: "20 azioni da 40 euro: 800 euro" },
+  ]}
+/>
+
 Il contrario è il **reverse split** (per esempio 1 per 10): le azioni si riuniscono e il prezzo sale in proporzione.
 
 Vuoi sentirlo spiegare da un'altra voce? Pochi minuti, in inglese con i sottotitoli:
@@ -80,6 +89,12 @@ Prezzi grezzi di Pasta Bellini (fittizi), con split 2 per 1 al terzo giorno:
 | 4 | 42 | 42 |
 
 I prezzi **prima** dello split si moltiplicano per **0,5**. Il rendimento del giorno 3 sui prezzi grezzi è 41 ÷ 82 − 1 = **−50%**, falso. Sui prezzi corretti è 41 ÷ 41 − 1 = **0%**, vero.
+
+<Compare
+  caption="Lo stesso giorno, letto con prezzi grezzi e con prezzi corretti."
+  left={{ title: "Prezzi grezzi", points: ["Da 82 a 41 euro", "Rendimento: -50%", "Un crollo che non è mai esistito"] }}
+  right={{ title: "Prezzi corretti", points: ["Da 41 a 41 euro", "Rendimento: 0%", "Il valore dell'azienda non è cambiato"] }}
+/>
 
 <PythonTerminal code={"prezzi = [80.0, 82.0, 41.0, 42.0]\ncorretti = [p * 0.5 for p in prezzi[:2]] + prezzi[2:]\nprint(corretti)\nprint(round(prezzi[2] / prezzi[1] - 1, 4))\nprint(round(corretti[2] / corretti[1] - 1, 4))"} />
 

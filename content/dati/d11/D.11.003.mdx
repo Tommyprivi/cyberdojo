@@ -64,6 +64,15 @@ Il modo più semplice è una **soglia**: **spam se le parole sospette sono almen
 
 Sei su sei. E la settima, con 6? Spam.
 
+<Flow
+  caption="La soglia trasforma un conteggio in una categoria."
+  steps={[
+    { icon: "search", title: "Conta", text: "Parole sospette nell'email" },
+    { icon: "gear", title: "Soglia", text: "Spam se sono almeno 3" },
+    { icon: "mail", title: "Classe", text: "Spam o non spam" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Il caso al limite: con la regola «almeno 3», un'email con esattamente 3 parole è spam. Controlla sempre se la soglia include il valore o no.
 </Callout>

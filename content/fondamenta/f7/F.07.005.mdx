@@ -62,6 +62,15 @@ La richiesta contiene un **metodo** (che cosa vuoi fare), il **percorso** (che c
 Richiesta = metodo + percorso + intestazioni. Risposta = codice di stato + intestazioni + contenuto.
 </Callout>
 
+<Flow
+  caption="Una richiesta, una risposta."
+  steps={[
+    { icon: "laptop", title: "Richiesta", text: "Il browser chiede GET /prezzi.html" },
+    { icon: "server", title: "Sito", text: "Il server cerca la pagina" },
+    { icon: "file", title: "Risposta", text: "Codice 200 e il contenuto" },
+  ]}
+/>
+
 <Say who="assistente">Come al ristorante: ordini (richiesta), arriva il piatto oppure «finito» (risposta).</Say>
 </Scene>
 
@@ -99,6 +108,16 @@ La risposta comincia con un numero a tre cifre. La **prima cifra** dice la famig
 <Callout kind="trucco">
 Se parte da **4**, colpa di chi ha chiesto. Se parte da **5**, colpa del server. Se parte da **2**, tutto bene.
 </Callout>
+
+<Layers
+  caption="La prima cifra del codice dice la famiglia."
+  items={[
+    { icon: "check", title: "2xx", text: "Tutto bene (200 OK)" },
+    { icon: "link", title: "3xx", text: "Vai altrove: reindirizzamento" },
+    { icon: "warning", title: "4xx", text: "Errore di chi chiede (404, 403)" },
+    { icon: "fire", title: "5xx", text: "Errore del server (500, 503)" },
+  ]}
+/>
 
 <Say who="assistente">Nel caso iniziale: 200 è una pagina servita, 404 è un link vecchio. Non un guasto del server.</Say>
 </Scene>

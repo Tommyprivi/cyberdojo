@@ -54,6 +54,15 @@ Un **bias** è una distorsione: i dati non rappresentano in modo equo la realtà
 - **alcuni gruppi mancano** nei dati: un riconoscimento facciale addestrato quasi solo su un gruppo di persone sbaglierà di più sugli altri;
 - le **etichette le hanno messe persone** con i loro pregiudizi.
 
+<Flow
+  caption="Un modello addestrato su un passato storto restituisce un futuro storto."
+  steps={[
+    { icon: "folder", title: "Passato", text: "90% degli assunti era uomo" },
+    { icon: "gear", title: "Modello", text: "Impara ciò che gli mostri" },
+    { icon: "warning", title: "Risultato", text: "Scarta quasi tutte le candidate" },
+  ]}
+/>
+
 Un modo di verificarlo: confrontare i risultati tra gruppi.
 
 <Log lines={["gruppo A: 60 accettati su 100 -> 60%", "gruppo B: 30 accettati su 100 -> 30%", "rapporto: 60 / 30 = 2 volte"]} caption="Dati fittizi. Una differenza così grande va indagata." />

@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Un attacco ha una forma">
-La «Rossi Forniture» riceve tre segnalazioni in due settimane, in sistemi diversi.
+La «Rossi Forniture» riceve quattro segnalazioni in due settimane, in sistemi diversi.
 
 <Log lines={[
   "Sett. 1  Posta  un dipendente apre un allegato in una mail «fattura»",
@@ -60,6 +60,17 @@ Un attacco ben fatto procede per **fasi**. Semplificando:
 3. **Stabilirsi**: si assicura di poter restare, anche dopo un riavvio.
 4. **Muoversi**: esplora la rete e cerca account e dati di valore.
 5. **Obiettivo**: ruba, cifra o distrugge.
+
+<Flow
+  caption="Le cinque fasi di un attacco."
+  steps={[
+    { icon: "eye", title: "Preparazione", text: "Studia l'obiettivo" },
+    { icon: "mail", title: "Primo accesso", text: "Per esempio una mail ingannevole" },
+    { icon: "hook", title: "Stabilirsi", text: "Resta anche dopo il riavvio" },
+    { icon: "search", title: "Muoversi", text: "Esplora rete, account, dati" },
+    { icon: "skull", title: "Obiettivo", text: "Ruba, cifra o distrugge" },
+  ]}
+/>
 
 <Callout kind="regola">
 Ogni fase lascia **tracce diverse**. Se perdi la prima, puoi ancora vedere la terza o la quarta. Un solo anello che vedi basta a rompere la catena.

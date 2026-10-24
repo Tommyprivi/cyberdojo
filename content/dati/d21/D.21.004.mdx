@@ -42,6 +42,12 @@ Nessun errore era comparso: `dbt run` era verde. Il modello era sbagliato, ma **
 
 La domanda del caso: **come ci si accorge del dato sbagliato prima di chi legge il report?**
 
+<Compare
+  caption="Eseguire non vuol dire essere corretto."
+  left={{ title: "Solo dbt run", points: ["Tutto verde, anche con due clienti con id 3", "Il dato sbagliato arriva al report", "Se ne accorge chi lo legge"] }}
+  right={{ title: "Con i test", points: ["Il test unique segnala l'id duplicato", "Il guaio si scopre prima del report", "Si sa chi deve intervenire"] }}
+/>
+
 <Say who="sensei">Un modello che gira non è un modello che funziona. Servono controlli scritti, e che parlino da soli.</Say>
 </Scene>
 
@@ -77,6 +83,16 @@ Che cosa controllano:
 - **unique**: nessun valore compare due volte.
 - **relationships**: ogni valore esiste anche nella colonna di un altro modello (come una chiave esterna).
 - **accepted_values**: la colonna contiene solo valori di un elenco.
+
+<Layers
+  caption="I quattro test generici di dbt."
+  items={[
+    { icon: "check", title: "not_null", text: "Nessun valore vuoto" },
+    { icon: "key", title: "unique", text: "Nessun valore ripetuto" },
+    { icon: "link", title: "relationships", text: "Ogni valore esiste anche in un altro modello" },
+    { icon: "book", title: "accepted_values", text: "Solo valori di un elenco" },
+  ]}
+/>
 
 <Callout kind="regola">
 Un test passa quando la query che dbt costruisce **non restituisce nessuna riga sbagliata**. Zero righe, test verde.

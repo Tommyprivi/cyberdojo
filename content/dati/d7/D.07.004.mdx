@@ -66,6 +66,15 @@ Con due assi chi disegna può far combaciare qualsiasi coppia di curve. Correzio
 
 **Aree non proporzionali.** Per mostrare che un valore è doppio, si disegna un cerchio con il raggio doppio. Ma l'area cresce con il quadrato del raggio: raggio doppio, area **4 volte** più grande. Il valore sembra quadruplicato. Lo stesso vale per le icone che crescono in altezza e larghezza. Correzione: usare barre, dove conta una sola dimensione.
 
+<Flow
+  caption="Perché un cerchio con il raggio doppio inganna."
+  steps={[
+    { icon: "chart", title: "Valore doppio", text: "Vuoi mostrare 2 invece di 1" },
+    { icon: "gear", title: "Raggio doppio", text: "Si raddoppia il raggio del cerchio" },
+    { icon: "warning", title: "Area 4 volte", text: "Sembra quadruplicato" },
+  ]}
+/>
+
 **Scale irregolari.** Anni 1990, 2000 e 2020 a distanze uguali sull'asse: il periodo lungo sembra corto e la pendenza è falsata.
 
 **Parti che non fanno un intero.** Una torta con 50%, 45% e 35% somma a 130%.
@@ -90,6 +99,12 @@ Le vendite della Bottega Verde nel 2024:
 | Giu | 118 | Dic | 158 |
 
 Un grafico che mostra solo da giugno a dicembre dice «+34%»: da 118 a 158 è proprio il 34%. Ma su tutto l'anno si va da 140 a 158: circa **+13%**, con un calo fino a giugno.
+
+<Compare
+  caption="Gli stessi dati del 2024, con due periodi diversi."
+  left={{ title: "Solo giugno-dicembre", points: ["Da 118 a 158", "Titolo clamoroso: +34%", "Non si vede il calo precedente"] }}
+  right={{ title: "Tutto l'anno", points: ["Da 140 a 158", "Crescita di circa +13%", "Calo fino a giugno, poi ripresa"] }}
+/>
 
 Non c'è nessun numero falso. Il periodo è stato scelto con furbizia.
 

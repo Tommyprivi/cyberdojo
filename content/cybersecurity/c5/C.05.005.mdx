@@ -42,6 +42,15 @@ Il codice cresce di poco ogni volta. Chiunque, in teoria, potrebbe provare 1044,
 
 La domanda del caso: **che cosa rende solida o fragile una prova di identità sul web?**
 
+<Flow
+  caption="Un codice di sessione che si indovina."
+  steps={[
+    { icon: "lock", title: "Login", text: "Sara riceve il codice 1043" },
+    { icon: "clock", title: "Il giorno dopo", text: "Il codice è 1051: cresce di poco" },
+    { icon: "warning", title: "Prevedibile", text: "Qualcuno può provare 1044, 1045…" },
+  ]}
+/>
+
 <Say who="sensei">Autenticarsi vuol dire dimostrare chi sei. Se la prova è facile da indovinare o da copiare, non dimostra niente.</Say>
 </Scene>
 
@@ -95,6 +104,12 @@ Cosa fa un sito fatto bene:
 - offre il **secondo fattore (MFA)**: una password rubata non basta;
 - genera token di sessione **casuali e lunghi**, li fa **scadere** e li invalida al logout;
 - dà **un solo messaggio** d'errore generico per login sbagliato.
+
+<Compare
+  caption="Login e sessione: un sito fragile e uno fatto bene."
+  left={{ title: "Sito fragile", points: ["Tentativi di login illimitati", "Token progressivi, senza scadenza"] }}
+  right={{ title: "Sito fatto bene", points: ["Tentativi limitati e secondo fattore", "Token casuali, con scadenza"] }}
+/>
 
 <Callout kind="trucco">
 Dopo il login, il sito deve anche cambiare il token di sessione. Se ne riutilizza uno già visto prima del login, qualcuno potrebbe averlo preparato in anticipo.

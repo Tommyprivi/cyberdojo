@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Il pacco in ritardo">
-«Corrieri Rapido» è un'azienda fittizia di consegne. Una cliente si lamenta: «Mi avevate promesso 2 giorni, ne sono passati 9». Il direttore guarda il cruscotto: tempo medio di consegna **2,9 giorni**. «Va bene», dice. Ma la cliente aspetta ancora.
+«Corrieri Rapido» è un'azienda fittizia di consegne. Una cliente si lamenta: «Mi avevate promesso 3 giorni, ne sono passati 9». Il direttore guarda il cruscotto: tempo medio di consegna **2,9 giorni**. «Va bene», dice. Ma la cliente aspetta ancora.
 
 La domanda del caso: **come si misura davvero un servizio di consegne?**
 
@@ -54,6 +54,12 @@ Sette consegne, tempi in giorni: **1, 1, 2, 2, 2, 3, 9**.
 
 La consegna da 9 giorni tira su la media. La mediana racconta il caso tipico, la quota di ritardi racconta chi resta deluso.
 
+<Compare
+  caption="La sola media nasconde la consegna da 9 giorni."
+  left={{ title: "Solo la media", points: ["2,9 giorni: sembra andare bene", "Nasconde la consegna da 9 giorni", "La cliente resta senza risposta"] }}
+  right={{ title: "Mediana e ritardi", points: ["Mediana 2 giorni: il caso tipico", "Oltre 3 giorni: 1 consegna su 7 (14%)", "Si indaga il caso peggiore"] }}
+/>
+
 Un video spiega gli indici di performance delle scorte, un altro lato della stessa misurazione:
 
 <Video />
@@ -69,6 +75,15 @@ Il magazzino vende in media **40 pezzi al giorno**. Il fornitore impiega **5 gio
 - Durante l'attesa si vendono 40 × 5 = **200 pezzi**.
 - Si aggiunge una **scorta di sicurezza** di **60 pezzi** per le giornate in cui si vende di più o il fornitore ritarda.
 - **Punto di riordino** = 200 + 60 = **260 pezzi**: quando la giacenza scende a 260, si ordina.
+
+<Flow
+  caption="Il punto di riordino mette insieme attesa e sicurezza."
+  steps={[
+    { icon: "clock", title: "Attesa", text: "5 giorni × 40 pezzi = 200" },
+    { icon: "shield", title: "Scorta", text: "+60 pezzi di sicurezza" },
+    { icon: "bell", title: "Riordino", text: "A 260 pezzi si ordina" },
+  ]}
+/>
 
 <Callout kind="regola">
 Punto di riordino = domanda media al giorno × giorni di attesa + scorta di sicurezza.

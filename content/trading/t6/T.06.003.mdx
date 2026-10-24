@@ -75,6 +75,15 @@ Nel caso: lo stop a 48 scatta, ma il primo prezzo disponibile è circa **44 €*
 
 La perdita è **tre volte** quella prevista. Il calcolo della quantità (lezione precedente) funziona se lo stop viene eseguito al suo livello: con i gap il rischio reale è più alto.
 
+<Flow
+  caption="Il gap salta lo stop: la perdita reale supera quella prevista."
+  steps={[
+    { icon: "bell", title: "Stop a 48", text: "Perdita prevista: 100 €" },
+    { icon: "bolt", title: "Notizia di notte", text: "Il titolo apre a 44 €" },
+    { icon: "warning", title: "Uscita a 44", text: "Perdita reale: 300 €" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Per questo i backtest che assumono l'uscita «esattamente al prezzo dello stop» sono ottimistici: nella realtà l'uscita può essere peggiore. Lo vedremo anche nel modulo sui costi.
 </Callout>

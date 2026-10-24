@@ -38,7 +38,7 @@ commands: []
 <Scene title="Il +10% che diventa +50%">
 Un conto demo fittizio ha **1.000 €**. Con una **leva 5** il conto controlla una posizione da **5.000 €**. Il prezzo sale del 10%: la posizione guadagna **500 €**, cioè il **50%** del capitale. Fantastico.
 
-Il giorno dopo il prezzo scende del 20%. La posizione perde **1.000 €**: l'**intero capitale**.
+Un altro giorno, partendo dagli stessi 1.000 €, il prezzo scende del 20%. La posizione perde **1.000 €**: l'**intero capitale**.
 
 La domanda del caso: **come può una discesa del 20% cancellare tutto?**
 
@@ -65,6 +65,15 @@ Effetto sul capitale (leva 5):
 | +10% | +500 € | +50% |
 | −10% | −500 € | −50% |
 | −20% | −1.000 € | −100% |
+
+<Flow
+  caption="Come la leva 5 trasforma un calo del 20% in una perdita totale."
+  steps={[
+    { icon: "coin", title: "Capitale", text: "1.000 €" },
+    { icon: "gear", title: "Leva 5", text: "Posizione da 5.000 €" },
+    { icon: "skull", title: "Prezzo -20%", text: "Perdi 1.000 €: tutto il capitale" },
+  ]}
+/>
 
 <Callout kind="regola">
 Variazione del capitale = variazione del prezzo × leva. Vale in entrambe le direzioni.
@@ -100,6 +109,15 @@ Esempio fittizio: posizione 5.000 €, capitale 1.000 €, margine di mantenimen
 - Posizione: 4.400 €. Perdita: 600 €. Capitale residuo: 400 €.
 - Mantenimento richiesto: 10% di 4.400 € = 440 €.
 - 400 € è meno di 440 €: **richiesta di integrazione**.
+
+<Flow
+  caption="Come arriva la richiesta di integrazione nell'esempio."
+  steps={[
+    { icon: "chart", title: "Prezzo -12%", text: "La posizione vale 4.400 €" },
+    { icon: "warning", title: "Capitale 400 €", text: "Sotto i 440 € richiesti" },
+    { icon: "bell", title: "Richiesta", text: "Versi altro denaro o riduci" },
+  ]}
+/>
 
 Le regole esatte cambiano da broker a broker: qui interessa il meccanismo.
 

@@ -82,6 +82,16 @@ Le **regole di rete** dicono quale traffico può entrare o uscire da una risorsa
   "  tutto il resto: negato",
 ]} />
 
+<Flow
+  caption="Una sola porta verso l'esterno: ogni livello parla solo con il vicino."
+  steps={[
+    { icon: "globe", title: "Internet", text: "Entra solo sulla porta 443" },
+    { icon: "cloud", title: "Sito web", text: "Sottorete pubblica" },
+    { icon: "gear", title: "Applicazione", text: "Accetta solo dal sito" },
+    { icon: "database", title: "Database", text: "Accetta solo dall'applicazione" },
+  ]}
+/>
+
 Regole d'oro:
 
 - **Nega tutto, poi consenti ciò che serve** (come nel firewall di C.04.001).

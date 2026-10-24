@@ -56,6 +56,15 @@ Nella **cifratura simmetrica** si usa **una chiave sola**: la stessa chiude e ap
 Simmetrica = **stessa chiave** per cifrare e decifrare. Veloce, adatta a grandi quantità di dati.
 </Callout>
 
+<Flow
+  caption="Una sola chiave, copiata presso entrambi."
+  steps={[
+    { icon: "user", title: "Sara", text: "Cifra con la chiave" },
+    { icon: "mail", title: "Il canale", text: "Viaggia il file cifrato" },
+    { icon: "key", title: "Nico", text: "Decifra con la stessa chiave" },
+  ]}
+/>
+
 <Say who="assistente">Il nome ti aiuta: simmetrica vuol dire che i due lati sono uguali. La stessa chiave, da una parte e dall'altra.</Say>
 </Scene>
 
@@ -90,6 +99,12 @@ Qui sta il punto debole. Se Sara e Nico devono avere la stessa chiave, **come se
 - Se la mandano in chat, chi ascolta la chat la ruba.
 - Se si incontrano di persona, funziona, ma non è pratico con persone lontane.
 - Se la cifrano con un'altra chiave, ora il problema è come scambiare quella.
+
+<Compare
+  caption="La chiave non deve viaggiare sulla strada del messaggio."
+  left={{ title: "Stessa strada", points: ["File e chiave nella stessa chat", "Chi ascolta ha tutto: cifratura inutile"] }}
+  right={{ title: "Strade diverse", points: ["Il file cifrato viaggia in chat", "La chiave arriva per un'altra via"] }}
+/>
 
 <Callout kind="attenzione">
 È il **problema dello scambio delle chiavi**: la cifratura simmetrica è fortissima, ma richiede di far arrivare il segreto all'altra persona in modo sicuro. La prossima lezione mostra come lo si risolve.

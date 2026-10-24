@@ -56,6 +56,12 @@ Nel mondo della sicurezza i ruoli hanno colori:
 
 Nelle esercitazioni «classiche» il red team attacca di nascosto e consegna il rapporto settimane dopo. Nel purple team l'obiettivo non è vincere: è **migliorare il rilevamento**.
 
+<Compare
+  caption="Due modi di fare un'esercitazione."
+  left={{ title: "Esercitazione classica", points: ["Il red team attacca di nascosto", "Il rapporto arriva dopo settimane", "Si cerca di vincere"] }}
+  right={{ title: "Purple team", points: ["Red e blue lavorano insieme", "Il blue dice subito se ha visto la tecnica", "Si corregge subito il rilevamento"] }}
+/>
+
 <Callout kind="regola">
 Purple team = **attacco simulato + osservazione insieme + correzione subito**. Chi attacca e chi difende si siedono allo stesso tavolo.
 </Callout>
@@ -119,6 +125,16 @@ Quando l'esercizio non genera un allarme, si risale la catena, come un idraulico
 5. **L'allarme è stato visto?** Forse è scattato, ma è finito in coda e nessuno l'ha aperto.
 
 Ogni «perché» dà una correzione concreta: accendere un log, riparare l'invio, sistemare i campi, allentare il filtro, cambiare la priorità.
+
+<Flow
+  caption="La catena da controllare quando l'allarme non suona."
+  steps={[
+    { icon: "file", title: "Log", text: "Esiste?" },
+    { icon: "link", title: "Invio", text: "Arriva al SIEM?" },
+    { icon: "code", title: "Regola", text: "Campi e filtri giusti?" },
+    { icon: "bell", title: "Allarme", text: "Qualcuno lo apre?" },
+  ]}
+/>
 
 Vuoi sentire il concetto spiegato da un esperto? Un video in inglese di un istituto di formazione molto noto (attiva i sottotitoli):
 

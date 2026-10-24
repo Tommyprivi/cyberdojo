@@ -87,6 +87,12 @@ Una **policy** è un elenco di regole in forma di testo. Ecco due esempi fittizi
 
 La **A** permette una sola azione su una sola risorsa. La **B** permette tutto su tutto: se quell'account viene rubato, chi lo ha può cancellare ogni dato, creare macchine, leggere ogni archivio.
 
+<Compare
+  caption="Lo stesso account rubato: il danno dipende dai permessi."
+  left={{ title: "Policy B", points: ["Può cancellare ogni dato", "Può creare macchine", "Può leggere ogni archivio"] }}
+  right={{ title: "Policy A", points: ["Può solo leggere", "Solo l'archivio «backup-clienti»", "Il resto resta fuori portata"] }}
+/>
+
 <Callout kind="attenzione">
 Un asterisco al posto dell'azione o della risorsa («tutto») è quasi sempre un campanello d'allarme. Si usa solo se c'è un motivo scritto.
 </Callout>

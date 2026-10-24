@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Due medie, un solo numero">
-Chiara ha già imparato le medie mobili. Sul grafico di una azienda inventata, la **Bianchi Spa**, vede in basso due linee e delle barrette: è il **MACD**. A lei sembra magia.
+Chiara ha già imparato le medie mobili. Sul grafico di un'azienda inventata, la **Bianchi Spa**, vede in basso due linee e delle barrette: è il **MACD**. A lei sembra magia.
 
 Non lo è: è fatto con **due EMA** che già conosci.
 
@@ -88,6 +88,15 @@ Quando l'istogramma passa da positivo a negativo, il MACD è sceso **sotto** la 
 <Callout kind="regola">
 MACD = EMA12 − EMA26. Segnale = EMA9 del MACD. Istogramma = MACD − segnale. Le impostazioni **12, 26, 9** sono una **convenzione**, non una legge.
 </Callout>
+
+<Flow
+  caption="Le tre parti del MACD, una dopo l'altra."
+  steps={[
+    { icon: "chart", title: "Linea MACD", text: "EMA veloce − EMA lenta" },
+    { icon: "clock", title: "Segnale", text: "EMA a 9 periodi del MACD" },
+    { icon: "bell", title: "Istogramma", text: "MACD − segnale" },
+  ]}
+/>
 
 <Say who="sensei">Attento ai segni. Meno un negativo fa un più: è lì che si sbaglia.</Say>
 </Scene>

@@ -82,6 +82,15 @@ Numeri fittizi: tasso privo di rischio 2%, mercato atteso 8%, premio = 6%.
 Più beta, più rendimento atteso richiesto. Beta zero = tasso privo di rischio.
 </Callout>
 
+<Flow
+  caption="La formula del CAPM con beta 1,5."
+  steps={[
+    { icon: "coin", title: "Privo di rischio", text: "2%" },
+    { icon: "chart", title: "Beta x premio", text: "1,5 x 6% = 9%" },
+    { icon: "check", title: "Rendimento atteso", text: "2% + 9% = 11%" },
+  ]}
+/>
+
 <Say who="sensei">Sono rendimenti attesi, non promessi. Un beta alto significa anche perdere di più quando il mercato scende.</Say>
 </Scene>
 
@@ -91,6 +100,12 @@ Più beta, più rendimento atteso richiesto. Beta zero = tasso privo di rischio.
 Il CAPM afferma una cosa importante: il mercato **paga solo il rischio che non si può eliminare** diversificando, cioè il rischio di mercato misurato dal beta.
 
 Il rischio specifico di una singola azienda si elimina diversificando: per quello non c'è premio.
+
+<Compare
+  caption="Quale rischio viene pagato dal CAPM."
+  left={{ title: "Rischio specifico", points: ["Riguarda una sola azienda", "Si elimina diversificando", "Nessun premio"] }}
+  right={{ title: "Rischio di mercato", points: ["Colpisce tutto insieme", "Non si elimina diversificando", "Misurato dal beta e pagato"] }}
+/>
 
 Il beta di un portafoglio è la media pesata dei beta. Esempio: 60% con beta 1,5 e 40% con beta 0,5.
 

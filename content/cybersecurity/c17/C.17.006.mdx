@@ -91,6 +91,16 @@ Esempio di accesso, fittizio:
   "registro             →  10:42  applicazione-ordini ha letto «password-database-ordini»",
 ]} />
 
+<Flow
+  caption="Il segreto non sta nel codice: l'applicazione lo chiede quando serve."
+  steps={[
+    { icon: "code", title: "Applicazione", text: "Chiede il segreto" },
+    { icon: "lock", title: "Gestore", text: "Verifica identità e permessi" },
+    { icon: "key", title: "Consegna", text: "Il valore arriva cifrato" },
+    { icon: "book", title: "Registro", text: "Annota chi l'ha letto" },
+  ]}
+/>
+
 Un'attenzione in più: una **scansione dei segreti** sui repository (esistono strumenti automatici) trova chiavi dimenticate nel codice prima che lo faccia qualcun altro.
 
 <Say who="sensei">Il segreto sta in una cassaforte, non in un cassetto. E la cassaforte tiene un registro di chi la apre.</Say>

@@ -84,6 +84,16 @@ Esempio: «acquisti per carta negli ultimi 5 minuti». Ogni minuto la finestra s
 
 <Log lines={["14:00  carta A  acquisto 20 euro", "14:01  carta A  acquisto 35 euro", "14:02  carta A  acquisto 18 euro", "14:02  carta B  acquisto 12 euro", "Finestra 14:00-14:05: carta A = 3 acquisti, carta B = 1"]} caption="Eventi fittizi. Se la regola dice «più di 10 acquisti in 5 minuti», scatta l'allarme." />
 
+<Flow
+  caption="Dall'evento all'allarme: la finestra scorre e ricalcola."
+  steps={[
+    { icon: "bell", title: "Evento", text: "Un acquisto con la carta" },
+    { icon: "clock", title: "Finestra", text: "Gli ultimi 5 minuti" },
+    { icon: "gear", title: "Regola", text: "Più di 10 acquisti" },
+    { icon: "warning", title: "Allarme", text: "Scatta subito, non alle 23" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Conta l'ora in cui l'evento è **accaduto**, non quella in cui è arrivato. Un evento può arrivare in ritardo, e il sistema deve gestirlo.
 </Callout>
@@ -99,6 +109,15 @@ Chi genera eventi (il sito, i negozi) e chi li elabora non devono dipendere uno 
 È una grande cassetta della posta: i produttori ci mettono eventi, i consumatori li leggono quando possono. Gli eventi restano per un po' e si possono **rileggere**.
 
 Se il consumatore si ferma mezz'ora, non si perde nulla: al riavvio riprende dal punto in cui era rimasto.
+
+<Flow
+  caption="La coda sta in mezzo: chi produce e chi consuma non dipendono uno dall'altro."
+  steps={[
+    { icon: "globe", title: "Produttori", text: "Sito e negozi mandano eventi" },
+    { icon: "mail", title: "Coda", text: "Gli eventi restano e si rileggono" },
+    { icon: "server", title: "Consumatori", text: "Leggono quando possono" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Una coda di messaggi non sostituisce il database: conserva gli eventi per un tempo limitato e li fa leggere a più destinatari. I dati definitivi vanno poi in un archivio.

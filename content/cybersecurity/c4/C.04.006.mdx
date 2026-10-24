@@ -36,9 +36,9 @@ commands: []
 ---
 
 <Scene title="Due reti con lo stesso nome">
-Sara è in aeroporto e cerca il Wi-Fi gratuito. Sul telefono compaiono due reti:
+Sara è in aeroporto e cerca il Wi-Fi gratuito. Sul telefono compaiono tre reti:
 
-<Log lines={["AeroportoLibero          segnale: ottimo   sicurezza: nessuna", "AeroportoLibero          segnale: medio    sicurezza: nessuna", "Aeroporto_Passeggeri     segnale: buono    sicurezza: WPA2 (con password sul cartello)"]} caption="Due reti hanno lo stesso nome, e sono entrambe aperte. Quale è quella vera?" />
+<Log lines={["AeroportoLibero          segnale: ottimo   sicurezza: nessuna", "AeroportoLibero          segnale: medio    sicurezza: nessuna", "Aeroporto_Passeggeri     segnale: buono    sicurezza: WPA2 (con password sul cartello)"]} caption="Due reti hanno lo stesso nome e sono entrambe aperte: una è vera, l'altra no. Quale?" />
 
 Sara si collega alla prima, quella con il segnale migliore. Poche ore dopo scopre un accesso strano al suo account della posta.
 
@@ -88,6 +88,12 @@ Le regole di buon senso:
 - usa una VPN affidabile, ricordando i suoi limiti;
 - disattiva la condivisione di file e la connessione automatica alle reti aperte.
 
+<Compare
+  caption="Su una rete pubblica contano le precauzioni."
+  left={{ title: "Senza precauzioni", points: ["Il traffico non cifrato si ascolta", "Il telefono si collega da solo alle reti aperte"] }}
+  right={{ title: "Con precauzioni", points: ["HTTPS, VPN o dati mobili", "Connessione automatica disattivata"] }}
+/>
+
 <Callout kind="trucco">
 Se devi inserire una password importante e non sei su una rete tua, passa ai dati mobili del telefono.
 </Callout>
@@ -103,6 +109,15 @@ Torniamo ai due «AeroportoLibero». Un **evil twin** (*gemello malvagio*) è un
 Chi si collega passa dal gemello: l'attaccante vede il traffico e può mostrare pagine false per rubare password.
 
 Perché funziona? Perché il telefono riconosce le reti dal **nome**, e il nome si può copiare. Spesso le reti aperte non hanno nessun modo di verificare chi c'è dall'altra parte.
+
+<Flow
+  caption="Come un evil twin attira chi cerca la rete vera."
+  steps={[
+    { icon: "wifi", title: "Gemello", text: "Copia il nome della rete vera" },
+    { icon: "phone", title: "Connessione", text: "Il telefono sceglie il segnale più forte" },
+    { icon: "eye", title: "Traffico spiato", text: "L'attaccante vede i dati o mostra pagine false" },
+  ]}
+/>
 
 **Difese.**
 - Chiedi allo staff il nome **esatto** della rete e, se c'è, la password sul cartello. Una rete con password è più difficile da copiare in modo credibile.

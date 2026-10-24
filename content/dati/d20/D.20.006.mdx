@@ -90,6 +90,15 @@ Se solo una parte accetta, i numeri misurati sono incompleti. Un esempio:
 - accettano i cookie: **55%**
 - visite misurate nello strumento: 10.000 × 0,55 = **5.500**
 
+<Flow
+  caption="Il sito non è crollato: manca chi ha rifiutato i cookie."
+  steps={[
+    { icon: "globe", title: "Visite reali", text: "10.000" },
+    { icon: "cross", title: "Banner", text: "Accetta il 55%" },
+    { icon: "chart", title: "Misurate", text: "5.500 nello strumento" },
+  ]}
+/>
+
 Per stimare il totale dalle visite misurate: 5.500 ÷ 0,55 = **10.000**.
 
 Attenzione: chi accetta non è un campione casuale. Potrebbe comprare più (o meno) degli altri. Perciò una stima è utile per i volumi, meno per i tassi.
@@ -99,6 +108,15 @@ Ci sono modi di misurare **con meno dati personali**:
 - **Minimizzazione**: raccogli solo ciò che serve a una domanda concreta, e per il tempo necessario.
 - **Pseudonimizzazione**: sostituisci il nome con un codice; resta possibile risalire alla persona con altre informazioni, quindi è ancora un dato personale.
 - **Anonimizzazione**: nessuno può più risalire alla persona; solo allora il dato esce dai vincoli sui dati personali.
+
+<Layers
+  caption="Tre modi di usare meno dati personali."
+  items={[
+    { icon: "check", title: "Minimizzazione", text: "Si raccoglie solo ciò che serve" },
+    { icon: "mask", title: "Pseudonimizzazione", text: "Un codice al posto del nome: resta dato personale" },
+    { icon: "shield", title: "Anonimizzazione", text: "Nessuno può risalire alla persona" },
+  ]}
+/>
 
 Strumenti come Matomo o Plausible possono essere configurati per misurare senza cookie e senza tenere dati identificabili. Vanno comunque configurati con attenzione.
 

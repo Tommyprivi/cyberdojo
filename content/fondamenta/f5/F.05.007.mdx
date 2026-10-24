@@ -59,6 +59,16 @@ Il protocollo si chiama **ARP**: associa un indirizzo IP al suo MAC.
 **Richiesta**: in broadcast, la sentono tutti. **Risposta**: solo il dispositivo che ha quell'IP, e arriva solo a chi ha chiesto. Poi il computer **ricorda** la coppia IP-MAC in una tabella.
 </Callout>
 
+<Flow
+  caption="Come ARP trova il MAC di un indirizzo IP."
+  steps={[
+    { icon: "laptop", title: "Chiede", text: "Chi ha 192.168.1.1?" },
+    { icon: "bell", title: "Broadcast", text: "La sentono tutti" },
+    { icon: "server", title: "Risponde", text: "Solo il router, con il suo MAC" },
+    { icon: "book", title: "Tabella", text: "Il PC ricorda la coppia IP-MAC" },
+  ]}
+/>
+
 <Say who="assistente">Una domanda gridata a tutta la stanza, una risposta detta a bassa voce a chi l'ha fatta. Questo è ARP.</Say>
 </Scene>
 
@@ -70,7 +80,7 @@ Il PC della contabilità deve inviare un pacchetto al server dei dati, che sta i
 <Guided
   steps={[
     "Il server dei dati è fuori dalla rete locale: il PC non lo può raggiungere direttamente.",
-    "Allora il pacchetto va al router, il gateway. Il PC conosce il suo IP (192.168.1.1) ma non il MAC.",
+    "Allora il pacchetto va al router, il gateway. Il PC conosce l'IP del router (192.168.1.1) ma non il suo MAC.",
     "Il PC invia una richiesta ARP in broadcast: «Chi ha 192.168.1.1?».",
     "Il router risponde con il proprio MAC. Il PC lo salva nella tabella ARP e lo usa per spedire il pacchetto.",
     "Attenzione al dettaglio: il MAC usato è quello del router, non quello del server. Il MAC vale solo dentro la rete locale.",

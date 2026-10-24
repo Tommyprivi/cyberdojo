@@ -52,6 +52,16 @@ Una **feature** («caratteristica») è un'informazione in ingresso che il model
 
 Convenzione di tutta la lezione: **la riga del giorno t contiene solo ciò che si sa a fine giornata t**.
 
+<Flow
+  caption="Il modello riceve numeri calcolati dai prezzi, non il grafico."
+  steps={[
+    { icon: "chart", title: "Prezzi", text: "Le chiusure di ogni giorno" },
+    { icon: "gear", title: "Rendimenti", text: "Quanto cambia il prezzo" },
+    { icon: "search", title: "Feature", text: "Media mobile, volatilità, volume" },
+    { icon: "code", title: "Modello", text: "Una riga per giorno" },
+  ]}
+/>
+
 Esempi comuni:
 
 - il **rendimento di oggi**, cioè di quanto è cambiato il prezzo (nel corso usiamo il rendimento semplice, in %);

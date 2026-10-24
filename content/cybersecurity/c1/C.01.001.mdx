@@ -41,6 +41,15 @@ Il computer si ricompra in un giorno. Ma lo studio non sa più chi deve pagare, 
 
 La domanda del caso: **che cosa aveva davvero valore, in quello studio?**
 
+<Flow
+  caption="Un guasto da poche ore blocca tutto lo studio."
+  steps={[
+    { icon: "laptop", title: "Il guasto", text: "Il disco si rompe di notte" },
+    { icon: "folder", title: "Fatture perse", text: "Nessuna copia di riserva" },
+    { icon: "coin", title: "Niente incassi", text: "Non si sa chi deve pagare" },
+  ]}
+/>
+
 <Say who="sensei">Non il computer. Il computer era la scatola. Ciò che manca è dentro. Cominciamo da qui.</Say>
 </Scene>
 
@@ -55,6 +64,16 @@ Non solo oggetti. Asset sono anche:
 - i **servizi**: il sito, la posta elettronica;
 - le **persone** e le loro competenze;
 - la **reputazione**: la fiducia che i clienti hanno in te.
+
+<Layers
+  caption="Quattro famiglie di asset: tutte vanno protette."
+  items={[
+    { icon: "database", title: "Dati", text: "Clienti, fatture, progetti" },
+    { icon: "server", title: "Servizi", text: "Sito web, posta elettronica" },
+    { icon: "users", title: "Persone", text: "Le competenze di chi lavora con te" },
+    { icon: "shield", title: "Reputazione", text: "La fiducia dei clienti" },
+  ]}
+/>
 
 <Callout kind="regola">
 Un asset è ciò che ti farebbe male perdere. Se non ti farebbe male, non è un asset da proteggere con fatica.
@@ -72,6 +91,15 @@ Il valore di un asset non si legge sull'etichetta. Si misura con una domanda:
 
 Una chiavetta USB costa pochi euro. Ma se contiene i progetti di un cliente, la perdita può costare un contratto.
 
+<Flow
+  caption="Il valore sta nel danno, non nel prezzo."
+  steps={[
+    { icon: "coin", title: "Prezzo", text: "Pochi euro" },
+    { icon: "bolt", title: "Se si perde?", text: "Chiedi: quale danno?" },
+    { icon: "warning", title: "Valore", text: "Un contratto perso" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Errore tipico: valutare un asset dal prezzo pagato. Un computer da 600 euro è sostituibile. Un archivio di dieci anni di lavoro no.
 </Callout>
@@ -87,6 +115,12 @@ Un asset si può perdere in tre modi, e ognuno fa un danno diverso:
 1. **Finisce in mani sbagliate**: i dati dei clienti vengono letti da chi non doveva. Danno: fiducia, multe, cause.
 2. **Viene alterato**: qualcuno cambia un IBAN su una fattura. Danno: soldi pagati alla persona sbagliata.
 3. **Non è più disponibile**: il sito è spento, i file sono spariti. Danno: attività ferma.
+
+<Compare
+  caption="Un asset perso bene o male: cambia il danno."
+  left={{ title: "Senza protezione", points: ["I dati dei clienti li legge chiunque", "Un IBAN cambiato passa inosservato", "Il sito spento per giorni"] }}
+  right={{ title: "Con protezione", points: ["Solo chi deve vedere i dati li vede", "Ogni modifica si può controllare", "Una copia pronta riparte in un'ora"] }}
+/>
 
 <Callout kind="curiosita">
 Questi tre modi hanno un nome preciso: sono la base della **triade CIA**, che vedremo nella prossima lezione.

@@ -112,6 +112,16 @@ Con **HTTPS** (porta **443**) prima si apre la connessione TCP, poi parte la str
 
 Che cosa **resta visibile**: gli indirizzi IP, le porte, gli orari, **quanti dati** passano, la versione di TLS e di solito il **nome del sito** nel campo **SNI** del Client Hello. Che cosa **non si vede**: pagine, parole chiave, password, contenuto.
 
+<Flow
+  caption="La stretta di mano TLS: da qui in poi il contenuto è chiuso."
+  steps={[
+    { icon: "link", title: "TCP", text: "Si apre la connessione" },
+    { icon: "mail", title: "Client Hello", text: "Il client propone le opzioni, con il nome (SNI)" },
+    { icon: "server", title: "Server Hello", text: "Risponde e manda il certificato" },
+    { icon: "lock", title: "Dati cifrati", text: "Il contenuto non si legge più" },
+  ]}
+/>
+
 Vuoi vedere la stretta di mano TLS in una cattura vera, spiegata da un'altra voce? In inglese:
 
 <Video />
@@ -132,6 +142,12 @@ Mettiamo ordine, come in un rapporto.
     "Si può affermare con certezza: queste richieste esistono, a quest'ora, verso questi indirizzi.",
     "NON si può affermare: che cosa conteneva la pagina HTTPS; chi era seduto al computer; perché ha provato admin.html. Sono ipotesi da verificare altrove.",
   ]}
+/>
+
+<Compare
+  caption="Fatti visti nella cattura e ipotesi da verificare altrove."
+  left={{ title: "Non si può affermare", points: ["Che cosa conteneva la pagina HTTPS", "Chi era seduto al computer", "Perché ha provato admin.html"] }}
+  right={{ title: "Si può affermare", points: ["Il computer .20 ha chiesto www.esempio-meteo.it", "Ha letto listino.html (200) e provato admin.html (403)", "Ha aperto una connessione cifrata verso 203.0.113.40"] }}
 />
 
 <Callout kind="regola">

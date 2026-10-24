@@ -40,7 +40,7 @@ Nella notte un lavoro di «Pasta Bianchi» riscrive la tabella delle vendite, co
 
 Al mattino Nora apre la tabella: alcuni file sono nuovi, altri vecchi. I totali non tornano, e nessuno sa quali righe siano giuste.
 
-<Say who="sensei">Dei file buttati in un armadio non hanno memoria. Se un lavoro si interrompe a metà, nessuno lo sa. Serve ordine sopra i file.</Say>
+<Say who="sensei">I file buttati in un armadio non hanno memoria. Se un lavoro si interrompe a metà, nessuno lo sa. Serve ordine sopra i file.</Say>
 </Scene>
 
 {/* screen */}
@@ -49,6 +49,15 @@ Al mattino Nora apre la tabella: alcuni file sono nuovi, altri vecchi. I totali 
 - **Data lake**: un grande armadio di file di ogni tipo, economico e flessibile, ma senza regole sulle tabelle.
 - **Data warehouse**: un magazzino ordinato con tabelle, regole e query veloci, ma più rigido e costoso.
 - **Lakehouse**: unisce le due idee. I file restano nell'armadio economico, ma sopra c'è uno strato che li fa comportare come tabelle affidabili.
+
+<Layers
+  caption="Il lakehouse a strati: i file restano economici, le regole stanno sopra."
+  items={[
+    { icon: "search", title: "Query e analisi", text: "Come su una tabella" },
+    { icon: "book", title: "Strato di regole", text: "Registro, transazioni, versioni" },
+    { icon: "folder", title: "File nel lake", text: "Economici, in formato aperto" },
+  ]}
+/>
 
 <Callout kind="regola">
 Lakehouse = **file nel lake** + **uno strato di regole** che dà tabelle, transazioni e versioni.
@@ -85,6 +94,15 @@ Una **transazione** è un gruppo di modifiche che valgono **tutte o nessuna**. �
 Nel lakehouse il registro cambia **in un colpo solo** alla fine del lavoro. Prima di quel momento, i lettori vedono la versione vecchia; dopo, la nuova. Mai un miscuglio.
 
 <Log lines={["versione 7: 12 file, vendite fino al 30 giugno", "lavoro notturno: scrive 3 file nuovi...", "versione 8: 15 file, vendite fino al 1 luglio  (registro aggiornato)"]} caption="Il lettore passa dalla 7 alla 8 in un istante. Esempio fittizio." />
+
+<Flow
+  caption="Il lettore passa dalla versione 7 alla 8 in un istante."
+  steps={[
+    { icon: "database", title: "Versione 7", text: "12 file, vendite al 30 giugno" },
+    { icon: "gear", title: "Lavoro notturno", text: "Scrive 3 file nuovi: i lettori vedono ancora la 7" },
+    { icon: "check", title: "Versione 8", text: "Registro aggiornato: 15 file" },
+  ]}
+/>
 
 <Say who="assistente">Due persone che leggono mentre un lavoro scrive vedono lo stesso risultato, vecchio o nuovo, ma mai a pezzi.</Say>
 </Scene>

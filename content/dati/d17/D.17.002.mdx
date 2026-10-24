@@ -64,6 +64,15 @@ Il conto economico del trimestre (in euro):
 - **Margine lordo**: ricavi meno il costo diretto di ciò che si vende.
 - **Utile operativo**: il margine lordo meno i costi di gestione.
 
+<Flow
+  caption="Dai ricavi all'utile operativo."
+  steps={[
+    { icon: "coin", title: "Ricavi", text: "200.000 €" },
+    { icon: "chart", title: "Margine lordo", text: "80.000 € (meno 120.000 di costo del venduto)" },
+    { icon: "check", title: "Utile operativo", text: "20.000 € (meno 60.000 di costi operativi)" },
+  ]}
+/>
+
 Un'altra voce spiega il flusso di cassa. Eccola in un esempio pratico:
 
 <Video />
@@ -74,7 +83,7 @@ Un'altra voce spiega il flusso di cassa. Eccola in un esempio pratico:
 {/* screen */}
 
 <Scene title="Il flusso di cassa">
-Il **flusso di cassa** conta solo i soldi che **entrano e escono davvero** dal conto.
+Il **flusso di cassa** conta solo i soldi che **entrano ed escono davvero** dal conto.
 
 | Voce | Importo |
 |---|---|
@@ -87,6 +96,16 @@ Cassa iniziale 50.000 €, cassa finale **30.000 €**.
 Perché la differenza? I clienti hanno pagato **150.000** su 200.000 di vendite: restano **50.000 da incassare** (crediti). L'azienda ha avuto 180.000 di costi ma pagato **170.000**: 10.000 sono debiti ancora aperti.
 
 Il conto torna: 20.000 di utile − 50.000 di crediti + 10.000 di debiti = **−20.000**.
+
+<Flow
+  caption="Come un utile positivo diventa una cassa che scende."
+  steps={[
+    { icon: "chart", title: "Utile", text: "+20.000 €" },
+    { icon: "file", title: "Crediti", text: "−50.000 € ancora da incassare" },
+    { icon: "folder", title: "Debiti aperti", text: "+10.000 € non ancora pagati" },
+    { icon: "warning", title: "Cassa", text: "−20.000 € nel trimestre" },
+  ]}
+/>
 
 <Callout kind="regola">
 Utile = competenza (quando nasce la vendita o il costo). Cassa = quando si muove il denaro. Un'azienda può fallire con l'utile positivo se i soldi non arrivano in tempo.

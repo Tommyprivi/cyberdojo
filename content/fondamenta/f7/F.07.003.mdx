@@ -68,6 +68,15 @@ Le porte sono numeri da **0 a 65535**. Quelle basse sono assegnate per convenzio
 IP = quale **macchina**. Porta = quale **servizio** su quella macchina.
 </Callout>
 
+<Flow
+  caption="L'IP sceglie la macchina, la porta sceglie il servizio."
+  steps={[
+    { icon: "server", title: "Macchina", text: "L'indirizzo IP, per esempio 10.0.0.5" },
+    { icon: "link", title: "Porta", text: "Il citofono: quale servizio" },
+    { icon: "globe", title: "Servizio", text: "Per esempio il web cifrato sulla 443" },
+  ]}
+/>
+
 <Say who="assistente">Se il palazzo ha troppi citofoni inutili, ogni citofono in più è un possibile disturbo.</Say>
 </Scene>
 
@@ -108,6 +117,15 @@ Il risultato ha tre possibilità:
 <Callout kind="attenzione">
 Scansionare sistemi che non sono tuoi, o per cui non hai un permesso scritto, può essere reato: in Italia è l'accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si controlla solo ciò che è tuo, in un laboratorio tuo.
 </Callout>
+
+<Layers
+  caption="Tre possibili risultati di una scansione."
+  items={[
+    { icon: "check", title: "Aperta", text: "Un servizio ascolta e risponde" },
+    { icon: "cross", title: "Chiusa", text: "La macchina risponde: qui non c'è nessuno" },
+    { icon: "shield", title: "Filtrata", text: "Nessuna risposta, spesso per un firewall" },
+  ]}
+/>
 
 <Say who="sensei">Il difensore si chiede: «Che cosa mostro al mondo?». E poi chiude ciò che non serve.</Say>
 </Scene>

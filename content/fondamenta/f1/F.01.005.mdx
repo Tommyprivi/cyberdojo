@@ -71,6 +71,16 @@ Due parole da imparare:
 
 Il programma che crea e gestisce le VM si chiama **hypervisor**. Ne vedremo due: VirtualBox e VMware.
 
+<Layers
+  caption="Dall'alto in basso: ciò che gira dentro la VM poggia sul computer vero."
+  items={[
+    { icon: "terminal", title: "Ospite", text: "Il sistema dentro la VM" },
+    { icon: "cloud", title: "Hypervisor", text: "VirtualBox o VMware" },
+    { icon: "gear", title: "Host", text: "Il sistema del computer vero" },
+    { icon: "laptop", title: "Hardware", text: "CPU, RAM e disco veri" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 La VM **usa le risorse dell'host**: CPU, RAM, spazio su disco. Se le dai troppa RAM, il computer vero rallenta.
 </Callout>

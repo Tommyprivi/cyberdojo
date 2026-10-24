@@ -96,6 +96,15 @@ Per i prezzi servono due passi: cambiare la virgola in punto (Python usa il punt
   "Name: prezzo, dtype: float64",
 ]} />
 
+<Flow
+  caption="Un prezzo scritto come testo diventa un numero in due passi."
+  steps={[
+    { icon: "file", title: "Testo", text: "«12,50» con la virgola" },
+    { icon: "gear", title: "Punto", text: "replace(',', '.')" },
+    { icon: "chart", title: "Numero", text: "astype(float) dà 12.5" },
+  ]}
+/>
+
 Se provi `astype(float)` direttamente su `'12,50'`, pandas si ferma con un errore (`ValueError: could not convert string to float`). È un bene: l'errore ti dice che il dato non è come pensavi.
 
 Stesso discorso per le **unità di misura**. Se il peso arriva in chili e in grammi, scegli **una** unità e converti tutto:
@@ -149,6 +158,12 @@ La regola: **dichiara sempre il formato**. `%d` è il giorno, `%m` il mese, `%Y`
   "prezzo           float64",
   "dtype: object",
 ]} caption="«ieri» è diventato NaT: ora è un valore mancante, da trattare come nella prima lezione." />
+
+<Compare
+  caption="Il formato dichiarato toglie l'ambiguità."
+  left={{ title: "Senza format", points: ["«03/02/2025» letto come 2 marzo", "«ieri» blocca la conversione"] }}
+  right={{ title: "Con format e coerce", points: ["«03/02/2025» è il 3 febbraio", "«ieri» diventa NaT, un buco da contare"] }}
+/>
 
 Spaziature e maiuscole si sistemano allo stesso modo prima di confrontare: `.str.strip().str.upper()` toglie gli spazi ai bordi e mette tutto maiuscolo (ne parliamo meglio tra due lezioni).
 

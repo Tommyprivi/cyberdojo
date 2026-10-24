@@ -60,6 +60,16 @@ Il vantaggio di una strategia può ridursi, e si parla di **decadimento** (in in
 - **Costi e capacità**: più capitale si usa, più si muove il prezzo; con costi alti il margine sparisce (modulo T8).
 - **Le strategie viste in questo modulo**: trend, mean reversion, momentum, coppie, breakout, volatilità. Ognuna ha periodi buoni e periodi cattivi, e nessuna vince sempre.
 
+<Layers
+  caption="Quattro cause che fanno perdere il vantaggio a una strategia."
+  items={[
+    { icon: "users", title: "Affollamento", text: "Molti applicano la stessa regola" },
+    { icon: "globe", title: "Cambio di regime", text: "Il mercato non è più quello di prima" },
+    { icon: "code", title: "Overfitting", text: "La regola era tagliata sul passato" },
+    { icon: "coin", title: "Costi e capacità", text: "Più capitale, più costi" },
+  ]}
+/>
+
 <Callout kind="regola">
 Un vantaggio vero ha una **ragione economica** che puoi spiegare a parole, e la ragione può sparire. Se non la sai spiegare, sospetta overfitting.
 </Callout>
@@ -84,6 +94,16 @@ Esempio **fittizio** per anno, in punti percentuali:
 | Con costi più alti | 3 | 4 | -1 |
 
 Il vantaggio lordo passa da 6 a 3 (arrivano altri partecipanti) e i costi restano: il netto crolla da 4 a 1. Se i costi salgono a 4, il netto è -1.
+
+<Flow
+  caption="Il netto (in punti percentuali all'anno) si assottiglia a ogni passaggio."
+  steps={[
+    { icon: "chart", title: "Backtest", text: "Netto: 6" },
+    { icon: "coin", title: "Con i costi", text: "Netto: 4" },
+    { icon: "users", title: "Affollamento", text: "Netto: 1" },
+    { icon: "warning", title: "Costi più alti", text: "Netto: -1" },
+  ]}
+/>
 
 <PythonTerminal code={"lordo = [6, 6, 3, 3]\ncosti = [0, 2, 2, 4]\nfor l, c in zip(lordo, costi):\n    print(l, c, l - c)"} />
 

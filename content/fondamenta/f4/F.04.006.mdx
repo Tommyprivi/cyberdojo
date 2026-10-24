@@ -59,6 +59,12 @@ Ogni comando, quando finisce, lascia un **codice di uscita**: **0 = tutto bene**
   "trovato",
 ]} caption="-q = silenzioso. Con && il secondo comando parte solo se il primo ha avuto successo (codice 0)." />
 
+<Compare
+  caption="Il codice di uscita dice com'è andato il comando."
+  left={{ title: "Codice diverso da 0", points: ["Qualcosa è andato storto", "Il numero indica che cosa", "Esempi: 1, 2, 127"] }}
+  right={{ title: "Codice 0", points: ["Il comando è andato a buon fine", "Con && parte il comando dopo", "Si legge con $?"] }}
+/>
+
 <Callout kind="attenzione">
 Qui lo zero vuol dire **successo**, non «falso». Un comando che finisce con 0 è andato bene; 1, 2, 127... sono errori diversi.
 </Callout>
@@ -168,6 +174,16 @@ La riga `set -euo pipefail` attiva tre protezioni:
     "-u: usare una variabile che non esiste è un errore. Senza, un nome scritto male diventa una stringa vuota in silenzio.",
     "-o pipefail: in una pipeline, se un comando in mezzo fallisce, l'errore non si perde.",
     "|| true dopo un comando dice «un fallimento qui è normale»: serve con grep -c, che esce con 1 se non trova niente.",
+  ]}
+/>
+
+<Layers
+  caption="Le quattro difese di uno script prudente."
+  items={[
+    { icon: "lock", title: "set -e", text: "Si ferma al primo comando che fallisce" },
+    { icon: "eye", title: "set -u", text: "Una variabile inesistente è un errore" },
+    { icon: "link", title: "pipefail", text: "Un errore in mezzo a una pipe non si perde" },
+    { icon: "shield", title: "Virgolette", text: "\"$f\" resta un solo argomento" },
   ]}
 />
 

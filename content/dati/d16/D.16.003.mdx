@@ -87,6 +87,15 @@ Una **foresta casuale** (random forest) costruisce tanti alberi diversi:
 
 Per decidere, gli alberi **votano**. Esempio con 100 alberi: 63 dicono «rinnova», 37 «non rinnova». Vince il sì, con una probabilità stimata di **0,63**.
 
+<Flow
+  caption="La foresta decide a maggioranza."
+  steps={[
+    { icon: "code", title: "100 alberi", text: "Ognuno impara da un campione diverso" },
+    { icon: "users", title: "Il voto", text: "63 dicono sì, 37 dicono no" },
+    { icon: "check", title: "Risposta", text: "Rinnova, probabilità 0,63" },
+  ]}
+/>
+
 <Log lines={[
   "from sklearn.ensemble import RandomForestClassifier",
   "foresta = RandomForestClassifier(n_estimators=200, max_depth=6, random_state=42)",

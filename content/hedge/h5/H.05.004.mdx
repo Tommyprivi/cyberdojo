@@ -55,6 +55,16 @@ Le **greche** (si indicano con lettere greche) misurano **quanto cambia il premi
 - **Theta**: quanto premio si perde ogni giorno che passa.
 - **Vega**: quanto cambia il premio se la volatilità attesa sale di 1 punto percentuale.
 
+<Layers
+  caption="Le quattro greche e che cosa guardano."
+  items={[
+    { icon: "chart", title: "Delta", text: "Il prezzo dell'azione" },
+    { icon: "gear", title: "Gamma", text: "Come cambia il delta" },
+    { icon: "clock", title: "Theta", text: "Il passare del tempo" },
+    { icon: "bolt", title: "Vega", text: "La volatilità attesa" },
+  ]}
+/>
+
 <Callout kind="regola">
 Le greche sono **sensibilità**, non previsioni. Dicono «se succede X, di quanto si muove il premio», non «succederà X».
 </Callout>
@@ -78,6 +88,15 @@ Esempio fittizio: call con delta **0,50**. Se Alfa sale di **2 euro**, il premio
   ]}
 />
 
+<Flow
+  caption="Il delta in azione, con i numeri dell'esempio."
+  steps={[
+    { icon: "chart", title: "Azione", text: "Sale di 2 euro" },
+    { icon: "gear", title: "Delta 0,50", text: "0,50 x 2 = 1" },
+    { icon: "coin", title: "Premio", text: "Sale di circa 1 euro" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Il delta è usato dai professionisti come «equivalente in azioni»: serve per sapere quanta esposizione dà davvero un'opzione.
 </Callout>
@@ -97,7 +116,7 @@ Un'altra voce, in inglese con sottotitoli:
 <Video />
 
 <Callout kind="attenzione">
-Theta e vega spiegano il caso di Marta: l'azione ferma ha fatto perdere valore al tempo. Una opzione può perdere denaro anche se il prezzo non si muove.
+Il theta spiega il caso di Marta: con l'azione ferma, è il passare del tempo a far perdere valore al premio. Un'opzione può far perdere denaro anche se il prezzo non si muove.
 </Callout>
 
 <Say who="assistente">Il tempo è come un gelato al sole: chi compra opzioni lo tiene in mano mentre si scioglie.</Say>

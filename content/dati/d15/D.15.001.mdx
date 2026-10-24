@@ -57,6 +57,16 @@ Pensa a un registratore di cassa. Lo scontrino è il fatto. Il listino prezzi, l
 Il fatto risponde a «quanto?». Le dimensioni rispondono a «per che cosa, dove, quando?». Si taglia il numero con le dimensioni.
 </Callout>
 
+<Layers
+  caption="Al centro i fatti, intorno le dimensioni che li descrivono."
+  items={[
+    { icon: "coin", title: "Fatti", text: "Le vendite: quantità e importo" },
+    { icon: "book", title: "Prodotti", text: "Nome e categoria" },
+    { icon: "globe", title: "Negozi", text: "La città" },
+    { icon: "clock", title: "Date", text: "Giorno e mese" },
+  ]}
+/>
+
 <Say who="assistente">Se in una colonna c'è un numero da sommare, è quasi sempre un fatto. Se c'è un nome o una categoria, è una dimensione.</Say>
 </Scene>
 
@@ -112,6 +122,12 @@ Mescolare livelli diversi nella stessa tabella fa sommare due volte la stessa co
 Vuoi sentirlo spiegare da un'altra voce? È in inglese, e racconta perché gli strumenti di report amano questa forma:
 
 <Video />
+
+<Compare
+  caption="La granularità decide se i totali si possono fidare."
+  left={{ title: "Livelli mescolati", points: ["Righe di prodotto e righe di ordine insieme", "Spedizione da 5 euro ripetuta su 3 prodotti", "Il report conta 15"] }}
+  right={{ title: "Granularità scritta", points: ["Una riga = un prodotto in uno scontrino", "Ogni importo compare una volta sola", "I totali tornano"] }}
+/>
 
 <Say who="assistente">Una riga, una cosa. Se non sai dire quale, la tabella non è pronta.</Say>
 </Scene>

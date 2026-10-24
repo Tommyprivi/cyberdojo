@@ -86,6 +86,15 @@ Non sei tornato a 100. Per recuperare da −50% serve **+100%**: il 50 deve radd
   "50  -> +100% -> 100",
 ]} />
 
+<Flow
+  caption="Meno 50% e poi più 50% non riportano al punto di partenza."
+  steps={[
+    { icon: "coin", title: "Parti da 100", text: "Euro fittizi" },
+    { icon: "warning", title: "-50%", text: "Rimangono 50" },
+    { icon: "chart", title: "+50%", text: "Arrivi a 75, non a 100" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Le perdite pesano più dei guadagni: una perdita grande richiede un recupero più grande. Più sono profonde, più sale in fretta il conto del recupero.
 </Callout>

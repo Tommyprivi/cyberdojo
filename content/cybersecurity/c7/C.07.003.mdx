@@ -57,7 +57,7 @@ La domanda del caso: **quali di queste porte servono davvero?**
 {/* screen */}
 
 <Scene title="La superficie d'attacco">
-La **superficie d'attacco** è l'insieme di tutti i punti da cui qualcuno potrebbe provare ad entrare: servizi in ascolto, account, programmi installati, impostazioni deboli.
+La **superficie d'attacco** è l'insieme di tutti i punti da cui qualcuno potrebbe provare a entrare: servizi in ascolto, account, programmi installati, impostazioni deboli.
 
 Più è grande, più possibilità ha chi attacca. Ridurla si chiama **hardening**, cioè «indurimento».
 
@@ -85,6 +85,12 @@ Le prime misure di hardening sono poche, e valgono per quasi ogni sistema.
     "Pochi privilegi: ogni account ha solo i permessi che gli servono (privilegio minimo).",
     "Il database non si espone a Internet: lo raggiunge solo il server che lo usa.",
   ]}
+/>
+
+<Compare
+  caption="Il server di prova, prima e dopo l'hardening."
+  left={{ title: "Prima", points: ["Telnet e FTP trasmettono in chiaro", "Il database è raggiungibile da fuori", "Servizi attivi che nessuno usa"] }}
+  right={{ title: "Dopo", points: ["Restano solo i servizi che servono", "Accesso con SSH e SFTP", "Il database lo raggiunge solo il sito"] }}
 />
 
 <Say who="sensei">Cinque mosse. Poco brillanti, molto efficaci. La sicurezza vera è fatta di noia ben fatta.</Say>
@@ -162,7 +168,7 @@ Cinque domande su superficie d'attacco e configurazioni sicure. Servono **cinque
 
 <Flashcards
   cards={[
-    { q: "Che cos'è la superficie d'attacco?", a: "L'insieme dei punti da cui un attaccante può provare ad entrare" },
+    { q: "Che cos'è la superficie d'attacco?", a: "L'insieme dei punti da cui un attaccante può provare a entrare" },
     { q: "Che cos'è una baseline?", a: "La configurazione di riferimento che ogni sistema deve rispettare" },
     { q: "Perché spegnere un servizio inutile?", a: "Ciò che non c'è non si può attaccare" },
     { q: "Si può applicare un benchmark CIS senza provarlo?", a: "No: va provato, può bloccare servizi utili" },

@@ -105,11 +105,20 @@ volatilità annua = volatilità giornaliera × √252
   "Beta:  0,5% × 15,87 = 7,94% annuo",
 ]} />
 
+<Flow
+  caption="Dalla volatilità giornaliera a quella annua di Gamma."
+  steps={[
+    { icon: "chart", title: "Giornaliera", text: "2% al giorno" },
+    { icon: "gear", title: "× √252", text: "Circa 15,87" },
+    { icon: "bolt", title: "Annua", text: "Circa 31,75%" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Si moltiplica per la **radice** di 252, non per 252. E la regola vale se i giorni sono indipendenti: nei mercati reali è solo un'approssimazione, perché la volatilità viene a ondate (lo vedremo nella lezione sull'autocorrelazione).
 </Callout>
 
-<Say who="assistente">Se nel conto vedi volatilità annua 600%, hai moltiplicato per 252 invece che per la sua radice.</Say>
+<Say who="assistente">Se nel conto vedi una volatilità annua di oltre 500%, hai moltiplicato per 252 invece che per la sua radice.</Say>
 </Scene>
 
 {/* screen */}

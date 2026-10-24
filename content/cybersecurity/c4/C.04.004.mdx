@@ -42,6 +42,12 @@ Il gestionale non è raggiungibile da Internet (c'è il firewall, ricordi?). Per
 
 La domanda del caso: **come si porta la rete aziendale fino al tavolino di un bar, senza che nessuno ascolti il traffico?**
 
+<Compare
+  caption="Lo stesso bar, con e senza tunnel."
+  left={{ title: "Senza VPN", points: ["Il traffico passa dal Wi-Fi del bar", "Può essere ascoltato da altri"] }}
+  right={{ title: "Con la VPN", points: ["Il bar vede solo traffico cifrato", "Giulia arriva alla rete aziendale"] }}
+/>
+
 <Say who="sensei">Il Wi-Fi del bar non è tuo. Tutto ciò che ci passa può essere ascoltato da chi lo gestisce, o da chi ci è collegato. Serve un tunnel.</Say>
 </Scene>
 
@@ -76,6 +82,16 @@ Con la VPN attiva, Giulia ottiene due cose.
 **Riservatezza sul percorso locale.** Chi controlla il Wi-Fi del bar non può leggere né modificare ciò che passa nel tunnel. Vede solo che si sta collegando a un server VPN.
 
 **Accesso alla rete aziendale.** Il traffico esce dal server VPN dell'azienda, dentro la rete interna. Per il gestionale è come se Giulia fosse in ufficio, con le regole del firewall di quella zona.
+
+<Flow
+  caption="Il percorso di Giulia: protetto fino al server VPN."
+  steps={[
+    { icon: "laptop", title: "Giulia", text: "Cifra il traffico" },
+    { icon: "lock", title: "Tunnel", text: "Il bar vede solo traffico illeggibile" },
+    { icon: "server", title: "Server VPN", text: "Apre la busta e inoltra" },
+    { icon: "database", title: "Gestionale", text: "Dentro la rete interna" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Molti siti oggi usano già HTTPS, che cifra il traffico tra te e il sito. La VPN aggiunge una seconda cifratura sul tratto fino al server VPN, utile soprattutto per protocolli e applicazioni che non sono cifrati.

@@ -163,6 +163,16 @@ I dati grezzi di marzo, per ricontrollare a mano:
 
 Le dipendenze formano un **grafo orientato senza cicli** (DAG): una mappa con frecce.
 
+<Flow
+  caption="I dati di marzo attraversano i modelli, uno dopo l'altro."
+  steps={[
+    { icon: "database", title: "Grezzo", text: "5 ordini, anche l'annullato" },
+    { icon: "gear", title: "stg_ordini", text: "Colonne pulite: 5 righe" },
+    { icon: "check", title: "ordini_pagati", text: "Senza l'annullato: 4 righe" },
+    { icon: "coin", title: "ricavi_mensili", text: "Marzo: 82,50" },
+  ]}
+/>
+
 <Log lines={[
   "source negozio.ordini",
   "   -> stg_ordini",

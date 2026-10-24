@@ -66,6 +66,12 @@ print(curva_truccata.round(4).tolist())
 
 La strategia prende **tutte** le salite (+2%, +2,97%, +2,91%, +2,86%) e **nessuna** discesa. Un robot che sa in anticipo che il prezzo salirà. Nella vita reale nessuno lo sa.
 
+<Compare
+  caption="Lo stesso segnale, con e senza spostamento di un giorno."
+  left={{ title: "Senza shift(1)", points: ["Dentro proprio nei giorni di salita", "Curva finale: circa +11,2%", "Impossibile nella realtà"] }}
+  right={{ title: "Con shift(1)", points: ["Dentro il giorno dopo il segnale", "Curva finale: circa −2,9%", "Risultato onesto"] }}
+/>
+
 <Say who="assistente">Controlla il giorno 1: il segnale dice «il prezzo oggi è salito da 100 a 102». Per saperlo devi aver visto il 102. Ma lo vedi solo a fine giornata.</Say>
 </Scene>
 

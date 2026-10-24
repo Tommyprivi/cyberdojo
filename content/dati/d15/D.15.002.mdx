@@ -80,6 +80,12 @@ La colonna calcolata «margine %» per riga dà 40%, 60%, 40%, 60%. La media è 
 Mai fare la media di percentuali. Si **somma il numeratore**, si **somma il denominatore**, poi si divide. Somma diviso somma.
 </Callout>
 
+<Compare
+  caption="Stessi dati, due calcoli: solo uno è giusto."
+  left={{ title: "Media delle percentuali", points: ["Per riga: 40%, 60%, 40%, 60%", "Media: 50%", "Una riga da 50 pesa quanto una da 100"] }}
+  right={{ title: "Somma diviso somma", points: ["Margine totale 144", "Importo totale 300", "144 / 300 = 48%"] }}
+/>
+
 <Say who="sensei">Il 50% è un numero elegante e falso. Il 48% è quello che incassa l'azienda.</Say>
 </Scene>
 
@@ -120,6 +126,15 @@ Nella cella «Milano» il contesto tiene solo le righe 1 e 2: importo 100 + 50 =
 <Callout kind="trucco">
 Per prevedere una cella, chiediti: «quali righe restano con i filtri di questa riga e di questa colonna?». Poi applica la formula solo a quelle.
 </Callout>
+
+<Flow
+  caption="Il caso della cella «Milano»."
+  steps={[
+    { icon: "search", title: "Filtro", text: "Negozio = Milano" },
+    { icon: "file", title: "Righe", text: "Restano la 1 e la 2" },
+    { icon: "chart", title: "Formula", text: "Margine 70 su 150: 46,7%" },
+  ]}
+/>
 
 Vuoi sentirlo spiegare da un'altra voce? È in inglese, sul contesto di filtro:
 

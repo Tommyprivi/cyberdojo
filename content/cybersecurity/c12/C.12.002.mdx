@@ -64,6 +64,12 @@ Nessuno sa a memoria cento regole. Per questo esistono i **benchmark CIS**: list
 - **Livello 1**: regole di buon senso, con poco rischio di rompere qualcosa;
 - **Livello 2**: regole più severe, per ambienti dove la sicurezza pesa di più, con più possibilità di effetti collaterali.
 
+<Compare
+  caption="L'hardening toglie ciò che nessuno usa."
+  left={{ title: "Installazione di default", points: ["Servizi accesi che nessuno usa (stampa, rpcbind)", "Più porte da aggiornare e sorvegliare", "Più punti da cui si può entrare"] }}
+  right={{ title: "Dopo l'hardening", points: ["Solo il portale e l'accesso per gli amministratori", "I servizi inutili sono spenti e annotati", "Superficie d'attacco ridotta"] }}
+/>
+
 <Callout kind="regola">
 Un benchmark è una **lista di controllo, non un ordine**: ogni regola va capita e confrontata con ciò che il server deve fare.
 </Callout>

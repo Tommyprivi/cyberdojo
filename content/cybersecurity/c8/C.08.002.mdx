@@ -78,6 +78,12 @@ Le VM comunicano attraverso una rete virtuale. Per un laboratorio la scelta gius
   "accesso a Internet: NO    accesso alla rete di casa: NO",
 ]} caption="Esempio di laboratorio ben isolato (indirizzi privati)" />
 
+<Compare
+  caption="Dove si trova la macchina fragile."
+  left={{ title: "Rete a ponte", points: ["La VM sta sulla rete reale", "Raggiungibile da casa e forse da fuori"] }}
+  right={{ title: "Rete solo-host", points: ["Le VM vedono solo se stesse e il tuo computer", "Né Internet né rete di casa"] }}
+/>
+
 <Callout kind="attenzione">
 Altre modalità di rete (come quella «a ponte») mettono la VM sulla rete reale. Per la macchina fragile sono la scelta sbagliata.
 </Callout>
@@ -96,6 +102,16 @@ Abitudine da professionisti:
 2. Fai uno snapshot e gli dai un nome chiaro («pulita, giorno 1»).
 3. Fai la tua prova.
 4. Torni allo snapshot e riparti da capo.
+
+<Flow
+  caption="Il ciclo del laboratorio: si riparte sempre da uno stato pulito."
+  steps={[
+    { icon: "gear", title: "Installa", text: "Configura la macchina" },
+    { icon: "folder", title: "Snapshot", text: "Salva lo stato pulito" },
+    { icon: "bug", title: "Prova", text: "Fai l'esercizio" },
+    { icon: "check", title: "Ripristina", text: "Torna allo snapshot" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Lo snapshot ti permette di sbagliare senza paura. Chi ha paura di rompere, impara meno.

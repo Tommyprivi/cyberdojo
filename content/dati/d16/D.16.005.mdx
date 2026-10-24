@@ -89,6 +89,12 @@ Con le serie storiche **non si mescola**. Il train è il passato, il test è il 
 
 Se mescolassi a caso, il modello vedrebbe valori del futuro mentre impara: sarebbe una **perdita di dati** nel tempo, e il voto sarebbe troppo bello.
 
+<Compare
+  caption="Nelle serie storiche il tempo decide come si divide."
+  left={{ title: "Righe mescolate", points: ["Train e test scelti a caso", "Il modello vede il futuro mentre impara", "Il voto è troppo bello"] }}
+  right={{ title: "Divisione nel tempo", points: ["Train: il passato", "Test: il futuro", "Il voto è onesto"] }}
+/>
+
 <Callout kind="attenzione">
 Anche la validazione incrociata va fatta «a finestre che avanzano» (in scikit-learn c'è `TimeSeriesSplit`), mai con parti scelte a caso.
 </Callout>

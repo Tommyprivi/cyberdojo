@@ -72,6 +72,15 @@ print(posizione.tolist())
 
 `fillna(0)` mette 0 dove non c'è un valore: il primo giorno non si può essere dentro.
 
+<Flow
+  caption="Una decisione presa a fine giornata vale dal giorno dopo."
+  steps={[
+    { icon: "clock", title: "Chiusura di oggi", text: "Il prezzo è noto solo a fine giornata" },
+    { icon: "bell", title: "Segnale", text: "La decisione si prende ora" },
+    { icon: "check", title: "Posizione di domani", text: "Si è dentro dal giorno dopo" },
+  ]}
+/>
+
 <Callout kind="regola">
 Segnale di oggi, posizione di domani. Sempre.
 </Callout>

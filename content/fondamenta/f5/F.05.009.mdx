@@ -71,6 +71,16 @@ Il pacchetto parte dalla .66 e attraversa switch e router prima di arrivare al s
   ]}
 />
 
+<Flow
+  caption="Chi legge quale busta lungo il percorso."
+  steps={[
+    { icon: "laptop", title: "Postazione .66", text: "Aggiunge le quattro buste" },
+    { icon: "wifi", title: "Switch", text: "Legge il MAC" },
+    { icon: "globe", title: "Router", text: "Legge l'IP, cambia il MAC" },
+    { icon: "server", title: "Server", text: "Legge la porta 22" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 A ogni salto cambiano i **MAC**, non gli **IP**: il pacchetto arriva con lo stesso indirizzo sorgente con cui è partito (se non c'è NAT). Per questo nel log trovi l'IP originale, e non quello del router.
 </Callout>

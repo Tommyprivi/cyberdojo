@@ -79,6 +79,15 @@ La volatilità cambia con il periodo. Se i rendimenti sono indipendenti, scala c
 Quattro trimestri non fanno 4 volte la volatilità: ne fanno 2 volte. Il rischio si somma più lentamente del tempo.
 </Callout>
 
+<Flow
+  caption="Dalla volatilità trimestrale a quella annua."
+  steps={[
+    { icon: "clock", title: "Trimestre", text: "Volatilità 5%" },
+    { icon: "gear", title: "Radice di 4", text: "Si moltiplica per 2, non per 4" },
+    { icon: "check", title: "Anno", text: "Volatilità 10%" },
+  ]}
+/>
+
 <Say who="sensei">Radice del tempo. Scrivila sul quaderno. È l'errore più comune di chi comincia.</Say>
 </Scene>
 
@@ -92,6 +101,15 @@ Il **VaR** (Value at Risk, «valore a rischio») è una soglia di perdita, con u
 Il **VaR storico** si calcola dai rendimenti passati: si ordinano dal peggiore, si scartano le n x (1 - livello) perdite peggiori e il VaR è la perdita successiva.
 
 Esempio: 20 giorni, livello 95%. Il 5% di 20 è 1 giorno, quindi si scarta la perdita peggiore. Le quattro peggiori sono -4%, -3%, -2%, -2%: il VaR al 95% è **3%**.
+
+<Flow
+  caption="Il VaR storico dell'esempio, in tre passi."
+  steps={[
+    { icon: "database", title: "20 giorni", text: "Si ordinano dal peggiore" },
+    { icon: "cross", title: "Si scarta 1", text: "Il 5% di 20 è 1: via il -4%" },
+    { icon: "shield", title: "VaR 3%", text: "È la perdita successiva" },
+  ]}
+/>
 
 Vuoi vederlo spiegato da un'altra voce? Cinque minuti, in inglese con i sottotitoli:
 

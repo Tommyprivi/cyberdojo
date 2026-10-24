@@ -98,6 +98,15 @@ Vuoi sentire la stessa differenza da un'altra voce? Qualche minuto, in inglese c
 
 <Video />
 
+<Flow
+  caption="Un'analisi pesante sullo stesso database rallenta i clienti."
+  steps={[
+    { icon: "search", title: "Analisi", text: "Giulia legge tre anni di ordini" },
+    { icon: "database", title: "Database occupato", text: "Le mani sono tutte prese" },
+    { icon: "warning", title: "Sito lento", text: "I clienti non riescono a pagare" },
+  ]}
+/>
+
 <Say who="sensei">Con cinque righe è un gioco. Con cinquanta milioni occupa il database per minuti. Ecco chi ha rallentato il sito.</Say>
 </Scene>
 
@@ -110,6 +119,16 @@ I dati non vivono solo nei database. Un data engineer li raccoglie da **quattro 
 - **File**: un CSV mandato dal magazzino, un foglio di calcolo.
 - **API**: una «porta di servizio» con cui un altro programma ti dà i dati su richiesta, come un cameriere che porta quello che ordini.
 - **Strumenti esterni**: il sistema di email marketing, il gestionale della contabilità.
+
+<Layers
+  caption="Quattro tipi di sorgenti da cui il data engineer raccoglie i dati."
+  items={[
+    { icon: "database", title: "Database", text: "Ordini e clienti dell'app" },
+    { icon: "file", title: "File", text: "CSV del magazzino, fogli di calcolo" },
+    { icon: "link", title: "API", text: "Un programma dà dati a un altro" },
+    { icon: "mail", title: "Strumenti esterni", text: "Email marketing, contabilità" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Un file CSV non è un database: non controlla che una data sia davvero una data, né che un numero sia un numero. Chi lo riceve deve verificare.

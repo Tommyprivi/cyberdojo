@@ -76,6 +76,16 @@ Registro di audit **sempre attivo**, in tutte le regioni, e conservato in un luo
 <Scene title="Leggere i segnali">
 Torniamo al log di Tinta Blu. Riga per riga:
 
+<Flow
+  caption="Quattro minuti, quattro segnali: ognuno poteva far scattare un allarme."
+  steps={[
+    { icon: "key", title: "Accesso strano", text: "Da un indirizzo mai visto" },
+    { icon: "server", title: "50 macchine", text: "In una regione insolita" },
+    { icon: "eye", title: "Log spento", text: "L'estraneo vuole nascondersi" },
+    { icon: "user", title: "Nuovo admin", text: "La porta sul retro" },
+  ]}
+/>
+
 <Guided
   steps={[
     "03:12: un account «sviluppo-ci» (di un programma) entra da un indirizzo mai visto. Credenziali rubate? Da verificare.",
@@ -92,7 +102,7 @@ Alcune regole per allarmi che funzionano:
 - le azioni **rare e gravi** (disattivare i log, creare un amministratore, modificare le policy) fanno scattare sempre un avviso;
 - un **allarme di spesa** è anche un allarme di sicurezza.
 
-<Say who="sensei">Tre allarmi su cinque righe. Bastava così poco per fermare tutto alle 03:15.</Say>
+<Say who="sensei">Tre allarmi su quattro righe. Bastava così poco per fermare tutto alle 03:15.</Say>
 </Scene>
 
 {/* screen */}

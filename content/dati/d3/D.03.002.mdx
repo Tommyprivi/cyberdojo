@@ -78,6 +78,15 @@ Con `SELECT *` si chiedono tutte le colonne. Va bene per curiosare, meno per i r
   "candela mirra | 19.00",
 ]} caption="Solo i prodotti con prezzo maggiore di 15." />
 
+<Flow
+  caption="Come lavora la query con WHERE prezzo > 15 (nell'ordine in cui il database ragiona)."
+  steps={[
+    { icon: "database", title: "FROM", text: "Prende la tabella: 6 righe" },
+    { icon: "search", title: "WHERE", text: "Scarta chi non ha prezzo > 15: ne restano 3" },
+    { icon: "file", title: "SELECT", text: "Sceglie le colonne nome e prezzo" },
+  ]}
+/>
+
 <Callout kind="regola">
 Il testo va tra apici singoli (`'candele'`), i numeri no. In SQL il confronto di uguaglianza si scrive con **un solo** `=`.
 </Callout>
@@ -149,6 +158,12 @@ Quando mescoli AND e OR, l'**AND si calcola per primo**. `A OR B AND C` signific
   "nome",
   "profumatore",
 ]} caption="Con le parentesi: (saponi o profumi) e prezzo sopra 10." />
+
+<Compare
+  caption="Stesse condizioni, parentesi diverse, risultati diversi."
+  left={{ title: "Senza parentesi", points: ["saponi OR (profumi AND prezzo > 10)", "AND si calcola per primo", "Risultato: 3 prodotti"] }}
+  right={{ title: "Con parentesi", points: ["(saponi OR profumi) AND prezzo > 10", "Prima si risolve la parentesi", "Risultato: 1 prodotto"] }}
+/>
 
 <Say who="sensei">Stesse condizioni, parentesi diverse, risultati diversi. In un report, questa differenza sono soldi.</Say>
 </Scene>

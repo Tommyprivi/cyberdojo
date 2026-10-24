@@ -54,8 +54,17 @@ Il **payoff** è il risultato a scadenza. Convenzioni di questa lezione: opzioni
 - **Put comprata**: (K - S se K supera S, altrimenti 0), meno il premio.
 - Le posizioni **vendute** sono lo specchio: quello che guadagna il compratore lo perde il venditore.
 
+<Flow
+  caption="Come si calcola il risultato netto di un'opzione comprata."
+  steps={[
+    { icon: "clock", title: "A scadenza", text: "Si guarda il prezzo S" },
+    { icon: "gear", title: "Valore", text: "S - K (call) o K - S (put), mai sotto zero" },
+    { icon: "coin", title: "Meno il premio", text: "Si sottrae ciò che si è pagato" },
+  ]}
+/>
+
 <Callout kind="regola">
-**Break-even** (pareggio): call = K + premio; put = K - premio. Prima di quel prezzo, il compratore è in perdita.
+**Break-even** (pareggio): call = K + premio; put = K - premio. Per la call, sotto quel prezzo il compratore è in perdita; per la put, sopra.
 </Callout>
 
 <Say who="assistente">Due passaggi: valore dell'opzione a scadenza, poi sottrai ciò che hai pagato.</Say>
@@ -122,6 +131,12 @@ Chi **vende** ha il grafico capovolto:
 <Callout kind="attenzione">
 Il venditore di opzioni ha un guadagno **limitato** (il premio) e una perdita **molto grande o illimitata**. È una scommessa sbilanciata: è facile guadagnare poco spesso e perdere tanto una volta.
 </Callout>
+
+<Compare
+  caption="Call venduta e call comprata a confronto."
+  left={{ title: "Call venduta", points: ["Guadagno massimo: il premio", "Perdita teoricamente illimitata"] }}
+  right={{ title: "Call comprata", points: ["Perdita massima: il premio", "Guadagno teoricamente illimitato"] }}
+/>
 
 <Say who="sensei">Un premio piccolo incassato oggi può nascondere una perdita enorme domani. Guarda sempre il lato peggiore.</Say>
 </Scene>

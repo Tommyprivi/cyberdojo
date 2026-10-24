@@ -46,7 +46,7 @@ La domanda del caso: **come si costruisce e si invia un ordine in modo che gli e
 Educazione, non consulenza: gli esempi usano un broker inventato, un conto demo e numeri fittizi. Nessun codice di questo corso va collegato a un conto con denaro reale.
 </Callout>
 
-<Say who="sensei">Un ordine è un'azione che non si ritira. Costruiscilo con cura, anche quando i soldi sono finti.</Say>
+<Say who="sensei">Un ordine, una volta partito, può essere eseguito subito. Costruiscilo con cura, anche quando i soldi sono finti.</Say>
 </Scene>
 
 {/* screen */}
@@ -87,6 +87,16 @@ Risultato atteso: `ok`, poi `quantità non valida`, poi `manca il prezzo limite`
 <Callout kind="regola">
 Un ordine passa da **tre porte**: controllo del formato, controllo dell'ambiente (demo), controllo dei limiti (quantità massima). Se una si chiude, non parte niente.
 </Callout>
+
+<Flow
+  caption="L'ordine parte solo se supera tutte e tre le porte."
+  steps={[
+    { icon: "file", title: "Formato", text: "Campi completi e validi" },
+    { icon: "shield", title: "Ambiente", text: "Solo demo" },
+    { icon: "lock", title: "Limiti", text: "Quantità entro il massimo" },
+    { icon: "check", title: "Invio", text: "L'ordine parte" },
+  ]}
+/>
 
 <Say who="sensei">I controlli sono noiosi. Per questo funzionano: non si stancano mai.</Say>
 </Scene>

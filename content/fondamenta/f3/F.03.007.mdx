@@ -50,6 +50,16 @@ Un **pacchetto** è un programma già impacchettato, pronto da installare, con l
 
 I pacchetti stanno in archivi online chiamati **repository**. Su Debian e Ubuntu il programma che li gestisce si chiama `apt`.
 
+<Flow
+  caption="Dal repository al tuo server, con la firma controllata."
+  steps={[
+    { icon: "cloud", title: "Repository", text: "L'archivio ufficiale" },
+    { icon: "gear", title: "apt", text: "Sceglie pacchetto e dipendenze" },
+    { icon: "shield", title: "Firma", text: "Verifica che sia autentico" },
+    { icon: "check", title: "Installato", text: "Il programma è sul server" },
+  ]}
+/>
+
 <Callout kind="regola">
 Repository = il magazzino. Pacchetto = la scatola. apt = il magazziniere che va a prendere la scatola giusta e anche quelle che servono insieme.
 </Callout>

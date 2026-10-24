@@ -61,7 +61,17 @@ Esiste un secondo strato, **obbligatorio** (MAC, *Mandatory Access Control*): re
 I due strati si **sommano**: un'azione passa solo se la permettono sia i permessi classici sia il MAC. Se un programma viene compromesso, il MAC limita i danni.
 </Callout>
 
-Su Linux i due sistemi più diffusi sono **AppArmor** (di default su Ubuntu, Debian e SUSE) e **SELinux** (di default su Red Hat, Fedora, Rocky e AlmaLinux). Non si usano insieme sulla stessa macchina: uno o l'altro.
+<Flow
+  caption="Un'azione passa solo se la permettono entrambi gli strati."
+  steps={[
+    { icon: "globe", title: "Il programma", text: "Il sito web chiede di aprire un file" },
+    { icon: "key", title: "Permessi classici", text: "Passa: il file è leggibile da tutti" },
+    { icon: "shield", title: "Controllo MAC", text: "Il sito non ha bisogno di quel file" },
+    { icon: "cross", title: "Bloccato", text: "Per passare servono tutti e due i sì" },
+  ]}
+/>
+
+Su Linux i due sistemi più diffusi sono **AppArmor** (di default su Ubuntu, Debian e SUSE) e **SELinux** (di default su Red Hat, Fedora, Rocky e AlmaLinux). Di norma non si usano insieme sulla stessa macchina: si sceglie l'uno o l'altro.
 
 Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese, attiva i sottotitoli.
 

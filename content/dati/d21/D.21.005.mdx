@@ -42,6 +42,12 @@ Quella riga contiene una virgola di troppo. Il lunedì dopo la dashboard è vuot
 
 La domanda del caso: **come si cambia un modello senza rischiare la dashboard di tutti?**
 
+<Compare
+  caption="La modifica di venerdì sera e il percorso fatto apposta."
+  left={{ title: "Venerdì alle 17:50", points: ["Modifica diretta al progetto della dashboard", "Nessuna prova e nessuna revisione", "Dashboard vuota, nessuna marcia indietro"] }}
+  right={{ title: "Il percorso corretto", points: ["Branch separato e prova in sviluppo", "Pull request con la CI verde", "Solo allora si unisce in main"] }}
+/>
+
 <Say who="sensei">Le modifiche di venerdì sera sono quelle che si pagano il lunedì. Esiste un percorso, ed è fatto apposta.</Say>
 </Scene>
 
@@ -59,6 +65,16 @@ I file SQL e YAML del progetto stanno in un **repository Git**. Git conserva ogn
 ]} caption="Sul tuo branch puoi sbagliare: main non cambia." />
 
 Poi si apre una **pull request** (richiesta di unione): dice ai colleghi «ho cambiato questo, controllate». Un collega legge il codice, commenta, approva. Solo allora il branch viene **unito** (*merge*) in `main`.
+
+<Flow
+  caption="Il percorso di una modifica, dal branch a main."
+  steps={[
+    { icon: "code", title: "Branch", text: "Si lavora su una copia" },
+    { icon: "mail", title: "Pull request", text: "«Controllate la mia modifica»" },
+    { icon: "eye", title: "Revisione", text: "Un collega legge e approva" },
+    { icon: "check", title: "Merge", text: "Entra in main" },
+  ]}
+/>
 
 <Callout kind="regola">
 Su `main` c'è solo ciò che è stato **rivisto e testato**. Nessuno scrive direttamente su `main`.

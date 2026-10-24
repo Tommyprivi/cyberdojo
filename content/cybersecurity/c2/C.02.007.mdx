@@ -41,6 +41,15 @@ La domanda del caso: **se l'algoritmo era fortissimo, che cosa è andato storto?
 <Scene title="Errore 1: la chiave nel codice">
 Scrivere una chiave, una password o un token **dentro il codice** è l'errore più diffuso. Il codice si copia, si condivide, si archivia per anni. Se finisce in un repository pubblico, chiunque lo può leggere.
 
+<Flow
+  caption="Come una chiave finisce in mano a chi non deve."
+  steps={[
+    { icon: "code", title: "Nel codice", text: "La chiave è scritta in un file" },
+    { icon: "globe", title: "Repository pubblico", text: "Il progetto è visibile a tutti" },
+    { icon: "eye", title: "Letta", text: "Un curioso la trova e la usa" },
+  ]}
+/>
+
 <Callout kind="regola">
 Le chiavi vivono **fuori** dal codice: in variabili d'ambiente, in un gestore di segreti, in un modulo hardware dedicato. Mai in un file del progetto.
 </Callout>
@@ -96,6 +105,12 @@ Usare **la stessa chiave** ovunque sembra comodo: un segreto solo da ricordare. 
     "Ora può leggere backup, database e email: un solo errore, tre disastri.",
     "Con chiavi diverse per ogni scopo, il danno sarebbe rimasto limitato a una cosa sola.",
   ]}
+/>
+
+<Compare
+  caption="Se la chiave viene scoperta, il danno cambia."
+  left={{ title: "Una chiave per tutto", points: ["Backup, database ed email cadono insieme", "Un solo errore, tre disastri"] }}
+  right={{ title: "Una chiave per scopo", points: ["Cade una sola cosa", "Le altre restano protette"] }}
 />
 
 <Callout kind="trucco">

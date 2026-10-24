@@ -66,6 +66,15 @@ Ogni comando ha **tre canali**, come tre tubi:
 
 Sullo schermo sembra un unico flusso, ma i tubi sono separati. Ed è proprio questo che permette di **deviarli**.
 
+<Layers
+  caption="I tre canali di ogni comando, con il loro numero."
+  items={[
+    { icon: "terminal", title: "stdin (0)", text: "Ingresso: di solito la tastiera" },
+    { icon: "laptop", title: "stdout (1)", text: "Uscita normale: di solito lo schermo" },
+    { icon: "warning", title: "stderr (2)", text: "Errori: di solito lo schermo" },
+  ]}
+/>
+
 <Callout kind="trucco">
 I tre canali hanno anche un numero: **0** = stdin, **1** = stdout, **2** = stderr. Lo rivedrai tra poco.
 </Callout>
@@ -137,6 +146,16 @@ La **pipe** si scrive con la barra verticale **`|`**. Prende lo **stdout** del p
   "studente@lab:~$ cat accessi.log | head -n 5 | tail -n 1",
   "03:07 192.168.1.66 ssh OK mario",
 ]} caption="head prende le prime righe, tail le ultime. Si possono mettere più pipe di fila." />
+
+<Flow
+  caption="Che cosa succede in cat accessi.log | wc -l."
+  steps={[
+    { icon: "file", title: "cat", text: "Stampa le righe del file" },
+    { icon: "link", title: "Pipe |", text: "Il suo stdout diventa stdin" },
+    { icon: "gear", title: "wc -l", text: "Conta le righe ricevute" },
+    { icon: "check", title: "Risultato", text: "8" },
+  ]}
+/>
 
 Ecco la risposta al caso: il registro ha **8 righe**. L'ultima pipe prende le prime 5 righe e di quelle tiene l'ultima: la quinta.
 

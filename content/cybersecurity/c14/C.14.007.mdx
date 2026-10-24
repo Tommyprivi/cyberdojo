@@ -79,6 +79,12 @@ Ricollega ciò che hai imparato. Ogni difesa riduce un rischio preciso.
 - **Limitare NTLM**, con audit prima e blocco poi.
 - **AppLocker o WDAC**: fanno girare solo programmi autorizzati.
 
+<Compare
+  caption="Ogni difesa risponde a un rischio preciso."
+  left={{ title: "Il rischio", points: ["Hash riutilizzati su altri PC", "Credenziali rubate dalla memoria (lsass)", "Protocolli vecchi (SMBv1, LLMNR, NetBIOS)", "Programmi non autorizzati"] }}
+  right={{ title: "La difesa", points: ["LAPS: una password locale diversa per PC", "Credential Guard: credenziali isolate", "Disattivarli quando non servono", "AppLocker o WDAC"] }}
+/>
+
 <Callout kind="trucco">
 Una scheda a due colonne vale più di cento pagine: **attacco → difesa**. Se non sai dire quale rischio riduce una modifica, forse non serve.
 </Callout>
@@ -99,7 +105,16 @@ Due abitudini che contano più di molte impostazioni.
 
 Un account di livello 0 **non fa mai l'accesso** su un PC di livello 2: le sue credenziali non devono restare in memoria dove sono più facili da rubare.
 
-**Aggiornamenti.** Le falle note sono le prime sfruttate. Patchare ogni 8 mesi è lasciare la porta aperta per 8 mesi. Serve un ciclo regolare e più rapido per le falle gravi.
+**Aggiornamenti.** Le falle note sono le prime sfruttate. Patchare ogni sei mesi è lasciare la porta aperta per sei mesi. Serve un ciclo regolare e più rapido per le falle gravi.
+
+<Layers
+  caption="Il modello a livelli: le chiavi della cassaforte non vanno sul bancone."
+  items={[
+    { icon: "key", title: "Livello 0", text: "Controller di dominio e identità" },
+    { icon: "server", title: "Livello 1", text: "Server" },
+    { icon: "laptop", title: "Livello 2", text: "PC e dispositivi degli utenti" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Controller di dominio e **backup** sono il bersaglio più delicato: proteggi il backup (accesso limitato, copie fuori dal dominio) e **provane il ripristino** ogni tanto. Un backup mai provato è una speranza.

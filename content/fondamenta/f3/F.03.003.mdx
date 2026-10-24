@@ -131,6 +131,12 @@ L'errore più comune: il file non funziona, quindi si lancia `chmod 777`. **777*
   ]}
 />
 
+<Compare
+  caption="Lo stesso script, due scelte di permessi."
+  left={{ title: "chmod 777", points: ["Tutti leggono, modificano, eseguono", "Chiunque può riscrivere lo script", "Un comando ostile gira con i tuoi poteri"] }}
+  right={{ title: "chmod 750", points: ["Il proprietario fa tutto", "Il gruppo legge ed esegue", "Gli altri non hanno alcun permesso"] }}
+/>
+
 Altri errori frequenti: scrivere il file prima dei permessi (`chmod controllo.sh 755` dà un errore di modo non valido) e dimenticare di essere nella cartella giusta («No such file or directory»).
 
 <Callout kind="regola">

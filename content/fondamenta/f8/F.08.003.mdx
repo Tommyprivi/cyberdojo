@@ -105,6 +105,16 @@ Ogni interfaccia del router ha un indirizzo **nella rete a cui è collegata** e 
 Per parlare con un'altra rete, un PC manda il pacchetto al **suo gateway**. Se il gateway manca o è sbagliato, il PC vede i vicini ma non esce dalla propria rete.
 </Callout>
 
+<Flow
+  caption="Due reti comunicano solo attraverso il router."
+  steps={[
+    { icon: "laptop", title: "PC1", text: "Rete A: 192.168.1.10" },
+    { icon: "gear", title: "Router, lato A", text: "Gateway 192.168.1.1" },
+    { icon: "gear", title: "Router, lato B", text: "Interfaccia 192.168.2.1" },
+    { icon: "laptop", title: "PC3", text: "Rete B: 192.168.2.10" },
+  ]}
+/>
+
 <Say who="assistente">Il router è la porta tra due stanze. Il gateway è il numero civico di quella porta, dal tuo lato.</Say>
 </Scene>
 

@@ -53,6 +53,17 @@ Le due metriche più note misurano **il tempo**:
 - **MTTD** (*Mean Time To Detect*, tempo medio di rilevamento): dal momento in cui l'attacco **comincia** al momento in cui il SOC **se ne accorge**.
 - **MTTR** (*Mean Time To Respond*, tempo medio di risposta): dal momento in cui il SOC se ne accorge al momento in cui l'attacco è **contenuto**.
 
+<Flow
+  caption="Due tempi su una stessa linea: prima ci si accorge, poi si risponde."
+  steps={[
+    { icon: "skull", title: "Inizio attacco", text: "Il nemico comincia" },
+    { icon: "clock", title: "MTTD", text: "Tempo per accorgersene" },
+    { icon: "bell", title: "Rilevato", text: "Il SOC se ne accorge" },
+    { icon: "clock", title: "MTTR", text: "Tempo per rispondere" },
+    { icon: "shield", title: "Contenuto", text: "L'attacco è fermato" },
+  ]}
+/>
+
 Si dice «medio» perché si calcola la media di molti incidenti. Esempio con tre incidenti fittizi (in ore):
 
 | Incidente | Inizio → rilevato (MTTD) | Rilevato → contenuto (MTTR) |

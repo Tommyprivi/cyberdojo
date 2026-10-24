@@ -70,7 +70,7 @@ Vuoi sentire come si gestisce il gruppo sudo da un'altra voce? Il video è in it
 
 <Video />
 
-<Say who="assistente">Il segno + di append è una lettera sola, ma evita un lunedì di telefonate.</Say>
+<Say who="assistente">La `-a` di append è una lettera sola, ma evita un lunedì di telefonate.</Say>
 </Scene>
 
 {/* screen */}
@@ -86,6 +86,12 @@ La forma di una regola: **chi, da quale macchina, come quale utente, quale coman
   "# /etc/sudoers.d/davide",
   "davide web01 = (root) /usr/bin/systemctl restart nginx",
 ]} caption="Davide, sulla macchina web01, può essere root solo per eseguire questo comando preciso." />
+
+<Compare
+  caption="Stesso tecnico, due regole molto diverse."
+  left={{ title: "Davide in sudo", points: ["Può fare qualsiasi cosa come root", "Se l'account viene rubato, si perde il server"] }}
+  right={{ title: "Regola stretta", points: ["Solo systemctl restart nginx, su web01", "Percorso completo e argomenti precisi", "Si controlla con sudo -l -U davide"] }}
+/>
 
 Per controllare cosa può fare un utente: `sudo -l -U davide`. Per togliere l'accesso: si elimina il file o si toglie l'utente dal gruppo (`sudo` su Debian e Ubuntu, `wheel` su Red Hat).
 

@@ -135,6 +135,12 @@ La tabella piatta di Marta, divisa bene, diventa le tre tabelle che conosci:
   "ordini (id, cliente_id, prodotto_id, quantita, totale, data)",
 ]} caption="Ogni dato scritto una sola volta, collegato con chiavi." />
 
+<Compare
+  caption="Normalizzare: ogni informazione in un posto solo."
+  left={{ title: "Tabella piatta", points: ["Cliente e città ripetuti a ogni riga", "Una città scritta in due modi", "Cancelli l'ultimo ordine, perdi il cliente"] }}
+  right={{ title: "Tre tabelle collegate", points: ["La città sta solo in clienti", "Si corregge in un punto solo", "Il cliente resta anche senza ordini"] }}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Un video sulla normalizzazione:
 
 <Video />

@@ -60,6 +60,15 @@ Quando tutti i casi sono ugualmente possibili, basta una divisione:
 
 **probabilità = casi favorevoli diviso casi possibili**
 
+<Layers
+  caption="La scala della probabilità, dal certo all'impossibile."
+  items={[
+    { icon: "check", title: "1: certo", text: "Succede sempre" },
+    { icon: "coin", title: "0,5: moneta", text: "Metà e metà, come testa o croce" },
+    { icon: "cross", title: "0: impossibile", text: "Non succede mai" },
+  ]}
+/>
+
 Esempio con un dado a sei facce. «Esce un numero pari» ha 3 casi favorevoli (2, 4, 6) su 6 possibili: 3/6 = **1/2**.
 
 <Callout kind="regola">
@@ -108,6 +117,12 @@ Torniamo a Giulia. Con 10 lanci, 7 teste su 10 (frequenza 0,7) è uno scarto che
 Ma se i lanci diventano 1000 e la frequenza delle teste è 0,52, qualcosa cambia: la frequenza si è **avvicinata** a 0,5.
 
 Questa è la **legge dei grandi numeri**: più prove si fanno, più la frequenza relativa si avvicina alla probabilità teorica.
+
+<Compare
+  caption="Frequenza di teste con una moneta equa: pochi lanci ballano, molti lanci si stabilizzano."
+  left={{ title: "10 lanci", points: ["7 teste: frequenza 0,7", "Lontana da 0,5", "Il caso oscilla molto"] }}
+  right={{ title: "1000 lanci", points: ["Frequenza di teste 0,52", "Vicina a 0,5", "Il caso si stabilizza"] }}
+/>
 
 <Callout kind="curiosita">
 Non significa che gli scarti si «compensano» esattamente. Dopo 1000 lanci puoi avere 20 teste in più delle croci, e dopo 100 000 lanci perfino 100 in più: quello che si avvicina a 0,5 è la **frequenza**, non la differenza assoluta.

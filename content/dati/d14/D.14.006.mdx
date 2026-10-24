@@ -69,6 +69,12 @@ Quando chiedi «le vendite di ieri», il sistema apre **solo la cartella di ieri
 
 <Log lines={["vendite/data=2026-10-18/...", "vendite/data=2026-10-19/...", "vendite/data=2026-10-20/...", "Domanda: vendite del 2026-10-19  ->  si legge 1 cartella su 3"]} caption="Partizioni per data. Esempio fittizio." />
 
+<Compare
+  caption="La query sulle vendite di ieri, senza e con partizioni per data."
+  left={{ title: "Senza partizioni", points: ["Legge tutti e 3 gli anni", "9 minuti per le vendite di ieri", "Bolletta in aumento"] }}
+  right={{ title: "Partizioni per data", points: ["Apre solo la cartella del giorno", "Salta le altre: potatura delle partizioni", "Meno dati letti, meno costo"] }}
+/>
+
 <Callout kind="attenzione">
 Si partiziona per ciò che si usa **nei filtri**. Partizionare per una colonna con milioni di valori diversi crea milioni di cartellette: peggio di prima.
 </Callout>
@@ -102,6 +108,16 @@ Un video breve sugli indici:
 Prima di cambiare qualcosa, **misura**: quanto tempo impiega ogni passo? Quanti dati legge? Quanto costa?
 
 Spesso il collo di bottiglia non è dove pensi. Se il 90% del tempo è in un solo passo, ottimizzare gli altri non cambia quasi niente.
+
+<Flow
+  caption="Un ciclo per ottimizzare senza tirare a indovinare."
+  steps={[
+    { icon: "search", title: "Misura", text: "Tempo, dati letti, costo" },
+    { icon: "gear", title: "Cambia", text: "Una cosa sola" },
+    { icon: "chart", title: "Misura ancora", text: "È migliorato?" },
+    { icon: "check", title: "Decidi", text: "Tieni la modifica o torna indietro" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Il ciclo è semplice: **misura**, cambia **una cosa sola**, **misura di nuovo**. Se non è migliorato, torna indietro.

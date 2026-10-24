@@ -80,6 +80,12 @@ Il registro è una **fonte di dati sensibili** a sua volta. Non si scrivono mai:
 - **Token, chiavi API, identificativi di sessione completi**: chi legge il log li userebbe. Se serve, si salva solo un frammento o un'impronta.
 - **Dati personali non necessari** (documenti, numeri di carta, dati sanitari): per il GDPR vale la **minimizzazione**.
 
+<Compare
+  caption="Che cosa va nel log e che cosa mai."
+  left={{ title: "Mai nei log", points: ["Password, anche sbagliate", "Token, chiavi API, sessioni complete", "Dati personali non necessari"] }}
+  right={{ title: "Nei log", points: ["Chi, che cosa, quando, da dove, esito", "Al massimo un frammento o un'impronta del token", "Un identificativo di richiesta (correlation ID)"] }}
+/>
+
 Inoltre:
 
 - Gli input dell'utente vanno **ripuliti prima di scriverli**: un testo con a capo e simboli strani potrebbe falsare le righe del log (lo trovi come «log injection»).
@@ -129,6 +135,17 @@ Un allarme senza un piano è un campanello senza portiere. Per ogni regola devi 
   "Correzione  : aggiungere il controllo di proprietà dell'ordine (lezione 5, BOLA)",
   "Comunicazione: se sono stati letti dati personali, valutare con il responsabile la notifica al Garante entro 72 ore",
 ]} />
+
+<Flow
+  caption="Dal log alla correzione: cinque anelli, nessuno si salta."
+  steps={[
+    { icon: "file", title: "Registrare", text: "Chi, che cosa, quando, esito" },
+    { icon: "eye", title: "Osservare", text: "Si cercano gli schemi sospetti" },
+    { icon: "bell", title: "Avvisare", text: "Un allarme su una regola tarata" },
+    { icon: "shield", title: "Rispondere", text: "Si contengono sessione e utente" },
+    { icon: "gear", title: "Correggere", text: "Per esempio il controllo BOLA" },
+  ]}
+/>
 
 I **SIEM** sono sistemi che raccolgono log da molte fonti, li mettono in ordine di tempo e fanno scattare allarmi sulle regole. Non sono magici: funzionano quanto i log che ricevono e le regole che scrivi.
 

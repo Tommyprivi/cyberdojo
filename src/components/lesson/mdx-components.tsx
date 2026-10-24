@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import { BitLab } from "./bit-lab";
 import { BitGrid, Callout, Envelope, Log } from "./bits";
 import { Recap, Say, Scene } from "./blocks";
+import { Compare, Flow, Layers } from "./diagrams";
 import { Flashcards } from "./flashcards";
 import { Guided } from "./guided";
 import { Practice } from "./practice";
@@ -27,6 +28,9 @@ export const lessonComponents = {
   Envelope,
   Log,
   Flashcards,
+  Flow,
+  Layers,
+  Compare,
   Video,
   PythonTerminal,
   LinuxTerminal,

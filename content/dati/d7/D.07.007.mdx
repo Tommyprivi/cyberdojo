@@ -90,6 +90,16 @@ Barre ordinate, partenza da zero, colore di enfasi. I resi per canale sono: Cent
   "plt.show()",
 ]} />
 
+<Flow
+  caption="Le regole del modulo e la riga di codice che le applica."
+  steps={[
+    { icon: "chart", title: "Ordina", text: "sorted(..., reverse=True)" },
+    { icon: "eye", title: "Enfasi", text: "Lista colori: arancione solo a Parco" },
+    { icon: "check", title: "Da zero", text: "plt.ylim(0, 14)" },
+    { icon: "book", title: "Titolo", text: "plt.title con la conclusione" },
+  ]}
+/>
+
 `sorted(..., reverse=True)` mette le barre dalla più alta alla più bassa (Parco 12, Online 6, Centro 5, Stazione 4). `plt.ylim(0, 14)` fissa l'asse da zero. La lista `colori` dà arancione a Parco e grigio agli altri.
 
 <Callout kind="attenzione">

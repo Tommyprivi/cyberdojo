@@ -58,6 +58,16 @@ Con le due chiavi della lezione scorsa si può fare una cosa nuova: **firmare**.
   ]}
 />
 
+<Flow
+  caption="Firma e verifica: le due chiavi lavorano in direzioni opposte."
+  steps={[
+    { icon: "file", title: "Hash", text: "Impronta del messaggio" },
+    { icon: "key", title: "Firma", text: "Hash cifrato con la chiave privata" },
+    { icon: "search", title: "Verifica", text: "Si decifra con la chiave pubblica" },
+    { icon: "check", title: "Confronto", text: "Hash uguali: messaggio intatto" },
+  ]}
+/>
+
 <Callout kind="regola">
 Si **firma con la chiave privata** (solo il proprietario può farlo) e si **verifica con la chiave pubblica** (chiunque può controllare).
 </Callout>
@@ -91,6 +101,16 @@ Serve qualcuno di cui tutti si fidano, che attesti: «Questa chiave pubblica app
 <Callout kind="curiosita">
 Il certificato contiene il nome del proprietario, la sua chiave pubblica, la data di scadenza e la **firma di chi lo ha emesso**.
 </Callout>
+
+<Layers
+  caption="Che cosa c'è dentro un certificato."
+  items={[
+    { icon: "user", title: "Proprietario", text: "Il nome della persona o del sito" },
+    { icon: "key", title: "Chiave pubblica", text: "Quella che gli appartiene" },
+    { icon: "clock", title: "Scadenza", text: "Dopo quella data non vale più" },
+    { icon: "shield", title: "Firma della CA", text: "Di chi lo ha emesso" },
+  ]}
+/>
 
 <Say who="assistente">Un certificato è come una carta d'identità: dice chi sei, ed è firmata da un ente riconosciuto.</Say>
 </Scene>

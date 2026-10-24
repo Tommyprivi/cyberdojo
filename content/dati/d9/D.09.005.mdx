@@ -108,6 +108,15 @@ I dati restano come **file nel lake** (di solito Parquet), ma sopra c'è uno **s
 
 Risultato: si può fare SQL come in un warehouse, sui file economici del lake, con più garanzie (per esempio modifiche che riescono per intero o non riescono affatto).
 
+<Layers
+  caption="Il lakehouse: un registro sopra i file economici del lake."
+  items={[
+    { icon: "code", title: "SQL", text: "Query come in un warehouse" },
+    { icon: "book", title: "Strato di gestione", text: "Registro: file, forma, modifiche" },
+    { icon: "folder", title: "File nel lake", text: "Di solito Parquet, a basso costo" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Il lakehouse non è magia: è un lake con un **registro** ben tenuto.
 </Callout>

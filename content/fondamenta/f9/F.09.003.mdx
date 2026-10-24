@@ -187,6 +187,16 @@ print(porta + 1)
 
 Se l'utente scrive `22` stampa `23`. Senza `int()` si avrebbe un `TypeError`, come nella lezione precedente.
 
+<Flow
+  caption="Che cosa succede con input()."
+  steps={[
+    { icon: "terminal", title: "input()", text: "Il programma si ferma e chiede" },
+    { icon: "user", title: "L'utente", text: "Scrive 22 e preme Invio" },
+    { icon: "file", title: "Testo", text: "Arriva sempre come str" },
+    { icon: "check", title: "int()", text: "Si converte in numero" },
+  ]}
+/>
+
 <Say who="sensei">Mai fidarsi di ciò che scrive un utente: è testo, e può essere sbagliato. Convertilo, e un domani impareremo a controllarlo.</Say>
 </Scene>
 

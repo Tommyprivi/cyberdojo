@@ -57,7 +57,7 @@ Quattro problemi da cercare sempre:
 - **duplicati**: la stessa riga due volte;
 - **valori mancanti** (`NaN`): un prezzo assente;
 - **errori di tipo**: numeri letti come testo, date come testo;
-- **valori incoerenti**: un massimo sotto il minimo, un prezzo mille volte più alto dei vicini (spesso un errore di virgola).
+- **valori incoerenti**: un massimo sotto il minimo, un prezzo cento volte più alto dei vicini (spesso un errore di virgola).
 
 Non sono errori: **sabato, domenica e festività**. La borsa è chiusa, quindi i giorni mancano.
 
@@ -102,6 +102,12 @@ Vuoi sentire come si gestiscono i valori mancanti da un'altra voce? In inglese, 
 
 <Scene title="Riempire senza barare">
 `ffill` porta avanti il prezzo di ieri: usa solo il **passato**. `bfill` usa il prezzo di **domani** per riempire oggi: è **look-ahead**, in un backtest sarebbe barare.
+
+<Compare
+  caption="Con quale prezzo riempire un buco."
+  left={{ title: "bfill", points: ["Riempie oggi con il prezzo di domani", "Usa un'informazione non ancora nota", "In un backtest è look-ahead"] }}
+  right={{ title: "ffill", points: ["Riempie oggi con l'ultimo prezzo noto", "Usa solo il passato", "Prezzo riempito, da annotare"] }}
+/>
 
 <Callout kind="regola">
 Nei dati finanziari: riempi con il passato, non con il futuro. E ricorda che un prezzo riempito non è un prezzo vero: annotalo.

@@ -62,6 +62,12 @@ Una password è forte quando **servono troppe prove** per indovinarla. Non quand
 
 Un confronto con i numeri: una password di **8 caratteri** scelti tra lettere, numeri e simboli ha circa 6,6 milioni di miliardi di combinazioni. Una di **12 sole lettere minuscole** ne ha circa 95 milioni di miliardi: **di più**, anche se sembra «semplice».
 
+<Compare
+  caption="Più corta e complicata, o più lunga e semplice?"
+  left={{ title: "8 caratteri con simboli", points: ["Circa 6,6 milioni di miliardi di combinazioni", "Sembra forte, ma è corta"] }}
+  right={{ title: "12 sole minuscole", points: ["Circa 95 milioni di miliardi di combinazioni", "Sembra semplice, ma ha più combinazioni"] }}
+/>
+
 <Callout kind="attenzione">
 Qui si parla di password scelte a caso. Se la scegli tu seguendo un modello (nome, anno, punto esclamativo) le combinazioni reali sono molte meno, perché il modello è prevedibile.
 </Callout>
@@ -111,6 +117,16 @@ Vuoi sentirlo spiegare da un'altra voce? Ecco i punti chiave in pochi minuti:
 Marta usava **M@rta2024!** anche per un negozio online di hobby. Quel negozio ha subìto una violazione e le password sono finite in rete. Chi le ha trovate le ha provate **su altri servizi**, compresa la posta di Marta.
 
 Questo si chiama **riuso delle password** ed è uno dei modi più comuni per perdere un account: il servizio sicuro cade a causa di un servizio debole.
+
+<Flow
+  caption="Come una password riusata fa cadere un altro account."
+  steps={[
+    { icon: "globe", title: "Negozio debole", text: "Subisce una violazione" },
+    { icon: "file", title: "Elenco in rete", text: "Le password sono pubbliche" },
+    { icon: "key", title: "Altri servizi", text: "L'attaccante le prova ovunque" },
+    { icon: "mail", title: "Posta persa", text: "La stessa password funziona" },
+  ]}
+/>
 
 <Callout kind="regola">
 Una password diversa per ogni servizio. Almeno per posta, banca e account di lavoro, che sono le «chiavi di casa».

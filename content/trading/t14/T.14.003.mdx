@@ -74,6 +74,17 @@ print(f"Scambi: {int(scambi.sum())}")
 
 Convenzioni: rendimenti **semplici**, composti con `(1 + r).prod() - 1`.
 
+<Flow
+  caption="Le righe del codice seguono sempre lo stesso ordine."
+  steps={[
+    { icon: "chart", title: "Rendimenti", text: "Variazione giornaliera dei prezzi" },
+    { icon: "search", title: "Segnale", text: "Sopra la media a 3 giorni" },
+    { icon: "clock", title: "Posizione", text: "Segnale spostato di un giorno" },
+    { icon: "coin", title: "Costi", text: "0,2% a ogni acquisto o vendita" },
+    { icon: "check", title: "Confronto", text: "Strategia netta e buy and hold" },
+  ]}
+/>
+
 <Log lines={[
   "Strategia lorda: 3.87%",
   "Strategia netta: 3.26%",
@@ -95,6 +106,16 @@ Con la posizione spostata, la strategia è investita solo in tre giorni: giorno 
 - Scambi: compra il giorno 4, vende il giorno 6, compra il giorno 9. Sono **3**, a 0,2% ciascuno: 0,6% di costi in totale, applicati ai giorni in cui avvengono.
 - Netto: **+3,26%**. I costi hanno tolto circa 0,6 punti percentuali.
 - Buy and hold: da 100 a 107, cioè **+7,00%**.
+
+<Flow
+  caption="Dal lordo al netto, e poi il confronto con il buy and hold."
+  steps={[
+    { icon: "chart", title: "Lordo", text: "+3,87%" },
+    { icon: "coin", title: "Costi", text: "3 scambi: circa -0,6 punti" },
+    { icon: "check", title: "Netto", text: "+3,26%" },
+    { icon: "warning", title: "Buy and hold", text: "+7,00%: la strategia perde" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 I rendimenti giornalieri si **compongono**, non si sommano: 1,92 - 0,94 + 2,88 darebbe 3,86, un numero diverso e, sui periodi lunghi, molto più sbagliato.
@@ -154,7 +175,7 @@ Il test non dice che «la media mobile non funziona». Dice che **in questi 10 g
 <Scene title="Riproduci il calcolo">
 Rifai il conto con Python puro, senza pandas, per vedere dove nasce ogni numero. Ci sono quattro giorni con un movimento: i tre giorni investiti (4, 5 e 9) e il giorno 6, in cui si vende e si paga il costo senza guadagnare nulla.
 
-<PythonTerminal code={"rend = [0.0192, -0.0094, 0.0, 0.0288]
+<PythonTerminal code={`rend = [0.0192, -0.0094, 0.0, 0.0288]
 costi = [0.002, 0.0, 0.002, 0.002]
 lordo = 1.0
 netto = 1.0
@@ -162,7 +183,7 @@ for r, c in zip(rend, costi):
     lordo = lordo * (1 + r)
     netto = netto * (1 + r - c)
 print(round(lordo - 1, 4))
-print(round(netto - 1, 4))"} />
+print(round(netto - 1, 4))`} />
 
 Risultato atteso: `0.0387` e `0.0326`, cioè +3,87% e +3,26%, come nel calcolo con pandas.
 

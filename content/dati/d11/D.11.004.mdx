@@ -58,6 +58,16 @@ Ogni gruppo ha un **centro**: la **media** dei suoi punti.
 k-means in due mosse da ripetere: 1) ogni punto va al gruppo con il centro più vicino; 2) si ricalcola il centro di ogni gruppo come media.
 </Callout>
 
+<Flow
+  caption="k-means: due mosse ripetute finché i gruppi non cambiano."
+  steps={[
+    { icon: "gear", title: "Scegli k", text: "Quanti gruppi vuoi" },
+    { icon: "search", title: "Assegna", text: "Ogni punto al centro più vicino" },
+    { icon: "chart", title: "Ricalcola", text: "Il centro è la media del gruppo" },
+    { icon: "check", title: "Fermati", text: "Quando i gruppi non cambiano" },
+  ]}
+/>
+
 <Say who="assistente">Come disporre dei segnaposto in una stanza e far camminare ognuno verso il centro del gruppo che si forma attorno a lui.</Say>
 </Scene>
 

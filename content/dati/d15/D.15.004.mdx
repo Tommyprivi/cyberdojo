@@ -70,6 +70,15 @@ Una buona dashboard va dal generale al particolare, come una piramide rovesciata
 2. **Al centro**: la scomposizione, per esempio per negozio o categoria, che spiega dove si muove il numero.
 3. **In basso o in una pagina a parte**: il dettaglio, per chi vuole scavare.
 
+<Layers
+  caption="Dal generale al particolare: chi vuole di più scende."
+  items={[
+    { icon: "chart", title: "Numeri chiave", text: "3-5 cifre, ognuna con un confronto" },
+    { icon: "search", title: "Scomposizione", text: "Per negozio o categoria: dove si muove" },
+    { icon: "file", title: "Dettaglio", text: "Per chi vuole scavare" },
+  ]}
+/>
+
 Un numero senza confronto non dice niente. Ricavi 184: è tanto o poco? Con l'obiettivo di 200 e il mese scorso a 160 diventa leggibile.
 
 <Log lines={["Ricavi del mese: 184", "Obiettivo: 200  ->  92% dell'obiettivo", "Mese precedente: 160  ->  +15%  (24 / 160)"]} caption="Un numero con i suoi due confronti. Esempio fittizio." />
@@ -93,7 +102,7 @@ Con 92% dell'obiettivo, i ricavi sono **gialli**.
 Un **avviso** è un messaggio che arriva da solo quando una soglia viene superata, per esempio una email se i ricavi del giorno scendono sotto il rosso. Così il dirigente non deve aprire il report ogni mattina.
 
 <Callout kind="attenzione">
-Non usare solo il colore: aggiungi un simbolo o una parola («in ritardo»). Una persona su dodici fra gli uomini ha difficoltà a distinguere rosso e verde, e un report stampato in bianco e nero perde i colori.
+Non usare solo il colore: aggiungi un simbolo o una parola («in ritardo»). Circa un uomo su dodici ha difficoltà a distinguere rosso e verde, e un report stampato in bianco e nero perde i colori.
 </Callout>
 
 <Say who="assistente">Troppe soglie e troppi avvisi fanno il lupo che non arriva mai: dopo una settimana nessuno li legge più.</Say>

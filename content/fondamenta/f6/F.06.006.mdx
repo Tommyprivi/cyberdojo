@@ -72,6 +72,16 @@ Prima di inviare, il PC applica la **propria maschera** a due indirizzi: il suo 
   ]}
 />
 
+<Flow
+  caption="Il PC decide se parlare al vicino o al gateway."
+  steps={[
+    { icon: "gear", title: "Calcola", text: "Rete del PC e rete di destinazione" },
+    { icon: "search", title: "Confronta", text: "192.168.1.0 e 10.0.0.0: diverse" },
+    { icon: "link", title: "Gateway", text: "Il pacchetto va a 192.168.1.1" },
+    { icon: "server", title: "Server", text: "Il router lo porta a 10.0.0.5" },
+  ]}
+/>
+
 <Say who="sensei">Un AND, un confronto. Due righe di conti, e il PC sa se parlare al vicino o alla porta.</Say>
 </Scene>
 

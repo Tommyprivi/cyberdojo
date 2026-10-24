@@ -94,6 +94,15 @@ Cosa vede l'utente? Spesso un avviso: *«Il certificato di questo sito non è va
 
 **Difesa.** **HTTPS con certificati verificati**: il browser controlla che il sito sia davvero quello. **Non ignorare mai gli avvisi di certificato.** Evitare le reti non fidate o usare una VPN. Rete locale ben protetta, con funzioni di sicurezza sugli switch dove disponibili.
 
+<Flow
+  caption="Man-in-the-middle: ognuno crede di parlare con l'altro."
+  steps={[
+    { icon: "user", title: "Utente", text: "Crede di parlare con il sito" },
+    { icon: "mask", title: "Attaccante", text: "Legge e modifica ciò che passa" },
+    { icon: "server", title: "Sito", text: "Crede di parlare con l'utente" },
+  ]}
+/>
+
 <Callout kind="regola">
 Avviso di certificato = ferma. Non cliccare «procedi comunque», soprattutto su un Wi-Fi che non è tuo.
 </Callout>
@@ -109,6 +118,12 @@ Riga delle 00:40. Una **negazione di servizio** (*Denial of Service*, DoS) non r
 È come far squillare mille volte il telefono di un negozio: nessun cliente vero riesce a chiamare.
 
 **Difesa.** Non basta un firewall locale, perché il collo di bottiglia è la **capacità**. Servono: servizi di protezione a monte, offerti da chi gestisce la rete o da società specializzate, che filtrano il traffico prima che arrivi; limiti sul numero di richieste da un singolo indirizzo; capacità extra; un piano per quando succede.
+
+<Compare
+  caption="Lo stesso sito sotto attacco, con e senza filtri a monte."
+  left={{ title: "Senza filtri a monte", points: ["Richieste false e vere arrivano insieme", "Il sito non risponde ai clienti"] }}
+  right={{ title: "Con filtri a monte", points: ["Il traffico finto è scartato prima", "I clienti veri passano"] }}
+/>
 
 <Callout kind="curiosita">
 Chi lancia un DDoS a volte usa dispositivi altrui già infettati (telecamere, router con password di fabbrica). Cambiare le password predefinite dei propri dispositivi è anche un modo di non diventare complici senza saperlo.

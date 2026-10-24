@@ -59,6 +59,12 @@ Quattro ruoli:
 
 Il «gettone» che l'app riceve si chiama **access token**: vale poco tempo e solo per certe cose.
 
+<Compare
+  caption="Consegnare la password o delegare un accesso."
+  left={{ title: "Consegnare la password", points: ["FotoStampa conosce la password di CloudAlbum", "Può fare qualsiasi cosa, senza limiti di tempo", "Per fermarla devi cambiare la password"] }}
+  right={{ title: "Delegare con un token", points: ["FotoStampa riceve solo un access token", "Vale poco tempo e solo per certe cose (scope)", "Se l'app lo perde, revochi il token e la password resta al sicuro"] }}
+/>
+
 <Callout kind="regola">
 OAuth 2.0 risponde a «**che cosa può fare** questa app al posto mio?», non a «**chi sei**».
 </Callout>
@@ -79,6 +85,17 @@ Il percorso più usato si chiama **authorization code**. Ecco la storia, in sei 
   "5. FotoStampa (dal suo server) scambia il codice con un access token",
   "6. FotoStampa chiama l'API con il token e riceve le foto",
 ]} />
+
+<Flow
+  caption="Il flusso con codice di autorizzazione, in cinque passaggi."
+  steps={[
+    { icon: "link", title: "Richiesta", text: "FotoStampa manda il browser a CloudAlbum" },
+    { icon: "user", title: "Consenso", text: "Fai il login e dici di sì" },
+    { icon: "key", title: "Codice", text: "Torna al redirect_uri, monouso, con lo state" },
+    { icon: "lock", title: "Token", text: "FotoStampa scambia il codice, dal suo server" },
+    { icon: "folder", title: "Foto", text: "L'API risponde a chi mostra il token" },
+  ]}
+/>
 
 Tre dettagli che fanno la sicurezza:
 

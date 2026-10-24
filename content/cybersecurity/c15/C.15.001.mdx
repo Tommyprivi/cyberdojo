@@ -93,6 +93,16 @@ Quando apri un sito, il browser verifica, in ordine:
 3. **Le date**: oggi è dentro il periodo di validità?
 4. **La revoca**: il certificato è stato dichiarato non più valido prima della scadenza (per esempio per una chiave rubata)?
 
+<Flow
+  caption="I quattro controlli del browser, in ordine."
+  steps={[
+    { icon: "key", title: "Firma", text: "È di una CA della catena?" },
+    { icon: "globe", title: "Nome", text: "Coincide con quello digitato (SAN)?" },
+    { icon: "clock", title: "Date", text: "Oggi è dentro la validità?" },
+    { icon: "cross", title: "Revoca", text: "È stato dichiarato non più valido?" },
+  ]}
+/>
+
 Se uno dei controlli fallisce, compare l'errore. Il testo dell'errore ti dice quale.
 
 Vuoi sentire la spiegazione da un'altra voce? Parla di che cosa sono i certificati e le CA, in italiano:
@@ -137,6 +147,12 @@ Rinnovare a mano ogni pochi mesi non regge. La risposta è l'**automazione**: un
 Il rinnovo manuale è un guasto che aspetta di accadere. Si automatizza, si **monitora la scadenza** con un allarme (per esempio 21 giorni prima) e si tiene un inventario di tutti i certificati.
 </Callout>
 
+<Compare
+  caption="Rinnovo dei certificati: a mano o in automatico."
+  left={{ title: "Rinnovo a mano", points: ["Dipende dalla memoria di una persona", "Una scadenza dimenticata ferma il portale", "Un certificato fuori elenco scade senza che nessuno lo sappia"] }}
+  right={{ title: "Rinnovo automatico", points: ["Il client ACME rinnova da solo", "Un allarme avvisa 21 giorni prima", "Un inventario elenca tutti i certificati"] }}
+/>
+
 <Say who="sensei">Il tecnico di Officine Bianchi non ha sbagliato per cattiveria. Ha dipinto un calendario sulla memoria di una persona. Non si fa.</Say>
 
 Rimettiamo in ordine il portale di Officine Bianchi. Ecco come ragiona chi progetta bene il rinnovo.
@@ -144,10 +160,10 @@ Rimettiamo in ordine il portale di Officine Bianchi. Ecco come ragiona chi proge
 <Guided
   steps={[
     "Inventario: si elencano tutti i certificati dell'azienda (portale, posta, VPN, strumenti interni). Un certificato che non è in elenco è un certificato che scadrà senza che nessuno lo sappia.",
-    "Automazione: sul server si attiva un client ACME, che chiede il rinnovo da solo quando mancano circa due terzi della vita del certificato.",
+    "Automazione: sul server si attiva un client ACME, che chiede il rinnovo da solo quando manca circa un terzo della vita del certificato.",
     "Chiave nuova: a ogni rinnovo conviene generare anche una coppia di chiavi nuova. La chiave privata resta sul server, leggibile solo dal servizio che la usa.",
     "Controllo: un allarme avvisa se il certificato attivo scade fra meno di 21 giorni, cioè se l'automazione si è inceppata.",
-    "Prova: dopo ogni cambio si apre il sito da più dispositivi e si controlli che la catena sia completa.",
+    "Prova: dopo ogni cambio si apre il sito da più dispositivi e si controlla che la catena sia completa.",
   ]}
 />
 

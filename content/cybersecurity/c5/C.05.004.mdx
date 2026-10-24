@@ -76,6 +76,15 @@ Nel guestbook succede così, a livello di concetto:
 
 Con quei poteri il codice può leggere ciò che la pagina vede, modificare la pagina, e in certi casi usare la sessione del visitatore.
 
+<Flow
+  caption="Il messaggio di Ada arriva al browser di tutti i visitatori."
+  steps={[
+    { icon: "user", title: "Ada", text: "Scrive codice al posto di parole" },
+    { icon: "server", title: "Il sito", text: "Salva e mostra senza neutralizzare" },
+    { icon: "laptop", title: "Visitatori", text: "Il browser esegue il codice" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 La vittima non è il server, ma **chi visita la pagina**. È per questo che si parla di rischio per gli utenti, anche se il difetto sta nel sito.
 </Callout>

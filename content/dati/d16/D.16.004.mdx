@@ -48,6 +48,15 @@ Questa è l'idea del **boosting**: tanti modelli piccoli, uno dopo l'altro, cias
 <Scene title="Un passo alla volta, con i numeri">
 Spese vere: **10, 20, 30** euro.
 
+<Flow
+  caption="Con tasso 0,5, ogni passo toglie metà dell'errore rimasto."
+  steps={[
+    { icon: "chart", title: "Passo 0", text: "20, 20, 20: la media" },
+    { icon: "gear", title: "Passo 1", text: "15, 20, 25" },
+    { icon: "check", title: "Passo 2", text: "17,5, 20, 22,5" },
+  ]}
+/>
+
 **Passo 0.** Previsione uguale per tutti: la media, 20. Gli **errori** (valore vero meno previsione) sono −10, 0, +10.
 
 **Passo 1.** Un piccolo albero impara a prevedere gli errori. Per cautela non applichiamo tutta la correzione, ma solo la metà: il **tasso di apprendimento** vale 0,5. Nuova previsione: 20 + 0,5 × (−10, 0, +10) = **15, 20, 25**.

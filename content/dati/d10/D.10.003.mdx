@@ -57,6 +57,17 @@ Il **funnel** («imbuto») è la strada che un cliente percorre, a passi. Ad ogn
   "5  Completano l'acquisto           300",
 ]} />
 
+<Layers
+  caption="L'imbuto di Tavola Bella: a ogni passo qualcuno si ferma."
+  items={[
+    { icon: "globe", title: "Visitano il sito", text: "10.000" },
+    { icon: "eye", title: "Guardano un prodotto", text: "4.000" },
+    { icon: "folder", title: "Mettono nel carrello", text: "1.000" },
+    { icon: "coin", title: "Arrivano al pagamento", text: "400" },
+    { icon: "check", title: "Completano l'acquisto", text: "300" },
+  ]}
+/>
+
 Vuoi vederlo spiegato da un'altra voce? In italiano, usa solo i primi minuti:
 
 <Video />
@@ -113,6 +124,15 @@ Esempio: 100 clienti nuovi a gennaio.
 - A marzo ne comprano 30 → ritenzione a 2 mesi: **30%**
 
 Il numero è sempre calcolato sul gruppo di partenza (100), non su quelli del mese prima.
+
+<Flow
+  caption="La ritenzione si calcola sempre sul gruppo di partenza."
+  steps={[
+    { icon: "users", title: "Gennaio", text: "100 clienti nuovi" },
+    { icon: "clock", title: "Febbraio", text: "40 tornano: 40%" },
+    { icon: "clock", title: "Marzo", text: "30 tornano: 30%" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Il contrario della ritenzione è l'**abbandono** (in inglese *churn*): se la ritenzione è 40%, l'abbandono è 60%.

@@ -58,6 +58,15 @@ Le regole sono scritte nei documenti del fondo:
 
 Perché queste regole? Perché il fondo investe in strumenti che **non si vendono in un giorno senza perdere valore**. Se tutti uscissero insieme, il fondo dovrebbe svendere.
 
+<Flow
+  caption="Le tre regole di uscita, nell'ordine in cui si incontrano."
+  steps={[
+    { icon: "lock", title: "Lock-up", text: "All'inizio non si può chiedere il rimborso" },
+    { icon: "clock", title: "Preavviso", text: "La richiesta si fa in anticipo (qui 60 giorni)" },
+    { icon: "check", title: "Finestra", text: "Il rimborso arriva solo nella data prevista" },
+  ]}
+/>
+
 <Callout kind="regola">
 Più il fondo investe in cose difficili da vendere, più le regole di uscita sono rigide.
 </Callout>
@@ -100,6 +109,16 @@ Esempio fittizio: il fondo vale **200 milioni**, il gate è **10% a trimestre**.
   "chi chiedeva 5 milioni riceve 40% di 5 = 2 milioni",
   "il resto resta in coda per le date successive",
 ]} />
+
+<Flow
+  caption="Come funziona il gate, con i numeri dell'esempio."
+  steps={[
+    { icon: "users", title: "Richieste", text: "50 milioni in tutto" },
+    { icon: "lock", title: "Gate", text: "10% di 200 = 20 milioni disponibili" },
+    { icon: "coin", title: "Si paga il 40%", text: "20 su 50 della richiesta di ciascuno" },
+    { icon: "clock", title: "Il resto", text: "Resta in coda per le date successive" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Nei momenti di panico le richieste si concentrano: è proprio allora che il gate può scattare. In casi eccezionali un fondo può anche **sospendere** i rimborsi, per proteggere tutti gli investitori.

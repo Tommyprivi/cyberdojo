@@ -86,6 +86,12 @@ Ma i casi veri sono più sottili:
 - una **normalizzazione** con media e deviazione standard calcolate su **tutto** il periodo: il passato «conosce» le statistiche del futuro;
 - un target su 5 giorni, con righe che si sovrappongono tra addestramento e test.
 
+<Compare
+  caption="La domanda da farsi per ogni feature: lo sapevo a fine giornata t?"
+  left={{ title: "Con perdita di dati", points: ["rendimento_domani tra le feature", "Media centrata che include il giorno dopo", "Normalizzazione su tutto il periodo"] }}
+  right={{ title: "Senza perdita di dati", points: ["Solo ciò che si sa a fine giornata t", "Media che guarda solo indietro", "Normalizzazione calcolata solo sull'addestramento"] }}
+/>
+
 <Callout kind="regola">
 Per ogni feature chiediti: **«lo avrei saputo a fine giornata t?»**. Se la risposta è no, o forse, la feature è sospetta.
 </Callout>

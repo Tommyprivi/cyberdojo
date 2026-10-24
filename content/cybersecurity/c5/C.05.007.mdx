@@ -40,7 +40,7 @@ Un'azienda fittizia, «Rossi Servizi», mette online un nuovo sito. Per i test l
 
 Due mesi dopo, un controllo automatico di sicurezza trova **il pannello aperto** a chiunque.
 
-Nessun difetto nel codice. Solo una impostazione dimenticata.
+Nessun difetto nel codice. Solo un'impostazione dimenticata.
 
 La domanda del caso: **come si evitano errori che non stanno nel programma, ma intorno al programma?**
 
@@ -77,6 +77,15 @@ Quasi nessuna applicazione è scritta tutta da zero. Si usano **librerie** e **f
 
 Quando in una libreria viene scoperta una falla, viene pubblicata e prende un identificativo **CVE**. Chi non aggiorna resta esposto a una falla che **tutti conoscono**.
 
+<Flow
+  caption="Come una libreria non aggiornata espone il sito."
+  steps={[
+    { icon: "code", title: "Libreria", text: "Scritta da altri, usata dal sito" },
+    { icon: "bug", title: "Falla", text: "Pubblicata con un codice CVE" },
+    { icon: "clock", title: "Nessun update", text: "La falla è nota a tutti e resta aperta" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Spesso le falle più sfruttate non sono nuovissime: sono falle note da mesi, in sistemi che nessuno ha aggiornato. Aggiornare è noioso, ma è una difesa vera.
 </Callout>
@@ -93,6 +102,16 @@ Una squadra attenta fa quattro cose:
 - usa **strumenti di scansione delle dipendenze** che avvisano quando una versione ha una falla nota;
 - **aggiorna con regolarità**, provando prima su un ambiente di test;
 - ha un **modello di configurazione sicura** ripetibile, uguale in test e in produzione, e lo rivede con una lista di controllo.
+
+<Layers
+  caption="Le quattro abitudini di una squadra attenta."
+  items={[
+    { icon: "file", title: "Inventario", text: "Librerie e versioni usate" },
+    { icon: "search", title: "Scansione", text: "Avvisa delle falle note" },
+    { icon: "clock", title: "Aggiornamenti", text: "Regolari, provati su un ambiente di test" },
+    { icon: "gear", title: "Configurazione sicura", text: "Ripetibile e rivista con una lista" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Aggiornare in fretta senza provare può rompere il sito. Aggiornare mai lascia la porta aperta. La via giusta è un ritmo regolare, con un ambiente di prova.

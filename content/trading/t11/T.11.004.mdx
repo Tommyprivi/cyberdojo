@@ -58,6 +58,12 @@ Addestramento **prima** nel tempo, test **dopo**. Mai il contrario, mai mescolat
 
 La divisione più semplice: i primi 400 giorni su 500 per addestrare (l'80%), gli ultimi 100 per provare.
 
+<Compare
+  caption="Il test deve stare dopo l'addestramento, come nella realtà."
+  left={{ title: "Righe mescolate", points: ["Il test contiene giorni a caso", "L'addestramento vede giorni successivi", "Il modello usa il futuro: prova truccata"] }}
+  right={{ title: "Divisione nel tempo", points: ["Addestramento: i giorni più vecchi", "Test: i giorni più recenti", "Si prevede il futuro con il passato"] }}
+/>
+
 <Say who="assistente">È come studiare per l'esame: puoi usare i compiti già fatti, non le domande che ancora non ci sono.</Say>
 </Scene>
 
@@ -82,6 +88,15 @@ for train, test in TimeSeriesSplit(n_splits=3).split(giorni):
 ]} />
 
 Come si calcola: 10 giorni, 3 finestre di prova, quindi si divide in 4 parti uguali (10 diviso 4, parte intera, fa 2 giorni a finestra). Gli ultimi 3 × 2 = 6 giorni sono i test; quello che resta (4 giorni) è il primo addestramento. A ogni giro l'addestramento **cresce** e include tutto il passato.
+
+<Flow
+  caption="Tre finestre di prova che avanzano nel tempo (giorni 0-9)."
+  steps={[
+    { icon: "clock", title: "Primo giro", text: "Addestra 0-3, prova 4-5" },
+    { icon: "clock", title: "Secondo giro", text: "Addestra 0-5, prova 6-7" },
+    { icon: "clock", title: "Terzo giro", text: "Addestra 0-7, prova 8-9" },
+  ]}
+/>
 
 Vuoi vederlo spiegato da un'altra voce? Meno di sette minuti, in inglese con i sottotitoli:
 

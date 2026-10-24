@@ -90,6 +90,12 @@ Due controlli rispondono al caso del giovedì:
 - **Freschezza**: quanto è vecchio l'ultimo dato? Se il sito dovrebbe mandare ordini ogni minuto e l'ultimo è di 6 ore fa, qualcosa non va.
 - **Volume**: quante righe sono arrivate oggi rispetto al solito? Mille al giorno e oggi dodici: allarme.
 
+<Compare
+  caption="Stesso giovedì, con e senza controlli sul contenuto dei dati."
+  left={{ title: "Solo compiti verdi", points: ["12 ordini invece di mille", "Nessun errore, nessun avviso", "Il crollo lo scopre il capo"] }}
+  right={{ title: "Con controlli sui dati", points: ["Volume: 12 righe contro le solite mille", "Freschezza: ultimo dato vecchio di ore", "Avviso subito, prima del report"] }}
+/>
+
 <Callout kind="trucco">
 Per il volume non usare un numero fisso: confronta con lo **storico** (stesso giorno della settimana, ultime settimane). Il sabato è diverso dal lunedì.
 </Callout>
@@ -107,6 +113,16 @@ Un'altra voce parla di tutto questo come di **osservabilità dei dati**:
 L'**osservabilità dei dati** è la capacità di vedere in ogni momento **lo stato di salute** dei dati: freschezza, volume, forma delle tabelle (colonne cambiate?), distribuzione dei valori e **da dove vengono** (la «linea di discendenza»).
 
 Quando qualcosa non va, parte un **avviso** (email, messaggio in chat) a una persona precisa.
+
+<Flow
+  caption="Un avviso utile arriva a una persona che sa che cosa fare."
+  steps={[
+    { icon: "search", title: "Controllo", text: "Freschezza, volume, forma" },
+    { icon: "bell", title: "Avviso", text: "Email o messaggio in chat" },
+    { icon: "user", title: "Responsabile", text: "Una persona precisa" },
+    { icon: "check", title: "Correzione", text: "Si sistema la causa" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Troppi avvisi inutili e la squadra smette di leggerli. È come il pastore che gridava «al lupo»: quando il lupo arriva davvero, nessuno guarda. Meglio pochi avvisi, importanti, con un **responsabile** e un **che cosa fare**.

@@ -85,6 +85,15 @@ Per i **dati personali** (nome, email, telefono, codice fiscale) valgono le rego
   "FROM clienti;",
 ]} />
 
+<Flow
+  caption="La vista mostra all'analista solo le colonne che gli servono."
+  steps={[
+    { icon: "database", title: "Tabella clienti", text: "Con email e telefono" },
+    { icon: "eye", title: "Vista", text: "Solo id_cliente e citta" },
+    { icon: "user", title: "Analista", text: "Non vede i dati riservati" },
+  ]}
+/>
+
 L'analista interroga `clienti_analisti` e **non vede mai** email e telefono, che restano nella tabella `clienti`, accessibile solo a chi ne ha bisogno.
 
 <Callout kind="regola">
@@ -109,6 +118,12 @@ Un esempio con prezzi **inventati**: 5 euro per ogni terabyte (TB) letto. Una qu
   "SELECT pagina FROM clic;            -> legge 1 colonna su 20",
   "                                    -> circa 0,1 TB -> 0,1 x 5 = 0,5 euro",
 ]} />
+
+<Compare
+  caption="Stessa tabella da 2 TB, due modi di interrogarla (prezzi inventati)."
+  left={{ title: "SELECT *", points: ["Legge 2 TB", "10 euro per ogni esecuzione", "720 volte al mese: 7200 euro"] }}
+  right={{ title: "Una colonna sola", points: ["Legge circa 0,1 TB", "0,5 euro per ogni esecuzione", "720 volte al mese: 360 euro"] }}
+/>
 
 Ripetuta ogni ora per un mese (720 volte), la prima costa 7200 euro, la seconda 360 euro.
 

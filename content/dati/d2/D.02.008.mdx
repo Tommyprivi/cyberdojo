@@ -72,6 +72,15 @@ Tre abitudini:
 2. **Un foglio per scopo**: uno per i **dati**, uno per i **calcoli**, uno per il **report** con grafici e pivot. Così i dati non si rovinano per sbaglio.
 3. **Niente numeri nascosti**: `=B2*1,22` nasconde l'IVA dentro la formula. Se l'IVA cambia, chi la trova? Mettila in una cella etichettata «IVA» e richiamala.
 
+<Flow
+  caption="Un foglio per scopo: i dati non si toccano per sbaglio."
+  steps={[
+    { icon: "database", title: "Dati", text: "Le righe originali" },
+    { icon: "gear", title: "Calcoli", text: "Formule che leggono i dati" },
+    { icon: "chart", title: "Report", text: "Grafici e pivot da mostrare" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Ogni numero che può cambiare sta in una cella con un'etichetta. Dentro le formule restano solo operazioni e riferimenti.
 </Callout>

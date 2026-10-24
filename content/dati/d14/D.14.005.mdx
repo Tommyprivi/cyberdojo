@@ -52,6 +52,12 @@ Un **orchestratore** (strumenti come Apache Airflow, o simili) esegue il workflo
 
 <Log lines={["raccogli_vendite  ->  pulisci_dati  ->  calcola_totali  ->  pubblica_report", "se pulisci_dati fallisce: calcola_totali e pubblica_report NON partono, e arriva un avviso"]} caption="Un workflow in forma di schema. Esempio fittizio." />
 
+<Compare
+  caption="Lo stesso report delle 06:00, con orario fisso o con dipendenze."
+  left={{ title: "Orario fisso", points: ["Parte alle 06:00 anche se i dati non sono pronti", "Il report usa i dati di ieri", "Nessuno se ne accorge"] }}
+  right={{ title: "Dipendenze", points: ["Parte quando i dati sono pronti", "Se un passo fallisce, i successivi non partono", "Arriva un avviso"] }}
+/>
+
 <Callout kind="regola">
 L'orchestratore non fa il lavoro dei dati: **decide quando e in che ordine** si fa, e che cosa accade se va male.
 </Callout>
@@ -69,6 +75,15 @@ Un cambiamento non si prova mai dove lavorano tutti. Si usano **ambienti** separ
 - **produzione**: dove girano i lavori veri.
 
 Con dati di persone vere si fa attenzione: in sviluppo si usano dati fittizi o resi anonimi, per il GDPR.
+
+<Layers
+  caption="Tre ambienti separati: si sbaglia solo nel primo."
+  items={[
+    { icon: "code", title: "Sviluppo", text: "Si scrive e si sbaglia" },
+    { icon: "bug", title: "Prova", text: "Si verifica con dati di test" },
+    { icon: "server", title: "Produzione", text: "Girano i lavori veri" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Provare «un attimo» in produzione è come provare un paracadute nuovo durante il primo salto vero.
@@ -106,6 +121,15 @@ Anche la pipeline è codice, quindi si tratta come tale:
 1. **Versionare**: ogni modifica viene salvata con la sua storia (con uno strumento come Git), con una persona che la rilegge.
 2. **Testare**: controlli automatici su piccoli dati di esempio (le colonne ci sono? i totali tornano? nessun valore vuoto dove non deve?).
 3. **Rilasciare**: se i test passano, la modifica passa in produzione in modo ordinato; se qualcosa va storto, si torna alla versione precedente.
+
+<Flow
+  caption="Una pipeline è codice: si versiona, si testa, si rilascia."
+  steps={[
+    { icon: "book", title: "Versiona", text: "Con Git, rilettura di un'altra persona" },
+    { icon: "bug", title: "Testa", text: "Controlli su dati di esempio" },
+    { icon: "bolt", title: "Rilascia", text: "Si può tornare indietro" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Rilasciare spesso, a piccoli passi, è più sicuro che rilasciare ogni tre mesi un cambiamento enorme: se qualcosa si rompe, sai che cosa è stato.

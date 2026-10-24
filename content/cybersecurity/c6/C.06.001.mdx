@@ -152,6 +152,15 @@ Nella tabella `clienti` di Marta ci sono nomi, indirizzi, email. Un `SELECT * FR
 
 Il sito costruisce domande come questa ogni volta che qualcuno entra, cerca, ordina. Se qualcuno riuscisse a cambiare la domanda, potrebbe farsi dare molto più del dovuto.
 
+<Flow
+  caption="Il sito è la porta, il database è la cassaforte."
+  steps={[
+    { icon: "user", title: "Visitatore", text: "Cerca, entra, ordina" },
+    { icon: "globe", title: "Sito", text: "Costruisce la domanda" },
+    { icon: "database", title: "Database", text: "Risponde con i dati" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Per questo i database sono tra i sistemi più importanti da difendere: le difese dei prossimi capitoli (query sicure, permessi, backup, cifratura) partono tutte da qui.
 </Callout>

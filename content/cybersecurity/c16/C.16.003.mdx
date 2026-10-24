@@ -56,6 +56,16 @@ Come il **cappotto al guardaroba**: il numero non dice nulla da solo, il guardar
 - Per **chiudere** l'accesso basta cancellare la riga: effetto immediato.
 - Costo: il server deve **ricordare** tutte le sessioni (un archivio condiviso se i server sono molti).
 
+<Flow
+  caption="La sessione: il server ricorda, il browser porta un numero."
+  steps={[
+    { icon: "lock", title: "Login", text: "Marco entra nell'app" },
+    { icon: "database", title: "Registro", text: "Il server crea una riga per la sessione" },
+    { icon: "key", title: "Cookie", text: "Il browser riceve solo il numero" },
+    { icon: "check", title: "Controllo", text: "A ogni richiesta il server guarda il registro" },
+  ]}
+/>
+
 <Callout kind="regola">
 Sessione = lo **stato sta sul server**; il cliente porta solo un numero imprevedibile.
 </Callout>
@@ -73,6 +83,12 @@ Come il **biglietto del treno con data e timbro**: il controllore non chiama la 
 - Pro: nessun archivio da consultare, comodo con molte API e molti servizi.
 - Contro: **revocarlo prima della scadenza è difficile**. Per questo il telefono di Marco ha ancora un'ora di vita.
 - Mitigazioni: token di accesso **brevi** (minuti) più un **refresh token** (più durevole, custodito meglio, con cambio a ogni uso) e, se serve, una **lista di token revocati**.
+
+<Compare
+  caption="Stesso «disattiva utente», effetti diversi."
+  left={{ title: "Con il token", points: ["Il telefono funziona ancora per un'ora", "Il server non tiene nessun registro", "Revocare prima della scadenza è difficile"] }}
+  right={{ title: "Con la sessione", points: ["Cancelli la riga: accesso chiuso subito", "Il server deve ricordare ogni sessione", "Serve un archivio condiviso se i server sono molti"] }}
+/>
 
 <Say who="sensei">Un biglietto non si richiama indietro. Si fa in modo che scada presto.</Say>
 </Scene>

@@ -64,6 +64,15 @@ Nei team di dati ci sono tre mestieri vicini.
 - L'**analista** risponde alle domande e costruisce grafici e report.
 - L'**analytics engineer** sta in mezzo: prende i dati arrivati nel magazzino e li trasforma in tabelle **pulite, documentate e testate**, con le regole dell'azienda scritte una volta sola.
 
+<Flow
+  caption="Tre mestieri vicini lungo la strada del dato."
+  steps={[
+    { icon: "server", title: "Data engineer", text: "Porta i dati nel magazzino" },
+    { icon: "gear", title: "Analytics engineer", text: "Li trasforma in tabelle pulite e testate" },
+    { icon: "chart", title: "Analista", text: "Risponde alle domande con grafici e report" },
+  ]}
+/>
+
 Un'immagine: il data engineer porta la farina al magazzino, l'analista serve la pizza al cliente, l'analytics engineer prepara l'impasto in modo che ogni pizza venga uguale.
 
 <Callout kind="regola">
@@ -88,6 +97,12 @@ Il rimedio è scrivere la regola una volta, come una query SQL salvata in un fil
 ]} caption="La regola «incasso = solo ordini pagati» scritta in un posto solo." />
 
 Messo in **Git** (il sistema che ricorda ogni versione di un file), questo file ha una storia: chi l'ha scritto, quando è cambiato, perché. Un collega può **rivedere** la modifica prima che arrivi a tutti.
+
+<Compare
+  caption="Dove sta la regola di calcolo."
+  left={{ title: "Fogli sparsi", points: ["Ognuno ha la sua copia", "Nessuno vede il calcolo degli altri", "Non si sa chi ha cambiato cosa"] }}
+  right={{ title: "Regola in un file", points: ["Scritta una volta sola", "Con la storia in Git", "Rivista da un collega"] }}
+/>
 
 <Callout kind="trucco">
 Domanda-test per una regola di calcolo: «se Giulia è in ferie, il collega può trovarla, leggerla e cambiarla in modo controllato?» Se la risposta è no, la regola è ancora in un foglio sparso.

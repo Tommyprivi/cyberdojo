@@ -42,6 +42,12 @@ Marta chiede: «E la leva? Hai 160 di posizioni su 100 di capitale».
 
 La domanda del caso: **che cosa dicono due numeri diversi, netta e lorda?**
 
+<Compare
+  caption="Quello che dice il gestore e quello che dicono i numeri."
+  left={{ title: "Le parole", points: ["«Siamo neutrali»", "«Il mercato non ci riguarda»"] }}
+  right={{ title: "I numeri", points: ["Netta: 80 - 80 = 0%", "Lorda: 160% del capitale, cioè leva 1,6"] }}
+/>
+
 <Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. «Neutrale» è una parola. I numeri sono un'altra cosa.</Say>
 </Scene>
 
@@ -62,6 +68,16 @@ Convenzione: tutto in percentuale del capitale (NAV).
   "lorda  = 120 + 70 = 190%",
   "leva lorda = 1,9 volte il capitale",
 ]} />
+
+<Flow
+  caption="Dalle posizioni alle due esposizioni, con i numeri dell'esempio."
+  steps={[
+    { icon: "chart", title: "Lunghe", text: "120% del capitale" },
+    { icon: "warning", title: "Corte", text: "70% del capitale" },
+    { icon: "globe", title: "Netta", text: "120 - 70 = 50%" },
+    { icon: "gear", title: "Lorda", text: "120 + 70 = 190%" },
+  ]}
+/>
 
 <Say who="assistente">Due somme diverse, due domande diverse. La prima: quanto mercato ho addosso? La seconda: quanta leva?</Say>
 </Scene>
@@ -86,7 +102,7 @@ Netta zero non vuol dire nessun rischio: lunghe e corte possono muoversi in modo
 
 {/* screen */}
 
-<Scene title="Che cosa dice la lorda e le corte">
+<Scene title="Che cosa dicono la lorda e le corte">
 La lorda dice quanta **leva** si usa e quante posizioni sono in gioco. Netta 0% e lorda 160% sono diverse da netta 0% e lorda 20%: nel primo caso gli errori di selezione costano molto di più.
 
 <Callout kind="attenzione">

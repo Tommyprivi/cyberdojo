@@ -40,6 +40,17 @@ Torniamo al guestbook di «Gatti di Quartiere». La sviluppatrice, Giulia, ha co
 
 La domanda del caso: **come si costruisce un'applicazione che non dipende da una sola difesa?**
 
+<Layers
+  caption="Le difese a strati del guestbook, una sopra l'altra."
+  items={[
+    { icon: "check", title: "Validare l'input", text: "Entra solo ciò che è ammesso" },
+    { icon: "code", title: "Codificare l'output", text: "Un dato non diventa comando" },
+    { icon: "lock", title: "Intestazioni e cookie", text: "CSP, HttpOnly, Secure, SameSite" },
+    { icon: "shield", title: "WAF", text: "Filtra le richieste note" },
+    { icon: "clock", title: "Aggiornamenti", text: "Librerie e sistema sempre in regola" },
+  ]}
+/>
+
 <Say who="sensei">Una cinta di mura sola cade al primo colpo. Un buon castello ne ha tre. Si chiama difesa a strati.</Say>
 </Scene>
 
@@ -96,6 +107,15 @@ Serve per:
 - avere un punto dove osservare ciò che arriva.
 
 Ma ha limiti: un WAF può essere aggirato, può bloccare richieste legittime, e **non corregge** il difetto dietro di sé.
+
+<Flow
+  caption="Il WAF sta davanti all'applicazione, ma non ripara il difetto."
+  steps={[
+    { icon: "globe", title: "Internet", text: "Richieste di tutti" },
+    { icon: "shield", title: "WAF", text: "Blocca ciò che somiglia ad attacchi noti" },
+    { icon: "server", title: "Applicazione", text: "Il difetto resta da correggere" },
+  ]}
+/>
 
 Poi ci sono gli **aggiornamenti**: librerie, framework, sistema operativo, aggiornati con regolarità. È la difesa meno vistosa e una delle più efficaci.
 

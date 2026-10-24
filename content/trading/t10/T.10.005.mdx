@@ -60,6 +60,12 @@ Gli errori si dividono in due famiglie, e vanno trattati in modo diverso:
 Riprova solo ciò che può cambiare da solo (429 e 5xx). Se la richiesta è sbagliata, ripeterla cento volte la rende sbagliata cento volte.
 </Callout>
 
+<Compare
+  caption="Non tutti gli errori si trattano allo stesso modo."
+  left={{ title: "Errori 4xx (non 429)", points: ["La richiesta o la chiave è sbagliata", "Riprovare è inutile", "Si corregge il codice o la chiave"] }}
+  right={{ title: "429 e errori 5xx", points: ["Il problema può passare da solo", "Si aspetta e si riprova", "Con un massimo di tentativi"] }}
+/>
+
 <Say who="assistente">Un 4xx dice «è colpa tua». Un 5xx dice «è colpa mia, riprova più tardi». Un 429 dice «piano».</Say>
 </Scene>
 
@@ -71,6 +77,16 @@ Quando si riprova, si aspetta un po', poi il doppio, poi il doppio ancora. Si ch
 <PythonTerminal code={"attesa = 1\nfor tentativo in range(1, 5):\n    print('tentativo', tentativo, 'attendo', attesa, 'secondi')\n    attesa = attesa * 2"} />
 
 Risultato atteso: attese di 1, 2, 4 e 8 secondi.
+
+<Flow
+  caption="Ogni attesa raddoppia, e a un certo punto ci si ferma."
+  steps={[
+    { icon: "clock", title: "Tentativo 1", text: "Attesa: 1 secondo" },
+    { icon: "clock", title: "Tentativo 2", text: "Attesa: 2 secondi" },
+    { icon: "clock", title: "Tentativo 3", text: "Attesa: 4 secondi" },
+    { icon: "clock", title: "Tentativo 4", text: "Attesa: 8 secondi" },
+  ]}
+/>
 
 Alcuni broker mandano l'header `Retry-After`, che dice quanti secondi aspettare: in quel caso si ubbidisce a lui.
 

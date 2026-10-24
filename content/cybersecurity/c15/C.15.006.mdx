@@ -42,6 +42,16 @@ Poche ore dopo qualcuno prova a entrare, con la stessa password, nella sua posta
 
 La domanda del caso: **come si evita che un errore di un sito apra tutti gli altri, e perché le passkey nascono per risolvere il problema alla radice?**
 
+<Flow
+  caption="Come l'errore di un sito apre gli altri."
+  steps={[
+    { icon: "globe", title: "Sito di ricette", text: "Subisce una fuga di dati" },
+    { icon: "key", title: "Password in rete", text: "Quella di Elena è tra le rubate" },
+    { icon: "mail", title: "Posta di lavoro", text: "Stessa password, altro sito" },
+    { icon: "warning", title: "Credential stuffing", text: "Un solo errore apre tutto" },
+  ]}
+/>
+
 <Say who="sensei">La password è un segreto condiviso: lo sa l'utente e lo sa il sito. Se il sito lo perde, il segreto non è più tuo.</Say>
 </Scene>
 
@@ -74,6 +84,12 @@ Una **passkey** cambia il modello. Non c'è più una password condivisa: c'è un
 2. Al sito va la **chiave pubblica**. La **chiave privata** resta nel tuo dispositivo (o nel tuo gestore) e non viene mai inviata.
 3. Per accedere, il sito manda una **sfida** casuale. Il dispositivo la **firma** con la chiave privata, dopo che tu ti sei sbloccato con impronta, volto o PIN del dispositivo.
 4. Il sito controlla la firma con la chiave pubblica.
+
+<Compare
+  caption="Password e passkey: che cosa può rubare chi attacca."
+  left={{ title: "Password", points: ["Segreto condiviso con il sito", "Se il sito lo perde, non è più tuo", "Un sito falso può farsela digitare"] }}
+  right={{ title: "Passkey", points: ["Coppia di chiavi solo per quel sito", "La chiave privata non lascia il dispositivo", "Legata al dominio vero: il phishing non funziona"] }}
+/>
 
 Lo standard si chiama **WebAuthn** (parte della famiglia **FIDO2**).
 

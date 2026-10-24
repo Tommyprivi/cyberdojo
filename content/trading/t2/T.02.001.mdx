@@ -69,6 +69,15 @@ Ecco cinque giornate fittizie di Forno Rossi (prezzi in euro, volume in azioni):
 | Giovedì | 10,10 | 11,00 | 10,00 | 10,90 | 30000 |
 | Venerdì | 10,90 | 11,00 | 10,50 | 10,60 | 14000 |
 
+<Flow
+  caption="Da una giornata di scambi a quattro numeri."
+  steps={[
+    { icon: "clock", title: "La giornata", text: "Il prezzo si muove di continuo" },
+    { icon: "file", title: "Quattro prezzi", text: "Apertura, massimo, minimo, chiusura" },
+    { icon: "chart", title: "Una candela", text: "Il disegno di quei quattro prezzi" },
+  ]}
+/>
+
 <Say who="assistente">Il massimo non può mai essere sotto il minimo. Se lo vedi, i dati sono sbagliati.</Say>
 </Scene>
 
@@ -109,7 +118,7 @@ Prova a farlo fare a Python. Cambia i numeri e premi Esegui:
 {/* screen */}
 
 <Scene title="Il volume">
-Il **volume** è quante azioni sono state scambiate nel periodo. Giovedì: 30000, più del doppio degli altri giorni.
+Il **volume** è quante azioni sono state scambiate nel periodo. Giovedì: 30000, almeno il doppio di qualsiasi altro giorno.
 
 Vuoi sentirlo spiegare da un'altra voce? Qualche minuto sulle candele e su come si leggono:
 

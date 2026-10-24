@@ -54,6 +54,12 @@ La **same-origin policy** è la regola di fondo del browser: **uno script di una
 
 Ma la regola riguarda la **lettura**. Mandare richieste verso altri siti, per esempio caricando un'immagine o un modulo, il browser lo fa comunque.
 
+<Compare
+  caption="La same-origin policy riguarda la lettura, non l'invio."
+  left={{ title: "Parte comunque", points: ["Richieste verso altri siti: immagini, moduli", "Il browser le manda lo stesso"] }}
+  right={{ title: "Viene bloccato", points: ["Gli script non leggono le risposte di altre origini", "Il sito dei gattini non legge il tuo conto"] }}
+/>
+
 <Callout kind="regola">
 Same-origin policy: gli script non **leggono** le risposte di altre origini. Non vuol dire che le richieste non partano.
 </Callout>
@@ -98,6 +104,16 @@ Per le richieste «delicate» il browser fa prima una domanda preliminare (**pre
 1. Il sito si fida di un **cookie** che il browser allega da solo.
 2. Esiste un'azione che **cambia qualcosa** (cambio IBAN, cambio email, bonifico).
 3. Un estraneo può **indovinare tutti i parametri** della richiesta.
+
+<Flow
+  caption="Il caso di Giulia, passo per passo."
+  steps={[
+    { icon: "user", title: "Giulia", text: "È collegata a BancaNord" },
+    { icon: "globe", title: "Sito di gattini", text: "Un'immagine invisibile chiama la banca" },
+    { icon: "key", title: "Cookie allegato", text: "Il browser manda la sessione da solo" },
+    { icon: "warning", title: "Azione eseguita", text: "La banca cambia l'IBAN" },
+  ]}
+/>
 
 Le difese si mettono su uno di questi tre punti:
 

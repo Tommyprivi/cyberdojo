@@ -65,6 +65,16 @@ Il **track record** è la storia dei risultati di un fondo. Per leggerlo, i rend
   ]}
 />
 
+<Flow
+  caption="Il valore di 100 euro anno dopo anno: i rendimenti si compongono."
+  steps={[
+    { icon: "coin", title: "Inizio", text: "100 euro" },
+    { icon: "chart", title: "Anno 1: +20%", text: "Diventano 120" },
+    { icon: "warning", title: "Anno 2: -10%", text: "Diventano 108" },
+    { icon: "chart", title: "Anno 3: +5%", text: "Diventano 113,4" },
+  ]}
+/>
+
 <Callout kind="regola">
 I rendimenti di anni diversi **non si sommano**: si moltiplicano i fattori (1,20 × 0,90 × 1,05 = 1,134).
 </Callout>
@@ -109,6 +119,16 @@ Prima di fidarsi di una storia di risultati, controlla:
 - **Sopravvivenza**: se nelle statistiche restano solo i fondi sopravvissuti, i risultati sembrano più belli, perché i fondi chiusi sono spariti.
 - **Rischio**: l'indice di Sharpe misura quanto si guadagna per ogni unità di rischio. Con rendimento 8%, tasso privo di rischio 2%, volatilità 10%: (8 - 2) / 10 = **0,6**.
 - **Controllo**: un track record certificato da revisore e amministratore indipendenti vale più di uno solo dichiarato.
+
+<Flow
+  caption="Dal rendimento lordo a quello netto, con i numeri dell'esempio."
+  steps={[
+    { icon: "chart", title: "Lordo", text: "12 su 100 euro" },
+    { icon: "cross", title: "Gestione", text: "-2" },
+    { icon: "cross", title: "Performance", text: "20% di 12 = -2,4" },
+    { icon: "check", title: "Netto", text: "7,6%" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 I risultati passati non garantiscono quelli futuri. Un bel track record può essere fortuna.

@@ -68,6 +68,16 @@ Il listino sta in **A1:C5**:
 
 Il numero di colonna conta dentro l'intervallo: A è la 1, B la 2, C la 3. L'ultimo argomento, **FALSO**, chiede la corrispondenza **esatta**.
 
+<Flow
+  caption="Come lavora CERCA.VERT con il codice C3."
+  steps={[
+    { icon: "search", title: "Cerca", text: "Il codice «C3»" },
+    { icon: "folder", title: "Prima colonna", text: "Lo trova nella riga 4" },
+    { icon: "link", title: "Stessa riga", text: "Va alla colonna 3" },
+    { icon: "coin", title: "Risultato", text: "Prezzo: 80" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Se dimentichi FALSO, il foglio cerca il valore «più vicino» e può restituire un risultato sbagliato senza avvisarti. Scrivilo sempre.
 </Callout>

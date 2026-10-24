@@ -148,6 +148,15 @@ Prendi l'ordine numero 6 e ricostruisci chi ha comprato che cosa, passando da un
   ]}
 />
 
+<Flow
+  caption="L'ordine 6 passa da due tabelle per dire chi ha comprato cosa."
+  steps={[
+    { icon: "file", title: "Ordine 6", text: "cliente_id 4, prodotto_id 2" },
+    { icon: "user", title: "Clienti", text: "id 4: Luca Riva, Roma" },
+    { icon: "folder", title: "Prodotti", text: "id 2: sapone lavanda, 6.00" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Quando in SQL scriverai un **JOIN** (lo vedrai nella lezione 5), farai fare al database proprio questo lavoro: seguire le frecce da una tabella all'altra.
 </Callout>

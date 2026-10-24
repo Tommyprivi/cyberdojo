@@ -83,6 +83,12 @@ Funziona così: l'applicazione identifica un oggetto con un valore che l'utente 
   "GET /referti/5822   (utente: Marta)   ->  403, accesso negato        <-- corretto",
 ]} />
 
+<Compare
+  caption="Lo stesso indirizzo, con e senza controllo di proprietà."
+  left={{ title: "Senza controllo", points: ["/referti/5822 mostra il referto di un altro", "Il sito sa chi sei, non di chi è l'oggetto"] }}
+  right={{ title: "Con controllo", points: ["Il server verifica il proprietario", "Risposta 403: accesso negato"] }}
+/>
+
 <Callout kind="attenzione">
 Usare identificativi lunghi e casuali al posto dei numeri progressivi rende più difficile **indovinarli**, ma non sostituisce il controllo. Se qualcuno scopre un identificativo, il sito deve comunque rifiutare.
 </Callout>
@@ -98,6 +104,15 @@ La difesa è una sola idea: **ogni richiesta viene controllata lato server**, co
 - «L'utente collegato è il proprietario di questo oggetto?»
 - «Il suo ruolo (cliente, operatore, amministratore) permette questa azione?»
 - Per impostazione predefinita, **nega**: si apre solo ciò che è esplicitamente permesso.
+
+<Flow
+  caption="Il controllo lato server, a ogni richiesta."
+  steps={[
+    { icon: "mail", title: "Richiesta", text: "L'utente chiede un oggetto" },
+    { icon: "shield", title: "Controllo", text: "Identità dalla sessione: è suo? Il ruolo basta?" },
+    { icon: "check", title: "Risposta", text: "Sì: lo mostra. No: lo nega" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Non basta nascondere il pulsante «Elimina» agli utenti normali. Se la funzione esiste sul server senza controllo, qualcuno può richiederla direttamente.

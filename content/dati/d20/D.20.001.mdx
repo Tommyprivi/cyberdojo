@@ -82,6 +82,15 @@ Per sapere **chi** ha fatto l'evento servono due identificatori, che spesso si c
 
 Una persona ha **un** utente e **tante** sessioni.
 
+<Layers
+  caption="Tre unità di conto diverse: non vanno confuse."
+  items={[
+    { icon: "user", title: "Utente", text: "La persona (o il suo browser), nel tempo" },
+    { icon: "clock", title: "Sessione", text: "Una singola visita" },
+    { icon: "bolt", title: "Evento", text: "Una singola azione dentro la visita" },
+  ]}
+/>
+
 <Log lines={[
   "utente   sessione   evento",
   "U1       S1         visita_pagina",
@@ -118,6 +127,12 @@ Regole per i **nomi coerenti**:
 - sempre minuscolo, con il trattino basso, senza spazi;
 - sempre **verbo o azione** (`acquisto`, non `pagina_acquisti_ok`);
 - sempre la stessa lingua; mai `AddToCart` in un punto e `aggiunta_carrello` in un altro.
+
+<Compare
+  caption="Lo stesso gesto, con nomi diversi o con un nome solo."
+  left={{ title: "Nomi incoerenti", points: ["aggiunta_carrello sul sito, AddToCart nell'app", "Per lo strumento sono due eventi diversi", "Il totale va sommato a mano"] }}
+  right={{ title: "Piano di tracciamento", points: ["Un solo nome per ogni azione", "I dettagli stanno nelle proprietà", "Un conteggio solo, già corretto"] }}
+/>
 
 Vuoi sentire un altro spiegare come funzionano gli eventi? Il video è in italiano, bastano i primi minuti:
 

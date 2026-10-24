@@ -34,7 +34,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="La stampante dei guai">
+<Scene title="La telecamera dei guai">
 Una telecamera nella VLAN 30 comincia a mandare pacchetti strani verso il server dei dati, nella rete interna. Il capo del SOC dice: «Le VLAN le abbiamo. Ma il router le collega senza controlli: la telecamera arriva dove vuole.»
 
 Adesso servono le **regole**. Su un router si scrivono con le **ACL**.
@@ -81,6 +81,16 @@ Il router legge la ACL **dall'alto verso il basso** e si ferma alla **prima rego
 />
 
 Prova a invertire le righe: con `permit ip any any` in cima, la regola 10 non viene **mai** letta, e la telecamera passa. Stesse regole, ordine diverso, risultato opposto.
+
+<Flow
+  caption="Il router legge la ACL dall'alto e si ferma alla prima regola che corrisponde."
+  steps={[
+    { icon: "mail", title: "Pacchetto", text: "Arriva sull'interfaccia" },
+    { icon: "search", title: "Dall'alto", text: "Confronta le regole una per una" },
+    { icon: "check", title: "Prima che combacia", text: "Permit o deny: finisce lì" },
+    { icon: "shield", title: "Nessuna?", text: "Deny implicito: scartato" },
+  ]}
+/>
 
 <Say who="sensei">L'ordine è metà della sicurezza. Una regola giusta nel posto sbagliato non serve a niente.</Say>
 </Scene>

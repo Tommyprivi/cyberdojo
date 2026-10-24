@@ -66,6 +66,15 @@ Chiusure inventate: 10, 12, 14, 16, 18, 20. Media mobile a **3 giorni**:
   "6       20        (16+18+20)/3 = 18",
 ]} />
 
+<Flow
+  caption="Come scorre la finestra della media mobile."
+  steps={[
+    { icon: "chart", title: "Entra il nuovo", text: "Il prezzo di oggi" },
+    { icon: "clock", title: "Esce il vecchio", text: "Il prezzo più lontano" },
+    { icon: "gear", title: "Nuova media", text: "Somma ÷ N" },
+  ]}
+/>
+
 I primi due giorni non hanno la media: mancano dati per riempire la finestra.
 
 <Callout kind="regola">
@@ -129,7 +138,7 @@ Si usano spesso **due medie**: una **veloce** (finestra corta) e una **lenta** (
 In un mercato **laterale** (il prezzo va su e giù senza direzione) le due medie si incrociano di continuo: tanti **falsi segnali**. In un trend l'incrocio arriva **tardi**, perché le medie seguono il prezzo.
 </Callout>
 
-La scelta di N è sempre un compromesso: finestra corta = reattiva ma nervosa; lunga = calma ma lenta. E provare tante finestre fino a trovare quella «perfetta» sui dati passati è un modo per ingannare se stessi: ne parleremo parlando di overfitting.
+La scelta di N è sempre un compromesso: finestra corta = reattiva ma nervosa; lunga = calma ma lenta. E provare tante finestre fino a trovare quella «perfetta» sui dati passati è un modo per ingannare se stessi: ne parleremo più avanti, a proposito di overfitting.
 
 <Say who="assistente">Un incrocio dice cosa è già successo alle medie. Non promette cosa succederà al prezzo.</Say>
 </Scene>

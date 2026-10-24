@@ -175,6 +175,16 @@ Porta: 22
 
 Le funzioni di conversione sono `int()`, `float()`, `str()` e `bool()`. Attenzione ai casi limite: `int(3.9)` dà `3` (taglia, non arrotonda) e `int("ventidue")` dà `ValueError`: il testo non è un numero.
 
+<Flow
+  caption="Dal TypeError alla soluzione."
+  steps={[
+    { icon: "code", title: "Il testo", text: "porta contiene il testo 22" },
+    { icon: "warning", title: "La somma", text: "porta + 1 mescola testo e numero" },
+    { icon: "bolt", title: "TypeError", text: "Tipo sbagliato per l'operazione" },
+    { icon: "check", title: "Conversione", text: "int(porta) + 1 dà 23" },
+  ]}
+/>
+
 <Say who="sensei">Quando vedi TypeError, chiediti: di che tipo è ciascun valore? Quasi sempre uno dei due è testo.</Say>
 </Scene>
 

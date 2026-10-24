@@ -61,6 +61,16 @@ Nel modulo C2 hai visto la firma digitale. Applicata al software funziona così:
   "firmatario nel certificato = Gestionale Verde Srl (catena valida)",
 ]} />
 
+<Flow
+  caption="Come si firma e come si verifica un programma."
+  steps={[
+    { icon: "code", title: "Hash", text: "L'autore calcola l'impronta del programma" },
+    { icon: "key", title: "Firma", text: "Cifra l'hash con la chiave privata" },
+    { icon: "folder", title: "Pubblicazione", text: "Programma, firma e certificato" },
+    { icon: "check", title: "Verifica", text: "Chi installa ricalcola e confronta" },
+  ]}
+/>
+
 <Callout kind="regola">
 La firma garantisce **integrità** (non modificato) e **autenticità** (viene da chi dice). Non garantisce che il codice sia **privo di difetti** né **buono**.
 </Callout>
@@ -79,6 +89,12 @@ Per questo si protegge così:
 - Pochi ruoli possono firmare, e solo dalla **pipeline di build** controllata, non dal portatile di uno sviluppatore.
 - Si firma con un **timestamp**, un'ora certificata da terzi: la firma resta valida anche dopo la scadenza del certificato, perché prova che è stata fatta quando il certificato era valido.
 - Si usa un certificato di firma **dedicato**, con una durata breve, e si può **revocare** se c'è un sospetto.
+
+<Compare
+  caption="Dove tenere la chiave di firma."
+  left={{ title: "Chiave sul portatile", points: ["Chi ruba la chiave firma programmi dannosi", "Quei programmi sembrano ufficiali"] }}
+  right={{ title: "Chiave in un HSM", points: ["I programmi chiedono la firma, non vedono la chiave", "Si firma solo dalla pipeline di build controllata", "Timestamp, certificato dedicato e revocabile"] }}
+/>
 
 <Callout kind="attenzione">
 Se una chiave di firma è compromessa, si revoca il certificato **e si avvisano i clienti**: le firme fatte con quella chiave non sono più affidabili da quel momento.

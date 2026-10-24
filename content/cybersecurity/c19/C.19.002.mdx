@@ -50,6 +50,15 @@ Riscrivere ogni regola a mano per ogni prodotto è un lavoro enorme, e si sbagli
 
 La regola non si esegue direttamente. Si **converte** con uno strumento (per esempio *sigma-cli*) nella lingua del proprio SIEM: una query per Splunk, una per Elastic, una per Microsoft Sentinel e così via.
 
+<Flow
+  caption="Una regola scritta una volta, usata su ogni SIEM."
+  steps={[
+    { icon: "file", title: "Regola Sigma", text: "Un solo testo YAML" },
+    { icon: "gear", title: "Conversione", text: "Con uno strumento come sigma-cli" },
+    { icon: "search", title: "Query del SIEM", text: "Splunk, Elastic, Sentinel..." },
+  ]}
+/>
+
 <Callout kind="regola">
 Una regola Sigma è come un testo scritto in una lingua neutra: serve un traduttore per ogni SIEM, ma il testo originale è uno solo e lo capiscono tutti gli analisti.
 </Callout>

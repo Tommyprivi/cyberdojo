@@ -74,6 +74,17 @@ Da qui nasce l'idea: **una VLAN per ogni gruppo**. Cinque gruppi, cinque VLAN: a
 **Una VLAN, una sottorete.** Mai due VLAN con la stessa sottorete IP: i pacchetti non saprebbero dove andare.
 </Callout>
 
+<Layers
+  caption="Cinque gruppi, cinque VLAN."
+  items={[
+    { icon: "users", title: "Amministrazione", text: "12 postazioni" },
+    { icon: "terminal", title: "Tecnico", text: "20 postazioni" },
+    { icon: "server", title: "Server", text: "4 macchine" },
+    { icon: "wifi", title: "Ospiti", text: "Fino a 40 dispositivi contemporanei" },
+    { icon: "eye", title: "Telecamere", text: "8 telecamere" },
+  ]}
+/>
+
 <Say who="assistente">Cinque gruppi, cinque VLAN, cinque sottoreti. Il conto è facile: per ora.</Say>
 </Scene>
 
@@ -93,7 +104,7 @@ Per ogni gruppo scegli una **maschera** che dia abbastanza indirizzi, con **spaz
 />
 
 <Callout kind="trucco">
-Tabellina da ricordare: **/24 = 254**, **/25 = 126**, **/26 = 62**, **/27 = 30**, **/28 = 14**. Ogni bit in più dimezza gli indirizzi utilizzabili circa a metà.
+Tabellina da ricordare: **/24 = 254**, **/25 = 126**, **/26 = 62**, **/27 = 30**, **/28 = 14**. Ogni bit in più dimezza, circa, gli indirizzi utilizzabili.
 </Callout>
 
 <Say who="sensei">Troppo piccolo, e tra un anno rifai tutto. Troppo grande, e sprechi. Qui sta il mestiere.</Say>
@@ -142,6 +153,12 @@ Le VLAN separano. Ora scrivi le **regole sul router**, partendo dal principio de
 <Callout kind="attenzione">
 Il deny implicito vale per chi ha già scritto ogni permit necessario. Se dimentichi un servizio, qualcuno non lavora. Per questo servono la documentazione e il collaudo: la prossima lezione.
 </Callout>
+
+<Compare
+  caption="Con il minimo privilegio un guasto o un attacco restano piccoli."
+  left={{ title: "Tutto permesso", points: ["Gli ospiti possono arrivare ai server","Una telecamera compromessa raggiunge il gestionale","Nessuno sa chi parla con chi"] }}
+  right={{ title: "Minimo privilegio", points: ["Ospiti: solo Internet","Telecamere: solo il registratore","Si permette solo ciò che serve, con un motivo scritto"] }}
+/>
 
 <Say who="sensei">Poche regole, tutte motivate. Ogni permit deve avere un motivo scritto accanto.</Say>
 </Scene>

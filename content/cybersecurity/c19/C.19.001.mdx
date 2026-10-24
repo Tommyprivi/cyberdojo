@@ -58,6 +58,17 @@ Non basta scriverla. Una regola è come un prodotto: ha un ciclo di vita.
 4. **Scrivi la logica**: condizione e soglia.
 5. **Collauda e correggi**, poi accendi e tieni d'occhio.
 
+<Flow
+  caption="Dalla minaccia alla regola accesa: cinque passi."
+  steps={[
+    { icon: "skull", title: "Minaccia", text: "Che cosa rilevare" },
+    { icon: "eye", title: "Comportamento", text: "Quale traccia lascia" },
+    { icon: "file", title: "Log", text: "Dove si vede la traccia" },
+    { icon: "code", title: "Logica", text: "Condizione e soglia" },
+    { icon: "check", title: "Collaudo", text: "Prova, poi accendi" },
+  ]}
+/>
+
 <Callout kind="regola">
 Si rileva il **comportamento**, non il singolo indicatore. Un indirizzo IP si cambia in un minuto. Il modo di muoversi dell'attaccante costa molta più fatica a cambiare.
 </Callout>
@@ -83,7 +94,7 @@ Ecco come appare la traccia, con indirizzi fittizi riservati alla documentazione
   "10:41:05 srv1 sshd: Failed password for admin from 203.0.113.45",
   "10:41:06 srv1 sshd: Failed password for admin from 203.0.113.45",
   "10:41:08 srv1 sshd: Accepted password for admin from 203.0.113.45",
-]} caption="Cinque errori in sei secondi, poi un accesso riuscito: la traccia che cerchiamo." />
+]} caption="Cinque errori in quattro secondi, poi un accesso riuscito: la traccia che cerchiamo." />
 
 <Callout kind="attenzione">
 Per rilevare un'attività serve che **il log esista**. Se il servizio non registra gli accessi falliti, nessuna regola può vederli. A volte il primo lavoro è accendere il log giusto.

@@ -91,6 +91,15 @@ Marta possiede 100 azioni ALFA, comprate a 50. Mette uno **stop di vendita a 45*
 
 Il punto delicato: dopo l'attivazione, si vende al **miglior prezzo disponibile**, che può essere inferiore a 45. Se una notizia fa aprire il titolo il giorno dopo a 40, l'ordine viene eseguito intorno a 40, non a 45: è un **gap**, un salto di prezzo.
 
+<Flow
+  caption="Cosa succede quando il prezzo tocca lo stop."
+  steps={[
+    { icon: "chart", title: "Prezzo scende", text: "Arriva a 45" },
+    { icon: "bell", title: "Scatta lo stop", text: "L'ordine si attiva" },
+    { icon: "bolt", title: "Ordine a mercato", text: "Vende al prezzo che trova" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Lo stop **non garantisce** il prezzo di uscita. Protegge, ma non è una rete di sicurezza assoluta.
 </Callout>

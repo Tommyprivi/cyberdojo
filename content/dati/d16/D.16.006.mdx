@@ -62,6 +62,15 @@ Si fa un elenco di tutte le parole (il **vocabolario**): abbaia, cane, dorme, ga
 
 Ogni testo è ora una riga di numeri. L'ordine delle parole si perde.
 
+<Flow
+  caption="Come un testo diventa una riga di numeri."
+  steps={[
+    { icon: "mail", title: "Testo", text: "«il gatto dorme»" },
+    { icon: "book", title: "Vocabolario", text: "L'elenco delle parole distinte" },
+    { icon: "code", title: "Conteggi", text: "Una riga di numeri per ogni testo" },
+  ]}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Come le parole diventano numeri (embedding), in inglese con sottotitoli:
 
 <Video />
@@ -106,6 +115,15 @@ Il conteggio non sa che «gatto» e «micio» sono vicini. Un **embedding** dà 
 Esempio ridotto a 2 numeri (inventati): gatto (2, 1), micio (2, 2), automobile (−3, 4). Gatto e micio sono vicini; automobile è lontana.
 
 I numeri non si scrivono a mano: li impara un modello leggendo moltissimi testi. I modelli di linguaggio moderni costruiscono embedding di frasi intere e generano testo prevedendo la parola successiva.
+
+<Layers
+  caption="Tre modi di dare numeri a un testo, dal più semplice al più raffinato."
+  items={[
+    { icon: "code", title: "Contare", text: "Bag of words: quante volte compare ogni parola" },
+    { icon: "chart", title: "Pesare", text: "TF-IDF: premia le parole rare e utili" },
+    { icon: "globe", title: "Embedding", text: "Ogni parola è un punto: significato simile, punti vicini" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Gli embedding hanno spesso centinaia di numeri, non due. Il principio è lo stesso: vicino nello spazio, simile nel significato.

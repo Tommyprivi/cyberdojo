@@ -68,6 +68,12 @@ Il risultato è giusto, ma il database deve calcolare `extract` su **ogni riga**
   "WHERE data >= '2025-04-01' AND data < '2025-05-01' ORDER BY id;",
 ]} caption="Stesso risultato: ordini 4, 5, 6 e 7. Ma ora l'indice sulla data lavora." />
 
+<Compare
+  caption="Lo stesso risultato, due strade per arrivarci."
+  left={{ title: "Funzione sulla colonna", points: ["extract(month from data) = 4", "Calcolo su ogni riga", "L'indice sulla data non si usa"] }}
+  right={{ title: "Intervallo di date", points: ["data >= aprile e data < maggio", "Colonna da sola nel confronto", "L'indice va dritto alle righe"] }}
+/>
+
 <Callout kind="regola">
 Lascia la colonna **da sola** nel confronto, e sposta il calcolo dall'altra parte. Colonna a sinistra, calcoli a destra.
 </Callout>
@@ -152,6 +158,12 @@ Chi scrive quel testo ha trasformato un dato in **codice**. È la **SQL injectio
 
 Con la query parametrizzata, il testo `' OR '1'='1` viene cercato come nome. Nessun cliente si chiama così: risultato, zero righe.
 
+<Compare
+  caption="Lo stesso testo dell'utente, trattato in due modi."
+  left={{ title: "Query incollata", points: ["Il testo dell'utente diventa codice", "La condizione è sempre vera", "Escono tutte le righe"] }}
+  right={{ title: "Query parametrizzata", points: ["Il testo resta un semplice valore", "Viene cercato come nome", "Zero righe"] }}
+/>
+
 <Callout kind="regola">
 Difese in ordine: **query parametrizzate** sempre; **permessi minimi** del ruolo dell'applicazione; validare l'input; non mostrare all'utente i messaggi di errore del database.
 </Callout>
@@ -171,6 +183,15 @@ I dati si proteggono in tre momenti.
 - **In transito** (tra applicazione e database): connessione cifrata con **TLS**. In PostgreSQL si usa `sslmode=verify-full` nella stringa di connessione, così il client verifica anche l'identità del server.
 - **A riposo** (su disco): cifratura del disco o del volume, e **backup cifrati** (lezione 7). PostgreSQL da solo non cifra i file: lo fa il sistema.
 - **Nelle colonne** (dati molto sensibili): funzioni come quelle di `pgcrypto`, oppure cifratura fatta dall'applicazione prima di salvare. Chi ha accesso al database vede solo dati illeggibili.
+
+<Layers
+  caption="Tre momenti da proteggere."
+  items={[
+    { icon: "wifi", title: "In transito", text: "Connessione cifrata con TLS" },
+    { icon: "server", title: "A riposo", text: "Disco e backup cifrati" },
+    { icon: "lock", title: "Nelle colonne", text: "Dati molto sensibili, per esempio con pgcrypto" },
+  ]}
+/>
 
 Una distinzione importante: le **password degli utenti** non si cifrano, si salvano come **hash lento** (come argon2 o bcrypt), che non si può invertire. I dati che devi poter rileggere (come un codice fiscale) si cifrano; quelli che devi solo verificare (le password) si trasformano in hash.
 

@@ -68,7 +68,7 @@ Chi prevede «sale» o «scende» ha **due scelte**. Anche tirando una **moneta*
 
 Quindi il primo confronto è sempre questo: **il mio modello fa meglio della moneta, o della risposta più banale?** La risposta banale si chiama **baseline**.
 
-Ma attenzione ai numeri piccoli. Su **100 giorni** la moneta non fa sempre esattamente 50: di solito sta tra **45 e 55**, cioè 5 punti percentuali sopra o sotto.
+Ma attenzione ai numeri piccoli. Su **100 giorni** la moneta non fa sempre esattamente 50: si scosta spesso di circa 5 punti percentuali dal 50, quindi tra **45 e 55**; scarti maggiori sono meno frequenti, ma possibili.
 
 | giorni di prova | scarto tipico della moneta |
 |---|---|
@@ -95,6 +95,15 @@ Non tutto è ugualmente difficile.
 «Spiegare il passato» e «prevedere il futuro» sono due lavori diversi. Un modello che spiega benissimo il passato può non sapere nulla del futuro: ci tornerà la lezione sull'overfitting.
 </Callout>
 
+<Layers
+  caption="Dal più facile al più difficile da prevedere."
+  items={[
+    { icon: "book", title: "Spiegare il passato", text: "Facilissimo: la storia torna sempre" },
+    { icon: "chart", title: "La volatilità", text: "Un po' più prevedibile" },
+    { icon: "warning", title: "La direzione di domani", text: "Molto difficile: quasi una moneta" },
+  ]}
+/>
+
 Vuoi sentire che cos'è il machine learning da un'altra voce? Meno di quattro minuti, in italiano:
 
 <Video />
@@ -114,7 +123,7 @@ Vuoi sentire che cos'è il machine learning da un'altra voce? Meno di quattro mi
     "Il modello è sbagliato, perché non arriva al 90%",
   ]}
   answer={0}
-  explain="Su 100 giorni la moneta sta tra circa 45% e 55%. Un 53% non si distingue dalla fortuna. Chi risponde «funziona» confonde una piccola differenza con una prova."
+  explain="Su 100 giorni la moneta sta spesso tra circa 45% e 55%. Un 53% non si distingue dalla fortuna. Chi risponde «funziona» confonde una piccola differenza con una prova."
 />
 
 <Say who="sensei">Un numero senza il suo campione è una chiacchiera. Domandati sempre: su quanti giorni, e fatti da chi?</Say>

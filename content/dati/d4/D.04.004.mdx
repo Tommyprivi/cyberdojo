@@ -211,6 +211,16 @@ Name: importo, dtype: float64
 
 Conta 6 valori, media 30, deviazione standard 8,94 (pandas divide per n-1, come visto con `ddof=1`), minimo 20, massimo 40. Il 25% e il 75% sono i **quartili**: sotto il 25% c'è un quarto dei valori. Il 50% è la **mediana**.
 
+<Flow
+  caption="I quattro controlli prima di ogni analisi."
+  steps={[
+    { icon: "eye", title: "head", text: "Le prime righe" },
+    { icon: "file", title: "shape", text: "Quante righe e colonne" },
+    { icon: "search", title: "dtypes o info", text: "Tipi e celle piene" },
+    { icon: "chart", title: "describe", text: "Le statistiche base" },
+  ]}
+/>
+
 <Callout kind="regola">
 Il ritmo di ogni analisi: `head`, `shape`, `dtypes` o `info`, `describe`. Quattro comandi, trenta secondi, e sai con cosa hai a che fare.
 </Callout>

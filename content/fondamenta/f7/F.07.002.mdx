@@ -59,6 +59,16 @@ Questa sequenza si chiama **three-way handshake**, «stretta di mano in tre temp
 SYN → SYN-ACK → ACK. Solo dopo il terzo messaggio la connessione è **stabilita** e i dati possono viaggiare.
 </Callout>
 
+<Flow
+  caption="Tre messaggi, poi viaggiano i dati."
+  steps={[
+    { icon: "laptop", title: "Client: SYN", text: "Pronto? Mi senti?" },
+    { icon: "server", title: "Server: SYN-ACK", text: "Ti sento. E tu senti me?" },
+    { icon: "laptop", title: "Client: ACK", text: "Ti sento. Cominciamo." },
+    { icon: "check", title: "Dati", text: "La connessione è stabilita" },
+  ]}
+/>
+
 <Say who="assistente">Se manca anche uno solo dei tre messaggi, la telefonata non è mai partita davvero.</Say>
 </Scene>
 

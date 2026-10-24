@@ -45,6 +45,12 @@ Marta, la gestrice di Rondine Capital, mostra a Luca due portafogli fittizi:
 
 Y rende meno **e** rischia di più. Nessuno sceglierebbe Y: è **dominato** da X.
 
+<Compare
+  caption="Un portafoglio dominato e quello che lo domina."
+  left={{ title: "Portafoglio Y", points: ["Rendimento atteso 5%", "Volatilità 7%"] }}
+  right={{ title: "Portafoglio X", points: ["Rendimento atteso 6%", "Volatilità 5%"] }}
+/>
+
 La domanda del caso: **esiste un modo per trovare, tra tutte le miscele possibili, solo quelle che non sono dominate?**
 
 <Say who="sensei">Educazione, non consulenza: si può perdere denaro. I numeri qui sono inventati e i mercati non regalano niente.</Say>
@@ -56,6 +62,16 @@ La domanda del caso: **esiste un modo per trovare, tra tutte le miscele possibil
 Nel 1952 l'economista **Harry Markowitz** propose un'idea semplice: un investimento si giudica per due numeri, **rendimento atteso** e **rischio**, e si guarda al portafoglio nel suo insieme, non ai singoli titoli.
 
 Per ogni miscela di titoli si calcolano i due numeri. Mettendo tutte le miscele su un grafico (rischio in orizzontale, rendimento in verticale), il bordo in alto a sinistra è la **frontiera efficiente**: per ogni livello di rischio, il massimo rendimento atteso.
+
+<Flow
+  caption="Come si arriva alla frontiera efficiente."
+  steps={[
+    { icon: "folder", title: "Miscele", text: "Tutte le combinazioni di titoli" },
+    { icon: "gear", title: "Due numeri", text: "Rendimento atteso e rischio di ognuna" },
+    { icon: "chart", title: "Grafico", text: "Rischio in orizzontale, rendimento in verticale" },
+    { icon: "check", title: "Frontiera", text: "Il bordo in alto a sinistra" },
+  ]}
+/>
 
 Vuoi vederla disegnare? Questo video la spiega in inglese, con i sottotitoli:
 

@@ -90,6 +90,16 @@ print("modello :", modello.score(scaler.transform(X_te), y_te))
 print("baseline:", baseline.score(X_te, y_te))
 ```
 
+<Flow
+  caption="L'ordine del lavoro: prima si divide nel tempo, poi si addestra, infine si confronta."
+  steps={[
+    { icon: "file", title: "Tabella", text: "Feature e target in ordine di data" },
+    { icon: "clock", title: "Divisione", text: "80% più vecchio per addestrare" },
+    { icon: "gear", title: "Addestramento", text: "Scaler e modello solo sul passato" },
+    { icon: "check", title: "Confronto", text: "Modello contro baseline sul test" },
+  ]}
+/>
+
 Il codice stampa due accuratezze: quella del modello e quella della baseline «dire sempre la classe più frequente». I numeri dipendono dai dati: qui lo scopo è l'ordine, non il risultato.
 
 <Callout kind="regola">
@@ -121,7 +131,7 @@ Il modello di Sara fa **peggio** della risposta più banale: 55% contro 58%.
 Questo succede spesso con classi sbilanciate: dire sempre la classe più frequente dà già un buon risultato. L'accuratezza non dice quanto si guadagna o si perde nei giorni sbagliati, né i costi.
 </Callout>
 
-<Say who="assistente">55% batte la moneta, ma non batte il «non faccio niente». E non facendo niente non paghi commissioni.</Say>
+<Say who="assistente">Il 55% sembra battere la moneta, ma su 100 giorni non lo prova, e non batte il «non faccio niente». E non facendo niente non paghi commissioni.</Say>
 </Scene>
 
 {/* screen */}

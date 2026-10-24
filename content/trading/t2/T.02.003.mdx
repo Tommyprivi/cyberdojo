@@ -123,6 +123,12 @@ Le prime due righe sono `NaN` («non un numero»): non ci sono ancora tre valori
 `shift(-1)` fa il contrario: porta il prezzo di **domani** su oggi. In una strategia sarebbe barare, si chiama **look-ahead**. Lo ritroveremo.
 </Callout>
 
+<Compare
+  caption="Quale prezzo puoi usare per decidere oggi."
+  left={{ title: "shift(-1)", points: ["Porta su oggi il prezzo di domani", "Usa un dato che non esiste ancora", "È look-ahead: risultati falsati"] }}
+  right={{ title: "shift(1)", points: ["Porta su oggi il prezzo di ieri", "Usa solo ciò che è già successo", "Confronto onesto tra oggi e ieri"] }}
+/>
+
 <Say who="sensei">Tutto quello che usi per decidere oggi deve essere già successo. Sempre.</Say>
 </Scene>
 

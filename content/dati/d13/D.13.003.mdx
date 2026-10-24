@@ -55,6 +55,16 @@ L'analisi segue sempre lo stesso ordine:
 3. **Analisi**: il calcolo o il confronto previsto nel piano.
 4. **Controllo**: verificare che il risultato abbia senso.
 
+<Flow
+  caption="Le quattro fasi dell'analisi, sempre nello stesso ordine."
+  steps={[
+    { icon: "gear", title: "Pulizia", text: "Duplicati, vuoti, formati" },
+    { icon: "search", title: "Esplorazione", text: "Righe, minimo, massimo" },
+    { icon: "chart", title: "Analisi", text: "Il calcolo del piano" },
+    { icon: "check", title: "Controllo", text: "Il risultato ha senso?" },
+  ]}
+/>
+
 Un'idea importante: **il file originale non si tocca mai**. Si salva in una cartella «dati grezzi» e si lavora su una copia, con il codice che registra ogni modifica.
 
 Un esempio di progetto svolto da capo a fondo, da un'altra voce:
@@ -81,6 +91,16 @@ Ecco gli ordini di Elisa (importi in euro, dati inventati):
 | 107 | mar | 50 |
 
 Due problemi: l'ordine 103 compare **due volte identico** (un duplicato), e l'ordine 104 non ha importo.
+
+<Flow
+  caption="Ogni riga persa ha un motivo annotato: 8 righe diventano 6."
+  steps={[
+    { icon: "file", title: "Grezzo", text: "8 righe" },
+    { icon: "cross", title: "Duplicato", text: "Meno 1: ordine 103 doppio" },
+    { icon: "warning", title: "Senza importo", text: "Meno 1: ordine 104" },
+    { icon: "check", title: "Pulito", text: "6 righe" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Ogni scelta di pulizia cambia il risultato, quindi va **annotata con il motivo**. Il duplicato esatto si elimina. Il valore vuoto si può escludere, recuperare da un'altra fonte o sostituire: dipende dal caso, e lo si scrive.

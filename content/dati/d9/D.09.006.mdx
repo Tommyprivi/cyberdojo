@@ -59,6 +59,16 @@ Sa fare quattro cose:
 - **riprovare** se un compito fallisce;
 - **avvisare** se qualcosa non va.
 
+<Layers
+  caption="Le quattro cose che fa un orchestratore."
+  items={[
+    { icon: "clock", title: "Pianifica", text: "Ogni giorno alle 6" },
+    { icon: "link", title: "Dipendenze", text: "Il report dopo gli ordini" },
+    { icon: "gear", title: "Riprova", text: "Se un compito fallisce" },
+    { icon: "bell", title: "Avvisa", text: "Se qualcosa non va" },
+  ]}
+/>
+
 <Say who="assistente">Il direttore non suona: guarda lo spartito e dà gli attacchi.</Say>
 </Scene>
 
@@ -95,11 +105,20 @@ I compiti non sono tutti indipendenti. Si disegnano come **scatole con frecce**.
   "importa_clienti --/",
 ]} />
 
+<Flow
+  caption="Il report parte solo quando entrambi gli import sono riusciti."
+  steps={[
+    { icon: "database", title: "Import", text: "Ordini e clienti" },
+    { icon: "chart", title: "Report", text: "Parte se entrambi sono ok" },
+    { icon: "mail", title: "Email", text: "Invio del report" },
+  ]}
+/>
+
 `prepara_report` aspetta **entrambi** gli import. Se uno fallisce, il report **non parte**: meglio nessun report che un report sbagliato.
 
 Questo disegno si chiama **DAG** (grafo orientato senza giri): le frecce vanno in una direzione e non tornano mai indietro. Se tornassero, i compiti si aspetterebbero a vicenda per sempre.
 
-In Airflow ogni scatola è un **compito (task)**, tutto il disegno è un **DAG**. Un altro spiegone, con l'interfaccia vera:
+In Airflow ogni scatola è un **compito (task)**, tutto il disegno è un **DAG**. Un'altra spiegazione, con l'interfaccia vera:
 
 <Video />
 

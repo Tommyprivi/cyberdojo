@@ -75,6 +75,12 @@ Si usano due comandi:
 
 Sulle cartelle la `x` serve per **entrarci**: senza `x` Marta non potrebbe aprire i file dentro.
 
+<Compare
+  caption="Due modi di dare la lettura a Marta."
+  left={{ title: "chmod o+r", points: ["Apre la cartella a tutti, non solo a Marta", "Chi non deve vedere i progetti li può leggere"] }}
+  right={{ title: "ACL per marta", points: ["Solo l'utente marta può leggere", "Gli altri dipendenti non vedono nulla", "Si toglie con un comando: setfacl -x"] }}
+/>
+
 <Callout kind="trucco">
 Se `ls -l` mostra un **+** dopo i permessi (per esempio `drwxrwx---+`), quel file ha una ACL. Fai subito `getfacl`: i permessi che vedi con `ls` non sono più tutta la verità.
 </Callout>
@@ -94,6 +100,15 @@ Esempio svolto. Il sistemista, per un'altra ragione, fa `chmod g-w` sulla cartel
   "group::rwx              #effective:r-x",
   "mask::r-x",
 ]} caption="Marta ha scritto «rwx», ma il tetto è «r-x»: in pratica può solo leggere." />
+
+<Flow
+  caption="La mask taglia i permessi: conta quello effettivo."
+  steps={[
+    { icon: "user", title: "Voce di Marta", text: "Nella ACL: rwx" },
+    { icon: "shield", title: "Mask", text: "Il tetto: r-x" },
+    { icon: "check", title: "Effettivo", text: "In pratica Marta può solo leggere" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Quando una ACL «sembra» dare un permesso e non funziona, controlla la colonna **#effective** e la mask. È l'errore più comune.
@@ -133,7 +148,7 @@ Principio del **minimo privilegio**: a ciascuno solo ciò che serve, per il temp
 {/* screen */}
 
 <Scene title="Setuid, setgid e sticky bit">
-Esistono tre **permessi speciali**, che comparirebbero al posto della `x`:
+Esistono tre **permessi speciali**, che compaiono al posto della `x`:
 
 - **setuid** (`s` nella casella del proprietario): chi esegue il programma lo esegue **con i diritti del proprietario**. `passwd` lo usa per poter modificare il file delle password anche se lo lancia un utente normale.
 - **setgid** (`s` nella casella del gruppo): su una **cartella** fa sì che i file nuovi prendano il gruppo della cartella. Utile per le cartelle condivise.

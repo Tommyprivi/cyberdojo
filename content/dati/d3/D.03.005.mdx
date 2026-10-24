@@ -118,6 +118,12 @@ Anna e Paolo non hanno mai ordinato. Con un `INNER JOIN` non comparirebbero. Il 
   "Paolo Gallo  | NULL",
 ]} caption="Tutti i clienti, con i loro ordini (se ci sono)." />
 
+<Compare
+  caption="Gli stessi sei clienti con due JOIN diversi."
+  left={{ title: "INNER JOIN", points: ["Solo righe con corrispondenza", "Anna e Paolo spariscono", "Il risultato ha 8 righe"] }}
+  right={{ title: "LEFT JOIN", points: ["Tutta la tabella di sinistra", "Anna e Paolo restano, con NULL", "Il risultato ha 10 righe"] }}
+/>
+
 Questo permette una domanda preziosa: **chi non ha mai ordinato?** Si cercano le righe con NULL a destra.
 
 <Log lines={[

@@ -52,7 +52,7 @@ La domanda del caso: **dov'è l'errore di Luca?**
 <Scene title="Eventi indipendenti: si moltiplica">
 Due eventi sono **indipendenti** se sapere che uno è accaduto non cambia la probabilità dell'altro.
 
-Per sapere che accadano **tutti e due**, si **moltiplica**:
+Per sapere quanto è probabile che accadano **tutti e due**, si **moltiplica**:
 
 **P(A e B) = P(A) per P(B)**
 
@@ -65,13 +65,13 @@ Esempi:
 Moltiplicare **riduce** la probabilità: chiedere due cose insieme è più difficile che chiederne una.
 </Callout>
 
-<Say who="assistente">E, quindi moltiplico. Con indipendenti, sempre.</Say>
+<Say who="assistente">«E» vuol dire moltiplicare, ma solo se gli eventi sono indipendenti.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Oppure: si somma">
-Per sapere che accada **uno oppure l'altro**:
+Per sapere quanto è probabile che accada **uno oppure l'altro**:
 
 - se non possono accadere insieme (eventi **incompatibili**), si **somma**: con un dado, P(1 oppure 2) = 1/6 + 1/6 = **1/3**;
 - se possono accadere insieme, bisogna togliere il caso contato due volte: **P(A o B) = P(A) + P(B) - P(A e B)**.
@@ -118,6 +118,15 @@ Torniamo a Luca. Immagina **1000 persone**. Dati (inventati per l'esempio):
     "Sani positivi: il 10% di 990 fa 99.",
     "In tutto i positivi sono 9 + 99 = 108.",
     "Tra i 108 positivi, i veri malati sono 9: 9/108 è circa 8%, cioè circa 1 su 12.",
+  ]}
+/>
+
+<Flow
+  caption="Su 1000 persone: quanti positivi sono davvero malati."
+  steps={[
+    { icon: "users", title: "1000 persone", text: "10 malate e 990 sane" },
+    { icon: "bell", title: "Positivi", text: "9 malati e 99 sani: 108 in tutto" },
+    { icon: "warning", title: "Davvero malati", text: "9 su 108, circa l'8%" },
   ]}
 />
 

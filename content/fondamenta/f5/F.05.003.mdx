@@ -127,7 +127,16 @@ Manca l'ultimo ottetto. Poi rimettiamo insieme l'indirizzo.
 Le reti private sono tre e conviene saperle a memoria: **10**.x.x.x, **172.16–31**.x.x e **192.168**.x.x. Se una di queste compare come sorgente in un registro interno, il traffico è partito da dentro.
 </Callout>
 
-<Say who="sensei">L'intruso non bussava da fuori. Era già in casa. Ricordatelo, la prossima volta che guardi un log.</Say>
+<Layers
+  caption="Le tre reti private: se compaiono come sorgente, il traffico parte da dentro."
+  items={[
+    { icon: "laptop", title: "10.x.x.x", text: "Reti aziendali grandi" },
+    { icon: "server", title: "172.16-31.x.x", text: "Reti private intermedie" },
+    { icon: "wifi", title: "192.168.x.x", text: "Reti domestiche e piccoli uffici" },
+  ]}
+/>
+
+<Say who="sensei">L'intruso non bussava da fuori. Era già in casa. Ricordalo, la prossima volta che guardi un log.</Say>
 </Scene>
 
 {/* screen */}

@@ -61,6 +61,15 @@ La domanda del caso: **che cosa è sbagliato in una connessione cifrata che funz
 - **TLS 1.2** (2008): ancora accettabile se configurato bene. Si tiene per i client che non conoscono la 1.3.
 - **TLS 1.3** (2018, RFC 8446): la versione da preferire. Più veloce e più semplice: ha tolto di mezzo gli algoritmi deboli.
 
+<Layers
+  caption="Quali versioni di TLS tenere."
+  items={[
+    { icon: "check", title: "TLS 1.3", text: "Da preferire: più semplice, senza algoritmi deboli" },
+    { icon: "shield", title: "TLS 1.2", text: "Minimo accettato, se configurato bene" },
+    { icon: "cross", title: "Versioni vecchie", text: "SSL 3.0, TLS 1.0 e 1.1: da spegnere" },
+  ]}
+/>
+
 <Callout kind="regola">
 Regola di base, in sintesi a ottobre 2026: **TLS 1.3 attivo e preferito, TLS 1.2 come minimo accettato, tutto il resto spento**.
 </Callout>
@@ -77,6 +86,12 @@ Dipende dalla **segretezza in avanti** (*forward secrecy*). Con essa, ogni conne
 
 - **Senza** segretezza in avanti: rubare la chiave del server permette di aprire le registrazioni vecchie.
 - **Con** segretezza in avanti: le registrazioni vecchie restano illeggibili.
+
+<Compare
+  caption="Che cosa succede se la chiave privata viene rubata."
+  left={{ title: "Senza segretezza in avanti", points: ["Un malintenzionato registra il traffico", "Poi ruba la chiave privata del server", "Può aprire le registrazioni vecchie"] }}
+  right={{ title: "Con segretezza in avanti", points: ["Ogni connessione ha una chiave di sessione nuova", "La chiave privata serve solo a firmare", "Le registrazioni vecchie restano illeggibili"] }}
+/>
 
 <Callout kind="curiosita">
 In TLS 1.3 la segretezza in avanti è **obbligatoria**. In TLS 1.2 bisogna sceglierla, consentendo solo le suite con ECDHE.

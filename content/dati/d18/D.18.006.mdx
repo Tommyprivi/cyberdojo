@@ -65,6 +65,15 @@ Lo **schema** è una «cartella» dentro un database, che raggruppa tabelle e og
 
 Gli schemi servono a **separare** i reparti (vendite, magazzino, contabilità) e a dare permessi per reparto: `GRANT USAGE ON SCHEMA magazzino TO ...`.
 
+<Flow
+  caption="Tre domande, tre strumenti."
+  steps={[
+    { icon: "user", title: "Ruolo", text: "Chi sei" },
+    { icon: "folder", title: "Schema", text: "Dove lavori" },
+    { icon: "key", title: "GRANT", text: "Che cosa puoi fare" },
+  ]}
+/>
+
 <Callout kind="regola">
 Permessi minimi: ogni persona o programma riceve solo ciò che serve. L'applicazione usa un ruolo suo, mai `postgres`.
 </Callout>
@@ -171,6 +180,12 @@ Per esercitarti, installa PostgreSQL e pgAdmin **sul tuo computer**, scaricandol
 - Durante l'installazione scegli una **password lunga e unica** per l'utente `postgres`. Non riutilizzarne una già usata altrove.
 - Lascia la **porta 5432** e l'ascolto su `localhost`: il database accetta connessioni solo dal tuo computer.
 - Se usi Docker, pubblica la porta come `127.0.0.1:5432:5432`, non come `5432:5432`.
+
+<Compare
+  caption="Un database di prova non va mai aperto al mondo."
+  left={{ title: "Esposto a Internet", points: ["Porta 5432 aperta sul router", "I bot cercano password banali", "Dati alla mercé di chiunque"] }}
+  right={{ title: "Solo in locale", points: ["Ascolto su localhost", "Docker su 127.0.0.1", "Da fuori: VPN o tunnel SSH"] }}
+/>
 
 <Callout kind="attenzione">
 **Mai esporre un database a Internet.** Niente apertura della porta 5432 sul router, niente «accesso da qualsiasi indirizzo». I bot scandiscono continuamente la rete cercando database aperti con password banali. Per accedere da fuori si usa una VPN o un tunnel SSH, e solo su sistemi che sono tuoi o per cui hai un permesso.

@@ -57,7 +57,7 @@ export default function AccessibilitaPage() {
           moduli con etichette collegate ai campi e messaggi d&apos;errore annunciati.
         </li>
         <li>
-          <strong>Lingua dichiarata.</strong> Ogni pagina è in italiano (<code>lang="it"</code>), anche
+          <strong>Lingua dichiarata.</strong> Ogni pagina è in italiano (<code>{`lang="it"`}</code>), anche
           quando contiene un video in inglese: in quel caso lo si dice.
         </li>
         <li>

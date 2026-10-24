@@ -62,6 +62,16 @@ Fa tre cose:
 - **normalizza**: rende uguali formati e orari diversi, così le righe si possono confrontare;
 - **correla**: collega eventi diversi che, messi in fila, hanno un significato.
 
+<Flow
+  caption="Dai diari separati a un solo avviso."
+  steps={[
+    { icon: "folder", title: "Raccoglie", text: "Log da VPN, server, firewall" },
+    { icon: "gear", title: "Normalizza", text: "Formati e orari uguali" },
+    { icon: "link", title: "Correla", text: "Collega gli eventi in fila" },
+    { icon: "bell", title: "Avvisa", text: "Scatta la regola" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Esistono SIEM commerciali e anche open source. Wazuh, per esempio, è un progetto aperto che molte piccole aziende usano.
 </Callout>

@@ -74,6 +74,15 @@ L'**esposizione** è quanto la controparte ti deve, meno ciò che hai già in ga
   "perdita = 8 x (1 - 0,40) = 4,8 milioni",
 ]} />
 
+<Flow
+  caption="Come si passa dal contratto all'esposizione residua."
+  steps={[
+    { icon: "file", title: "Contratto", text: "4 milioni a favore del fondo" },
+    { icon: "lock", title: "Collaterale", text: "3 milioni ricevuti in garanzia" },
+    { icon: "warning", title: "Esposizione", text: "1 milione resta a rischio" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Con la **compensazione** (netting) i contratti con la stessa banca si sommano: A vale +6 e B vale -4, l'esposizione è 2 milioni, non 6.
 </Callout>
@@ -129,7 +138,7 @@ Esposizione, collaterale, netting e difese. Numeri fittizi.
 <Scene title="Rapporto finale">
 <Recap xp={20}>
 - Il rischio di controparte è che l'altra parte non paghi; non dipende dai prezzi di mercato.
-- Esposizione = quanto ti devono meno le garanzie; il netting somma i contratti con lo stesso segno e riduce l'esposizione.
+- Esposizione = quanto ti devono meno le garanzie; il netting compensa i contratti positivi e negativi con la stessa controparte e riduce l'esposizione.
 - Difese: collaterale, limiti, più controparti, camera di compensazione e monitoraggio.
 </Recap>
 

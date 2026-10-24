@@ -76,6 +76,15 @@ Per semplicità guardiamo solo il pezzo della query sul nome. Il database riceve
 
 Guarda: `'1'='1'` è **sempre vero**. Con `OR` basta una condizione vera perché la riga passi. Il controllo sul nome non protegge più niente.
 
+<Flow
+  caption="Il testo scritto nel campo cambia la forma della domanda."
+  steps={[
+    { icon: "user", title: "Il campo", text: "Un apice e una condizione" },
+    { icon: "code", title: "Query incollata", text: "La forma cambia" },
+    { icon: "database", title: "Il database", text: "Condizione sempre vera: passa ogni riga" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Il problema non è quell'esempio. Ce ne sono infiniti. Il problema è che l'estraneo può **riscrivere la domanda**: leggere altre tabelle, cambiare dati, cancellarli.
 </Callout>

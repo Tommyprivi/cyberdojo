@@ -70,6 +70,15 @@ Segnale: **punteggi bassi sia sull'addestramento sia sul test**, e vicini tra lo
 
 <Log lines={["addestramento: 60%", "test:          59%", "-> underfitting: troppo semplice"]} caption="Sbaglia sempre, e allo stesso modo." />
 
+<Layers
+  caption="Dalla complessità eccessiva a quella insufficiente: i due punteggi dicono dove sei."
+  items={[
+    { icon: "warning", title: "Troppo complesso", text: "Overfitting: 99% in addestramento, 70% nel test" },
+    { icon: "check", title: "Giusto", text: "Generalizza: 85% e 83%" },
+    { icon: "cross", title: "Troppo semplice", text: "Underfitting: 60% e 59%" },
+  ]}
+/>
+
 <Callout kind="regola">
 Guarda i due punteggi insieme. Addestramento alto e test basso: overfitting. Entrambi bassi: underfitting. Entrambi buoni e vicini (85% e 83%): il modello generalizza.
 </Callout>
@@ -92,6 +101,16 @@ Come si trova il punto giusto senza consumare il test?
 - **validazione incrociata**: si divide l'addestramento in 5 parti, ogni parte fa a turno da validazione, e si fa la media dei 5 punteggi.
 
 <Log lines={["punteggi sulle 5 parti: 80, 85, 75, 90, 70", "somma = 400  ->  media = 400 / 5 = 80"]} caption="Il modello viene addestrato 5 volte, una per parte." />
+
+<Flow
+  caption="Validazione incrociata: ogni parte fa a turno da validazione."
+  steps={[
+    { icon: "database", title: "Dividi", text: "Addestramento in 5 parti" },
+    { icon: "search", title: "A turno", text: "Una parte è la validazione" },
+    { icon: "gear", title: "Ripeti", text: "5 addestramenti" },
+    { icon: "chart", title: "Media", text: "80, 85, 75, 90, 70: media 80" },
+  ]}
+/>
 
 I rimedi all'overfitting: **più dati**, **modello più semplice**, **meno domande nell'albero**.
 

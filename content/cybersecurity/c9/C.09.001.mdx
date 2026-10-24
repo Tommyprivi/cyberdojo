@@ -79,6 +79,17 @@ Il ciclo si ripete uguale ogni volta. Sei fasi, in ordine:
 5. **Ripristino**: rimettere in servizio i sistemi, in modo sicuro.
 6. **Lezioni apprese**: capire cosa migliorare per la prossima volta.
 
+<Flow
+  caption="Dopo la preparazione, le altre cinque fasi in ordine."
+  steps={[
+    { icon: "eye", title: "Rilevazione", text: "Accorgersi dell'incidente" },
+    { icon: "lock", title: "Contenimento", text: "Fermare il danno" },
+    { icon: "bug", title: "Eradicazione", text: "Eliminare la causa" },
+    { icon: "server", title: "Ripristino", text: "Tornare in servizio" },
+    { icon: "book", title: "Lezioni", text: "Migliorare per la prossima volta" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Un'immagine: **un incendio**. Prepari estintori e uscite, ti accorgi del fumo, chiudi le porte, spegni le fiamme, rientri quando è sicuro, poi correggi l'impianto che ha causato il corto circuito.
 </Callout>
@@ -97,6 +108,12 @@ Prepararsi vuol dire, in piccolo:
 - **backup** che funzionano davvero e che non stanno sulla stessa rete;
 - **log attivi** e conservati abbastanza a lungo;
 - un **piano scritto**, anche di una pagina, provato almeno una volta.
+
+<Compare
+  caption="Alle 17:40 di un venerdì."
+  left={{ title: "Senza preparazione", points: ["Nessuno sa chi chiamare", "Ognuno improvvisa", "Si perde tempo ogni minuto"] }}
+  right={{ title: "Con preparazione", points: ["Contatti e ruoli già scritti", "Piano trovabile e provato", "Backup che si sa ripristinare"] }}
+/>
 
 <Callout kind="attenzione">
 Un backup mai provato è una speranza, non un backup. Si prova a ripristinarlo *prima* di averne bisogno.

@@ -65,6 +65,15 @@ Non tutti i buchi nascono allo stesso modo:
 - **Per un motivo che conosci**: i clienti più giovani non compilano il campo città. Il buco dipende da un'altra colonna.
 - **Per un motivo che riguarda il dato stesso**: chi ha stipendi alti non lo scrive. Qui il buco è il segnale più importante, e il più pericoloso da riempire.
 
+<Layers
+  caption="Tre origini dei buchi: più il motivo è legato al dato, più è rischioso riempire."
+  items={[
+    { icon: "bolt", title: "A caso", text: "Distrazione: il buco non dice niente" },
+    { icon: "link", title: "Per un motivo noto", text: "Dipende da un'altra colonna" },
+    { icon: "warning", title: "Per il dato stesso", text: "Il buco è il segnale: rischio massimo" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Occhio ai buchi **travestiti**. Un `0`, un `-999`, un «N/D» o un «non so» sono caselle vuote scritte in un altro modo. Se li lasci, la media dell'età diventa assurda.
 </Callout>
@@ -150,6 +159,16 @@ Meglio togliere solo se manca la colonna che ti serve: `df.dropna(subset=['eta']
 <Callout kind="regola">
 Togliere perde informazione. Riempire **inventa** informazione. Nessuna delle due è neutra: scegli sapendo cosa stai rischiando.
 </Callout>
+
+<Flow
+  caption="Prima si capisce, poi si decide, infine si lascia traccia."
+  steps={[
+    { icon: "search", title: "Conta", text: "isna().sum() trova i buchi" },
+    { icon: "eye", title: "Capisci", text: "Perché manca il dato?" },
+    { icon: "gear", title: "Decidi", text: "dropna() o fillna()" },
+    { icon: "check", title: "Segna", text: "Colonna eta_mancante" },
+  ]}
+/>
 
 <Say who="sensei">Se ti manca poco e a caso, riempire con la mediana va bene. Se ti manca molto, o non a caso, riempire è raccontare una storia che non conosci.</Say>
 </Scene>

@@ -54,6 +54,15 @@ Immagina un edificio con una portineria.
 - **Log di Zeek**: il portiere che annota ogni visita **con il contesto**: chi, a che ora, quale richiesta fatta, con quale esito.
 - **NetFlow**: il registro all'ingresso: chi è entrato, quando, per quanto, quanti pacchi ha portato. Niente sul contenuto.
 
+<Layers
+  caption="Tre livelli di dettaglio, dal più pesante al più leggero."
+  items={[
+    { icon: "eye", title: "Cattura completa", text: "Ogni pacchetto: pesa tanto, si tiene pochi giorni" },
+    { icon: "book", title: "Log di Zeek", text: "Ogni connessione, con il contesto" },
+    { icon: "chart", title: "NetFlow", text: "Chi, quando, quanto: niente contenuto" },
+  ]}
+/>
+
 <Callout kind="regola">
 Più dettaglio vuol dire più spazio e più dati personali da proteggere. Ogni livello risponde a domande diverse: si sceglie quello che serve, non il massimo possibile.
 </Callout>
@@ -69,8 +78,8 @@ Un **flusso** è l'insieme dei pacchetti con lo stesso indirizzo di origine e di
 <Log
   lines={[
     "Inizio    Durata  Protocollo  Origine:porta          Destinazione:porta       Pacchetti  Byte",
-    "09:12:01  312 s   TCP         192.168.1.20:51234     203.0.113.80:443         4 210      5 200 000",
-    "09:12:05  44 s    TCP         192.168.1.20:51300     198.51.100.250:443       61         38 000 000",
+    "09:12:01  312 s   TCP         192.168.1.20:51234     203.0.113.80:443         2 210      2 700 000",
+    "09:12:05  44 s    TCP         192.168.1.20:51300     198.51.100.250:443       5 600      7 900 000",
     "09:13:00  1 s     UDP         192.168.1.20:50400     192.168.1.1:53           2          180",
   ]}
   caption="Record di flusso inventati"
@@ -79,7 +88,7 @@ Un **flusso** è l'insieme dei pacchetti con lo stesso indirizzo di origine e di
 Con i flussi puoi rispondere a: **chi parla con chi, quanto e quando**. Non puoi rispondere a: **che cosa si sono detti**. Ma per una rete grande il panorama è prezioso, perché occupa poco ed è facile da cercare.
 
 <Callout kind="curiosita">
-In pratica un record di flusso pesa poche decine di byte, un pacchetto catturato anche mille. Per questo i flussi si conservano per mesi, le catture complete per giorni.
+In pratica un record di flusso pesa poche decine di byte, un pacchetto catturato anche più di mille, e ogni flusso ne contiene centinaia o migliaia. Per questo i flussi si conservano per mesi, le catture complete per giorni.
 </Callout>
 
 <Say who="sensei">NetFlow è un grande aiuto per il «chi e quanto». Non ti dirà mai il «che cosa».</Say>

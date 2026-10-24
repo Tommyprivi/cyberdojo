@@ -53,6 +53,16 @@ Uno script di controllo (in inglese *audit script*) dovrebbe essere:
 - **ripetibile**: dà lo stesso risultato se non è cambiato niente;
 - **confrontabile**: scrive un file con data, da confrontare con quello della settimana prima.
 
+<Flow
+  caption="Il ciclo di un buon controllo."
+  steps={[
+    { icon: "search", title: "Lo script legge", text: "Sola lettura: non cambia nulla" },
+    { icon: "check", title: "PASS o FAIL", text: "Una riga per controllo, con il motivo" },
+    { icon: "file", title: "File con data", text: "Ogni esecuzione viene salvata" },
+    { icon: "chart", title: "Confronto", text: "Si guarda che cosa è cambiato" },
+  ]}
+/>
+
 Sono le idee dei benchmark CIS (lezione 2) trasformate in codice: ogni regola diventa una domanda con risposta sì o no.
 
 Esistono anche strumenti già pronti, come **Lynis** (controllo di sicurezza gratuito per Linux) e **OpenSCAP**. Vuoi vedere Lynis all'opera? Il video è in inglese, attiva i sottotitoli.
@@ -109,7 +119,7 @@ Altri esempi, tutti di lettura:
   "",
   "# 4. Elenco dei programmi setuid da confrontare con quello precedente",
   "find /usr -xdev -perm -4000 -type f 2>/dev/null | sort > \"setuid-$(date +%F).txt\"",
-]} caption="Quattro controlli: UID 0, SSH, setuid." />
+]} caption="Tre controlli: UID 0, SSH, setuid." />
 
 Alcune osservazioni:
 

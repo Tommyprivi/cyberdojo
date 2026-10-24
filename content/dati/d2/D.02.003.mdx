@@ -88,6 +88,12 @@ Copiata in C3 diventa `=B3*(1-E2)`: ma **E2 è vuota**, vale zero. Il risultato 
   "C4  =B4*(1-E3)   ->  80   (sconto sparito: E3 è vuota)",
 ]} />
 
+<Compare
+  caption="Copiare la formula in C3: senza il dollaro lo sconto scivola via."
+  left={{ title: "Senza $", points: ["=B3*(1-E2): il riferimento scende", "E2 è vuota, vale zero", "Risultato 20: sconto sparito"] }}
+  right={{ title: "Con $E$1", points: ["=B3*(1-$E$1): lo sconto resta fermo", "E1 vale sempre 0,1", "Risultato 18: sconto applicato"] }}
+/>
+
 <Say who="sensei">Il prezzo B si deve spostare, lo sconto E1 no. Il foglio non lo sa: glielo dici tu.</Say>
 </Scene>
 

@@ -98,6 +98,12 @@ Il modello della banca che dice sempre «regolare»: accuratezza 99%. Ma il suo 
 Con classi sbilanciate (una rara, una comune) l'accuratezza inganna. Guarda precision e recall sulla classe rara.
 </Callout>
 
+<Compare
+  caption="Lo stesso modello visto con una sola misura o con quelle giuste."
+  left={{ title: "Modello «sempre regolare»", points: ["Accuratezza 99%", "Recall sulle frodi 0%", "Frodi trovate: 0 su 10"] }}
+  right={{ title: "Che cosa guardare", points: ["Precision e recall sulla classe rara", "Recall alto se perdere un caso costa tanto", "Precision alta se un falso allarme costa tanto"] }}
+/>
+
 Quale misura conviene alzare dipende da cosa costa sbagliare:
 
 - **esame medico per una malattia rara**: meglio trovare quasi tutti i malati, anche con qualche falso allarme: **recall alto**;

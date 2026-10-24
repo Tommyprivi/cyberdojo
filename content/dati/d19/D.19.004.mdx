@@ -44,6 +44,16 @@ Prima di analizzare, si **legge**, si **pulisce** e si **unisce**. Di solito è 
 
 La domanda del caso: **come si prepara una tabella sporca senza barare con i numeri?**
 
+<Flow
+  caption="Prima dell'analisi c'è il lavoro di preparazione."
+  steps={[
+    { icon: "file", title: "Leggere", text: "Il file arriva da Excel" },
+    { icon: "gear", title: "Pulire", text: "Spazi, maiuscole, valori mancanti" },
+    { icon: "link", title: "Unire", text: "Le regioni stanno in un altro file" },
+    { icon: "chart", title: "Analizzare", text: "Solo a dati pronti" },
+  ]}
+/>
+
 <Say who="sensei">Un'analisi giusta su dati sporchi è un'analisi sbagliata con buone maniere. Si pulisce prima, e si annota cosa è stato fatto.</Say>
 </Scene>
 
@@ -212,6 +222,16 @@ puliti |> left_join(regioni, by = "citta")
 - `inner_join()` tiene **solo le righe che si abbinano**: qui restano Anna e Bruno;
 - `anti_join()` tiene le righe di sinistra **senza abbinamento**: qui solo Dario;
 - `full_join()` tiene tutto da entrambe le parti.
+
+<Layers
+  caption="Quattro join, quattro modi di tenere le righe."
+  items={[
+    { icon: "folder", title: "left_join", text: "Tutta la tabella di sinistra" },
+    { icon: "check", title: "inner_join", text: "Solo le righe che si abbinano" },
+    { icon: "search", title: "anti_join", text: "Le righe di sinistra senza abbinamento" },
+    { icon: "database", title: "full_join", text: "Tutto, da entrambe le parti" },
+  ]}
+/>
 
 ```r
 puliti |> anti_join(regioni, by = "citta")

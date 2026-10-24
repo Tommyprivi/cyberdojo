@@ -48,7 +48,17 @@ La domanda del caso: **quanto resta del capitale di Cima Capital?**
 {/* screen */}
 
 <Scene title="La leva fa da moltiplicatore">
-La **leva** è denaro preso in prestito per investire più di quanto si ha. Il portafoglio ora vale 900. Si restituiscono i 900 del prestito. Restano **0**: il capitale proprio è azzerato, con un calo di soli 10%.
+La **leva** è denaro preso in prestito per investire più di quanto si ha. Il portafoglio ora vale 900. Si restituiscono i 900 del prestito. Restano **0**: il capitale proprio è azzerato, con un calo di appena il 10%.
+
+<Flow
+  caption="Come un calo del 10% azzera il capitale proprio con leva 10 a 1 (milioni)."
+  steps={[
+    { icon: "coin", title: "Capitale + prestito", text: "100 propri + 900 in prestito" },
+    { icon: "chart", title: "Portafoglio", text: "Investiti 1.000" },
+    { icon: "warning", title: "Calo del 10%", text: "Il portafoglio vale 900" },
+    { icon: "skull", title: "Si restituiscono 900", text: "Al capitale proprio resta 0" },
+  ]}
+/>
 
 Regola semplice: con leva *L* a 1, un calo di circa **1/L** azzera il capitale.
 
@@ -89,8 +99,18 @@ La leva non è l'unica strada verso il fallimento. In sintesi, le cause tipiche:
 - **Errori operativi**: ordini sbagliati, dati sbagliati, nessuno che controlla chi opera.
 - **Frode**: documenti falsi e rendimenti inventati (ne parleremo in due lezioni).
 
+<Layers
+  caption="Le altre cause tipiche di fallimento, oltre alla leva."
+  items={[
+    { icon: "chart", title: "Concentrazione", text: "Troppo rischio su una sola idea o un solo mercato" },
+    { icon: "coin", title: "Costi e dimensioni", text: "Un fondo piccolo con costi fissi alti non si regge" },
+    { icon: "bug", title: "Errori operativi", text: "Ordini e dati sbagliati, nessun controllo" },
+    { icon: "mask", title: "Frode", text: "Documenti falsi e rendimenti inventati" },
+  ]}
+/>
+
 <Callout kind="regola">
-Molti fondi non chiudono in modo spettacolare: chiudono in silenzio, perché i conti non tornano. Nessuna di queste cause è un «evento raro» da guardare in tv.
+Molti fondi non chiudono in modo spettacolare: chiudono in silenzio, perché i conti non tornano. Nessuna di queste cause richiede un evento raro o spettacolare.
 </Callout>
 
 <Say who="sensei">Quando un fondo muore, di solito le cause sono più d'una. Si sommano, come i buchi in una barca.</Say>

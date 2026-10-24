@@ -58,6 +58,15 @@ Come la differenza tra l'italiano e un programma di videoscrittura: R è la ling
 Si installa **prima R**, poi **RStudio**. Se fai il contrario, RStudio non trova il linguaggio e si lamenta.
 </Callout>
 
+<Flow
+  caption="L'ordine di installazione conta."
+  steps={[
+    { icon: "terminal", title: "Prima R", text: "Il linguaggio, da CRAN" },
+    { icon: "laptop", title: "Poi RStudio", text: "Il quaderno, da Posit" },
+    { icon: "chart", title: "Si lavora", text: "Script e analisi" },
+  ]}
+/>
+
 Vuoi vedere l'installazione fatta da un'altra voce? Un docente universitario la mostra passo per passo:
 
 <Video />
@@ -106,6 +115,15 @@ library(tidyverse)
 ```
 
 Pensa a una biblioteca: `install.packages()` è **portare il libro a casa** (si fa una volta, richiede internet e qualche minuto). `library()` è **aprire il libro sulla scrivania** (si fa a ogni sessione, all'inizio dello script).
+
+<Flow
+  caption="Due passi diversi: uno si fa una volta, l'altro a ogni sessione."
+  steps={[
+    { icon: "cloud", title: "CRAN", text: "L'archivio ufficiale dei pacchetti" },
+    { icon: "folder", title: "install.packages()", text: "Una volta sola, serve internet" },
+    { icon: "book", title: "library()", text: "A ogni sessione, all'inizio dello script" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Se scrivi `library(tidyverse)` senza averlo installato, R risponde così:

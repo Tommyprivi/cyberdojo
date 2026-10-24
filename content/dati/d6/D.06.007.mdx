@@ -75,6 +75,12 @@ Con p = 0,03, ecco che cosa **non** si può dire:
 - **«L'effetto è grande.»** No: il p-value non misura la grandezza dell'effetto. Con campioni enormi anche differenze minuscole danno p piccolissimi.
 - **p = 0,30 allora «non c'è alcun effetto».** No: significa solo che i dati sono compatibili con H0. Può esserci un effetto che il campione non vede.
 
+<Compare
+  caption="Con p = 0,03: che cosa non dice e che cosa dice."
+  left={{ title: "Non dice", points: ["H0 ha il 3% di essere vera", "L'effetto è reale al 97%", "L'effetto è grande"] }}
+  right={{ title: "Dice", points: ["Si parte da H0 vera", "Dati così estremi: circa 3 volte su 100", "Quanto sono strani i dati se è tutto caso"] }}
+/>
+
 <Callout kind="attenzione">
 Il p-value risponde a una domanda stretta. Pretendere di più è l'errore più comune.
 </Callout>
@@ -110,6 +116,15 @@ Probabilità che **tutti** i 20 test siano «non significativi»: 0,95 moltiplic
 Probabilità che **almeno uno** risulti significativo: 1 - 0,36 = circa **0,64**, cioè il **64%**.
 
 Se poi il ricercatore scrive solo del test fortunato, e non dice degli altri 19, sta facendo **p-hacking**: provare finché esce qualcosa, e raccontare solo quello.
+
+<Flow
+  caption="Come nasce un falso risultato con il p-hacking."
+  steps={[
+    { icon: "search", title: "20 test", text: "Su dati senza alcun effetto" },
+    { icon: "bell", title: "Almeno uno", text: "Significativo per caso: circa 64%" },
+    { icon: "mask", title: "Si racconta solo quello", text: "Gli altri 19 restano nascosti" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Difesa: dichiarare **prima** ipotesi, soglia e numero di confronti; riportare tutti i test fatti; correggere la soglia quando i confronti sono molti (per esempio dividendola per il numero di confronti).

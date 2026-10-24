@@ -60,7 +60,16 @@ Convenzione: usiamo i **rendimenti semplici** di ogni anno, cioè la variazione 
 - Dopo l'anno 1: 10.000 × 1,25 = **12.500**
 - Dopo l'anno 2: 12.500 × 0,80 = **10.000**
 
-Dopo due anni Marta è **a zero**: ha lo stesso capitale di partenza. Altro che +2,5% all'anno.
+Dopo due anni Marta è **in pari**: ha lo stesso capitale di partenza, nessun guadagno. Altro che +2,5% all'anno.
+
+<Flow
+  caption="Il caso di Marta: +25% e poi −20% non fanno +5%."
+  steps={[
+    { icon: "coin", title: "Parte da", text: "10.000 euro" },
+    { icon: "chart", title: "Anno 1: +25%", text: "Sale a 12.500" },
+    { icon: "warning", title: "Anno 2: -20%", text: "Torna a 10.000" },
+  ]}
+/>
 
 Il motivo: il −20% del secondo anno si applica a un capitale **più grande**, quindi toglie più euro di quelli che il +25% aveva aggiunto.
 
@@ -109,7 +118,7 @@ Con i giorni di borsa si fa lo stesso: un anno ha circa **252 giorni di borsa** 
 CAGR = 1,21 ^ (252 / 504) − 1 = 1,1 − 1 = **10%**
 
 <Callout kind="trucco">
-Regola pratica: periodo più corto di un anno? Eleva alla potenza (periodi in un anno) / (periodi che hai). Periodo più lungo? Stessa formula con l'esponente più piccolo di 1.
+Regola pratica: l'esponente è sempre (periodi in un anno) ÷ (periodi che hai). Con 6 mesi di dati l'esponente è 12 ÷ 6 = 2; con 24 mesi è 12 ÷ 24 = 1/2.
 </Callout>
 
 <Say who="assistente">Attenzione ai campioni brevi: sei mesi di dati «annualizzati» sono una scommessa sulla fortuna, non una misura.</Say>

@@ -88,6 +88,16 @@ Nora compra **100 azioni** all'ask e le rivende subito al bid. Facciamo il conto
   ]}
 />
 
+<Flow
+  caption="Il prezzo resta fermo, ma il giro completo costa lo spread."
+  steps={[
+    { icon: "coin", title: "Compra", text: "All'ask: 50,10" },
+    { icon: "clock", title: "Prezzo fermo", text: "Il mercato non si muove" },
+    { icon: "coin", title: "Rivende", text: "Al bid: 49,90" },
+    { icon: "warning", title: "Perdita", text: "20 euro su 100 azioni" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Lo spread si misura meglio in **percentuale**: 0,20 su un titolo da 50 euro è lo 0,4%. Lo stesso 0,20 su un titolo da 5 euro sarebbe il 4%.
 </Callout>

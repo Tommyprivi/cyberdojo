@@ -62,6 +62,16 @@ Un esempio con numeri fittizi, che puoi provare qui:
 
 Risultato atteso: `Cassa: 9000.0` e `Posizione: 20 azioni`. È così che un simulatore tiene i conti: sottrae dalla cassa e segna la posizione.
 
+<Flow
+  caption="Nel conto demo l'ordine è vero per il programma, ma il denaro è finto."
+  steps={[
+    { icon: "code", title: "Programma", text: "Decide e invia l'ordine" },
+    { icon: "server", title: "Ambiente demo", text: "Il gemello del broker vero" },
+    { icon: "coin", title: "Conto finto", text: "Cassa 9.000, 20 azioni" },
+    { icon: "file", title: "Registro", text: "Si controlla il giorno dopo" },
+  ]}
+/>
+
 <Say who="assistente">Il conto demo è una palestra: i pesi sono finti, ma i movimenti sono quelli giusti.</Say>
 </Scene>
 

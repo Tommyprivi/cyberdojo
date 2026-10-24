@@ -66,6 +66,12 @@ Un **outlier** (in italiano «valore anomalo») è un dato molto lontano dagli a
 
 La **media** (somma divisa per quanti sono) viene trascinata dal 240. La **mediana** (il valore centrale, 25) resta dove sta la maggioranza.
 
+<Compare
+  caption="Lo stesso dato, due misure: la media viene trascinata, la mediana no."
+  left={{ title: "Media: 55,4 minuti", points: ["Somma divisa per sette", "Trascinata dal 240", "Non descrive nessuna consegna vera"] }}
+  right={{ title: "Mediana: 25 minuti", points: ["Valore centrale dei dati ordinati", "Resta dove sta la maggioranza", "Descrive la consegna tipica"] }}
+/>
+
 <Callout kind="regola">
 Con un outlier, una media da sola mente. Guarda sempre anche la mediana: se sono molto diverse, c'è qualcosa da capire.
 </Callout>
@@ -125,6 +131,16 @@ Le **regole di buon senso** si scrivono nel codice e sono più sicure dell'IQR q
   "3  230",
   "5   -5",
 ]} caption="Nessuna età è negativa e nessuno ne ha 230: sono errori sicuri." />
+
+<Flow
+  caption="Il numero segnala il sospetto, le domande decidono."
+  steps={[
+    { icon: "search", title: "Sospetto", text: "L'IQR segnala il valore" },
+    { icon: "eye", title: "Domande", text: "Possibile? Si spiega? Ce ne sono altri?" },
+    { icon: "gear", title: "Decisione", text: "Correggi, tieni, limita o togli" },
+    { icon: "book", title: "Registro", text: "Scrivi cosa hai fatto" },
+  ]}
+/>
 
 Le tue opzioni per ogni outlier:
 

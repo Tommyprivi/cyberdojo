@@ -85,6 +85,12 @@ Con dbt questo si fa con **MetricFlow**, in file YAML accanto ai modelli. Sintas
 
 Chi chiede `ricavi` per mese riceve **82,50** per marzo; per città, Torino 60,50 e Bari 22,00 (la somma torna: 60,50 + 22,00 = 82,50). Nessuno riscrive la regola.
 
+<Compare
+  caption="Dove vive la definizione di «ricavi»."
+  left={{ title: "Formula in ogni dashboard", points: ["Ricavi ricalcolati dalle tabelle grezze", "90,00 nella dashboard, 82,50 nel foglio", "Un cambio di regola va rifatto in ogni posto"] }}
+  right={{ title: "Metrica definita una volta", points: ["«ricavi» nel livello semantico", "Tutti leggono 82,50 per marzo", "Un cambio di regola, tutti aggiornati"] }}
+/>
+
 <Callout kind="attenzione">
 La sintassi del livello semantico è cambiata più volte tra le versioni di dbt (le versioni recenti la rivedono). Il concetto resta lo stesso; la sintassi esatta va controllata nella documentazione della **versione che usi**. Inoltre, collegare il livello semantico direttamente agli strumenti di BI è una funzione del servizio a pagamento dbt Cloud; con dbt Core si può usare MetricFlow da riga di comando.
 </Callout>
@@ -140,6 +146,16 @@ Un modello perfetto che non si aggiorna da due giorni è un modello sbagliato. L
 | **test** | le regole valgono? | `dbt build`, avvisi alla squadra se falliscono |
 | **volumi** | ci sono più o meno righe del solito? | test sul numero di righe |
 | **esecuzioni** | i modelli girano e in quanto tempo? | file `run_results.json`, prodotto a ogni esecuzione |
+
+<Layers
+  caption="Quattro segnali per accorgersi prima degli altri."
+  items={[
+    { icon: "clock", title: "Freschezza", text: "I dati sono recenti?" },
+    { icon: "check", title: "Test", text: "Le regole valgono?" },
+    { icon: "chart", title: "Volumi", text: "Ci sono più o meno righe del solito?" },
+    { icon: "gear", title: "Esecuzioni", text: "I modelli girano e in quanto tempo?" },
+  ]}
+/>
 
 La freschezza si dichiara sulla sorgente:
 

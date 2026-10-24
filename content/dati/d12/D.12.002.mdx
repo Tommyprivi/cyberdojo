@@ -58,6 +58,17 @@ Un **bias** è una distorsione sistematica: il risultato sbaglia sempre nella st
 - **Sostituti**: una colonna innocua, come il CAP, può far le veci di una colonna sensibile.
 - **Circolo vizioso**: un sistema controlla di più un quartiere, trova più casi, e il modello si convince che lì serva controllare ancora di più.
 
+<Layers
+  caption="Cinque punti in cui può nascere il bias."
+  items={[
+    { icon: "users", title: "Campione", text: "I dati non rappresentano tutti" },
+    { icon: "book", title: "Storia", text: "Decisioni passate già ingiuste" },
+    { icon: "gear", title: "Misure", text: "Si misura ciò che non conta" },
+    { icon: "mask", title: "Sostituti", text: "Il CAP fa le veci di un dato sensibile" },
+    { icon: "link", title: "Circolo vizioso", text: "Più controlli, più casi, più controlli" },
+  ]}
+/>
+
 Vuoi sentirlo raccontare da una ricercatrice che lo ha scoperto sul campo? Otto minuti, in inglese:
 
 <Video />
@@ -101,6 +112,16 @@ Ma gli esiti diversi possono avere cause diverse. Allora guarda solo chi è davv
 | B | 40 | 24 | 60% |
 
 Seconda idea: **parità delle opportunità**. A parità di qualifica, A ha il 90% di probabilità e B il 60%. Il programma sbaglia di più con B.
+
+<Flow
+  caption="Per misurare l'equità si confrontano i gruppi, uno per uno."
+  steps={[
+    { icon: "users", title: "Dividi", text: "Per gruppo" },
+    { icon: "chart", title: "Calcola", text: "Percentuali: A 50%, B 30%" },
+    { icon: "search", title: "Confronta", text: "Esiti e, a parità di qualifica, opportunità" },
+    { icon: "warning", title: "Chiedi perché", text: "Le differenze vanno spiegate" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Le metriche di equità non sempre vanno d'accordo: in generale non si possono soddisfare tutte insieme. Scegliere quale conta di più è una decisione da prendere con chi risponde del processo, non solo una scelta tecnica.

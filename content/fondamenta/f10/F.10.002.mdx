@@ -40,6 +40,12 @@ Sei in ferie. Il lunedì dopo, un tuo collega deve aggiungere una stampante alla
 
 Per sapere dove collegarla, **deve indovinare**. Sceglie un indirizzo che sembra libero. Era il gateway della VLAN 20. Metà reparto tecnico perde la rete.
 
+<Compare
+  caption="Il lunedì del collega, senza e con la documentazione."
+  left={{ title: "Senza documenti", points: ["Cartella vuota, nessuno schema","Si indovina un indirizzo «libero»","Era il gateway della VLAN 20"] }}
+  right={{ title: "Con documenti", points: ["Diagramma e tabella degli indirizzi","L'indirizzo libero si legge, non si indovina","La stampante entra senza guasti"] }}
+/>
+
 <Say who="sensei">Una rete non documentata è una rete che solo tu capisci. Quando non ci sei, è un rischio.</Say>
 </Scene>
 
@@ -56,10 +62,10 @@ Ti basta un disegno semplice, anche con caratteri di testo: dispositivi, collega
     "   |  (trunk: VLAN 10, 20, 30, 40, 50)",
     "[Switch centrale]",
     "   |-- porta 1-12   access VLAN 10  Amministrazione",
-    "   |-- porta 13-24  access VLAN 20  Tecnico",
-    "   |-- porta 25-28  access VLAN 30  Server",
-    "   |-- porta 29-36  access VLAN 50  Telecamere",
-    "   |-- porta 37     access VLAN 40  Access point Wi-Fi ospiti",
+    "   |-- porta 13-32  access VLAN 20  Tecnico",
+    "   |-- porta 33-36  access VLAN 30  Server",
+    "   |-- porta 37-44  access VLAN 50  Telecamere",
+    "   |-- porta 45     access VLAN 40  Access point Wi-Fi ospiti",
   ]}
   caption="Un diagramma in testo: un solo sguardo e si capisce dove sta ogni cosa."
 />
@@ -115,6 +121,17 @@ Una rete non è pronta perché «sembra» funzionare. Si **collauda**, con una *
 Si provano anche le cose che **devono fallire**. Un ospite che raggiunge il server non fa comparire nessun errore: te ne accorgi solo se lo provi.
 </Callout>
 
+<Flow
+  caption="Il collaudo procede dal vicino al lontano."
+  steps={[
+    { icon: "laptop", title: "DHCP", text: "Il PC prende un indirizzo" },
+    { icon: "link", title: "Gateway", text: "Ping al 10.10.10.1" },
+    { icon: "server", title: "Server", text: "Ping al 10.10.30.2" },
+    { icon: "globe", title: "Internet", text: "Nome e pagina esterna" },
+    { icon: "cross", title: "Deve fallire", text: "Ospiti verso il server: nessuna risposta" },
+  ]}
+/>
+
 <Say who="sensei">Il collaudo dimostra due cose: che funziona ciò che serve, e che è vietato ciò che deve esserlo.</Say>
 </Scene>
 
@@ -145,10 +162,10 @@ Un video in italiano, con due sottoreti e un router costruiti passo passo, mostr
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Durante il collaudo, un PC dell'amministrazione raggiunge il server e i colleghi, ma non apre nessun sito su Internet. Il ping verso 10.10.10.1 e verso il server va bene. Dove guardi per primo?"
+  question="Durante il collaudo, un PC dell'amministrazione raggiunge i colleghi della sua rete, ma non apre nessun sito su Internet. Dove guardi per primo?"
   options={["Nella configurazione del PC: il gateway potrebbe mancare o essere sbagliato", "Nel cavo tra il PC e lo switch", "Nella VLAN dei server, che è danneggiata", "Nel Wi-Fi degli ospiti"]}
   answer={0}
-  explain="Il PC parla con chi sta nella sua rete e con il gateway del progetto: il cavo e la VLAN sono a posto. Ma se ha un gateway sbagliato o assente non esce dalla rete. Controlla anche l'ACL, ma il sintomo punta prima al PC."
+  explain="Il PC parla con chi sta nella sua rete: il cavo e lo switch sono a posto. Ma se ha un gateway sbagliato o assente non esce dalla rete. Controlla anche ACL e NAT, ma il sintomo punta prima al PC."
 />
 
 <Say who="sensei">Il sintomo indica il tratto. Segui la logica, non l'intuito.</Say>

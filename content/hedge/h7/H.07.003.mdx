@@ -59,6 +59,12 @@ Convenzione: correlazione zero tra i due asset. Il contributo di un asset alla *
   ]}
 />
 
+<Compare
+  caption="Stesso portafoglio, due punti di vista: capitale e rischio."
+  left={{ title: "Capitale 50/50", points: ["Obbligazioni 50%, azioni 50%", "Rischio: obbligazioni 10%, azioni 90%"] }}
+  right={{ title: "Risk parity", points: ["Obbligazioni 75%, azioni 25%", "Rischio: 50% e 50%"] }}
+/>
+
 <Say who="assistente">Il capitale è metà e metà. Il rischio è novanta e dieci. Capisci il problema?</Say>
 </Scene>
 
@@ -92,6 +98,16 @@ Meno volatile = più peso. Più volatile = meno peso. Il rischio si divide, il c
 Il portafoglio 75/25 ha una volatilità di circa 5,3%: molto bassa, ma anche il rendimento atteso è basso. Allora i fondi risk parity spesso usano la **leva** per portare il rischio al livello voluto.
 
 Con numeri semplici: portafoglio con volatilità 5%, obiettivo 10%, esposizione totale **2 volte** il capitale.
+
+<Flow
+  caption="Come la leva porta il rischio al livello voluto, e dove si nasconde il pericolo."
+  steps={[
+    { icon: "shield", title: "Poco rischio", text: "Volatilità 5%" },
+    { icon: "gear", title: "Leva 2 volte", text: "Esposizione doppia" },
+    { icon: "chart", title: "Obiettivo", text: "Volatilità 10%" },
+    { icon: "warning", title: "Se scendono insieme", text: "Perdite amplificate" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 La leva non elimina il rischio: lo moltiplica. Se obbligazioni e azioni scendono insieme (per esempio quando i tassi salgono in fretta), la correlazione sale e le perdite sono amplificate dalla leva.

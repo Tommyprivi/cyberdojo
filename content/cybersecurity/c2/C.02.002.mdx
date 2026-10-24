@@ -102,6 +102,15 @@ Vuoi sentirlo spiegare da un'altra voce? Guarda i primi minuti:
 
 **Uso 2, password.** Un sito serio non conserva la tua password: conserva il suo hash. Quando accedi, calcola l'hash di quello che scrivi e lo confronta. Se il database viene rubato, i ladri trovano impronte, non password.
 
+<Flow
+  caption="Controllo di integrità: si confrontano due impronte."
+  steps={[
+    { icon: "globe", title: "Il sito", text: "Pubblica l'hash del programma" },
+    { icon: "laptop", title: "Luca", text: "Calcola l'hash del suo file" },
+    { icon: "check", title: "Confronto", text: "Uguali: il file è identico" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Per le password serve di più di un hash semplice: servono un dato casuale aggiunto (il **salt**) e funzioni volutamente lente. Lo vedrai nel modulo sull'autenticazione. Per ora ricorda: **mai** password in chiaro.
 </Callout>

@@ -82,6 +82,15 @@ Perdere e recuperare **non sono simmetrici**.
 - Perdi **−50%**: serve **+100%**.
 - Perdi **−20%**: serve **+25%**.
 
+<Flow
+  caption="Perché risalire costa più che scendere."
+  steps={[
+    { icon: "chart", title: "Massimo 120", text: "Il riferimento resta questo" },
+    { icon: "warning", title: "Scende a 90", text: "Drawdown di −25%" },
+    { icon: "bolt", title: "Per rientrare", text: "Serve +33,3%, non +25%" },
+  ]}
+/>
+
 Formula: guadagno necessario = 1 / (1 − perdita) − 1.
 
 <Callout kind="regola">
@@ -110,7 +119,7 @@ Convenzione: CAGR calcolato su tutto il periodo, massimo drawdown sullo stesso p
 Per Calmar, **B è meglio**: rende meno ma costa meno discesa.
 
 <Callout kind="attenzione">
-Il massimo drawdown storico è solo il peggio **già visto**. Con più dati, o in un altro periodo, può essere peggiore. Nei backtest, poi, è sempre ottimistico: costi e slippage lo peggiorano.
+Il massimo drawdown storico è solo il peggio **già visto**. Con più dati, o in un altro periodo, può essere peggiore. Nei backtest, poi, tende a essere ottimistico: costi e slippage lo peggiorano.
 </Callout>
 
 <Say who="assistente">Calmar usa un solo evento: la discesa peggiore. È utile ma fragile, perché dipende da una sola data.</Say>

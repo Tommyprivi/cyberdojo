@@ -58,6 +58,16 @@ Il **pairs trading** («operare sulle coppie») sceglie due titoli che storicame
 - si **vende** il caro (vendita allo scoperto, cioè vendere ciò che si è preso in prestito, sperando di ricomprarlo più in basso) e si **compra** l'economico;
 - si esce quando lo spread torna normale.
 
+<Flow
+  caption="Una coppia ha due gambe: si vende il titolo caro e si compra quello economico."
+  steps={[
+    { icon: "link", title: "Coppia", text: "Due titoli che si muovono insieme" },
+    { icon: "warning", title: "Divario largo", text: "Lo spread si allarga molto" },
+    { icon: "code", title: "Due operazioni", text: "Vendi il caro, compri l'economico" },
+    { icon: "check", title: "Uscita", text: "Quando lo spread torna normale" },
+  ]}
+/>
+
 È una forma di mean reversion applicata al **divario**, non al prezzo. Per questo si chiama **arbitraggio statistico**: non è sicuro come un arbitraggio puro, è una scommessa basata sulle statistiche del passato.
 
 <Callout kind="regola">
@@ -82,7 +92,7 @@ Dati fittizi: dalla storia, lo spread medio è **10** e la sua deviazione standa
 | 2 | 55 | 44 | 11 | 0,5 |
 | 3 | 58 | 44 | 14 | 2,0 |
 
-Il giorno 3: (14 - 10) / 2 = 2. Regola d'esempio: «con z sopra 2 vendi X e compri Y; esci quando z torna vicino a 0».
+Il giorno 3: (14 - 10) / 2 = 2. Regola d'esempio: «con z maggiore di 2 (soglia esclusa) vendi X e compri Y; esci quando z torna vicino a 0».
 
 <PythonTerminal code={"media, dev = 10, 2\nfor x, y in [(52, 42), (55, 44), (58, 44)]:\n    spread = x - y\n    print(spread, (spread - media) / dev)"} />
 

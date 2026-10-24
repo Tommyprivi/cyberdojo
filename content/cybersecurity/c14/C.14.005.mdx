@@ -78,6 +78,12 @@ Si prova solo ciò che è tuo o per cui hai un permesso scritto. Senza eccezioni
 - Nei log: un account che chiede in poco tempo ticket (**4769**) per **molti servizi**, spesso con cifratura debole.
 - Difese: **account di servizio gestiti (gMSA)** o password lunghe e casuali; cifratura AES; pochi privilegi agli account di servizio.
 
+<Compare
+  caption="Password spraying: che cosa si vede e come si ferma."
+  left={{ title: "Password spraying", points: ["Poche password comuni su moltissimi account", "Pochi tentativi per account: il blocco non scatta", "Nei log: molti 4625 da una sola origine"] }}
+  right={{ title: "Le difese", points: ["Autenticazione a più fattori", "Password lunghe e lista di password vietate", "Allarme su molti fallimenti dalla stessa origine"] }}
+/>
+
 <Callout kind="trucco">
 Nel primo caso il segnale è **«troppi fallimenti da una origine»**. Nel secondo è **«troppi ticket di servizio da un account»**.
 </Callout>
@@ -112,6 +118,16 @@ Vuoi sentire come si mette in sicurezza un dominio? Un video in italiano, i prim
 
 - Nei log: richieste di ticket di servizio (**4769**) **senza** un TGT richiesto prima (**4768**) dal DC; ticket con durate anomale; account che non esistono.
 - Difese: proteggere i DC; **cambiare due volte** la password di krbtgt dopo una compromissione; limitare i diritti di replica.
+
+<Flow
+  caption="Il ticket falso si riconosce da ciò che manca."
+  steps={[
+    { icon: "key", title: "Chiave krbtgt", text: "Chi la possiede può fabbricare TGT" },
+    { icon: "mask", title: "TGT falso", text: "Il DC non l'ha mai emesso" },
+    { icon: "file", title: "Evento 4769", text: "Viene richiesto un ticket di servizio" },
+    { icon: "search", title: "Manca il 4768", text: "Nessun TGT richiesto prima: ecco la traccia" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 L'attacco ai ticket falsi è difficile da vedere con un solo evento: il segnale è una **mancanza** (un 4769 senza 4768). Serve correlare più eventi, anche di macchine diverse.

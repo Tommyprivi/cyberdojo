@@ -61,7 +61,16 @@ Un fondo **multi-strategy** usa **più strategie insieme**, di solito con **squa
 - ha un **limite di perdita**: se lo supera, il capitale viene ridotto o il pod chiuso;
 - risponde a un **controllo centrale del rischio**, che guarda tutti i pod insieme.
 
-L'idea è che le squadre guadagnino da fonti diverse, così **il fondo non dipende da un'unica idea**. Il fondo sposta capitale dai pod che vanno bene a quelli che vanno male, o li chiude.
+<Layers
+  caption="Come è organizzato un fondo multi-strategy."
+  items={[
+    { icon: "shield", title: "Controllo del rischio", text: "Guarda tutti i pod insieme" },
+    { icon: "users", title: "Pod", text: "Ognuno con capitale assegnato e limite di perdita" },
+    { icon: "chart", title: "Strategie", text: "Una per squadra: long/short, event driven, relative value, managed futures" },
+  ]}
+/>
+
+L'idea è che le squadre guadagnino da fonti diverse, così **il fondo non dipende da un'unica idea**. Il fondo sposta capitale dai pod che vanno male a quelli che vanno bene, oppure chiude i primi.
 
 Vuoi sentirlo spiegare da un'altra voce? Un podcast in inglese con sottotitoli, guardane i primi minuti.
 
@@ -119,7 +128,7 @@ Prima di chiudere il modulo, una mappa. Per ognuna: l'idea e il rischio principa
 | Managed futures | Seguire il trend su molti mercati | Whipsaw, costi, leva |
 | Multi-strategy | Più squadre insieme | Costi, leva, crisi comuni |
 
-Nessuna strategia è «la migliore»: ognuna ha un tipo di errore che la costringe a perdere. Nei prossimi moduli vedremo come si misurano e si combinano.
+Nessuna strategia è «la migliore»: ognuna ha un tipo di errore in cui perde. Nei prossimi moduli vedremo come si misurano e si combinano.
 
 <Say who="sensei">Ricorda questa tabella. Ogni idea ha il suo modo di fallire. Conoscerlo è metà del lavoro.</Say>
 </Scene>

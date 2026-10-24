@@ -56,6 +56,15 @@ Un **IDS** (*Intrusion Detection System*, sistema di rilevamento delle intrusion
 
 Un **IPS** (*Intrusion Prevention System*, sistema di prevenzione) è una **guardia che ferma**: oltre a vedere, **blocca** il traffico sospetto, di solito subito e da solo.
 
+<Layers
+  caption="Tre strumenti, tre verbi: decide, avvisa, blocca."
+  items={[
+    { icon: "shield", title: "Firewall", text: "Decide in base a indirizzi e porte" },
+    { icon: "bell", title: "IDS", text: "Guarda dentro e avvisa una persona" },
+    { icon: "lock", title: "IPS", text: "Guarda dentro e blocca da solo" },
+  ]}
+/>
+
 <Callout kind="trucco">
 D come **D**etection: scopre e avvisa. P come **P**revention: previene, cioè blocca.
 </Callout>
@@ -89,6 +98,15 @@ Torniamo all'allarme delle 14:05. Il tecnico indaga. Era il programma di backup 
 Non era un attacco. Un allarme che scatta per qualcosa di innocuo si chiama **falso positivo**. Il caso opposto, un attacco vero che passa senza allarme, è un **falso negativo**.
 
 Perché i falsi positivi sono importanti? Con un **IDS** costano tempo: qualcuno deve controllare ogni avviso, e a forza di allarmi inutili si smette di leggerli. Con un **IPS** costano di più: il traffico innocuo viene **bloccato davvero**. Se l'IPS ferma il backup, o l'accesso di un cliente, l'azienda smette di lavorare.
+
+<Flow
+  caption="L'allarme delle 14:05, dall'avviso alla verifica."
+  steps={[
+    { icon: "bell", title: "Allarme", text: "Accesso a un file di sistema" },
+    { icon: "search", title: "Indagine", text: "Il tecnico controlla" },
+    { icon: "check", title: "Falso positivo", text: "Era il programma di backup" },
+  ]}
+/>
 
 <Callout kind="regola">
 Un IPS va tarato con cura. Spesso si comincia con la modalità «solo avviso» (come un IDS), si guardano i falsi positivi per qualche settimana, poi si attiva il blocco.

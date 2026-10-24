@@ -61,6 +61,16 @@ Davanti a una cattura sospetta si lavora sempre allo stesso modo.
 Un foglio con due colonne, «Fatto visto» e «Ipotesi», vale più di cento schermate. Si riempie mentre si legge, non dopo.
 </Callout>
 
+<Flow
+  caption="Le quattro mosse, sempre nello stesso ordine."
+  steps={[
+    { icon: "chart", title: "Panorama", text: "Gerarchia e conversazioni" },
+    { icon: "clock", title: "Cronologia", text: "Eventi in ordine, ora UTC" },
+    { icon: "search", title: "Indicatori", text: "IP, nomi DNS, porte, file" },
+    { icon: "book", title: "Fatti e ipotesi", text: "In due colonne separate" },
+  ]}
+/>
+
 Vuoi vedere un'analisi di traffico sospetto fatta da un'altra voce? In inglese:
 
 <Video />
@@ -133,6 +143,16 @@ Rimettiamo tutto in ordine.
     "Fatti: tutto ciò che è nella tabella sopra. Ipotesi: file scaricato → attività successiva; beaconing; possibile infezione.",
     "Ciò che la cattura NON mostra: che cosa conteneva lo zip, se è stato aperto, quale programma ha generato i contatti, quali dati sono stati inviati.",
     "Prossimi passi: verificare il computer di prova (isolato dalla rete), controllare i processi, fare l'hash del file e cercarlo in un servizio di reputazione, bloccare gli indirizzi nel firewall del laboratorio.",
+  ]}
+/>
+
+<Flow
+  caption="La cronologia ricostruita: coerente con un'infezione, non una prova."
+  steps={[
+    { icon: "folder", title: "14:02", text: "Download di foglio-prezzi.zip via HTTP" },
+    { icon: "globe", title: "14:03", text: "Nomi DNS casuali, NXDOMAIN" },
+    { icon: "lock", title: "14:04", text: "Primo contatto TLS verso 198.51.100.33" },
+    { icon: "clock", title: "14:05-14:06", text: "Invii da 212 byte ogni minuto" },
   ]}
 />
 

@@ -80,6 +80,16 @@ L'**errore** di un punto è la differenza tra voto reale e voto previsto: **real
 
 Per un riassunto si usa l'**errore medio assoluto** (MAE): si toglie il segno e si fa la media. Qui: (0,2 + 0,3 + 0,2 + 0,3 + 0,2) diviso 5 = 1,2 diviso 5 = **0,24**.
 
+<Flow
+  caption="Dal voto reale all'errore medio assoluto, passo per passo."
+  steps={[
+    { icon: "book", title: "Reale", text: "Il voto preso davvero" },
+    { icon: "chart", title: "Previsto", text: "Il voto che dà la retta" },
+    { icon: "warning", title: "Errore", text: "Reale meno previsto" },
+    { icon: "check", title: "MAE", text: "Senza segno, poi la media: 0,24" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Non sommare gli errori con il segno: -0,2 e +0,3 si compensano. Qui la somma fa 0, ma la retta non è perfetta.
 </Callout>
@@ -95,6 +105,12 @@ Proviamo un'altra retta: **voto = 1 × ore + 3**. Le previsioni sono 4, 5, 6, 7,
 <Log lines={["errori: 3-4 = -1 | 5-5 = 0 | 6-6 = 0 | 8-7 = +1 | 9-8 = +1", "MAE = (1 + 0 + 0 + 1 + 1) / 5 = 3 / 5 = 0,6"]} caption="Errore medio 0,6 contro 0,24." />
 
 0,6 è più grande di 0,24: la prima retta è migliore. **Addestrare** una regressione lineare vuol dire cercare la retta con l'errore più piccolo.
+
+<Compare
+  caption="Due rette sugli stessi cinque punti: vince quella con l'errore più piccolo."
+  left={{ title: "Voto = 1 × ore + 3", points: ["Previsioni: 4, 5, 6, 7, 8", "Errore medio (MAE): 0,6"] }}
+  right={{ title: "Voto = 1,5 × ore + 1,7", points: ["Previsioni: 3,2 - 4,7 - 6,2 - 7,7 - 9,2", "Errore medio (MAE): 0,24", "Questa è la retta migliore"] }}
+/>
 
 Vuoi sentirlo da un'altra voce? Un video di meno di sei minuti:
 

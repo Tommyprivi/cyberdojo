@@ -58,6 +58,12 @@ Pensa a un palazzo con un solo ascensore e tre piani con le porte chiuse: l'edif
 
 Ogni VLAN ha un **numero** (da 1 a 4094) e di solito un **nome** (per esempio 10 «contabilita», 20 «ospiti», 30 «telecamere»). In genere a ogni VLAN corrisponde **una sottorete IP diversa**.
 
+<Compare
+  caption="Lo stesso switch, senza e con le VLAN."
+  left={{ title: "Rete piatta", points: ["Tutti i dispositivi nella stessa rete","Un computer infetto «vede» gli altri","I broadcast arrivano a tutti"] }}
+  right={{ title: "Con le VLAN", points: ["Contabilità, ospiti e telecamere separate","Dispositivi di VLAN diverse non si vedono","I broadcast restano dentro la propria VLAN"] }}
+/>
+
 <Say who="assistente">Una VLAN è un'etichetta sulle porte. Stessa etichetta, stessa rete. Etichetta diversa, muro.</Say>
 </Scene>
 

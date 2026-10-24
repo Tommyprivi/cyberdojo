@@ -82,6 +82,16 @@ Con pandas i metodi per il testo stanno dopo `.str`. I due più usati:
   "Name: count, dtype: int64",
 ]} caption="nunique conta i valori distinti. Da 6 a 3, e ora i conteggi tornano." />
 
+<Flow
+  caption="Due metodi concatenati portano sei scritture a tre città."
+  steps={[
+    { icon: "file", title: "Grezzo", text: "Roma, « roma», «ROMA »" },
+    { icon: "gear", title: "strip()", text: "Via gli spazi ai bordi" },
+    { icon: "gear", title: "lower()", text: "Tutto minuscolo" },
+    { icon: "check", title: "Pulito", text: "Da 6 valori distinti a 3" },
+  ]}
+/>
+
 Nota che i metodi si possono **concatenare**: prima strip, poi lower. E il risultato va **riassegnato** alla colonna, altrimenti la tabella originale non cambia.
 
 <Callout kind="trucco">

@@ -72,6 +72,12 @@ Guarda i bit del secondo ottetto:
 <BitGrid bits="00011111" caption="31: la fine del blocco privato" />
 <BitGrid bits="00100000" caption="32: già fuori, e 40 è ancora più in là" />
 
+<Compare
+  caption="Stesso primo numero, origine opposta: conta il secondo numero."
+  left={{ title: "172.40.12.9", points: ["Il secondo numero, 40, è oltre il 31", "È un indirizzo pubblico", "Arriva da Internet"] }}
+  right={{ title: "172.20.5.5", points: ["Il secondo numero, 20, è tra 16 e 31", "È un indirizzo privato", "Parte da dentro la rete"] }}
+/>
+
 <Callout kind="curiosita">
 Ecco perché il blocco si scrive **/12**: tutti i secondi ottetti da 16 a 31 iniziano con **0001**. Appena il bit cambia (32 = 00100000), l'indirizzo non è più privato. Il binario non è teoria: è il motivo per cui l'intervallo è proprio quello.
 </Callout>

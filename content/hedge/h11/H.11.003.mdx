@@ -59,6 +59,16 @@ Conti fittizi:
   "Mancano 10.000 euro, che arrivano solo da nuovi clienti",
 ]} />
 
+<Flow
+  caption="Come gira il denaro in uno schema Ponzi."
+  steps={[
+    { icon: "users", title: "Nuovi clienti", text: "Versano denaro" },
+    { icon: "folder", title: "Non investito", text: "Nessun investimento reale" },
+    { icon: "coin", title: "Pagati i vecchi", text: "I «guadagni» arrivano da altri clienti" },
+    { icon: "warning", title: "Rimborsi in crisi", text: "Se superano i versamenti, crolla" },
+  ]}
+/>
+
 <Callout kind="regola">
 Lo schema regge solo finché **entrano più soldi di quanti ne escono**. Quando in crisi cresce il numero di chi chiede rimborsi, crolla.
 </Callout>
@@ -78,7 +88,7 @@ Dal sito della Consob, il video sullo schema Ponzi, in italiano, circa due minut
 <Video />
 
 <Callout kind="curiosita">
-Non serve un «professionista della truffa» per cadere in questo schema: spesso la fiducia nasce dal passaparola e dalla stima, la cosiddetta «affinità».
+Cadere in questo schema non è questione di ingenuità: spesso la fiducia nasce dal passaparola e dalla stima, la cosiddetta «affinità».
 </Callout>
 
 <Say who="sensei">Fatti ben noti, ottobre 2026. Per i dettagli, fonti ufficiali e sentenze, non commenti sui social.</Say>
@@ -94,6 +104,17 @@ Un elenco da tenere a portata di mano:
 - **Nessun controllo indipendente**: chi gestisce, chi custodisce i titoli e chi controlla i conti sono la stessa persona o lo stesso gruppo.
 - **Premi per portare amici**.
 - **Pressione a decidere subito**.
+
+<Layers
+  caption="I cinque segnali d'allarme da tenere a portata di mano."
+  items={[
+    { icon: "chart", title: "Troppo regolari", text: "Rendimenti uniformi rispetto ai mercati, o garantiti" },
+    { icon: "lock", title: "Segreto", text: "«Non posso spiegare la strategia»" },
+    { icon: "eye", title: "Nessun controllo", text: "Gestore, custode e controllore sono lo stesso gruppo" },
+    { icon: "users", title: "Premi per amici", text: "Compensi per portare nuovi clienti" },
+    { icon: "clock", title: "Fretta", text: "Pressione a decidere subito" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Un fondo che perde soldi veri e uno schema Ponzi sono cose diverse. Nel primo gli investimenti c'erano e sono andati male. Nel secondo i rendimenti sono inventati.

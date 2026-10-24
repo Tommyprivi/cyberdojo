@@ -79,6 +79,12 @@ Il fondo ha comprato un'obbligazione a **40**. Alla fine della ristrutturazione 
   ]}
 />
 
+<Compare
+  caption="Lo stesso acquisto a 40, con due recuperi diversi."
+  left={{ title: "Recupero 25", points: ["Si incassa meno di quanto pagato", "Perdita di 15, cioè -37,5%"] }}
+  right={{ title: "Recupero 60", points: ["Si incassa più di quanto pagato", "Guadagno di 20, cioè +50%"] }}
+/>
+
 <Callout kind="regola">
 Il prezzo di mercato contiene già le aspettative di tutti. Un fondo ha un vantaggio solo se sa **valutare il recupero meglio degli altri**: studiando i contratti, i beni dell'azienda e le procedure legali.
 </Callout>
@@ -95,6 +101,16 @@ Quando un'azienda fallisce o si ristruttura, non tutti ricevono lo stesso. L'ord
 2. **Obbligazioni senza garanzia** (*senior*): vengono dopo.
 3. **Debiti subordinati**: ultimi tra i creditori.
 4. **Azionisti**: per ultimi, spesso non ricevono niente.
+
+<Layers
+  caption="L'ordine di rimborso: dal più protetto al meno protetto."
+  items={[
+    { icon: "lock", title: "Debiti garantiti", text: "Pagati per primi, con i beni dati in garanzia" },
+    { icon: "file", title: "Senior", text: "Obbligazioni senza garanzia, pagate dopo" },
+    { icon: "warning", title: "Subordinati", text: "Ultimi tra i creditori" },
+    { icon: "users", title: "Azionisti", text: "Per ultimi, spesso non ricevono niente" },
+  ]}
+/>
 
 Per questo un fondo distressed legge molto attentamente i contratti: due obbligazioni della stessa azienda possono valere cose molto diverse.
 
@@ -114,7 +130,7 @@ A volte i fondi distressed, invece di aspettare i soldi, accettano nuove azioni 
 - **Contratti e tribunali.** Gli esiti dipendono da regole legali e da trattative, spesso difficili da prevedere.
 - **Crisi generali.** Quando molte aziende vanno in crisi insieme, i prezzi di tutti i debiti scendono insieme e gli investitori chiedono indietro i soldi.
 
-Per questo i fondi seri spesso accettano che gli investitori **non possano ritirare i soldi per molto tempo** (lo vedrai nel modulo sulle operazioni).
+Per questo i fondi distressed spesso prevedono che gli investitori **non possano ritirare i soldi per molto tempo** (lo vedrai nel modulo sulle operazioni).
 
 <Say who="sensei">Comprare un debito in crisi non è coraggio. È un lavoro da avvocati e analisti, con conti pazienti.</Say>
 </Scene>

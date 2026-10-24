@@ -107,7 +107,13 @@ La regola dei professionisti si ricorda con tre numeri.
 - **2** supporti diversi (per esempio disco del server e disco esterno o archivio cloud).
 - **1** copia **fuori sede**, lontana dal luogo dell'originale (un altro edificio, un servizio online).
 
-Nel caso di Marta c'era **una** copia, sullo stesso disco: un solo guasto ha portato via tutto.
+Nel caso di Marta c'era **un solo** backup, sullo stesso disco del database: un solo guasto ha portato via tutto.
+
+<Compare
+  caption="Il caso di Marta contro la regola dei professionisti."
+  left={{ title: "Il caso di Marta", points: ["Un solo backup", "Sullo stesso disco del database", "Ripristino mai provato"] }}
+  right={{ title: "Regola 3-2-1", points: ["3 copie dei dati", "2 supporti diversi", "1 copia fuori sede"] }}
+/>
 
 <Callout kind="curiosita">
 Oggi si aggiunge spesso uno «0»: **0 errori** nel ripristino di prova. E una copia **immutabile** o scollegata protegge dai ransomware, che cifrano anche i backup raggiungibili dalla rete.
@@ -129,6 +135,15 @@ Due sigle misurano quanto fa male un guasto.
 - **RTO** (*Recovery Time Objective*): **quanto tempo** puoi restare fermo.
 
 Facciamo i conti sul caso. Backup alle 02:00, guasto alle 17:00.
+
+<Flow
+  caption="Quanto si perde nel caso di Marta."
+  steps={[
+    { icon: "folder", title: "02:00", text: "Ultimo backup utile" },
+    { icon: "bolt", title: "17:00", text: "Il disco si rompe" },
+    { icon: "clock", title: "15 ore", text: "Ordini persi" },
+  ]}
+/>
 
 <Guided
   steps={[

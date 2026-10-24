@@ -79,6 +79,15 @@ Ora la mettiamo dentro il WHERE al posto del numero:
 
 Se i prezzi cambiano, la media si ricalcola da sola. Nessun numero scritto a mano.
 
+<Flow
+  caption="La sottoquery si esegue per prima, poi la query principale."
+  steps={[
+    { icon: "gear", title: "Sottoquery", text: "Calcola la media: 14.50" },
+    { icon: "search", title: "Confronto", text: "Ogni prezzo contro 14.50" },
+    { icon: "check", title: "Risultato", text: "I 3 prodotti più cari della media" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Con `=`, `>`, `<` la sottoquery deve restituire **un solo valore** (una riga, una colonna). Se ne restituisce di più, il database dà errore.
 </Callout>
@@ -189,6 +198,16 @@ Come si arriva a una query così? Non la si scrive di getto. Si **spezza** il pr
     "Passo 2: serve la media di quelle 4 spese: (58 + 42 + 24.5 + 30) / 4 = 38.625. Verifica: la media sta tra il minimo e il massimo.",
     "Passo 3: tengo i clienti con spesa maggiore di 38.625: Giulia (58.00) e Marco (42.00).",
     "Passo 4: aggiungo il nome unendo con clienti. Ogni passo si può provare da solo, prima di montarli insieme.",
+  ]}
+/>
+
+<Flow
+  caption="Il problema spezzato in passi, ognuno controllabile da solo."
+  steps={[
+    { icon: "coin", title: "Spesa", text: "Totale di ogni cliente" },
+    { icon: "chart", title: "Media", text: "38.625 sulle 4 spese" },
+    { icon: "search", title: "Confronto", text: "Chi supera la media" },
+    { icon: "users", title: "Nomi", text: "Giulia e Marco" },
   ]}
 />
 

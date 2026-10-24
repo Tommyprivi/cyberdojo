@@ -59,6 +59,16 @@ Come funziona, in parole povere:
 È l'idea delle **buste** del modulo F5, usata di proposito: una busta dentro un'altra. Il pacchetto vero è chiuso nella busta del tunnel, e solo chi ha la chiave la apre.
 </Callout>
 
+<Flow
+  caption="Il pacchetto di Marta viaggia dentro un altro pacchetto."
+  steps={[
+    { icon: "laptop", title: "Marta", text: "Cifra il pacchetto e lo chiude" },
+    { icon: "lock", title: "Tunnel", text: "Su Internet si vede una scatola chiusa" },
+    { icon: "server", title: "Server VPN", text: "Lo apre e controlla chi è" },
+    { icon: "database", title: "Rete interna", text: "Riceve la richiesta al gestionale" },
+  ]}
+/>
+
 <Say who="assistente">Tunnel non vuol dire nascondersi. Vuol dire che chi sta in mezzo vede una scatola chiusa, non il contenuto.</Say>
 </Scene>
 

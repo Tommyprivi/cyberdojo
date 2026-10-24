@@ -54,6 +54,16 @@ La **linea di base** è la descrizione del traffico di una rete nei giorni tranq
 Senza linea di base si possono fare solo ipotesi. Con la linea di base si può dire: «questo è diverso dal solito, e in questo modo».
 </Callout>
 
+<Flow
+  caption="Come si riconosce un'anomalia."
+  steps={[
+    { icon: "clock", title: "Giorni tranquilli", text: "Misuri il traffico normale" },
+    { icon: "book", title: "Linea di base", text: "Annoti protocolli, quantità, orari" },
+    { icon: "search", title: "Differenza", text: "Confronti con ciò che vedi ora" },
+    { icon: "check", title: "Spiegazione?", text: "Se non c'è un motivo normale, indaga" },
+  ]}
+/>
+
 Un aggiornamento automatico ogni notte, un backup ogni domenica, la posta che parte la mattina: sono **abitudini**, non anomalie. Va annotato che cosa le spiega.
 
 <Say who="assistente">Chiedi sempre: c'è un motivo normale? Se c'è, annotalo e vai avanti. Se non c'è, indaga.</Say>
@@ -82,6 +92,16 @@ Ecco quattro anomalie classiche. Per ciascuna, **che cosa si vede** e **quale sp
 **3. DNS anomalo.** Nomi molto lunghi, casuali, sotto un unico dominio sconosciuto; tante richieste NXDOMAIN; risposte di tipo TXT molto grosse. Può indicare un uso improprio del DNS per far passare dati. Spiegazione normale: certi servizi di sicurezza o di posta usano nomi lunghi.
 
 **4. Tanti dati verso l'esterno.** Un computer manda molti più byte di quanti ne riceve, verso un indirizzo mai visto. Spiegazione normale: backup in cloud, caricamento di un video.
+
+<Layers
+  caption="Quattro segni classici di traffico anomalo."
+  items={[
+    { icon: "search", title: "Scansione", text: "Tanti SYN a porte diverse in pochi millisecondi" },
+    { icon: "clock", title: "Beaconing", text: "Contatti regolari, dati piccoli e simili" },
+    { icon: "globe", title: "DNS anomalo", text: "Nomi lunghi e casuali, tanti NXDOMAIN" },
+    { icon: "cloud", title: "Invii in uscita", text: "Molti più byte inviati che ricevuti" },
+  ]}
+/>
 
 <Say who="sensei">Quattro segni. Per ognuno, un colpevole possibile e un innocente possibile. Il tuo lavoro è decidere tra i due, con le prove.</Say>
 </Scene>

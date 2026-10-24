@@ -55,6 +55,16 @@ Il risultato:
 - il tuo provider di casa vede solo che sei collegato alla VPN, non cosa visiti;
 - il sito vede l'indirizzo **IP** del server della VPN, non il tuo.
 
+<Flow
+  caption="Il percorso del traffico con una VPN."
+  steps={[
+    { icon: "laptop", title: "Il tuo dispositivo", text: "Il traffico parte cifrato" },
+    { icon: "lock", title: "Tunnel", text: "Il provider di casa non legge" },
+    { icon: "server", title: "Server VPN", text: "Il sito vede il suo IP" },
+    { icon: "globe", title: "Sito", text: "Riceve la richiesta" },
+  ]}
+/>
+
 <Callout kind="trucco">
 È come spedire una lettera dentro una busta chiusa a un amico, che poi la rispedisce con il suo indirizzo. Chi guarda la tua cassetta non legge nulla. Ma il tuo amico sa tutto.
 </Callout>
@@ -74,6 +84,12 @@ Mettiamo i fatti in fila. Con una VPN attiva:
 - Il **fornitore della VPN** vede il tuo IP reale e i siti a cui ti colleghi. Prima li vedeva il provider, ora li vede lui.
 - Il **sito** non vede il tuo IP, ma vede **tutto il resto**: cookie, account, impronta del browser.
 - Se fai il login con il tuo account, il sito sa chi sei, VPN o no.
+
+<Compare
+  caption="Chi vede che cosa, prima e dopo."
+  left={{ title: "Senza VPN", points: ["Il provider di casa vede i siti che visiti", "Il sito vede il tuo IP"] }}
+  right={{ title: "Con VPN", points: ["Il fornitore della VPN vede i siti", "Il sito vede l'IP della VPN", "Account, cookie e impronta restano visibili"] }}
+/>
 
 <Callout kind="attenzione">
 La VPN **non ti rende anonimo**. Cambia chi può vederti, ma non elimina chi può vederti. Il fornitore diventa una persona di cui devi fidarti.

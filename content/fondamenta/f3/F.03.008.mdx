@@ -101,6 +101,15 @@ Prendiamo la prima riga e leggiamola a pezzi:
   ]}
 />
 
+<Flow
+  caption="Le tre domande a cui risponde ogni riga di log."
+  steps={[
+    { icon: "clock", title: "Quando", text: "Data e ora dell'evento" },
+    { icon: "user", title: "Chi", text: "Utente e servizio coinvolti" },
+    { icon: "globe", title: "Da dove", text: "L'indirizzo di provenienza" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Un solo `Failed password` non è un attacco: capita a tutti di sbagliare. Un attacco si riconosce dal **ripetersi**: molti tentativi, in poco tempo, dallo stesso indirizzo.
 </Callout>

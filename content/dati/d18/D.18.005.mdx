@@ -104,6 +104,15 @@ Una **procedura** non restituisce un valore: **fa delle cose** (modifica tabelle
 
 Effetto: la giacenza della candela cedro passa da 12 a **10**, e compare un nuovo ordine con totale **36.00** (2 pezzi per 18.00). Le due operazioni stanno insieme: se una fallisce, l'altra viene annullata.
 
+<Flow
+  caption="Una chiamata, due operazioni che stanno insieme."
+  steps={[
+    { icon: "terminal", title: "CALL", text: "registra_vendita(2, 3, 2)" },
+    { icon: "folder", title: "Magazzino", text: "Giacenza da 12 a 10" },
+    { icon: "file", title: "Ordine", text: "Nuova riga: totale 36.00" },
+  ]}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sulla differenza tra funzioni, procedure e trigger:
 
 <Video />
@@ -147,6 +156,15 @@ Ora un collega scrive `UPDATE prodotti SET prezzo = 13.00 WHERE id = 1;`. Il tri
 ]} caption="Contenuto di log_prezzi dopo l'UPDATE." />
 
 Usi tipici: **storico delle modifiche** (audit), controlli che un vincolo non sa fare, colonne calcolate.
+
+<Layers
+  caption="Tre strumenti per tenere la logica dentro il database."
+  items={[
+    { icon: "code", title: "Funzione", text: "Calcola e restituisce un valore, dentro una SELECT" },
+    { icon: "terminal", title: "Procedura", text: "Esegue operazioni, si lancia con CALL" },
+    { icon: "bolt", title: "Trigger", text: "Scatta da solo a un INSERT, UPDATE o DELETE" },
+  ]}
+/>
 
 <Say who="assistente">Nessuno ha chiamato il trigger: ha fatto tutto da solo. È la sua forza, e anche il suo rischio.</Say>
 </Scene>

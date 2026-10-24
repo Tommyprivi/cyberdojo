@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Il registro cancellato">
-Alla **Bianchi Logistica** un server di file ha comportamenti strani. L'analista apre il registro di sicurezza e trova pochissimo: un evento per tutta la notte.
+Alla **Bianchi Logistica** un server di file ha comportamenti strani. L'analista apre il registro di sicurezza e trova pochissimo: due soli eventi per tutta la notte.
 
 <Log lines={[
   "03:52  1102  Il registro di controllo è stato cancellato   utente: admin.temp",
@@ -58,6 +58,15 @@ L'**Event Viewer** (Visualizzatore eventi) mostra i diari di Windows. I tre prin
 - **Application**: messaggi dei programmi.
 
 Ogni evento ha un **ID**, un'**ora**, l'**account**, e dettagli come il **computer di origine**.
+
+<Layers
+  caption="I tre registri principali di Windows."
+  items={[
+    { icon: "shield", title: "Security", text: "Accessi, account, privilegi, permessi" },
+    { icon: "gear", title: "System", text: "Servizi, driver, errori del sistema" },
+    { icon: "code", title: "Application", text: "Messaggi dei programmi" },
+  ]}
+/>
 
 <Callout kind="regola">
 Nel dominio i controller di dominio hanno il quadro più utile: sul registro **Security dei DC** si leggono gli accessi di tutti gli utenti del dominio.
@@ -125,6 +134,15 @@ Tre lavori prima di avere un incidente.
 1. **Accendere gli audit.** Molti eventi non vengono registrati se la **politica di audit** non li abilita (per esempio la creazione dei processi con riga di comando, 4688). Si imposta con una **GPO**.
 2. **Conservare.** Un registro piccolo si riempie e sovrascrive i vecchi eventi: servono spazio e tempi di conservazione adeguati.
 3. **Centralizzare.** Inviare i log a un sistema centrale (un **SIEM**, lo hai incontrato nel modulo 7). Così chi compromette un PC e cancella il registro locale non cancella anche la copia.
+
+<Flow
+  caption="Tre lavori da fare prima dell'incidente."
+  steps={[
+    { icon: "bolt", title: "Accendere", text: "Gli audit, con una GPO" },
+    { icon: "database", title: "Conservare", text: "Spazio e tempi adeguati" },
+    { icon: "server", title: "Centralizzare", text: "Una copia nel SIEM, fuori dal PC" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 **Sysmon** è uno strumento gratuito di Microsoft che aggiunge dettagli (processi, connessioni di rete, modifiche ai file) in un registro proprio. Utile quando i log standard non bastano.

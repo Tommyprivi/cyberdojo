@@ -55,6 +55,17 @@ Le attività di cron stanno in un elenco personale, il **crontab**. Si apre con 
   "30 2 * * * /home/studente/backup.sh",
 ]} caption="La riga dice: ogni giorno, alle 02:30, esegui backup.sh." />
 
+<Layers
+  caption="I cinque campi di una riga di crontab, nell'ordine."
+  items={[
+    { icon: "clock", title: "Minuto", text: "0-59" },
+    { icon: "clock", title: "Ora", text: "0-23" },
+    { icon: "book", title: "Giorno del mese", text: "1-31" },
+    { icon: "book", title: "Mese", text: "1-12" },
+    { icon: "bell", title: "Giorno della settimana", text: "0-7, con 0 e 7 domenica" },
+  ]}
+/>
+
 L'**asterisco `*`** significa «qualsiasi valore». Quindi `30 2 * * *` = minuto 30, ora 2, ogni giorno del mese, ogni mese, ogni giorno della settimana.
 
 <Callout kind="attenzione">
@@ -120,6 +131,12 @@ L'errore più comune: lo script funziona se lo lanci tu, ma **da cron no**. Il m
   "studente@lab:~$ cat cron.log",
   "/home/studente/backup.sh: riga 3: miostrumento: comando non trovato",
 ]} caption="Esempio di cron.log: il comando esiste, ma cron non sa dove cercarlo." />
+
+<Compare
+  caption="Lo stesso script, due ambienti diversi."
+  left={{ title: "Da cron", points: ["PATH corto: di solito /usr/bin:/bin", "Nessuna delle tue impostazioni", "Parte dalla tua home"] }}
+  right={{ title: "Dal tuo terminale", points: ["Il tuo PATH completo", "Le tue impostazioni caricate", "Parti dalla cartella in cui sei"] }}
+/>
 
 Come si evita:
 

@@ -116,6 +116,16 @@ Vendite per categoria: si **unisce** (JOIN) la tabella dei fatti alla dimensione
   "Casa        9",
 ]} />
 
+<Flow
+  caption="Dalla domanda del capo al risultato: un solo JOIN."
+  steps={[
+    { icon: "database", title: "Fatti", text: "Importi di ogni vendita" },
+    { icon: "link", title: "JOIN", text: "Con dim_prodotto" },
+    { icon: "folder", title: "GROUP BY", text: "Per categoria" },
+    { icon: "chart", title: "SUM", text: "Alimentari 12, Casa 9" },
+  ]}
+/>
+
 Controlla a mano: Alimentari = 4 + 2 + 6 = 12. Casa = 3 + 6 = 9.
 
 Vuoi vederlo spiegato da un'altra voce, con i disegni?

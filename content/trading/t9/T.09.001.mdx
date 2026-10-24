@@ -92,6 +92,16 @@ Regola di esempio, con prezzi **fittizi** e una media a 3 giorni:
 
 Controlla il giorno 3: (30 + 33 + 36) / 3 = 99 / 3 = 33. Il prezzo, 36, è sopra: dentro.
 
+<Flow
+  caption="Ogni sera la regola confronta la chiusura con la media e decide."
+  steps={[
+    { icon: "chart", title: "Chiusura", text: "Il prezzo di fine giornata" },
+    { icon: "gear", title: "Media a 3 giorni", text: "Media delle ultime tre chiusure" },
+    { icon: "search", title: "Confronto", text: "Sopra o sotto la media?" },
+    { icon: "check", title: "Dentro o fuori", text: "Sopra: dentro. Sotto: fuori" },
+  ]}
+/>
+
 <Say who="sensei">Guarda i giorni 4 e 5: fuori, poi dentro. Il segnale ha cambiato idea in fretta. Ci torniamo.</Say>
 </Scene>
 

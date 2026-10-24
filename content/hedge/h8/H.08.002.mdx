@@ -42,6 +42,12 @@ Nessun estratto conto di una banca. Nessuno che controlli. L'investitore sente u
 
 La domanda del caso: **dove dovrebbero stare i titoli di un fondo, e chi li deve tenere?**
 
+<Compare
+  caption="Dove si tengono i titoli di un fondo."
+  left={{ title: "«Fidati, sono da me»", points: ["Titoli presso il gestore", "Nessun estratto conto esterno", "Nessuno controlla"] }}
+  right={{ title: "Custode indipendente", points: ["Titoli presso una banca custode", "Beni dei clienti tenuti separati", "Registri confrontati ogni giorno"] }}
+/>
+
 Nota: educazione, non consulenza. Si può perdere denaro, anche tutto.
 
 <Say who="sensei">Un gestore onesto non si offende se gli chiedi dove sono i soldi. Un gestore che si offende, lo annoti.</Say>
@@ -52,7 +58,7 @@ Nota: educazione, non consulenza. Si può perdere denaro, anche tutto.
 <Scene title="Il custode">
 Il **custode** (in inglese *custodian*) è una banca che **conserva i titoli e il denaro** del fondo e **registra ogni movimento**. Non decide che cosa comprare.
 
-Una regola chiave è la **segregazione**: i beni dei clienti sono tenuti **separati** da quelli della banca. Se la banca ha problemi, i beni dei clienti non sono i suoi.
+Una regola chiave è la **segregazione**: i beni dei clienti sono tenuti **separati** da quelli della banca. Se la banca ha problemi, i beni dei clienti non fanno parte del suo patrimonio.
 
 <Callout kind="regola">
 Chi **decide** gli acquisti non deve essere chi **custodisce** i beni. Così nessuno può da solo spostarli o farli sparire.
@@ -98,6 +104,16 @@ Il gestore ha il suo registro. Il custode ha il suo. Ogni giorno si **confrontan
 ]} />
 
 Quando i numeri non coincidono, non si ignora e non si «sistema» a occhio: si **indaga finché si capisce da dove viene** la differenza. Può essere un semplice ritardo di regolamento, oppure un errore, oppure peggio.
+
+<Flow
+  caption="La riconciliazione, passo per passo."
+  steps={[
+    { icon: "book", title: "Registro gestore", text: "Gamma SpA: 1.000" },
+    { icon: "book", title: "Registro custode", text: "Gamma SpA: 900" },
+    { icon: "search", title: "Confronto", text: "Differenza di 100" },
+    { icon: "check", title: "Si indaga", text: "Finché si capisce l'origine" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Una differenza piccola e spiegata è normale. Una differenza piccola e **mai spiegata** è un campanello d'allarme.

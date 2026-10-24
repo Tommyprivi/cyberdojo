@@ -58,6 +58,17 @@ Un metodo semplice e sempre uguale:
 4. **Controlla che i dati coincidano**: nome, sede, servizi per cui è autorizzata.
 5. **Cerca avvisi** sulle pagine dedicate alle truffe e ai siti oscurati.
 
+<Flow
+  caption="Il controllo parte sempre dall'autorità, mai dal sito dell'intermediario."
+  steps={[
+    { icon: "file", title: "Scrivi i dati", text: "Ragione sociale, sede, numero" },
+    { icon: "globe", title: "Sito ufficiale", text: "Digita tu l'indirizzo" },
+    { icon: "search", title: "Cerca", text: "Negli elenchi delle autorizzate" },
+    { icon: "check", title: "Confronta", text: "Nome, sede e servizi coincidono?" },
+    { icon: "warning", title: "Avvisi", text: "Truffe e siti oscurati" },
+  ]}
+/>
+
 <Callout kind="regola">
 Mai fidarti dei dati scritti sul sito dell'intermediario. Cerca sempre nell'elenco dell'autorità, con una ricerca fatta da te.
 </Callout>
@@ -98,6 +109,12 @@ Che cosa fai quando la verifica dà un risultato strano?
 - **Trovi un avviso o il sito oscurato**: non versi nulla, non fornisci documenti, non rispondi.
 - **Hai già versato denaro**: smetti di inviarne altro, conserva messaggi e ricevute, informa la tua banca e **segnala** all'autorità; se pensi sia un reato, puoi presentare **denuncia alle forze dell'ordine**.
 - **Qualcuno ti propone di recuperare i soldi dietro pagamento anticipato**: è quasi sempre una seconda truffa. Non pagare.
+
+<Compare
+  caption="Quando hai già versato, contano le prime mosse."
+  left={{ title: "Da non fare", points: ["Versare altro denaro", "Pagare per «recuperare» i soldi", "Dare documenti o codici di accesso"] }}
+  right={{ title: "Da fare", points: ["Smettere di inviare denaro", "Conservare messaggi e ricevute", "Informare la banca e segnalare"] }}
+/>
 
 <Callout kind="regola">
 Mai documenti d'identità, foto del volto o codici di accesso a chi non hai verificato. Possono essere usati per altre frodi.

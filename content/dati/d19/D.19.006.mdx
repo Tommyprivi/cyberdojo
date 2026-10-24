@@ -117,6 +117,12 @@ Come si legge:
 Un p-value sopra 0,05 **non prova** che le classi siano uguali. Dice che con soli 10 voti non possiamo escludere il caso. Con più studenti la stessa differenza potrebbe risultare chiara.
 </Callout>
 
+<Compare
+  caption="Come leggere un p-value di 0,0558 con soli 10 voti."
+  left={{ title: "Lettura sbagliata", points: ["«Le classi sono uguali»", "«C'è il 5,6% di probabilità che sia solo caso»", "«Non c'è nessuna differenza»"] }}
+  right={{ title: "Lettura corretta", points: ["Con 10 voti non si esclude il caso", "La differenza vera va da circa 0 a circa 2 punti", "Servono più dati per decidere"] }}
+/>
+
 `t.test()` fa per impostazione predefinita il test di **Welch**, che non richiede due gruppi con la stessa variabilità. Con una tabella si scrive `t.test(voto ~ classe, data = voti)`: «il voto in funzione della classe».
 
 <Say who="sensei">Il p-value è una misura di sorpresa, non di verità. E l'intervallo ti dice quanto sei ancora al buio.</Say>
@@ -162,7 +168,7 @@ predict(modello, data.frame(ore = c(8, 20)))
  8 14 
 ```
 
-Con 8 ore la previsione 8 è ragionevole. Con 20 ore il modello prevede 14: un voto che non esiste. Fuori dai dati la retta non vale.
+Con 8 ore, appena oltre l'ultimo dato osservato, la previsione 8 è ancora plausibile. Con 20 ore il modello prevede 14: un voto che non esiste. Fuori dai dati la retta non vale, e più ci si allontana, peggio è.
 
 <Callout kind="attenzione">
 Una correlazione forte **non prova** che le ore di studio facciano salire il voto. Potrebbe esserci una terza causa, come la motivazione. La regressione descrive un legame, non lo spiega.

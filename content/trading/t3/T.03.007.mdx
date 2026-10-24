@@ -104,6 +104,12 @@ print(position.tolist())
 Il segnale calcolato sulla chiusura di oggi può essere usato solo da domani: `position = signal.shift(1)`.
 </Callout>
 
+<Compare
+  caption="Quando il segnale può essere usato."
+  left={{ title: "Senza shift(1)", points: ["Il segnale usa la chiusura di oggi", "Opera su un prezzo già avvenuto oggi", "Look-ahead: risultato troppo bello"] }}
+  right={{ title: "Con shift(1)", points: ["Si usa il segnale di ieri", "La posizione parte dal giorno dopo", "Il test non guarda il futuro"] }}
+/>
+
 <Say who="assistente">Il look-ahead è come correggere il compito guardando la soluzione. Sembra andar benissimo, ma non hai imparato niente.</Say>
 </Scene>
 

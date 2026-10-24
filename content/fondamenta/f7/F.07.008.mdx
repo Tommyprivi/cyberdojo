@@ -54,6 +54,16 @@ Il **NAT** (Network Address Translation) è una funzione del router: quando un p
 NAT = traduzione di indirizzi tra rete privata e Internet. Gli indirizzi privati restano dentro; all'esterno si vede quello pubblico.
 </Callout>
 
+<Flow
+  caption="Il router traduce all'uscita e al ritorno."
+  steps={[
+    { icon: "laptop", title: "PC interno", text: "Indirizzo privato 192.168.1.66" },
+    { icon: "gear", title: "Router (NAT)", text: "Mette al posto suo l'indirizzo pubblico" },
+    { icon: "globe", title: "Internet", text: "Vede un solo indirizzo pubblico" },
+    { icon: "check", title: "Risposta", text: "Il router rimette l'indirizzo privato" },
+  ]}
+/>
+
 <Say who="assistente">Fuori vedono il centralino. Dentro, chi ha chiamato lo sa solo il centralino.</Say>
 </Scene>
 

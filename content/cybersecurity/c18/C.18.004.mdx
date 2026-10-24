@@ -69,6 +69,16 @@ Mentre il programma gira, gli strumenti della sandbox **registrano** quattro cos
 
 La rete della sandbox è **finta o chiusa**: il programma crede di parlare con Internet, ma le richieste vengono registrate e non escono.
 
+<Flow
+  caption="Il ciclo di un'analisi dinamica, dallo snapshot pulito allo snapshot ripristinato."
+  steps={[
+    { icon: "folder", title: "Snapshot", text: "Stato pulito salvato" },
+    { icon: "bug", title: "Avvio", text: "Il file parte in sandbox, rete chiusa" },
+    { icon: "eye", title: "Osservazione", text: "File, processi, registro, rete" },
+    { icon: "check", title: "Ripristino", text: "Si torna allo stato pulito" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Il risultato è un **rapporto di comportamento**, come una pagella: ha scritto in cartelle di avvio, ha cercato questo dominio, ha avviato quel processo. Da qui si ricavano gli indicatori di compromissione (la prossima lezione).
 </Callout>

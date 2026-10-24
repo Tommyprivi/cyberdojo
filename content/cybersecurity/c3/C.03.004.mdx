@@ -52,6 +52,15 @@ Il web non ricorda niente: ogni richiesta è per il sito una richiesta nuova. Pe
 
 Il browser lo conserva in un **cookie** (un piccolo file di dati associato al sito) e lo rimanda a ogni richiesta. Il sito lo confronta con la sua lista di sessioni attive e capisce chi sei.
 
+<Flow
+  caption="Dal login al cookie: così il sito ti riconosce a ogni clic."
+  steps={[
+    { icon: "lock", title: "Login", text: "Password ed eventuale secondo fattore" },
+    { icon: "key", title: "Token", text: "Il sito crea la sessione e ti dà un codice" },
+    { icon: "laptop", title: "Cookie", text: "Il browser lo rimanda a ogni richiesta" },
+  ]}
+/>
+
 <Callout kind="regola">
 Dopo il login, **il token di sessione vale quanto la tua password**. Chi lo possiede viene trattato dal sito come te.
 </Callout>
@@ -90,6 +99,12 @@ Chi costruisce il sito riduce il danno. Tre misure da conoscere come idee:
 - Il cookie viaggia solo su connessioni protette (HTTPS) e non è leggibile dagli script della pagina (opzioni dette **Secure** e **HttpOnly**).
 - La sessione **scade**: dopo un periodo di inattività il braccialetto smette di valere.
 - Al **logout** il sito cancella la sessione dalla sua lista: il token copiato diventa inutile anche se qualcuno lo possiede ancora.
+
+<Compare
+  caption="Lo stesso token rubato: il danno dipende dalle difese del sito."
+  left={{ title: "Sessione senza difese", points: ["Non scade mai", "Il cookie è leggibile dagli script"] }}
+  right={{ title: "Sessione protetta", points: ["Cookie Secure e HttpOnly", "Scade e si cancella al logout"] }}
+/>
 
 <Callout kind="curiosita">
 Per le operazioni più delicate (cambiare la password, fare un bonifico) molti siti chiedono di **riconfermare** la tua identità anche se la sessione è attiva. Così un braccialetto rubato non basta per fare i danni peggiori.

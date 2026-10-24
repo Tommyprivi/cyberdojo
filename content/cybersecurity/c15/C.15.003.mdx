@@ -82,6 +82,16 @@ Se non vuoi dare ai programmi la chiave stessa, la cifratura a busta fa così: i
   "Il file cifrato porta con sé la DEK cifrata: senza il KMS non si apre.",
 ]} />
 
+<Flow
+  caption="Cifratura a busta: due chiavi, due livelli."
+  steps={[
+    { icon: "file", title: "Dati", text: "L'archivio da proteggere" },
+    { icon: "key", title: "DEK", text: "Chiave dati: cifra i dati, una per file" },
+    { icon: "lock", title: "KEK", text: "Chiave principale: cifra la DEK, resta nel KMS o HSM" },
+    { icon: "shield", title: "Apertura", text: "Senza il KMS il file non si apre" },
+  ]}
+/>
+
 Vuoi sentire la differenza da un'altra voce? In inglese, con sottotitoli:
 
 <Video />
@@ -139,6 +149,12 @@ Distruggere la chiave equivale a distruggere i dati cifrati con essa: si chiama 
     "Si imposta una rotazione automatica della chiave principale, per esempio una volta l'anno, e subito dopo ogni sospetto.",
     "Si attiva il registro d'uso con un avviso per accessi fuori orario. Si prova a ripristinare da backup su una macchina di prova.",
   ]}
+/>
+
+<Compare
+  caption="Studio Ferri, prima e dopo il riordino."
+  left={{ title: "Studio Ferri oggi", points: ["Chiave in un file di testo, nella cartella condivisa", "Leggibile da tutti i dipendenti", "Mai cambiata da quattro anni"] }}
+  right={{ title: "Dopo il riordino", points: ["Chiave principale in un KMS, con accesso a pochi ruoli", "Il programma cifra e decifra, ma non esporta", "Rotazione automatica e registro d'uso"] }}
 />
 
 <Callout kind="regola">

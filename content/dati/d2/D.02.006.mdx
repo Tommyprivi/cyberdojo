@@ -81,6 +81,16 @@ Si crea con Inserisci > Tabella pivot (Excel e Fogli Google); in LibreOffice Cal
 
 In inglese: Rows, Columns, Values, Filters.
 
+<Layers
+  caption="Le quattro aree della pivot, con l'esempio del negozio."
+  items={[
+    { icon: "file", title: "Righe", text: "Cosa elenchi in verticale: Reparto" },
+    { icon: "folder", title: "Colonne", text: "Cosa metti in orizzontale: Mese" },
+    { icon: "chart", title: "Valori", text: "Cosa calcoli: somma di Importo" },
+    { icon: "search", title: "Filtri", text: "Quale parte guardare" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Pensa a una tabella: i campi nelle Righe e nelle Colonne sono i titoli, i Valori sono i numeri che compaiono nelle celle.
 </Callout>
@@ -105,6 +115,15 @@ Controllo a mano: per Gen 30 + 5 + 40 = 75, per Feb 20 + 50 + 10 = 80, e 75 + 80
 Ora la domanda si legge subito: **Zaini** è il reparto migliore (90), e **Feb** è il mese migliore (80).
 
 Se cambi il Valore in **Conteggio** (COUNT) ogni cella dice quante vendite ci sono: Libri 2, Penne 2, Zaini 2. Se lo cambi in **Media**, Libri dà 25 (50 diviso 2), Penne 7,5 (15 diviso 2) e Zaini 45 (90 diviso 2).
+
+<Flow
+  caption="Dalle singole vendite alla risposta."
+  steps={[
+    { icon: "file", title: "Vendite", text: "Una riga per ogni vendita" },
+    { icon: "gear", title: "Pivot", text: "Reparto per mese, somma" },
+    { icon: "chart", title: "Risposta", text: "Zaini: 90 euro su 155" },
+  ]}
+/>
 
 <Say who="assistente">Stessi dati, tre domande diverse: quanto, quante volte, in media quanto. Cambi solo il Valore.</Say>
 </Scene>

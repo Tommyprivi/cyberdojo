@@ -35,7 +35,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="La stessa pulizia in sette posti">
+<Scene title="La stessa pulizia in quattro posti">
 Nel progetto di Marta i modelli sono cresciuti: ora sono trenta. Quattro di loro cominciano così:
 
 <Log lines={[
@@ -48,6 +48,12 @@ Nel progetto di Marta i modelli sono cresciuti: ora sono trenta. Quattro di loro
 
 Un giorno la tabella grezza cambia il nome della colonna `stato` in `stato_ordine`. Quattro modelli si rompono. Un altro, dimenticato, continua a funzionare con dati vecchi.
 
+<Compare
+  caption="Dove si fa la pulizia cambia quanti file si rompono."
+  left={{ title: "Pulizia copiata", points: ["Lo stesso codice in quattro modelli", "Una colonna cambia nome", "Se ne rompono quattro"] }}
+  right={{ title: "Pulizia nello staging", points: ["Un modello per ogni tabella grezza", "Una colonna cambia nome", "Si tocca un solo file"] }}
+/>
+
 La domanda del caso: **dove si fa la pulizia, perché si faccia una volta sola?**
 
 <Say who="sensei">Ogni cosa al suo posto, e un posto solo per ogni cosa. Questa lezione disegna i posti.</Say>
@@ -56,7 +62,7 @@ La domanda del caso: **dove si fa la pulizia, perché si faccia una volta sola?*
 {/* screen */}
 
 <Scene title="Tre livelli, tre responsabilità">
-I progetti dbt in ordine si organizzano in tre livelli, che corrispondono a tre cartelle in `models/`:
+I progetti dbt ben organizzati si dividono in tre livelli, che corrispondono a tre cartelle in `models/`:
 
 | Livello | Che cosa fa | Che cosa NON fa |
 |---|---|---|
@@ -67,6 +73,16 @@ I progetti dbt in ordine si organizzano in tre livelli, che corrispondono a tre 
 <Callout kind="regola">
 Le frecce vanno in un verso solo: **grezzo → staging → intermediate → marts**. Un mart non legge mai una tabella grezza. Lo staging non legge mai un altro livello.
 </Callout>
+
+<Flow
+  caption="Le frecce vanno in un verso solo."
+  steps={[
+    { icon: "database", title: "Grezzo", text: "Le tabelle come arrivano" },
+    { icon: "gear", title: "Staging", text: "Pulizia: nomi, tipi, formati" },
+    { icon: "link", title: "Intermediate", text: "Join e passaggi riusabili" },
+    { icon: "chart", title: "Marts", text: "Tabelle finali, pronte da leggere" },
+  ]}
+/>
 
 <Say who="assistente">Pensa a una cucina: lavare e tagliare (staging), preparare le basi (intermediate), servire i piatti (marts).</Say>
 </Scene>

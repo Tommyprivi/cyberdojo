@@ -61,8 +61,17 @@ Spostare dati da un posto all'altro richiede tre passi. Pensa a un **trasloco**:
 
 Il processo classico si chiama **ETL**: estrai, trasformi, poi carichi. Il lavoro di pulizia avviene **in un posto di passaggio**, prima dell'arrivo.
 
+<Flow
+  caption="ETL: la pulizia avviene prima dell'arrivo."
+  steps={[
+    { icon: "folder", title: "Estrai", text: "Prendi i dati dalla fonte" },
+    { icon: "gear", title: "Trasforma", text: "Pulisci in un posto di passaggio" },
+    { icon: "database", title: "Carica", text: "Nel magazzino entra roba pulita" },
+  ]}
+/>
+
 <Callout kind="trucco">
-ETL: **E**strai, **T**rasforma, **L**oad (carica). Le lettere stanno nell'ordine in cui accadono le cose.
+ETL: **E**xtract (estrai), **T**ransform (trasforma), **L**oad (carica). Le lettere stanno nell'ordine in cui accadono le cose.
 </Callout>
 
 <Say who="assistente">Nel trasloco ETL, nella casa nuova entra solo roba già pulita.</Say>
@@ -89,6 +98,15 @@ Per Giulia: il file arriva e viene copiato così com'è in una tabella `ordini_g
 ]} />
 
 La riga 3, con il totale negativo, è esclusa dalla tabella pulita. Ma **nella tabella grezza c'è ancora**: se un giorno capiamo che quel -5 era un rimborso importante, possiamo recuperarlo.
+
+<Flow
+  caption="ELT: si carica subito il grezzo e si trasforma nel magazzino."
+  steps={[
+    { icon: "folder", title: "Estrai", text: "Prendi i dati dalla fonte" },
+    { icon: "database", title: "Carica", text: "Tabella ordini_grezzi, com'è" },
+    { icon: "code", title: "Trasforma", text: "Con SQL: ordini_puliti" },
+  ]}
+/>
 
 Altra voce, altro esempio? Guarda qui:
 

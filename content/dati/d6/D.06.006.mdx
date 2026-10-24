@@ -61,7 +61,7 @@ Si parte da H0, e si guarda se i dati sono **così strani** da rendere H0 diffic
 H0 e H1 si scrivono **prima** di guardare i dati. Altrimenti si costruisce l'ipotesi intorno al risultato, e il test perde di significato.
 </Callout>
 
-Nel nostro caso: H0 «le medie sono uguali», H1 «le medie sono diverse». Dato che H1 non dice quale è maggiore, il test è **a due code**.
+Nel nostro caso: H0 «le medie sono uguali», H1 «le medie sono diverse». Dato che H1 non dice quale delle due medie sia maggiore, il test è **a due code**.
 
 <Say who="assistente">Nessuna differenza, fino a prova contraria. Come un giudice con un imputato.</Say>
 </Scene>
@@ -76,6 +76,17 @@ Tutti i test seguono lo stesso schema:
 3. **Raccogliere i dati** e calcolare una **statistica del test**, che misura quanto i dati si discostano da H0.
 4. **Calcolare il p-value** o confrontare la statistica con il valore critico.
 5. **Decidere e comunicare**: rifiutare o non rifiutare H0, con le cifre.
+
+<Flow
+  caption="I cinque passi di ogni test di ipotesi."
+  steps={[
+    { icon: "book", title: "Ipotesi", text: "Scrivi H0 e H1" },
+    { icon: "gear", title: "Soglia", text: "Scegli α, di solito 0,05" },
+    { icon: "chart", title: "Statistica", text: "Misura quanto i dati si discostano da H0" },
+    { icon: "search", title: "p-value", text: "Oppure confronta con il valore critico" },
+    { icon: "check", title: "Decisione", text: "Rifiuta o non rifiutare H0" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Se non rifiuti H0, **non** hai dimostrato che sia vera: hai solo detto che i dati non bastano per metterla in dubbio.

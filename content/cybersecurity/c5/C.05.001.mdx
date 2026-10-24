@@ -44,6 +44,15 @@ Nessuno ha «bucato» niente di complicato. Il sito si è fidato di ciò che gli
 
 La domanda del caso: **chi decide davvero il prezzo, il browser o il server?**
 
+<Flow
+  caption="Il prezzo viaggia nel browser, e il server non lo controlla."
+  steps={[
+    { icon: "file", title: "Modulo", text: "Campo nascosto: prezzo=12.00" },
+    { icon: "laptop", title: "Browser", text: "Il cliente lo cambia in 0.10" },
+    { icon: "server", title: "Server", text: "Si fida e conferma l'ordine" },
+  ]}
+/>
+
 <Say who="sensei">Per capire dove si rompe un'applicazione web, devi prima sapere chi fa cosa. Partiamo dal giro completo.</Say>
 </Scene>
 
@@ -113,6 +122,12 @@ Dividi il mondo in due.
 
 - **Nel browser** (lato client): la pagina, i pulsanti, i controlli in JavaScript. Li gestisce **l'utente**, che può guardarli, cambiarli o saltarli.
 - **Nel server** (lato server): le regole vere, i dati, le password, i prezzi. Li gestisce **l'azienda**.
+
+<Compare
+  caption="Chi controlla che cosa: i controlli del browser non proteggono."
+  left={{ title: "Nel browser", points: ["Lo gestisce l'utente", "Può guardarlo, cambiarlo o saltarlo"] }}
+  right={{ title: "Nel server", points: ["Lo gestisce l'azienda", "Qui valgono le regole vere"] }}
+/>
 
 <Callout kind="regola">
 **Mai fidarsi del browser.** I controlli nella pagina servono a essere gentili con l'utente (un messaggio subito, senza aspettare). I controlli nel server servono a essere **sicuri**. Servono tutti e due, ma solo il secondo protegge.

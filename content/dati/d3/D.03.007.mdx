@@ -77,6 +77,12 @@ Otto ordini in ingresso, otto righe in uscita. Il 58.00 del cliente 1 compare tr
 `GROUP BY` **riduce** le righe. `OVER` **aggiunge** una colonna e lascia le righe come sono.
 </Callout>
 
+<Compare
+  caption="Stessi 8 ordini, due modi di sommare la spesa dei clienti."
+  left={{ title: "Con GROUP BY", points: ["8 ordini diventano 4 righe", "Una riga per cliente", "Il dettaglio degli ordini sparisce"] }}
+  right={{ title: "Con OVER", points: ["8 ordini restano 8 righe", "Una colonna in più: spesa del cliente", "Il dettaglio resta visibile"] }}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Un video sulle funzioni finestra:
 
 <Video />

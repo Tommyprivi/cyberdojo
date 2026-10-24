@@ -106,6 +106,16 @@ Come si legge:
 - `uid`: l'identità con cui il processo ha **lavorato** (qui root, per via di sudo);
 - `comm` ed `exe`: il comando e il programma.
 
+<Flow
+  caption="Dalla modifica al responsabile: la strada dell'audit."
+  steps={[
+    { icon: "file", title: "Il file cambia", text: "Qualcuno modifica /etc/passwd" },
+    { icon: "eye", title: "Il kernel registra", text: "Regola -w con la chiave identita" },
+    { icon: "search", title: "ausearch", text: "Si cercano gli eventi con -k identita" },
+    { icon: "user", title: "auid", text: "Chi era all'inizio, anche dopo sudo" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 `auid` è il dettaglio più prezioso di un'indagine: se qualcuno entra con un account e poi diventa root con `sudo`, il registro ricorda **chi era all'inizio**.
 </Callout>

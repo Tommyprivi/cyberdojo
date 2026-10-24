@@ -40,6 +40,16 @@ Il fondo fittizio Gufo Capital ha 25 milioni di euro suoi e ne ha presi in prest
 
 Un giorno i prezzi scendono del 5%: il fondo perde 5 milioni... ma ne aveva solo 25 di suoi. Ha perso il **20% del capitale** con un calo che sembrava piccolo.
 
+<Flow
+  caption="Come un calo del 5% diventa una perdita del 20% del capitale."
+  steps={[
+    { icon: "coin", title: "Capitale", text: "25 milioni propri" },
+    { icon: "server", title: "Prestito", text: "75 milioni dalle banche" },
+    { icon: "chart", title: "Calo del 5%", text: "Su 100 milioni: -5 milioni" },
+    { icon: "warning", title: "Perdita", text: "Il 20% del capitale proprio" },
+  ]}
+/>
+
 La domanda del caso: **che cosa fa la leva ai nostri conti?**
 
 <Say who="sensei">Educazione, non consulenza: si può perdere denaro, anche tutto. Numeri inventati, mercati che non regalano niente.</Say>
@@ -81,6 +91,12 @@ Ora con il costo del prestito. Capitale 100, prestito 100 al 3%, posizioni da 20
 <Callout kind="attenzione">
 Gli interessi si pagano sempre, vada bene o male. Nella perdita si sommano; nel guadagno si sottraggono.
 </Callout>
+
+<Compare
+  caption="Con leva 5 il capitale si muove cinque volte tanto."
+  left={{ title: "Portafoglio -10%", points: ["Il capitale perde il 50%", "10% x 5"] }}
+  right={{ title: "Portafoglio +4%", points: ["Il capitale guadagna il 20%", "4% x 5"] }}
+/>
 
 <Say who="sensei">Ricontrolla: 8% x 2 fa 16, meno 3 fa 13. Se scrivi 19, hai sbagliato il segno.</Say>
 </Scene>

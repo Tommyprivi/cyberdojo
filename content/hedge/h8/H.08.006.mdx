@@ -80,6 +80,16 @@ Due sigle aiutano a giudicare un piano:
   ]}
 />
 
+<Flow
+  caption="Dove si misurano RPO e RTO lungo un guasto."
+  steps={[
+    { icon: "database", title: "Ultimo backup", text: "I dati arrivano fino a qui" },
+    { icon: "warning", title: "Guasto", text: "I dati dopo il backup si perdono: è l'RPO" },
+    { icon: "gear", title: "Ripristino", text: "Il tempo di fermo è l'RTO" },
+    { icon: "check", title: "Si riparte", text: "I sistemi tornano in funzione" },
+  ]}
+/>
+
 <Say who="sensei">Un obiettivo scritto sulla carta non è un risultato. Misura.</Say>
 </Scene>
 
@@ -92,6 +102,12 @@ Dove si rompono più spesso i piani:
 - **Fornitori critici**: amministratore, prime broker, custode. Il fondo deve sapere che piano hanno e che cosa fa se si fermano.
 - **Attacchi informatici**: un virus che blocca i computer e chiede un riscatto. Aiutano **backup separati o offline**, già provati.
 - **Backup nello stesso posto**: se un incendio brucia i dati e le copie, non resta niente. Regola **3-2-1**: 3 copie, su 2 supporti diversi, di cui 1 fuori sede.
+
+<Compare
+  caption="Dove tenere le copie dei dati."
+  left={{ title: "Tutto nello stesso posto", points: ["Dati e copie nella stessa sede", "Un incendio brucia tutto"] }}
+  right={{ title: "Regola 3-2-1", points: ["3 copie dei dati", "Su 2 supporti diversi", "1 copia fuori sede"] }}
+/>
 
 <Callout kind="curiosita">
 Per la sicurezza informatica in generale, nel corso di cybersecurity trovi password, backup e difesa dagli attacchi spiegati dall'inizio.

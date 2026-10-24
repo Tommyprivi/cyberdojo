@@ -111,6 +111,16 @@ Un bot che lavora da solo ha bisogno di **limiti** e di un **interruttore di eme
 - **battito** (*heartbeat*): una riga INFO ogni minuto, che dice «sono vivo». Se le righe spariscono, qualcosa non va;
 - **interruttore**: un file o una variabile che, se presente, ferma subito l'invio di ordini.
 
+<Layers
+  caption="Quattro protezioni per un bot che lavora da solo."
+  items={[
+    { icon: "lock", title: "Limite di quantità", text: "Per ordine e per giorno" },
+    { icon: "warning", title: "Limite di perdita", text: "Superato, il bot smette" },
+    { icon: "bell", title: "Battito", text: "Una riga al minuto: sono vivo" },
+    { icon: "bolt", title: "Interruttore", text: "Ferma subito l'invio di ordini" },
+  ]}
+/>
+
 <Callout kind="regola">
 Il bot non si fida di sé stesso. Fissa i limiti **prima** di partire e li fa rispettare dal codice, non dalla memoria di chi lo guarda.
 </Callout>

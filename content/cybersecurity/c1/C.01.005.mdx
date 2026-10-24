@@ -75,6 +75,17 @@ Ecco i livelli che avrebbero fermato, o almeno ridotto, il danno della mail:
 - **Le copie di riserva**: se i file vengono rovinati, si ripristinano.
 - **Il rilevamento**: un avviso che segnala comportamenti strani del computer.
 
+<Layers
+  caption="Cinque livelli, di tipo diverso: se uno cade, gli altri reggono."
+  items={[
+    { icon: "mail", title: "Filtro antispam", text: "Ferma molte email false" },
+    { icon: "user", title: "Persona preparata", text: "Riconosce il messaggio sospetto" },
+    { icon: "key", title: "Pochi permessi", text: "Il danno resta piccolo" },
+    { icon: "eye", title: "Rilevamento", text: "Avvisa dei comportamenti strani" },
+    { icon: "database", title: "Copie di riserva", text: "I file si ripristinano" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Errore tipico: mettere tre volte lo stesso tipo di controllo. Tre antivirus sullo stesso computer non sono tre livelli: è un livello ripetuto. I livelli devono essere **diversi**.
 </Callout>
@@ -90,6 +101,12 @@ Il **privilegio minimo** è una regola semplice: **ogni persona e ogni programma
 Esempio: il fattorino ha le chiavi del portone, non quelle dell'ufficio. Il contabile legge il gestionale, ma non lo amministra.
 
 Perché funziona: se un account viene compromesso, l'attaccante ottiene **gli stessi permessi** di quell'account. Pochi permessi, pochi danni.
+
+<Compare
+  caption="Lo stesso computer infettato: il danno dipende dai permessi."
+  left={{ title: "Sempre amministratore", points: ["L'attaccante ha tutti i permessi", "Arriva ai file di tutti i clienti"] }}
+  right={{ title: "Account normale", points: ["L'attaccante ha pochi permessi", "Il danno resta piccolo"] }}
+/>
 
 <Callout kind="trucco">
 Domanda guida per ogni permesso: **«Che cosa non funzionerebbe, se lo togliessi?»** Se la risposta è «niente», toglilo.

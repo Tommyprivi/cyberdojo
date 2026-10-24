@@ -86,6 +86,16 @@ Esempio con numeri fittizi. Ogni «investitore» versa 100 e gli viene promesso 
 
 Il buco **cresce**. Per tenere in piedi il castello servono sempre più persone. Quando i nuovi arrivi rallentano o molti chiedono il rimborso insieme, tutto crolla.
 
+<Flow
+  caption="Lo schema Ponzi regge solo finché entrano nuovi versamenti."
+  steps={[
+    { icon: "users", title: "Nuovi versamenti", text: "Arrivano altre persone" },
+    { icon: "coin", title: "Pagano i vecchi", text: "Nessun guadagno vero" },
+    { icon: "warning", title: "Il buco cresce", text: "I debiti aumentano ogni mese" },
+    { icon: "skull", title: "Il crollo", text: "I nuovi arrivi rallentano" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Il caso più famoso recente è quello di Bernard Madoff, scoperto nel 2008 a New York. Prometteva rendimenti regolari anno dopo anno, anche quando i mercati scendevano. Quella regolarità era il segnale che nessuno controllò.
 </Callout>
@@ -103,6 +113,16 @@ Come si sviluppa di solito, in generale:
 - All'inizio i guadagni sulla piattaforma **sembrano veri** e ti spingono a versare di più.
 - Quando chiedi di **prelevare**, spuntano scuse: una «tassa», una «verifica», un «deposito di sblocco».
 - Infine qualcuno ti contatta promettendo di **recuperare i soldi** dietro un pagamento anticipato: è una seconda truffa sulla prima.
+
+<Flow
+  caption="Il falso broker porta a una seconda truffa sulla prima."
+  steps={[
+    { icon: "laptop", title: "Guadagni finti", text: "Numeri sullo schermo" },
+    { icon: "coin", title: "Versi di più", text: "Ti fidi del saldo" },
+    { icon: "lock", title: "Prelievo bloccato", text: "Tassa o verifica da pagare" },
+    { icon: "mask", title: "Falso recupero", text: "Altro pagamento anticipato" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Un saldo su una piattaforma non è denaro tuo finché non puoi prelevarlo. E nessuna autorità o studio serio chiede un pagamento anticipato per «sbloccare» i tuoi soldi.

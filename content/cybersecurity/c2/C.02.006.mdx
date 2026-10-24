@@ -52,6 +52,12 @@ La domanda del caso: **che cosa succede, in pochi istanti, quando il browser mos
 
 **HTTPS** è HTTP dentro un tunnel protetto. Il tunnel si chiama **TLS** (Transport Layer Security). I siti con HTTPS usano di solito la porta **443**.
 
+<Compare
+  caption="Lo stesso percorso, con e senza tunnel."
+  left={{ title: "HTTP in chiaro", points: ["Chi sta nel mezzo legge tutto", "Può anche modificare i dati"] }}
+  right={{ title: "HTTPS con TLS", points: ["Il traffico è cifrato", "Una modifica in viaggio si scopre"] }}
+/>
+
 <Callout kind="curiosita">
 Prima di TLS c'era **SSL**, ma le sue versioni sono considerate rotte e non si usano più. La gente dice ancora «certificato SSL» per abitudine: oggi si parla di TLS, e la versione attuale è la **1.3**.
 </Callout>
@@ -91,8 +97,17 @@ Con HTTPS, chi sta in mezzo (il Wi-Fi del bar, un provider) non può:
 - **modificare** i dati in viaggio senza che il browser se ne accorga (**integrità**);
 - farsi passare per il sito senza un certificato valido per quel nome (**autenticità del sito**).
 
+<Layers
+  caption="Le tre garanzie di HTTPS."
+  items={[
+    { icon: "eye", title: "Riservatezza", text: "Chi sta in mezzo non legge" },
+    { icon: "check", title: "Integrità", text: "Le modifiche in viaggio si scoprono" },
+    { icon: "shield", title: "Autenticità", text: "Il sito è chi dice di essere" },
+  ]}
+/>
+
 <Callout kind="trucco">
-La chiave di sessione dura **solo** quella connessione. Alla successiva se ne crea una nuova. Anche se un giorno una chiave venisse scoperta, le conversazioni passate non si leggerebbero.
+La chiave di sessione dura **solo** quella connessione. Alla successiva se ne crea una nuova. Anche se una chiave venisse scoperta, ne sarebbe compromessa solo una conversazione, non tutte le altre.
 </Callout>
 
 <Say who="assistente">Chiara può stare tranquilla sul Wi-Fi del bar: l'ascoltatore vede solo dati incomprensibili.</Say>

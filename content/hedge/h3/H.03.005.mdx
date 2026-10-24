@@ -55,6 +55,15 @@ Il rendimento di un fondo si divide in due parti:
 
 L'**alpha di Jensen** è: rendimento del fondo meno il rendimento atteso dal CAPM.
 
+<Flow
+  caption="Come si separa il rendimento di un fondo."
+  steps={[
+    { icon: "chart", title: "Rendimento", text: "Quello ottenuto dal fondo" },
+    { icon: "gear", title: "Meno il beta", text: "Ciò che il mercato dà comunque" },
+    { icon: "search", title: "Alpha", text: "Ciò che resta: abilità o fortuna" },
+  ]}
+/>
+
 Una spiegazione in inglese, breve, con i sottotitoli:
 
 <Video />
@@ -76,6 +85,12 @@ Numeri fittizi: tasso privo di rischio 2%, mercato 8%, premio 6%.
   ]}
 />
 
+<Compare
+  caption="Lo slogan e il conto di Falco Uno."
+  left={{ title: "Lo slogan", points: ["Reso il 14% contro l'8% del mercato", "«Battuto il mercato di 6 punti»"] }}
+  right={{ title: "Il conto", points: ["Con beta 2 il CAPM dà già il 14%", "Alpha 0%: era tutto beta"] }}
+/>
+
 <Say who="sensei">Chi usa la leva sul mercato non ha talento: ha coraggio. E ne paga il conto quando il mercato scende.</Say>
 </Scene>
 
@@ -92,7 +107,7 @@ Stessi tassi: rf 2%, mercato 8%.
 ]} />
 
 <Callout kind="curiosita">
-Un fondo **market neutral** ha beta vicino a zero: se non ha alpha, ci si aspetta circa il tasso privo di rischio. Per questo i fondi speculativi vendono soprattutto alpha.
+Un fondo **market neutral** ha beta vicino a zero: se non ha alpha, ci si aspetta circa il tasso privo di rischio. Per questo gli hedge fund vendono soprattutto alpha.
 </Callout>
 
 <Say who="sensei">Un alpha negativo significa che chi ha comprato il fondo avrebbe fatto meglio con il mercato. Succede più spesso di quanto si dica.</Say>

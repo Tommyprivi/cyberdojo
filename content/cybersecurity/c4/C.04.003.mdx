@@ -61,6 +61,16 @@ Un esempio per la Verdi Consulting:
 
 Il firewall tra le zone ha regole semplici, sempre con **default deny**: gli ospiti non raggiungono i server interni; le telecamere non parlano con gli uffici; gli uffici raggiungono solo le porte dei server che servono.
 
+<Layers
+  caption="Le quattro zone della Verdi Consulting."
+  items={[
+    { icon: "laptop", title: "Uffici", text: "I pc degli impiegati" },
+    { icon: "server", title: "Server interni", text: "Contratti e archivi" },
+    { icon: "wifi", title: "Ospiti", text: "Il Wi-Fi per i clienti" },
+    { icon: "gear", title: "Dispositivi", text: "Stampanti e telecamere" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Pensa alle paratie di una nave. Se si apre una falla, si allaga un compartimento, non tutta la nave.
 </Callout>
@@ -80,6 +90,12 @@ L'allegato infetto cade sul pc dell'impiegato, nella zona uffici. L'attaccante o
 - Il Wi-Fi ospiti o le telecamere: no, nessuna regola lo permette.
 
 L'attaccante non è fermato per sempre, ma deve fare **più passi**. Ogni passo è un'occasione per essere visto da chi sorveglia (ricordi l'IDS?).
+
+<Compare
+  caption="Lo stesso pc infettato, con e senza zone."
+  left={{ title: "Rete unica", points: ["Dal pc infetto si raggiunge tutto", "I contratti vengono copiati in serata"] }}
+  right={{ title: "Rete a zone", points: ["Si raggiunge solo la propria zona", "Il resto sta dietro le regole del firewall"] }}
+/>
 
 <Callout kind="attenzione">
 La segmentazione non toglie l'errore dell'impiegato. Riduce il **raggio d'azione** dell'errore. È una difesa a strati: nessuna da sola basta.

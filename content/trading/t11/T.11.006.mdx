@@ -72,13 +72,23 @@ Vuoi sentire l'overfitting spiegato con i grafici da un'altra voce? Un video in 
 {/* screen */}
 
 <Scene title="Provare tante idee">
-Rifacciamo il conto di Paolo. Ogni modello senza alcuna capacità ha circa il **5%** di probabilità di sembrare «buono» per pura fortuna (per esempio superare una certa soglia di accuratezza).
+Rifacciamo il conto di Paolo. Ogni modello senza alcuna capacità ha circa il **5%** di probabilità di sembrare «buono» per pura fortuna (per esempio superare una certa soglia di accuratezza). Per semplicità supponiamo che i 20 tentativi siano indipendenti tra loro.
 
 Probabilità che **tutti e 20** i modelli non sembrino buoni: 0,95 elevato alla 20, circa **0,36**.
 
 Quindi la probabilità che **almeno uno** sembri buono è 1 − 0,36 = circa **64%**.
 
 Più idee provi, più è probabile che una funzioni per caso. Se non conti gli altri tentativi, il risultato migliore ti inganna.
+
+<Flow
+  caption="Il conto di Paolo: venti tentativi, nessun vero vantaggio."
+  steps={[
+    { icon: "code", title: "20 modelli", text: "Nessuno ha una vera capacità" },
+    { icon: "gear", title: "Ognuno 5%", text: "Probabilità di sembrare buono per caso" },
+    { icon: "search", title: "Nessuno buono", text: "0,95 alla 20: circa 0,36" },
+    { icon: "warning", title: "Almeno uno", text: "1 - 0,36: circa 64%" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Dichiara **sempre** quanti modelli hai provato. Un «ho provato un solo modello» e un «ne ho provati duecento» non sono la stessa storia.
@@ -97,6 +107,15 @@ Guadagno medio per operazione, **prima dei costi**: 0,52 × 1% − 0,48 × 1% = 
 Ora un costo fittizio di **0,10%** per operazione (commissioni e spread):
 
 Risultato netto medio: 0,04% − 0,10% = **−0,06%** per operazione. In **perdita**.
+
+<Flow
+  caption="Un vantaggio piccolo non sopravvive a un costo più grande."
+  steps={[
+    { icon: "chart", title: "Lordo", text: "+0,04% per operazione" },
+    { icon: "coin", title: "Costi", text: "-0,10% per operazione" },
+    { icon: "warning", title: "Netto", text: "-0,06%: in perdita" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 Un vantaggio piccolo, come tutti quelli che si trovano nei mercati, può essere cancellato dai costi. E ricorda: i mercati cambiano, le regolarità del passato possono sparire.

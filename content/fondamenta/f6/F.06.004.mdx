@@ -41,6 +41,12 @@ Se un PC viene infettato, può raggiungere subito **tutti** gli altri. Il titola
 
 La domanda: **come si spezza 192.168.1.0/24 in quattro reti uguali?**
 
+<Compare
+  caption="Rete piatta contro quattro sottoreti."
+  left={{ title: "Rete piatta", points: ["Un solo blocco, 192.168.1.0/24, per tutti","Un PC infetto raggiunge subito tutti gli altri","Nessun punto dove mettere regole"] }}
+  right={{ title: "Quattro sottoreti", points: ["Una rete per reparto: quattro /26","Il traffico tra reparti passa da un punto di controllo","Un'infezione fa più fatica a diffondersi"] }}
+/>
+
 <Say who="sensei">Separare i reparti non è burocrazia. È come mettere le porte tagliafuoco: l'incendio non attraversa il corridoio.</Say>
 </Scene>
 

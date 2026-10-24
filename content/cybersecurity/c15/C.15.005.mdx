@@ -58,6 +58,15 @@ Se qualcuno toglie il disco e lo collega a un altro computer, vede solo dati sen
 
 Usano di norma **AES**, in modalità pensate per i dischi (per esempio **XTS**).
 
+<Layers
+  caption="I tre stati dei dati: il disco cifrato protegge l'ultimo."
+  items={[
+    { icon: "wifi", title: "In transito", text: "Sulla rete: li protegge TLS" },
+    { icon: "gear", title: "In uso", text: "Nella memoria mentre il programma lavora" },
+    { icon: "database", title: "A riposo", text: "Salvati su disco: li protegge la cifratura del disco" },
+  ]}
+/>
+
 <Callout kind="regola">
 Disco cifrato = protegge **a computer spento o bloccato** dal furto fisico. Non protegge un computer **acceso e sbloccato**: lì i dati sono già accessibili a chi usa la sessione, o a un malware che gira.
 </Callout>

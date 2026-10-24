@@ -104,6 +104,16 @@ Le opzioni si mettono dopo `grep`:
 
 Ecco la risposta al caso: **4 accessi falliti**, tutti sul servizio ssh.
 
+<Flow
+  caption="grep come filtro: dal registro intero alla risposta."
+  steps={[
+    { icon: "file", title: "accessi.log", text: "Otto righe" },
+    { icon: "search", title: "grep FALLITO", text: "Tiene le righe con la parola" },
+    { icon: "bug", title: "Quattro righe", text: "Solo i tentativi falliti" },
+    { icon: "check", title: "grep -c", text: "Dà direttamente: 4" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Le opzioni si possono unire: `grep -in fallito accessi.log` fa ricerca senza distinzione di maiuscole **e** mostra i numeri di riga.
 </Callout>

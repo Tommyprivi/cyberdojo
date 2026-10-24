@@ -126,6 +126,16 @@ Ora la risposta al capo. Un pezzo alla volta:
   ]}
 />
 
+<Flow
+  caption="La pipeline passo per passo: da otto righe a una classifica."
+  steps={[
+    { icon: "search", title: "grep", text: "4 righe con FALLITO" },
+    { icon: "code", title: "cut", text: "Solo gli indirizzi" },
+    { icon: "chart", title: "sort | uniq -c", text: "Raggruppa e conta" },
+    { icon: "warning", title: "sort -rn", text: "In cima: 203.0.113.9" },
+  ]}
+/>
+
 <Log lines={[
   "studente@lab:~$ grep FALLITO accessi.log | cut -d' ' -f2 | sort | uniq -c | sort -rn",
   "      3 203.0.113.9",

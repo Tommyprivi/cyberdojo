@@ -64,6 +64,15 @@ Pensa a una banca: i clienti stanno nella sala, il caveau è dietro una porta bl
 Un programma in modalità utente chiede al kernel di fare le cose per lui. Se il programma si blocca, il sistema resta in piedi. Se si blocca il kernel, si ferma tutto.
 </Callout>
 
+<Layers
+  caption="Due livelli sopra l'hardware: il programma chiede, il kernel decide."
+  items={[
+    { icon: "laptop", title: "Programmi", text: "Modalità utente: browser, Word, ognuno con la sua memoria" },
+    { icon: "gear", title: "Kernel e driver", text: "Modalità kernel: accesso a tutto, hardware compreso" },
+    { icon: "server", title: "Hardware", text: "Disco, rete, memoria: ci si arriva tramite il kernel" },
+  ]}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti, in inglese con i sottotitoli:
 
 <Video />
@@ -101,6 +110,16 @@ Quando fai l'accesso, Windows crea il tuo **token di accesso**: una sorta di **t
 - il tuo **SID**,
 - i **gruppi** di cui fai parte,
 - i tuoi **privilegi** (cose speciali che puoi fare, come spegnere il sistema).
+
+<Flow
+  caption="Il token è il tesserino che ogni programma si porta dietro."
+  steps={[
+    { icon: "user", title: "Accesso", text: "Fai il login" },
+    { icon: "key", title: "Token", text: "SID, gruppi e privilegi" },
+    { icon: "laptop", title: "Programma", text: "Si porta dietro il tuo token" },
+    { icon: "folder", title: "Permessi del file", text: "Windows confronta il token, non il nome" },
+  ]}
+/>
 
 <Callout kind="curiosita">
 L'account **SYSTEM** ha un SID noto (S-1-5-18) e ha il massimo potere sulla macchina locale. Molti servizi girano con SYSTEM. Se un servizio così viene compromesso, chi lo controlla ottiene quel potere.

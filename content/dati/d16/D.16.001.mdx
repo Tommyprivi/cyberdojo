@@ -86,6 +86,12 @@ La colonna **città** contiene parole: Roma, Milano, Torino. Un modello vuole nu
 
 La soluzione è il **one-hot**: una colonna per città, con 1 se vale e 0 se no.
 
+<Compare
+  caption="Le città non hanno un ordine: la codifica non deve inventarlo."
+  left={{ title: "Numeri progressivi", points: ["Roma = 1, Milano = 2, Torino = 3", "Il modello crede a un ordine", "Torino «vale» il triplo di Roma"] }}
+  right={{ title: "One-hot", points: ["Una colonna per ogni città", "1 se vale, 0 se no", "Nessuna città sta sopra un'altra"] }}
+/>
+
 | città | è_Roma | è_Milano | è_Torino |
 |---|---|---|---|
 | Milano | 0 | 1 | 0 |
@@ -106,6 +112,12 @@ Se le categorie sono tantissime (migliaia di codici postali), il one-hot crea tr
 La **perdita di dati** (data leakage) è quando il modello vede, durante l'addestramento, informazioni che nella vita reale non avrebbe. Un caso tipico: calcoli minimo e massimo su **tutto** il dataset, poi dividi in train e test.
 
 Giusto: calcoli minimo e massimo **solo sul train**, poi li applichi al test. Esempio: nel train le età vanno da 20 a 40. Una persona del test ha 60 anni: il suo valore min-max è (60 − 20) / (40 − 20) = **2**. Sì, può uscire da 0-1: è normale.
+
+<Compare
+  caption="Dove si calcolano minimo e massimo fa la differenza."
+  left={{ title: "Perdita di dati", points: ["Minimo e massimo su tutto il dataset", "Poi la divisione in train e test", "Il test ha già influenzato la preparazione"] }}
+  right={{ title: "Procedura corretta", points: ["Prima la divisione in train e test", "Minimo e massimo solo sul train", "Poi si applicano al test"] }}
+/>
 
 <Log lines={[
   "from sklearn.compose import ColumnTransformer",

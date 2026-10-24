@@ -127,6 +127,15 @@ Su un computer puoi fare tu la domanda con **nslookup** (o **dig** su Linux). È
 **Rischio, a livello di concetto: l'avvelenamento della cache.** Se un resolver accetta una risposta falsa, la tiene in cache e la consegna a tutti i suoi utenti: un nome noto porta a un indirizzo sbagliato. Difese: resolver aggiornati, DNSSEC (le risposte vengono firmate) e controllo dei log. Provare l'attacco su sistemi altrui è reato (art. 615-ter c.p.).
 </Callout>
 
+<Flow
+  caption="Che cosa succede con nslookup."
+  steps={[
+    { icon: "terminal", title: "Domanda", text: "nslookup esempio.it" },
+    { icon: "server", title: "Resolver", text: "192.168.1.1, sulla porta 53" },
+    { icon: "check", title: "Risposta", text: "L'indirizzo 203.0.113.20" },
+  ]}
+/>
+
 <Say who="sensei">Se il nome porta al posto sbagliato, tutto ciò che viene dopo sembra normale. Per questo il DNS si sorveglia.</Say>
 </Scene>
 

@@ -114,6 +114,12 @@ Se il file di destinazione esiste già, di norma `cp` lo **sovrascrive senza chi
   "appunti.txt",
 ]} caption="Prima rinomino, poi sposto nella cartella archivio." />
 
+<Compare
+  caption="Copiare e spostare: che cosa resta nel vecchio posto."
+  left={{ title: "cp (copia)", points: ["L'originale resta dov'è", "Ora i file sono due", "Per le cartelle serve -r"] }}
+  right={{ title: "mv (sposta)", points: ["L'originale lascia il vecchio posto", "Il file resta uno solo", "Con un nuovo nome, rinomina"] }}
+/>
+
 <Callout kind="curiosita">
 In Linux **rinominare e spostare sono la stessa cosa**: cambia solo il «percorso» del file. Per questo c'è un solo comando.
 </Callout>

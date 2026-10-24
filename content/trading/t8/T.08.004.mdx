@@ -94,7 +94,17 @@ Nora corregge il backtest: il segnale calcolato con la chiusura di lunedì si es
   "in percentuale: 1,00 / 100,00 = 1%",
 ]} />
 
-Il «salto» tra chiusura e apertura si chiama **gap**. Nel backtest ingenuo non esiste; nella realtà costa.
+Il «salto» tra chiusura e apertura si chiama **gap**. Nel backtest ingenuo non esiste; nella realtà può costare.
+
+<Flow
+  caption="Il segnale di oggi si esegue domani, non al prezzo che l'ha generato."
+  steps={[
+    { icon: "chart", title: "Chiusura", text: "Lunedì: nasce il segnale" },
+    { icon: "clock", title: "Mercato chiuso", text: "Non si può ancora comprare" },
+    { icon: "coin", title: "Apertura", text: "Martedì: si compra" },
+    { icon: "warning", title: "Gap", text: "Il prezzo può essere diverso" },
+  ]}
+/>
 
 In pandas (il modulo T2 ne ha parlato) il trucco è **ritardare il segnale di un giorno** con `shift(1)`: la posizione di domani usa il segnale di oggi, mai quello di domani.
 

@@ -54,6 +54,16 @@ Quando un programma invia dati, li affida a un **protocollo di trasporto** (un i
 **TCP** = affidabile, ordinato, un po' più lento. **UDP** = leggero, veloce, senza garanzie.
 </Callout>
 
+<Flow
+  caption="TCP non si fida: ogni pezzo viene confermato."
+  steps={[
+    { icon: "mail", title: "Invia", text: "Pezzi numerati" },
+    { icon: "check", title: "Ricevuta", text: "Conferma: ricevuto fino al pezzo 7" },
+    { icon: "warning", title: "Se manca", text: "Il pezzo non viene confermato" },
+    { icon: "mail", title: "Rispedisce", text: "Il pezzo viene inviato di nuovo" },
+  ]}
+/>
+
 <Say who="assistente">La cartolina non è una cattiva spedizione. È la scelta giusta quando la ricevuta costerebbe più del messaggio.</Say>
 </Scene>
 

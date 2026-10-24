@@ -54,6 +54,16 @@ Un'**opzione** è un contratto che dà a chi la compra il **diritto, ma non l'ob
 - **Scadenza**: la data limite.
 - **Premio**: il prezzo dell'opzione, qui 5 euro per azione. Si paga subito e non torna indietro.
 
+<Flow
+  caption="L'opzione di Marta, passo per passo."
+  steps={[
+    { icon: "coin", title: "Premio", text: "Marta paga 5 euro oggi" },
+    { icon: "key", title: "Diritto", text: "Può comprare Alfa a 100 entro tre mesi" },
+    { icon: "check", title: "Se sale", text: "Compra a 100" },
+    { icon: "cross", title: "Se scende", text: "Lascia perdere: perde solo i 5 euro" },
+  ]}
+/>
+
 <Callout kind="regola">
 Chi **compra** l'opzione ha un **diritto**. Chi la **vende** (si dice anche «scrive») ha un **obbligo**, se l'altro decide di esercitare.
 </Callout>
@@ -89,11 +99,17 @@ Il collega ha **venduto** la call a Marta e ha incassato 5 euro. Sembra un affar
 
 <Guided
   steps={[
-    "Il compratore di una opzione può perdere al massimo il premio pagato.",
+    "Il compratore di un'opzione può perdere al massimo il premio pagato.",
     "Il venditore incassa il premio subito, ma ha un obbligo che può costare molto di più.",
     "Il venditore di una call senza possedere l'azione ha una perdita teoricamente senza limite: il prezzo può salire quanto vuole.",
     "Vendere opzioni non è «incassare soldi gratis»: è assumersi un rischio in cambio di un premio.",
   ]}
+/>
+
+<Compare
+  caption="Lo stesso contratto visto da chi vende e da chi compra."
+  left={{ title: "Chi vende la call", points: ["Incassa 5 euro di premio", "Ha l'obbligo di consegnare l'azione", "Con Alfa a 150 perde 45 euro"] }}
+  right={{ title: "Chi compra la call", points: ["Paga 5 euro di premio", "Ha il diritto, non l'obbligo", "Perde al massimo i 5 euro"] }}
 />
 
 <Say who="sensei">Chi vende opzioni raccoglie spiccioli davanti a un rullo compressore, dicono. Non sempre, ma il rischio c'è.</Say>
@@ -114,7 +130,7 @@ Il collega ha **venduto** la call a Marta e ha incassato 5 euro. Sembra un affar
   explain="La put è il diritto di vendere allo strike. Con l'azione a 80 puoi venderla a 100: vale 20 euro prima di sottrarre il premio. Chi dice 'comprare a 100' ha confuso put e call."
 />
 
-<Say who="assistente">Indizio: put e «vendere» iniziano per lettere diverse. Parti da quello che il contratto ti lascia fare.</Say>
+<Say who="assistente">Indizio: la put è il diritto di vendere, la call quello di comprare. Parti da ciò che il contratto ti lascia fare.</Say>
 </Scene>
 
 {/* screen */}

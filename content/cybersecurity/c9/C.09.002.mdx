@@ -58,6 +58,17 @@ Non tutte le tracce durano uguale. Pensa a un ghiacciolo, a una pozzanghera e a 
 4. **Disco** (file, registri): resta, ma può essere modificato.
 5. **Log remoti e backup**: durano di più.
 
+<Flow
+  caption="Dal più volatile al più duraturo."
+  steps={[
+    { icon: "bolt", title: "Memoria RAM", text: "Sparisce allo spegnimento" },
+    { icon: "wifi", title: "Rete", text: "Connessioni attive" },
+    { icon: "file", title: "Temporanei", text: "File temporanei e swap" },
+    { icon: "database", title: "Disco", text: "File e registri" },
+    { icon: "folder", title: "Log e backup", text: "Durano di più" },
+  ]}
+/>
+
 <Callout kind="regola">
 Si parte dal più volatile. La RAM prima del disco, il disco prima degli archivi.
 </Callout>
@@ -91,6 +102,16 @@ Il disco originale non si tocca. Si fa una **copia forense**: un duplicato ident
 Per dimostrare che la copia è identica e non è stata alterata si usa un **hash**: un'impronta digitale del contenuto, calcolata con un algoritmo come SHA-256. Cambi un solo bit e l'impronta cambia del tutto.
 
 <Log lines={["originale   SHA-256  9f2c...e41a", "copia        SHA-256  9f2c...e41a", "esito: le impronte coincidono, la copia è fedele"]} caption="Impronte abbreviate per leggibilità." />
+
+<Flow
+  caption="L'originale non si tocca: si analizza solo la copia."
+  steps={[
+    { icon: "database", title: "Originale", text: "Protetto da write blocker" },
+    { icon: "folder", title: "Copia forense", text: "Identica, bit per bit" },
+    { icon: "key", title: "Hash", text: "Le impronte coincidono" },
+    { icon: "search", title: "Analisi", text: "Si lavora sulla copia" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Per bloccare la scrittura sul disco originale si usa un **write blocker**: un dispositivo che lascia solo leggere, mai scrivere.

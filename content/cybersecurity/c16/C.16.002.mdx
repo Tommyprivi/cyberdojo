@@ -63,6 +63,15 @@ Un **JWT** (JSON Web Token, si dice «giot») è una stringa fatta di **tre part
 
 Header e payload sono solo **codificati** (in base64url, una scrittura che si legge con qualunque strumento): non sono cifrati. La **firma** non nasconde nulla: serve a **scoprire se qualcuno ha cambiato qualcosa**. Se Elena cambiasse «studente» in «amministratore», la firma non tornerebbe più e il server rifiuterebbe il token.
 
+<Layers
+  caption="Le tre parti di un JWT."
+  items={[
+    { icon: "gear", title: "Header", text: "Tipo di token e algoritmo di firma" },
+    { icon: "file", title: "Payload", text: "I claim: utente, ruolo, scadenza. Si legge" },
+    { icon: "lock", title: "Firma", text: "Scopre ogni modifica, ma non nasconde nulla" },
+  ]}
+/>
+
 <Callout kind="regola">
 Un JWT è **firmato, non segreto**. Nel payload non si mette nulla che non possa leggere chi ha il token: niente password, niente dati sanitari, niente numeri di telefono.
 </Callout>
@@ -102,6 +111,12 @@ Questi errori si trovano davvero nelle revisioni di codice. Li spieghiamo solo p
 - **Dati sensibili nel payload**: lo vede chiunque abbia il token, compreso chi legge i log.
 - **Token conservato dove lo legge uno script**: se la pagina ha un difetto XSS (lo ricordi da C.05), lo script dell'estraneo può portarsi via il token.
 - **Nessun modo di revocare**: un JWT valido resta valido finché non scade, anche se l'utente è stato disattivato. Si mitiga con scadenze brevi, controlli aggiuntivi e liste di revoca.
+
+<Compare
+  caption="Un token è sicuro quanto i controlli del server."
+  left={{ title: "Il server crede al token", points: ["Algoritmo scelto dall'header del token", "Segreto debole, facile da indovinare", "Nessuna scadenza, o di mesi"] }}
+  right={{ title: "Il server controlla", points: ["Lista fissa di algoritmi ammessi", "Chiave lunga, casuale e custodita", "Scadenze brevi, sempre verificate"] }}
+/>
 
 <Callout kind="attenzione">
 Falsificare token o indovinare chiavi di un sistema che non è tuo è accesso abusivo a sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo o per cui hai un permesso scritto.

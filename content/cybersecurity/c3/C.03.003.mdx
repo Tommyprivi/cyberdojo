@@ -56,6 +56,15 @@ Per dimostrare chi sei puoi usare tre tipi di prova, detti **fattori**:
 
 **2FA** (autenticazione a due fattori) usa due fattori di **tipo diverso**. **MFA** (a più fattori) è il nome generico: due o più.
 
+<Layers
+  caption="I tre tipi di fattore: per la 2FA se ne scelgono due diversi."
+  items={[
+    { icon: "key", title: "Qualcosa che sai", text: "Password, PIN" },
+    { icon: "phone", title: "Qualcosa che hai", text: "Telefono, chiavetta, carta" },
+    { icon: "user", title: "Qualcosa che sei", text: "Impronta digitale, volto" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Password più domanda segreta non sono due fattori: sono due cose che **sai**. Un attaccante che le scopre entrambe ha fatto un solo lavoro.
 </Callout>
@@ -87,6 +96,15 @@ I secondi fattori non sono tutti uguali.
 **App di autenticazione**: genera codici a sei cifre che cambiano ogni 30 secondi circa e non passano dalla rete telefonica. Molto meglio.
 
 **Chiave fisica** (o **passkey**): un dispositivo o una credenziale che controlla anche **su quale sito** stai accedendo, quindi un finto sito non riesce a farsela dare. È il livello più alto.
+
+<Layers
+  caption="Dal più debole (in alto) al più forte (in basso)."
+  items={[
+    { icon: "mail", title: "SMS", text: "Esposto al SIM swap" },
+    { icon: "phone", title: "App di autenticazione", text: "Codici che cambiano ogni 30 secondi" },
+    { icon: "shield", title: "Chiave fisica o passkey", text: "Controlla anche il sito" },
+  ]}
+/>
 
 <Callout kind="regola">
 Usa il fattore più forte che il servizio offre. L'SMS solo quando non c'è altro.

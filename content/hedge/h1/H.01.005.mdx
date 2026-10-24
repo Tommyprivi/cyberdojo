@@ -72,7 +72,7 @@ Un video in inglese (sottotitoli) racconta le soglie americane:
 
 <Video />
 
-<Say who="sensei">Le soglie cambiano nel tempo. Un numero senza data è un numero da diffidare.</Say>
+<Say who="sensei">Le soglie cambiano nel tempo. Un numero senza data è un numero di cui diffidare.</Say>
 </Scene>
 
 {/* screen */}
@@ -93,7 +93,13 @@ Torniamo al messaggio di Giada. Ecco perché non è credibile:
 Un fondo serio controlla chi sei (norme antiriciclaggio) e ti consegna documenti. Chi ti chiede un bonifico subito, senza documenti, è un segnale di truffa.
 </Callout>
 
-<Say who="assistente">Quando c'è fretta, rallenta. È proprio lì che ti fregano.</Say>
+<Compare
+  caption="Il messaggio di Giada a confronto con un fondo serio."
+  left={{ title: "Il messaggio", points: ["Rendimento garantito del 30%", "Bonifico entro stasera", "Nessun documento"] }}
+  right={{ title: "Un fondo serio", points: ["Nessuna garanzia di rendimento", "Controlla chi sei", "Consegna i documenti", "Si verifica su Consob e Banca d'Italia"] }}
+/>
+
+<Say who="assistente">Quando c'è fretta, rallenta. È proprio lì che ti ingannano.</Say>
 </Scene>
 
 {/* screen */}

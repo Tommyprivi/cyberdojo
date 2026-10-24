@@ -35,7 +35,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="Seimila ordini, un solo raddoppio">
+<Scene title="Un aumento, una sola riga">
 Giulia vuole simulare un aumento: «E se tutti i prezzi salissero del 10 per cento?». Hai gli importi degli ordini in una lista. Con i cicli della lezione scorsa dovresti scrivere un `for`, aggiungere ogni risultato a una nuova lista, ricordarti di non sbagliare gli indici.
 
 Esiste un modo più corto: scrivere `importi * 1.1` e basta. Funziona su sei numeri come su sei milioni.
@@ -142,6 +142,15 @@ print((importi > 25).sum())
 ```
 
 Il confronto produce una **maschera**: un array di `True` e `False`. Mettendola tra parentesi quadre tieni solo gli elementi dove vale `True`. Sommare una maschera conta i `True`: gli ordini sopra i 25 euro sono 4.
+
+<Flow
+  caption="Il filtro con la maschera, passo per passo."
+  steps={[
+    { icon: "search", title: "Confronto", text: "importi > 25" },
+    { icon: "check", title: "Maschera", text: "True e False, uno per ogni valore" },
+    { icon: "file", title: "Filtro", text: "Restano 40, 40, 30, 30" },
+  ]}
+/>
 
 <Say who="assistente">Il trucco della maschera lo ritroverai identico in pandas. Imparalo qui, dove è piccolo.</Say>
 </Scene>

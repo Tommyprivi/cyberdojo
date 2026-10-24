@@ -134,6 +134,12 @@ print(clienti.merge(ordini, on="id_cliente", how="right"))
 
 Il `left` tiene Carla e Dario con importo `NaN`: **nessun ordine**. Il `right` tiene l'ordine del cliente 5 con nome `NaN`: **ordine di un cliente sconosciuto**, un problema di qualità dei dati da segnalare. L'`outer` tiene tutto, le due cose insieme.
 
+<Compare
+  caption="Le stesse due tabelle con due tipi di join."
+  left={{ title: "inner (predefinito)", points: ["Solo chiavi presenti in entrambe", "Carla, Dario e il cliente 5 spariscono", "Risultato: 3 righe"] }}
+  right={{ title: "left", points: ["Tutti i clienti della tabella a sinistra", "Carla e Dario restano, con NaN", "Risultato: 5 righe"] }}
+/>
+
 <Callout kind="trucco">
 Per trovare i clienti senza ordini: `left` join, poi tieni le righe dove `importo` è `NaN`. Con la tabella di esempio sono Carla e Dario.
 </Callout>

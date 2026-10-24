@@ -55,7 +55,7 @@ La domanda del caso: **come si risponde a tre domande senza scrivere tre pagine 
 {/* screen */}
 
 <Scene title="Pipe, select e filter">
-La **pipe** passa il risultato di un passaggio al successivo. Si scrive `|>` e si legge «poi». Dati di partenza (una tabella tibble, come nella lezione scorsa):
+La **pipe** passa il risultato di un passaggio al successivo. Si scrive `|>` e si legge «poi». Dati di partenza (una tabella tibble, la versione moderna del data frame):
 
 ```r
 library(tidyverse)
@@ -172,6 +172,16 @@ ordini |>
 ```
 
 Controlla a mano: a Roma 40 + 40 + 40 = 120, media 40. A Milano 20 + 30 = 50, media 25. A Torino un solo ordine da 10.
+
+<Flow
+  caption="Una pipeline si legge come una ricetta: un verbo per passaggio."
+  steps={[
+    { icon: "database", title: "ordini", text: "Sei righe, tre città" },
+    { icon: "folder", title: "group_by", text: "Un gruppo per città" },
+    { icon: "chart", title: "summarise", text: "Totale e media per gruppo" },
+    { icon: "check", title: "Risultato", text: "Una riga per città" },
+  ]}
+/>
 
 Per contare le righe di ogni gruppo c'è la scorciatoia `count()`:
 

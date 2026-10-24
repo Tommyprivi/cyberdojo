@@ -86,7 +86,7 @@ Sharpe inoltre:
 
 - vale solo se la volatilità descrive bene il rischio (le perdite rare e gigantesche sfuggono);
 - su pochi dati è molto instabile;
-- nei backtest è sempre ottimistico: costi, slippage e scelte fatte guardando i dati lo gonfiano.
+- nei backtest tende a essere ottimistico: costi, slippage e scelte fatte guardando i dati lo gonfiano.
 
 <Callout kind="attenzione">
 Non esiste un numero «buono» valido per sempre. Uno Sharpe alto in un backtest può essere solo il segno di una strategia ritoccata finché i dati andavano bene.
@@ -112,6 +112,12 @@ Lo Sharpe sugli stessi numeri (soglia 0, deviazione standard con n − 1): 0,5 /
 <Callout kind="trucco">
 Sortino = Sharpe che guarda solo le cadute. Le salite non vengono più punite.
 </Callout>
+
+<Compare
+  caption="Che cosa conta come rischio nei due indici."
+  left={{ title: "Sharpe", points: ["Conta ogni oscillazione", "Anche i balzi verso l'alto", "Usa la deviazione standard"] }}
+  right={{ title: "Sortino", points: ["Conta solo le cadute sotto soglia", "Le salite non sono punite", "Usa la deviazione al ribasso"] }}
+/>
 
 <Say who="assistente">Sortino è più alto di Sharpe quando le oscillazioni sono soprattutto verso l'alto. Quando le perdite sono grandi, i due si avvicinano.</Say>
 </Scene>

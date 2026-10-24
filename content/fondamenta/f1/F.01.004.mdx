@@ -66,6 +66,15 @@ Un **eseguibile** è un file che contiene istruzioni che la CPU può eseguire. �
 
 Mentre è chiuso, il programma è solo un file sull'armadio (il disco). Quando lo avvii, il sistema lo copia nella RAM e lo fa lavorare: ora è un **processo**.
 
+<Flow
+  caption="Dal file sul disco al processo in esecuzione."
+  steps={[
+    { icon: "file", title: "Programma", text: "Un file fermo sul disco" },
+    { icon: "bolt", title: "Avvio", text: "Il sistema lo copia nella RAM" },
+    { icon: "gear", title: "Processo", text: "La CPU esegue le istruzioni" },
+  ]}
+/>
+
 <Callout kind="regola">
 **Programma** = il file sul disco. **Processo** = quel programma **in esecuzione**. Aprendo due volte lo stesso programma ottieni due processi.
 </Callout>

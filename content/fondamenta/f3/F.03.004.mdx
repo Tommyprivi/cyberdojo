@@ -55,6 +55,16 @@ Luca, del turno di notte, deve installare un programma. Cerca online e trova una
   "[sudo] password for studente:",
 ]} caption="Senza sudo il file è negato. Con sudo, il sistema chiede la password." />
 
+<Flow
+  caption="Che cosa succede quando scrivi sudo davanti a un comando."
+  steps={[
+    { icon: "user", title: "Tu", text: "Scrivi sudo e il comando" },
+    { icon: "key", title: "Password", text: "Inserisci la tua, non quella di root" },
+    { icon: "shield", title: "Controllo", text: "Il sistema verifica che puoi" },
+    { icon: "book", title: "Un comando", text: "Gira da root e resta nel log" },
+  ]}
+/>
+
 Attenzione: sudo chiede **la tua password**, non quella di root. Serve per verificare che sia davvero tu davanti alla tastiera, e che tu sia tra gli utenti autorizzati (il file `/etc/sudoers` decide chi).
 
 <Callout kind="curiosita">

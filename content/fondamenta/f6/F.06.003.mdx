@@ -72,6 +72,15 @@ Restano **2^n − 2** indirizzi per i dispositivi, gli **host utilizzabili**.
 Gli host sono 2^n **meno due**. Chi risponde 256 per una /24 assegnerebbe al primo computer proprio l'indirizzo di rete.
 </Callout>
 
+<Layers
+  caption="In una /24: 256 indirizzi in tutto, 254 per i dispositivi."
+  items={[
+    { icon: "lock", title: "Indirizzo di rete", text: "Il primo (.0): non si assegna" },
+    { icon: "laptop", title: "Host utilizzabili", text: "Da .1 a .254: 254 dispositivi" },
+    { icon: "bell", title: "Broadcast", text: "L'ultimo (.255): arriva a tutti" },
+  ]}
+/>
+
 <Say who="sensei">Duecentocinquantasei indirizzi, duecentocinquantaquattro computer. Il primo e l'ultimo sono di servizio.</Say>
 </Scene>
 

@@ -107,6 +107,12 @@ Se l'indice è utile, il piano della stessa query diventa:
 - **Index Cond**: la condizione è risolta **dentro l'indice**, senza leggere le altre righe.
 - Il costo totale passa da 21850 a 394: circa **55 volte meno lavoro stimato**.
 
+<Compare
+  caption="Lo stesso filtro, due modi di lavorare."
+  left={{ title: "Seq Scan", points: ["Legge la tabella dall'inizio alla fine", "Filter: scarta quasi tutte le righe", "Costo stimato 21850"] }}
+  right={{ title: "Index Scan", points: ["Cerca nell'indice e va dritto alle righe", "Index Cond: nessuna lettura inutile", "Costo stimato 394"] }}
+/>
+
 Altri nomi che incontrerai: **Index Only Scan** (basta l'indice), **Bitmap Index Scan** (tante righe da un indice), e per i collegamenti tra tabelle **Nested Loop**, **Hash Join**, **Merge Join**.
 
 <Callout kind="curiosita">

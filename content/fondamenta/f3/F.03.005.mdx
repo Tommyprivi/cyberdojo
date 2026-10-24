@@ -99,6 +99,15 @@ I due che ti servono:
   "studente@lab:~$ kill -9 4410",
 ]} caption="Prima kill 3071: il processo è sparito dall'elenco. kill -9 si usa solo se quello gentile non basta." />
 
+<Flow
+  caption="L'ordine giusto per fermare un processo."
+  steps={[
+    { icon: "search", title: "Guarda", text: "ps o top: chi è, che cosa fa" },
+    { icon: "bell", title: "kill PID", text: "SIGTERM: chiuditi, per favore" },
+    { icon: "skull", title: "kill -9", text: "Solo se non risponde" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Ordine giusto: prima `kill PID`, poi, **solo se non risponde**, `kill -9 PID`. Chi parte subito col 9 rischia di perdere dati.
 </Callout>

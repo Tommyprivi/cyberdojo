@@ -60,6 +60,15 @@ Nello swap di tasso più comune:
 Si scambiano di solito solo i **differenziali**: chi deve di più paga la differenza.
 </Callout>
 
+<Flow
+  caption="Come funziona uno swap di tasso."
+  steps={[
+    { icon: "user", title: "Luca", text: "Paga il tasso fisso (3%)" },
+    { icon: "server", title: "La banca", text: "Paga il tasso variabile" },
+    { icon: "coin", title: "Differenza", text: "Si scambia solo la differenza" },
+  ]}
+/>
+
 <Say who="assistente">Come due vicini che si scambiano le bollette: non ti do i miei soldi, ci diciamo quanto deve pagare ciascuno.</Say>
 </Scene>
 
@@ -74,6 +83,15 @@ Luca fa lo swap: **paga il 3% fisso, riceve il variabile**, sul nozionale di 1.0
     "Variabile al 2%: prestito 3% = 30.000 euro. Swap: riceve 2% (20.000) e paga 3% (30.000): -10.000. Costo totale 40.000.",
     "In entrambi i casi il costo è 40.000, cioè 4%: fisso 3% più il 1% del prestito.",
     "Luca ha un costo certo. Ha perso la possibilità di pagare meno se i tassi scendono.",
+  ]}
+/>
+
+<Flow
+  caption="Il costo finale di Luca con lo swap."
+  steps={[
+    { icon: "file", title: "Prestito", text: "Variabile + 1%" },
+    { icon: "link", title: "Swap", text: "Riceve il variabile, paga 3%" },
+    { icon: "lock", title: "Costo finale", text: "3% + 1% = 4%, qualunque sia il variabile" },
   ]}
 />
 

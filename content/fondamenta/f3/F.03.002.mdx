@@ -96,6 +96,16 @@ Prendiamo `-rwxr-xr--`. Sono dieci caratteri: **uno** per il tipo, poi **tre gru
   ]}
 />
 
+<Flow
+  caption="La stringa -rwxr-xr-- tagliata in quattro: 1 + 3 + 3 + 3."
+  steps={[
+    { icon: "file", title: "Tipo", text: "- è un file normale" },
+    { icon: "user", title: "Proprietario", text: "rwx: tutto" },
+    { icon: "users", title: "Gruppo", text: "r-x: legge ed esegue" },
+    { icon: "globe", title: "Altri", text: "r--: solo legge" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Taglia la stringa così: **1 | 3 | 3 | 3**. Tipo, proprietario, gruppo, altri. Se non la tagli, la leggi male.
 </Callout>

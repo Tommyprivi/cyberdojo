@@ -74,6 +74,16 @@ La domanda del caso: **come si trasformano i dati direttamente dentro la query?*
 
 La candela cedro costa esattamente 18.00: non è `< 18`, quindi cade nell'`ELSE` e diventa premium.
 
+<Flow
+  caption="Come CASE WHEN classifica la candela cedro: si ferma al primo test vero."
+  steps={[
+    { icon: "coin", title: "Prezzo", text: "Candela cedro: 18.00" },
+    { icon: "cross", title: "Primo WHEN", text: "18 < 10? No" },
+    { icon: "cross", title: "Secondo WHEN", text: "18 < 18? No" },
+    { icon: "check", title: "ELSE", text: "Fascia: premium" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Senza `ELSE`, le righe che non soddisfano nessuna condizione ricevono **NULL**. E l'ordine conta: se scrivessi prima `WHEN prezzo < 18` e poi `WHEN prezzo < 10`, il secondo non scatterebbe mai (i prezzi sotto 10 sono già sotto 18).
 </Callout>

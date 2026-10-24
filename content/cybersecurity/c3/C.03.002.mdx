@@ -52,6 +52,12 @@ Se il servizio conserva le password **in chiaro** (così come le scrivi), chi ru
 
 Anche chi lavora nell'azienda le vedrebbe. Non c'è motivo che qualcuno debba saperle.
 
+<Compare
+  caption="Che cosa ha in mano il ladro che copia il database."
+  left={{ title: "Password in chiaro", points: ["Le legge subito, tutte", "Entra in ogni account"] }}
+  right={{ title: "Hash con salt", points: ["Deve provarle una per una", "Cadono prima le password deboli"] }}
+/>
+
 <Callout kind="regola">
 Il servizio **non ha bisogno di conoscere** la tua password. Deve solo poter controllare che quella che scrivi sia giusta.
 </Callout>
@@ -84,6 +90,15 @@ Problema: due utenti con la stessa password avrebbero lo stesso hash. Un attacca
 Il **salt** è un valore casuale, **diverso per ogni utente**, aggiunto alla password prima di calcolare l'hash. Il salt viene conservato accanto all'hash: non è un segreto.
 
 <Log lines={["utente=marta.r   salt=7f3a9c   hash=e19b…41", "utente=luca.b    salt=02d8e1   hash=a77c…09"]} caption="Stessa password per entrambi? Gli hash sono comunque diversi. Valori inventati, ridotti a scopo didattico." />
+
+<Flow
+  caption="Il controllo al login: la password vera non viene mai conservata."
+  steps={[
+    { icon: "user", title: "Scrivi", text: "Inserisci la password" },
+    { icon: "gear", title: "Salt e hash", text: "Si aggiunge il salt e si calcola l'hash" },
+    { icon: "check", title: "Confronto", text: "Uguale a quello salvato: entri" },
+  ]}
+/>
 
 Con il salt l'attaccante non può riusare lavoro già fatto: deve ricominciare **per ogni singolo utente**.
 

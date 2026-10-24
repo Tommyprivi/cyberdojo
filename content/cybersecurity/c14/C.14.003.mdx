@@ -73,6 +73,15 @@ A che cosa servono?
 - ad applicare **regole diverse** a gruppi diversi;
 - a **delegare**: dare a una persona il potere di gestire una sola OU, senza darle il dominio intero.
 
+<Layers
+  caption="Dall'insieme più grande al più piccolo."
+  items={[
+    { icon: "globe", title: "Foresta", text: "Uno o più domini con la stessa struttura" },
+    { icon: "server", title: "Dominio", text: "Il recinto con l'anagrafe e i controller di dominio" },
+    { icon: "folder", title: "OU", text: "Cartelle per raggruppare utenti e computer" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Delegare è minimo privilegio applicato: un responsabile del magazzino può reimpostare le password del suo reparto senza poter toccare i server.
 </Callout>
@@ -95,6 +104,16 @@ La GPO si **collega** a un sito, al dominio o a una OU. I computer la scaricano 
 <Callout kind="regola">
 Ordine di applicazione: **Locale, Sito, Dominio, OU**. L'ultima applicata, di solito, prevale (l'OU più vicina all'oggetto vince).
 </Callout>
+
+<Flow
+  caption="L'ordine di applicazione delle GPO."
+  steps={[
+    { icon: "laptop", title: "Locale", text: "Le impostazioni del computer" },
+    { icon: "globe", title: "Sito", text: "Poi la GPO del sito" },
+    { icon: "server", title: "Dominio", text: "Poi quella del dominio" },
+    { icon: "folder", title: "OU", text: "Per ultima: di solito prevale" },
+  ]}
+/>
 
 Vuoi vederlo fare da un'altra voce? Un video in italiano, solo i primi dieci minuti:
 

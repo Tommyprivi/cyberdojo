@@ -61,6 +61,16 @@ Per Tavola Bella:
 
 Come una catena di montaggio: se un posto si ferma, gli altri dopo non possono lavorare.
 
+<Flow
+  caption="Ogni passo riceve l'uscita del precedente."
+  steps={[
+    { icon: "database", title: "Estrai", text: "Ordini del giorno dal sito" },
+    { icon: "gear", title: "Trasforma", text: "Via duplicati, città corrette" },
+    { icon: "server", title: "Carica", text: "Risultato nel magazzino dati" },
+    { icon: "chart", title: "Report", text: "Tabella delle vendite" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Disegna sempre la pipeline su carta: scatole e frecce. Se non sai dire che cosa entra e che cosa esce da ogni scatola, non la stai ancora capendo.
 </Callout>
@@ -103,6 +113,12 @@ Ecco i due modi, in Python:
 ]} />
 
 Il secondo prima **toglie** il giorno e poi lo **riscrive**: si può rilanciare quante volte si vuole.
+
+<Compare
+  caption="Rilanciare il caricamento di sabato: due modi, due risultati."
+  left={{ title: "Aggiungi", points: ["Ogni esecuzione aggiunge righe", "Il rilancio le raddoppia", "Sabato: 240 euro invece di 120"] }}
+  right={{ title: "Sostituisci", points: ["Prima toglie il giorno, poi lo riscrive", "Si rilancia quante volte si vuole", "Sabato resta 120 euro"] }}
+/>
 
 Un'altra voce spiega perché è così importante:
 

@@ -83,6 +83,15 @@ Se provi a lanciare lo script direttamente, il sistema ti ferma: il file non ha 
   "Ciao dal laboratorio",
 ]} caption="Prima del chmod +x il sistema rifiuta; dopo, lo script parte." />
 
+<Flow
+  caption="Dal file di testo allo script che parte."
+  steps={[
+    { icon: "file", title: "Scrivi", text: "Shebang e comandi, con nano" },
+    { icon: "key", title: "chmod +x", text: "Dai il permesso di esecuzione" },
+    { icon: "terminal", title: "./script.sh", text: "Lo lanci dalla cartella" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Perché `./saluto.sh` e non solo `saluto.sh`? Perché la cartella corrente, per sicurezza, non è tra quelle in cui il sistema cerca i programmi. Con `./` dici tu dove si trova.
 </Callout>
@@ -116,7 +125,7 @@ Una **variabile** è una scatola con un nome che contiene un valore. Si assegna 
 {/* screen */}
 
 <Scene title="if e test">
-Con **`if`** lo script prende una decisione. Il controllo si scrive tra parentesi quadre, con **spazi dentro**:
+Con **`if`** lo script prende una decisione. Il controllo si scrive tra parentesi quadre, con **spazi dentro**.
 
 La forma è: `if [ test ]; then`, i comandi da eseguire, e `fi` per chiudere (è «if» scritto al contrario).
 

@@ -40,7 +40,7 @@ Luca ha la sua regola precisa: **segnale = 1 se oggi il prezzo è più alto di i
 
 Questo si chiama **backtest**: simulare una regola su dati storici.
 
-La domanda del caso: **come si fa un backtest con poche righe, e che cosa ci si può fidare di quello che dice?**
+La domanda del caso: **come si fa un backtest con poche righe, e di che cosa ci si può fidare tra ciò che dice?**
 
 <Say who="sensei">Un backtest è uno specchietto retrovisore. Ti dice dove sei passato. Non ti dice dove vai.</Say>
 
@@ -131,6 +131,16 @@ print(round(buy_and_hold, 4))
 <Callout kind="trucco">
 Una strategia che fa +5% quando «compra e tieni» farebbe +8% ha lavorato di più per ottenere meno. Confronta sempre.
 </Callout>
+
+<Flow
+  caption="I pezzi di un backtest, prima di montarli."
+  steps={[
+    { icon: "chart", title: "Prezzi", text: "Le chiusure del passato" },
+    { icon: "gear", title: "Rendimenti", text: "Con pct_change()" },
+    { icon: "bell", title: "Segnale", text: "1 o 0 ogni giorno" },
+    { icon: "check", title: "Riferimento", text: "Compra e tieni" },
+  ]}
+/>
 
 <Say who="sensei">Se non sai battere chi non fa niente, il tuo lavoro non vale. Il riferimento è la prima cosa che si calcola.</Say>
 </Scene>

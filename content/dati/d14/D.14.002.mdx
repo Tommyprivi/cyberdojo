@@ -66,6 +66,15 @@ Esempio fittizio: 400 GB divisi in 200 partizioni da circa 2 GB. Con 20 lavorato
 
 Ogni lavoratore calcola il totale per negozio **sul suo pezzo**. Poi un passo finale unisce i totali parziali.
 
+<Flow
+  caption="Spark divide, calcola in parallelo e riunisce."
+  steps={[
+    { icon: "database", title: "Dividi", text: "400 GB in 200 partizioni" },
+    { icon: "server", title: "Calcola", text: "20 lavoratori in parallelo" },
+    { icon: "check", title: "Riunisci", text: "Si sommano i totali parziali" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Partizioni piccole e numerose si distribuiscono bene. Ma troppe partizioni minuscole creano burocrazia: l'equilibrio si trova misurando.
 </Callout>
@@ -85,6 +94,16 @@ Spark è **pigro**: quando gli dai un ordine di tipo «filtra» o «raggruppa»,
 Quando chiedi un risultato (mostrare, contare, salvare), allora parte. Le prime istruzioni si chiamano **trasformazioni**, le seconde **azioni**.
 
 <Log lines={["df = spark.read.csv('vendite/', header=True, inferSchema=True)", "grandi = df.filter(df.importo > 100)", "totali = grandi.groupBy('negozio').sum('importo')", "totali.show()"]} caption="Le prime tre righe preparano il piano. Solo show() fa partire il lavoro. Esempio didattico, non serve un account per leggerlo." />
+
+<Flow
+  caption="Il calcolo parte solo quando chiedi un risultato."
+  steps={[
+    { icon: "book", title: "Trasformazioni", text: "filter, groupBy: solo il piano" },
+    { icon: "bolt", title: "Azione", text: "show(), count(), scrittura" },
+    { icon: "gear", title: "Calcolo", text: "Spark esegue il piano" },
+    { icon: "check", title: "Risultato", text: "Mostrato o salvato" },
+  ]}
+/>
 
 Perché essere pigri? Perché guardando tutto il piano, Spark può ottimizzarlo: per esempio filtrare **prima**, così gli altri passaggi lavorano su meno dati.
 

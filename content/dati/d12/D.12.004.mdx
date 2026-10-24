@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Il foglio inviato per email">
-Giulia, analista in una società di assicurazioni fittizia, deve mandare a un fornitore un foglio per un controllo. Per comodità invia il file completo: nome, indirizzo, IBAN e data di nascita dei clienti. Ha nascosto due colonne, pensando di averle protette.
+Giulia, analista in una società di assicurazioni fittizia, deve mandare a un fornitore un foglio per un controllo. Per comodità invia il file completo: nome, indirizzo, IBAN, data di nascita e codice fiscale dei clienti. Ha nascosto due colonne, pensando di averle protette.
 
 Il fornitore le risponde dopo un'ora: «Ho visto che c'erano delle colonne nascoste, le ho mostrate: c'erano i codici fiscali».
 
@@ -53,6 +53,15 @@ Il primo principio è il **minimo privilegio**: ciascuno accede solo ai dati che
 Quando una persona cambia ruolo o lascia l'organizzazione, gli accessi si tolgono subito.
 
 Poi le **copie**: ogni copia in più (nella cartella Download, su una chiavetta, in un file «prova») è un posto in più dove i dati possono perdersi. Meglio lavorare sui dati dove stanno, e dove serve una copia, saperne il motivo e cancellarla alla fine.
+
+<Layers
+  caption="Regola 3-2-1 per i backup."
+  items={[
+    { icon: "file", title: "3 copie", text: "Dei dati" },
+    { icon: "database", title: "2 supporti", text: "Diversi tra loro" },
+    { icon: "cloud", title: "1 fuori sede", text: "Lontana dall'originale" },
+  ]}
+/>
 
 Vuoi sentire parlare dei backup da un'altra voce? Meno di cinque minuti:
 
@@ -74,6 +83,15 @@ Backup, regola 3-2-1: 3 copie dei dati, su 2 supporti diversi, 1 copia fuori sed
 - **In transito**: collegamenti protetti (HTTPS e simili), per i dati che viaggiano in rete.
 
 Per inviare un file con dati personali a qualcuno fuori dall'organizzazione, una buona abitudine è un archivio cifrato con una password robusta, comunicata **su un altro canale** (per esempio per telefono). Se la password sta nella stessa email, è come attaccare la chiave alla porta.
+
+<Flow
+  caption="Il file e la password viaggiano su strade diverse."
+  steps={[
+    { icon: "lock", title: "Archivio cifrato", text: "Con password robusta" },
+    { icon: "mail", title: "Invio", text: "Il file va per email" },
+    { icon: "phone", title: "Password", text: "Comunicata per telefono" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 La cifratura protegge da certi rischi (perdita, intercettazione), non da tutti: chi ha la chiave e l'accesso vede i dati. Per questo servono anche gli accessi minimi.

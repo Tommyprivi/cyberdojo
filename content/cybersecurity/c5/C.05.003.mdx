@@ -83,6 +83,15 @@ Immagina un'app che stampa un saluto, costruendo il comando così:
 
 Nel primo caso tutto va come previsto. Nel secondo il testo dell'utente contiene **un'istruzione in più**, e il programma la esegue perché è finita nello stesso comando.
 
+<Flow
+  caption="Come un dato diventa comando."
+  steps={[
+    { icon: "user", title: "Dato", text: "«Anna e poi cancella la lista»" },
+    { icon: "code", title: "Incollato", text: "Finisce dentro lo stesso comando" },
+    { icon: "bolt", title: "Eseguito", text: "Il programma fa due azioni" },
+  ]}
+/>
+
 Succede con interpreti diversi: la riga di comando del sistema, i linguaggi di interrogazione dei database, i modelli di pagina, i filtri di ricerca di una directory.
 
 <Callout kind="curiosita">
@@ -100,6 +109,12 @@ Come si risolve? Tenendo **separati** comando e dato.
 - **Interrogazioni parametrizzate** (o «preparate»): il comando è scritto una volta, con dei segnaposto; i dati si passano a parte e vengono sempre trattati come dati.
 - **Validare l'input**: accettare solo ciò che ha senso (un nome non ha bisogno di simboli speciali, un numero deve essere un numero).
 - **Minimo privilegio**: l'account che esegue il comando deve poter fare poco, così anche un errore fa pochi danni.
+
+<Compare
+  caption="Incollare il dato o tenerlo separato."
+  left={{ title: "Dato incollato", points: ["Il testo altrui diventa parte del comando", "Può far eseguire azioni in più"] }}
+  right={{ title: "Query parametrizzata", points: ["Il comando ha un segnaposto", "I dati restano sempre dati"] }}
+/>
 
 <Callout kind="attenzione">
 Cancellare a mano alcune parole «pericolose» dal testo **non funziona**: c'è sempre un modo di scriverle diversamente. La difesa solida è la separazione, non la lista nera.

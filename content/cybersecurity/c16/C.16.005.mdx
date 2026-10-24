@@ -36,11 +36,21 @@ commands: []
 ---
 
 <Scene title="L'ordine numero 5521">
-**Tavola Bella** ha una API per l'app dei clienti. Marta consulta il suo ordine: la richiesta è `GET /ordini/5521`. Il giorno dopo il suo ordine è il 5530. Per curiosità, un tecnico del supporto in un laboratorio di prova chiede `GET /ordini/5522` con la sessione di Marta e riceve **l'ordine di un altro cliente**, con nome e indirizzo.
+**Tavola Bella** ha una API per l'app dei clienti. Marta consulta il suo ordine: la richiesta è `GET /ordini/5521`. Per curiosità, un tecnico del supporto, in un laboratorio di prova, cambia il numero e chiede `GET /ordini/5522` con la sessione di Marta e riceve **l'ordine di un altro cliente**, con nome e indirizzo.
 
 La sessione era valida e Marta era autenticata. Eppure l'API ha mostrato dati non suoi.
 
 La domanda del caso: **quale controllo manca, e quali altri errori simili conosce la sicurezza delle API?**
+
+<Flow
+  caption="Il caso dell'ordine 5522."
+  steps={[
+    { icon: "user", title: "Ordine 5521", text: "Marta lo apre: tutto regolare" },
+    { icon: "search", title: "Un altro numero", text: "GET /ordini/5522, con la sessione di Marta" },
+    { icon: "warning", title: "Nessun controllo", text: "L'API non chiede di chi sia l'ordine" },
+    { icon: "folder", title: "Dati altrui", text: "Nome e indirizzo di un altro cliente" },
+  ]}
+/>
 
 <Say who="sensei">Sapere chi sei non basta. Bisogna chiedersi se quella cosa è tua. È l'errore più frequente nelle API.</Say>
 </Scene>
@@ -68,6 +78,15 @@ Il primo gruppo riguarda chi può vedere o fare che cosa:
 - **API2 – Broken Authentication**: login, token e recupero password fatti male (nessun limite ai tentativi, token deboli, scadenze assenti). Si lega alle lezioni 1-3.
 - **API3 – Broken Object Property Level Authorization**: l'utente può vedere o cambiare **campi** che non dovrebbe, per esempio il campo `ruolo` o `sconto` dentro il suo profilo. **Difesa**: elenco esplicito dei campi leggibili e modificabili, mai «restituisci tutto l'oggetto».
 - **API5 – Broken Function Level Authorization**: un utente comune può chiamare una funzione da amministratore (per esempio `DELETE /utenti/12`). **Difesa**: permessi controllati per ogni funzione, con rifiuto di default.
+
+<Layers
+  caption="Tre livelli di controllo, a ogni richiesta."
+  items={[
+    { icon: "folder", title: "Oggetto", text: "BOLA: quell'ordine è dell'utente?" },
+    { icon: "file", title: "Campo", text: "Può vedere o cambiare questo campo?" },
+    { icon: "gear", title: "Funzione", text: "Può chiamare questa azione, per esempio DELETE?" },
+  ]}
+/>
 
 <Log lines={[
   "Esempio descritto (fittizio), controllo mancante a livello di funzione:",

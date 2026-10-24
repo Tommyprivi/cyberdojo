@@ -72,6 +72,15 @@ Name: importo, dtype: float64
 
 Controlliamo a mano. Roma ha tre ordini: 40 + 40 + 30 = 110, e la media è 110 / 3, cioè 36,67. Milano: 20 + 30 = 50, media 25. Torino: un solo ordine da 20. Il totale generale è 180: 50 + 110 + 20.
 
+<Flow
+  caption="Dividere, calcolare, riunire: la somma degli importi per città."
+  steps={[
+    { icon: "folder", title: "Dividi", text: "Tre gruppi: Milano, Roma, Torino" },
+    { icon: "gear", title: "Calcola", text: "Somma degli importi in ogni gruppo" },
+    { icon: "chart", title: "Riunisci", text: "Una tabellina: 50, 110, 20" },
+  ]}
+/>
+
 I gruppi escono in **ordine alfabetico**. E il nome del raggruppamento (`citta`) diventa l'**indice** del risultato.
 
 <Callout kind="attenzione">

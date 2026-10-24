@@ -55,6 +55,16 @@ La domanda del caso: **come fanno i servizi a fidarsi di Sara, senza che la pass
 3. Quando vuole usare un servizio, presenta il TGT e riceve un **ticket di servizio**: il biglietto per quella giostra.
 4. Presenta il ticket di servizio al servizio, che si fida perché il ticket è cifrato con una chiave che solo lui e il KDC conoscono.
 
+<Flow
+  caption="Kerberos: la password serve solo all'inizio."
+  steps={[
+    { icon: "user", title: "Accesso", text: "Sara dimostra chi è al KDC" },
+    { icon: "key", title: "TGT", text: "Il biglietto d'ingresso" },
+    { icon: "file", title: "Ticket di servizio", text: "Il biglietto per quella giostra" },
+    { icon: "server", title: "Il servizio", text: "Si fida: il ticket è cifrato con la sua chiave" },
+  ]}
+/>
+
 <Callout kind="regola">
 La password serve solo all'inizio. Poi viaggiano **ticket cifrati**, con una scadenza (di solito poche ore).
 </Callout>
@@ -94,6 +104,12 @@ Perché lo si limita?
 - non autentica il server allo stesso modo di Kerberos;
 - le prove di identità (gli hash) si possono **riutilizzare** più facilmente da chi riesce a rubarle;
 - è meno ricco di dettagli per chi cerca le tracce nei log.
+
+<Compare
+  caption="Due protocolli, due livelli di fiducia."
+  left={{ title: "NTLM", points: ["Sfida e risposta con l'hash della password", "L'hash, se rubato, si riutilizza più facilmente", "Non autentica il server allo stesso modo", "Lascia meno dettagli nei log"] }}
+  right={{ title: "Kerberos", points: ["Ticket cifrati, con una scadenza", "La password serve solo all'inizio", "Il servizio si fida del ticket emesso dal KDC"] }}
+/>
 
 <Callout kind="trucco">
 Per sapere se NTLM è usato davvero nella tua rete, **attiva il controllo** (audit) e guarda chi lo usa. Poi limitalo un pezzo alla volta, senza spegnere tutto in un colpo.

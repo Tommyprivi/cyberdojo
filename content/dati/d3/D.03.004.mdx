@@ -136,6 +136,17 @@ Sono due filtri diversi, e si applicano in momenti diversi:
 
 L'ordine in cui il database lavora è: `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, `LIMIT`.
 
+<Flow
+  caption="L'ordine in cui il database lavora: WHERE viene prima dei gruppi, HAVING dopo."
+  steps={[
+    { icon: "database", title: "FROM", text: "Prende la tabella" },
+    { icon: "search", title: "WHERE", text: "Filtra le righe" },
+    { icon: "folder", title: "GROUP BY", text: "Forma i gruppi" },
+    { icon: "check", title: "HAVING", text: "Filtra i gruppi" },
+    { icon: "file", title: "Il resto", text: "SELECT, ORDER BY, LIMIT" },
+  ]}
+/>
+
 <Log lines={[
   "SELECT cliente_id, SUM(totale) AS spesa",
   "FROM ordini",

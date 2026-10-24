@@ -63,8 +63,18 @@ Il conto di Nora, per ordine:
 ]} />
 
 <Callout kind="regola">
-Slippage in euro = (prezzo eseguito − prezzo atteso) × quantità. Sull'acquisto è un costo se il prezzo eseguito è più alto, sulla vendita se è più basso.
+Slippage in euro = differenza tra prezzo eseguito e prezzo atteso × quantità. È un costo quando in acquisto paghi di più del previsto, o quando in vendita incassi meno del previsto.
 </Callout>
+
+<Flow
+  caption="Tra l'ordine e l'esecuzione il prezzo si muove."
+  steps={[
+    { icon: "eye", title: "Prezzo visto", text: "Sullo schermo: 50,00" },
+    { icon: "clock", title: "Ordine in viaggio", text: "Il prezzo si muove" },
+    { icon: "coin", title: "Prezzo eseguito", text: "Pagato: 50,20" },
+    { icon: "warning", title: "Slippage", text: "40 euro su 200 azioni" },
+  ]}
+/>
 
 <Say who="assistente">Quaranta euro su 10.000 sono lo 0,4%. Sembra poco, ma ricordati che si paga a ogni ordine.</Say>
 </Scene>
@@ -105,7 +115,7 @@ Nessuna delle due è «la migliore»: con il mercato paghi il prezzo, con il lim
 {/* screen */}
 
 <Scene title="Slippage nel codice">
-Nel backtest lo slippage si inserisce come costo. Prova a cambiare i numeri e a rieseguire:
+Nel backtest lo slippage si inserisce come costo. Qui il caso è un acquisto. Prova a cambiare i numeri e a rieseguire:
 
 <PythonTerminal code={"prezzo_atteso = 50.00\nprezzo_eseguito = 50.20\nquantita = 200\nslippage = (prezzo_eseguito - prezzo_atteso) * quantita\nprint(round(slippage, 2))"} />
 

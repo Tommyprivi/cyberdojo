@@ -29,7 +29,7 @@ status: published
 approved: true
 human_reviewed: false
 known_pitfalls:
-  - "Spegnere tutto di colpa, perdendo prove e capacità di capire come l'intruso è entrato"
+  - "Spegnere tutto in preda al panico, perdendo prove e capacità di capire come l'intruso è entrato"
   - "Ripristinare dal backup senza prima chiudere la porta da cui l'intruso è entrato"
   - "Pensare che con il backup il problema sia finito: i dati rubati restano un incidente di violazione"
 commands: []
@@ -101,6 +101,16 @@ Non si riaccende tutto insieme. Si decide un **ordine**, di solito per **importa
 | 4 | Archivi storici e posta vecchia | Non bloccano l'attività |
 
 Ogni sistema ricostruito parte **da un'immagine pulita**, aggiornato, con il monitoraggio rafforzato (C.09.006). I dati si ripristinano dopo, e si **controllano**.
+
+<Flow
+  caption="Il ripristino a ondate: prima ciò che serve per lavorare."
+  steps={[
+    { icon: "key", title: "Identità e rete", text: "Con credenziali nuove" },
+    { icon: "server", title: "Ordini", text: "Si fattura e si spedisce" },
+    { icon: "file", title: "Documenti", text: "Il lavoro urgente riparte" },
+    { icon: "folder", title: "Archivi storici", text: "Non bloccano l'attività" },
+  ]}
+/>
 
 Vuoi vedere come questo si vive in un'azienda? Pochi minuti, in italiano:
 

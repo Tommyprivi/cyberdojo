@@ -93,6 +93,16 @@ Si **monitora** il modello come un impianto: si confrontano i dati nuovi con que
 
 Esempio: all'avvio 90 per cento. Dopo tre mesi, su 200 casi con risposta nota, 156 previsioni giuste: 156 / 200 = **0,78**. La soglia di allarme è 0,85: scatta l'allarme e si **riaddestra**.
 
+<Flow
+  caption="Il monitoraggio fa scattare l'allarme prima del danno."
+  steps={[
+    { icon: "check", title: "Avvio", text: "Accuratezza 0,90" },
+    { icon: "chart", title: "Dopo 3 mesi", text: "156 giuste su 200: 0,78" },
+    { icon: "bell", title: "Allarme", text: "Sotto la soglia di 0,85" },
+    { icon: "gear", title: "Riaddestro", text: "Con dati recenti" },
+  ]}
+/>
+
 <Say who="assistente">Come la spia dell'olio: non spegne la macchina, ti avvisa prima che si fermi.</Say>
 </Scene>
 

@@ -94,11 +94,17 @@ Correlare non è dimostrare. Due eventi vicini nel tempo possono non avere nient
 {/* screen */}
 
 <Scene title="Il problema dei fusi orari">
-Uno degli errori più comuni: mettere in fila orari che non sono nello stesso fuso.
+Uno degli errori più comuni: mettere in fila orari che non sono nello stesso fuso. Nel caso di prima gli orari erano già allineati; ecco che cosa succede quando non lo sono.
 
 Molti sistemi (server, cloud, firewall) registrano in **UTC**, il tempo universale di riferimento. Un portatile italiano registra l'ora locale: UTC+1 in inverno, UTC+2 in estate.
 
 <Log lines={["server (UTC)       13:03  login utente=mbianchi", "portatile (Italia) 14:09  copia listini.zip", "In inverno: 14:09 italiane = 13:09 UTC"]} caption="Senza conversione sembra passata più di un'ora tra login e copia. In realtà sono sei minuti." />
+
+<Compare
+  caption="Lo stesso caso, con e senza conversione dei fusi."
+  left={{ title: "Orari misti", points: ["Server in UTC, portatile in ora italiana", "Sembra passata più di un'ora"] }}
+  right={{ title: "Tutto in UTC", points: ["13:03 e 13:09 sulla stessa scala", "Sono sei minuti: sequenza stretta"] }}
+/>
 
 <Callout kind="trucco">
 Regola d'oro: porta **tutto in UTC** prima di mettere in fila. Poi, se serve, riconverti al fuso di chi leggerà il rapporto.

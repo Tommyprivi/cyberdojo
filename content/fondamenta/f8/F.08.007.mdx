@@ -116,13 +116,22 @@ Torniamo alla segnalazione. L'ordine giusto è dal vicino al lontano. Ogni passo
 Se `ping 8.8.8.8` funziona e `ping www.esempio.it` no, la rete va bene: è il **DNS** che non traduce i nomi. Non toccare cavi e router.
 </Callout>
 
+<Flow
+  caption="Dal vicino al lontano: tre ping, tre domande."
+  steps={[
+    { icon: "laptop", title: "Gateway", text: "Il tratto locale funziona?" },
+    { icon: "globe", title: "8.8.8.8", text: "Si esce dalla rete?" },
+    { icon: "search", title: "Un nome", text: "Il DNS risolve?" },
+  ]}
+/>
+
 <Say who="sensei">Un ping è una domanda: «ci sei?». Tre ping a distanze diverse ti dicono dove la risposta si perde.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="Gli altri tre strumenti">
-- **traceroute** (su Windows `tracert`): mostra i **router attraversati**, uno per riga, fino alla destinazione. Se dopo il quarto salto ci sono solo asterischi, sai dove cercare. Ma un router può essere configurato per non rispondere: un asterisco non è sempre un guasto.
+- **traceroute** (su Windows `tracert`): mostra i **router attraversati**, uno per riga, fino alla destinazione. Se dal quarto salto in poi ci sono solo asterischi, sai dove cercare. Ma un router può essere configurato per non rispondere: un asterisco non è sempre un guasto.
 - **nslookup** nome: chiede al **DNS** l'indirizzo associato a un nome, e dice quale server DNS ha risposto.
 - **ss -tuln** (su Linux): elenca le **porte TCP e UDP su cui il computer è in ascolto**. Utile per sapere se un servizio è attivo, e per accorgersi di porte aperte che non ti aspetti.
 

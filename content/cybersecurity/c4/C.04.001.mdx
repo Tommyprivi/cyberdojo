@@ -59,6 +59,15 @@ Le decisioni possibili sono due:
 - **allow** (permetti): il pacchetto passa;
 - **deny** (nega): il pacchetto viene scartato.
 
+<Flow
+  caption="Il firewall legge l'etichetta del pacchetto e applica le regole."
+  steps={[
+    { icon: "mail", title: "Pacchetto", text: "Origine, destinazione, porta" },
+    { icon: "shield", title: "Firewall", text: "Scorre la tabella delle regole" },
+    { icon: "check", title: "Decisione", text: "Allow: passa. Deny: scartato" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Il firewall non «capisce» di che cosa si parla. Guarda l'etichetta del pacco (indirizzi, porta), non il contenuto. Per questo è veloce, ma da solo non basta.
 </Callout>
@@ -90,6 +99,12 @@ La riga 4 è la **regola di chiusura**. Quello che nessuna regola sopra ha perme
 Questa idea si chiama **default deny**: *di base si nega, si permette solo ciò che serve*. È il contrario del «default allow», dove di base passa tutto e si vieta solo ciò che si conosce come pericoloso.
 
 Perché è meglio il default deny? Perché le minacce nuove non hanno ancora un nome. Con il default deny una porta che nessuno ha mai pensato di aprire resta chiusa. Con il default allow resta aperta, finché qualcuno non se ne accorge.
+
+<Compare
+  caption="Che cosa succede a una porta che nessuno ha mai pensato di aprire."
+  left={{ title: "Default allow", points: ["Passa tutto, si vieta solo il pericolo noto", "La porta dimenticata resta aperta"] }}
+  right={{ title: "Default deny", points: ["Tutto vietato, tranne ciò che serve", "La porta dimenticata resta chiusa"] }}
+/>
 
 <Callout kind="regola">
 **Default deny**: tutto è vietato, tranne ciò che è permesso in modo esplicito e con un motivo.

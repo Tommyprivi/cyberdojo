@@ -77,6 +77,15 @@ Poi decidi quali righe tenere. I tipi di unione (`how`):
 
 Una riga che non trova la sua coppia si chiama **orfana**. Nel nostro caso l'ordine 13 è orfano.
 
+<Layers
+  caption="Tre tipi di unione, dal più selettivo al più ampio."
+  items={[
+    { icon: "key", title: "inner", text: "Solo le righe con coppia in entrambe" },
+    { icon: "database", title: "left", text: "Tutte quelle di sinistra, anche senza coppia" },
+    { icon: "globe", title: "outer", text: "Tutte le righe di entrambe le tabelle" },
+  ]}
+/>
+
 <Callout kind="regola">
 Parti dalla tabella che vuoi **mantenere intera** e mettila a sinistra con `how='left'`. Se non sai perché useresti inner, non usarla.
 </Callout>
@@ -155,6 +164,15 @@ Per proteggerti usa **validate**: se la regola non è rispettata, pandas si ferm
 ]} caption="Se in clienti la chiave si ripetesse, pandas solleverebbe un MergeError invece di moltiplicare le righe." />
 
 E un controllo semplice, sempre: **conta le righe prima e dopo**. Con una unione left da molti a uno, le righe dopo devono essere uguali alle righe della tabella di sinistra.
+
+<Flow
+  caption="Tre controlli di poche righe evitano di perdere dati in silenzio."
+  steps={[
+    { icon: "clock", title: "Conta", text: "Righe prima e dopo" },
+    { icon: "search", title: "Orfani", text: "indicator=True" },
+    { icon: "shield", title: "Valida", text: "validate=many_to_one" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Tre controlli in fila: righe prima e dopo, orfani con `indicator=True`, `validate` nella chiamata. Costano tre righe di codice.

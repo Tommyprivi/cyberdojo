@@ -93,6 +93,17 @@ Ordina i reparti dal più grande al più piccolo. Poi, per ognuno, scrivi dove c
   ]}
 />
 
+<Layers
+  caption="Il piano della filiale: dal blocco più grande al più piccolo."
+  items={[
+    { icon: "chart", title: "Contabilità /26", text: "192.168.20.0 - .63 (64 indirizzi)" },
+    { icon: "folder", title: "Magazzino /27", text: ".64 - .95 (32 indirizzi)" },
+    { icon: "users", title: "Direzione /28", text: ".96 - .111 (16 indirizzi)" },
+    { icon: "link", title: "Collegamento /30", text: ".112 - .115 (4 indirizzi)" },
+    { icon: "check", title: "Liberi", text: ".116 - .255 (140 indirizzi)" },
+  ]}
+/>
+
 <Say who="assistente">Ogni blocco comincia dove finisce il precedente. Se l'inizio non è un multiplo della dimensione, hai sbagliato un passaggio.</Say>
 </Scene>
 

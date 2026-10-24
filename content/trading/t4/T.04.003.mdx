@@ -95,13 +95,19 @@ volatilità del portafoglio = σ × √((1 + ρ) / 2)
 Con σ = 20%: ρ = +1 dà 20% (nessun vantaggio); ρ = +0,5 dà circa 17,3%; ρ = 0 dà circa 14,1%; ρ = −1 dà 0%.
 </Callout>
 
+<Compare
+  caption="Con σ = 20%, la correlazione cambia il rischio del portafoglio 50/50."
+  left={{ title: "Correlazione +1", points: ["I titoli si muovono sempre insieme", "Il portafoglio ha volatilità 20%", "Nessun vantaggio"] }}
+  right={{ title: "Correlazione −1", points: ["I titoli si muovono sempre in verso opposto", "Il portafoglio ha volatilità 0%", "I movimenti si annullano"] }}
+/>
+
 <Say who="sensei">Meno sono correlati, più il portafoglio è calmo. Questo è tutto il segreto della diversificazione. Non è magia, è aritmetica.</Say>
 </Scene>
 
 {/* screen */}
 
 <Scene title="I limiti">
-Nella realtà il −1 non si trova. Titoli diversi hanno correlazioni tra 0 e +0,9. E c'è di peggio.
+Nella realtà il −1 non si trova. Titoli diversi hanno di solito correlazioni tra 0 e +0,9. E c'è di peggio.
 
 <Callout kind="attenzione">
 **Nelle crisi le correlazioni salgono.** Quando il panico colpisce, molti titoli scendono insieme: la diversificazione che sembrava solida si riduce proprio quando serve di più.

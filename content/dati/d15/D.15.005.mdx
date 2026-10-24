@@ -79,6 +79,15 @@ Il totale è 150. Con la regola «il responsabile vede solo il suo negozio»:
 - responsabile di Roma: **20**;
 - la direzione, senza regola: **150**.
 
+<Flow
+  caption="Stesso report, righe diverse: il filtro sta nei dati."
+  steps={[
+    { icon: "database", title: "Tutte le righe", text: "Totale 150" },
+    { icon: "lock", title: "Regola per riga", text: "Solo il negozio dell'utente" },
+    { icon: "eye", title: "Ciò che vede", text: "Milano 70, Torino 60, Roma 20" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 I permessi si mettono sui **dati**, non sul disegno della pagina. In Power BI, per esempio, la regola per riga vale per chi **guarda** il report, mentre chi ha diritto di modifica sull'area di lavoro può non esserne limitato: si controlla chi ha quali diritti.
 </Callout>
@@ -113,6 +122,16 @@ Spesso il modo più sicuro di proteggere una colonna è **non caricarla affatto*
 
 <Scene title="Ciclo di vita e duplicati">
 Un report ha una vita: **nasce** (richiesta e proprietario), **vive** (usato e aggiornato), **si rivede** (ogni tanto si controlla se serve ancora) e **si ritira** (archiviato, poi eliminato).
+
+<Flow
+  caption="Il ciclo di vita di un report."
+  steps={[
+    { icon: "file", title: "Nasce", text: "Richiesta e proprietario" },
+    { icon: "bolt", title: "Vive", text: "Usato e aggiornato" },
+    { icon: "search", title: "Si rivede", text: "Serve ancora?" },
+    { icon: "folder", title: "Si ritira", text: "Archiviato, poi eliminato" },
+  ]}
+/>
 
 Il controllo periodico guarda l'uso. Esempio con i 48 report di Bottega Rossi:
 

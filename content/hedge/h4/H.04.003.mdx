@@ -57,6 +57,15 @@ Dati fittizi: **10 milioni di azioni** a **15 euro**; utile netto **15 milioni**
   ]}
 />
 
+<Flow
+  caption="Dal prezzo al P/E di Officine Lumi."
+  steps={[
+    { icon: "coin", title: "Capitalizzazione", text: "15 euro x 10 milioni = 150 milioni" },
+    { icon: "chart", title: "Utile per azione", text: "15 / 10 = 1,5 euro" },
+    { icon: "search", title: "P/E", text: "15 / 1,5 = 10" },
+  ]}
+/>
+
 <Say who="assistente">Un indizio: se il prezzo raddoppia e l'utile no, il P/E raddoppia.</Say>
 </Scene>
 
@@ -68,6 +77,16 @@ La capitalizzazione ignora i debiti. Chi comprasse l'intera azienda dovrebbe pre
 **EV = capitalizzazione + debiti finanziari - cassa = 150 + 60 - 10 = 200.**
 
 Con l'EBITDA di 40: **EV/EBITDA = 200 / 40 = 5**.
+
+<Flow
+  caption="Come si costruisce l'enterprise value, in milioni di euro."
+  steps={[
+    { icon: "coin", title: "Capitalizzazione", text: "150" },
+    { icon: "warning", title: "Più i debiti", text: "+60" },
+    { icon: "lock", title: "Meno la cassa", text: "-10" },
+    { icon: "check", title: "EV", text: "200" },
+  ]}
+/>
 
 <Callout kind="regola">
 L'**EV/EBITDA** confronta meglio aziende con debiti diversi del P/E, perché guarda tutta l'azienda, non solo la parte dei soci.

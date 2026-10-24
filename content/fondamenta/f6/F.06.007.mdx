@@ -85,6 +85,16 @@ E se **più righe** corrispondono allo stesso indirizzo? Prendi questa tabella:
   ]}
 />
 
+<Flow
+  caption="Il router sceglie la riga con il prefisso più lungo."
+  steps={[
+    { icon: "mail", title: "Pacchetto", text: "Destinazione 10.1.5.9" },
+    { icon: "search", title: "Righe valide", text: "Corrispondono /8, /16 e /24" },
+    { icon: "check", title: "Vince la /24", text: "Prefisso più lungo, più specifica" },
+    { icon: "link", title: "Esce", text: "Verso R3, il prossimo salto" },
+  ]}
+/>
+
 <Say who="sensei">Chi indica una via precisa batte chi indica un quartiere. Il più preciso comanda.</Say>
 </Scene>
 
@@ -103,7 +113,7 @@ Vuoi vedere le tabelle spiegate da un'altra voce, con esempi disegnati?
 
 <Video />
 
-<Say who="assistente">Default significa «tutto il resto». Sta in fondo non per l'ordine della tabella, ma per il suo prefisso: lo zero.</Say>
+<Say who="assistente">Default significa «tutto il resto». Perde sempre non per la posizione nella tabella, ma per il suo prefisso: lo zero.</Say>
 </Scene>
 
 {/* screen */}

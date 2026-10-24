@@ -95,6 +95,12 @@ I privilegi non sostituiscono le query parametrizzate: sono un **secondo muro**.
 
 Immagina che la vulnerabilità esista e qualcuno riesca a far eseguire una query. Con l'utente `sito_negozio` non può cancellare la tabella dei prodotti (manca il permesso) e non può leggere i dati di un altro progetto sullo stesso server.
 
+<Compare
+  caption="Se il sito viene compromesso, l'attaccante eredita i suoi permessi."
+  left={{ title: "Utente root", points: ["Legge e cancella tutto", "Può creare altri utenti", "Vede anche gli altri database"] }}
+  right={{ title: "Utente sito_negozio", points: ["Solo le tabelle che servono al sito", "Niente DROP né DELETE", "Nessun accesso ad altri database"] }}
+/>
+
 <Callout kind="attenzione">
 Meno privilegi non vuol dire nessun danno. Se l'utente può leggere i clienti, una falla può ancora farli leggere. Per questo i permessi vanno stretti tabella per tabella, non solo «tolti i più pericolosi».
 </Callout>

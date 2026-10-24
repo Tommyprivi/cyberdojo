@@ -55,6 +55,16 @@ Wireshark ha **due tipi di filtro**, con due sintassi diverse.
 Cattura: scarti per sempre. Visualizzazione: nascondi e puoi tornare indietro. Nel dubbio, **cattura largo, filtra dopo**.
 </Callout>
 
+<Flow
+  caption="Due filtri in due momenti diversi."
+  steps={[
+    { icon: "wifi", title: "La rete", text: "Passano tutti i pacchetti" },
+    { icon: "gear", title: "Filtro di cattura", text: "Ciò che scarti è perso per sempre" },
+    { icon: "file", title: "File salvato", text: "Contiene solo ciò che è passato" },
+    { icon: "eye", title: "Visualizzazione", text: "Nasconde senza cancellare: si può tornare indietro" },
+  ]}
+/>
+
 Il filtro di cattura serve solo quando la cattura sarebbe enorme, o quando ci sono dati che **non devi avere** (per la privacy è un buon motivo per catturare meno).
 
 <Say who="assistente">Se non sei sicuro di che cosa ti servirà, non buttare niente. Filtrare dopo costa solo un clic.</Say>

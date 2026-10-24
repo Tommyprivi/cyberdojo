@@ -124,6 +124,15 @@ In `falliti.txt` ci sono le due righe di `root` e `admin`. Rileggi il programma:
 Due blocchi `with` separati: prima si legge e si chiude, poi si scrive. Così non rischi di leggere e scrivere sullo stesso file nello stesso momento.
 </Callout>
 
+<Flow
+  caption="Leggi, filtra, scrivi."
+  steps={[
+    { icon: "file", title: "accessi.log", text: "Quattro righe in ingresso" },
+    { icon: "search", title: "Filtra", text: "Tiene le righe con FAILED" },
+    { icon: "file", title: "falliti.txt", text: "Le due righe salvate" },
+  ]}
+/>
+
 <Say who="sensei">Leggi, filtra, scrivi. Questo è lo scheletro di mezzo lavoro di un analista. Imparalo bene.</Say>
 </Scene>
 

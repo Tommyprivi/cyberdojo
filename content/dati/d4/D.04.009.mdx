@@ -109,12 +109,21 @@ Se nel testo ci sono lettere accentate che Excel mostra male, aggiungi `encoding
 {/* screen */}
 
 <Scene title="Dove finisce il file?">
-`to_csv("riepilogo.csv")` scrive nella **cartella di lavoro**, la stessa dove `read_csv` cerca i file: lo hai visto due lezioni fa. E **sovrascrive** senza chiedere: se esiste già un `riepilogo.csv`, il vecchio è perso.
+`to_csv("riepilogo.csv")` scrive nella **cartella di lavoro**, la stessa dove `read_csv` cerca i file: lo hai visto nella lezione sui file. E **sovrascrive** senza chiedere: se esiste già un `riepilogo.csv`, il vecchio è perso.
 
 In **Google Colab** c'è un'avvertenza in più. Il computer di Colab è temporaneo: quando chiudi il notebook o la sessione scade, **i file creati lì spariscono**. Dopo `to_csv` bisogna:
 
 - scaricare il file dal pannello dei file a sinistra (con i tre puntini accanto al nome), oppure
 - collegare Google Drive e salvare il file lì.
+
+<Flow
+  caption="In Colab il file creato è temporaneo: mettilo al sicuro prima di chiudere."
+  steps={[
+    { icon: "file", title: "Crei il file", text: "to_csv lo scrive nella cartella di lavoro" },
+    { icon: "cloud", title: "Lo salvi", text: "Lo scarichi o lo copi su Drive" },
+    { icon: "warning", title: "Chiudi", text: "La copia temporanea sparisce" },
+  ]}
+/>
 
 Su Jupyter locale il file resta sul tuo disco, nella cartella di lavoro.
 

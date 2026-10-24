@@ -155,6 +155,15 @@ Ecco il rapporto di Marta, risolto. Con `porta = 3389` stamperebbe `da controlla
 `else` non ha condizione: è la strada di tutto il resto. Mettilo sempre per ultimo.
 </Callout>
 
+<Flow
+  caption="Con porta = 443 il secondo ramo è il primo vero: gli altri si saltano."
+  steps={[
+    { icon: "search", title: "porta == 22", text: "Falso: si passa oltre" },
+    { icon: "check", title: "80 o 443", text: "Vero: stampa web" },
+    { icon: "cross", title: "else", text: "Saltato: un ramo è già stato eseguito" },
+  ]}
+/>
+
 <Say who="assistente">Un'idea per ricordare: elif è un «se invece», e viene letto solo se il se precedente era falso.</Say>
 </Scene>
 

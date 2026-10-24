@@ -92,6 +92,12 @@ Gli indirizzi non validi che incontrerai sono quasi sempre di quattro tipi. Impa
   ]}
 />
 
+<Compare
+  caption="Indirizzi sbagliati e indirizzi validi: conta i numeri e il loro valore."
+  left={{ title: "Non validi", points: ["192.168.1.300: il 300 supera 255", "10.0.0: solo tre numeri", "172.16.0.1.5: cinque numeri"] }}
+  right={{ title: "Validi", points: ["8.8.8.8: quattro numeri", "10.0.0.1: tutti tra 0 e 255", "192.168.1.66: tutti tra 0 e 255"] }}
+/>
+
 <Say who="assistente">Controlla sempre due cose: quanti numeri sono, e se qualcuno supera 255.</Say>
 </Scene>
 

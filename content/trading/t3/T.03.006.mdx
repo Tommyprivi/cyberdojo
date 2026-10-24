@@ -103,6 +103,15 @@ Per misurare l'agitazione serve un numero che consideri anche i **salti** (gap) 
   "True Range = max(5, 7, 2) = 7",
 ]} />
 
+<Flow
+  caption="Come si ottiene il True Range di un giorno."
+  steps={[
+    { icon: "chart", title: "Tre misure", text: "Giornata e due salti rispetto a ieri" },
+    { icon: "bolt", title: "Il maggiore", text: "Si tiene il più grande dei tre" },
+    { icon: "gear", title: "ATR", text: "La media dei True Range di N giorni" },
+  ]}
+/>
+
 L'**ATR** (average true range) è la **media** dei True Range di N giorni. Con True Range 7, 3 e 5: ATR = (7 + 3 + 5) ÷ 3 = **5**.
 
 <Callout kind="regola">

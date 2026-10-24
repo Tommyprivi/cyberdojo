@@ -63,6 +63,16 @@ La **vendita allo scoperto** (in inglese *short selling*) fa il contrario. Funzi
 
 Se nel frattempo il prezzo è sceso, le ricompri a meno di quanto le hai vendute: la differenza è il tuo guadagno. Se è salito, perdi. Questa posizione si chiama **short**.
 
+<Flow
+  caption="La vendita allo scoperto, passo per passo."
+  steps={[
+    { icon: "file", title: "Prestito", text: "Prendi le azioni in prestito" },
+    { icon: "coin", title: "Vendita", text: "Le vendi subito a oggi" },
+    { icon: "clock", title: "Ricompra", text: "Le ricompri più tardi" },
+    { icon: "check", title: "Restituzione", text: "Le restituisci: la differenza è il risultato" },
+  ]}
+/>
+
 Vuoi sentirlo spiegare da un'altra voce? Meno di dieci minuti, in inglese: attiva i sottotitoli.
 
 <Video />
@@ -112,6 +122,12 @@ Molti fondi long/short restano sempre con una netta positiva, cioè «un po' lon
 
 <Scene title="I rischi dello short">
 Una posizione long può perdere al massimo il 100%: un'azione non scende sotto zero. Una posizione short è diversa. Il prezzo può salire senza limiti, quindi **la perdita teorica non ha un tetto**.
+
+<Compare
+  caption="Il limite della perdita cambia da una posizione all'altra."
+  left={{ title: "Posizione short", points: ["Il prezzo può salire senza limiti", "La perdita teorica non ha un tetto"] }}
+  right={{ title: "Posizione long", points: ["L'azione non scende sotto zero", "Si perde al massimo il 100% investito"] }}
+/>
 
 - Se vendi allo scoperto a 20 e il prezzo sale a 60, perdi 40 per azione: **il doppio** di quanto hai incassato.
 - Se molti shortisti devono ricomprare in fretta, il prezzo schizza ancora più su: si chiama **short squeeze**.

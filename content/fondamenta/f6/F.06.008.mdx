@@ -71,6 +71,16 @@ Il tempo che serve perché tutti i router abbiano di nuovo tabelle corrette si c
 Per questo Internet non si ferma quando un cavo sottomarino si rompe: i router trovano un'altra strada senza che nessuno scriva niente a mano.
 </Callout>
 
+<Flow
+  caption="Con il routing dinamico le tabelle si aggiornano da sole."
+  steps={[
+    { icon: "bolt", title: "Il guasto", text: "Il collegamento cade" },
+    { icon: "bell", title: "L'avviso", text: "I vicini lo comunicano" },
+    { icon: "gear", title: "Nuove tabelle", text: "I router ricalcolano le strade" },
+    { icon: "check", title: "Traffico ripreso", text: "Passa da un'altra strada, se c'è" },
+  ]}
+/>
+
 <Say who="sensei">I router chiacchierano. Chi ascolta bene non ha bisogno che gli si ripeta la strada ogni volta.</Say>
 </Scene>
 

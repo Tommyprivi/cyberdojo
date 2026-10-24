@@ -54,6 +54,15 @@ Ognuno aveva calcolato «ricavi» a modo suo.
 
 Nessuno ha sbagliato la formula. Hanno risposto a tre domande diverse con la stessa parola.
 
+<Flow
+  caption="Stessa parola, tre definizioni, tre numeri."
+  steps={[
+    { icon: "coin", title: "Vendite", text: "Con IVA: 1220" },
+    { icon: "file", title: "Finanza", text: "Senza IVA: 1000" },
+    { icon: "globe", title: "Online", text: "Senza IVA e senza resi: 920" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Una parola di business come «ricavi» o «cliente attivo» non basta: serve una **definizione scritta** e **calcolata in un posto solo**.
 </Callout>
@@ -67,6 +76,15 @@ Una parola di business come «ricavi» o «cliente attivo» non basta: serve una
 Il **livello semantico** è uno strato che sta **tra i dati e i report**. Contiene le definizioni di business: le metriche, le dimensioni, i nomi in italiano chiaro, le regole di calcolo.
 
 I report non calcolano più da soli: **chiedono** al livello semantico. Cambi la definizione una volta, e tutti i report cambiano insieme.
+
+<Layers
+  caption="Il livello semantico sta in mezzo: i report chiedono a lui."
+  items={[
+    { icon: "chart", title: "Report", text: "Chiedono, non ricalcolano" },
+    { icon: "book", title: "Livello semantico", text: "Metriche, nomi e regole di calcolo" },
+    { icon: "database", title: "Dati", text: "Le tabelle di origine" },
+  ]}
+/>
 
 <Log lines={["Ricavi netti = incassi senza IVA, meno i resi", "Definizione: gli incassi di Vendite[importo_lordo] divisi 1,22, meno Resi[importo]", "Proprietario: Finanza · Ultima modifica: 2025-02-03"]} caption="Una definizione di metrica ben scritta: nome, regola, proprietario." />
 

@@ -83,6 +83,16 @@ Aurora ha 10 milioni propri, compra titoli per 15 milioni e prende a prestito **
   ]}
 />
 
+<Flow
+  caption="Come la leva trasforma un calo del 10% dei titoli in una perdita del 15% sul capitale proprio."
+  steps={[
+    { icon: "coin", title: "Capitale proprio", text: "10 milioni" },
+    { icon: "database", title: "Prestito", text: "5 milioni dal prime broker" },
+    { icon: "chart", title: "Titoli", text: "15 milioni" },
+    { icon: "warning", title: "Calo del 10%", text: "-1,5 milioni, cioè -15% sul capitale proprio" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 La leva amplifica **sia i guadagni sia le perdite**. Con numeri fittizi come questi si vede bene: un calo del 10% diventa una perdita del 15% sul capitale proprio.
 </Callout>
@@ -104,6 +114,16 @@ In cambio il prime broker chiede una **garanzia**, detta **margine**. Esempio: t
 ]} />
 
 Se i titoli perdono valore e la garanzia scende sotto il minimo, arriva la **richiesta di margine** (*margin call*): il fondo deve **aggiungere garanzie** o **ridurre le posizioni**.
+
+<Flow
+  caption="Come nasce una richiesta di margine."
+  steps={[
+    { icon: "chart", title: "Prezzi in calo", text: "I titoli perdono valore" },
+    { icon: "shield", title: "Garanzia scesa", text: "Sotto il minimo richiesto" },
+    { icon: "bell", title: "Richiesta di margine", text: "Il prime broker la invia" },
+    { icon: "check", title: "Il fondo agisce", text: "Aggiunge garanzie o riduce le posizioni" },
+  ]}
+/>
 
 <Say who="assistente">Un indizio: la richiesta di margine arriva proprio quando i prezzi scendono, cioè quando al fondo servirebbe più respiro.</Say>
 </Scene>

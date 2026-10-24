@@ -101,6 +101,16 @@ Un runbook cloud per un'istanza compromessa, in breve (fittizio):
   "Non fare: non terminare l'istanza; non analizzare sull'originale",
 ]} caption="Isolare, copiare, mettere al sicuro: poi, e solo poi, fermare." />
 
+<Flow
+  caption="L'ordine conta: si copia e si mette al sicuro prima di fermare."
+  steps={[
+    { icon: "lock", title: "Isola", text: "Gruppo di sicurezza in quarantena" },
+    { icon: "folder", title: "Copia", text: "Snapshot nell'account forense" },
+    { icon: "key", title: "Revoca", text: "Chiavi e sessioni sospette" },
+    { icon: "clock", title: "Ferma", text: "Solo dopo il via del responsabile, mai cancellare" },
+  ]}
+/>
+
 Le **identità** sono la nuova superficie: nel cloud la chiave rubata è spesso l'intera storia. Si **revocano** le credenziali sospette e si controllano tutte le risorse create con esse (come i 12 server).
 
 Vuoi vedere gli strumenti su un esempio reale? Pochi minuti, in inglese con i sottotitoli:

@@ -62,6 +62,16 @@ Nessun umano è attento a quest'ora. La domanda del caso: **può il server difen
 
 Alla fine del tempo di blocco, l'indirizzo viene **sbloccato** da solo.
 
+<Flow
+  caption="fail2ban: osserva, riconosce, blocca per un po'."
+  steps={[
+    { icon: "file", title: "Log", text: "Righe «Failed password»" },
+    { icon: "search", title: "Filtro", text: "Riconosce le righe sospette" },
+    { icon: "clock", title: "Soglia", text: "Quanti errori, in quanto tempo" },
+    { icon: "shield", title: "Blocco", text: "Il firewall chiude l'indirizzo" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Esistono altri strumenti dello stesso genere, e molti firewall e servizi in cloud hanno funzioni simili. L'idea è sempre: osserva, riconosci, blocca per un po'.
 </Callout>

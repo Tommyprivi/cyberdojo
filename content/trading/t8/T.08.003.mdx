@@ -92,6 +92,16 @@ Un ordine a mercato per 300 azioni **consuma** i livelli uno dopo l'altro:
   ]}
 />
 
+<Flow
+  caption="Un ordine a mercato consuma il book un livello dopo l'altro."
+  steps={[
+    { icon: "coin", title: "Primo livello", text: "100 azioni a 10,00" },
+    { icon: "coin", title: "Secondo livello", text: "100 azioni a 10,02" },
+    { icon: "coin", title: "Terzo livello", text: "100 azioni a 10,04" },
+    { icon: "chart", title: "Prezzo medio", text: "10,02, non 10,00" },
+  ]}
+/>
+
 <Say who="sensei">Più compri, più alto è il prezzo medio. Il mercato non è un distributore automatico.</Say>
 </Scene>
 
@@ -139,7 +149,7 @@ Per questo, nei backtest seri:
 - si fissa un tetto alla quota di volume che l'ordine può rappresentare;
 - si dichiara con quanto capitale la strategia è plausibile.
 
-Prima della verifica: sei dubbioso? Rileggi il calcolo del book, è la parte che cade più spesso.
+Prima della verifica, se hai dubbi, rileggi il calcolo del book: è la parte in cui si sbaglia più spesso.
 
 <Say who="sensei">Un risultato che vale solo con poco denaro non è sbagliato. È incompleto, se non lo dici.</Say>
 </Scene>

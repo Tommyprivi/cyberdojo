@@ -72,6 +72,12 @@ Ecco la tabella `ordini` del negozio (le otto righe che già conosci):
 
 Un indice su `cliente_id` sarebbe una piccola rubrica: cliente 1 porta alle righe 1, 3, 7; cliente 2 alle righe 2, 5; cliente 3 alle righe 4, 8; cliente 4 alla riga 6.
 
+<Compare
+  caption="La stessa ricerca, con e senza indice."
+  left={{ title: "Senza indice", points: ["Legge tutte e tre milioni di righe", "Una per una, dall'inizio alla fine", "Circa quattro secondi"] }}
+  right={{ title: "Con indice su cliente_id", points: ["Consulta la rubrica ordinata", "Bastano pochi passi", "Il risultato non cambia"] }}
+/>
+
 <Say who="assistente">La rubrica è ordinata per cliente. La tabella no. Ecco perché la rubrica si consulta in fretta.</Say>
 </Scene>
 

@@ -138,6 +138,15 @@ Se due righe hanno lo stesso valore nella colonna di ordinamento, il database pu
   "sapone lavanda   | 6.00",
 ]} caption="Salto i primi tre, prendo i tre seguenti." />
 
+<Flow
+  caption="I tre prodotti più cari: prima si ordina, poi si taglia."
+  steps={[
+    { icon: "folder", title: "Tutti", text: "6 prodotti, in ordine casuale" },
+    { icon: "chart", title: "ORDER BY DESC", text: "Dal più caro al più economico" },
+    { icon: "check", title: "LIMIT 3", text: "Restano i primi tre" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 `LIMIT` senza `ORDER BY` dà «tre righe qualsiasi»: quali, non è garantito. Per «i più cari» l'ordine è parte della domanda.
 </Callout>
@@ -156,7 +165,7 @@ Vuoi sentirlo spiegare da un'altra voce? Un video su ORDER BY in italiano:
 {/* screen */}
 
 <Scene title="DISTINCT: niente doppioni">
-Nella tabella `prodotti` ci sono tre candele, ma le categorie sono tre soltanto. Con `DISTINCT` ogni valore compare **una volta sola**.
+Nella tabella `prodotti` ci sono sei prodotti, ma le categorie sono soltanto tre (candele, saponi, profumi). Con `DISTINCT` ogni valore compare **una volta sola**.
 
 <Log lines={[
   "SELECT DISTINCT categoria",

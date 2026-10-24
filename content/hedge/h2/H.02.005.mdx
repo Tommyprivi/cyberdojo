@@ -60,6 +60,17 @@ Un fondo **quantitativo** (o *quant*) usa **matematica, statistica e computer** 
 4. **Regole scritte**: se funziona, il programma sceglie le posizioni, con limiti di rischio fissi.
 5. **Controllo continuo**: si osserva se la regola smette di funzionare.
 
+<Flow
+  caption="Il ciclo di lavoro di un fondo quantitativo."
+  steps={[
+    { icon: "search", title: "Idea", text: "Un'ipotesi semplice" },
+    { icon: "database", title: "Dati", text: "Anni di prezzi e numeri" },
+    { icon: "clock", title: "Backtest", text: "Prova sul passato" },
+    { icon: "code", title: "Regole", text: "Il programma sceglie le posizioni" },
+    { icon: "eye", title: "Controllo", text: "Si vede se smette di funzionare" },
+  ]}
+/>
+
 Vuoi vederlo spiegare da persone del settore? Un video in inglese con sottotitoli, guardane i primi minuti.
 
 <Video />
@@ -85,7 +96,7 @@ Un vantaggio piccolo si vede solo con **tanti tentativi**. Esempio inventato: og
 Vantaggio piccolo + tante prove = risultato possibile. Vantaggio piccolo + poche prove = rumore.
 </Callout>
 
-<Say who="sensei">Se chi ti propone un metodo lo ha provato dieci volte, non ti ha provato niente.</Say>
+<Say who="sensei">Se chi ti propone un metodo lo ha provato dieci volte, non ti ha dimostrato niente.</Say>
 </Scene>
 
 {/* screen */}
@@ -98,6 +109,12 @@ Esempio inventato: Irene prova **10 regole completamente casuali** sui dati degl
 Irene trova una regola che «guadagna il 30% all'anno» sui dati passati. Sul primo anno nuovo, fa -2%. Non era un vantaggio: era un caso.
 
 Per difendersi si usano **dati fuori campione** (non usati per cercare la regola), regole semplici, e pochissimi tentativi rispetto alla quantità di dati.
+
+<Compare
+  caption="Una regola trovata per caso e una regola controllata."
+  left={{ title: "Overfitting", points: ["Funziona benissimo sul passato", "Sul primo anno nuovo fa -2%"] }}
+  right={{ title: "Regola verificata", points: ["Provata su dati fuori campione", "Semplice, con pochi tentativi"] }}
+/>
 
 <Callout kind="attenzione">
 Un backtest bellissimo è un sospetto, non una prova. Ricorda il bias di look-ahead (usare informazioni che nel passato non c'erano ancora) e i costi di trading, che il backtest spesso dimentica.

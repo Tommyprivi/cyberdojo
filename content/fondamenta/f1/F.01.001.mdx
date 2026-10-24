@@ -81,6 +81,12 @@ Il **disco** conserva i dati **anche a computer spento**. Può essere un **SSD**
 
 È come l'**armadio d'archivio**: molto capiente e duraturo, ma servono più tempo e fatica per prendere le cose.
 
+<Compare
+  caption="Scrivania e armadio: due memorie con compiti opposti."
+  left={{ title: "RAM (scrivania)", points: ["Veloce da raggiungere", "Piccola", "Si svuota senza corrente"] }}
+  right={{ title: "Disco (armadio)", points: ["Più lento", "Molto capiente", "Conserva anche a computer spento"] }}
+/>
+
 <Callout kind="attenzione">
 Salvare un file significa **copiarlo dalla RAM al disco**. Se non salvi, resta solo sulla scrivania.
 </Callout>
@@ -92,6 +98,16 @@ Salvare un file significa **copiarlo dalla RAM al disco**. Se non salvi, resta s
 
 <Scene title="La scheda madre e tutto insieme">
 La **scheda madre** è la grande scheda a cui tutto si collega: CPU, RAM, disco, porte USB. Non calcola e non archivia. **Fa comunicare** i pezzi tra loro, come le strade di una città.
+
+<Flow
+  caption="Il viaggio di un documento: dal disco alla RAM e ritorno."
+  steps={[
+    { icon: "database", title: "Disco", text: "Il file è nell'armadio" },
+    { icon: "file", title: "RAM", text: "Aperto, sta sulla scrivania" },
+    { icon: "gear", title: "CPU", text: "Lo modifica" },
+    { icon: "check", title: "Salva", text: "Torna sul disco" },
+  ]}
+/>
 
 <Guided
   steps={[

@@ -98,6 +98,15 @@ Il segnale nasce a fine giornata, quando la chiusura è nota. Non si può usare 
 
 Per questo la posizione è il segnale **spostato di un giorno**: in pandas si scrive `segnale.shift(1)`.
 
+<Flow
+  caption="Il segnale di oggi lavora domani, mai oggi."
+  steps={[
+    { icon: "clock", title: "Fine giornata", text: "La chiusura è nota" },
+    { icon: "search", title: "Segnale", text: "1 se sopra la media a 3 giorni" },
+    { icon: "check", title: "Giorno dopo", text: "La posizione usa il segnale di ieri" },
+  ]}
+/>
+
 <Log lines={[
   "giorno  segnale  posizione",
   "3       1        0",

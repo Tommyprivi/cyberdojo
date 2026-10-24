@@ -67,7 +67,7 @@ Il primo strumento è nel menu **Statistiche**: la **Gerarchia dei protocolli**.
 <Log
   lines={[
     "Protocollo            % pacchetti   % byte",
-    "Ethernet / IP / TCP   88,0          96,4",
+    "Ethernet / IP / TCP   88,0          98,5",
     "  TLS                 41,0          71,2",
     "  HTTP                 6,5           8,1",
     "DNS                   10,2           1,3",
@@ -79,7 +79,7 @@ Il primo strumento è nel menu **Statistiche**: la **Gerarchia dei protocolli**.
 Che cosa ti dice? Che il traffico è soprattutto **cifrato** (TLS) e che il DNS pesa poco in byte. Se invece il DNS fosse il 60% dei byte, sarebbe già una domanda da fare.
 
 <Callout kind="trucco">
-Leggi sempre **due colonne**: pacchetti e byte. Un protocollo con tanti pacchetti ma pochi byte (DNS) è normale. Uno con **pochi pacchetti e tantissimi byte** sposta molti dati: guarda chi li sposta.
+Leggi sempre **due colonne**: pacchetti e byte. Un protocollo con tanti pacchetti ma pochi byte (DNS) è normale. Uno che pesa **molto di più in byte che in pacchetti** (pacchetti grandi) sposta molti dati: guarda chi li sposta.
 </Callout>
 
 <Say who="assistente">È la mappa dall'alto. Non cerchi ancora il colpevole: cerchi dove sembra strano il paesaggio.</Say>
@@ -93,19 +93,29 @@ Secondo strumento, sempre in **Statistiche**: **Conversazioni**. Ogni riga è un
 <Log
   lines={[
     "Indirizzo A       Indirizzo B       Pacchetti  Byte      Durata",
-    "192.168.1.20      203.0.113.80        4 210    5,2 MB    312 s",
-    "192.168.1.20      198.51.100.7        1 905    1,1 MB    598 s",
+    "192.168.1.20      198.51.100.250      5 600    7,9 MB    44 s",
+    "192.168.1.20      203.0.113.80        2 210    2,7 MB    312 s",
+    "192.168.1.20      198.51.100.7        1 105    0,6 MB    598 s",
     "192.168.1.20      192.168.1.1           980    94 KB     600 s",
-    "192.168.1.20      198.51.100.250         61    38 MB     44 s",
   ]}
   caption="Conversazioni IPv4, ordinate per byte (esempio inventato)"
 />
 
-Ordina per **Byte** e guarda in alto. L'ultima riga ha **soltanto 61 pacchetti** ma **38 MB** in 44 secondi: pochi pacchetti molto grossi, verso un indirizzo mai visto. Il computer 192.168.1.20 sta mandando o ricevendo un file grande.
+Ordina per **Byte** e guarda in alto. La prima riga ha **7,9 MB in soli 44 secondi**, più di quanto il computer scambia con chiunque altro in dieci minuti: pacchetti quasi tutti pieni, in raffica, verso un indirizzo mai visto. Il computer 192.168.1.20 sta mandando o ricevendo un file grande.
 
 <Callout kind="attenzione">
-Non è ancora una prova di nulla. Può essere un aggiornamento scaricato. Ma è la **prima pista**: hai passato da 10 412 pacchetti a una riga.
+Non è ancora una prova di nulla. Può essere un aggiornamento scaricato. Ma è la **prima pista**: sei passato da 10 412 pacchetti a una riga.
 </Callout>
+
+<Flow
+  caption="Dall'alto al dettaglio, senza leggere tutto."
+  steps={[
+    { icon: "chart", title: "Gerarchia", text: "Dove sembra strano il paesaggio" },
+    { icon: "users", title: "Conversazioni", text: "Ordinate per byte, dall'alto" },
+    { icon: "search", title: "Una pista", text: "Una riga su 10 412 pacchetti" },
+    { icon: "eye", title: "I pacchetti", text: "Solo ora si scende nel dettaglio" },
+  ]}
+/>
 
 <Say who="sensei">Una pista non è una conclusione. Scrivila e verificala. Sei passato da diecimila righe a una: bene.</Say>
 </Scene>
@@ -131,15 +141,15 @@ Vuoi vedere l'interfaccia usata per capire dove va la banda, da un'altra voce? Q
 
 <Scene title="Tocca a te">
 <Quiz
-  question="In una cattura vedi, nelle conversazioni, una coppia di indirizzi con 40 pacchetti ma 30 MB di dati, e un'altra con 3 000 pacchetti ma 90 KB. Quale conviene guardare per prima, se cerchi un possibile trasferimento di file?"
+  question="In una cattura vedi, nelle conversazioni, una coppia di indirizzi con 2 000 pacchetti e 2,8 MB di dati, e un'altra con 3 000 pacchetti ma solo 400 KB. Quale conviene guardare per prima, se cerchi un possibile trasferimento di file?"
   options={[
-    "Quella da 40 pacchetti e 30 MB: pochi pacchetti molto grossi spostano un file",
-    "Quella da 3 000 pacchetti: più pacchetti vuol dire più dati",
+    "Quella da 2 000 pacchetti e 2,8 MB: pacchetti pieni, tipici di un file che si sposta",
+    "Quella da 3 000 pacchetti: più pacchetti vuol dire sempre più dati",
     "Nessuna delle due: si guardano solo i pacchetti ARP",
     "Quella con meno byte, perché è più discreta",
   ]}
   answer={0}
-  explain="I byte dicono quanti dati si muovono. 30 MB in 40 pacchetti significa pacchetti grandi: tipico di un trasferimento di file. 3 000 pacchetti da 90 KB sono tanti messaggi minuscoli, come un controllo periodico o un DNS."
+  explain="I byte dicono quanti dati si muovono. 2,8 MB in 2 000 pacchetti significa circa 1 400 byte a pacchetto: pacchetti pieni, tipici di un trasferimento di file. 3 000 pacchetti da 400 KB sono circa 130 byte l'uno: tanti messaggi piccoli, come un controllo periodico o un DNS."
 />
 
 <Say who="sensei">Pacchetti e byte non sono la stessa cosa. Chi li confonde guarda la pista sbagliata.</Say>
@@ -169,7 +179,7 @@ Prima di chiudere il laboratorio, salva e **proteggi** la prova: salva il file i
 <Flashcards
   cards={[
     { q: "Che cosa mostra la gerarchia dei protocolli?", a: "Quanta parte della cattura (in pacchetti e in byte) è fatta di ogni protocollo" },
-    { q: "Pochi pacchetti ma molti byte: che cosa suggerisce?", a: "Pacchetti grandi, cioè un trasferimento di dati: da guardare" },
+    { q: "Molti byte in ogni pacchetto: che cosa suggerisce?", a: "Pacchetti pieni, cioè un trasferimento di dati: da guardare" },
     { q: "Perché usare l'ora UTC nei rapporti?", a: "Per confrontare cattura e log di altri sistemi senza errori di fuso orario" },
     { q: "A che cosa serve l'hash del file di cattura?", a: "A dimostrare che il file non è stato modificato dopo il salvataggio" },
   ]}

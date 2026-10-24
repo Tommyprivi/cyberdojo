@@ -48,7 +48,13 @@ I report non leggono i dati in diretta: di solito **si aggiornano a orari fissi*
 
 Il punto delicato è l'**ordine**. Prima si caricano i dati di origine, poi si aggiorna il report.
 
-<Log lines={["05:30  il magazzino dati finisce di caricare le vendite di ieri", "06:00  il report si aggiorna  ->  mostra le vendite di ieri: giusto", "", "Se il caricamento finisce alle 06:20:", "06:00  il report si aggiorna  ->  mostra ancora quelle di ieri l'altro: sbagliato"]} caption="L'aggiornamento del report deve partire dopo la fine del caricamento." />
+<Log lines={["05:30  il magazzino dati finisce di caricare le vendite di ieri", "06:00  il report si aggiorna  ->  mostra le vendite di ieri: giusto", "", "Se il caricamento finisce alle 06:20:", "06:00  il report si aggiorna  ->  mostra ancora quelle di l'altro ieri: sbagliato"]} caption="L'aggiornamento del report deve partire dopo la fine del caricamento." />
+
+<Compare
+  caption="L'orario dell'aggiornamento decide quali dati vedi."
+  left={{ title: "Aggiornamento alle 06:00", points: ["Il caricamento finisce alle 06:20", "Il report parte prima", "Mostra dati vecchi come fossero nuovi"] }}
+  right={{ title: "Aggiornamento alle 06:45", points: ["Il caricamento è finito, con margine", "Il report parte dopo", "Mostra le vendite di ieri"] }}
+/>
 
 Si lascia un margine di sicurezza, si controlla l'esito (riuscito o fallito) e si riceve un avviso se fallisce. Sul report si mostra sempre la data dell'ultimo aggiornamento.
 
@@ -65,6 +71,15 @@ Molti strumenti hanno un percorso di rilascio per questo. Power BI ha le «pipel
 <Callout kind="regola">
 Mai modificare direttamente in produzione. Si cambia in sviluppo, si controlla in test, si pubblica con calma.
 </Callout>
+
+<Flow
+  caption="Un cambiamento arriva a chi decide solo dopo due controlli."
+  steps={[
+    { icon: "code", title: "Sviluppo", text: "Si prova" },
+    { icon: "check", title: "Test", text: "Si controlla con altri" },
+    { icon: "users", title: "Produzione", text: "La usano tutti" },
+  ]}
+/>
 
 Vuoi sentirlo spiegare da un'altra voce? È in inglese, e mostra il passaggio tra gli ambienti:
 

@@ -53,6 +53,12 @@ Sono due cose diverse.
 - **Pseudonimizzare**: al posto dei dati che identificano si mettono codici (non più «Mario Rossi» ma «paziente 4821»). La tabella che collega codice e persona si conserva separata e protetta. I dati restano **personali**, perché con quella tabella si risale alla persona.
 - **Anonimizzare**: si fa in modo che non si possa più risalire a una persona con mezzi ragionevoli. Solo allora, in sintesi, il GDPR non si applica più a quei dati.
 
+<Compare
+  caption="Due cose diverse, con effetti diversi sugli obblighi."
+  left={{ title: "Pseudonimo", points: ["Un codice al posto del nome", "La tabella di corrispondenza esiste, separata", "I dati restano personali"] }}
+  right={{ title: "Anonimo", points: ["Non si risale più alla persona con mezzi ragionevoli", "Nessuna tabella per tornare indietro", "Il GDPR non si applica più"] }}
+/>
+
 <Callout kind="regola">
 Pseudonimizzare riduce i rischi ma non cancella gli obblighi. Anonimizzare davvero è più difficile di quanto sembri.
 </Callout>
@@ -74,6 +80,17 @@ Le principali, con un esempio:
 - **Generalizzare**: l'età 34 diventa «30-39», il CAP 20121 diventa `201**`.
 - **Aggregare**: si pubblicano solo conteggi per gruppo («120 clienti a Torino»).
 - **Mascherare o aggiungere rumore**: si alterano un po' i valori, quando l'analisi lo tollera.
+
+<Layers
+  caption="Cinque tecniche di base: ognuna toglie un po' di dettaglio."
+  items={[
+    { icon: "cross", title: "Togliere", text: "Nome, codice fiscale, email" },
+    { icon: "key", title: "Codice", text: "Lo stesso codice per la stessa persona" },
+    { icon: "eye", title: "Generalizzare", text: "Età 34 diventa 30-39" },
+    { icon: "chart", title: "Aggregare", text: "Solo conteggi per gruppo" },
+    { icon: "bolt", title: "Rumore", text: "Valori alterati un poco" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Un hash semplice di un'email, senza altri accorgimenti, non è una protezione sicura: chi prova molti indirizzi probabili può calcolare gli stessi hash e ritrovare le email. È pseudonimizzazione debole, non anonimizzazione.

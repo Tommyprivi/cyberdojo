@@ -79,7 +79,7 @@ Convenzioni: numeri fittizi, 252 giorni di borsa all'anno, drawdown dal massimo.
 />
 
 <Callout kind="regola">
-Giorni per liquidare = valore della posizione divisi la quantità che si riesce a vendere ogni giorno senza muovere il prezzo.
+Giorni per liquidare = valore della posizione diviso la quantità che si riesce a vendere ogni giorno senza muovere il prezzo.
 </Callout>
 
 <Say who="sensei">Se ci vogliono venticinque giorni per uscire, non hai una posizione. Hai un matrimonio.</Say>
@@ -91,6 +91,15 @@ Giorni per liquidare = valore della posizione divisi la quantità che si riesce 
 Per ogni indicatore si fissano due livelli: una soglia di **allerta** (giallo) e un **limite** (rosso).
 
 Esempio: allerta del drawdown a 8%, blocco a 12%. Con un drawdown del 10% il fondo è sopra l'allerta e sotto il blocco: si segnala e si decide che cosa fare, prima di arrivare al limite.
+
+<Flow
+  caption="Le soglie dell'esempio sul drawdown: prima l'allerta, poi il blocco."
+  steps={[
+    { icon: "check", title: "Sotto 8%", text: "Tutto nei limiti" },
+    { icon: "bell", title: "Da 8%: allerta", text: "Si segnala e si decide" },
+    { icon: "lock", title: "A 12%: blocco", text: "Limite da non superare" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Il controllo del rischio dovrebbe essere affidato anche a una funzione **indipendente dal gestore**: chi guadagna dalla performance può avere un conflitto di interessi. Se un limite è violato (per esempio netta al 32% con limite 30%), si segnala, si documenta e si riporta nei limiti. Non si alza il limite di nascosto.

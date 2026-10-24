@@ -54,6 +54,16 @@ Il **phishing** è un inganno che ti spinge a consegnare un accesso: una passwor
 
 Funziona su una leva semplice: ti fa **agire senza pensare**. Fretta, paura, curiosità, o la voce di un capo che chiede un favore.
 
+<Flow
+  caption="Come funziona un phishing: nessun virus, solo un inganno."
+  steps={[
+    { icon: "mail", title: "Email falsa", text: "Fretta e paura" },
+    { icon: "link", title: "Link", text: "Porta a un sito che somiglia" },
+    { icon: "globe", title: "Pagina falsa", text: "Copia la schermata di login" },
+    { icon: "mask", title: "Accesso rubato", text: "La password arriva all'attaccante" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Qui descriviamo gli inganni per riconoscerli. Creare pagine false o inviare email del genere è reato (truffa, accesso abusivo, art. 615-ter c.p.): nelle esercitazioni si lavora solo in laboratori autorizzati.
 </Callout>
@@ -95,6 +105,12 @@ La pagina in cui è finita Marta copiava la schermata della posta. Come si smasc
 - Il **lucchetto** vuol dire solo che la connessione è cifrata, non che il sito sia onesto: anche i siti falsi lo hanno.
 - Il modo più sicuro: **non passare dal link**. Apri tu il sito digitando l'indirizzo o usando un segnalibro, e guarda se la notifica compare anche lì.
 
+<Compare
+  caption="Due modi di arrivare allo stesso sito."
+  left={{ title: "Dal link ricevuto", points: ["Il sito può essere una copia", "Il lucchetto non lo garantisce"] }}
+  right={{ title: "Aprendo tu il sito", points: ["Digiti l'indirizzo o usi un segnalibro", "La notifica vera compare anche lì"] }}
+/>
+
 <Callout kind="regola">
 Mai inserire le credenziali dopo aver cliccato un link ricevuto. Vai sempre al sito per conto tuo.
 </Callout>
@@ -134,7 +150,7 @@ Un'ultima cosa: alcune pagine false chiedono anche il **codice della 2FA** e lo 
   question="Un'email dell'«assistenza» dice che il conto sarà chiuso e chiede di cliccare per confermare i dati. Che cosa fai?"
   options={["Non clicco: apro io il sito o chiamo il numero ufficiale e segnalo il messaggio", "Clicco, ma controllo almeno che ci sia il lucchetto", "Rispondo all'email per chiedere se è davvero la banca", "Clicco e inserisco solo il nome utente, non la password"]}
   answer={0}
-  explain="Un link ricevuto non va usato per accedere: si apre il sito per conto proprio. Il lucchetto non prova che il sito sia quello giusto. Rispondere conferma all'attaccante che l'indirizzo è attivo. Anche il solo nome utente è una informazione utile per lui."
+  explain="Un link ricevuto non va usato per accedere: si apre il sito per conto proprio. Il lucchetto non prova che il sito sia quello giusto. Rispondere conferma all'attaccante che l'indirizzo è attivo. Anche il solo nome utente è un'informazione utile per lui."
 />
 
 <Say who="assistente">Indizio: la risposta giusta è quella in cui il link non lo tocchi.</Say>

@@ -42,7 +42,16 @@ La domanda del caso: **come lavori oggi in modo che tra un mese tu (o chiunque) 
 
 Un lavoro di pulizia ben fatto ha tre qualità: è **ripetibile** (rilanciando il codice ottieni lo stesso risultato), **documentato** (si sa cosa è stato cambiato) e **controllato** (dei test automatici lo verificano).
 
-<Say who="sensei">Un dato pulito che nessuno può verificare vale meno di un dato sporco, almeno di quello si sa che è sporco.</Say>
+<Layers
+  caption="Le tre qualità di una pulizia fatta bene."
+  items={[
+    { icon: "gear", title: "Ripetibile", text: "Rilanci il codice: stesso risultato" },
+    { icon: "book", title: "Documentato", text: "Si sa cosa è stato cambiato" },
+    { icon: "check", title: "Controllato", text: "Test automatici lo verificano" },
+  ]}
+/>
+
+<Say who="sensei">Un dato pulito che nessuno può verificare vale meno di un dato sporco: di quello, almeno, si sa che è sporco.</Say>
 </Scene>
 
 {/* screen */}
@@ -99,6 +108,16 @@ Tutta la pulizia si mette in **una funzione**, e la funzione tiene un **registro
   "duplicati tolti: 1",
   "eta fuori scala messe a NaN: 1",
 ]} caption="La funzione non modifica grezzo: restituisce una tabella nuova e il registro." />
+
+<Flow
+  caption="L'originale resta intatto: la funzione restituisce tabella nuova e registro."
+  steps={[
+    { icon: "folder", title: "Grezzo", text: "L'originale non si tocca" },
+    { icon: "gear", title: "pulisci()", text: "Trasforma e scrive il registro" },
+    { icon: "file", title: "Pulito", text: "Tabella nuova" },
+    { icon: "shield", title: "assert", text: "Controlli automatici" },
+  ]}
+/>
 
 Leggi la funzione: toglie un duplicato, poi mette a NaN le età impossibili (fuori da 0-110). Ogni passo scrive una riga nel registro. Il registro si salva con il report: è il diario del lavoro.
 

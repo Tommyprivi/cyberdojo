@@ -65,7 +65,7 @@ I livelli principali:
 - **Controllo completo**: tutto, compreso **cambiare i permessi**.
 
 <Callout kind="attenzione">
-Il «Controllo completo» dà anche il potere di riscrivere i permessi. Chi lo ha può darselo su tutto il resto. Da assegnare con molta cautela.
+Il «Controllo completo» dà anche il potere di riscrivere i permessi. Chi lo ha può darsi qualsiasi altro permesso su quella cartella. Da assegnare con molta cautela.
 </Callout>
 
 Vuoi vedere dove si trovano queste impostazioni? Un video breve in italiano:
@@ -103,6 +103,16 @@ Una cartella in rete ha **due strati**:
 
 Per chi arriva dalla rete conta il **più restrittivo** dei due.
 
+<Flow
+  caption="Per chi arriva dalla rete, i due strati si sommano al ribasso."
+  steps={[
+    { icon: "globe", title: "Dalla rete", text: "Un utente apre la cartella condivisa" },
+    { icon: "folder", title: "Condivisione", text: "Primo strato: vale solo per la rete" },
+    { icon: "lock", title: "NTFS", text: "Secondo strato: vale sempre" },
+    { icon: "check", title: "Accesso", text: "Conta il più restrittivo dei due" },
+  ]}
+/>
+
 <Guided
   steps={[
     "Condivisione: Tutti → Modifica. NTFS: Amministrazione → Lettura.",
@@ -125,6 +135,16 @@ La soluzione sono i **gruppi**. Nei domini si usa spesso **AGDLP**:
 - **A**ccount (le persone) vanno nei gruppi **G**lobali (per ruolo: «Amministrazione», «Tirocinanti»);
 - i gruppi Globali vanno nei gruppi **D**omain **L**ocali (per risorsa: «Contratti-Modifica», «Contratti-Lettura»);
 - i **P**ermessi si danno ai gruppi di dominio locali.
+
+<Flow
+  caption="AGDLP: i permessi seguono i gruppi, non le persone."
+  steps={[
+    { icon: "user", title: "Account", text: "Le persone" },
+    { icon: "users", title: "Gruppi globali", text: "Per ruolo, per esempio Amministrazione" },
+    { icon: "folder", title: "Gruppi locali", text: "Per risorsa, per esempio Contratti-Lettura" },
+    { icon: "lock", title: "Permessi", text: "Si danno ai gruppi di dominio locali" },
+  ]}
+/>
 
 <Callout kind="trucco">
 Se Luca cambia ruolo, cambi **un** gruppo. Se arriva una nuova cartella, crei **un** gruppo di risorsa. I permessi restano leggibili.

@@ -56,6 +56,15 @@ Uno **scanner di porte** prova, una dopo l'altra, a «suonare» le porte di una 
 
 Alcuni strumenti provano anche a capire **quale programma e quale versione** sta ascoltando.
 
+<Layers
+  caption="I tre stati di una porta."
+  items={[
+    { icon: "check", title: "Aperta", text: "Un servizio risponde" },
+    { icon: "lock", title: "Chiusa", text: "La macchina risponde, ma nessun servizio ascolta" },
+    { icon: "shield", title: "Filtrata", text: "Nessuna risposta: di solito un firewall" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Una scansione fa rumore: genera molte connessioni e compare nei registri di chi la riceve. Per questo si fa solo con ambito e permesso chiari.
 </Callout>
@@ -115,6 +124,17 @@ Chi difende usa la scansione sulle proprie macchine per **rilevare** l'esposizio
 3. **Restringi** chi può raggiungerli, con regole di firewall o rete interna.
 4. **Cifra** dove possibile (sito su HTTPS, trasferimenti cifrati).
 5. **Ripeti** la scansione e controlla che il risultato sia cambiato come previsto.
+
+<Flow
+  caption="Il ciclo della riduzione dell'esposizione."
+  steps={[
+    { icon: "cross", title: "Spegni", text: "I servizi che non servono" },
+    { icon: "gear", title: "Aggiorna", text: "Quelli che servono" },
+    { icon: "lock", title: "Restringi", text: "Chi può raggiungerli" },
+    { icon: "key", title: "Cifra", text: "Dove è possibile" },
+    { icon: "search", title: "Ripeti", text: "La scansione per controllare" },
+  ]}
+/>
 
 Per **rilevare** scansioni fatte da altri, nei registri del firewall si vedono molti tentativi su porte diverse in pochi secondi dalla stessa sorgente.
 

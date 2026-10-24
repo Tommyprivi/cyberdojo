@@ -54,6 +54,17 @@ La domanda del caso: **come può un sistema nascondere chi sei senza chiederti d
 - **Nodo intermedio**: sa solo da quale nodo arriva e a quale va.
 - **Nodo di uscita**: parla con il sito, ma non sa chi sei.
 
+<Flow
+  caption="Il percorso a tre nodi: ognuno conosce solo un pezzo."
+  steps={[
+    { icon: "user", title: "Tu", text: "Con il Tor Browser" },
+    { icon: "server", title: "Ingresso", text: "Conosce il tuo IP, non la meta" },
+    { icon: "server", title: "Intermedio", text: "Sa solo prima e dopo" },
+    { icon: "server", title: "Uscita", text: "Conosce il sito, non te" },
+    { icon: "globe", title: "Sito", text: "Riceve la richiesta" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Nessun nodo conosce **insieme** chi sei e dove vai. Per ricostruire tutto, bisognerebbe osservare più punti nello stesso momento.
 </Callout>

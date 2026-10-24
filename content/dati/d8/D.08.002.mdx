@@ -108,6 +108,16 @@ Per vedere **tutte** le righe coinvolte, anche la prima copia, si usa `keep=Fals
   "5        104   Dario       55",
 ]} />
 
+<Flow
+  caption="Si guarda e si sceglie la chiave prima di togliere qualsiasi riga."
+  steps={[
+    { icon: "search", title: "Guarda", text: "duplicated() senza togliere" },
+    { icon: "key", title: "Chiave", text: "Per esempio id_ordine" },
+    { icon: "file", title: "Distingui", text: "Identiche: tieni una copia. Diverse: conflitto" },
+    { icon: "check", title: "Controlla", text: "Righe prima e dopo" },
+  ]}
+/>
+
 <Say who="sensei">Prima guardi, poi decidi. Un conflitto come il 104 non si risolve con un comando: si risolve chiedendo alla fonte.</Say>
 </Scene>
 

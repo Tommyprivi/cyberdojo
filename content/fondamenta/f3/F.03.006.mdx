@@ -50,11 +50,21 @@ Un **servizio** è un programma che offre qualcosa in modo continuo: accessi rem
 
 Un programma di questo tipo si chiama **demone** (in inglese *daemon*). Non c'entrano gli spiriti: è un aiutante invisibile che lavora in silenzio. Molti hanno un nome che finisce per `d`: `sshd` è il demone degli accessi remoti SSH.
 
+<Flow
+  caption="Come un servizio parte senza che nessuno lo lanci."
+  steps={[
+    { icon: "bolt", title: "Accensione", text: "Il server si avvia" },
+    { icon: "gear", title: "systemd", text: "Avvia i servizi abilitati" },
+    { icon: "server", title: "Demone", text: "Per esempio sshd" },
+    { icon: "link", title: "Porta 22", text: "In ascolto per gli accessi" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Nelle distribuzioni Linux moderne i servizi sono avviati e gestiti da un programma chiamato **systemd**. Il comando per parlarci è `systemctl`.
 </Callout>
 
-<Say who="assistente">Quando in `ps` vedi `sshd`, stai guardando un demone. Era quella la porta 22 di cui parlavamo nei log.</Say>
+<Say who="assistente">Quando in `ps` vedi `sshd`, stai guardando un demone. Era lui ad ascoltare sulla porta 22 di cui parlavamo all'inizio.</Say>
 </Scene>
 
 {/* screen */}

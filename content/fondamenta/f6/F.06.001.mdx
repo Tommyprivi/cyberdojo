@@ -101,6 +101,16 @@ Dove la maschera ha 1, il bit dell'indirizzo passa. Dove ha 0, il bit viene azze
   "rete  192.168.1.0",
 ]} caption="Ultimo ottetto: 66 AND 0 = 0. I primi tre passano intatti perché 255 è tutto a 1." />
 
+<Flow
+  caption="Come il computer decide se due indirizzi sono vicini."
+  steps={[
+    { icon: "laptop", title: "Indirizzo", text: "192.168.1.66" },
+    { icon: "code", title: "Maschera", text: "255.255.255.0" },
+    { icon: "gear", title: "AND bit a bit", text: "I bit a 0 si azzerano" },
+    { icon: "globe", title: "Rete", text: "192.168.1.0" },
+  ]}
+/>
+
 <Say who="assistente">La .66 e la .70 hanno la stessa rete, 192.168.1.0. Quindi sono vicine di casa.</Say>
 </Scene>
 

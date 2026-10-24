@@ -35,7 +35,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="Il portatile è ancora in rete">
+<Scene title="L'intruso è ancora in rete">
 Alla Rossi Serramenti l'analisi ha confermato: l'account di Marta Bianchi è stato usato da un estraneo, che ha copiato i listini. L'estraneo potrebbe essere ancora dentro.
 
 <Log lines={["10:31  server-file  login utente=mbianchi da 203.0.113.50", "10:34  server-file  creato account servizio-backup2", "10:40  server-file  nuova regola di avvio automatico"]} caption="Un nuovo account e una regola di avvio: non è più solo una password rubata." />
@@ -114,6 +114,17 @@ Nei casi dubbi, la scelta più sicura è **ricostruire** il sistema da un'immagi
 <Callout kind="regola">
 Non si dichiara finita finché non si è **verificato**: log che non mostrano più attività dell'intruso, nessun account o regola strana, monitoraggio attivo per giorni.
 </Callout>
+
+<Flow
+  caption="L'ordine di lavoro: prima le prove, poi la pulizia."
+  steps={[
+    { icon: "lock", title: "Isola", text: "Si toglie la rete" },
+    { icon: "folder", title: "Prove", text: "Si raccolgono quelle volatili" },
+    { icon: "key", title: "Credenziali", text: "Si ruotano password e chiavi" },
+    { icon: "bug", title: "Eradica", text: "Via backdoor e causa" },
+    { icon: "check", title: "Verifica", text: "Log puliti e monitoraggio" },
+  ]}
+/>
 
 <Guided
   steps={[

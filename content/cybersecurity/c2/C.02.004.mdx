@@ -50,6 +50,15 @@ Quello che chiude una chiave, lo apre solo l'altra.
 Per mandare un segreto a Sara: si cifra con la **chiave pubblica di Sara**. Solo Sara, con la **sua chiave privata**, può decifrare.
 </Callout>
 
+<Flow
+  caption="Nico scrive a Sara senza nessun segreto condiviso."
+  steps={[
+    { icon: "user", title: "Nico", text: "Cifra con la chiave pubblica di Sara" },
+    { icon: "mail", title: "In viaggio", text: "Il messaggio è illeggibile" },
+    { icon: "key", title: "Sara", text: "Decifra con la sua chiave privata" },
+  ]}
+/>
+
 <Say who="assistente">Nico non ha bisogno di nessun segreto per scrivere a Sara. Prende il lucchetto in bacheca e lo chiude. Tutto qui.</Say>
 </Scene>
 

@@ -144,6 +144,16 @@ Se dentro il `while` nessuno cambia la variabile della condizione, il ciclo non 
 
 Regola pratica: se hai una sequenza da scorrere, usa `for`; se aspetti che succeda qualcosa, usa `while`.
 
+<Flow
+  caption="Il while ricontrolla la condizione a ogni giro."
+  steps={[
+    { icon: "search", title: "Condizione", text: "tentativi < 3 è vera?" },
+    { icon: "gear", title: "Corpo", text: "Stampa e aumenta di uno" },
+    { icon: "clock", title: "Si ripete", text: "Si ricontrolla la condizione" },
+    { icon: "check", title: "Falsa", text: "Il ciclo finisce" },
+  ]}
+/>
+
 <Say who="assistente">Prima di lanciare un while, chiediti: quale riga dentro il ciclo avvicina la condizione alla fine?</Say>
 </Scene>
 

@@ -44,6 +44,12 @@ La soluzione si chiama **report riproducibile**: un solo file che contiene testo
 
 La domanda del caso: **come si fa un documento che si aggiorna da solo?**
 
+<Compare
+  caption="Il report a mano contro il report riproducibile."
+  left={{ title: "Report copiato a mano", points: ["Analisi e documento sono separati", "Un numero dimenticato nel titolo", "Il socio legge 120 accanto a un grafico da 150"] }}
+  right={{ title: "Report riproducibile", points: ["Un solo file con testo, codice e risultati", "I numeri li scrive il codice", "Cambiano i dati: si preme Render"] }}
+/>
+
 <Say who="sensei">Se un numero in un report l'hai scritto tu a mano, un giorno sarà sbagliato. I numeri li scrive il codice.</Say>
 </Scene>
 
@@ -95,6 +101,15 @@ Le tre parti:
 1. **L'intestazione (YAML)**, tra le righe `---`: titolo, formato di uscita (`html`, `docx`, `pdf`) e i parametri;
 2. **I blocchi di codice**, che cominciano con la riga `{r}` preceduta da tre apici rovesciati. Le righe che iniziano con `#|` sono opzioni: `echo: false` nasconde il codice e mostra solo il risultato, `message: false` nasconde i messaggi dei pacchetti;
 3. **Il testo**, in Markdown, con **codice in linea**: `` `r espressione` `` viene sostituito dal risultato. Così il numero nella frase è sempre quello giusto.
+
+<Layers
+  caption="Le tre parti di un file Quarto."
+  items={[
+    { icon: "gear", title: "Intestazione", text: "YAML: titolo, formato e parametri" },
+    { icon: "code", title: "Codice", text: "Blocchi che R esegue a ogni rendering" },
+    { icon: "file", title: "Testo", text: "Markdown, con numeri calcolati in linea" },
+  ]}
+/>
 
 In R Markdown le opzioni si scrivono nell'intestazione del blocco, ``{r, echo=FALSE}``, e il formato con `output: html_document`. Il resto è identico.
 

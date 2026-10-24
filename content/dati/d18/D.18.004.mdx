@@ -128,6 +128,15 @@ Le categorie del negozio sono in una tabella con un **auto-riferimento**: la col
   "6  | Saponi liquidi     | 3",
 ]} caption="La tabella categorie. «Tutto» è la radice: non ha padre." />
 
+<Layers
+  caption="La tabella categorie come albero, dalla radice alle foglie."
+  items={[
+    { icon: "folder", title: "Livello 1", text: "Tutto (la radice, senza padre)" },
+    { icon: "folder", title: "Livello 2", text: "Candele e Saponi" },
+    { icon: "file", title: "Livello 3", text: "Candele profumate, Candele decorative, Saponi liquidi" },
+  ]}
+/>
+
 Un JOIN normale scende di **un solo livello**. Per scendere fino in fondo senza sapere quanti livelli ci sono, serve una **CTE ricorsiva**: una query che richiama sé stessa finché trova nuove righe.
 
 <Log lines={[

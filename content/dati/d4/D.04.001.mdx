@@ -140,6 +140,12 @@ NameError: name 'prezzo' is not defined
 
 L'errore dice: «il nome `prezzo` non esiste». Non perché sia scritto male, ma perché nessuna cella eseguita l'ha ancora creato.
 
+<Compare
+  caption="Il kernel ricorda ciò che hai eseguito, nell'ordine in cui l'hai eseguito."
+  left={{ title: "B prima di A", points: ["Il kernel non conosce ancora prezzo", "NameError: name 'prezzo' is not defined", "Il codice è giusto, l'ordine no"] }}
+  right={{ title: "A poi B", points: ["La cella A crea prezzo = 10", "Il kernel lo ricorda", "La cella B stampa 30"] }}
+/>
+
 <Callout kind="attenzione">
 Il problema opposto è peggio, perché non dà errori. Modifichi la cella A (`prezzo = 20`) ma non la riesegui: la cella B continua a usare il vecchio valore, e i numeri sullo schermo sono sbagliati.
 </Callout>

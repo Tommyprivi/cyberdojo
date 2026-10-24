@@ -69,6 +69,16 @@ Esiste anche il modello **MITRE ATT&CK** (lo hai incontrato in «Conoscere l'avv
 3. **Consegna**: l'allegato arriva, per mail, chiavetta o sito. Traccia: la mail nei log del filtro posta.
 4. **Sfruttamento**: l'allegato aperto fa partire qualcosa che non doveva. Traccia: un comportamento strano del programma che l'ha aperto.
 
+<Flow
+  caption="Le prime quattro fasi: le prime due fuori da casa tua."
+  steps={[
+    { icon: "search", title: "Ricognizione", text: "Raccoglie informazioni" },
+    { icon: "bug", title: "Arma", text: "Prepara l'allegato" },
+    { icon: "mail", title: "Consegna", text: "L'allegato arriva" },
+    { icon: "bolt", title: "Sfruttamento", text: "Il file aperto fa partire il danno" },
+  ]}
+/>
+
 <Callout kind="trucco">
 Le prime due fasi avvengono **fuori** da casa tua. Le puoi quasi solo rendere più difficili: poche informazioni pubbliche, personale formato.
 </Callout>
@@ -82,6 +92,15 @@ Le prime due fasi avvengono **fuori** da casa tua. Le puoi quasi solo rendere pi
 5. **Installazione**: il malware si fissa sul computer per restare anche dopo il riavvio. Traccia: un nuovo programma o servizio all'avvio.
 6. **Comando e controllo** (C2): il malware contatta chi lo guida, per ricevere ordini. Traccia: collegamenti ripetuti, a orari regolari, verso un indirizzo mai visto. È il caso dei collegamenti notturni di Lucia.
 7. **Azioni sull'obiettivo**: raccolta e furto dei dati, cifratura, danno. Traccia: un grande archivio creato e inviato all'esterno.
+
+<Flow
+  caption="Le ultime tre fasi, con la traccia che lasciano."
+  steps={[
+    { icon: "gear", title: "Installazione", text: "Nuovo programma all'avvio" },
+    { icon: "link", title: "Comando e controllo", text: "Contatti notturni regolari" },
+    { icon: "skull", title: "Obiettivo", text: "Archivio creato e inviato fuori" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Più si va avanti, più il danno è reale. Ma più si va avanti, più **tracce** ci sono. La difesa sta nel notarle prima della fase sette.

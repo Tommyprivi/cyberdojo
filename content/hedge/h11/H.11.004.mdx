@@ -59,6 +59,16 @@ Una scommessa fittizia: 50% di probabilità di guadagnare 100, 50% di perdere 10
 
 Per il fondo la scommessa vale **-5**, per il trader **+5**. Il trader ha ogni interesse a ripeterla.
 
+<Flow
+  caption="Perché lo stesso rischio conviene al trader e non al fondo (esempio fittizio)."
+  steps={[
+    { icon: "coin", title: "Scommessa", text: "50%: +100 oppure 50%: -100" },
+    { icon: "user", title: "Trader", text: "10% dei profitti, nessuna perdita: +5" },
+    { icon: "database", title: "Fondo", text: "Valore della scommessa: -5" },
+    { icon: "warning", title: "Risultato", text: "Il trader ha interesse a ripeterla" },
+  ]}
+/>
+
 <Callout kind="attenzione">
 Quando i guadagni sono miei e le perdite sono di altri, il rischio sale. Nessuna persona è «cattiva»: è matematica degli incentivi.
 </Callout>
@@ -75,6 +85,12 @@ Due principi semplici:
 - **La separazione dei compiti**: chi esegue un'operazione non deve poterla anche registrare e controllare da solo.
 
 Un esempio storico, in sintesi: nel 1995 la banca britannica **Barings** fallì dopo perdite nascoste da un trader, che di fatto registrava e controllava da solo le proprie operazioni. Mancava proprio la separazione dei compiti.
+
+<Compare
+  caption="Chi esegue e chi controlla."
+  left={{ title: "Compiti non separati", points: ["Chi opera registra e controlla le proprie operazioni", "Le perdite si nascondono (Barings, 1995)"] }}
+  right={{ title: "Compiti separati", points: ["Chi esegue non registra né controlla da solo", "Il controllo indipendente può dire no"] }}
+/>
 
 <Callout kind="regola">
 Un controllo senza il potere di fermare un'operazione è solo un verbale.

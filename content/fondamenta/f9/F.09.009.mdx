@@ -152,6 +152,16 @@ Se lanci il client **prima** del server, nessuno ascolta sulla porta 5050 e Pyth
 
 Hai appena visto con i tuoi occhi cosa significa «porta aperta»: è un programma in ascolto. Se lo fermi, la porta si chiude.
 
+<Flow
+  caption="Server e client, nell'ordine in cui si incontrano."
+  steps={[
+    { icon: "server", title: "bind", text: "Il server si lega alla porta" },
+    { icon: "bell", title: "listen", text: "Si mette in attesa" },
+    { icon: "laptop", title: "connect", text: "Il client si collega" },
+    { icon: "check", title: "accept", text: "Il server accetta chi arriva" },
+  ]}
+/>
+
 <Say who="assistente">Fai anche una prova di errore: avvia il client senza il server, e leggi il messaggio. Capire gli errori è metà del lavoro.</Say>
 </Scene>
 

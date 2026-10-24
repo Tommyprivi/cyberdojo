@@ -60,6 +60,16 @@ Si usano i quartili, come nel box plot (stessa convenzione: mediana delle due me
   ]}
 />
 
+<Flow
+  caption="La regola dell'IQR sui dieci tempi di attesa."
+  steps={[
+    { icon: "chart", title: "Quartili", text: "Q1 = 5 e Q3 = 9" },
+    { icon: "gear", title: "IQR", text: "9 − 5 = 4, per 1,5 fa 6" },
+    { icon: "check", title: "Limiti", text: "Da −1 a 15" },
+    { icon: "warning", title: "Verdetto", text: "45 è fuori: outlier" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 La regola dell'1,5 è una convenzione, attribuita allo statistico John Tukey. Con 3 al posto di 1,5 si cercano solo gli outlier «estremi».
 </Callout>
@@ -96,6 +106,16 @@ Trovare l'outlier è solo il primo passo. Poi si **indaga**.
 2. **Se è reale**, tienilo: è un pezzo di verità (un cliente che ha speso moltissimo, un giorno di picco).
 3. **Documenta tutto**: scrivi cosa hai trovato e cosa hai fatto, e quando serve mostra i risultati sia con sia senza.
 </Callout>
+
+<Flow
+  caption="Che cosa fare davanti a un outlier."
+  steps={[
+    { icon: "warning", title: "Trovato", text: "Un valore fuori dai limiti" },
+    { icon: "search", title: "Indagare", text: "Controlla la fonte" },
+    { icon: "check", title: "Decidere", text: "Errore: correggi. Reale: tieni" },
+    { icon: "book", title: "Documentare", text: "Scrivi cosa hai fatto" },
+  ]}
+/>
 
 <Callout kind="attenzione">
 Cosa **non** fare: togliere un valore solo perché ti fa uscire un risultato che non ti piace. Non è pulizia dei dati, è truccare la risposta.

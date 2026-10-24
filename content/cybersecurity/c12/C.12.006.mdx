@@ -95,6 +95,12 @@ Cosa succede:
 - il pannello sulla porta 8080 è raggiungibile **solo dalla sede**;
 - il database 3306 non è aperto: resta usabile **dallo stesso server** (traffico locale), ma non da fuori.
 
+<Compare
+  caption="Il server di Moretti Studio, prima e dopo ufw."
+  left={{ title: "Prima di ufw", points: ["Il database 3306 è raggiungibile da chiunque", "Il pannello 8080 è aperto a ogni indirizzo"] }}
+  right={{ title: "Dopo ufw", points: ["3306 chiuso da fuori, usabile solo dallo stesso server", "8080 raggiungibile solo dalla sede", "SSH e HTTPS aperti, il resto bloccato"] }}
+/>
+
 <Callout kind="attenzione">
 Prima di `ufw enable`, controlla **sempre** di aver permesso SSH. Altrimenti, collegato da remoto, ti chiudi fuori e per rientrare serve un accesso fisico o la console del fornitore.
 </Callout>
@@ -125,6 +131,16 @@ Come si legge:
 - **catena** (`chain input`): il percorso dei pacchetti **in ingresso**;
 - **policy drop**: ciò che nessuna regola permette viene scartato;
 - **regole**: si valutano **dall'alto in basso**; la prima che corrisponde decide.
+
+<Flow
+  caption="Che cosa succede a un pacchetto in ingresso."
+  steps={[
+    { icon: "globe", title: "Pacchetto", text: "Arriva dalla rete sulla catena input" },
+    { icon: "search", title: "Regole in ordine", text: "Dall'alto in basso: la prima che corrisponde decide" },
+    { icon: "warning", title: "Nessuna regola?", text: "Se nessuna corrisponde, vale la policy" },
+    { icon: "cross", title: "Drop", text: "Con policy drop il pacchetto è scartato" },
+  ]}
+/>
 
 Comandi utili: `sudo nft list ruleset` per vedere ciò che è attivo, e `sudo nft -c -f file.nft` per **controllare la sintassi** senza applicare.
 

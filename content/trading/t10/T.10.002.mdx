@@ -56,6 +56,16 @@ Ogni richiesta ha:
 - un **metodo**: `GET` per leggere, `POST` per creare, `DELETE` per cancellare;
 - degli **header**, informazioni extra, tra cui l'identità di chi chiede.
 
+<Flow
+  caption="Una richiesta parte dal programma e torna con un codice e dei dati."
+  steps={[
+    { icon: "code", title: "Programma", text: "Prepara la richiesta" },
+    { icon: "mail", title: "Richiesta", text: "Indirizzo, metodo, header" },
+    { icon: "server", title: "Broker", text: "Controlla e prepara la risposta" },
+    { icon: "file", title: "Risposta", text: "Codice di stato e dati" },
+  ]}
+/>
+
 <Callout kind="curiosita">
 Gli indirizzi in questo corso, come `example-broker.test`, sono **inventati**: non esistono. Servono a mostrare la forma, senza toccare nessun servizio vero.
 </Callout>

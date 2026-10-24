@@ -72,6 +72,12 @@ Con la query parametrizzata, i valori viaggiano come **dati**, mai come codice. 
 
 Se qualcuno scrive come nome `x' OR '1'='1`, il database cerca un utente che si chiami proprio così, apici compresi. Non lo trova. Fine.
 
+<Compare
+  caption="Stesso testo scritto dall'utente, due esiti diversi."
+  left={{ title: "Query incollata", points: ["Codice e dati in un'unica stringa", "Il testo dell'utente può diventare istruzione"] }}
+  right={{ title: "Query parametrizzata", points: ["Prima la forma, poi i valori a parte", "Il testo resta sempre un dato"] }}
+/>
+
 <Callout kind="regola">
 Codice e dati viaggiano separati. È questo il principio: il testo dell'utente non può mai diventare istruzione.
 </Callout>
