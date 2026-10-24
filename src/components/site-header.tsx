@@ -19,7 +19,10 @@ export function SiteHeader({ wide = false, app = false }: { wide?: boolean; app?
             <Seal size={30} />
             {SITE.name}
           </Link>
-          <UserMenu variant="avatar" />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserMenu variant="avatar" />
+          </div>
         </div>
       </header>
     );

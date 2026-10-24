@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useConsent } from "../consent/consent-provider";
 import { PlayIcon } from "../icons";
 import { usePlayer } from "./player-context";
@@ -19,6 +19,20 @@ export function Video() {
   const { video } = usePlayer();
   const { thirdParty, ask } = useConsent();
   const [loaded, setLoaded] = useState(false);
+  const box = useRef<HTMLElement>(null);
+
+  // Le schermate della lezione restano montate anche se nascoste: quando questa sparisce
+  // (si passa alla successiva) il video si ferma, altrimenti l'audio continuerebbe a suonare.
+  useEffect(() => {
+    const el = box.current;
+    if (!el || !loaded) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting && el.offsetParent === null) setLoaded(false);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [loaded]);
+
   if (!video) return null;
 
   const params = new URLSearchParams({ start: String(video.start), end: String(video.end), rel: "0", autoplay: "1", hl: "it" });
@@ -32,7 +46,7 @@ export function Video() {
   const minutes = Math.max(1, Math.round((video.end - video.start) / 60));
 
   return (
-    <figure className="my-2 grid max-w-4xl gap-2">
+    <figure ref={box} className="my-2 grid max-w-4xl gap-2">
       <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-deep">
         {loaded ? (
           <iframe
@@ -69,9 +83,16 @@ export function Video() {
         <span>
           Video di <strong>{video.channel}</strong>, incorporato da YouTube.
         </span>
-        <a href={watch} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline">
-          Apri su YouTube
-        </a>
+        <span className="flex gap-4">
+          {loaded ? (
+            <button type="button" onClick={() => setLoaded(false)} className="font-semibold text-primary underline">
+              Ferma il video
+            </button>
+          ) : null}
+          <a href={watch} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary underline">
+            Apri su YouTube
+          </a>
+        </span>
       </figcaption>
     </figure>
   );

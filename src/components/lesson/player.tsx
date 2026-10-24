@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type TouchEvent } from "react";
 import { CheckIcon, LockIcon } from "../icons";
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
+import { ThemeToggle } from "../theme-toggle";
 import { PlayerContext, type LessonVideo } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
@@ -155,6 +156,7 @@ export function LessonPlayer({
               <p className="w-12 shrink-0 text-right font-mono text-xs text-muted">
                 {index + 1}/{screens.length}
               </p>
+              <ThemeToggle />
             </div>
             <p className="truncate font-mono text-xs uppercase tracking-widest text-muted">
               {lessonId} · {title}
@@ -180,9 +182,7 @@ export function LessonPlayer({
               <div className="h-full bg-primary transition-[width] duration-300" style={{ width: `${pct}%` }} />
             </div>
             <p className="font-mono text-xs text-muted">{pct}%</p>
-            <button type="button" disabled title="L'audio arriva con la pipeline TTS (E6)" className="chip min-h-9 text-sm opacity-60">
-              Audio: presto
-            </button>
+            <ThemeToggle />
           </div>
 
           <main
