@@ -4,12 +4,16 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type TouchEvent } from "react";
 import { CheckIcon, LockIcon } from "../icons";
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
+import { Mascot } from "../mascot";
 import { ThemeToggle } from "../theme-toggle";
 import { PlayerContext, type LessonVideo } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
 
 const pad = (n: number) => String(n).padStart(2, "0");
+
+// Il Sensei cambia espressione da una schermata all'altra; serio sulla verifica.
+const MOODS = ["happy", "attento", "happy", "stern"] as const;
 
 /**
  * Player della lezione, con due impianti:
@@ -31,6 +35,7 @@ export function LessonPlayer({
   const [index, setIndex] = useState(0);
   const [reached, setReached] = useState(0); // schermata più avanti raggiunta: fin lì l'indice è cliccabile
   const [verified, setVerified] = useState(false);
+  const [done, setDone] = useState(false);
   const ctx = useMemo(() => ({ lessonId, video, markVerified: () => setVerified(true) }), [lessonId, video]);
 
   const screen = screens[index];
@@ -192,11 +197,36 @@ export function LessonPlayer({
             className="flex-1 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4 lg:overflow-y-auto lg:px-14 lg:pb-12 lg:pt-10 2xl:px-20"
           >
             <article className="mx-auto w-full max-w-2xl rounded-lg border border-border bg-surface p-5 sm:p-8 lg:mx-0 lg:max-w-[84rem] lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:text-[1.0625rem]">
-              <p className="mb-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent lg:mb-3">Schermata {pad(index + 1)}</p>
-              <h1 className="mb-6 font-display text-3xl font-bold lg:mb-8 lg:max-w-4xl lg:text-5xl">{screen.title}</h1>
+              {done ? (
+                <div className="rise grid justify-items-center gap-4 py-10 text-center">
+                  <Mascot size={160} mood="happy" animate />
+                  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Lezione finita</p>
+                  <h1 className="font-display text-4xl font-bold lg:text-5xl">Ottimo lavoro!</h1>
+                  <p className="max-w-md text-muted">
+                    Hai finito «{title}». Il Sensei è soddisfatto, per oggi. Torna al percorso per la prossima.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-3">
+                    <Link href="/percorso" className="btn btn-primary min-h-14 min-w-56 text-base">
+                      Avanti con il percorso
+                    </Link>
+                    <button type="button" onClick={() => setDone(false)} className="btn btn-ghost min-h-14">
+                      Rivedi la lezione
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+              <div hidden={done} className="mb-6 flex items-center gap-4 lg:mb-8">
+                <Mascot size={64} mood={screen.gated ? "stern" : MOODS[index % MOODS.length]} className="shrink-0 max-sm:size-12" />
+                <div className="min-w-0">
+                  <p className="mb-1 font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                    Schermata {pad(index + 1)} di {pad(screens.length)}
+                  </p>
+                  <h1 className="font-display text-3xl font-bold lg:max-w-4xl lg:text-5xl">{screen.title}</h1>
+                </div>
+              </div>
               {/* Tutte le schermate restano montate: la verifica non perde lo stato se si torna indietro. */}
               {screens.map((s, i) => (
-                <section key={i} hidden={i !== index} aria-hidden={i !== index} className={i === index ? "rise" : ""} style={{ "--d": "0s" } as React.CSSProperties}>
+                <section key={i} hidden={done || i !== index} aria-hidden={done || i !== index} className={i === index ? "rise" : ""} style={{ "--d": "0s" } as React.CSSProperties}>
                   {s.node}
                 </section>
               ))}
@@ -217,10 +247,14 @@ export function LessonPlayer({
             >
               <ChevronLeftIcon width={24} height={24} />
             </button>
-            {last ? (
+            {done ? (
               <Link href="/percorso" className="btn btn-primary min-h-14 flex-1 text-base">
-                Completa la lezione
+                Avanti con il percorso
               </Link>
+            ) : last ? (
+              <button type="button" onClick={() => setDone(true)} className="btn btn-primary min-h-14 flex-1 text-base">
+                Completa la lezione
+              </button>
             ) : (
               <button type="button" onClick={() => go(index + 1)} disabled={blocked} className="btn btn-primary min-h-14 flex-1 text-base">
                 {blocked ? "Prima la verifica" : "Continua"}
@@ -235,10 +269,14 @@ export function LessonPlayer({
                 <ChevronLeftIcon width={18} height={18} /> Indietro
               </span>
             </button>
-            {last ? (
+            {done ? (
               <Link href="/percorso" className="btn btn-primary min-w-48">
-                Completa la lezione
+                Avanti con il percorso
               </Link>
+            ) : last ? (
+              <button type="button" onClick={() => setDone(true)} className="btn btn-primary min-w-48">
+                Completa la lezione
+              </button>
             ) : (
               <button type="button" onClick={() => go(index + 1)} disabled={blocked} className="btn btn-primary min-w-48">
                 <span className="inline-flex items-center gap-2">
