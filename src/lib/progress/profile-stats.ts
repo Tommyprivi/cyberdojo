@@ -22,10 +22,11 @@ export function levelOf(xp: number) {
   };
 }
 
-export type MedalIcon = "check" | "bolt" | "flame" | "belt" | "book";
+export type MedalIcon = "check" | "bolt" | "flame" | "belt" | "book" | "target";
 export type Medal = { id: string; label: string; hint: string; icon: MedalIcon; unlocked: boolean };
 
-export function medalsFor(i: { xp: number; lessons: number; bestStreak: number; beltDone: boolean }): Medal[] {
+export function medalsFor(i: { xp: number; lessons: number; bestStreak: number; beltDone: boolean; /** Sfide settimanali vinte (settimane concluse). */ challengesWon?: number }): Medal[] {
+  const wins = i.challengesWon ?? 0;
   return [
     { id: "first", label: "Primo caso", hint: "Completa una lezione", icon: "check", unlocked: i.lessons >= 1 },
     { id: "xp100", label: "100 XP", hint: "Raggiungi 100 XP", icon: "bolt", unlocked: i.xp >= 100 },
@@ -35,6 +36,8 @@ export function medalsFor(i: { xp: number; lessons: number; bestStreak: number; 
     { id: "s7", label: "Serie di 7", hint: "7 giorni di fila", icon: "flame", unlocked: i.bestStreak >= 7 },
     { id: "s30", label: "Serie di 30", hint: "30 giorni di fila", icon: "flame", unlocked: i.bestStreak >= 30 },
     { id: "belt", label: "Cintura gialla", hint: "Completa il primo modulo", icon: "belt", unlocked: i.beltDone },
+    { id: "challenge1", label: "Sfidante", hint: "Vinci una sfida settimanale", icon: "target", unlocked: wins >= 1 },
+    { id: "challenge5", label: "Campione di sfide", hint: "Vinci 5 sfide settimanali", icon: "target", unlocked: wins >= 5 },
   ];
 }
 

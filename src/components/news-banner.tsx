@@ -1,0 +1,50 @@
+"use client";
+
+import { useState, useSyncExternalStore } from "react";
+
+/** Versione del banner: cambiala quando c'è un nuovo aggiornamento, così tutti lo rivedono una volta. */
+const VERSION = "2026-10-24";
+const KEY = "news-banner-dismissed";
+
+function read(): string | null {
+  try {
+    return localStorage.getItem(KEY);
+  } catch {
+    return null;
+  }
+}
+
+/** Banner «novità» chiudibile. Si ricorda la scelta nel browser (se il browser lo permette). */
+export function NewsBanner() {
+  const dismissedVersion = useSyncExternalStore(
+    () => () => {},
+    read,
+    () => VERSION,
+  );
+  const [hidden, setHidden] = useState(false);
+  if (hidden || dismissedVersion === VERSION) return null;
+
+  return (
+    <aside role="region" aria-label="Novità" className="border-b border-border bg-deep text-deep-fg">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-2 text-sm">
+        <p className="flex-1">
+          <strong>Novità:</strong> nuovi corsi di <strong>trading con Python</strong> e <strong>hedge fund</strong>, approfondimenti di cybersecurity, terminale Python e Linux nel browser, classifica e amici con codice (solo per chi attiva la partecipazione), autenticazione a due fattori.
+        </p>
+        <button
+          type="button"
+          className="font-bold underline"
+          onClick={() => {
+            try {
+              localStorage.setItem(KEY, VERSION);
+            } catch {
+              /* il browser non permette di salvare: il banner resta chiuso solo per questa visita */
+            }
+            setHidden(true);
+          }}
+        >
+          Chiudi
+        </button>
+      </div>
+    </aside>
+  );
+}

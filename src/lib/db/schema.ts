@@ -295,3 +295,6 @@ export const legalConsents = pgTable(
   },
   (t) => [index("consents_user_idx").on(t.userId), ownRow("user_id")],
 ).enableRLS();
+
+// Lato social (profilo pubblico, amici, gruppi, segnalazioni, sfide): vedi schema-social.ts e docs/social.md.
+export * from "./schema-social";

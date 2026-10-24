@@ -76,6 +76,23 @@ export function authErrorMessage(error: { code?: string; message?: string; statu
       return "La password è troppo lunga.";
     case "INVALID_EMAIL":
       return "L'email non sembra valida.";
+    // Verifica in due passaggi: messaggi volutamente generici, non dicono cosa è sbagliato oltre al necessario.
+    case "INVALID_PASSWORD":
+      return "Password non corretta.";
+    case "INVALID_CODE":
+      return "Codice non valido o scaduto. Riprova col codice che vedi adesso nell'app.";
+    case "INVALID_BACKUP_CODE":
+      return "Codice di recupero non valido. Ricorda che ognuno vale una sola volta.";
+    case "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE":
+    case "INVALID_TWO_FACTOR_COOKIE":
+      return "La verifica è scaduta o ci sono stati troppi tentativi. Torna indietro e accedi di nuovo.";
+    case "ACCOUNT_TEMPORARILY_LOCKED":
+      return "Troppi tentativi sbagliati. Per sicurezza aspetta un quarto d'ora e riprova.";
+    case "TOTP_ALREADY_ENABLED":
+      return "La verifica in due passaggi è già attiva.";
+    case "TWO_FACTOR_NOT_ENABLED":
+    case "TOTP_NOT_ENABLED":
+      return "La verifica in due passaggi non è attiva su questo account.";
   }
   if (error?.status === 429) return "Troppi tentativi: aspetta un minuto e riprova.";
   return "Non è andata a buon fine. Riprova tra poco.";

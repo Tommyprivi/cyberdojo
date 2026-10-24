@@ -78,6 +78,18 @@ export default function PrivacyPage() {
           nome o la tua email al fornitore del modello. Vedi il punto 4.
         </dd>
 
+        <dt>Social: soprannome, classifica, amici, gruppi e sfide</dt>
+        <dd>
+          Solo se lo attivi: un soprannome di fantasia, un avatar scelto da un elenco, i punti XP della
+          settimana, le amicizie e i gruppi a cui ti iscrivi, le sfide a cui partecipi e i blocchi che
+          imposti. <strong>Base giuridica:</strong> consenso (art. 6.1.a GDPR), con interruttori separati,
+          tutti spenti di default e modificabili in ogni momento da Profilo, «Social e privacy». Gli altri
+          vedono solo soprannome, avatar e punti (e, per gli amici, serie e cintura), e solo persone della
+          tua fascia d&apos;età. Non ci sono chat, messaggi, foto né ricerca di utenti. Se segnali un
+          soprannome o un gruppo, conserviamo solo l&apos;identificativo segnalato, il motivo e la data, senza
+          alcun dato di chi ha segnalato.
+        </dd>
+
         <dt>Email di servizio</dt>
         <dd>
           Link di accesso, conferma dell&apos;indirizzo, recupero password, benvenuto. Servono a far
@@ -158,6 +170,7 @@ export default function PrivacyPage() {
         <li>Dati dell&apos;account e di studio: finché l&apos;account esiste. Li cancelliamo entro 30 giorni dalla richiesta di cancellazione.</li>
         <li>Dati di accesso (IP e browser): 30 giorni.</li>
         <li>Token di verifica e di recupero password: pochi minuti o poche ore, dopodiché scadono da soli.</li>
+        <li>Dati del Social: finché l&apos;account esiste; sono cancellati con l&apos;account (anche i gruppi che hai creato) e compaiono nel file di esportazione dei dati. Le segnalazioni, che non contengono dati personali, restano per tutelare la community.</li>
         <li>Accettazioni dei documenti: finché l&apos;account esiste e per i tempi che la legge ci chiede di dimostrare l&apos;accordo.</li>
         <li>Email inviate: restano nel provider di posta per il tempo previsto dalla loro policy, con le protezioni del caso.</li>
       </ul>

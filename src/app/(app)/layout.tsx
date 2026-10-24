@@ -1,5 +1,6 @@
 import type { Viewport } from "next";
 import { BottomNav } from "@/components/bottom-nav";
+import { NewsBanner } from "@/components/news-banner";
 import { Sidebar } from "@/components/sidebar";
 import { SiteHeader } from "@/components/site-header";
 
@@ -18,6 +19,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
       <Sidebar />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
+        <NewsBanner />
         <div className="lg:hidden">
           <SiteHeader app />
         </div>

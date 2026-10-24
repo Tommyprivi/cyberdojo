@@ -8,6 +8,7 @@ import { sendMail } from "@/lib/email";
 import { welcomeEmail } from "@/lib/mail/templates";
 import { profileInput } from "@/lib/profile-options";
 import { getSessionUser } from "@/lib/session";
+import { exportSocial, resetSocialIfAgeChanged } from "@/lib/social/service";
 
 const reminderInput = z.object({ enabled: z.boolean(), hour: z.number().int().min(0).max(23) });
 
@@ -41,6 +42,8 @@ export async function saveProfile(input: unknown): Promise<ActionResult> {
       });
     return !existing;
   });
+  // Se la fascia d'età è cambiata, il social si azzera subito (nessun resto nella vecchia fascia).
+  await resetSocialIfAgeChanged(user.id);
 
   // Il benvenuto parte solo alla prima creazione del profilo, non a ogni salvataggio. Se l'invio
   // fallisce, la registrazione resta valida: un'email persa non deve bloccare nessuno.
@@ -97,6 +100,8 @@ export async function exportMyData(): Promise<{ ok: true; json: string; filename
       note: await tx.select().from(schema.notes).where(eq(schema.notes.userId, user.id)),
       certificati: await tx.select().from(schema.certificates).where(eq(schema.certificates.userId, user.id)),
       consensi: await tx.select().from(schema.legalConsents).where(eq(schema.legalConsents.userId, user.id)),
+      // Lato social: profilo pubblico, amicizie, gruppi, blocchi, sfide (solo righe tue, niente dati di altri).
+      social: await exportSocial(tx, user.id),
     };
   });
 

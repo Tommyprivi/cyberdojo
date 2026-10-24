@@ -21,3 +21,6 @@ export const CloseIcon = (p: P) => (
 export const LogOutIcon = (p: P) => (
   <svg {...base} {...p}><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9" /></svg>
 );
+export const UsersIcon = (p: P) => (
+  <svg {...base} {...p}><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.4c2 .7 3.5 2.5 3.5 5.6" /></svg>
+);

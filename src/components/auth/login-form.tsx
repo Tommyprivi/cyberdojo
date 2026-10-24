@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { authErrorMessage } from "./auth-card";
+import { TwoFactorStep } from "./two-factor-step";
 
 /** Solo percorsi interni: `?next=` non può portare su un altro sito. */
 function safeNext(next: string | null) {
@@ -13,17 +14,26 @@ function safeNext(next: string | null) {
 
 export function LoginForm() {
   const router = useRouter();
-  const next = safeNext(useSearchParams().get("next"));
+  const params = useSearchParams();
+  const next = safeNext(params.get("next"));
+  // Link magico e Google non aprono la sessione a chi ha la verifica in due passaggi: tornano qui con un errore.
+  const blockedBy2fa = ["failed_to_create_session", "unable_to_create_session"].includes(params.get("error") ?? "");
   const [mode, setMode] = useState<"password" | "link">("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    blockedBy2fa
+      ? "Se hai attivato la verifica in due passaggi, il link via email e Google non bastano: accedi con email e password e poi col codice dell'app."
+      : null,
+  );
   const [sent, setSent] = useState(false);
+  const [needsCode, setNeedsCode] = useState(false);
+  const errorCallbackURL = `/accedi?next=${encodeURIComponent(next)}`;
 
   const google = async () => {
     setError(null);
-    const { error } = await authClient.signIn.social({ provider: "google", callbackURL: next });
+    const { error } = await authClient.signIn.social({ provider: "google", callbackURL: next, errorCallbackURL });
     if (error) setError(authErrorMessage(error));
   };
 
@@ -32,19 +42,34 @@ export function LoginForm() {
     setBusy(true);
     setError(null);
     if (mode === "password") {
-      const { error } = await authClient.signIn.email({ email, password });
+      const { data, error } = await authClient.signIn.email({ email, password });
       if (error) setError(authErrorMessage(error));
-      else {
+      else if (data && "twoFactorRedirect" in data && data.twoFactorRedirect) {
+        setPassword("");
+        setNeedsCode(true);
+      } else {
         router.push(next);
         router.refresh();
       }
     } else {
-      const { error } = await authClient.signIn.magicLink({ email, callbackURL: next });
+      const { error } = await authClient.signIn.magicLink({ email, callbackURL: next, errorCallbackURL });
       if (error) setError(authErrorMessage(error));
       else setSent(true);
     }
     setBusy(false);
   };
+
+  if (needsCode) {
+    return (
+      <TwoFactorStep
+        next={next}
+        onRestart={(message) => {
+          setNeedsCode(false);
+          setError(message || null);
+        }}
+      />
+    );
+  }
 
   if (sent) {
     return (

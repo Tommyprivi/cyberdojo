@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { BeltIcon, BoltIcon, BookIcon, CheckIcon, FlameIcon } from "../icons";
+import { BeltIcon, BoltIcon, BookIcon, CheckIcon, FlameIcon, TargetIcon } from "../icons";
 import { lastDays, type MedalIcon } from "@/lib/progress/profile-stats";
 
 /** Cintura illustrata: fascia, nodo centrale e due code. Il colore è quello della cintura (variabili dell'app). */
@@ -18,7 +18,7 @@ export function BeltArt({ color, className = "" }: { color: "white" | "yellow"; 
   );
 }
 
-const GLYPH: Record<MedalIcon, typeof BoltIcon> = { check: CheckIcon, bolt: BoltIcon, flame: FlameIcon, belt: BeltIcon, book: BookIcon };
+const GLYPH: Record<MedalIcon, typeof BoltIcon> = { check: CheckIcon, bolt: BoltIcon, flame: FlameIcon, belt: BeltIcon, book: BookIcon, target: TargetIcon };
 
 /** Medaglia con nastro. Sbloccata: sigillo rosso e scintilla; bloccata: tratteggiata e spenta. */
 export function MedalArt({ icon, unlocked, size = 64 }: { icon: MedalIcon; unlocked: boolean; size?: number }) {

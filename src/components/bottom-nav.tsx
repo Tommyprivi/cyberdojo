@@ -15,7 +15,7 @@ export function BottomNav() {
       aria-label="Navigazione principale"
       className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      <ul className="mx-auto grid max-w-xl grid-cols-5">
+      <ul className="mx-auto grid max-w-xl grid-cols-6">
         {APP_NAV.map(({ href, label, Icon }) => {
           const active = isActive(pathname, href);
           return (
@@ -23,12 +23,12 @@ export function BottomNav() {
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-[3.75rem] flex-col items-center justify-center gap-0.5 text-xs font-semibold ${
+                className={`flex min-h-[3.75rem] flex-col items-center justify-center gap-0.5 text-[0.6875rem] font-semibold ${
                   active ? "text-primary" : "text-muted"
                 }`}
               >
                 <span
-                  className={`grid h-8 w-14 place-items-center rounded-full transition-colors ${active ? "bg-primary/15" : ""}`}
+                  className={`grid h-8 w-12 place-items-center rounded-full transition-colors ${active ? "bg-primary/15" : ""}`}
                 >
                   <Icon width={26} height={26} strokeWidth={active ? 2.4 : 1.9} />
                 </span>

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { AccountActions } from "@/components/account-actions";
 import { BoltIcon, FlameIcon } from "@/components/icons";
 import { Mascot } from "@/components/mascot";
 import { BeltArt, MedalArt, StreakCalendar } from "@/components/profilo/graphics";
 import { ProfileTabs } from "@/components/profilo/profile-tabs";
+import { SecuritySection } from "@/components/profilo/security-section";
 import { ReminderSettings } from "@/components/reminder-settings";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
@@ -14,6 +16,7 @@ import { GOALS } from "@/lib/profile-options";
 import { levelOf, medalsFor } from "@/lib/progress/profile-stats";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
+import { getChallengeWins } from "@/lib/social/service";
 
 export const metadata: Metadata = { title: "Profilo", robots: { index: false } };
 
@@ -60,7 +63,8 @@ async function ProfiloContent() {
   const beltPct = pool.length ? Math.round((beltDoneCount / pool.length) * 100) : 0;
 
   const doneDays = new Set([...completedAt.values()].map((d) => localDay(d, tz)));
-  const medals = medalsFor({ xp, lessons: completed.size, bestStreak: streak.best, beltDone });
+  const challengesWon = await getChallengeWins(user.id);
+  const medals = medalsFor({ xp, lessons: completed.size, bestStreak: streak.best, beltDone, challengesWon });
   const unlocked = medals.filter((m) => m.unlocked).length;
 
   const rows: [string, string][] = [
@@ -96,6 +100,16 @@ async function ProfiloContent() {
             </p>
             <ThemeToggle />
           </div>
+          <Link
+            href="/profilo/social"
+            className="flex min-h-11 items-center justify-between gap-3 rounded-md border border-border bg-background p-3 hover:bg-surface-muted"
+          >
+            <span>
+              <span className="block font-semibold">Social e privacy</span>
+              <span className="block text-sm text-muted">Soprannome, avatar e cosa vedono gli altri.</span>
+            </span>
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       ),
     },
@@ -110,6 +124,11 @@ async function ProfiloContent() {
           email={user.email}
         />
       ),
+    },
+    {
+      id: "sicurezza",
+      label: "Sicurezza",
+      content: <SecuritySection userId={user.id} email={user.email} enabled={Boolean(user.twoFactorEnabled)} />,
     },
     {
       id: "diritti",

@@ -46,8 +46,22 @@ export default function MinoriPage() {
       </ul>
       <p>
         <strong>Niente</strong> profilaggio, <strong>niente</strong> pubblicità, <strong>niente</strong> acquisti
-        in-app, <strong>niente</strong> chat con adulti. Nessun dato viene venduto o ceduto.
+        in-app, <strong>niente</strong> chat (né con adulti né con altri minori). Nessun dato viene venduto o ceduto.
       </p>
+
+      <h3>Il Social, per chi ha 14-17 anni</h3>
+      <p>
+        Classifica, amici, gruppi e sfide sono <strong>facoltativi e spenti di default</strong>. Per i
+        minori valgono regole in più:
+      </p>
+      <ul>
+        <li>Niente chat, niente messaggi privati, niente foto, niente testo libero visibile ad altri, niente ricerca di utenti, niente nomi reali: ci si riconosce solo con un soprannome e un avatar scelto da un elenco.</li>
+        <li>I minori vedono e sono visti <strong>solo da altri minori</strong>: classifica e amicizie sono separate dagli adulti.</li>
+        <li>Si diventa amici solo con un codice invito che ci si scambia fuori dal sito, e serve l&apos;accettazione di entrambi.</li>
+        <li>I minori non possono creare gruppi: entrano solo con un codice, in gruppi creati da un adulto responsabile (un insegnante, un genitore). Il gruppo dice sempre che è visibile ai membri.</li>
+        <li>Ogni soprannome e ogni gruppo ha il pulsante «Segnala», che blocca subito per chi segnala.</li>
+        <li>Tutto si spegne con un tocco, e cancellando l&apos;account sparisce ogni dato del Social.</li>
+      </ul>
 
       <h2>3. Come funziona per i genitori</h2>
       <div id="come-funziona-per-i-genitori" />

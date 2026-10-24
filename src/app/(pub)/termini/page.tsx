@@ -36,6 +36,14 @@ export default function TerminiPage() {
         <li>Puoi chiudere l&apos;account quando vuoi, senza dover spiegare perché.</li>
       </ul>
 
+      <h3>Il Social (facoltativo)</h3>
+      <ul>
+        <li>Classifica, amici, gruppi e sfide sono opzionali e spenti di default. Per usarli scegli un soprannome di fantasia: non usare il tuo nome vero né dati personali, e niente nomi offensivi, illeciti o che imitano altri o il dojo.</li>
+        <li>Non esistono chat né messaggi: non cercare di scambiare contatti o contenuti con altri utenti attraverso il soprannome o il codice invito.</li>
+        <li>I codici invito servono a invitare persone che conosci: non pubblicarli. Chi crea un gruppo deve avere almeno 18 anni e ne è responsabile.</li>
+        <li>Possiamo rimuovere un soprannome o un gruppo, o limitare il Social, dopo una segnalazione. Puoi segnalare quando vuoi con il pulsante «Segnala».</li>
+      </ul>
+
       <h2>3. La regola del dojo</h2>
       <p>
         Il dojo ha una regola sola, ed è scritta in ogni lezione:{" "}
