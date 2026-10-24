@@ -10,10 +10,9 @@ import { SecuritySection } from "@/components/profilo/security-section";
 import { ReminderSettings } from "@/components/reminder-settings";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
-import { loadCatalog } from "@/lib/content/catalog";
 import { displayName } from "@/lib/display-name";
 import { GOALS } from "@/lib/profile-options";
-import { levelOf, medalsFor } from "@/lib/progress/profile-stats";
+import { beltOf, levelOf, medalsFor } from "@/lib/progress/profile-stats";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 import { getChallengeWins } from "@/lib/social/service";
@@ -54,13 +53,8 @@ async function ProfiloContent() {
   const streakNow = effectiveStreak(streak, today);
   const lvl = levelOf(xp);
 
-  // Cintura gialla = completare il primo modulo di Fondamenta (se non ha lezioni ancora, tutte quelle di Fondamenta).
-  const lessons = loadCatalog().filter((l) => l.course === "fondamenta");
-  const first = lessons.filter((l) => l.module === 1);
-  const pool = first.length ? first : lessons;
-  const beltDoneCount = pool.filter((l) => completed.has(l.id)).length;
-  const beltDone = pool.length > 0 && beltDoneCount === pool.length;
-  const beltPct = pool.length ? Math.round((beltDoneCount / pool.length) * 100) : 0;
+  const belt = beltOf(lvl.level);
+  const beltDone = lvl.level >= 2;
 
   const doneDays = new Set([...completedAt.values()].map((d) => localDay(d, tz)));
   const challengesWon = await getChallengeWins(user.id);
@@ -186,24 +180,24 @@ async function ProfiloContent() {
 
         <Panel className="grid content-center gap-3 p-5">
           <Eyebrow>La tua cintura</Eyebrow>
-          <BeltArt color="white" className="h-auto w-full max-w-64 justify-self-center" />
-          <p className="text-center font-display text-xl font-bold">Cintura bianca</p>
+          <BeltArt color={belt.color} name={belt.name} className="h-auto w-full max-w-64 justify-self-center" />
+          <p className="text-center font-display text-xl font-bold">Cintura {belt.name.toLowerCase()}</p>
           <div className="grid gap-1.5">
             <div className="flex justify-between font-mono text-xs text-muted">
-              <span>Verso la gialla: modulo F1</span>
+              <span>{belt.next ? `Verso la ${belt.next.toLowerCase()}` : "Cintura più alta raggiunta"}</span>
               <span>
-                {beltDoneCount}/{pool.length}
+                {lvl.into}/{lvl.span} XP
               </span>
             </div>
             <div
               role="progressbar"
-              aria-label="Avanzamento verso la cintura gialla"
+              aria-label="Avanzamento verso la prossima cintura"
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-valuenow={beltPct}
+              aria-valuenow={lvl.pct}
               className="h-2 overflow-hidden rounded-full bg-surface-muted"
             >
-              <div className="h-full rounded-full bg-belt-yellow" style={{ width: `${beltPct}%` }} />
+              <div className="h-full rounded-full bg-primary" style={{ width: `${lvl.pct}%` }} />
             </div>
           </div>
         </Panel>

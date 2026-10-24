@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lastDays, levelOf, medalsFor } from "./profile-stats";
+import { beltOf, lastDays, levelOf, medalsFor } from "./profile-stats";
 
 describe("levelOf", () => {
   it("parte dal livello 1 e sale a 100 e 300 XP", () => {
@@ -26,5 +26,17 @@ describe("lastDays", () => {
     expect(d.map((x) => x.day)).toEqual(["2026-02-27", "2026-02-28", "2026-03-01", "2026-03-02"]);
     expect(d[2].done).toBe(true);
     expect(d[3].isToday).toBe(true);
+  });
+});
+
+describe("beltOf", () => {
+  it("una cintura per livello, dalla bianca alla nera", () => {
+    expect(beltOf(1)).toEqual({ color: "white", name: "Bianca", next: "Gialla" });
+    expect(beltOf(2).color).toBe("yellow");
+    expect(beltOf(6)).toEqual({ color: "black", name: "Nera", next: null });
+  });
+  it("non esce dai limiti", () => {
+    expect(beltOf(0).color).toBe("white");
+    expect(beltOf(99).color).toBe("black");
   });
 });

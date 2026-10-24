@@ -1,13 +1,13 @@
 import type { CSSProperties } from "react";
 import { BeltIcon, BoltIcon, BookIcon, CheckIcon, FlameIcon, TargetIcon } from "../icons";
-import { lastDays, type MedalIcon } from "@/lib/progress/profile-stats";
+import { lastDays, type BeltColor, type MedalIcon } from "@/lib/progress/profile-stats";
 
 /** Cintura illustrata: fascia, nodo centrale e due code. Il colore è quello della cintura (variabili dell'app). */
-export function BeltArt({ color, className = "" }: { color: "white" | "yellow"; className?: string }) {
+export function BeltArt({ color, name, className = "" }: { color: BeltColor; name: string; className?: string }) {
   const fill = `var(--belt-${color})`;
   const edge = "var(--belt-outline)";
   return (
-    <svg viewBox="0 0 240 64" role="img" aria-label={`Cintura ${color === "white" ? "bianca" : "gialla"}`} className={className}>
+    <svg viewBox="0 0 240 64" role="img" aria-label={`Cintura ${name.toLowerCase()}`} className={className}>
       <path d="M0 22h104v20H0z" fill={fill} stroke={edge} strokeWidth="2" />
       <path d="M136 22h104v20H136z" fill={fill} stroke={edge} strokeWidth="2" />
       <path d="M112 38 94 62h22l8-14 8 14h22l-18-24z" fill={fill} stroke={edge} strokeWidth="2" strokeLinejoin="round" />

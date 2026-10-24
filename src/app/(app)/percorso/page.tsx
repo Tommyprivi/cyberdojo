@@ -10,6 +10,7 @@ import { COURSES } from "@/lib/content/courses";
 import { moduleCover } from "@/lib/content/covers";
 import { loadCatalog, type LessonInfo } from "@/lib/content/catalog";
 import { firstName as firstNameOf } from "@/lib/display-name";
+import { beltOf, levelOf } from "@/lib/progress/profile-stats";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 
@@ -78,7 +79,7 @@ async function PercorsoContent() {
   const stats = [
     { Icon: FlameIcon, label: "Serie", value: String(streakNow), unit: streakNow === 1 ? "giorno" : "giorni", tone: "text-accent", motion: streakNow > 0 ? "flicker" : "" },
     { Icon: BoltIcon, label: "XP", value: String(xp), unit: "totali", tone: "text-primary", motion: xp > 0 ? "zap" : "" },
-    { Icon: BeltIcon, label: "Cintura", value: "Bianca", unit: "in corso", tone: "text-foreground", motion: "" },
+    { Icon: BeltIcon, label: "Cintura", value: beltOf(levelOf(xp).level).name, unit: "cintura", tone: "text-foreground", motion: "" },
   ];
 
   const mapCourses: MapCourse[] = COURSES.map((c) => {

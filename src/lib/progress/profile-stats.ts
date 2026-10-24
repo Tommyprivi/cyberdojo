@@ -35,7 +35,7 @@ export function medalsFor(i: { xp: number; lessons: number; bestStreak: number; 
     { id: "s3", label: "Serie di 3", hint: "3 giorni di fila", icon: "flame", unlocked: i.bestStreak >= 3 },
     { id: "s7", label: "Serie di 7", hint: "7 giorni di fila", icon: "flame", unlocked: i.bestStreak >= 7 },
     { id: "s30", label: "Serie di 30", hint: "30 giorni di fila", icon: "flame", unlocked: i.bestStreak >= 30 },
-    { id: "belt", label: "Cintura gialla", hint: "Completa il primo modulo", icon: "belt", unlocked: i.beltDone },
+    { id: "belt", label: "Cintura gialla", hint: "Raggiungi 100 XP", icon: "belt", unlocked: i.beltDone },
     { id: "challenge1", label: "Sfidante", hint: "Vinci una sfida settimanale", icon: "target", unlocked: wins >= 1 },
     { id: "challenge5", label: "Campione di sfide", hint: "Vinci 5 sfide settimanali", icon: "target", unlocked: wins >= 5 },
   ];
@@ -50,4 +50,20 @@ export function lastDays(today: string, n: number, doneDays: ReadonlySet<string>
     const day = t.toISOString().slice(0, 10);
     return { day, done: doneDays.has(day), isToday: k === n - 1, label: "DLMMGVS"[t.getUTCDay()], num: t.getUTCDate() };
   });
+}
+
+export type BeltColor = "white" | "yellow" | "orange" | "green" | "blue" | "black";
+const BELTS: { color: BeltColor; name: string }[] = [
+  { color: "white", name: "Bianca" },
+  { color: "yellow", name: "Gialla" },
+  { color: "orange", name: "Arancione" },
+  { color: "green", name: "Verde" },
+  { color: "blue", name: "Blu" },
+  { color: "black", name: "Nera" },
+];
+
+/** Una cintura per livello: bianca al livello 1, nera al Maestro. `next` è la prossima, se c'è. */
+export function beltOf(level: number) {
+  const i = Math.min(Math.max(level, 1), BELTS.length) - 1;
+  return { ...BELTS[i], next: BELTS[i + 1]?.name ?? null };
 }
