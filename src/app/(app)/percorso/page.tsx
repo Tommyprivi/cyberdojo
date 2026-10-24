@@ -204,6 +204,14 @@ async function PercorsoContent() {
           )}
         </section>
 
+        <Link href="/piano" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-primary bg-surface p-4 hover:bg-surface-muted">
+          <span>
+            <span className="block font-semibold">Il tuo piano di studio</span>
+            <span className="block text-sm text-muted">Tappe consigliate e consigli su come seguire i corsi</span>
+          </span>
+          <span aria-hidden className="font-bold text-primary">→</span>
+        </Link>
+
         <section aria-label="Obiettivo di oggi" className="grid gap-3 rounded-lg border border-border bg-surface p-4">
           <div className="flex items-center gap-3">
             <span className="grid size-10 shrink-0 place-items-center rounded-md bg-surface-muted text-primary">
