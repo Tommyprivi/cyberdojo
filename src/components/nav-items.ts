@@ -1,5 +1,5 @@
 import { BookIcon, BulbIcon, DumbbellIcon, MapIcon } from "./icons";
-import { UserIcon, UsersIcon } from "./nav-icons";
+import { UserIcon } from "./nav-icons";
 
 /** Voci di navigazione del sito pubblico (intestazione). */
 export const NAV_ITEMS = [
@@ -13,10 +13,9 @@ export const NAV_ITEMS = [
  * Niente "Corsi": dentro l'area riservata il Percorso mostra già tutti i corsi, sarebbe un doppione.
  */
 export const APP_NAV = [
-  NAV_ITEMS[0],
-  NAV_ITEMS[1],
-  { href: "/dojo", label: "AI Dojo", Icon: BulbIcon },
-  { href: "/social", label: "Social", Icon: UsersIcon },
+  { ...NAV_ITEMS[0], label: "Percorso" },
+  { ...NAV_ITEMS[1], label: "Pratica" },
+  { href: "/dojo", label: "Sensei", Icon: BulbIcon },
   { href: "/profilo", label: "Profilo", Icon: UserIcon },
 ] as const;
 

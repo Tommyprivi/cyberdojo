@@ -32,6 +32,10 @@ const pairs = [
   ["deep-fg", "deep"],
   ["accent-fg", "accent"],
   ["success-fg", "success"],
+  ["sun-fg", "sun"],
+  ["sky-fg", "sky"],
+  ["sky", "surface"],
+  ["sky", "background"],
   ["success", "surface"], // testo delle risposte giuste
   ["success", "background"],
   ["primary", "background"], // link e testo indaco

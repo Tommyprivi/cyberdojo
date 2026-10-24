@@ -1,33 +1,37 @@
 ﻿@import "tailwindcss";
 
 /*
-  Design system CyberDojo, v3: «carta e inchiostro».
-  Washi (carta), sumi (inchiostro), ai (indaco) e il rosso del sigillo. Superfici piatte con filetti
-  sottili, angoli poco arrotondati, molto spazio. Le cinture restano i colori dei livelli.
+  Design system CyberDojo, v4: «gioco colorato».
+  Verde per l'azione, giallo per XP e premi, blu per le informazioni, rosso per errori e marchio.
+  Bottoni a rilievo, angoli molto arrotondati, bordi pieni. Le cinture restano i colori dei livelli.
   Predefinito: chiaro. L'utente sceglie chiaro, scuro o sistema (data-theme su <html>).
   Ogni coppia testo/sfondo è verificata (>= 4.5:1) da scripts/check-contrast.mjs.
 */
 
 :root {
-  --background: #f4efe6;
-  --surface: #fffdf8;
-  --surface-muted: #ece6d9;
-  --foreground: #1a1612;
-  --foreground-muted: #5c5448;
-  --border: #d8d0bf;
+  --background: #f4f7fb;
+  --surface: #ffffff;
+  --surface-muted: #e8eef6;
+  --foreground: #1b2433;
+  --foreground-muted: #4d5b73;
+  --border: #d3dceb;
 
-  --primary: #1f3a5f; /* ai: indaco */
+  --primary: #1b7a3a; /* verde: azione principale */
   --primary-fg: #ffffff;
-  --primary-edge: #12243d;
-  --deep: #1a1612; /* sumi: blocchi scuri */
-  --deep-fg: #f4efe6;
+  --primary-edge: #125a2a;
+  --deep: #1b2433; /* blocchi scuri */
+  --deep-fg: #f4f7fb;
 
-  --accent: #b8321c; /* rosso del sigillo: errori e marchio */
+  --accent: #c0341f; /* rosso: errori e marchio */
   --accent-fg: #ffffff;
-  --success: #2d6a4f; /* risposte giuste */
+  --success: #1b7a3a; /* risposte giuste */
   --success-fg: #ffffff;
-  --focus: #1f5fbf;
-  --shadow: 0 1px 0 rgb(26 22 18 / 0.04), 0 10px 28px -18px rgb(26 22 18 / 0.28);
+  --sun: #ffc800; /* giallo: XP, serie, premi */
+  --sun-fg: #1b2433;
+  --sky: #1d63c9; /* blu: informazioni, link */
+  --sky-fg: #ffffff;
+  --focus: #1d5fd1;
+  --shadow: 0 2px 0 rgb(27 36 51 / 0.05), 0 12px 28px -18px rgb(27 36 51 / 0.3);
 
   --belt-white: #ffffff;
   --belt-white-fg: #1a1612;
@@ -48,42 +52,50 @@
 
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
-    --background: #14110e;
-    --surface: #1c1814;
-    --surface-muted: #26211b;
-    --foreground: #f1ebdd;
-    --foreground-muted: #b0a695;
-    --border: #3a3329;
-    --primary: #8fb4ee;
-    --primary-fg: #0d1b30;
-    --primary-edge: #5f86c4;
-    --deep: #26211b;
-    --deep-fg: #f1ebdd;
-    --accent: #ff7d66;
-    --accent-fg: #1c0a06;
-    --success: #86d6a6;
-    --success-fg: #08170f;
+    --background: #101826;
+    --surface: #19243a;
+    --surface-muted: #232f48;
+    --foreground: #eef3fb;
+    --foreground-muted: #a9b6cc;
+    --border: #33425f;
+    --primary: #7ddc3c;
+    --primary-fg: #0b2a05;
+    --primary-edge: #4ea422;
+    --deep: #19243a;
+    --deep-fg: #eef3fb;
+    --accent: #ff8a73;
+    --accent-fg: #2a0c06;
+    --success: #7ddc3c;
+    --success-fg: #0b2a05;
+    --sun: #ffd84a;
+    --sun-fg: #1b2433;
+    --sky: #8fb8ff;
+    --sky-fg: #0d1b30;
     --focus: #7fb0ff;
     --shadow: 0 10px 28px -18px rgb(0 0 0 / 0.7);
   }
 }
 
 :root[data-theme="dark"] {
-  --background: #14110e;
-  --surface: #1c1814;
-  --surface-muted: #26211b;
-  --foreground: #f1ebdd;
-  --foreground-muted: #b0a695;
-  --border: #3a3329;
-  --primary: #8fb4ee;
-  --primary-fg: #0d1b30;
-  --primary-edge: #5f86c4;
-  --deep: #26211b;
-  --deep-fg: #f1ebdd;
-  --accent: #ff7d66;
-  --accent-fg: #1c0a06;
-  --success: #86d6a6;
-  --success-fg: #08170f;
+  --background: #101826;
+  --surface: #19243a;
+  --surface-muted: #232f48;
+  --foreground: #eef3fb;
+  --foreground-muted: #a9b6cc;
+  --border: #33425f;
+  --primary: #7ddc3c;
+  --primary-fg: #0b2a05;
+  --primary-edge: #4ea422;
+  --deep: #19243a;
+  --deep-fg: #eef3fb;
+  --accent: #ff8a73;
+  --accent-fg: #2a0c06;
+  --success: #7ddc3c;
+  --success-fg: #0b2a05;
+  --sun: #ffd84a;
+  --sun-fg: #1b2433;
+  --sky: #8fb8ff;
+  --sky-fg: #0d1b30;
   --focus: #7fb0ff;
   --shadow: 0 10px 28px -18px rgb(0 0 0 / 0.7);
 }
@@ -105,6 +117,10 @@
   --color-success: var(--success);
   --color-success-fg: var(--success-fg);
   --color-focus: var(--focus);
+  --color-sun: var(--sun);
+  --color-sun-fg: var(--sun-fg);
+  --color-sky: var(--sky);
+  --color-sky-fg: var(--sky-fg);
 
   --color-belt-white: var(--belt-white);
   --color-belt-white-fg: var(--belt-white-fg);
@@ -127,12 +143,12 @@
   --font-display: var(--font-display-face);
 }
 
-/* Angoli poco arrotondati in tutto il sito: carattere più serio, meno «app». */
+/* Angoli morbidi in tutto il sito: carattere da gioco. */
 @theme {
-  --radius-lg: 0.375rem;
-  --radius-xl: 0.5rem;
-  --radius-2xl: 0.5rem;
-  --radius-3xl: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
 }
 
 body {
@@ -144,8 +160,8 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display-face), Georgia, serif;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display-face), system-ui, sans-serif;
+  letter-spacing: 0;
   line-height: 1.15;
 }
 
@@ -158,28 +174,34 @@ h1, h2, h3 {
 @layer components {
   .card {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 0.625rem;
+    border: 2px solid var(--border);
+    border-radius: 1.25rem;
   }
 
-  /* Fascicolo: filetto scuro in alto, come la costa di una cartella. */
+  /* Riquadro con costa colorata in alto. */
   .dossier {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--foreground);
-    border-radius: 0.5rem;
+    border: 2px solid var(--border);
+    border-top: 6px solid var(--primary);
+    border-radius: 1.25rem;
   }
 
+  /* Bottone a rilievo: si «preme» abbassandosi. */
   .btn {
     display: inline-grid;
     place-items: center;
-    min-height: 2.9rem;
-    padding: 0 1.25rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    border: 1px solid transparent;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    min-height: 3rem;
+    padding: 0 1.5rem;
+    border-radius: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    border: 2px solid transparent;
+    border-bottom-width: 5px;
+    transition: transform 0.08s ease, border-bottom-width 0.08s ease, background-color 0.15s ease, filter 0.15s ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(3px);
+    border-bottom-width: 2px;
   }
   .btn:disabled {
     opacity: 0.45;
@@ -188,14 +210,15 @@ h1, h2, h3 {
   .btn-primary {
     background: var(--primary);
     color: var(--primary-fg);
+    border-color: var(--primary-edge);
   }
   .btn-primary:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--primary) 85%, var(--foreground));
+    filter: brightness(1.08);
   }
   .btn-ghost {
-    background: transparent;
+    background: var(--surface);
     color: var(--foreground);
-    border-color: var(--foreground);
+    border-color: var(--border);
   }
   .btn-ghost:hover:not(:disabled) {
     background: var(--surface-muted);
@@ -206,18 +229,18 @@ h1, h2, h3 {
     align-items: center;
     gap: 0.4rem;
     min-height: 2.25rem;
-    padding: 0 0.75rem;
-    border-radius: 0.375rem;
+    padding: 0 0.9rem;
+    border-radius: 999px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    font-weight: 500;
+    border: 2px solid var(--border);
+    font-weight: 700;
   }
   .field {
-    min-height: 2.9rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--foreground-muted);
+    min-height: 3rem;
+    border-radius: 0.9rem;
+    border: 2px solid var(--border);
     background: var(--surface);
-    padding: 0 0.85rem;
+    padding: 0 1rem;
   }
   .field:focus-visible {
     border-color: var(--primary);
@@ -329,8 +352,8 @@ h1, h2, h3 {
 
 /* Pulsante principale: un'onda leggera ogni tanto. */
 @keyframes ring {
-  0%, 70%, 100% { box-shadow: 0 0 0 0 rgb(143 180 238 / 0); }
-  85% { box-shadow: 0 0 0 8px rgb(143 180 238 / 0.3); }
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgb(27 122 58 / 0); }
+  85% { box-shadow: 0 0 0 8px rgb(27 122 58 / 0.3); }
 }
 .pulse-ring { animation: ring 3.2s ease-out infinite; }
 

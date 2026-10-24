@@ -95,6 +95,16 @@ async function ProfiloContent() {
             <ThemeToggle />
           </div>
           <Link
+            href="/social"
+            className="flex min-h-11 items-center justify-between gap-3 rounded-xl border-2 border-primary bg-background p-3 hover:bg-surface-muted"
+          >
+            <span>
+              <span className="block font-semibold">Amici e sfide</span>
+              <span className="block text-sm text-muted">Sfida i tuoi amici e guarda la classifica.</span>
+            </span>
+            <span aria-hidden>→</span>
+          </Link>
+          <Link
             href="/profilo/social"
             className="flex min-h-11 items-center justify-between gap-3 rounded-md border border-border bg-background p-3 hover:bg-surface-muted"
           >

@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Shippori_Mincho } from "next/font/google";
+import { Fredoka, IBM_Plex_Mono, Nunito } from "next/font/google";
 import { ConsentBanner } from "@/components/consent/consent-banner";
 import { ConsentProvider } from "@/components/consent/consent-provider";
 import { ThemeSync } from "@/components/theme-toggle";
 import { SITE } from "@/lib/config";
 import "./globals.css";
 
-// Titoli: Shippori Mincho, un serif di ispirazione giapponese. Testo: IBM Plex Sans. Codice: IBM Plex Mono.
-const display = Shippori_Mincho({
+// Titoli: Fredoka, tonda e giocosa. Testo: Nunito. Codice: IBM Plex Mono.
+const display = Fredoka({
   variable: "--font-display-face",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
-const text = IBM_Plex_Sans({
+const text = Nunito({
   variable: "--font-text-face",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const mono = IBM_Plex_Mono({

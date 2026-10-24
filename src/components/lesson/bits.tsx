@@ -1,3 +1,5 @@
+import { BoltIcon, BookIcon, BulbIcon, FlameIcon, TargetIcon } from "../icons";
+
 /** Schema statico di un numero binario: bit sopra, peso sotto, bit a 1 evidenziati e somma. */
 export function BitGrid({ bits, showSum = true, caption }: { bits: string; showSum?: boolean; caption?: string }) {
   const n = bits.length;
@@ -108,21 +110,29 @@ export function Envelope() {
   );
 }
 
-/** Riquadri di spiegazione: una regola, un errore da evitare, un esempio. */
+/** Riquadri di spiegazione: una regola, un errore da evitare, un esempio. Ognuno ha il suo colore e la sua icona. */
 const KINDS = {
-  regola: { label: "Regola", cls: "border-primary" },
-  attenzione: { label: "Attenzione", cls: "border-accent" },
-  esempio: { label: "Esempio", cls: "border-belt-blue" },
-  trucco: { label: "Trucco per ricordarlo", cls: "border-belt-yellow" },
-  curiosita: { label: "Lo sapevi?", cls: "border-belt-orange" },
+  regola: { label: "Regola", color: "var(--primary)", Icon: BookIcon },
+  attenzione: { label: "Attenzione", color: "var(--accent)", Icon: FlameIcon },
+  esempio: { label: "Esempio", color: "var(--sky)", Icon: TargetIcon },
+  trucco: { label: "Trucco per ricordarlo", color: "var(--sun)", Icon: BulbIcon },
+  curiosita: { label: "Lo sapevi?", color: "var(--belt-orange)", Icon: BoltIcon },
 } as const;
 
 export function Callout({ kind, children }: { kind: keyof typeof KINDS; children: React.ReactNode }) {
-  const k = KINDS[kind];
+  const { label, color, Icon } = KINDS[kind];
   return (
-    <div className={`my-1 max-w-[70ch] rounded-md border-l-4 ${k.cls} bg-surface-muted px-4 py-3`}>
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.18em]">{k.label}</p>
-      <div className="mt-1">{children}</div>
+    <div
+      className="my-1 flex max-w-[70ch] gap-3 rounded-2xl border-2 px-4 py-3.5"
+      style={{ borderColor: color, background: `color-mix(in srgb, ${color} 10%, var(--surface))` }}
+    >
+      <span aria-hidden className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-full text-foreground" style={{ background: color }}>
+        <Icon width={20} height={20} style={{ color: kind === "trucco" ? "var(--sun-fg)" : "#fff" }} />
+      </span>
+      <div className="min-w-0">
+        <p className="text-sm font-extrabold uppercase tracking-wide">{label}</p>
+        <div className="mt-1">{children}</div>
+      </div>
     </div>
   );
 }
