@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { loadScopeContext, ScopeError, stripMdx, truncate, type LessonInfo } from "./context";
 import { FakeProvider } from "./fake";
 import { GeminiProvider } from "./gemini";
+import { GroqProvider } from "./groq";
 import { handleDojo } from "./handler";
 import { createLimiter, LIMITS } from "./limits";
 import { answeredCount, buildSystemPrompt, QUIZ_START_MESSAGE, sanitizeContext } from "./prompts";
@@ -192,5 +193,24 @@ describe("provider Gemini (fetch simulata)", () => {
     const g = (status: number) => new GeminiProvider("K", "m", (async () => new Response("{}", { status })) as typeof fetch);
     await expect(g(429).generate(req)).rejects.toMatchObject({ status: 429 });
     await expect(g(500).generate(req)).rejects.toBeInstanceOf(AiError);
+  });
+});
+
+describe("provider Groq (fetch simulata)", () => {
+  const req = { system: "s", messages: [{ role: "user" as const, content: "ciao" }], maxOutputTokens: 100, meta: { mode: "chat" as const } };
+  it("manda la chiave nell'intestazione, il system come primo messaggio e legge il testo", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: "Ciao!" } }] }), { status: 200 }));
+    const r = await new GroqProvider("KEY", "m", fetchImpl as unknown as typeof fetch).generate(req);
+    expect(r.text).toBe("Ciao!");
+    const [url, init] = fetchImpl.mock.calls[0];
+    expect(String(url)).not.toContain("KEY");
+    expect((init as RequestInit).headers).toMatchObject({ authorization: "Bearer KEY" });
+    expect(JSON.parse(String((init as RequestInit).body)).messages[0]).toEqual({ role: "system", content: "s" });
+  });
+  it("429, 401 e risposta vuota diventano errori in italiano", async () => {
+    const g = (status: number, body = "{}") => new GroqProvider("K", "m", (async () => new Response(body, { status })) as typeof fetch);
+    await expect(g(429).generate(req)).rejects.toMatchObject({ status: 429 });
+    await expect(g(401).generate(req)).rejects.toBeInstanceOf(AiError);
+    await expect(g(200, JSON.stringify({ choices: [{ message: { content: "" } }] })).generate(req)).rejects.toBeInstanceOf(AiError);
   });
 });

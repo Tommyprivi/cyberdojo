@@ -28,6 +28,9 @@ Al fornitore vanno solo messaggi e testo della lezione: mai nome, email o ID del
 ## Limitatore: contatore in memoria, nessuna tabella
 Scelta: contatore in memoria del processo (`limits.ts`). Pro: nessuna migrazione, nessun dato nuovo da proteggere. Contro: si azzera al riavvio e non è condiviso tra più istanze serverless, quindi su Vercel il limite vale «per istanza». Per il piano gratuito basta, perché il vero tetto è quello di Google. Se si scala o si passa a un piano a pagamento, aggiungere una tabella `ai_usage` (user_id, giorno, contatore) con RLS come le altre.
 
+## Fornitori disponibili
+Se c'è `GEMINI_API_KEY` si usa Gemini; altrimenti, se c'è `GROQ_API_KEY`, si usa Groq (`groq.ts`, API compatibile OpenAI, modello predefinito `openai/gpt-oss-20b`, cambiabile con `GROQ_MODEL`). Senza nessuna chiave resta la modalità dimostrativa.
+
 ## Cambiare fornitore
 Scrivere una classe che implementa `AiProvider` (`generate({system, messages, maxOutputTokens, signal})` restituisce `{text}`), poi sceglierla in `getProvider()` in `provider.ts` (ad esempio in base a una nuova variabile d'ambiente). Gli errori vanno lanciati come `AiError` con messaggio in italiano.
 
