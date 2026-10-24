@@ -5,9 +5,9 @@ import type { CourseId } from "./courses";
 export const COURSE_COVER: Record<CourseId, string> = {
   F: "/img/corsi/fondamenta.jpg",
   C: "/img/corsi/cybersecurity.jpg",
-  D: "/img/corsi/dati.jpg", // provvisoria: da sostituire con la copertina vera
-  T: "/img/corsi/python.jpg", // provvisoria
-  H: "/img/corsi/progetto-cintura.jpg", // provvisoria
+  D: "/img/corsi/dati.svg",
+  T: "/img/corsi/trading.svg",
+  H: "/img/corsi/hedge.svg",
 };
 
 const MODULE_COVER: Record<string, string> = {

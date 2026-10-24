@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1376 768" role="img" aria-hidden="true"><rect width="1376" height="768" fill="#f4efe6"/>
+<circle cx="1010" cy="230" r="110" fill="#b8321c" opacity="0.92"/>
+<path d="M0 620 L240 470 L400 540 L620 330 L800 450 L1010 300 L1376 560 V768 H0Z" fill="#1f3a5f" opacity="0.14"/>
+<g stroke="#1f3a5f" stroke-width="5" stroke-linecap="round">
+<line x1="200" y1="535" x2="200" y2="675"/><rect x="178" y="560" width="44" height="40" rx="4" fill="#fffdf8"/>
+<line x1="300" y1="495" x2="300" y2="615"/><rect x="278" y="520" width="44" height="50" rx="4" fill="#1f3a5f"/>
+<line x1="400" y1="515" x2="400" y2="675"/><rect x="378" y="540" width="44" height="60" rx="4" fill="#fffdf8"/>
+<line x1="500" y1="425" x2="500" y2="555"/><rect x="478" y="450" width="44" height="50" rx="4" fill="#fffdf8"/>
+<line x1="600" y1="445" x2="600" y2="595"/><rect x="578" y="470" width="44" height="70" rx="4" fill="#1f3a5f"/>
+<line x1="700" y1="335" x2="700" y2="475"/><rect x="678" y="360" width="44" height="60" rx="4" fill="#fffdf8"/>
+<line x1="800" y1="355" x2="800" y2="485"/><rect x="778" y="380" width="44" height="50" rx="4" fill="#fffdf8"/>
+<line x1="900" y1="265" x2="900" y2="415"/><rect x="878" y="290" width="44" height="60" rx="4" fill="#1f3a5f"/>
+<line x1="1000" y1="285" x2="1000" y2="415"/><rect x="978" y="310" width="44" height="45" rx="4" fill="#fffdf8"/>
+<line x1="1100" y1="215" x2="1100" y2="365"/><rect x="1078" y="240" width="44" height="55" rx="4" fill="#fffdf8"/>
+</g>
+<path d="M150 600 L350 540 L550 500 L750 420 L950 340 L1150 250" fill="none" stroke="#b8321c" stroke-width="6" stroke-dasharray="14 12" stroke-linecap="round"/>
+<path d="M120 560 Q 240 546 360 560 T 600 560 T 840 560 T 1080 560 T 1256 560" fill="none" stroke="#1f3a5f" stroke-opacity="0.8" stroke-width="2.5"/><path d="M120 582 Q 240 568 360 582 T 600 582 T 840 582 T 1080 582 T 1256 582" fill="none" stroke="#1f3a5f" stroke-opacity="0.7" stroke-width="2.5"/><path d="M120 604 Q 240 590 360 604 T 600 604 T 840 604 T 1080 604 T 1256 604" fill="none" stroke="#1f3a5f" stroke-opacity="0.6" stroke-width="2.5"/><path d="M120 626 Q 240 612 360 626 T 600 626 T 840 626 T 1080 626 T 1256 626" fill="none" stroke="#1f3a5f" stroke-opacity="0.5" stroke-width="2.5"/><path d="M120 648 Q 240 634 360 648 T 600 648 T 840 648 T 1080 648 T 1256 648" fill="none" stroke="#1f3a5f" stroke-opacity="0.4" stroke-width="2.5"/><path d="M120 670 Q 240 656 360 670 T 600 670 T 840 670 T 1080 670 T 1256 670" fill="none" stroke="#1f3a5f" stroke-opacity="0.3" stroke-width="2.5"/>
+<rect x="1290" y="690" width="36" height="36" rx="4" fill="#b8321c"/><rect x="1298" y="698" width="20" height="20" fill="none" stroke="#f4efe6" stroke-width="3"/>
+</svg>
