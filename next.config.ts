@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // Le illustrazioni a tutto schermo si servono a qualità alta, il resto al livello predefinito.
   images: { qualities: [75, 95] },
+  // Le lezioni si leggono dalla cartella content/ a runtime: va inclusa nel pacchetto che Vercel pubblica.
+  outputFileTracingIncludes: { "/**": ["./content/**/*"] },
   turbopack: {
     rules: {
       "*.css": {
