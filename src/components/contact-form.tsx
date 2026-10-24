@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CONTACT_KINDS, sendContactMessage } from "@/app/actions/contact";
+import { sendContactMessage } from "@/app/actions/contact";
+import { CONTACT_KINDS } from "@/lib/contact-kinds";
 
 /**
  * Modulo di contatto: serve per le domande, per segnalare un bug, per un problema di

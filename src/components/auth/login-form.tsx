@@ -16,7 +16,7 @@ export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const next = safeNext(params.get("next"));
-  // Link magico e Google non aprono la sessione a chi ha la verifica in due passaggi: tornano qui con un errore.
+  // Il link magico non apre la sessione a chi ha la verifica in due passaggi: tornano qui con un errore.
   const blockedBy2fa = ["failed_to_create_session", "unable_to_create_session"].includes(params.get("error") ?? "");
   const [mode, setMode] = useState<"password" | "link">("password");
   const [email, setEmail] = useState("");
@@ -24,18 +24,12 @@ export function LoginForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(
     blockedBy2fa
-      ? "Se hai attivato la verifica in due passaggi, il link via email e Google non bastano: accedi con email e password e poi col codice dell'app."
+      ? "Se hai attivato la verifica in due passaggi, il link via email non basta: accedi con email e password e poi col codice dell'app."
       : null,
   );
   const [sent, setSent] = useState(false);
   const [needsCode, setNeedsCode] = useState(false);
   const errorCallbackURL = `/accedi?next=${encodeURIComponent(next)}`;
-
-  const google = async () => {
-    setError(null);
-    const { error } = await authClient.signIn.social({ provider: "google", callbackURL: next, errorCallbackURL });
-    if (error) setError(authErrorMessage(error));
-  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,10 +82,6 @@ export function LoginForm() {
 
   return (
     <div className="grid gap-4">
-      <button type="button" onClick={google} className="btn btn-ghost">
-        Continua con Google
-      </button>
-      <p className="text-center text-sm text-muted">oppure</p>
 
       <div role="tablist" aria-label="Come vuoi accedere" className="grid grid-cols-2 gap-2">
         {([["password", "Con la password"], ["link", "Con un link"]] as const).map(([m, label]) => (

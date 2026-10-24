@@ -3,21 +3,12 @@
 import { z } from "zod";
 import { sendMail } from "@/lib/email";
 import { contactEmail } from "@/lib/mail/templates";
+import { CONTACT_KINDS } from "@/lib/contact-kinds";
 
 /**
  * Modulo pubblico di contatto: domande, segnalazioni di bug, richieste sui dati.
  * Non serve l'account, e non rispondiamo a chi scrive solo per fare rumore.
  */
-
-export const CONTACT_KINDS = [
-  { id: "domanda", label: "Ho una domanda" },
-  { id: "bug", label: "Segnala un bug" },
-  { id: "accessibilita", label: "Problema di accessibilità" },
-  { id: "privacy", label: "Richiesta sui miei dati" },
-  { id: "altro", label: "Altro" },
-] as const;
-
-export type ContactKind = (typeof CONTACT_KINDS)[number]["id"];
 
 const input = z.object({
   kind: z.enum(["domanda", "bug", "accessibilita", "privacy", "altro"]),

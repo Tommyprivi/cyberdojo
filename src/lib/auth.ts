@@ -12,16 +12,6 @@ import { classifyCode } from "./two-factor";
 let instance: ReturnType<typeof create> | undefined;
 
 function create() {
-  const google =
-    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
-      ? {
-          google: {
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          },
-        }
-      : undefined;
-
   return betterAuth({
     database: drizzleAdapter(getDb(), { provider: "pg", schema }),
     emailAndPassword: {
@@ -41,7 +31,7 @@ function create() {
         await sendMail({ to: user.email, mail: verificationEmail({ name: user.name, email: user.email, url }) });
       },
     },
-    socialProviders: google,
+
     // Verifica in due passaggi: vedi docs/2fa.md. Il gancio di Better Auth chiede il secondo codice solo
     // dopo `/sign-in/email`. Per questo qui sotto si impedisce che link magico, Google e il link di
     // conferma email aprano una sessione a chi ha il 2FA attivo: sarebbero porte che lo aggirano.
