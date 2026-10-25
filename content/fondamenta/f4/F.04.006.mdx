@@ -177,16 +177,6 @@ La riga `set -euo pipefail` attiva tre protezioni:
   ]}
 />
 
-<Layers
-  caption="Le quattro difese di uno script prudente."
-  items={[
-    { icon: "lock", title: "set -e", text: "Si ferma al primo comando che fallisce" },
-    { icon: "eye", title: "set -u", text: "Una variabile inesistente è un errore" },
-    { icon: "link", title: "pipefail", text: "Un errore in mezzo a una pipe non si perde" },
-    { icon: "shield", title: "Virgolette", text: "\"$f\" resta un solo argomento" },
-  ]}
-/>
-
 <Callout kind="attenzione">
 **Le virgolette (quoting) sono la quarta difesa.** Se `f` contiene «mio file.txt», `ls $f` lo spezza in due argomenti. Con `ls "$f"` resta uno solo.
 </Callout>
@@ -221,6 +211,7 @@ Cinque domande su argomenti, cicli, funzioni e codici di uscita: cosa stampa, co
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: `analizza.sh` prende il file dall'argomento `$1`, controlla che esista e si ferma con un errore chiaro se qualcosa non torna.
 - `$1`, `$2` sono gli argomenti, `$#` quanti sono; `for` ripete per ogni elemento, `while` finché la condizione è vera; le funzioni raggruppano comandi.
 - Codice di uscita: 0 = successo, altro = errore; si legge con `$?` e si restituisce con `exit N`.
 - Script prudenti: `set -euo pipefail`, controlli iniziali, errori su stderr (`>&2`) e sempre virgolette attorno alle variabili.

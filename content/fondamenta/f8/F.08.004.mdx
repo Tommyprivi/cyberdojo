@@ -53,7 +53,7 @@ La risposta si chiama **VLAN**.
 Dispositivi in VLAN diverse **non si vedono**, anche se sono attaccati allo stesso switch. Tecnicamente la separazione avviene al **livello 2**, quello dei frame Ethernet e dei MAC: anche i messaggi mandati a tutti (broadcast) restano dentro la propria VLAN.
 
 <Callout kind="trucco">
-Pensa a un palazzo con un solo ascensore e tre piani con le porte chiuse: l'edificio è uno, ma gli appartamenti sono separati. Lo switch è il palazzo, le VLAN sono gli appartamenti.
+Pensa a un palazzo: l'edificio è uno solo, ma gli appartamenti hanno le porte chiuse. Lo switch è il palazzo, le VLAN sono gli appartamenti.
 </Callout>
 
 Ogni VLAN ha un **numero** (da 1 a 4094) e di solito un **nome** (per esempio 10 «contabilita», 20 «ospiti», 30 «telecamere»). In genere a ogni VLAN corrisponde **una sottorete IP diversa**.
@@ -131,7 +131,7 @@ Vuoi sentirlo spiegare da un'altra voce? Un video in italiano che parte da zero:
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Un tecnico collega il PC di una nuova assunta a una porta access assegnata per errore alla VLAN 30 (telecamere). Che cosa succede?"
+  question="Un tecnico collega il PC di una nuova assunta della contabilità (VLAN 10) a una porta access assegnata per errore alla VLAN 30 (telecamere). Che cosa succede?"
   options={["Il PC non raggiunge il suo gateway né i colleghi: sembra senza rete", "Funziona normalmente, perché è collegato allo stesso switch", "Il PC cambia da solo VLAN e funziona", "Il PC vede tutte le VLAN"]}
   answer={0}
   explain="La VLAN è decisa dalla porta, non dal PC. Nella VLAN 30 il PC non trova il gateway della VLAN 10: dal suo punto di vista la rete non c'è. Il guasto è nella configurazione della porta, non nel cavo."
@@ -157,6 +157,7 @@ Cinque domande sulle VLAN. Cinque su cinque, 3 tentativi.
 - Una VLAN è una rete virtuale: separa i dispositivi a livello 2, anche sullo stesso switch.
 - Porta access: una VLAN, dispositivi finali. Porta trunk: più VLAN con tag 802.1Q.
 - Le VLAN separano ma non filtrano: serve un router con regole (ACL) dove le VLAN si incontrano.
+- Caso chiuso: contabilità, ospiti e telecamere finiscono in tre VLAN sugli stessi switch, senza comprarne di nuovi. Un'infezione resta nel suo reparto.
 </Recap>
 
 <Flashcards

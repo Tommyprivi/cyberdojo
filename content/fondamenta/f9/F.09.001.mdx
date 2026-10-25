@@ -52,17 +52,17 @@ La domanda del caso: **in che linguaggio lo scriviamo, e come si fa partire?**
 <Scene title="Che cos'è Python">
 **Python** è un linguaggio di programmazione. Lo scegliamo perché si legge quasi come l'inglese, funziona su Linux, Windows e macOS ed è usatissimo in sicurezza e in amministrazione di sistemi.
 
-Python è un linguaggio **interpretato**: un programma chiamato **interprete** legge il tuo testo e lo esegue una riga alla volta, dall'alto verso il basso. Non devi fare altro.
+Python è un linguaggio **interpretato**: un programma chiamato **interprete** legge il tuo testo e lo esegue un'istruzione alla volta, dall'alto verso il basso. Non devi fare altro.
 
 <Callout kind="curiosita">
-Il nome non viene dal serpente: viene dal gruppo comico britannico «Monty Python». Per questo negli esempi di Python trovi spesso battute su uova e prosciutto.
+Il nome non viene dal serpente: viene dal gruppo comico britannico «Monty Python». Per questo negli esempi di Python trovi spesso riferimenti a quegli sketch, come «spam» e «eggs» (uova).
 </Callout>
 
 <Callout kind="regola">
 Questo corso usa **Python 3.11 o più nuovo**. Sul terminale Linux si controlla con `python3 --version`. Su Windows il comando di solito è `py` oppure `python`.
 </Callout>
 
-Vuoi vederlo spiegato da un'altra voce, con l'installazione e il primo programma?
+Vuoi vedere Python spiegato da un'altra voce?
 
 <Video />
 
@@ -94,16 +94,6 @@ $ python3 ciao.py
 <Callout kind="trucco">
 Una riga da provare: shell interattiva. Un programma da conservare e rilanciare: file `.py`.
 </Callout>
-
-<Flow
-  caption="Dalla prova veloce al programma da conservare."
-  steps={[
-    { icon: "code", title: "Una riga", text: "La provi nella shell interattiva" },
-    { icon: "check", title: "Funziona", text: "Il risultato compare subito" },
-    { icon: "file", title: "File .py", text: "Lo salvi per rilanciarlo" },
-    { icon: "terminal", title: "python3 file.py", text: "Lo esegui quando vuoi" },
-  ]}
-/>
 
 <Say who="sensei">Prima si prova nella shell. Quando funziona, si salva in un file. Così non perdi mai il lavoro.</Say>
 </Scene>
@@ -169,6 +159,7 @@ Cinque domande sul primo programma: cosa stampa un codice breve, quale riga è s
 - Python è un linguaggio interpretato: l'interprete esegue il codice riga per riga.
 - Si prova una riga nella shell interattiva (`python3`, prompt `>>>`) e si conserva un programma in un file `.py` da lanciare con `python3 file.py`.
 - `print()` mostra valori, `#` apre un commento; maiuscole e virgolette contano.
+- Caso chiuso: per il conteggio mattutino del log di Marta si usa Python, salvato in un file `.py` e lanciato con `python3 file.py`.
 </Recap>
 
 <Flashcards

@@ -142,11 +142,8 @@ Cosa fai tu, utente di un servizio che ha subìto un **data breach** (violazione
   question="Un servizio conserva per ogni utente un hash con salt. Cosa ottiene un ladro che copia il database?"
   options={["Non le password vere: dovrà provarle una per una, e cadranno prima quelle deboli", "Tutte le password in chiaro, perché basta decifrarle", "Niente di utile, perché con il salt nessuna password può essere scoperta", "Solo le password degli utenti che le hanno riusate altrove"]}
   answer={0}
-  explain="Hash e salt non rendono le password indecifrabili in assoluto: costringono a provarle una per una, utente per utente. Le password deboli cadono comunque. Per questo servono sia il servizio fatto bene sia utenti con password lunghe."
-/>
-
-<Say who="assistente">Indizio: il salt rende il lavoro più lungo, non impossibile. Quanto resiste dipende anche da te.</Say>
-</Scene>
+  explain="Hash e salt non rendono le password indecifrabili in assoluto: costringono a provarle una per una, utente per utente. Le password deboli cadono comunque, e il salt rende il lavoro più lungo, non impossibile. Per questo servono sia il servizio fatto bene sia utenti con password lunghe."
+/></Scene>
 
 {/* screen */}
 
@@ -176,5 +173,5 @@ Cinque scenari sul salvataggio delle password. Servono tutte giuste. Hai 3 tenta
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: come proteggere un account anche quando la password è finita in mani sbagliate. Si chiama secondo fattore.</Say>
+<Say who="sensei">Caso chiuso: nella riga di Marta c'era un hash con salt, non la password, e questo ha lasciato una speranza. Prossima lezione: come proteggere un account anche quando la password è finita in mani sbagliate. Si chiama secondo fattore.</Say>
 </Scene>

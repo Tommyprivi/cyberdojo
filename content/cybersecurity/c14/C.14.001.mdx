@@ -135,7 +135,7 @@ Un amministratore ha un token molto potente. Se ogni programma ne ereditasse tut
 
 L'**UAC** (Controllo dell'account utente) lo evita: anche un amministratore, di solito, lavora con un token **limitato**. Per azioni che richiedono più potere compare la finestra di conferma.
 
-Questo è il **minimo privilegio** (lo hai visto nel modulo 3): ognuno e ogni programma ha **solo** i poteri che gli servono.
+Questo è il **minimo privilegio** (lo hai visto nel modulo 1): ognuno e ogni programma ha **solo** i poteri che gli servono.
 
 <Callout kind="attenzione">
 Disattivare l'UAC «perché dà fastidio» toglie una protezione, non un fastidio. Se serve un'azione da amministratore, meglio un account amministrativo separato, usato solo per quello.
@@ -147,7 +147,7 @@ Disattivare l'UAC «perché dà fastidio» toglie una protezione, non un fastidi
 {/* screen */}
 
 <Scene title="Tocca a te: dove si nasconde chi vuole restare">
-Chi si introduce in un PC di solito vuole **restare** anche dopo il riavvio. Per questo il registro di sistema e le attività pianificate sono tra le prime cose da controllare.
+Nel caso iniziale hai trovato l'impostore. Ora l'analista deve capire se si è sistemato per **restare** anche dopo il riavvio: chi si introduce in un PC di solito lo vuole. Per questo il registro di sistema e le attività pianificate sono tra le prime cose da controllare.
 
 Il **registro di sistema** (Registry) è un grande archivio organizzato ad albero con le impostazioni di Windows, dei programmi e degli utenti.
 
@@ -194,5 +194,5 @@ Scenari su processi, privilegi e token.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: chi può aprire quale cartella. Account, gruppi e permessi NTFS.</Say>
+<Say who="sensei">Caso chiuso: la terza riga è l'impostore, perché il padre è explorer.exe e la cartella è C:UsersPublic. Prossima lezione: chi può aprire quale cartella. Account, gruppi e permessi NTFS.</Say>
 </Scene>

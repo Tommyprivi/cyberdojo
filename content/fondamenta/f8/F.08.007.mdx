@@ -116,15 +116,6 @@ Torniamo alla segnalazione. L'ordine giusto è dal vicino al lontano. Ogni passo
 Se `ping 8.8.8.8` funziona e `ping www.esempio.it` no, la rete va bene: è il **DNS** che non traduce i nomi. Non toccare cavi e router.
 </Callout>
 
-<Flow
-  caption="Dal vicino al lontano: tre ping, tre domande."
-  steps={[
-    { icon: "laptop", title: "Gateway", text: "Il tratto locale funziona?" },
-    { icon: "globe", title: "8.8.8.8", text: "Si esce dalla rete?" },
-    { icon: "search", title: "Un nome", text: "Il DNS risolve?" },
-  ]}
-/>
-
 <Say who="sensei">Un ping è una domanda: «ci sei?». Tre ping a distanze diverse ti dicono dove la risposta si perde.</Say>
 </Scene>
 
@@ -184,6 +175,7 @@ Cinque domande su IPv6 e sulla diagnosi. Cinque su cinque, 3 tentativi.
 - IPv6: 128 bit, otto gruppi esadecimali separati da due punti; abbreviazione con zeri iniziali tolti e un solo ::. fe80:: è link-local, ::1 è il loopback.
 - Diagnosi dal vicino al lontano: gateway, indirizzo esterno, nome.
 - ping verifica, traceroute mostra i salti, nslookup interroga il DNS, ss -tuln elenca le porte in ascolto.
+- Caso chiuso: «Non funziona Internet» con gateway e 8.8.8.8 che rispondono e il nome no vuol dire guasto nel DNS, non nella rete.
 </Recap>
 
 <Flashcards
@@ -195,5 +187,5 @@ Cinque domande su IPv6 e sulla diagnosi. Cinque su cinque, 3 tentativi.
   ]}
 />
 
-<Say who="sensei">Hai chiuso Reti 4. Nel prossimo modulo si programma, ma non dimenticare queste mappe: ti serviranno nel progetto finale.</Say>
+<Say who="sensei">Hai chiuso il modulo sulle reti. Nel prossimo modulo si programma, ma non dimenticare queste mappe: ti serviranno nel progetto finale.</Say>
 </Scene>

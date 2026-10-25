@@ -90,15 +90,6 @@ Se solo una parte accetta, i numeri misurati sono incompleti. Un esempio:
 - accettano i cookie: **55%**
 - visite misurate nello strumento: 10.000 × 0,55 = **5.500**
 
-<Flow
-  caption="Il sito non è crollato: manca chi ha rifiutato i cookie."
-  steps={[
-    { icon: "globe", title: "Visite reali", text: "10.000" },
-    { icon: "cross", title: "Banner", text: "Accetta il 55%" },
-    { icon: "chart", title: "Misurate", text: "5.500 nello strumento" },
-  ]}
-/>
-
 Per stimare il totale dalle visite misurate: 5.500 ÷ 0,55 = **10.000**.
 
 Attenzione: chi accetta non è un campione casuale. Potrebbe comprare più (o meno) degli altri. Perciò una stima è utile per i volumi, meno per i tassi.
@@ -157,6 +148,7 @@ Consenso, stime e anonimizzazione: scenari e piccoli calcoli.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il sito non è crollato. Le 5.500 visite misurate sono il 55% delle 10.000 reali: mancano quelle di chi ha rifiutato i cookie.
 - I cookie non tecnici richiedono, in generale, un consenso libero, specifico, informato e inequivocabile.
 - Con il banner i numeri misurati sono una parte del totale: la stima dei volumi si fa dividendo per la quota di consenso.
 - Minimizzazione prima di tutto; pseudonimizzare non è anonimizzare; per i casi veri serve una consulenza legale.

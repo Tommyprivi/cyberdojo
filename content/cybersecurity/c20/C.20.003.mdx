@@ -142,15 +142,15 @@ Backup e ripristino riducono la pressione del riscatto. Ecco perché si preparan
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Bianchi Logistica ha un backup di domenica sera, pulito e provato. Lunedì il server è cifrato e i log mostrano l'ingresso dell'intruso domenica alle 23:40 da un account fornitore. Qual è la sequenza più sensata?"
+  question="Bianchi Logistica ha un backup di domenica alle 20:00, pulito e provato. Lunedì il server è cifrato e i log mostrano l'ingresso dell'intruso domenica alle 23:40 da un account fornitore. Qual è la sequenza più sensata?"
   options={[
     "Isolare i sistemi, capire e chiudere l'accesso del fornitore, cambiare le credenziali, ricostruire da immagine pulita e ripristinare in ondate, valutando in parallelo la notifica per i dati usciti",
-    "Ripristinare subito dal backup di domenica sera per ripartire in fretta, poi indagare",
+    "Ripristinare subito dal backup di domenica per ripartire in fretta, poi indagare",
     "Pagare il riscatto per recuperare i file più velocemente del backup",
     "Spegnere tutti i computer dell'azienda e aspettare l'arrivo dei tecnici esterni",
   ]}
   answer={0}
-  explain="Se si ripristina prima di chiudere l'accesso del fornitore, l'intruso può cifrare di nuovo. Il backup di domenica sera è precedente all'ingresso (23:40), quindi utilizzabile. La notifica va valutata perché i log mostrano anche un furto di dati. Spegnere tutto perde prove; pagare non è una scelta tecnica né garantita."
+  explain="Se si ripristina prima di chiudere l'accesso del fornitore, l'intruso può cifrare di nuovo. Il backup delle 20:00 è precedente all'ingresso (23:40), quindi utilizzabile. La notifica va valutata perché i log mostrano anche un furto di dati. Spegnere tutto perde prove; pagare non è una scelta tecnica né garantita."
 />
 
 <Say who="sensei">Prima chiudi la porta, poi rimetti i mobili. In quest'ordine.</Say>
@@ -170,6 +170,7 @@ Scenari sul ransomware: prime ore, backup, ordine del ripristino e doppia estors
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: a Bianchi Logistica il lunedì dei file cifrati finisce con isolamento, accesso del fornitore chiuso, ripristino a ondate dal backup pulito e valutazione dei dati usciti.
 - Prime ore: dichiarare l'incidente, isolare (non spegnere), valutare l'estensione, preservare le prove, poi cambiare le credenziali e avvisare chi serve.
 - Backup separati, puliti e provati; si ripristina a ondate, seguendo l'importanza per l'attività, da immagini pulite, dopo aver chiuso la porta d'ingresso.
 - Con la doppia estorsione il backup non basta: i dati rubati restano una violazione da valutare; il riscatto è una decisione della direzione con il legale, non dei tecnici.

@@ -93,25 +93,25 @@ Se `ls -l` mostra un **+** dopo i permessi (per esempio `drwxrwx---+`), quel fil
 <Scene title="La mask: il tetto massimo">
 Nell'elenco c'è una riga strana: `mask::rwx`. La **mask** è un **tetto**: i permessi delle voci con nome e del gruppo non possono superarla.
 
-Esempio svolto. Il sistemista, per un'altra ragione, fa `chmod g-w` sulla cartella. Con le ACL attive, `chmod g` cambia proprio la **mask**:
+Esempio **ipotetico**, diverso dal caso di Marta (a lei abbiamo dato solo `r-x`). Immagina un'altra cartella dove a un utente sono stati dati `rwx`. Poi il sistemista, per un'altra ragione, fa `chmod g-w`. Con le ACL attive, `chmod g` cambia proprio la **mask**:
 
 <Log lines={[
-  "user:marta:rwx          #effective:r-x",
+  "user:anna:rwx            #effective:r-x",
   "group::rwx              #effective:r-x",
   "mask::r-x",
-]} caption="Marta ha scritto «rwx», ma il tetto è «r-x»: in pratica può solo leggere." />
+]} caption="Esempio ipotetico: la voce dice «rwx», ma il tetto è «r-x», quindi in pratica l'utente può solo leggere." />
 
 <Flow
   caption="La mask taglia i permessi: conta quello effettivo."
   steps={[
-    { icon: "user", title: "Voce di Marta", text: "Nella ACL: rwx" },
+    { icon: "user", title: "Voce con nome", text: "Nella ACL: rwx" },
     { icon: "shield", title: "Mask", text: "Il tetto: r-x" },
-    { icon: "check", title: "Effettivo", text: "In pratica Marta può solo leggere" },
+    { icon: "check", title: "Effettivo", text: "In pratica può solo leggere" },
   ]}
 />
 
 <Callout kind="attenzione">
-Quando una ACL «sembra» dare un permesso e non funziona, controlla la colonna **#effective** e la mask. È l'errore più comune.
+Quando una ACL «sembra» dare un permesso e non funziona, controlla la colonna **#effective** e la mask. È l'insidia più frequente.
 </Callout>
 
 Vuoi vedere le ACL spiegate e provate da un'altra voce? Il video è in inglese: attiva i sottotitoli.
@@ -227,5 +227,5 @@ Scenari su ACL, mask, permessi predefiniti e permessi speciali. Scegli la rispos
   ]}
 />
 
-<Say who="sensei">Prossima lezione: l'hardening. Dopo aver chiuso le porte interne, togliamo le finestre che non servono.</Say>
+<Say who="sensei">Caso chiuso: Marta legge i progetti con una ACL solo sua, e «altri» resta chiuso. Prossima lezione: l'hardening. Dopo aver chiuso le porte interne, togliamo le finestre che non servono.</Say>
 </Scene>

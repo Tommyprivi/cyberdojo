@@ -45,7 +45,7 @@ Lo stesso cavo, la stessa rete. Perché il file è perfetto e la chiamata no?
 {/* screen */}
 
 <Scene title="Due modi di spedire">
-Quando un programma invia dati, li affida a un **protocollo di trasporto** (un insieme di regole per spedirli). Sono due, e li conosci già come «busta TCP» dal modulo precedente.
+Quando un programma invia dati, li affida a un **protocollo di trasporto** (un insieme di regole per spedirli). Sono due, e la «busta TCP» l'hai già incontrata nel modulo precedente.
 
 - **TCP**: come una **raccomandata con ricevuta**. Ogni pezzo viene confermato. Se un pezzo si perde, viene rispedito.
 - **UDP**: come una **cartolina**. La imbuchi e basta. Nessuna ricevuta, nessun controllo se è arrivata.
@@ -104,7 +104,7 @@ Per questo UDP è usato per:
 TCP si usa quando **ogni byte conta**: pagine web, posta elettronica, trasferimento di file, accesso remoto.
 
 <Callout kind="trucco">
-Domanda guida: «se un pezzo si perde, lo voglio ancora?» Sì, il file non funziona senza → TCP. No, ormai è passato → UDP.
+Domanda guida: «se un pezzo si perde, lo voglio ancora?» Sì, senza quel pezzo il file non funziona → TCP. No, ormai è passato → UDP.
 </Callout>
 
 <Say who="assistente">Il file del bilancio con un byte mancante è un file rotto. Una parola persa in chiamata è solo una parola persa.</Say>
@@ -145,6 +145,7 @@ Cinque scenari: per ciascuno dovrai ragionare su affidabilità e velocità. Hai 
 - TCP è affidabile: apre una connessione, numera, conferma e rispedisce. UDP spedisce e basta, senza garanzie.
 - TCP per pagine web, posta e file; UDP per chiamate, giochi, DNS e DHCP.
 - Affidabile non significa sicuro: TCP non cifra niente.
+- Caso chiuso: il bilancio viaggia in TCP e arriva completo; la videochiamata viaggia in UDP e perde qualche pezzo senza fermarsi.
 </Recap>
 
 <Flashcards

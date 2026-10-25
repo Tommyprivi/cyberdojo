@@ -88,7 +88,7 @@ Esempio fittizio: media 100, deviazione standard 5.
 | 90 | (90 - 100) / 5 | -2,0 |
 | 110 | (110 - 100) / 5 | 2,0 |
 
-Una regola d'esempio: «cerca di comprare se lo z-score è sotto -2; esci quando torna a 0».
+Una regola d'esempio: «cerca di comprare se lo z-score è -2 o meno; esci quando torna a 0».
 
 <PythonTerminal code={"media = 100\ndev = 5\nfor prezzo in [104, 95, 90, 110]:\n    z = (prezzo - media) / dev\n    print(prezzo, z)"} />
 
@@ -144,6 +144,7 @@ Z-score da calcolare e scenari da giudicare. Servono **cinque giuste su cinque**
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: l'elastico di Luca diventa una regola con lo z-score, ma può rompersi: se il prezzo non torna, la perdita è grande.
 - La mean reversion scommette che il prezzo lontano dalla media tenda a tornarci; è l'opposto del trend following.
 - Lo z-score = (prezzo - media) / deviazione standard misura la distanza, non prevede il ritorno.
 - Rischio tipico: tante piccole vincite e una perdita grande quando il prezzo non torna. Serve decidere in anticipo l'uscita.

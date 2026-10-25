@@ -90,7 +90,7 @@ Lo stesso vale per **come** usi gli algoritmi giusti: scrivere da zero la propri
 **Non inventare la tua crittografia.** Usa librerie e protocolli standard, aggiornati e ben mantenuti, con le impostazioni consigliate.
 </Callout>
 
-<Say who="assistente">Il cifrario inventato da te lo sai rompere solo tu? No: lo rompe il primo esperto che ci mette le mani.</Say>
+<Say who="assistente">Il tuo cifrario fatto in casa ti sembra indistruttibile perché sei l'unico a conoscere i suoi difetti. Un esperto che lo guarda li trova presto.</Say>
 </Scene>
 
 {/* screen */}
@@ -105,12 +105,6 @@ Usare **la stessa chiave** ovunque sembra comodo: un segreto solo da ricordare. 
     "Ora può leggere backup, database e email: un solo errore, tre disastri.",
     "Con chiavi diverse per ogni scopo, il danno sarebbe rimasto limitato a una cosa sola.",
   ]}
-/>
-
-<Compare
-  caption="Se la chiave viene scoperta, il danno cambia."
-  left={{ title: "Una chiave per tutto", points: ["Backup, database ed email cadono insieme", "Un solo errore, tre disastri"] }}
-  right={{ title: "Una chiave per scopo", points: ["Cade una sola cosa", "Le altre restano protette"] }}
 />
 
 <Callout kind="trucco">
@@ -168,5 +162,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Modulo concluso. Hai gli strumenti della crittografia. Il prossimo modulo parla di identità: chi sei, e come lo dimostri.</Say>
+<Say who="sensei">Caso chiuso: AES-256 non è stato rotto, la chiave era nel codice pubblico. Modulo concluso. Hai gli strumenti della crittografia. Il prossimo modulo parla di identità: chi sei, e come lo dimostri.</Say>
 </Scene>

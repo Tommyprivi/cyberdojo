@@ -81,7 +81,7 @@ Su una **scala lineare**, distanze uguali sono differenze in euro uguali. Su una
 
 Un prezzo passa da 100 a 200 e poi a 400. In scala lineare il secondo salto sembra doppio (200 contro 100 euro). In scala logaritmica i due salti sono **uguali**: entrambi raddoppiano.
 
-Per periodi lunghi e variazioni grandi la scala logaritmica è più onesta. In matplotlib: `plt.yscale("log")`.
+Per periodi lunghi e variazioni grandi la scala logaritmica è più adatta, perché mostra le percentuali. In matplotlib: `plt.yscale("log")`.
 
 <Say who="sensei">Se ti interessa la percentuale, usa la scala che mostra le percentuali.</Say>
 </Scene>
@@ -146,6 +146,7 @@ Cinque domande su grafici di prezzo, scale e normalizzazione.
 - Un grafico di prezzo si fa con `plot` e `plt.show()`; titolo, assi, unità e legenda sono obbligatori.
 - La scala logaritmica mostra variazioni percentuali uguali; la base 100 permette di confrontare titoli diversi.
 - Assi tagliati e linee che salgono possono ingannare: il grafico descrive il passato, non il futuro.
+- Caso chiuso: i due amici vedono gli stessi numeri; cambia solo da dove parte l'asse. Un grafico onesto dichiara l'asse, il titolo e le unità.
 </Recap>
 
 <Flashcards

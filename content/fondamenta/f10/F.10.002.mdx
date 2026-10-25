@@ -145,13 +145,13 @@ Quando una prova fallisce, sai già da dove cominciare a cercare.
     "Il PC vede i colleghi ma non Internet: gateway sbagliato o mancante.",
     "Il PC non vede nessuno: porta nella VLAN sbagliata, o cavo e porta spenti.",
     "Problemi a intermittenza su due PC: indirizzo IP duplicato.",
-    "PC che non raggiunge i vicini della stessa VLAN: maschera sbagliata (per esempio /30 invece di /27).",
+    "PC che non raggiunge i vicini della stessa VLAN: maschera sbagliata (per esempio /30 invece di /27: il PC crede che i vicini stiano in un'altra rete).",
     "Il traffico vietato passa ancora, o quello permesso non passa: ACL non applicata, interfaccia o direzione sbagliata, ordine delle regole.",
     "Il ping verso l'esterno va, il sito non si apre: controlla il nome con nslookup e il percorso con traceroute.",
   ]}
 />
 
-Un video in italiano, con due sottoreti e un router costruiti passo passo, mostra proprio questo tipo di verifica:
+Per vedere come si costruisce passo passo una rete con due sottoreti e un router, ecco un video in italiano:
 
 <Video />
 
@@ -188,6 +188,7 @@ Cinque domande su documentazione, collaudo ed errori tipici. Cinque su cinque, 3
 - Diagramma in testo e tabella degli indirizzi (dispositivo, ruolo, IP, maschera, gateway, VLAN), senza password, con data e autore.
 - Checklist di collaudo dal vicino al lontano, con prove positive e prove che devono fallire.
 - Errori tipici: gateway, maschera, VLAN della porta, IP duplicati, ACL non applicata o nel verso sbagliato.
+- Caso chiuso: con diagramma e tabella, il collega del lunedì legge un indirizzo libero invece di indovinarlo, e il gateway della VLAN 20 resta al suo posto.
 </Recap>
 
 <Flashcards

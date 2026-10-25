@@ -131,8 +131,8 @@ export const F09_ITEMS: Record<string, BankItem[]> = {
       ok: "strip()",
       no: ["cut()", "trim()", "clean()"],
     },
-    { q: "Cosa stampa `print('a-b-c'.count('-'))`?", ok: "2", no: ["3", "1", "a-b-c"] },
-    { q: "Cosa stampa `print('443'.isdigit())`?", ok: "True", no: ["False", "443", "Errore"] },
+    { q: "Cosa stampa `print('SOC'.lower())`?", ok: "soc", no: ["SOC", "Soc", "Errore"] },
+    { q: "Cosa stampa `print(len('203.0.113.9'))`?", ok: "11", no: ["9", "10", "4"] },
   ],
 
   // ---------- F.09.004: decisioni ----------
@@ -352,7 +352,7 @@ export const F09_ITEMS: Record<string, BankItem[]> = {
       no: ["Il punto e virgola", "La parola then", "Le graffe"],
     },
     {
-      q: "Codice (↵ = a capo): `def f(a, b): return a - b ↵ print(f(b=1, a=5))`. Cosa stampa?",
+      q: "Codice (↵ = a capo): `def f(a, b): return a - b ↵ print(f(5, 1))`. Cosa stampa?",
       ok: "4",
       no: ["-4", "6", "Errore"],
     },
@@ -516,8 +516,8 @@ export const F09_ITEMS: Record<string, BankItem[]> = {
     },
     {
       q: "Quale riga di cron esegue uno script ogni giorno alle 06:30?",
-      ok: "30 6 * * * python3 /home/ada/riassunto.py",
-      no: ["6 30 * * * python3 /home/ada/riassunto.py", "* * 6 30 * python3 /home/ada/riassunto.py", "30 6 1 * * python3 /home/ada/riassunto.py"],
+      ok: "30 6 * * * /usr/bin/python3 /home/ada/riassunto.py",
+      no: ["6 30 * * * /usr/bin/python3 /home/ada/riassunto.py", "* * 6 30 * /usr/bin/python3 /home/ada/riassunto.py", "30 6 1 * * /usr/bin/python3 /home/ada/riassunto.py"],
     },
     {
       q: "Perché in una riga di cron si usano percorsi assoluti?",

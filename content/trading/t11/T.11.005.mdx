@@ -146,7 +146,7 @@ Questo succede spesso con classi sbilanciate: dire sempre la classe più frequen
     "80%: il modello è ottimo",
   ]}
   answer={0}
-  explain="Giorni indovinati: 30 + 20 = 50 su 100, quindi 50%. È il livello della moneta. Chi risponde 60% conta solo i veri positivi e i falsi positivi insieme, che non sono i giorni indovinati."
+  explain="I giorni indovinati sono quelli sulla diagonale: 30 (veri positivi) + 20 (veri negativi) = 50 su 100, quindi 50%, il livello della moneta. Chi risponde 60% ha sommato i giorni previsti «sale» (30 + 30), che comprendono anche gli errori; chi risponde 30% ha contato solo i veri positivi."
 />
 
 <Say who="sensei">Somma la diagonale, cioè i casi giusti. Poi dividi per il totale. Lento e preciso batte veloce e sbagliato.</Say>
@@ -168,7 +168,7 @@ Calcoli sulla matrice di confusione e scenari su soglia, baseline e normalizzazi
 <Recap xp={20}>
 - Prevedere «domani sale o no» è una classificazione binaria; la regressione logistica dà una probabilità e una soglia decide.
 - L'accuratezza è la diagonale della matrice di confusione divisa per il totale, e va sempre confrontata con la baseline.
-- Un 55% può essere peggio della baseline (58%): il confronto onesto viene prima di tutto.
+- Caso chiuso: il 55% di Sara non è un buon risultato, perché la baseline «dico sempre non sale» fa 58%. Il confronto onesto viene prima di tutto.
 </Recap>
 
 <Flashcards

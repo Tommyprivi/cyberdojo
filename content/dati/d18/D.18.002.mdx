@@ -190,6 +190,7 @@ Cinque domande su indici, B-tree e scelte. Servono tutte e cinque giuste. Hai 3 
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: con un indice su cliente_id la query del cliente 4217 non legge più tre milioni di righe, ma pochi passi.
 - Un indice è una struttura ordinata, separata dalla tabella, che dice dove stanno le righe con un certo valore.
 - Il B-tree trova una riga in pochi passi anche con milioni di righe, e aiuta con uguaglianze, intervalli e ORDER BY.
 - Ogni indice rallenta le scritture: si crea solo dove serve, e non aiuta su tabelle piccole, filtri poco selettivi o LIKE '%...'.
@@ -204,5 +205,5 @@ Cinque domande su indici, B-tree e scelte. Servono tutte e cinque giuste. Hai 3 
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: come chiedere al database se sta davvero usando l'indice. Si chiama EXPLAIN.</Say>
+<Say who="sensei">Prossima lezione: come chiedere al database se sta davvero usando l'indice. Si chiama EXPLAIN.</Say>
 </Scene>

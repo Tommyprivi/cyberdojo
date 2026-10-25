@@ -64,10 +64,10 @@ Il pacchetto parte dalla .66 e attraversa switch e router prima di arrivare al s
 
 <Guided
   steps={[
-    "La .66 prepara il pacchetto: scrive i dati, poi aggiunge la busta TCP (porta 22), poi la busta IP (sorgente e destinazione), poi la busta Ethernet (MAC del router).",
-    "Lo switch guarda solo la busta Ethernet: legge il MAC e inoltra il frame sulla porta giusta.",
-    "Il router apre la busta Ethernet, legge l'indirizzo IP di destinazione per scegliere il percorso, e rimette una nuova busta Ethernet con i MAC del salto successivo.",
-    "Il server riceve il pacchetto e toglie le buste da fuori verso dentro: Ethernet, IP, TCP. All'ultimo livello legge la porta 22 e consegna i dati al servizio giusto.",
+    "La .66 scrive i dati e aggiunge le buste: TCP (porta 22), IP (sorgente e destinazione), Ethernet (MAC del router).",
+    "Lo switch legge solo la busta Ethernet: guarda il MAC e inoltra il frame.",
+    "Il router legge l'IP di destinazione per scegliere il percorso e mette una nuova busta Ethernet, con i MAC del salto successivo.",
+    "Il server toglie le buste da fuori verso dentro: Ethernet, IP, TCP. Legge la porta 22 e consegna i dati al servizio giusto.",
   ]}
 />
 

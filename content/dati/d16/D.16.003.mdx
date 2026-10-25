@@ -58,7 +58,7 @@ Vuoi sentirlo spiegare da un'altra voce? Alberi e foreste casuali, in inglese (c
 
 <Video />
 
-<Say who="assistente">Un gruppo con tutti uguali ha Gini 0: è perfetto. Più si avvicina a 0, meglio la domanda ha diviso.</Say>
+<Say who="assistente">Un gruppo con tutti uguali ha Gini 0: è perfetto. Più il Gini dei gruppi che nascono è vicino a 0, meglio la domanda ha diviso.</Say>
 </Scene>
 
 {/* screen */}
@@ -135,7 +135,7 @@ Attenzione alle trappole:
   explain="Quando due variabili sono molto simili, l'importanza si distribuisce tra loro: non dice che una sia inutile né che causi qualcosa. Per decidere si prova a toglierne una e si guarda il voto sulla validazione."
 />
 
-<Say who="assistente">Se due colonne sono quasi gemelle, leggile insieme: la loro importanza vera è la somma.</Say>
+<Say who="assistente">Se due colonne sono quasi gemelle, leggile insieme: la loro importanza va letta insieme.</Say>
 </Scene>
 
 {/* screen */}
@@ -152,6 +152,7 @@ Alberi, Gini, foreste e importanza delle variabili. Cinque domande, senza errori
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: per i 10 clienti la prima domanda è «ha rinnovato l'anno scorso?», che porta il Gini da 0,48 a circa 0,27.
 - Un albero pone domande che rendono i gruppi più puri (Gini più basso); senza limiti va in overfitting.
 - Una foresta casuale fa votare tanti alberi diversi e di solito è più stabile di uno solo.
 - L'importanza delle variabili è un indizio: non è causa, si divide tra variabili simili e va controllata.

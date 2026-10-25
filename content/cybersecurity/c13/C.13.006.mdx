@@ -107,7 +107,7 @@ In pratica un record di flusso pesa poche decine di byte, un pacchetto catturato
 <Log
   lines={[
     "ts          id.orig_h      id.resp_h       proto  service  duration  orig_bytes  resp_bytes  conn_state",
-    "1760437921  192.168.1.20   203.0.113.80    tcp    ssl      312.0     120400      5079600     SF",
+    "1760437921  192.168.1.20   203.0.113.80    tcp    ssl      312.0     120400      2579600     SF",
     "1760437925  192.168.1.77   192.168.1.50    tcp    -        0.0       0           0           S0",
     "1760437960  192.168.1.20   192.168.1.1     udp    dns      0.014     41          97          SF",
   ]}
@@ -130,7 +130,7 @@ Il caso: nella lezione 5 hai scoperto che 198.51.100.33 era sospetto. Chi altro,
 
 <Guided
   steps={[
-    "Con le sole catture complete non puoi rispondere: sono conservate solo per 3 giorni.",
+    "Con le sole catture complete non puoi rispondere: in questo esempio sono conservate solo per 3 giorni (i tempi variano da azienda ad azienda).",
     "Nei flussi NetFlow, che si conservano 90 giorni, cerchi tutti i record con destinazione 198.51.100.33.",
     "Risultato (inventato): due computer, il 192.168.1.30 e il 192.168.1.64, con contatti regolari da 18 giorni.",
     "In dns.log e ssl.log di Zeek, conservati 30 giorni, trovi i nomi richiesti: «aggiorna-esempio.example» da entrambi.",
@@ -139,10 +139,10 @@ Il caso: nella lezione 5 hai scoperto che 198.51.100.33 era sospetto. Chi altro,
 />
 
 <Callout kind="attenzione">
-Zeek e NetFlow raccolgono dati sul traffico dei dipendenti: serve un'informativa chiara, una conservazione limitata e un accesso ristretto (GDPR). Lo scopo è la sicurezza, non controllare le persone.
+Zeek e NetFlow raccolgono dati sul traffico dei dipendenti: servono un'informativa chiara, una conservazione limitata e un accesso ristretto (GDPR), e vanno rispettate le regole sul controllo dei lavoratori (art. 4 dello Statuto dei lavoratori): meglio sentire un consulente. Lo scopo è la sicurezza, non controllare le persone.
 </Callout>
 
-<Say who="sensei">Con tre livelli, una domanda che sembrava impossibile ha avuto risposta. Ecco perché si tengono tutti e tre, ma ciascuno per il giusto tempo.</Say>
+<Say who="sensei">Caso chiuso: chi ha parlato con 198.51.100.33 non erano uno ma due computer, e lo hai scoperto solo grazie ai registri lunghi. Con tre livelli, una domanda che sembrava impossibile ha avuto risposta. Ecco perché si tengono tutti e tre, ma ciascuno per il giusto tempo.</Say>
 </Scene>
 
 {/* screen */}

@@ -128,15 +128,6 @@ Le categorie del negozio sono in una tabella con un **auto-riferimento**: la col
   "6  | Saponi liquidi     | 3",
 ]} caption="La tabella categorie. «Tutto» è la radice: non ha padre." />
 
-<Layers
-  caption="La tabella categorie come albero, dalla radice alle foglie."
-  items={[
-    { icon: "folder", title: "Livello 1", text: "Tutto (la radice, senza padre)" },
-    { icon: "folder", title: "Livello 2", text: "Candele e Saponi" },
-    { icon: "file", title: "Livello 3", text: "Candele profumate, Candele decorative, Saponi liquidi" },
-  ]}
-/>
-
 Un JOIN normale scende di **un solo livello**. Per scendere fino in fondo senza sapere quanti livelli ci sono, serve una **CTE ricorsiva**: una query che richiama sé stessa finché trova nuove righe.
 
 <Log lines={[
@@ -233,6 +224,7 @@ Cinque domande su viste, viste materializzate e CTE ricorsive. Servono tutte e c
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: la query lunga diventa una vista con un nome, uguale per tutti; le categorie sotto «Candele» si trovano con una CTE ricorsiva.
 - Una vista è una query con un nome: non contiene dati propri e mostra sempre i dati aggiornati.
 - Una vista materializzata salva il risultato: è veloce da leggere, ma va aggiornata con REFRESH MATERIALIZED VIEW.
 - Una CTE ricorsiva ha un punto di partenza, un passo che si ripete e una condizione di arresto: serve per le gerarchie.
@@ -247,5 +239,5 @@ Cinque domande su viste, viste materializzate e CTE ricorsive. Servono tutte e c
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: funzioni, procedure e trigger, la logica che vive dentro il database.</Say>
+<Say who="sensei">Prossima lezione: funzioni, procedure e trigger, la logica che vive dentro il database.</Say>
 </Scene>

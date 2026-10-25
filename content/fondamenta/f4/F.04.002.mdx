@@ -67,7 +67,7 @@ La domanda del caso: **quali accessi sono falliti, e quanti?** Nessuno legge ott
   "03:12 198.51.100.7 ssh FALLITO test",
 ]} caption="Quattro righe su otto contengono la parola FALLITO." />
 
-Il nome viene da un vecchio comando di un editor: «cerca ovunque un modello e stampa la riga».
+Il nome viene dal comando `g/re/p` di un vecchio editor, ed: «cerca ovunque un modello e stampa la riga».
 
 <Callout kind="attenzione">
 grep distingue **maiuscole e minuscole**. `grep fallito accessi.log` non trova niente, perché nel file c'è FALLITO.
@@ -145,7 +145,7 @@ Si possono anche **concatenare due grep con la pipe**: il secondo filtra l'outpu
 <Video />
 
 <Callout kind="curiosita">
-Questi simboli fanno parte delle **espressioni regolari**, un piccolo linguaggio per descrivere testi. Per ora ti bastano `^` e `$`: ne imparerai altri più avanti.
+Questi simboli fanno parte delle **espressioni regolari**, un piccolo linguaggio per descrivere testi. Per ora ti bastano `^` e `$`. Nota: il punto vale «qualsiasi carattere», quindi `grep 203.0.113.9` è una ricerca un po' larga: negli esempi va bene lo stesso.
 </Callout>
 
 <Say who="assistente">Metti le virgolette attorno al testo quando contiene simboli speciali: così la shell non lo interpreta al posto di grep.</Say>
@@ -178,6 +178,7 @@ Cinque domande su grep: quale opzione serve, cosa stampa, quanti risultati. Ne s
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: gli accessi falliti sono 4, tutti sul servizio ssh, e li dà direttamente `grep -c FALLITO accessi.log`.
 - `grep testo file` stampa le righe che contengono il testo; distingue maiuscole e minuscole.
 - Opzioni: `-i` ignora le maiuscole, `-v` inverte, `-n` numera, `-c` conta, `-r` cerca nelle cartelle.
 - `^` indica l'inizio della riga, `$` la fine; più grep in pipe restringono la ricerca.

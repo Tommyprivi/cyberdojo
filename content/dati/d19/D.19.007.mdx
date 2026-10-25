@@ -210,6 +210,7 @@ Cinque domande su Quarto, R Markdown, parametri, rendering e organizzazione del 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Giulia non riscrive più i numeri a mano; li scrive il codice, e il report del mese si rifà con un solo comando.
 - Un report riproducibile (Quarto `.qmd` o R Markdown `.Rmd`) unisce intestazione YAML, testo Markdown e blocchi di codice: i numeri nel testo li scrive il codice.
 - I parametri permettono di rifare lo stesso report con valori diversi, con `quarto render report.qmd -P citta:Milano` oppure `rmarkdown::render(..., params = ...)`.
 - Cartella di progetto ordinata, percorsi relativi, `renv` per le versioni, Git per la storia del codice; i dati personali non si versionano.

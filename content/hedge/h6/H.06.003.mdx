@@ -56,15 +56,6 @@ Tre tipi di scenario:
 - **Ipotetico**: inventare uno shock plausibile mai visto.
 - **Reverse stress test**: si parte dalla perdita che non si vuole subire e si chiede quale scenario la causerebbe.
 
-<Layers
-  caption="I tre tipi di scenario."
-  items={[
-    { icon: "clock", title: "Storico", text: "Un evento già avvenuto, rifatto sul portafoglio di oggi" },
-    { icon: "bolt", title: "Ipotetico", text: "Uno shock plausibile mai visto" },
-    { icon: "search", title: "Reverse", text: "Parte dalla perdita e cerca la causa" },
-  ]}
-/>
-
 <Callout kind="regola">
 Il VaR risponde «quanto in un giorno normale?». Lo stress test risponde «che cosa succede se va male sul serio?».
 </Callout>
@@ -84,7 +75,7 @@ Portafoglio fittizio: 60% azioni, 40% obbligazioni. Scenario: azioni -30%, obbli
   "con 2.000.000 di euro: perdita = 400.000 euro",
 ]} />
 
-Un fondo long/short: long per 80 milioni, short per 40. Il mercato scende del 10%: il long perde 8, lo short guadagna 4. **Perdita netta: 4 milioni.**
+Un fondo long/short: long per 80 milioni, short per 40. Il mercato scende del 10% e le due parti si muovono come il mercato: il long perde 8, lo short guadagna 4. **Perdita netta: 4 milioni.**
 
 <Callout kind="curiosita">
 Nel 2008 molte correlazioni salirono insieme: titoli che sembravano indipendenti scesero tutti. Un buon scenario lo mette in conto.
@@ -144,6 +135,7 @@ Scenari, perdite e usi corretti dello stress test. Numeri fittizi.
 - Lo stress test applica uno scenario estremo a un portafoglio; il VaR descrive i giorni normali.
 - Gli scenari possono essere storici, ipotetici o rovesciati (reverse stress test).
 - Il test serve a trovare i punti deboli e a ridurre il rischio, non a rassicurare.
+- Caso chiuso: per il «giorno che non c'era nei dati» Marta applica uno scenario al portafoglio di Rondine Capital (ad esempio azioni -30%, perdita del 20% in un portafoglio 60/40) e, se supera il limite, riduce il rischio.
 </Recap>
 
 <Flashcards

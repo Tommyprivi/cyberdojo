@@ -63,15 +63,6 @@ Cinque numeri al massimo. Il resto sta in una pagina di approfondimento.
 Ordini = sessioni × tasso di conversione. Se gli ordini scendono, una delle due parti è scesa: la salute dice quale.
 </Callout>
 
-<Flow
-  caption="La metrica nord si scompone in due fattori."
-  steps={[
-    { icon: "globe", title: "Sessioni", text: "Quanta gente arriva: 10.000" },
-    { icon: "chart", title: "Conversione", text: "Quanti comprano: 3%" },
-    { icon: "coin", title: "Ordini", text: "La metrica nord: 300" },
-  ]}
-/>
-
 Vuoi vedere come si fanno i riquadri dei numeri chiave in uno strumento gratuito (Looker Studio)? Il video è in inglese:
 
 <Video />
@@ -125,7 +116,7 @@ Se questa settimana gli ordini sono 190, sono fuori dall'intervallo: **allarme**
 />
 
 <Callout kind="curiosita">
-Una soglia troppo stretta (±2%) suona sempre e nessuno la ascolta. Una troppo larga (±80%) non suona mai. Si sceglie guardando quanto varia di solito il numero. Nei dati reali si tiene conto anche del giorno della settimana: un lunedì non si confronta con una domenica.
+Una soglia troppo stretta (±2%) suona sempre e nessuno la ascolta. Una troppo larga (±80%) non suona mai. Si sceglie guardando quanto varia di solito il numero. Per accorgersi di un guasto in un giorno, la stessa regola si applica ai dati giornalieri. Nei dati reali si tiene conto anche del giorno della settimana: un lunedì non si confronta con una domenica.
 </Callout>
 
 <Say who="sensei">Un allarme che suona sempre è un allarme spento. Meglio pochi avvisi, giusti.</Say>
@@ -165,6 +156,7 @@ Metrica nord, variazioni, rapporti e allarmi: scenari e calcoli.
 
 <Scene title="Rapporto finale">
 <Recap xp={30}>
+- Caso chiuso: con una metrica nord (gli ordini) e un allarme sulla media recente, il guasto al pagamento sarebbe emerso subito, non dopo tre giorni.
 - Una metrica nord sola, poche metriche di salute che spiegano perché cambia.
 - Il rapporto di una pagina: numero nord, confronto, spiegazione, azione; variazione = (nuovo − vecchio) ÷ vecchio.
 - Un allarme usa la media recente e una tolleranza scelta guardando la variabilità normale.

@@ -101,16 +101,6 @@ Un'altra voce, in meno di quattro minuti:
   ]}
 />
 
-<Flow
-  caption="DORA: quattro battute tra client e server."
-  steps={[
-    { icon: "laptop", title: "Discover", text: "C'è un server DHCP?" },
-    { icon: "server", title: "Offer", text: "Ti propongo questo indirizzo" },
-    { icon: "laptop", title: "Request", text: "Va bene, lo voglio" },
-    { icon: "check", title: "Acknowledge", text: "Confermato fino alla scadenza" },
-  ]}
-/>
-
 <Say who="assistente">Una cosa da ricordare: l'ultimo messaggio dà anche gateway e DNS, non solo l'indirizzo.</Say>
 </Scene>
 
@@ -126,7 +116,7 @@ Come ci si difende:
 - si vieta di collegare apparecchi non autorizzati.
 
 <Callout kind="attenzione">
-Mettere un server DHCP falso in una rete altrui è un'intrusione (art. 615-ter c.p.). Le prove si fanno solo in un laboratorio isolato, di tua proprietà.
+Mettere un server DHCP falso in una rete altrui può costituire reato (per esempio l'accesso abusivo, art. 615-ter c.p.). Le prove si fanno solo in un laboratorio isolato, di tua proprietà.
 </Callout>
 
 <Say who="sensei">Chi dà l'indirizzo decide anche da dove passa il traffico. Per questo il DHCP si sorveglia.</Say>
@@ -167,6 +157,7 @@ DORA, lease e casi di rete. Hai 3 tentativi.
 - Il DHCP assegna in automatico indirizzo, subnet mask, gateway e DNS, in prestito per un tempo (lease).
 - DORA: Discover, Offer, Request, Acknowledge.
 - Un server DHCP non autorizzato può deviare il traffico: si previene con il DHCP snooping e il controllo dei dispositivi collegati.
+- Caso chiuso: la nuova collega naviga perché il DHCP le ha dato indirizzo, maschera, gateway e DNS con una concessione a tempo.
 </Recap>
 
 <Flashcards

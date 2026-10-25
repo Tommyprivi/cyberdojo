@@ -215,6 +215,7 @@ Cinque domande su vettori, liste, data frame, indicizzazione e funzioni. Ne serv
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: per i sei ordini di Giulia la media è mean(ordini$importo) = 30, gli ordini grandi si estraggono con ordini[ordini$importo > 25, ] e quelli di Roma con ordini[ordini$citta == 'Roma', ].
 - Un vettore tiene valori dello stesso tipo (numeric, integer, character, logical). Si crea con `c()` e si indicizza da 1 con `[ ]`.
 - Una lista contiene cose diverse; un data frame è una lista di colonne uguali in lunghezza. `$` prende una colonna, `[riga, colonna]` una porzione.
 - Il fattore ha livelli ordinati; la funzione `function()` è una ricetta riutilizzabile con argomenti di default.

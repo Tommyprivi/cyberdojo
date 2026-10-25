@@ -104,7 +104,7 @@ Conta l'ora in cui l'evento è **accaduto**, non quella in cui è arrivato. Un e
 {/* screen */}
 
 <Scene title="Code di messaggi">
-Chi genera eventi (il sito, i negozi) e chi li elabora non devono dipendere uno dall'altro. In mezzo si mette una **coda di messaggi**, come Kafka a livello concettuale.
+Chi genera eventi (il sito, i negozi) e chi li elabora non devono dipendere uno dall'altro. In mezzo si mette una **coda di messaggi** (un esempio molto usato è Apache Kafka).
 
 È una grande cassetta della posta: i produttori ci mettono eventi, i consumatori li leggono quando possono. Gli eventi restano per un po' e si possono **rileggere**.
 
@@ -156,6 +156,7 @@ Scenari su batch, streaming, finestre e code di messaggi.
 - Batch = elaborazione a blocchi, semplice ed economica; streaming = elaborazione mentre i dati arrivano.
 - Per contare nel flusso serve una finestra temporale; conta l'ora dell'evento, non quella di arrivo.
 - Una coda di messaggi (come Kafka) separa chi produce da chi consuma e conserva gli eventi per un po'.
+- Caso chiuso: il batch delle 23 scopriva i 30 acquisti delle 14:02 con nove ore di ritardo. Con lo streaming, una finestra di 5 minuti e la regola «più di 10 acquisti» l'allarme scatta subito.
 </Recap>
 
 <Flashcards

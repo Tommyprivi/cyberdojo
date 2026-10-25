@@ -42,8 +42,6 @@ Un lunedì ne dimentica una: il report mostra numeri vecchi per metà.
 
 La domanda del caso: **come si fa a dire a un programma «ricostruisci tutto, nell'ordine giusto»?**
 
-<Say who="sensei">Se l'ordine esiste solo nella testa di una persona, il processo non esiste. Lo scriviamo.</Say>
-
 **dbt** (*data build tool*) è un programma gratuito (dbt Core, a riga di comando) che fa tre cose:
 
 - legge i tuoi file SQL;
@@ -56,7 +54,9 @@ Non estrae e non carica dati: fa solo la **T** di ELT. Ogni file SQL con una `SE
 Un modello è **una sola SELECT**. Niente CREATE TABLE, niente INSERT: dbt scrive quella parte al posto tuo.
 </Callout>
 
-<Say who="assistente">Tu descrivi come deve essere il risultato. dbt decide come costruirlo.</Say>
+In breve: tu descrivi come deve essere il risultato, dbt decide come costruirlo.
+
+<Say who="sensei">Se l'ordine esiste solo nella testa di una persona, il processo non esiste. Lo scriviamo.</Say>
 </Scene>
 
 {/* screen */}
@@ -173,12 +173,7 @@ Le dipendenze formano un **grafo orientato senza cicli** (DAG): una mappa con fr
   ]}
 />
 
-<Log lines={[
-  "source negozio.ordini",
-  "   -> stg_ordini",
-  "      -> ordini_pagati",
-  "         -> ricavi_mensili",
-]} caption="dbt esegue sempre da sinistra a destra: un modello parte solo quando quelli da cui dipende sono pronti." />
+dbt esegue sempre da sinistra a destra: un modello parte solo quando quelli da cui dipende sono pronti.
 
 Il comando `dbt run` costruisce tutto nell'ordine giusto. `dbt run --select ordini_pagati+` ricostruisce quel modello e tutti quelli che ne dipendono.
 
@@ -246,6 +241,7 @@ Modelli, ref, grafo e materializzazioni: leggi i file e decidi che cosa succede.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: le venti query diventano modelli collegati da ref. Il grafo scrive l'ordine, e un solo comando (dbt run) ricostruisce tutto.
 - Un modello dbt è un file SQL con una sola SELECT: il nome del file è il nome della tabella creata.
 - `source` indica le tabelle grezze, `ref` un altro modello: così dbt costruisce il grafo (DAG) ed esegue nell'ordine giusto.
 - Materializzazioni: view (di default, leggera), table (ricostruita a ogni run), incremental (aggiunge solo il nuovo), ephemeral (solo codice).

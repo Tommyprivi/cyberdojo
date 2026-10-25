@@ -101,6 +101,8 @@ Una **GPO** (Group Policy Object) è un insieme di impostazioni che AD distribui
 
 La GPO si **collega** a un sito, al dominio o a una OU. I computer la scaricano e la applicano da soli, in modo periodico.
 
+Nel caso della Bianchi Logistica: una GPO collegata al **dominio** con «lunghezza minima password: 14». Il giorno dopo vale sui 500 computer, senza toccarne uno.
+
 <Callout kind="regola">
 Ordine di applicazione: **Locale, Sito, Dominio, OU**. L'ultima applicata, di solito, prevale (l'OU più vicina all'oggetto vince).
 </Callout>
@@ -147,7 +149,7 @@ Marco è un amministratore di sistema. Ogni mattina apre la posta e naviga sul w
 <Scene title="Che cosa proteggere, che cosa controllare">
 Tre cose da fare in un dominio.
 
-1. **Pochi** membri nei gruppi più potenti (**Domain Admins**, **Enterprise Admins**, **Schema Admins**). Se un gruppo ha 20 persone, 18 non servono.
+1. **Pochi** membri nei gruppi più potenti (**Domain Admins**, **Enterprise Admins**, **Schema Admins**). Se un gruppo ne ha venti, quasi certamente molte non servono.
 2. **Disattivare** subito gli account di chi se ne va, e rivederli: un account dimenticato è una porta aperta e nessuno nota se qualcuno la usa.
 3. **Proteggere i DC**: pochi accessi, niente navigazione o posta sui DC, aggiornamenti, backup provati.
 
@@ -186,5 +188,5 @@ Scenari su domini, OU, GPO e gruppi amministrativi.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: come fa Active Directory a fidarsi di te senza che la password giri sulla rete. Kerberos e NTLM.</Say>
+<Say who="sensei">Caso chiuso: una sola regola, collegata al dominio, ha raggiunto 500 computer. Prossima lezione: come fa Active Directory a fidarsi di te senza che la password giri sulla rete. Kerberos e NTLM.</Say>
 </Scene>

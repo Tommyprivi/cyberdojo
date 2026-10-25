@@ -103,16 +103,6 @@ Per arrivare al valore delle **azioni**, si toglie il debito netto. Con Officine
   ]}
 />
 
-<Flow
-  caption="Da enterprise value a valore per azione, in milioni di euro."
-  steps={[
-    { icon: "chart", title: "EV", text: "195" },
-    { icon: "warning", title: "Debito netto", text: "-50" },
-    { icon: "users", title: "Valore dei soci", text: "145" },
-    { icon: "check", title: "Per azione", text: "145 / 10 = 14,5 euro" },
-  ]}
-/>
-
 <Callout kind="attenzione">
 Il valore terminale pesa di solito la **maggior parte** del risultato. Un tasso di sconto più basso di due punti, a parità di flusso, può far salire quella parte del 25% (10 / 0,08 invece di 10 / 0,10: 125 contro 100).
 </Callout>
@@ -155,6 +145,7 @@ Calcoli di attualizzazione, valore terminale e valore per azione. Numeri fittizi
 - Un flusso tra n anni si divide per (1 + r) elevato a n: 11 tra un anno al 10% vale 10 oggi.
 - DCF = flussi dei primi anni attualizzati + valore terminale attualizzato; poi si toglie il debito netto.
 - Il valore terminale pesa molto: il risultato va letto con scenari, mai come numero esatto.
+- Caso chiuso: i 14,53 euro del modello sono precisi solo in apparenza. Cambiando il tasso di due punti il valore terminale si sposta del 25%, e per questo i decimali ingannano.
 </Recap>
 
 <Flashcards

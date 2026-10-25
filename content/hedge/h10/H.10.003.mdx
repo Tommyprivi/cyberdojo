@@ -127,13 +127,13 @@ Se scopri un errore nei numeri già inviati, il comportamento corretto è dirlo 
 <Quiz
   question="Un fondo ha fatto +5% in tre mesi e scrive: «Rendimento: 20% all'anno». Che cosa non va?"
   options={[
-    "Moltiplicare un trimestre per quattro non è una previsione: il risultato dei mesi seguenti può essere diverso",
+    "Un risultato di tre mesi non si può moltiplicare per quattro e presentare come annuale: i mesi seguenti possono andare in modo molto diverso",
     "Niente, è il modo corretto di calcolare il rendimento annuo",
-    "Il numero giusto sarebbe 5% diviso 4",
+    "Il numero giusto sarebbe 5%, perché una percentuale non cambia col tempo",
     "Non va il fatto di usare le percentuali",
   ]}
   answer={0}
-  explain="Il risultato di tre mesi non si può ripetere per quattro volte e presentarlo come annuale: non è garantito. Si può dire quanto è stato, non quanto sarà."
+  explain="Il risultato di tre mesi non si può ripetere quattro volte e presentare come annuale: non è garantito. Si può dire quanto è stato, non quanto sarà."
 />
 
 <Say who="assistente">Descrivi sempre il passato come passato e il futuro come incerto.</Say>
@@ -153,6 +153,7 @@ Casi di comunicazione, con qualche calcolo su rendimenti scelti e rendimenti com
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la brochure di Faro Capital (+16,6% in due anni) non è onesta. Omette l'anno a -8%: sui quattro anni il risultato è circa +20,1%, con un anno negativo.
 - Una comunicazione onesta è corretta, chiara e non fuorviante: niente bugie e niente omissioni che cambino il senso.
 - Scegliere solo gli anni migliori, annualizzare pochi mesi o confrontare con un benchmark sbagliato sono trucchi da riconoscere.
 - Una lettera onesta mostra rendimenti netti, periodi negativi, benchmark adatto e rischi, senza promettere nulla.

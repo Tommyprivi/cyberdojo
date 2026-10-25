@@ -38,7 +38,7 @@ commands: []
 <Scene title="Due reti con lo stesso nome">
 Sara è in aeroporto e cerca il Wi-Fi gratuito. Sul telefono compaiono tre reti:
 
-<Log lines={["AeroportoLibero          segnale: ottimo   sicurezza: nessuna", "AeroportoLibero          segnale: medio    sicurezza: nessuna", "Aeroporto_Passeggeri     segnale: buono    sicurezza: WPA2 (con password sul cartello)"]} caption="Due reti hanno lo stesso nome e sono entrambe aperte: una è vera, l'altra no. Quale?" />
+<Log lines={["AeroportoLibero          segnale: ottimo   sicurezza: nessuna", "AeroportoLibero          segnale: medio    sicurezza: nessuna"]} caption="Due reti con lo stesso nome, entrambe aperte: una è dell'aeroporto, l'altra è una copia. Quale?" />
 
 Sara si collega alla prima, quella con il segnale migliore. Poche ore dopo scopre un accesso strano al suo account della posta.
 
@@ -87,12 +87,6 @@ Le regole di buon senso:
 - evita di fare operazioni delicate (banca, pagamenti) su Wi-Fi pubblico: usa la rete dati del telefono;
 - usa una VPN affidabile, ricordando i suoi limiti;
 - disattiva la condivisione di file e la connessione automatica alle reti aperte.
-
-<Compare
-  caption="Su una rete pubblica contano le precauzioni."
-  left={{ title: "Senza precauzioni", points: ["Il traffico non cifrato si ascolta", "Il telefono si collega da solo alle reti aperte"] }}
-  right={{ title: "Con precauzioni", points: ["HTTPS, VPN o dati mobili", "Connessione automatica disattivata"] }}
-/>
 
 <Callout kind="trucco">
 Se devi inserire una password importante e non sei su una rete tua, passa ai dati mobili del telefono.
@@ -198,5 +192,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Il modulo sulla sicurezza di rete finisce qui: porte, sorveglianza, zone, tunnel, attacchi e Wi-Fi. Il prossimo parla del web. Preparati.</Say>
+<Say who="sensei">Caso chiuso: la rete con il segnale migliore era il gemello, e il nome da solo non provava niente. Il modulo sulla sicurezza di rete finisce qui: porte, sorveglianza, zone, tunnel, attacchi e Wi-Fi. Il prossimo parla del web. Preparati.</Say>
 </Scene>

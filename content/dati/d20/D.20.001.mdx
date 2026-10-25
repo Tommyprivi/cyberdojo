@@ -128,12 +128,6 @@ Regole per i **nomi coerenti**:
 - sempre **verbo o azione** (`acquisto`, non `pagina_acquisti_ok`);
 - sempre la stessa lingua; mai `AddToCart` in un punto e `aggiunta_carrello` in un altro.
 
-<Compare
-  caption="Lo stesso gesto, con nomi diversi o con un nome solo."
-  left={{ title: "Nomi incoerenti", points: ["aggiunta_carrello sul sito, AddToCart nell'app", "Per lo strumento sono due eventi diversi", "Il totale va sommato a mano"] }}
-  right={{ title: "Piano di tracciamento", points: ["Un solo nome per ogni azione", "I dettagli stanno nelle proprietà", "Un conteggio solo, già corretto"] }}
-/>
-
 Vuoi sentire un altro spiegare come funzionano gli eventi? Il video è in italiano, bastano i primi minuti:
 
 <Video />
@@ -177,6 +171,7 @@ Alcune domande sul registro eventi di Tavola Bella: nomi, proprietà e conteggi.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: per contare i clic su «Aggiungi al carrello» Giulia ha bisogno di un evento registrato con un nome coerente, deciso nel piano di tracciamento prima di scrivere il codice.
 - Un evento è una riga di registro: nome (che cosa), momento (quando), proprietà (i dettagli).
 - Utente = persona nel tempo, sessione = una visita, evento = un'azione: tre cose da non confondere.
 - Un piano di tracciamento elenca eventi, motivo e proprietà, con nomi coerenti scritti una sola volta.

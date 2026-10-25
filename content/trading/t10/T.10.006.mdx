@@ -136,7 +136,7 @@ Molti incidenti dei sistemi automatici non nascono da un'idea sbagliata, ma da u
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Alle 03:12 il bot registra WARNING Risposta 429. Alle 03:13 non scrive più nulla fino alle 07:00. Che cosa conviene pensare?"
+  question="Il bot scrive un battito ogni minuto. Alle 03:12 registra WARNING Risposta 429, poi non scrive più nulla fino alle 07:00. Che cosa conviene pensare?"
   options={[
     "Qualcosa si è fermato: il silenzio dopo il battito è un segnale da controllare",
     "Va tutto bene: se non c'è un errore scritto, non è successo niente",
@@ -164,6 +164,7 @@ Scenari su registri, livelli, segreti e monitoraggio del bot demo.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: con un registro su file, Marta al mattino avrebbe letto che cosa ha fatto il bot di notte; con il solo print non resta niente.
 - Il modulo logging ha livelli (DEBUG, INFO, WARNING, ERROR, CRITICAL) e può scrivere su file: print non basta.
 - Nel registro si scrive che cosa, quando, con quale identificativo e com'è andata; mai chiavi, password o dati personali.
 - Un bot ha limiti, battito e interruttore di emergenza: il silenzio è un segnale da controllare.

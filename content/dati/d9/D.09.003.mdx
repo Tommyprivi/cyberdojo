@@ -38,7 +38,7 @@ commands: []
 <Scene title="Il totale raddoppiato">
 Lunedì mattina il capo di **Tavola Bella** guarda il report: vendite di sabato, **240 euro**. Strano: ne risultavano 120.
 
-Giulia scopre che sabato notte la pipeline si era fermata a metà. Un collega l'ha **rilanciata**. Ma il report ora mostra il doppio.
+Giulia scopre che sabato notte la pipeline si era fermata all'ultimo passo, dopo aver già caricato i dati. Un collega l'ha **rilanciata** dall'inizio. Ma il report ora mostra il doppio.
 
 La domanda del caso: **come si rilancia una pipeline senza rovinare i dati?**
 
@@ -75,7 +75,7 @@ Come una catena di montaggio: se un posto si ferma, gli altri dopo non possono l
 Disegna sempre la pipeline su carta: scatole e frecce. Se non sai dire che cosa entra e che cosa esce da ogni scatola, non la stai ancora capendo.
 </Callout>
 
-<Say who="assistente">Il passo 3 ha fallito sabato notte. Quindi i passi 1 e 2 erano già fatti. Tienilo a mente.</Say>
+<Say who="assistente">Sabato notte il passo 3 aveva già scritto le righe, e il report (passo 4) si è fermato. Il rilancio ha scritto le righe una seconda volta. Tienilo a mente.</Say>
 </Scene>
 
 {/* screen */}
@@ -179,6 +179,7 @@ Scenari di pipeline guaste: capisci che cosa è andato storto e come ripartire.
 - Una pipeline è una catena di passi: ogni uscita è l'ingresso del passo successivo.
 - Un passo idempotente dà lo stesso risultato se ripetuto: rende sicuri i rilanci.
 - In caso di errore: fermarsi con un messaggio, riprovare se è passeggero, ripartire dal passo fallito.
+- Caso chiuso: sabato valeva 120, non 240. Il caricamento aggiungeva righe a ogni rilancio. Con «sostituisci il giorno» si può rilanciare senza paura.
 </Recap>
 
 <Flashcards

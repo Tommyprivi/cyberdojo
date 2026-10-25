@@ -94,11 +94,11 @@ Conta l'**ordine**. Una regola «DENY tutto» messa per prima bloccherebbe anche
 {/* screen */}
 
 <Scene title="Default deny">
-La riga 4 è la **regola di chiusura**. Quello che nessuna regola sopra ha permesso, viene negato.
+La riga 4 è la **regola di chiusura**: quello che nessuna regola sopra ha permesso, viene negato. Si chiama **default deny**: di base si nega, si permette solo ciò che serve.
 
-Questa idea si chiama **default deny**: *di base si nega, si permette solo ciò che serve*. È il contrario del «default allow», dove di base passa tutto e si vieta solo ciò che si conosce come pericoloso.
+È il contrario del «default allow», dove di base passa tutto e si vieta solo ciò che si sa pericoloso.
 
-Perché è meglio il default deny? Perché le minacce nuove non hanno ancora un nome. Con il default deny una porta che nessuno ha mai pensato di aprire resta chiusa. Con il default allow resta aperta, finché qualcuno non se ne accorge.
+Perché è meglio il default deny? Le minacce nuove non hanno ancora un nome: una porta che nessuno ha mai pensato di aprire resta chiusa.
 
 <Compare
   caption="Che cosa succede a una porta che nessuno ha mai pensato di aprire."
@@ -180,5 +180,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: chi guarda dentro i pacchetti che il portiere lascia passare. Si chiamano IDS e IPS.</Say>
+<Say who="sensei">Caso chiuso: la porta 3389 era aperta a Internet perché mancava la riga di chiusura. Prossima lezione: chi guarda dentro i pacchetti che il portiere lascia passare. Si chiamano IDS e IPS.</Say>
 </Scene>

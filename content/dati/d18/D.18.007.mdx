@@ -209,6 +209,7 @@ Cinque domande su backup, regola 3-2-1, RPO e RTO. Servono tutte e cinque giuste
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: a Marta serviva una copia fuori dal disco del database (3-2-1), un RPO e un RTO decisi in anticipo e un ripristino provato, non solo un file.
 - pg_dump fa una copia logica (piccola e portabile); la copia fisica con archivio dei WAL permette il ritorno a un istante preciso.
 - Regola 3-2-1: tre copie, due supporti diversi, una fuori sede; i backup si cifrano e proteggono come i dati.
 - RPO è quanti dati puoi perdere, RTO è quanto tempo puoi restare fermo. Il ripristino si prova, cronometrando.
@@ -223,5 +224,5 @@ Cinque domande su backup, regola 3-2-1, RPO e RTO. Servono tutte e cinque giuste
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Ultima lezione del ramo: prestazioni e sicurezza, per un database veloce e difeso.</Say>
+<Say who="sensei">Ultima lezione del ramo: prestazioni e sicurezza, per un database veloce e difeso.</Say>
 </Scene>

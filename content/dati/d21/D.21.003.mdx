@@ -46,7 +46,7 @@ Nel progetto di Marta i modelli sono cresciuti: ora sono trenta. Quattro di loro
   "from {{ source('negozio', 'ordini') }}",
 ]} caption="Stessa pulizia copiata in quattro modelli diversi." />
 
-Un giorno la tabella grezza cambia il nome della colonna `stato` in `stato_ordine`. Quattro modelli si rompono. Un altro, dimenticato, continua a funzionare con dati vecchi.
+Un giorno la tabella grezza cambia il nome della colonna `stato` in `stato_ordine`. Quattro modelli si rompono insieme, e vanno corretti uno per uno.
 
 <Compare
   caption="Dove si fa la pulizia cambia quanti file si rompono."
@@ -266,6 +266,7 @@ Modelli da collocare nel livello giusto, nomi da riconoscere, responsabilità da
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la pulizia sta in un solo modello di staging per tabella, quindi se una colonna grezza cambia nome si tocca un solo file.
 - Staging: un modello per tabella grezza, solo pulizia. Intermediate: passaggi riusabili. Marts: tabelle finali per concetto di business.
 - Nomi: stg_ per lo staging, int_ per l'intermediate, fct_ per i fatti e dim_ per le dimensioni. Una regola sola, rispettata da tutti.
 - Le frecce vanno in un verso: grezzo, staging, intermediate, marts. Solo lo staging legge il grezzo.

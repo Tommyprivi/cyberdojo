@@ -65,7 +65,7 @@ Vuoi sentirlo spiegare da un'altra voce? Meno di sei minuti, in inglese con i so
 
 <Video />
 
-<Say who="assistente">Pensa a un grande negozio che ti presta il carrello, la strada per arrivare e ti fa il conto finale. Ma tu scegli la spesa.</Say>
+<Say who="assistente">Pensa a un servizio che ti anticipa i soldi, ti presta ciò che ti manca e ti manda un solo estratto conto. Ma sei tu a scegliere che cosa comprare.</Say>
 </Scene>
 
 {/* screen */}
@@ -113,19 +113,19 @@ In cambio il prime broker chiede una **garanzia**, detta **margine**. Esempio: t
   "20.000.000 x 0,25 = 5.000.000",
 ]} />
 
-Se i titoli perdono valore e la garanzia scende sotto il minimo, arriva la **richiesta di margine** (*margin call*): il fondo deve **aggiungere garanzie** o **ridurre le posizioni**.
+Se i titoli comprati perdono valore (o, per un titolo venduto allo scoperto, il prezzo sale) e la garanzia scende sotto il minimo, arriva la **richiesta di margine** (*margin call*): il fondo deve **aggiungere garanzie** o **ridurre le posizioni**.
 
 <Flow
   caption="Come nasce una richiesta di margine."
   steps={[
-    { icon: "chart", title: "Prezzi in calo", text: "I titoli perdono valore" },
+    { icon: "chart", title: "Mercato contrario", text: "I prezzi vanno contro il fondo" },
     { icon: "shield", title: "Garanzia scesa", text: "Sotto il minimo richiesto" },
     { icon: "bell", title: "Richiesta di margine", text: "Il prime broker la invia" },
     { icon: "check", title: "Il fondo agisce", text: "Aggiunge garanzie o riduce le posizioni" },
   ]}
 />
 
-<Say who="assistente">Un indizio: la richiesta di margine arriva proprio quando i prezzi scendono, cioè quando al fondo servirebbe più respiro.</Say>
+<Say who="assistente">Un indizio: la richiesta di margine arriva proprio quando il mercato va contro il fondo, cioè quando servirebbe più respiro.</Say>
 </Scene>
 
 {/* screen */}
@@ -169,6 +169,7 @@ Domande sul prime broker, con qualche calcolo di leva e di margine. Numeri fitti
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Aurora Capital si rivolge a un prime broker, che presta i 5 milioni mancanti e i titoli da vendere, regola le operazioni e fa un solo rendiconto.
 - Il prime broker offre un pacchetto: finanziamento, prestito di titoli, regolamento e rendiconto unico. Non decide gli investimenti.
 - La leva amplifica guadagni e perdite: con leva 1,5 un calo del 10% dei titoli diventa una perdita del 15% sul capitale proprio.
 - Il prime broker è una controparte: il rischio di controparte esiste, e per questo si usano più prime broker e contratti letti con attenzione.

@@ -228,6 +228,7 @@ Domande sul codice: cosa stampa, cosa fa shift, perché compaiono i nan.
 - In pandas: rolling(N).mean() per la SMA, ewm(span=N, adjust=False).mean() per la EMA, diff() e clip() per l'RSI, std(ddof=0) per Bollinger.
 - shift(1) evita il look-ahead bias: il segnale di oggi si usa da domani.
 - Si controlla sempre il codice con un calcolo a mano su pochi numeri.
+- Caso chiuso: il backtest «perfetto» di Davide usava la chiusura di oggi per un'operazione già avvenuta oggi. Con shift(1) il segnale di oggi vale da domani e il risultato torna normale, cioè meno bello ma onesto.
 </Recap>
 
 <Flashcards

@@ -168,8 +168,8 @@ export const H10_ITEMS: Record<string, BankItem[]> = {
     },
     {
       q: "Un fondo ha fatto +5% in tre mesi e scrive: «Rendimento: 20% all'anno». Che cosa non va?",
-      ok: "Moltiplicare un trimestre per quattro non è una previsione: i mercati non ripetono lo stesso risultato ogni trimestre",
-      no: ["Niente: è il calcolo corretto del rendimento annuo", "Il calcolo corretto sarebbe 5% diviso 4", "Non va il fatto di aver usato percentuali"],
+      ok: "Un risultato di tre mesi non si può moltiplicare per quattro e presentare come annuale: i mesi seguenti possono andare in modo molto diverso",
+      no: ["Niente: è il calcolo corretto del rendimento annuo", "Il numero giusto sarebbe 5%, perché una percentuale non cambia col tempo", "Non va il fatto di aver usato percentuali"],
     },
     {
       q: "Quale frase è una comunicazione onesta?",

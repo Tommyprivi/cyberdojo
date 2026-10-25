@@ -122,7 +122,7 @@ export const H06_ITEMS: Record<string, BankItem[]> = {
     { q: "Con leva 25 volte, di quanto deve scendere il valore delle posizioni per azzerare il capitale?", ok: "4%", no: ["25%", "50%", "10%"] },
     { q: "Che cosa mostrò LTCM sulle correlazioni tra posizioni in crisi?", ok: "Posizioni che sembravano indipendenti persero insieme", no: ["Che le correlazioni restano sempre zero", "Che in crisi le posizioni si compensano sempre", "Che le correlazioni non esistono"] },
     { q: "Quale lezione resta per un fondo di oggi?", ok: "Non fidarsi di un solo modello: servono stress test, limiti alla leva e attenzione alla liquidità", no: ["Usare più leva dei concorrenti", "Evitare qualsiasi misura del rischio", "Dipendere da un solo prime broker"] },
-    { q: "Che cosa accadde al fondo dopo il salvataggio?", ok: "Fu liquidato e chiuso all'inizio del 2000", no: ["Continuò a operare con la stessa leva fino al 2010", "Fallì lo stesso giorno del salvataggio", "Fu nazionalizzato dagli Stati Uniti"] },
+    { q: "Che cosa accadde al fondo dopo il salvataggio?", ok: "Fu liquidato e chiuso tra la fine del 1999 e l'inizio del 2000", no: ["Continuò a operare con la stessa leva fino al 2010", "Fallì lo stesso giorno del salvataggio", "Fu nazionalizzato dagli Stati Uniti"] },
     { q: "Dopo il salvataggio, chi controllava la maggior parte del fondo?", ok: "Le banche partecipanti al salvataggio, con circa il 90%", no: ["I soci originari, che mantennero il 90%", "Il governo degli Stati Uniti, con il 50%", "Nessuno cambiò: la proprietà rimase uguale"] },
   ],
 };

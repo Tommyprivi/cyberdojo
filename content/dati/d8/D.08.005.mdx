@@ -168,7 +168,7 @@ Per un'altra voce, sulle stringhe e i loro metodi:
 
 <Video />
 
-<Say who="assistente">Non devi imparare tutte le espressioni regolari. Due o tre pezzi, e un posto dove ricercare il resto, bastano.</Say>
+<Say who="assistente">Non devi imparare tutte le espressioni regolari. Due o tre pezzi, e un posto dove cercare il resto, bastano.</Say>
 </Scene>
 
 {/* screen */}
@@ -206,6 +206,7 @@ Cinque domande su testo, `str` e espressioni regolari semplici. Servono tutte e 
 - Per il computer spazi e maiuscole contano: `.str.strip().str.lower()` è la ricetta base, e il risultato va riassegnato.
 - Accenti e varianti si unificano con un dizionario di sostituzione, scritto in un punto solo.
 - Per i modelli di caratteri bastano pochi pezzi di espressione regolare (`\D`, `\s+`), con `regex=True`.
+- Caso chiuso: le sei scritture della palestra sono tre città (Roma 3, Milano 2, Napoli 1), perché strip e lower hanno tolto la differenza invisibile.
 </Recap>
 
 <Flashcards

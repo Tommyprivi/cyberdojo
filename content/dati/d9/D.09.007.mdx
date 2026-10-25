@@ -135,7 +135,7 @@ Troppi avvisi inutili e la squadra smette di leggerli. È come il pastore che gr
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Ogni sera una pipeline carica gli incassi. Un giorno la valuta del file cambia da euro a centesimi senza avviso: i totali risultano 100 volte più grandi, ma nessun compito va in errore. Quale controllo l'avrebbe scoperto?"
+  question="Ogni sera una pipeline carica gli incassi. Un giorno l'unità degli importi nel file cambia da euro a centesimi senza avviso: i totali risultano 100 volte più grandi, ma nessun compito va in errore. Quale controllo l'avrebbe scoperto?"
   options={[
     "Un controllo sull'intervallo o sulla distribuzione dei totali rispetto allo storico",
     "Un controllo sul fatto che la pipeline sia terminata",
@@ -166,6 +166,7 @@ Scenari: quale controllo avrebbe scoperto il guaio, e che cosa è andato storto.
 - Una pipeline «verde» può produrre dati sbagliati: servono test sul contenuto.
 - Controlli utili: non vuoto, unico, intervalli, valori ammessi, coerenza, freschezza, volume.
 - Pochi avvisi, chiari, con un responsabile: troppi avvisi non vengono più letti.
+- Caso chiuso: un controllo di volume (12 righe contro le solite mille) e uno di freschezza avrebbero avvisato Giulia giovedì mattina, prima del capo.
 </Recap>
 
 <Flashcards

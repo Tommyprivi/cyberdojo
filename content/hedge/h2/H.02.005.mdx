@@ -110,12 +110,6 @@ Irene trova una regola che «guadagna il 30% all'anno» sui dati passati. Sul pr
 
 Per difendersi si usano **dati fuori campione** (non usati per cercare la regola), regole semplici, e pochissimi tentativi rispetto alla quantità di dati.
 
-<Compare
-  caption="Una regola trovata per caso e una regola controllata."
-  left={{ title: "Overfitting", points: ["Funziona benissimo sul passato", "Sul primo anno nuovo fa -2%"] }}
-  right={{ title: "Regola verificata", points: ["Provata su dati fuori campione", "Semplice, con pochi tentativi"] }}
-/>
-
 <Callout kind="attenzione">
 Un backtest bellissimo è un sospetto, non una prova. Ricorda il bias di look-ahead (usare informazioni che nel passato non c'erano ancora) e i costi di trading, che il backtest spesso dimentica.
 </Callout>
@@ -169,6 +163,7 @@ Cinque scenari sui fondi quantitativi: piccoli vantaggi, tanti tentativi, overfi
 - I fondi quant trasformano idee e dati in regole scritte, provate sul passato e controllate nel tempo.
 - Un vantaggio piccolo diventa risultato solo con tantissime scommesse indipendenti: con poche prove vince il caso.
 - Overfitting, posizioni affollate e regole che smettono di funzionare sono i rischi principali.
+- Caso chiuso: il vantaggio del 52% di Modello Sette diventa un fondo solo con migliaia di scommesse indipendenti e una regola verificata su dati nuovi. Anche così, un anno in perdita resta possibile.
 </Recap>
 
 <Flashcards

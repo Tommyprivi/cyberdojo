@@ -98,7 +98,7 @@ Se compare una password o un cookie di sessione in chiaro, **è un problema da s
 {/* screen */}
 
 <Scene title="TLS: la busta chiusa">
-Con **HTTPS** (porta **443**) prima si apre la connessione TCP, poi parte la stretta di mano **TLS**: il computer manda un **Client Hello** («ciao, parliamo in modo cifrato, ecco le mie opzioni»), il server risponde con **Server Hello** e il suo certificato, poi i dati viaggiano cifrati.
+Con **HTTPS** (porta **443**) prima si apre la connessione TCP, poi parte la stretta di mano **TLS**: il computer manda un **Client Hello** («ciao, parliamo in modo cifrato, ecco le mie opzioni»), il server risponde con **Server Hello** e si accordano sulla cifratura (il suo certificato è in chiaro in TLS 1.2, già cifrato in TLS 1.3), poi i dati viaggiano cifrati.
 
 <Log
   lines={[
@@ -117,7 +117,7 @@ Che cosa **resta visibile**: gli indirizzi IP, le porte, gli orari, **quanti dat
   steps={[
     { icon: "link", title: "TCP", text: "Si apre la connessione" },
     { icon: "mail", title: "Client Hello", text: "Il client propone le opzioni, con il nome (SNI)" },
-    { icon: "server", title: "Server Hello", text: "Risponde e manda il certificato" },
+    { icon: "server", title: "Server Hello", text: "Risponde e si accorda sulla cifratura" },
     { icon: "lock", title: "Dati cifrati", text: "Il contenuto non si legge più" },
   ]}
 />
@@ -139,10 +139,10 @@ Mettiamo ordine, come in un rapporto.
     "Dal DNS: il computer .20 ha chiesto www.esempio-meteo.it (risolto) e aggiorna.nonesiste-xyz.example (NXDOMAIN).",
     "Da HTTP: ha letto /intranet/listino.html (200) e ha provato /intranet/admin.html, ricevendo 403.",
     "Da TLS: ha aperto una connessione cifrata verso 203.0.113.40, con SNI www.esempio-meteo.it.",
-    "Si può affermare con certezza: queste richieste esistono, a quest'ora, verso questi indirizzi.",
-    "NON si può affermare: che cosa conteneva la pagina HTTPS; chi era seduto al computer; perché ha provato admin.html. Sono ipotesi da verificare altrove.",
   ]}
 />
+
+Ora il confronto che conta: che cosa dici al responsabile con certezza, e che cosa no.
 
 <Compare
   caption="Fatti visti nella cattura e ipotesi da verificare altrove."
@@ -203,5 +203,5 @@ Scenari su DNS, HTTP e TLS: che cosa si legge, che cosa no, quale filtro serve. 
   ]}
 />
 
-<Say who="sensei">Sai leggere i tre protocolli. Prossima lezione: riconoscere quando qualcosa non va: le anomalie.</Say>
+<Say who="sensei">Caso chiuso: al responsabile dici ciò che hai visto (chi, quando, dove, quanto) e tieni a parte le ipotesi. Sai leggere i tre protocolli. Prossima lezione: riconoscere quando qualcosa non va: le anomalie.</Say>
 </Scene>

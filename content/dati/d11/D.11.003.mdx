@@ -103,7 +103,7 @@ Vuoi sentire la differenza tra regressione e classificazione da un'altra voce? M
 <Scene title="L'albero di decisione">
 Un **albero di decisione** è una serie di domande sì/no, una dopo l'altra, che porta alla risposta.
 
-<Log lines={["parole sospette >= 3 ?", "  sì -> contiene un link strano ?", "          sì -> SPAM", "          no -> SPAM (ma da guardare)", "  no -> NON SPAM"]} caption="Un albero minuscolo. Si legge dall'alto verso il basso." />
+<Log lines={["parole sospette >= 3 ?", "  sì -> il mittente è nei tuoi contatti ?", "          sì -> NON SPAM (un amico che scrive «gratis»)", "          no -> SPAM", "  no -> contiene un link strano ?", "          sì -> SPAM", "          no -> NON SPAM"]} caption="Un albero minuscolo, inventato per l'esempio. Si legge dall'alto verso il basso." />
 
 Il suo punto di forza: **si legge**. Puoi dire a una persona perché un'email è stata segnata spam, seguendo il percorso.
 
@@ -146,6 +146,7 @@ Cinque domande su categorie, soglie e alberi. Hai 3 tentativi.
 - La classificazione prevede una categoria (binaria o con più classi).
 - La soglia decide quando il punteggio diventa «sì»: spostarla cambia gli errori di un tipo e dell'altro.
 - Un albero di decisione è una serie di domande sì/no, facile da leggere; se è troppo profondo memorizza.
+- Caso chiuso: la settima email di Marta, con 6 parole sospette, supera la soglia di 3 e viene classificata spam.
 </Recap>
 
 <Flashcards

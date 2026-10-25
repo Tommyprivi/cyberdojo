@@ -93,10 +93,8 @@ Una **transazione** è un gruppo di modifiche che valgono **tutte o nessuna**. �
 
 Nel lakehouse il registro cambia **in un colpo solo** alla fine del lavoro. Prima di quel momento, i lettori vedono la versione vecchia; dopo, la nuova. Mai un miscuglio.
 
-<Log lines={["versione 7: 12 file, vendite fino al 30 giugno", "lavoro notturno: scrive 3 file nuovi...", "versione 8: 15 file, vendite fino al 1 luglio  (registro aggiornato)"]} caption="Il lettore passa dalla 7 alla 8 in un istante. Esempio fittizio." />
-
 <Flow
-  caption="Il lettore passa dalla versione 7 alla 8 in un istante."
+  caption="Il lettore passa dalla versione 7 alla 8 in un istante. Esempio fittizio."
   steps={[
     { icon: "database", title: "Versione 7", text: "12 file, vendite al 30 giugno" },
     { icon: "gear", title: "Lavoro notturno", text: "Scrive 3 file nuovi: i lettori vedono ancora la 7" },
@@ -149,6 +147,7 @@ Scenari su lake, warehouse, lakehouse, transazioni e versioni.
 - Il lakehouse unisce file economici di un lake e le regole di tabelle affidabili di un warehouse.
 - Delta, Iceberg e Hudi sono formati aperti con un registro delle modifiche che dà transazioni (tutto o niente) e versioni.
 - Le versioni permettono di rivedere il passato, ma non sostituiscono un backup.
+- Caso chiuso: la tabella di Pasta Bianchi era un miscuglio perché il lake aveva solo file. Con un registro, il lavoro interrotto non lo aggiorna e al mattino Nora vede ancora la versione precedente, intera.
 </Recap>
 
 <Flashcards

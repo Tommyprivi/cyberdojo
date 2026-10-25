@@ -48,7 +48,7 @@ I report non leggono i dati in diretta: di solito **si aggiornano a orari fissi*
 
 Il punto delicato è l'**ordine**. Prima si caricano i dati di origine, poi si aggiorna il report.
 
-<Log lines={["05:30  il magazzino dati finisce di caricare le vendite di ieri", "06:00  il report si aggiorna  ->  mostra le vendite di ieri: giusto", "", "Se il caricamento finisce alle 06:20:", "06:00  il report si aggiorna  ->  mostra ancora quelle di l'altro ieri: sbagliato"]} caption="L'aggiornamento del report deve partire dopo la fine del caricamento." />
+<Log lines={["05:30  il magazzino dati finisce di caricare le vendite di ieri", "06:00  il report si aggiorna  ->  mostra le vendite di ieri: giusto", "", "Se il caricamento finisce alle 06:20:", "06:00  il report si aggiorna  ->  mostra ancora quelle dell'altro ieri: sbagliato"]} caption="L'aggiornamento del report deve partire dopo la fine del caricamento." />
 
 <Compare
   caption="L'orario dell'aggiornamento decide quali dati vedi."
@@ -72,15 +72,6 @@ Molti strumenti hanno un percorso di rilascio per questo. Power BI ha le «pipel
 Mai modificare direttamente in produzione. Si cambia in sviluppo, si controlla in test, si pubblica con calma.
 </Callout>
 
-<Flow
-  caption="Un cambiamento arriva a chi decide solo dopo due controlli."
-  steps={[
-    { icon: "code", title: "Sviluppo", text: "Si prova" },
-    { icon: "check", title: "Test", text: "Si controlla con altri" },
-    { icon: "users", title: "Produzione", text: "La usano tutti" },
-  ]}
-/>
-
 Vuoi sentirlo spiegare da un'altra voce? È in inglese, e mostra il passaggio tra gli ambienti:
 
 <Video />
@@ -101,7 +92,7 @@ Si fissa un elenco di numeri di riferimento e si confrontano prima e dopo, con u
 | Ricavi febbraio | 800 | 800 | uguale: passa |
 | Clienti attivi | 4 | 4 | uguale: passa |
 
-Se un numero cambia, si decide: è un effetto voluto (la definizione è cambiata) o un errore? Nel caso di Marta, 935 contro 920 è una differenza di 15, cioè 15 / 920, circa **1,63%**. Supera la tolleranza dello 0,5%: si ferma il rilascio e si cerca la causa.
+Se un numero cambia, si decide: è un effetto voluto (la definizione è cambiata) o un errore? Nel caso di Marta, 935 contro 920 è una differenza di 15, cioè 15 / 920, circa **1,63%**. Supera la tolleranza dello 0,5%: si ferma il rilascio e si cerca la causa. Con questo controllo Marta avrebbe visto il 935 prima di pubblicare, non lunedì mattina dalla direttrice.
 
 <Callout kind="attenzione">
 Un numero che cambia **non è mai** un dettaglio da scoprire dopo la pubblicazione. Si scopre prima, con il confronto.
@@ -151,6 +142,7 @@ Scenari su aggiornamenti pianificati, regressione dei numeri, comunicazione e ad
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il 935 di lunedì era un cambiamento non verificato né spiegato. Un test di regressione e una nota di rilascio avrebbero evitato la perdita di fiducia.
 - L'aggiornamento pianificato parte dopo la fine del caricamento dei dati, con un margine di sicurezza e un avviso se fallisce.
 - Si prova in sviluppo e in test; un test di regressione confronta i numeri di riferimento prima e dopo, con una tolleranza decisa in anticipo.
 - Ogni cambiamento si comunica prima, e l'adozione si misura per capire se il lavoro serve.

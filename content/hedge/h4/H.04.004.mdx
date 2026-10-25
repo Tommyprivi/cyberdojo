@@ -75,7 +75,7 @@ Se un'azienda produce un flusso **F per sempre**, con tasso di sconto **r**, val
   steps={[
     "Flusso 8 milioni l'anno per sempre, tasso 10%: valore = 8 / 0,10 = 80 milioni.",
     "Se il flusso cresce del 2% l'anno (g): valore = F1 / (r - g) = 8 / (0,10 - 0,02) = 100 milioni.",
-    "Con tasso 12% e crescita 2%: 8 / 0,10 = 80 milioni. Due punti di tasso in più, un quinto di valore in meno.",
+    "Con tasso 12% e crescita 2%: 8 / (0,12 - 0,02) = 8 / 0,10 = 80 milioni. Due punti di tasso in più, un quinto di valore in meno (da 100 a 80).",
     "La crescita g deve restare sotto r: nessuna azienda cresce per sempre più dell'economia.",
   ]}
 />
@@ -93,15 +93,6 @@ La formula è **molto sensibile** alle ipotesi. Per questo il valore intrinseco 
 Poiché le stime sono incerte, chi investe con metodo pretende un **margine di sicurezza**: compra solo se il prezzo è **ben sotto** il valore stimato.
 
 Valore stimato 20 euro, prezzo 15 euro: margine di sicurezza = (20 - 15) / 20 = **25%**.
-
-<Flow
-  caption="Il margine di sicurezza, con i numeri della lezione."
-  steps={[
-    { icon: "search", title: "Valore stimato", text: "20 euro" },
-    { icon: "coin", title: "Prezzo", text: "15 euro" },
-    { icon: "shield", title: "Margine", text: "(20 - 15) / 20 = 25%" },
-  ]}
-/>
 
 Se si pretende un margine del 30% su un valore di 100 euro, il prezzo massimo è 100 x 0,70 = **70 euro**.
 
@@ -147,6 +138,7 @@ Calcoli di valore e di margine di sicurezza. Numeri fittizi.
 - Il valore intrinseco è il valore attuale dei flussi di cassa futuri, scontati a un tasso che include il rischio.
 - Flusso costante F con tasso r: F / r; con crescita g: F1 / (r - g), e g deve restare sotto r.
 - Il margine di sicurezza (valore - prezzo) / valore protegge dagli errori di stima, senza garantire nulla.
+- Caso chiuso: i 12, 15 e 18 euro di Officine Lumi sono prezzi, cioè l'umore del mercato nei vari giorni. Il valore intrinseco è una stima dei flussi futuri, un intervallo e non un numero esatto.
 </Recap>
 
 <Flashcards

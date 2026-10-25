@@ -80,18 +80,12 @@ Numeri fittizi: tasso privo di rischio 2%, mercato 8%, premio 6%.
   steps={[
     "Falco Uno ha beta 2: rendimento atteso CAPM = 2% + 2 x 6% = 14%.",
     "Ha reso 14%. Alpha = 14% - 14% = 0%.",
-    "Non ha battuto il mercato per abilità: ha usato il doppio del mercato. Se il mercato fosse sceso, avrebbe perso il doppio.",
+    "Non ha battuto il mercato per abilità: ha preso il doppio del rischio di mercato. Se il mercato fosse sceso, avrebbe perso circa il doppio.",
     "Il «+6 punti» era beta, non alpha.",
   ]}
 />
 
-<Compare
-  caption="Lo slogan e il conto di Falco Uno."
-  left={{ title: "Lo slogan", points: ["Reso il 14% contro l'8% del mercato", "«Battuto il mercato di 6 punti»"] }}
-  right={{ title: "Il conto", points: ["Con beta 2 il CAPM dà già il 14%", "Alpha 0%: era tutto beta"] }}
-/>
-
-<Say who="sensei">Chi usa la leva sul mercato non ha talento: ha coraggio. E ne paga il conto quando il mercato scende.</Say>
+<Say who="sensei">Chi prende il doppio del rischio di mercato non ha talento: ha coraggio. E ne paga il conto quando il mercato scende.</Say>
 </Scene>
 
 {/* screen */}
@@ -107,10 +101,10 @@ Stessi tassi: rf 2%, mercato 8%.
 ]} />
 
 <Callout kind="curiosita">
-Un fondo **market neutral** ha beta vicino a zero: se non ha alpha, ci si aspetta circa il tasso privo di rischio. Per questo gli hedge fund vendono soprattutto alpha.
+Un fondo **market neutral** ha beta vicino a zero: se non ha alpha, ci si aspetta circa il tasso privo di rischio. Per questo molti hedge fund dicono di vendere alpha, non mercato: resta da verificare se ce l'hanno davvero.
 </Callout>
 
-<Say who="sensei">Un alpha negativo significa che chi ha comprato il fondo avrebbe fatto meglio con il mercato. Succede più spesso di quanto si dica.</Say>
+<Say who="sensei">Un alpha negativo significa che chi ha comprato il fondo avrebbe fatto meglio con il mercato. Può succedere, e non di rado.</Say>
 </Scene>
 
 {/* screen */}
@@ -152,6 +146,7 @@ Calcoli di alpha di Jensen e domande sul suo significato. Numeri fittizi.
 - Il rendimento di un fondo si divide in beta (il mercato) e alpha (il resto, abilità o fortuna).
 - Alpha di Jensen = rendimento del fondo meno il rendimento atteso CAPM; un beta alto da solo non è abilità.
 - Un alpha positivo su pochi anni può essere fortuna, e va considerato al netto dei costi.
+- Caso chiuso: i 6 punti in più di Falco Uno erano beta, non abilità. Con beta 2 il CAPM chiedeva già il 14%, quindi l'alpha è 0%.
 </Recap>
 
 <Flashcards

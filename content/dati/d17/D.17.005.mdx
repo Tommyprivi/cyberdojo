@@ -54,12 +54,6 @@ Sette consegne, tempi in giorni: **1, 1, 2, 2, 2, 3, 9**.
 
 La consegna da 9 giorni tira su la media. La mediana racconta il caso tipico, la quota di ritardi racconta chi resta deluso.
 
-<Compare
-  caption="La sola media nasconde la consegna da 9 giorni."
-  left={{ title: "Solo la media", points: ["2,9 giorni: sembra andare bene", "Nasconde la consegna da 9 giorni", "La cliente resta senza risposta"] }}
-  right={{ title: "Mediana e ritardi", points: ["Mediana 2 giorni: il caso tipico", "Oltre 3 giorni: 1 consegna su 7 (14%)", "Si indaga il caso peggiore"] }}
-/>
-
 Un video spiega gli indici di performance delle scorte, un altro lato della stessa misurazione:
 
 <Video />
@@ -170,6 +164,7 @@ Cinque casi su tempi di consegna, scorte, previsioni e percorsi. Hai 3 tentativi
 
 <Scene title="Rapporto finale">
 <Recap xp={30}>
+- Caso chiuso: la media di 2,9 giorni nascondeva la consegna da 9 giorni. Con mediana, quota di ritardi e analisi del caso peggiore, la cliente avrebbe avuto una risposta.
 - Per i tempi di consegna guarda mediana e quota di ritardi, non solo la media.
 - Punto di riordino = domanda al giorno × giorni di attesa + scorta di sicurezza.
 - La media mobile è una previsione semplice ma lenta; i percorsi si ottimizzano con metodi che trovano soluzioni molto buone.
@@ -184,5 +179,5 @@ Cinque casi su tempi di consegna, scorte, previsioni e percorsi. Hai 3 tentativi
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Ultima lezione del ramo: che cosa fare quando ti danno un settore che non conosci.</Say>
+<Say who="sensei">Ultima lezione del ramo: che cosa fare quando ti danno un settore che non conosci.</Say>
 </Scene>

@@ -148,7 +148,7 @@ Una regola dà 40 allarmi al mese, solo 2 sono veri. Il responsabile propone: «
     "Gli attaccanti lenti, che provano poche password alla volta, non farebbero più scattare la regola",
     "Il SIEM non riuscirebbe più a leggere le soglie così alte",
     "Gli utenti legittimi non potrebbero più sbagliare la password",
-    "Diminuirebbero i vantaggi della regola per i veri positivi",
+    "I falsi positivi aumenterebbero invece di scendere",
   ]}
   answer={0}
   explain="Una soglia molto alta fa sparire i falsi positivi ma anche gli attacchi discreti: aumentano i falsi negativi. Meglio aggiungere contesto (per esempio errori seguiti da un accesso riuscito, o indirizzi mai visti) e filtri precisi."
@@ -169,6 +169,7 @@ Cinque scenari sui falsi allarmi. Servono **cinque risposte giuste**. Hai 3 tent
 <Practice generator="c19-falsi-positivi" pass="5/5" retries={3} />
 
 <Recap xp={25}>
+- Caso chiuso: la regola da duecento allarmi al giorno non si spegne. Si aggiungono contesto e filtri precisi, e si controlla che l'intruso vero venga ancora segnalato.
 - Falso positivo: allarme senza attacco. Falso negativo: attacco senza allarme, ed è il peggiore. Ridurre i primi può aumentare i secondi.
 - Si riduce il rumore con soglie, segnali combinati, contesto, filtri precisi e priorità diverse, non spegnendo la regola.
 - Dopo ogni correzione si misura: la precisione deve salire e i veri positivi devono restare.

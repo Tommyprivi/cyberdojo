@@ -78,12 +78,6 @@ Si prova solo ciò che è tuo o per cui hai un permesso scritto. Senza eccezioni
 - Nei log: un account che chiede in poco tempo ticket (**4769**) per **molti servizi**, spesso con cifratura debole.
 - Difese: **account di servizio gestiti (gMSA)** o password lunghe e casuali; cifratura AES; pochi privilegi agli account di servizio.
 
-<Compare
-  caption="Password spraying: che cosa si vede e come si ferma."
-  left={{ title: "Password spraying", points: ["Poche password comuni su moltissimi account", "Pochi tentativi per account: il blocco non scatta", "Nei log: molti 4625 da una sola origine"] }}
-  right={{ title: "Le difese", points: ["Autenticazione a più fattori", "Password lunghe e lista di password vietate", "Allarme su molti fallimenti dalla stessa origine"] }}
-/>
-
 <Callout kind="trucco">
 Nel primo caso il segnale è **«troppi fallimenti da una origine»**. Nel secondo è **«troppi ticket di servizio da un account»**.
 </Callout>
@@ -194,5 +188,5 @@ Scenari su abusi di un dominio: che cosa lasciano nei log e quale difesa li ferm
   ]}
 />
 
-<Say who="sensei">Prossima lezione: dove leggere tutte queste orme. Il registro eventi di Windows.</Say>
+<Say who="sensei">Caso chiuso: non erano guasti sparsi ma una scala. Spraying dal 10.0.4.77, un account debole che cade, poi ticket di servizio a raffica. Prossima lezione: dove leggere tutte queste orme. Il registro eventi di Windows.</Say>
 </Scene>

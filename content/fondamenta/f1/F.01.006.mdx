@@ -90,12 +90,6 @@ La VM ha una **scheda di rete virtuale**. Le due modalità che ti servono:
 - **NAT**: la VM esce su Internet **attraverso** il computer vero, ma da fuori nessuno può raggiungerla. Ideale per **aggiornare e scaricare**.
 - **Solo host**: la VM parla **solo** con il computer vero (e con altre VM), **senza Internet**. Ideale per esperimenti isolati.
 
-<Compare
-  caption="Le due modalità da usare: cambia chi può parlare con la VM."
-  left={{ title: "Solo host", points: ["Parla solo con il computer vero", "Nessun accesso a Internet", "Ideale per esperimenti isolati"] }}
-  right={{ title: "NAT", points: ["Esce su Internet attraverso l'host", "Da fuori nessuno la raggiunge", "Ideale per aggiornare e scaricare"] }}
-/>
-
 <Callout kind="attenzione">
 C'è anche la modalità **bridge**: la VM appare sulla tua rete di casa come un dispositivo vero. Per ora **non usarla**: espone la VM a tutta la rete.
 </Callout>
@@ -150,6 +144,7 @@ Cinque domande sul laboratorio. Servono **cinque giuste**. Hai 3 tentativi, e a 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: per cominciare servono un computer adatto, VirtualBox e una VM con rete NAT; le partizioni del disco vero non si toccano mai.
 - Requisiti utili: 8 GB di RAM (meglio 16), processore con virtualizzazione attiva, 40-60 GB liberi.
 - NAT per aggiornare e uscire su Internet in sicurezza; solo-host per esperimenti isolati; il bridge, per ora, no.
 - Meglio una VM che il dual boot: non si toccano mai le partizioni del disco vero.

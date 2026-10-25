@@ -48,7 +48,7 @@ Per questo esiste **Wireshark**: un programma gratuito che **cattura** i pacchet
 Wireshark è uno strumento legale e normale per chi lavora in rete. Ma una cattura può contenere dati di altre persone.
 
 <Callout kind="regola">
-Si cattura **solo sulla propria macchina**, in una rete **di cui si è responsabili**, oppure con un **permesso scritto**. Catturare il traffico altrui senza permesso può essere reato (in Italia, accesso abusivo a sistema informatico: art. 615-ter del codice penale).
+Si cattura **solo sulla propria macchina**, in una rete **di cui si è responsabili**, oppure con un **permesso scritto**. Catturare il traffico altrui senza permesso può essere reato (in Italia, per esempio l'intercettazione di comunicazioni informatiche, art. 617-quater, o l'accesso abusivo, art. 615-ter del codice penale).
 </Callout>
 
 Per esercitarti hai due strade sicure: catturi **il traffico del tuo computer** mentre apri un sito, oppure scarichi da Internet un **file di esempio** (estensione `.pcap` o `.pcapng`) pensato per imparare.
@@ -110,12 +110,6 @@ Dopo pochi secondi hai migliaia di righe. Ti servono i **filtri**, e sono di due
 Le due sintassi sono diverse. `host 192.168.1.66` va nel filtro di cattura; `ip.addr == 192.168.1.66` (con i due uguali) va nella barra di visualizzazione.
 </Callout>
 
-<Compare
-  caption="Due filtri, due mestieri diversi."
-  left={{ title: "Filtro di cattura", points: ["Si imposta prima di avviare","Decide che cosa salvare","Ciò che non passa è perso per sempre"] }}
-  right={{ title: "Filtro di visualizzazione", points: ["Si scrive nella barra, dopo","Decide che cosa mostrare","Cancelli il filtro e i pacchetti tornano"] }}
-/>
-
 <Say who="assistente">Regola semplice: se non sei sicuro, cattura tutto e filtra dopo. Un pacchetto che non hai salvato non lo recuperi più.</Say>
 </Scene>
 
@@ -149,6 +143,7 @@ Cinque domande su cattura, interfaccia e filtri. Cinque su cinque, con 3 tentati
 - Wireshark cattura i pacchetti e ne mostra le buste: elenco, dettagli, byte.
 - Si cattura solo sulla propria macchina o con un permesso scritto.
 - Filtro di cattura: cosa si salva (prima). Filtro di visualizzazione: cosa si mostra (dopo).
+- Caso chiuso: il capo del SOC non si fida del riassunto di un log, e ora tu sai catturare e filtrare i pacchetti per mostrarglieli.
 </Recap>
 
 <Flashcards

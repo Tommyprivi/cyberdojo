@@ -93,17 +93,6 @@ Ordina i reparti dal più grande al più piccolo. Poi, per ognuno, scrivi dove c
   ]}
 />
 
-<Layers
-  caption="Il piano della filiale: dal blocco più grande al più piccolo."
-  items={[
-    { icon: "chart", title: "Contabilità /26", text: "192.168.20.0 - .63 (64 indirizzi)" },
-    { icon: "folder", title: "Magazzino /27", text: ".64 - .95 (32 indirizzi)" },
-    { icon: "users", title: "Direzione /28", text: ".96 - .111 (16 indirizzi)" },
-    { icon: "link", title: "Collegamento /30", text: ".112 - .115 (4 indirizzi)" },
-    { icon: "check", title: "Liberi", text: ".116 - .255 (140 indirizzi)" },
-  ]}
-/>
-
 <Say who="assistente">Ogni blocco comincia dove finisce il precedente. Se l'inizio non è un multiplo della dimensione, hai sbagliato un passaggio.</Say>
 </Scene>
 
@@ -117,7 +106,7 @@ Un esercizio svolto da un'altra voce, passo dopo passo:
 <Video />
 
 <Callout kind="curiosita">
-Nella pratica, il router di ogni reparto occupa a sua volta un indirizzo (di solito il gateway, quello che vedrai nella prossima lezione). Un tecnico prudente lascia sempre un po' di margine.
+Nella pratica, uno degli indirizzi utilizzabili di ogni sottorete va al gateway (lo vedrai nella prossima lezione), quindi per i PC ne restano uno in meno. Un tecnico prudente lascia sempre un po' di margine.
 </Callout>
 
 <Say who="sensei">Un buon piano non usa tutto, lascia spazio. Una rete piena è una rete già vecchia.</Say>
@@ -143,7 +132,7 @@ Cinque domande su prefissi e VLSM. Servono **tutte e cinque** giuste. Hai 3 tent
 
 <Practice generator="f06-vlsm" pass="5/5" retries={3} />
 
-<Say who="sensei">Prefisso giusto, poi posizione giusta. Una sbaglia, l'altra anche.</Say>
+<Say who="sensei">Prefisso giusto, poi posizione giusta. Se sbagli il primo, il secondo non si salva.</Say>
 </Scene>
 
 {/* screen */}
@@ -153,6 +142,7 @@ Cinque domande su prefissi e VLSM. Servono **tutte e cinque** giuste. Hai 3 tent
 - Per un numero di host richiesto si sceglie la rete più piccola con 2^n − 2 almeno uguale agli host.
 - Il VLSM usa maschere diverse nello stesso blocco: ogni sottorete ha la misura giusta e non si spreca spazio.
 - Si assegnano prima le sottoreti più grandi, ognuna dal primo indirizzo libero; un collegamento tra due router è un /30.
+- Caso chiuso: la filiale ha quattro reti su misura (/26, /27, /28, /30) e 140 indirizzi ancora liberi.
 </Recap>
 
 <Flashcards

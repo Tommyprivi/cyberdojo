@@ -259,6 +259,7 @@ Cinque domande su `merge` e `concat`: quale join serve, quante righe restano, pe
 - `a.merge(b, on="chiave", how=...)` unisce per chiave: inner (solo corrispondenze), left, right, outer, come INNER, LEFT, RIGHT e FULL OUTER JOIN di SQL.
 - Dopo ogni unione controlla le righe: i duplicati sulla chiave le moltiplicano, i NaN indicano assenza di corrispondenza. Aiutano `indicator=True` e `validate`.
 - `pd.concat([a, b], ignore_index=True)` impila tabelle con le stesse colonne.
+- Caso chiuso: con un left join dei clienti sugli ordini, chi non ha mai comprato (Carla e Dario) è chi ha importo NaN.
 </Recap>
 
 <Flashcards

@@ -68,21 +68,15 @@ Un video da un'altra voce, in inglese con sottotitoli: guardane i primi minuti.
 {/* screen */}
 
 <Scene title="Quanto si recupera?">
-Il fondo ha comprato un'obbligazione a **40**. Alla fine della ristrutturazione i creditori ricevono una parte dei 100 promessi. Tre futuri possibili (interessi ignorati, numeri inventati):
+Il fondo ha comprato un'obbligazione a **40**. Alla fine della ristrutturazione i creditori ricevono una parte dei 100 promessi. Guarda tre recuperi possibili (interessi ignorati, numeri inventati):
 
 <Guided
   steps={[
     "Recupero 60: l'obbligazione vale 60. Guadagno: 60 - 40 = +20, cioè +50% su 40.",
     "Recupero 40: l'obbligazione vale 40. Guadagno: 0.",
     "Recupero 25: l'obbligazione vale 25. Perdita: 25 - 40 = -15, cioè -37,5% su 40.",
-    "Se il mercato pensa che 60 e 20 siano ugualmente probabili, la media è (60 + 20) / 2 = 40: il prezzo di 40 è già «giusto». Non c'è un affare, ci sono due esiti ugualmente probabili.",
+    "Se il mercato pensa che un recupero di 55 e uno di 25 siano ugualmente probabili, la media è (55 + 25) / 2 = 40: il prezzo di 40 è già «giusto». Non c'è un affare: ci sono due esiti ugualmente probabili.",
   ]}
-/>
-
-<Compare
-  caption="Lo stesso acquisto a 40, con due recuperi diversi."
-  left={{ title: "Recupero 25", points: ["Si incassa meno di quanto pagato", "Perdita di 15, cioè -37,5%"] }}
-  right={{ title: "Recupero 60", points: ["Si incassa più di quanto pagato", "Guadagno di 20, cioè +50%"] }}
 />
 
 <Callout kind="regola">
@@ -95,12 +89,7 @@ Il prezzo di mercato contiene già le aspettative di tutti. Un fondo ha un vanta
 {/* screen */}
 
 <Scene title="Chi viene pagato per primo">
-Quando un'azienda fallisce o si ristruttura, non tutti ricevono lo stesso. L'ordine di rimborso, dal più protetto al meno protetto:
-
-1. **Debiti con garanzia** (per esempio garantiti da un impianto): vengono pagati per primi con il ricavato di quei beni.
-2. **Obbligazioni senza garanzia** (*senior*): vengono dopo.
-3. **Debiti subordinati**: ultimi tra i creditori.
-4. **Azionisti**: per ultimi, spesso non ricevono niente.
+Quando un'azienda fallisce o si ristruttura, non tutti ricevono lo stesso. L'ordine di rimborso va dal più protetto al meno protetto:
 
 <Layers
   caption="L'ordine di rimborso: dal più protetto al meno protetto."
@@ -130,7 +119,7 @@ A volte i fondi distressed, invece di aspettare i soldi, accettano nuove azioni 
 - **Contratti e tribunali.** Gli esiti dipendono da regole legali e da trattative, spesso difficili da prevedere.
 - **Crisi generali.** Quando molte aziende vanno in crisi insieme, i prezzi di tutti i debiti scendono insieme e gli investitori chiedono indietro i soldi.
 
-Per questo i fondi distressed spesso prevedono che gli investitori **non possano ritirare i soldi per molto tempo** (lo vedrai nel modulo sulle operazioni).
+Per questo i fondi distressed spesso prevedono che gli investitori **non possano ritirare i soldi per molto tempo** (lo vedrai più avanti nel corso).
 
 <Say who="sensei">Comprare un debito in crisi non è coraggio. È un lavoro da avvocati e analisti, con conti pazienti.</Say>
 </Scene>
@@ -170,6 +159,7 @@ Cinque scenari su debiti in crisi: calcoli di recupero, ordine di rimborso e ris
 - Le obbligazioni sono prestiti: se l'azienda va in crisi il prezzo scende perché cresce il rischio di non essere rimborsati.
 - Il distressed compra debiti di aziende in difficoltà puntando sul recupero finale; il prezzo basso riflette già il rischio.
 - L'ordine di rimborso (garantiti, senior, subordinati, azionisti), i tempi lunghi e la scarsa liquidità sono i punti chiave.
+- Caso chiuso: si compra il debito di Cartiere del Lago a 40 perché il recupero finale può essere più alto, ma può anche essere più basso. Il prezzo basso è già il rischio.
 </Recap>
 
 <Flashcards

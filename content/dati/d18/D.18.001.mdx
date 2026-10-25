@@ -54,12 +54,6 @@ Per spostare i soldi servono **due** modifiche: togliere 100 a Giulia e aggiunge
 
 La domanda del caso: **come si fa perché le due modifiche avvengano insieme, oppure per niente?**
 
-<Compare
-  caption="Lo stesso guasto, con e senza transazione."
-  left={{ title: "Senza transazione", points: ["Tolti 100 euro a Giulia", "Il server si spegne a metà", "100 euro spariti nel nulla"] }}
-  right={{ title: "Con transazione", points: ["BEGIN, poi le due modifiche", "Spegnimento prima del COMMIT", "Annullata da sola: saldi 500 e 200"] }}
-/>
-
 <Say who="sensei">Un database che perde soldi non è un database. Oggi impari lo strumento che lo impedisce: la transazione.</Say>
 </Scene>
 
@@ -83,6 +77,12 @@ Si scrive così:
 
 Se il server si spegne prima del `COMMIT`, al riavvio il database annulla da solo la transazione incompleta. I saldi restano 500 e 200.
 
+<Compare
+  caption="Lo stesso guasto, con e senza transazione."
+  left={{ title: "Senza transazione", points: ["Tolti 100 euro a Giulia", "Il server si spegne a metà", "100 euro spariti nel nulla"] }}
+  right={{ title: "Con transazione", points: ["BEGIN, poi le due modifiche", "Spegnimento prima del COMMIT", "Annullata da sola: saldi 500 e 200"] }}
+/>
+
 <Callout kind="trucco">
 Pensa al carrello di un negozio: puoi riempirlo e svuotarlo quanto vuoi. Solo alla cassa (il COMMIT) il conto diventa vero.
 </Callout>
@@ -99,16 +99,6 @@ Una transazione seria offre quattro garanzie. Le iniziali formano la sigla **ACI
 - **C, Consistenza**: i dati rispettano sempre le regole (per esempio «il saldo non è negativo»). Una transazione che le viola viene rifiutata.
 - **I, Isolamento**: due transazioni che corrono insieme non si pestano i piedi.
 - **D, Durabilità**: dopo il COMMIT il dato resta, anche se un attimo dopo salta la corrente.
-
-<Layers
-  caption="Le quattro garanzie di una transazione seria."
-  items={[
-    { icon: "lock", title: "Atomicità", text: "Tutto o niente" },
-    { icon: "check", title: "Consistenza", text: "Le regole dei dati sono rispettate" },
-    { icon: "users", title: "Isolamento", text: "Transazioni in parallelo senza disturbarsi" },
-    { icon: "database", title: "Durabilità", text: "Dopo il COMMIT il dato resta" },
-  ]}
-/>
 
 Vuoi sentirlo spiegare da un'altra voce? Il video mostra BEGIN, COMMIT e ROLLBACK su un altro database (SQL Server), ma l'idea è identica:
 
@@ -205,6 +195,7 @@ Cinque domande su transazioni, ACID e ROLLBACK. Servono tutte e cinque giuste. H
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: con BEGIN e COMMIT i 100 euro di Giulia non possono sparire a metà; se il server si spegne, restano 500 e 200.
 - Una transazione raggruppa più istruzioni: o riescono tutte (COMMIT) o non ne resta nessuna (ROLLBACK).
 - ACID: atomicità, consistenza, isolamento, durabilità.
 - L'isolamento decide che cosa vede una transazione delle altre: in PostgreSQL, di base, solo dati già confermati.
@@ -219,5 +210,5 @@ Cinque domande su transazioni, ACID e ROLLBACK. Servono tutte e cinque giuste. H
   ]}
 />
 
-<Say who="sensei">Caso chiuso: nessun euro perso. Prossima lezione: gli indici, per trovare una riga tra milioni senza leggerle tutte.</Say>
+<Say who="sensei">Prossima lezione: gli indici, per trovare una riga tra milioni senza leggerle tutte.</Say>
 </Scene>

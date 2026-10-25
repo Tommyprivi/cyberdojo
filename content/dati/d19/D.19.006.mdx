@@ -157,7 +157,7 @@ summary(modello)$r.squared
 - `coef()` dà i due numeri della retta: voto previsto = **4,0 + 0,5 × ore**. In questo campione, un'ora in più è associata a mezzo punto in più;
 - `r.squared` è **0,875**: la retta spiega l'87,5% della variabilità dei voti.
 
-Si può usare la retta per fare previsioni, ma solo **dentro** il campo dei dati osservati (da 1 a 7 ore):
+Si può usare la retta per fare previsioni, ma solo **dentro** il campo dei dati osservati (da 1 a 7 ore). Proviamo a uscirne, per vedere che cosa succede:
 
 ```r
 predict(modello, data.frame(ore = c(8, 20)))
@@ -168,7 +168,7 @@ predict(modello, data.frame(ore = c(8, 20)))
  8 14 
 ```
 
-Con 8 ore, appena oltre l'ultimo dato osservato, la previsione 8 è ancora plausibile. Con 20 ore il modello prevede 14: un voto che non esiste. Fuori dai dati la retta non vale, e più ci si allontana, peggio è.
+Con 8 ore, appena oltre l'ultimo dato osservato, la previsione 8 è ancora ragionevole, ma già da prendere con cautela. Con 20 ore il modello prevede 14: un voto che non esiste. Fuori dai dati la retta non vale, e più ci si allontana, peggio è.
 
 <Callout kind="attenzione">
 Una correlazione forte **non prova** che le ore di studio facciano salire il voto. Potrebbe esserci una terza causa, come la motivazione. La regressione descrive un legame, non lo spiega.
@@ -243,6 +243,7 @@ Cinque domande su summary, t.test, cor, lm e interpretazione dei risultati. Ne s
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la classe A ha un punto in più (7 contro 6), ma con soli 10 voti il test dà p = 0,056 e un intervallo da −0,03 a 2,03. Non si può escludere il caso: servono più dati.
 - `summary()`, `mean()` e `sd()` descrivono; `t.test()` confronta due medie e restituisce p-value e intervallo di confidenza.
 - `cor()` misura la forza del legame tra due numeri; `lm(y ~ x)` adatta una retta; la previsione vale solo dentro i dati osservati e la correlazione non è causa.
 - Un p-value alto non prova l'uguaglianza; il p-hacking si evita decidendo prima il test, dichiarando tutto e ripetendo su dati nuovi.

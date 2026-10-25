@@ -64,7 +64,7 @@ L'idea è antica: se hai 10 000 pagine da controllare, non le leggi da solo. Le 
 
 Esempio fittizio: 400 GB divisi in 200 partizioni da circa 2 GB. Con 20 lavoratori, ognuno ne gestisce circa 10 alla volta, un pezzo per volta.
 
-Ogni lavoratore calcola il totale per negozio **sul suo pezzo**. Poi un passo finale unisce i totali parziali.
+Ogni lavoratore calcola il totale per negozio **sul suo pezzo**. Poi un passo finale unisce i totali parziali. Se per unirli bisogna spostare molti dati da una macchina all'altra (in gergo **shuffle**), è la parte più lenta del lavoro.
 
 <Flow
   caption="Spark divide, calcola in parallelo e riunisce."
@@ -144,6 +144,7 @@ Scenari su big data, partizioni e pigrizia di Spark. Cinque domande.
 - Il big data nasce quando un solo computer non basta più; per dati piccoli Spark è esagerato.
 - Spark divide i dati in partizioni e le elabora in parallelo su più macchine, poi riunisce i risultati.
 - Le trasformazioni sono pigre: il calcolo parte solo con un'azione.
+- Caso chiuso: per i 400 GB di Nora non serviva una macchina più grossa. Divisi in 200 partizioni, ognuno dei 20 lavoratori ne elabora circa 10 e un passo finale unisce i totali per negozio.
 </Recap>
 
 <Flashcards

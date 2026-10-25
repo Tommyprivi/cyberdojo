@@ -142,23 +142,11 @@ Chi lancia un DDoS a volte usa dispositivi altrui già infettati (telecamere, ro
   explain="Un certificato non valido su un sito di banca, in una rete condivisa, può indicare un man-in-the-middle. La scelta giusta è fermarsi e cambiare rete. Chi procede comunque consegna la password a chi sta in mezzo."
 />
 
-<Say who="sensei">Un avviso di certificato su un sito di banca non è fastidio. È un segnale. Obbedisci al segnale.</Say>
-Rimettiamo in ordine i quattro attacchi del registro, con la difesa che li neutralizza meglio.
-
-<Guided
-  steps={[
-    "Scansione: l'attaccante cerca le porte aperte. Difesa: default deny sul firewall, servizi aggiornati, IDS/IPS che riconosce la scansione.",
-    "Sniffing: l'attaccante ascolta il traffico. Difesa: cifrare tutto (HTTPS, VPN, Wi-Fi sicuro).",
-    "Man-in-the-middle: l'attaccante si mette in mezzo e può modificare. Difesa: certificati verificati e non ignorare gli avvisi.",
-    "Negazione di servizio: l'attaccante sommerge il servizio. Difesa: filtri a monte, limiti sulle richieste, capacità extra.",
-  ]}
-/>
-
 <Callout kind="trucco">
-Ascoltare → cifra. Mettersi in mezzo → verifica chi sei davvero (certificati). Bussare a tutte le porte → chiudi quelle inutili. Sommergere → filtra a monte.
+I quattro attacchi del registro, con la difesa giusta. Bussare a tutte le porte: chiudi quelle inutili. Ascoltare: cifra. Mettersi in mezzo: verifica chi c'è dall'altra parte (certificati). Sommergere: filtra a monte.
 </Callout>
 
-<Say who="assistente">Se ti ricordi cosa vuole ottenere l'attaccante, la difesa viene da sola.</Say>
+<Say who="sensei">Un avviso di certificato su un sito di banca non è fastidio. È un segnale. Obbedisci al segnale.</Say>
 </Scene>
 
 {/* screen */}
@@ -191,5 +179,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Ultima lezione del modulo: il Wi-Fi. La rete che usiamo tutti, e che quasi nessuno configura bene.</Say>
+<Say who="sensei">Caso chiuso: le quattro righe del registro erano scansione, sniffing, man-in-the-middle e negazione di servizio. Ultima lezione del modulo: il Wi-Fi. La rete che usiamo tutti, e che quasi nessuno configura bene.</Say>
 </Scene>

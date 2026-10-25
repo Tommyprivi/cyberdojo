@@ -84,7 +84,7 @@ A volte serve che il sito `https://app.example` legga i dati di `https://api.exa
 Errori tipici di configurazione:
 
 - **Ripetere qualunque origine** ricevuta nell'Origin: è come scrivere «benvenuti tutti».
-- **Usare l'asterisco** (`*`) su dati riservati: il browser non lo accetta insieme alle credenziali, ma su dati pubblici va bene, su dati privati no.
+- **Usare l'asterisco** (`*`): il browser non lo accetta insieme alle credenziali. Va bene per dati davvero pubblici, non per dati privati.
 - **Fidarsi di domini con un nome «simile»** o di sottodomini non controllati.
 
 Per le richieste «delicate» il browser fa prima una domanda preliminare (**preflight**, un controllo `OPTIONS`): «posso mandare questa richiesta?». Ma attenzione.
@@ -115,7 +115,7 @@ Per le richieste «delicate» il browser fa prima una domanda preliminare (**pre
   ]}
 />
 
-Le difese si mettono su uno di questi tre punti:
+Le difese colpiscono uno di questi tre punti (meglio più di una insieme):
 
 - **Cookie `SameSite`** (Lax o Strict): il browser non allega il cookie alle richieste partite da altri siti.
 - **Token anti-CSRF**: un valore casuale legato alla sessione, inserito nei moduli e controllato dal server. L'estraneo non può conoscerlo.
@@ -185,5 +185,5 @@ Scenari su same-origin, CORS e CSRF: scegli la difesa o la spiegazione giusta.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: la lista dei difetti tipici delle API, la OWASP API Top 10.</Say>
+<Say who="sensei">Caso chiuso: con un cookie SameSite e un token anti-CSRF, la richiesta dei gattini non avrebbe cambiato l'IBAN di Giulia. Prossima lezione: la lista dei difetti tipici delle API, la OWASP API Top 10.</Say>
 </Scene>

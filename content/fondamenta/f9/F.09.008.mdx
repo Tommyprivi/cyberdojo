@@ -203,7 +203,7 @@ db1 5432
 I valori letti da un CSV sono **sempre testo**: `riga["porta"]` è `"80"`, non `80`. Per fare i conti serve `int(riga["porta"])`.
 </Callout>
 
-<Say who="sensei">Testo dentro, testo fuori. I numeri li converti tu. Ricordi il TypeError della seconda lezione?</Say>
+<Say who="sensei">Testo dentro, testo fuori. I numeri li converti tu. Ricordi il TypeError della lezione sulle variabili?</Say>
 </Scene>
 
 {/* screen */}
@@ -265,6 +265,7 @@ Cinque domande: cosa stampa il codice, quale modo o metodo serve, cosa succede s
 - `with open(nome, modo, encoding="utf-8") as f:` apre e chiude il file da solo; `'r'` legge, `'w'` cancella e scrive, `'a'` aggiunge.
 - `try`/`except NomeErrore` gestisce gli errori previsti, come `FileNotFoundError`.
 - Con i moduli `csv`, `json` e `pathlib` leggi tabelle, dati strutturati e percorsi; i valori di un CSV sono sempre testo.
+- Caso chiuso: lo script legge `accessi.log`, salva le righe `FAILED` in `falliti.txt` e non esplode se il file manca.
 </Recap>
 
 <Flashcards

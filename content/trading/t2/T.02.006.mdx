@@ -113,7 +113,7 @@ Vuoi sentire come si gestiscono i valori mancanti da un'altra voce? In inglese, 
 Nei dati finanziari: riempi con il passato, non con il futuro. E ricorda che un prezzo riempito non è un prezzo vero: annotalo.
 </Callout>
 
-Controlla anche la coerenza di ogni riga: il massimo deve essere almeno il maggiore tra apertura e chiusura, il minimo al massimo il minore dei due.
+Controlla anche la coerenza di ogni riga: il massimo deve essere almeno pari al maggiore tra apertura e chiusura, e il minimo al massimo pari al minore dei due.
 
 <PythonTerminal code={"righe = [(10.0, 10.6, 9.8, 10.4), (10.4, 10.5, 10.9, 10.0)]\nfor ap, mx, mn, ch in righe:\n    print(mx >= max(ap, ch) and mn <= min(ap, ch))"} />
 
@@ -155,6 +155,7 @@ Cinque domande su pulizia e coerenza dei dati.
 - Cerca duplicati, buchi, errori di tipo e righe incoerenti; weekend e festività non sono errori.
 - Riempi con il passato (`ffill`), mai con il futuro (`bfill`); un valore sospetto si controlla alla fonte.
 - Tieni una copia dei dati grezzi e annota ogni correzione fatta.
+- Caso chiuso: i dati di Elena avevano un valore sospetto (1000), un duplicato e un buco. Si controlla la fonte, si toglie il duplicato, si riempie con il passato e si annota tutto: così i rendimenti tornano sensati.
 </Recap>
 
 <Flashcards

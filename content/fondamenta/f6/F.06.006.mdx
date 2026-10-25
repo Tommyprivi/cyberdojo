@@ -137,7 +137,7 @@ Un'altra voce che ripassa IP, maschera e gateway con esempi:
 />
 
 <Callout kind="curiosita">
-Per un analista il gateway è un posto prezioso: **tutto** il traffico che esce dalla rete passa da lì. È il punto dove si registra e si controlla.
+Per un analista il gateway è un posto prezioso: **tutto** il traffico che esce dalla rete passa da lì. È un punto dove si può registrare e controllare.
 </Callout>
 
 <Say who="assistente">Calcola prima la rete del mittente con la sua maschera. Poi guarda dove cade la destinazione.</Say>
@@ -160,6 +160,7 @@ Cinque domande su rete locale e gateway. Servono **tutte e cinque** giuste. Hai 
 - Il PC applica la propria maschera al proprio indirizzo e a quello di destinazione: se le reti coincidono, parla direttamente; altrimenti manda tutto al gateway.
 - Verso l'esterno il MAC è quello del gateway, l'IP di destinazione resta quello del server.
 - Il gateway deve stare nella rete del PC: una maschera sbagliata può renderlo irraggiungibile.
+- Caso chiuso: la .66 si accorge che il server 10.0.0.5 è fuori rete e consegna tutto al gateway 192.168.1.1.
 </Recap>
 
 <Flashcards

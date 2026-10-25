@@ -141,7 +141,7 @@ print(round(crescita, 4), round(cagr, 4), round(rend.mean(), 4))
 
 Output: `1.21 0.0488 0.0625`
 
-Il capitale è cresciuto del 21% in totale, il CAGR è **4,88%**, mentre la media semplice dice 6,25%. La media sovrastima sempre quando i rendimenti ballano.
+Il capitale è cresciuto del 21% in totale, il CAGR è **4,88%**, mentre la media semplice dice 6,25%. La media semplice non è mai sotto il CAGR e lo supera di più quando i rendimenti ballano.
 
 Ora prova tu con Python puro: cambia i numeri e premi Esegui.
 
@@ -180,6 +180,7 @@ Cinque domande su CAGR, composizione dei rendimenti e annualizzazione. Servono t
 - I rendimenti si moltiplicano come fattori (1 + r): la media semplice sovrastima la crescita vera.
 - CAGR = (finale / iniziale) ^ (1 / anni) − 1: il rendimento costante che darebbe lo stesso risultato.
 - Per annualizzare si eleva a potenza (1,01 ^ 12 e non 1 × 12) e i periodi brevi non fanno un numero affidabile.
+- Caso chiuso: dopo +25% e −20% Marta ha ancora 10.000 euro di carta, non il +2,5% all'anno promesso dalla media. Il CAGR è 0%.
 </Recap>
 
 <Flashcards

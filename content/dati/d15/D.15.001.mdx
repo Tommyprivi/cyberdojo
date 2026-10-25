@@ -123,12 +123,6 @@ Vuoi sentirlo spiegare da un'altra voce? È in inglese, e racconta perché gli s
 
 <Video />
 
-<Compare
-  caption="La granularità decide se i totali si possono fidare."
-  left={{ title: "Livelli mescolati", points: ["Righe di prodotto e righe di ordine insieme", "Spedizione da 5 euro ripetuta su 3 prodotti", "Il report conta 15"] }}
-  right={{ title: "Granularità scritta", points: ["Una riga = un prodotto in uno scontrino", "Ogni importo compare una volta sola", "I totali tornano"] }}
-/>
-
 <Say who="assistente">Una riga, una cosa. Se non sai dire quale, la tabella non è pronta.</Say>
 </Scene>
 
@@ -180,6 +174,7 @@ Scenari su fatti, dimensioni, granularità e chiavi, con piccoli calcoli sulle t
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: 92 e 100 non erano due verità, ma due modi di contare la stessa categoria. Con le dimensioni ben definite, tutti i report danno 92.
 - I fatti sono gli eventi con i numeri; le dimensioni sono le descrizioni con cui si taglia il numero.
 - La granularità dice che cosa è una riga dei fatti: si decide prima e si scrive in una frase.
 - Le chiavi surrogate sono numeri senza significato, che proteggono la storia quando i codici cambiano.

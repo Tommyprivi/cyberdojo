@@ -48,7 +48,7 @@ Alla **Bianchi Logistica** la cartella «Contratti» è su un file server. Un gi
 
 La domanda del caso: **perché Luca può leggere i contratti? Chi ha sbagliato?**
 
-<Say who="sensei">Nessuno ha rubato niente. Qualcuno ha dato permessi larghi e non li ha più guardati. È l'errore più comune.</Say>
+<Say who="sensei">Nessuno ha rubato niente. Qualcuno ha dato permessi larghi e non li ha più guardati. È un errore frequente.</Say>
 </Scene>
 
 {/* screen */}
@@ -104,7 +104,7 @@ Una cartella in rete ha **due strati**:
 Per chi arriva dalla rete conta il **più restrittivo** dei due.
 
 <Flow
-  caption="Per chi arriva dalla rete, i due strati si sommano al ribasso."
+  caption="Per chi arriva dalla rete conta il più restrittivo dei due strati."
   steps={[
     { icon: "globe", title: "Dalla rete", text: "Un utente apre la cartella condivisa" },
     { icon: "folder", title: "Condivisione", text: "Primo strato: vale solo per la rete" },
@@ -118,7 +118,8 @@ Per chi arriva dalla rete conta il **più restrittivo** dei due.
     "Condivisione: Tutti → Modifica. NTFS: Amministrazione → Lettura.",
     "Una persona dell'Amministrazione apre la cartella dalla rete. Il primo strato permette Modifica, il secondo solo Lettura.",
     "Vale il più restrittivo: può solo leggere.",
-    "Torna al caso di Luca: il problema è che «Tutti → Lettura» su NTFS apre i contratti anche ai Tirocinanti. La condivisione larga non l'ha causato, ma ha lasciato la porta aperta.",
+    "Torna al caso di Luca: la condivisione («Tutti → Lettura») lo lascia passare. Su NTFS gli danno Lettura due voci: «Tutti → Lettura» e «Tirocinanti → Lettura». I «Consenti» si sommano, quindi basta una voce a farlo entrare.",
+    "Per chiudere il buco vanno tolte entrambe le voci larghe e va dato Lettura solo ai gruppi che ne hanno bisogno. Togliere solo «Tirocinanti» non basta: Luca è comunque compreso in «Tutti».",
   ]}
 />
 
@@ -183,5 +184,5 @@ Scenari di permessi: calcola il permesso effettivo e scegli la gestione giusta d
   ]}
 />
 
-<Say who="sensei">Prossima lezione: dove vivono utenti e gruppi in un'azienda vera. Active Directory.</Say>
+<Say who="sensei">Caso chiuso: nessuno ha rubato niente, ma «Tutti» e «Tirocinanti» avevano Lettura sui contratti e nessuno lo rivedeva. Prossima lezione: dove vivono utenti e gruppi in un'azienda vera. Active Directory.</Say>
 </Scene>

@@ -66,11 +66,7 @@ Vuoi sentirlo spiegare da un'altra voce? Un video in inglese con i sottotitoli, 
 {/* screen */}
 
 <Scene title="Una regola semplice">
-Una regola tipica, molto semplificata:
-
-- Se il prezzo oggi è **sopra** la media degli ultimi 100 giorni: **compra** (long).
-- Se è **sotto**: **vendi allo scoperto** (short), oppure resta fuori.
-- Se il prezzo si inverte, la posizione si chiude in perdita limitata.
+Una regola tipica, molto semplificata: il prezzo di oggi si confronta con la media degli ultimi 100 giorni.
 
 <Flow
   caption="La regola del trend following, in sintesi."
@@ -78,11 +74,11 @@ Una regola tipica, molto semplificata:
     { icon: "chart", title: "Confronto", text: "Prezzo contro media di 100 giorni" },
     { icon: "check", title: "Sopra", text: "Compra (long)" },
     { icon: "cross", title: "Sotto", text: "Vende allo scoperto o resta fuori" },
-    { icon: "warning", title: "Inversione", text: "Chiude in perdita limitata" },
+    { icon: "warning", title: "Inversione", text: "Chiude, tenendo la perdita piccola" },
   ]}
 />
 
-Ogni tentativo di seguire un trend ha esito incerto. Succede questo, nei fondi che funzionano così:
+Ogni tentativo di seguire un trend ha esito incerto. Un esempio inventato:
 
 <Guided
   steps={[
@@ -106,12 +102,6 @@ Nel trend following non conta quante volte si vince, ma **quanto si guadagna qua
 Il trend following guadagna quando c'è un **movimento lungo e netto** in una direzione: un prezzo che sale per mesi, o scende per mesi. Per questo ha funzionato in alcuni periodi di grandi cambiamenti.
 
 Perde nei mercati **senza direzione**, quando il prezzo sale un poco, poi scende un poco, poi risale: ogni volta la regola entra, il prezzo si inverte, e la regola esce in perdita. Questo si chiama **whipsaw** (come essere colpiti da una frusta avanti e indietro). Ci possono essere **anni interi** così.
-
-<Compare
-  caption="Il trend following dipende dal tipo di mercato."
-  left={{ title: "Mercato senza direzione", points: ["Il prezzo sale un poco, poi scende, poi risale", "La regola entra ed esce sempre in perdita", "Possono passare anni interi"] }}
-  right={{ title: "Movimento lungo e netto", points: ["Il prezzo sale o scende per mesi", "La regola resta dalla parte del trend", "Qui il metodo può funzionare"] }}
-/>
 
 Altri rischi:
 
@@ -161,6 +151,7 @@ Cinque scenari sui managed futures: conti di guadagni e perdite, e riconosciment
 - Un future è un contratto per comprare o vendere a una data futura a un prezzo fissato oggi; si usa spesso con la leva.
 - Il trend following segue i prezzi: compra ciò che sale, vende allo scoperto ciò che scende, su molti mercati.
 - Molte piccole perdite e pochi grandi guadagni; nei mercati senza direzione (whipsaw) perde a lungo.
+- Caso chiuso: Rotta Lunga decide senza opinioni, con una regola sui prezzi. Perde spesso e guadagna di più quando il trend c'è, ma nei mercati senza direzione può perdere per anni.
 </Recap>
 
 <Flashcards

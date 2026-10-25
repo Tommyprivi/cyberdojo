@@ -38,7 +38,7 @@ commands: []
 <Scene title="«Voglio fare l'hacker etico»">
 Giorgio, 17 anni, ha seguito il corso fino qui. Un amico gli dice: **«Prendi una certificazione e dopo un mese guadagni tremila euro».** Un altro: **«Metti online le prove che hai fatto sul sito della scuola, così ti notano»**.
 
-Giorgio è confuso. Una di queste frasi è una promessa vuota. L'altra è un reato.
+Giorgio è confuso. Una di queste frasi è una promessa vuota. L'altra può costare una denuncia.
 
 La domanda del caso: **come si costruisce davvero una carriera nei test di sicurezza?**
 
@@ -111,23 +111,12 @@ Il mercato delle certificazioni **cambia in fretta**: nomi, costi, formato dell'
 {/* screen */}
 
 <Scene title="Il portfolio pulito">
-Un **portfolio** è la raccolta di ciò che hai fatto e imparato. Per un tester serve a mostrare **come ragioni** e **come scrivi**. Che cosa metterci:
-
-- **rapporti di prova** su laboratori tuoi o su aziende fittizie;
-- **spiegazioni** di che cosa hai imparato in un esercizio di laboratorio o in una gara didattica (CTF);
-- **strumenti o appunti** scritti da te per studiare;
-- **segnalazioni** fatte in un programma pubblico, solo se le regole del programma lo permettono.
-
-Che cosa **non** metterci:
-
-- prove su sistemi altrui senza permesso;
-- dati, password o informazioni di persone o aziende reali;
-- rapporti di clienti (sono riservati).
+Un **portfolio** è la raccolta di ciò che hai fatto e imparato. Per un tester serve a mostrare **come ragioni** e **come scrivi**. Ecco che cosa metterci e che cosa no:
 
 <Compare
   caption="Un portfolio pulito si fida di te; uno sporco ti chiude le porte."
   left={{ title: "Da non mettere", points: ["Prove su sistemi altrui senza permesso", "Dati o password di persone reali", "Rapporti riservati dei clienti"] }}
-  right={{ title: "Da mettere", points: ["Rapporti su laboratori tuoi o aziende fittizie", "Spiegazioni di esercizi e gare didattiche (CTF)", "Appunti e strumenti scritti da te"] }}
+  right={{ title: "Da mettere", points: ["Rapporti su laboratori tuoi o aziende fittizie", "Spiegazioni di esercizi e gare didattiche (CTF)", "Appunti e strumenti scritti da te", "Segnalazioni in programmi pubblici, solo se le regole lo permettono"] }}
 />
 
 <Callout kind="trucco">
@@ -147,14 +136,14 @@ Due ragazzi, entrambi appassionati.
     "Anna: studia reti e sistemi, costruisce un laboratorio di macchine virtuali, partecipa a gare didattiche (CTF), scrive un rapporto di prova su un'azienda fittizia.",
     "Anna: lavora in un SOC o come tecnico sistemista per due anni, poi passa a un ruolo di sicurezza offensiva, intanto prende una certificazione pratica.",
     "Luca: scarica strumenti, li prova sul sito della scuola «per vedere se funziona» e mette uno screenshot sui social.",
-    "Luca: ha violato la legge penale (art. 615-ter c.p.), rischia una denuncia e una macchia che lo segue nei colloqui.",
+    "Luca: ha provato un sistema senza permesso, e questo può essere accesso abusivo (art. 615-ter c.p.): rischia una denuncia e una macchia che lo segue nei colloqui.",
     "Conclusione: la competenza è la stessa all'inizio; la differenza sta in permesso, ambito e condotta.",
   ]}
 />
 
 Chi vuole fare pratica **ha molte strade legali**: laboratori propri, piattaforme didattiche, gare per studenti e programmi di segnalazione con regole e ambito scritti.
 
-<Say who="assistente">Se non sei sicuro che una cosa sia permessa, fermati e chiedi. Non c'è nulla di brutto nel chiedere.</Say>
+Se non sei sicuro che una cosa sia permessa, fermati e chiedi. Non c'è nulla di brutto nel chiedere.
 
 <Quiz
   question="Un annuncio promette: «Con il nostro corso e la certificazione guadagnerai 4000 euro al mese in tre mesi, senza esperienza». Come lo valuti?"
@@ -185,6 +174,7 @@ Cinque domande su ruoli, percorso, certificazioni e portfolio. A ogni tentativo 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Giorgio scarta entrambe le scorciatoie. La promessa dei tremila euro in un mese è vuota; le prove sul sito della scuola sono un rischio legale. Resta la strada lunga e pulita.
 - I ruoli vanno dal penetration tester al red team, dall'analista di vulnerabilità alla sicurezza delle applicazioni; molti partono dal lato difesa.
 - Prima delle certificazioni servono fondamenta, laboratorio proprio, scrittura, legge ed etica; le certificazioni cambiano, si controllano sempre i siti ufficiali.
 - Il portfolio contiene solo lavori su laboratori propri o aziende fittizie; provare sistemi altrui senza permesso è accesso abusivo (art. 615-ter c.p.).

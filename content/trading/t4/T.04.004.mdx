@@ -78,12 +78,12 @@ Questo codice stampa 0.00135, poi 741 e infine 14: sono le migliaia di anni di b
 <Scene title="Le code grasse">
 Nei mercati reali i giorni oltre 4σ o 5σ sono capitati **molte più volte** di quanto la normale preveda. Si dice che i rendimenti hanno le **code grasse**: le estremità della distribuzione, le **code**, sono più «pesanti» di quelle della campana.
 
-Un esempio famoso: il **19 ottobre 1987**, in un solo giorno, i principali indici azionari americani persero oltre il 20%. Con una volatilità giornaliera di circa 1%, per la normale sarebbe stato un evento da circa 20σ: praticamente impossibile.
+Un esempio famoso: il **19 ottobre 1987**, in un solo giorno, il Dow Jones perse circa il 22% e l'S&P 500 oltre il 20%. Con una volatilità giornaliera di circa 1%, per la normale sarebbe stato un evento da circa 20σ: praticamente impossibile.
 
 <Compare
   caption="Il modello normale e i mercati reali non dicono la stessa cosa."
   left={{ title: "Secondo la campana", points: ["Oltre 5σ in perdita: circa 1 giorno su 3,5 milioni", "Gli eventi estremi sono quasi impossibili"] }}
-  right={{ title: "Nei mercati reali", points: ["Giorni oltre 4σ o 5σ molto più frequenti", "Le code sono più grasse della campana", "Il 19 ottobre 1987: oltre -20% in un giorno"] }}
+  right={{ title: "Nei mercati reali", points: ["Giorni oltre 4σ o 5σ molto più frequenti", "Le code sono più grasse della campana", "Il 19 ottobre 1987: circa -20% in un giorno"] }}
 />
 
 <Callout kind="trucco">
@@ -156,6 +156,7 @@ Domande su regola 68-95-99,7, code grasse ed eventi rari. Hai 3 tentativi, e a o
 - Normale: 68% entro 1σ, 95% entro 2σ, 99,7% entro 3σ. Perdite oltre 3σ: circa 1 giorno su 741.
 - Nei mercati le code sono grasse: gli eventi estremi sono molto più frequenti di quanto la normale dica.
 - Pochi giorni estremi possono pesare più di molti giorni normali: attenzione ai backtest troppo belli.
+- Caso chiuso: i conti della Cassa Verde erano giusti, ma il modello a campana no. Per un modello normale tre giorni estremi in un decennio erano quasi impossibili; nei mercati reali succede, quindi il rischio va sempre pensato più grande.
 </Recap>
 
 <Flashcards

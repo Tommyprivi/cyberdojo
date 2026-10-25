@@ -139,12 +139,14 @@ Per vedere **tutte** le righe coinvolte, anche la prima copia, si usa `keep=Fals
   "   id_ordine cliente  importo",
   "0        101    Anna       20",
   "2        102   Bruno       35",
-  "3        103    Carla       12",
+  "3        103   Carla       12",
   "5        104   Dario       55",
   "6        105   Elisa       18",
 ]} caption="Con keep='last' del 104 resta la riga più recente (55). Con keep='first' sarebbe rimasta quella da 50." />
 
 Nota i numeri a sinistra: l'indice non si rinumera, ricorda da quale riga viene ogni dato.
+
+E il totale «troppo alto»? Prima: 20 + 35 + 35 + 12 + 50 + 55 + 18 = 225. Dopo: 20 + 35 + 12 + 55 + 18 = **140**, a patto che il 55 sia davvero l'importo giusto.
 
 <Callout kind="attenzione">
 `keep='last'` ha senso solo se l'ultima riga è la più recente e quindi la corretta. Se non lo sai, **non scegliere a caso**: segnala il conflitto.
@@ -187,6 +189,7 @@ Cinque domande su duplicati, chiavi e `drop_duplicates`. Servono tutte e cinque.
 - I duplicati nascono da doppi invii, file caricati due volte, unioni di fonti e correzioni mal fatte.
 - La chiave dice cosa rende unica una riga: `duplicated()` e `drop_duplicates()` guardano tutte le colonne, a meno che tu non scriva `subset`.
 - Conta le righe prima e dopo; se due righe con la stessa chiave hanno valori diversi, è un conflitto da risolvere, non un duplicato da togliere.
+- Caso chiuso: il 102 era un doppione (tolto), il 104 un conflitto (da confermare alla fonte). Il totale passa da 225 a 140.
 </Recap>
 
 <Flashcards

@@ -38,7 +38,7 @@ commands: []
 <Scene title="Cosa è successo stanotte?">
 Stamattina Marta controlla il server dei dati. Tutto funziona, ma qualcuno nota che la porta 22 è stata molto «viva» durante la notte.
 
-Un computer non ha memoria nostra, ma tiene **un diario**. Ogni accesso, ogni errore, ogni sudo: Linux scrive tutto. La domanda del caso: **dove sta quel diario, e come si legge?**
+Un computer non ti racconta da solo ciò che è successo, ma tiene **un diario**. Ogni accesso, ogni errore, ogni sudo: Linux scrive tutto. La domanda del caso: **dove sta quel diario, e come si legge?**
 
 <Say who="sensei">Un analista non indovina. Apre il registro e legge. Cominciamo dal posto giusto.</Say>
 </Scene>
@@ -61,6 +61,10 @@ I più utili per cominciare:
 
 <Callout kind="curiosita">
 Molti file di log sono leggibili solo da root: servono `sudo`, e per il principio del privilegio minimo si usa solo per quel comando di lettura.
+</Callout>
+
+<Callout kind="attenzione">
+Su alcune installazioni recenti il file `auth.log` non esiste: gli stessi eventi sono solo nel giornale di systemd (lo vedi più avanti con `journalctl`).
 </Callout>
 
 <Say who="assistente">auth.log è il file da cui parte quasi ogni indagine sugli accessi. Memorizza il nome.</Say>
@@ -97,7 +101,7 @@ Prendiamo la prima riga e leggiamola a pezzi:
     "server sshd[2310]: chi ha scritto la riga. sshd è il servizio degli accessi remoti, 2310 è il suo PID.",
     "Failed password for ale: qualcuno ha provato a entrare come utente ale, e la password era sbagliata.",
     "from 203.0.113.9 port 51022: l'indirizzo da cui è arrivato il tentativo.",
-    "Tre tentativi falliti per ale in cinque secondi dallo stesso indirizzo, poi un accesso riuscito di marta da un indirizzo interno: ale è stato provato a ripetizione, marta è entrata normalmente.",
+    "Il quadro: tre tentativi falliti per ale in cinque secondi dallo stesso indirizzo esterno; poi marta entra regolarmente da un indirizzo interno.",
   ]}
 />
 
@@ -167,6 +171,7 @@ Cinque domande su /var/log, auth.log, head, tail e journalctl. Servono **cinque 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il diario della notte sta in /var/log e nel giornale di systemd; in auth.log si vedono tentativi ripetuti sull'utente ale dalla porta 22.
 - I log stanno in /var/log (auth.log per gli accessi, syslog per il sistema) e nel giornale di systemd (journalctl).
 - Si leggono a pezzi: head per le prime righe, tail per le ultime, tail -f per seguirli in diretta.
 - Una riga dice quando, chi e da dove. Un attacco si riconosce dal ripetersi, non da un singolo errore.

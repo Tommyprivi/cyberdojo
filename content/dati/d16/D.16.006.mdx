@@ -62,15 +62,6 @@ Si fa un elenco di tutte le parole (il **vocabolario**): abbaia, cane, dorme, ga
 
 Ogni testo è ora una riga di numeri. L'ordine delle parole si perde.
 
-<Flow
-  caption="Come un testo diventa una riga di numeri."
-  steps={[
-    { icon: "mail", title: "Testo", text: "«il gatto dorme»" },
-    { icon: "book", title: "Vocabolario", text: "L'elenco delle parole distinte" },
-    { icon: "code", title: "Conteggi", text: "Una riga di numeri per ogni testo" },
-  ]}
-/>
-
 Vuoi sentirlo spiegare da un'altra voce? Come le parole diventano numeri (embedding), in inglese con sottotitoli:
 
 <Video />
@@ -90,6 +81,8 @@ Testo 1 (3 parole):
 - «il»: IDF = ln(3/3) = ln 1 = 0, quindi punteggio **0**.
 - «gatto» (in 2 testi su 3): IDF = ln(3/2) ≈ 0,405; TF = 1/3; punteggio ≈ **0,14**.
 - «dorme» (in 1 testo su 3): IDF = ln 3 ≈ 1,099; TF = 1/3; punteggio ≈ **0,37**.
+
+Per Nora è questo il punto: «spedizione» e «ritardo» compaiono in poche recensioni e pesano molto; «libro» compare ovunque e pesa quasi zero.
 
 <Callout kind="attenzione">
 `TfidfVectorizer` di scikit-learn usa una variante con smussamento: i numeri esatti cambiano, ma l'idea è la stessa.
@@ -177,6 +170,7 @@ Conteggi, TF-IDF, embedding e uso responsabile. Cinque domande, senza errori.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Nora conta e pesa le parole delle recensioni, poi misura il modello su esempi etichettati a mano, senza dare dati personali a strumenti pubblici.
 - Un testo diventa numeri contando le parole (bag of words) e pesandole con il TF-IDF, che premia le parole rare e utili.
 - Un embedding dà a ogni parola un punto in uno spazio: significato simile, punti vicini.
 - I modelli di linguaggio possono sbagliare e ereditano pregiudizi: si controllano i fatti e non si incollano dati personali.

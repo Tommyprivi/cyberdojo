@@ -158,6 +158,7 @@ Cinque domande su rendimenti semplici, logaritmici e composti.
 - Rendimento semplice = prezzo di oggi ÷ prezzo di ieri − 1; su più periodi si moltiplica (1 + r).
 - Rendimento logaritmico = ln(prezzo di oggi ÷ prezzo di ieri); su più periodi si somma.
 - In pandas: `pct_change()` per il semplice, `np.log(s).diff()` per il logaritmico; dichiara sempre la convenzione.
+- Caso chiuso: +10% e poi −10% non fanno zero, ma −1%, perché il secondo calcolo parte da 110 e non da 100. Giulio è a 99, non a 100.
 </Recap>
 
 <Flashcards

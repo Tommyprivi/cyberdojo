@@ -117,13 +117,13 @@ Dopo la pulizia Elisa calcola la media. Ma il lavoro non è finito: serve il **c
 - **Conta le righe prima e dopo**: 8 righe, meno 1 duplicato, meno 1 senza importo, restano 6. Sai perché hai perso due righe.
 - **Controlla un totale a mano**: 20 + 35 + 40 + 25 + 30 + 50 = 200 euro. Con 6 ordini, la media è 200 / 6, circa 33,33 euro.
 - **Chiediti se ha senso**: un importo medio di 33 euro per una libreria è plausibile; 3300 no.
-- **Confronta con una fonte nota**: il titolare vede 7 ordini diversi (101-107): coincide con le righe dopo aver tolto il duplicato.
+- **Confronta con una fonte nota**: il titolare vede 7 ordini diversi (101-107): coincide con le righe dopo aver tolto il duplicato (poi si esclude anche l'ordine 104, senza importo).
 
 <Callout kind="trucco">
 Se il risultato ti sorprende, non festeggiare e non nasconderlo: **cerca prima l'errore**. Spesso la sorpresa è un duplicato o un filtro sbagliato.
 </Callout>
 
-<Say who="assistente">Il numero di Elisa poteva risultare basso perché un vuoto letto come zero fa scendere la media. Un controllo sulle righe l'avrebbe scoperto subito.</Say>
+<Say who="assistente">Il numero di Elisa era basso perché il vuoto contava come zero e il duplicato come ordine in più: 240 / 8 = 30 euro, invece di 33,33. Un controllo sulle righe l'avrebbe scoperto subito.</Say>
 </Scene>
 
 {/* screen */}
@@ -190,6 +190,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 - L'ordine è pulizia, esplorazione, analisi, controllo; il file grezzo non si modifica mai.
 - Ogni scelta di pulizia si annota con il motivo; si contano le righe prima e dopo.
 - Si controlla il risultato (totale a mano, buon senso, fonte nota) e si registra tutto in un notebook rieseguibile da zero.
+- Caso chiuso: con duplicato e vuoto la media di Elisa era 30 euro e le righe 8, non 7 come per il titolare. Pulita e annotata, la media è 33,33 euro su 6 ordini.
 </Recap>
 
 <Flashcards

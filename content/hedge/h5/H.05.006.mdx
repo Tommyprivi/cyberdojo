@@ -86,15 +86,6 @@ Luca fa lo swap: **paga il 3% fisso, riceve il variabile**, sul nozionale di 1.0
   ]}
 />
 
-<Flow
-  caption="Il costo finale di Luca con lo swap."
-  steps={[
-    { icon: "file", title: "Prestito", text: "Variabile + 1%" },
-    { icon: "link", title: "Swap", text: "Riceve il variabile, paga 3%" },
-    { icon: "lock", title: "Costo finale", text: "3% + 1% = 4%, qualunque sia il variabile" },
-  ]}
-/>
-
 Un'altra voce, in inglese con sottotitoli:
 
 <Video />
@@ -110,7 +101,7 @@ Ci sono altri tipi di swap, descritti qui in sintesi:
 - **Swap di valute**: si scambiano flussi in due valute diverse.
 - **Credit default swap (CDS)**: chi compra paga un premio periodico e riceve un rimborso se un debitore non paga; è come un'assicurazione sul debito.
 
-Gli swap sono per lo più **fuori borsa** (OTC), cioè contratti privati tra due parti, quindi c'è il **rischio di controparte**: l'altra parte potrebbe non pagare quando ti deve dei soldi.
+Gli swap sono per lo più **fuori borsa** (OTC), cioè contratti privati tra due parti, quindi c'è il **rischio di controparte**: l'altra parte potrebbe non pagare quando ti deve dei soldi. Dopo la crisi del 2008 molti swap standardizzati passano da una controparte centrale, che riduce questo rischio ma non lo azzera.
 
 <Callout kind="attenzione">
 Uno swap può passare da valore positivo a negativo: quando i tassi si muovono contro di te, devi pagare. E se la controparte fallisce, il guadagno che ti spettava può svanire.
@@ -154,6 +145,7 @@ Calcoli sugli swap di tasso e domande sul rischio di controparte. Numeri fittizi
 - Uno swap è uno scambio di flussi di denaro nel tempo; il capitale nozionale serve per il calcolo e non viene scambiato.
 - Swap di tasso: chi paga il fisso e riceve il variabile trasforma un debito variabile in fisso. Rinuncia a pagare meno se i tassi scendono.
 - Gli swap sono per lo più fuori borsa: c'è rischio di controparte e il valore può diventare negativo.
+- Caso chiuso: con lo swap Luca paga circa 4% (3% fisso più 1% del prestito) qualunque sia il variabile. Ha tolto l'incertezza, ma non può più pagare meno se i tassi scendono, e dipende dalla banca controparte.
 </Recap>
 
 <Flashcards

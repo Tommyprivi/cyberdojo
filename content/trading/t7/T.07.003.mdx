@@ -113,13 +113,7 @@ Lo Sharpe sugli stessi numeri (soglia 0, deviazione standard con n − 1): 0,5 /
 Sortino = Sharpe che guarda solo le cadute. Le salite non vengono più punite.
 </Callout>
 
-<Compare
-  caption="Che cosa conta come rischio nei due indici."
-  left={{ title: "Sharpe", points: ["Conta ogni oscillazione", "Anche i balzi verso l'alto", "Usa la deviazione standard"] }}
-  right={{ title: "Sortino", points: ["Conta solo le cadute sotto soglia", "Le salite non sono punite", "Usa la deviazione al ribasso"] }}
-/>
-
-<Say who="assistente">Sortino è più alto di Sharpe quando le oscillazioni sono soprattutto verso l'alto. Quando le perdite sono grandi, i due si avvicinano.</Say>
+<Say who="assistente">Di solito Sortino è più alto di Sharpe, e lo è di più quando le oscillazioni sono soprattutto verso l'alto.</Say>
 </Scene>
 
 {/* screen */}
@@ -177,6 +171,7 @@ Cinque domande su Sharpe, Sortino e sui loro limiti. Convenzioni dichiarate in o
 - Sharpe = (rendimento − tasso privo di rischio) / volatilità; da giornaliero ad annuo si moltiplica per √252.
 - Sortino usa solo la deviazione al ribasso: non punisce le oscillazioni verso l'alto.
 - Su pochi dati o dopo molte prove, uno Sharpe alto può essere solo fortuna o ritocchi.
+- Caso chiuso: la A rende di più (8%) ma la B ha reso di più per ogni unità di rischio (Sharpe 1,0 contro 0,5, con rf al 2% scelto per l'esercizio). Meglio in questo senso, non garantita in futuro.
 </Recap>
 
 <Flashcards

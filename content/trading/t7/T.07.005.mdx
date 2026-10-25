@@ -92,12 +92,6 @@ Tre anni di rendimenti annui fittizi:
 
 Sulla carta la strategia batte il benchmark di circa 1,77 punti all'anno e senza cadute. Ma c'è qualcosa che non torna.
 
-<Compare
-  caption="Il confronto sulla carta: la strategia è troppo bella per essere vera."
-  left={{ title: "Benchmark", points: ["Anni: +10%, −20%, +25%", "CAGR circa 3,23%", "Massimo drawdown −20%"] }}
-  right={{ title: "Strategia", points: ["+5% ogni anno, senza eccezioni", "CAGR 5,00%", "Nessuna caduta: da sospettare"] }}
-/>
-
 <Say who="sensei">Un +5% preciso ogni anno e nessuna caduta? Nel mondo reale non succede. Quando è troppo bello, si indaga.</Say>
 </Scene>
 
@@ -115,7 +109,7 @@ Una curva troppo regolare è un **segnale di allarme**. Le cause più comuni nei
 Il buy and hold ha anch'esso cadute vere (qui −20%), ma è una scelta semplice, trasparente e senza costi di continue operazioni. Per battere un risultato così onesto, una strategia deve dimostrare molto.
 </Callout>
 
-Dopo il confronto del rendimento, guarda **Sharpe**: strategia con CAGR 5% e volatilità 5% → (5 − 2) / 5 = **0,6**. Benchmark con CAGR 8% e volatilità 16% → (8 − 2) / 16 = **0,375** (rf 2%, numeri di un altro esempio fittizio).
+Dopo il rendimento, si guarda **Sharpe**. Esempio a parte, con altri numeri fittizi e tasso privo di rischio al 2%: strategia con CAGR 5% e volatilità 5% → (5 − 2) / 5 = **0,6**; benchmark con CAGR 8% e volatilità 16% → (8 − 2) / 16 = **0,375**.
 
 <Say who="assistente">Il confronto giusto guarda tutto insieme: rendimento, rischio, costi e periodo. Un solo numero non basta.</Say>
 </Scene>
@@ -183,6 +177,7 @@ Cinque domande su buy and hold, benchmark e confronto onesto. Servono tutte e ci
 - Il buy and hold è il confronto minimo: una strategia deve fare meglio di non fare niente, a parità di periodo e di rischio.
 - Il benchmark si sceglie prima di guardare i risultati e deve essere adatto al mercato della strategia.
 - Una curva troppo liscia e troppo bella è un segnale di allarme: look-ahead, overfitting, costi dimenticati.
+- Caso chiuso: il 5% di Paolo va confrontato con il buy and hold. Qui lo batte (3,23% di CAGR) senza nessuna caduta, ed è proprio questo a insospettire: prima di crederci si cercano gli errori.
 </Recap>
 
 <Flashcards

@@ -67,7 +67,7 @@ Con un valore anomalo si usa la **mediana**: nei numeri 4, 5, 6 e 30 la mediana 
 {/* screen */}
 
 <Scene title="Dal multiplo al valore">
-Applichiamo il multiplo mediano 6 a Officine Lumi, con EBITDA 40, debito netto 50 e 10 milioni di azioni:
+Officine Lumi oggi tratta a EV/EBITDA 5 (200 / 40), sotto la mediana 6. Applichiamo il multiplo mediano 6 a Officine Lumi, con EBITDA 40, debito netto 50 e 10 milioni di azioni:
 
 <Guided
   steps={[
@@ -75,15 +75,6 @@ Applichiamo il multiplo mediano 6 a Officine Lumi, con EBITDA 40, debito netto 5
     "Valore dei soci = 240 - 50 = 190 milioni.",
     "Per azione: 190 / 10 = 19 euro.",
     "Il DCF dava circa 14,5, il prezzo è 15, i multipli suggeriscono 19. Tre numeri diversi: è un intervallo, non una verità.",
-  ]}
-/>
-
-<Flow
-  caption="Dal multiplo mediano al valore per azione."
-  steps={[
-    { icon: "chart", title: "EV implicito", text: "6 x 40 = 240" },
-    { icon: "warning", title: "Meno il debito", text: "240 - 50 = 190" },
-    { icon: "check", title: "Per azione", text: "190 / 10 = 19 euro" },
   ]}
 />
 
@@ -147,6 +138,7 @@ Calcoli sul confronto tra aziende. Numeri fittizi.
 - Si scelgono aziende confrontabili e si usa la mediana dei multipli, meno sensibile ai casi estremi.
 - Dal multiplo si ricava un EV implicito, poi, tolto il debito netto, il valore per azione.
 - Il confronto è relativo: non prova che un'azienda sia conveniente se tutto il settore è caro.
+- Caso chiuso: per Officine Lumi il DCF dà circa 14,5 euro, il prezzo è 15 e i multipli 19. Costa meno dei concorrenti (5 contro 6), ma tre numeri diversi dicono «intervallo», non «affare».
 </Recap>
 
 <Flashcards

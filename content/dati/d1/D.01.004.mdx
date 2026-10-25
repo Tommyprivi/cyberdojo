@@ -58,7 +58,7 @@ Ecco i sei iscritti:
 | 5 | Elena | 40 | Milano | 2025-04-09 |
 | 6 | Anna | 27 | Mi | 2025-04-11 |
 
-A prima vista è ordinata. Ma ci sono quattro problemi di quattro tipi diversi. Li troviamo uno alla volta.
+A prima vista è ordinata. Ma ci sono problemi di tre tipi diversi: un valore mancante, uno impossibile, due scritture diverse della stessa città. Li troviamo uno alla volta.
 
 <Say who="assistente">Non è colpa di nessuno in particolare: i dati sporchi nascono quando si scrive di fretta, a mano o da fonti diverse.</Say>
 </Scene>
@@ -68,7 +68,7 @@ A prima vista è ordinata. Ma ci sono quattro problemi di quattro tipi diversi. 
 <Scene title="Completi e corretti">
 **Completezza**: ci sono tutti i valori che servono? A Marco manca l'età: su 6 record l'età è presente 5 volte, cioè nell'**83%** dei casi (5 su 6).
 
-**Correttezza**: i valori sono veri e possibili? Sara ha 250 anni: impossibile, probabilmente un 25 scritto male. Il dato è presente ma sbagliato.
+**Correttezza**: i valori sono veri e possibili? Sara ha 250 anni: impossibile, forse un errore di battitura. Il dato è presente ma sbagliato.
 
 <Callout kind="regola">
 **Completezza** = c'è tutto? **Correttezza** = è vero? Un dato può essere presente e sbagliato, oppure mancare.
@@ -94,11 +94,7 @@ A prima vista è ordinata. Ma ci sono quattro problemi di quattro tipi diversi. 
   ]}
 />
 
-<Callout kind="trucco">
-Le quattro domande: **c'è tutto? è vero? è scritto sempre uguale? è aggiornato?** Se rispondi no, il dato è sporco.
-</Callout>
-
-<Say who="assistente">Usa le quattro domande come una lista di controllo, ogni volta che ricevi una tabella nuova.</Say>
+<Say who="assistente">Se rispondi no a una delle quattro domande, il dato è sporco. Usale come lista di controllo ogni volta che ricevi una tabella nuova.</Say>
 </Scene>
 
 {/* screen */}
@@ -117,7 +113,7 @@ Senza l'errore di Sara (che non sappiamo correggere, quindi la togliamo): 24 + 3
   explain="Il problema è la coerenza: le città vere sono due (3 iscritti a Torino, 3 a Milano) ma il computer ne vede quattro. Non mancano valori e non ci sono numeri impossibili."
 />
 
-Vuoi sentire un'altra voce sul perché la qualità conta? Poco più di tre minuti:
+Vuoi sentire un'altra voce sul perché la qualità conta? Poco più di tre minuti, in inglese:
 
 <Video />
 
@@ -143,6 +139,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 - Quattro controlli: completezza (c'è tutto?), correttezza (è vero?), coerenza (è scritto sempre uguale?), tempestività (è aggiornato?).
 - Un solo valore impossibile può falsare una media: 74,4 invece di 30,5.
 - Prima di calcolare, guarda la tabella: i dati sporchi danno risultati sbagliati ma precisi.
+- Caso chiuso: l'età media di 74 anni non era un errore di calcolo, ma di dati (un 250 e un vuoto). Corretta, è 30,5.
 </Recap>
 
 <Flashcards

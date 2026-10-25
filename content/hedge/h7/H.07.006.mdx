@@ -90,7 +90,7 @@ Giorni per liquidare = valore della posizione diviso la quantità che si riesce 
 <Scene title="Soglie e indipendenza">
 Per ogni indicatore si fissano due livelli: una soglia di **allerta** (giallo) e un **limite** (rosso).
 
-Esempio: allerta del drawdown a 8%, blocco a 12%. Con un drawdown del 10% il fondo è sopra l'allerta e sotto il blocco: si segnala e si decide che cosa fare, prima di arrivare al limite.
+Esempio: allerta del drawdown a 8%, blocco a 12%. Con un drawdown del 10% il fondo è sopra l'allerta e sotto il blocco: si segnala e si decide che cosa fare, prima di arrivare al limite. I tre numeri gialli di Marta sono proprio questo: indicatori sopra l'allerta, da affrontare anche se il rendimento è ottimo.
 
 <Flow
   caption="Le soglie dell'esempio sul drawdown: prima l'allerta, poi il blocco."
@@ -140,6 +140,7 @@ Numeri fittizi: giorni per liquidare, volatilità, drawdown, soglie e controlli.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: con tre indicatori gialli il rendimento ottimo non basta. Marta li segnala e interviene prima che diventino limiti violati.
 - Il cruscotto contiene volatilità, drawdown, esposizioni, concentrazione, liquidità e attribuzione: il rendimento da solo non basta.
 - Soglie di allerta prima dei limiti danno il tempo di agire; le violazioni si segnalano e si documentano.
 - Il controllo dovrebbe essere anche indipendente dal gestore, per evitare conflitti di interesse.

@@ -119,10 +119,6 @@ Spesso il collo di bottiglia non è dove pensi. Se il 90% del tempo è in un sol
   ]}
 />
 
-<Callout kind="trucco">
-Il ciclo è semplice: **misura**, cambia **una cosa sola**, **misura di nuovo**. Se non è migliorato, torna indietro.
-</Callout>
-
 I costi seguono la stessa logica: guarda quale lavoro costa di più, e spegni le risorse che non servono più (macchine, copie dimenticate, tabelle mai lette).
 
 <Say who="sensei">Un medico non cura prima di aver diagnosticato. Neanche tu.</Say>
@@ -158,6 +154,7 @@ Scenari su partizioni, indici, cache, costi e misura.
 - Il modo più efficace per essere veloci è leggere meno: poche colonne, filtri presto, solo le partizioni giuste.
 - Partizioni, indici e cache aiutano, ma ognuno ha un costo: complessità, spazio, scritture più lente o dati vecchi.
 - Prima si misura, poi si cambia una cosa sola, poi si misura di nuovo; lo stesso vale per i costi.
+- Caso chiuso: per sapere le vendite di ieri la query rileggeva tre anni di dati, circa 1 095 giorni. Con le partizioni per data ne legge uno solo, prima di pensare a macchine più grosse.
 </Recap>
 
 <Flashcards

@@ -204,6 +204,7 @@ Cinque domande su tipi, `astype`, `to_datetime` e unità di misura. Servono tutt
 - Guarda `df.dtypes`: un `object` dove aspetti numeri o date è un campanello d'allarme.
 - Numeri come testo: sistema i simboli (virgola, euro), poi `astype`. Date: `to_datetime` con `format` esplicito e `errors='coerce'`.
 - Una colonna, una unità di misura, e scritta nel nome della colonna.
+- Caso chiuso: ora i prezzi si sommano (12,50 + 8 + 9,90 + 7,50 + 10 = 47,90) e «ieri» è un buco segnato come NaT, non più un errore.
 </Recap>
 
 <Flashcards

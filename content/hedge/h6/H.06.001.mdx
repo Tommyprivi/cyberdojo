@@ -69,16 +69,6 @@ Quattro rischi da conoscere subito:
 - **Rischio di controparte**: l'altra parte di un contratto non paga.
 - **Rischio operativo**: errori, guasti, frodi interne.
 
-<Layers
-  caption="I quattro tipi di rischio di un fondo."
-  items={[
-    { icon: "chart", title: "Mercato", text: "I prezzi si muovono contro di te" },
-    { icon: "lock", title: "Liquidità", text: "Non riesci a vendere senza far crollare il prezzo" },
-    { icon: "link", title: "Controparte", text: "L'altra parte del contratto non paga" },
-    { icon: "bug", title: "Operativo", text: "Errori, guasti, frodi interne" },
-  ]}
-/>
-
 Questa lezione li presenta; nelle prossime li vedrai uno per uno.
 
 Vuoi sentirli elencare da un'altra voce? Il video è in inglese, con i sottotitoli:
@@ -109,15 +99,6 @@ Valore fittizio di un fondo in cinque date:
 Non si parte dall'inizio ma dal **massimo precedente**: da 100 a 90 sarebbe solo -10%, ma chi ha comprato a 120 ha perso il 25%.
 </Callout>
 
-<Flow
-  caption="Come si legge il drawdown dell'esempio."
-  steps={[
-    { icon: "chart", title: "Massimo", text: "Il valore sale a 120" },
-    { icon: "warning", title: "Minimo", text: "Poi scende a 90" },
-    { icon: "cross", title: "Drawdown", text: "(90 - 120) / 120 = -25%" },
-  ]}
-/>
-
 <Say who="sensei">Il drawdown lo senti sulla pelle. Gli investitori ricordano quello, non la media.</Say>
 </Scene>
 
@@ -145,11 +126,11 @@ Dopo una perdita, per tornare in pari serve un guadagno **più grande**:
 {/* screen */}
 
 <Scene title="Un numero non basta">
-Rondine ha una volatilità del 10% all'anno. Un altro fondo fittizio, Gufo Capital, pure 10%. Ma:
+Faro Capital, un altro fondo fittizio, ha una volatilità del 10% all'anno. Gufo Capital, pure 10%. Ma:
 
 | Fondo | Volatilità | Drawdown massimo |
 |-------|-----------|------------------|
-| Rondine | 10% | -12% |
+| Faro | 10% | -12% |
 | Gufo | 10% | -45% |
 
 Stessa volatilità, sofferenza molto diversa. E la tabella non mostra ancora **liquidità**, **leva** e **controparti**.
@@ -178,6 +159,7 @@ Drawdown, recuperi e tipi di rischio. Numeri fittizi: pochi conti, da ricontroll
 - Il rischio è incertezza sul risultato; ci sono tipi diversi: mercato, liquidità, controparte, operativo.
 - Il drawdown misura il calo dal massimo; per recuperare una perdita serve un guadagno maggiore (-50% richiede +100%).
 - Un solo numero non basta: si usano più misure insieme.
+- Caso chiuso: il grafico quasi piatto di Rondine Capital mostrava poca oscillazione, non il rischio di perdere il 20% in una settimana. Servono drawdown, liquidità, leva e scenari, non un solo numero.
 </Recap>
 
 <Flashcards

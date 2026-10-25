@@ -151,7 +151,7 @@ Marzo 3 ordini, aprile 4, maggio 1. Controllo: 61.00 + 81.50 + 12.00 = 154.50.
 <Callout kind="attenzione">
 **Qui i database sono diversi.** Stessa idea, nomi diversi:
 - mese di una data: `EXTRACT(MONTH FROM data)` (PostgreSQL, standard), `MONTH(data)` (MySQL, SQL Server), `strftime('%m', data)` (SQLite);
-- data di oggi: `CURRENT_DATE` (quasi ovunque);
+- data di oggi: `CURRENT_DATE` (PostgreSQL, MySQL, SQLite), `GETDATE()` (SQL Server);
 - aggiungere 7 giorni: `data + INTERVAL '7 days'` (PostgreSQL), `DATE_ADD(data, INTERVAL 7 DAY)` (MySQL), `date(data, '+7 days')` (SQLite).
 
 Quando cambi database, cerca nella sua documentazione la funzione equivalente. La logica non cambia.
@@ -240,6 +240,7 @@ Cinque domande su CASE, date e testo. Servono tutte e cinque giuste. Hai 3 tenta
 - CASE WHEN classifica le righe: vince la prima condizione vera, senza ELSE le altre diventano NULL.
 - CASE dentro SUM o COUNT conta solo le righe che interessano.
 - Date e testo hanno funzioni utili (EXTRACT, UPPER, TRIM, COALESCE), ma i nomi cambiano tra PostgreSQL, MySQL, SQLite e SQL Server.
+- Caso chiuso: fasce di prezzo, incasso per mese (61.00, 81.50, 12.00) ed elenco clienti pulito si ottengono senza toccare le tabelle, solo dentro la query.
 </Recap>
 
 <Flashcards

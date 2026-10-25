@@ -48,7 +48,7 @@ La domanda del caso: **come si porta la rete aziendale fino al tavolino di un ba
   right={{ title: "Con la VPN", points: ["Il bar vede solo traffico cifrato", "Giulia arriva alla rete aziendale"] }}
 />
 
-<Say who="sensei">Il Wi-Fi del bar non è tuo. Tutto ciò che ci passa può essere ascoltato da chi lo gestisce, o da chi ci è collegato. Serve un tunnel.</Say>
+<Say who="sensei">Il Wi-Fi del bar non è tuo. Tutto ciò che ci passa in chiaro può essere ascoltato da chi lo gestisce, o da chi ci è collegato. Serve un tunnel.</Say>
 </Scene>
 
 {/* screen */}
@@ -110,8 +110,7 @@ Una VPN non è uno scudo universale. Non protegge da:
 - **password deboli e account rubati**: la VPN non cambia chi sei né quanto è forte la tua password;
 - **il fornitore della VPN stesso**: il traffico esce dal suo server, quindi lui può vederlo (se non è cifrato da HTTPS) e può tenerne traccia.
 
-E non ti rende «anonimo»: il sito vede l'indirizzo del server VPN, ma il fornitore sa chi sei. Hai spostato la fiducia, non l'hai eliminata.
-
+E non ti rende «anonimo»: il sito vede l'indirizzo del server VPN, ma il fornitore sa chi sei.
 <Callout kind="attenzione">
 Una VPN trasferisce la fiducia dal gestore del Wi-Fi al gestore della VPN. Conviene scegliere bene a chi darla.
 </Callout>
@@ -180,5 +179,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: gli attacchi di rete più comuni, e per ognuno la difesa.</Say>
+<Say who="sensei">Caso chiuso: Giulia accende la VPN aziendale prima di aprire il gestionale, e il bar vede solo un tunnel. Prossima lezione: gli attacchi di rete più comuni, e per ognuno la difesa.</Say>
 </Scene>

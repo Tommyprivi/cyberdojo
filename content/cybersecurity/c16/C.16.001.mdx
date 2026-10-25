@@ -86,17 +86,6 @@ Il percorso più usato si chiama **authorization code**. Ecco la storia, in sei 
   "6. FotoStampa chiama l'API con il token e riceve le foto",
 ]} />
 
-<Flow
-  caption="Il flusso con codice di autorizzazione, in cinque passaggi."
-  steps={[
-    { icon: "link", title: "Richiesta", text: "FotoStampa manda il browser a CloudAlbum" },
-    { icon: "user", title: "Consenso", text: "Fai il login e dici di sì" },
-    { icon: "key", title: "Codice", text: "Torna al redirect_uri, monouso, con lo state" },
-    { icon: "lock", title: "Token", text: "FotoStampa scambia il codice, dal suo server" },
-    { icon: "folder", title: "Foto", text: "L'API risponde a chi mostra il token" },
-  ]}
-/>
-
 Tre dettagli che fanno la sicurezza:
 
 - Il **codice** passa dal browser, ma è monouso e inutile da solo. Il **token** viaggia da server a server.
@@ -197,5 +186,5 @@ Scenari su flussi, scope, redirect e identità: scegli la scelta giusta.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: il formato in cui viaggiano molti di questi token, il JWT, e gli errori che si fanno con lui.</Say>
+<Say who="sensei">Caso chiuso: FotoStampa vede le foto con un token a tempo e a permessi limitati, non con la tua password. Se qualcosa va storto, si revoca il token. Prossima lezione: il formato in cui viaggiano molti di questi token, il JWT, e gli errori che si fanno con lui.</Say>
 </Scene>

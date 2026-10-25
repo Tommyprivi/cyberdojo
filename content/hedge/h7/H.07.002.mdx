@@ -102,7 +102,7 @@ Come si scelgono i pesi?
 - **Pesi basati sul rendimento passato**: la scelta più pericolosa.
 
 <Callout kind="attenzione">
-In crisi le correlazioni possono salire verso +1: la protezione calcolata nei tempi calmi diminuisce proprio quando serve. Per questo si mettono anche limiti per strategia, per esempio non oltre il 30% del capitale.
+In crisi le correlazioni possono salire verso +1: la protezione calcolata nei tempi calmi diminuisce proprio quando serve. Per questo si mettono anche limiti per strategia. Marta, per esempio, fissa un tetto del 30%: su 200 milioni sono al massimo 60 milioni per strategia.
 </Callout>
 
 <Say who="sensei">Un limite per strategia è la rete di sicurezza. Se la tua previsione era sbagliata, il danno resta piccolo.</Say>
@@ -140,6 +140,7 @@ Numeri fittizi: rendimenti pesati, volatilità con correlazioni dichiarate, pesi
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Marta non punta tutto sulla strategia che ha reso di più; divide il capitale con regole e un tetto per strategia.
 - Il rendimento atteso del portafoglio è la media pesata di quelli delle strategie; i pesi sommano 100% (senza leva).
 - Il rischio dipende dai pesi e dalla correlazione: meno correlazione, meno volatilità. In crisi le correlazioni possono salire.
 - Non si alloca inseguendo il rendimento passato; si usano limiti per strategia.

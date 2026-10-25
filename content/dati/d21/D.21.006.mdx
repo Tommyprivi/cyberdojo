@@ -85,12 +85,6 @@ Con dbt questo si fa con **MetricFlow**, in file YAML accanto ai modelli. Sintas
 
 Chi chiede `ricavi` per mese riceve **82,50** per marzo; per città, Torino 60,50 e Bari 22,00 (la somma torna: 60,50 + 22,00 = 82,50). Nessuno riscrive la regola.
 
-<Compare
-  caption="Dove vive la definizione di «ricavi»."
-  left={{ title: "Formula in ogni dashboard", points: ["Ricavi ricalcolati dalle tabelle grezze", "90,00 nella dashboard, 82,50 nel foglio", "Un cambio di regola va rifatto in ogni posto"] }}
-  right={{ title: "Metrica definita una volta", points: ["«ricavi» nel livello semantico", "Tutti leggono 82,50 per marzo", "Un cambio di regola, tutti aggiornati"] }}
-/>
-
 <Callout kind="attenzione">
 La sintassi del livello semantico è cambiata più volte tra le versioni di dbt (le versioni recenti la rivedono). Il concetto resta lo stesso; la sintassi esatta va controllata nella documentazione della **versione che usi**. Inoltre, collegare il livello semantico direttamente agli strumenti di BI è una funzione del servizio a pagamento dbt Cloud; con dbt Core si può usare MetricFlow da riga di comando.
 </Callout>
@@ -101,7 +95,7 @@ Non serve sempre uno strumento nuovo: anche senza livello semantico si ottiene m
 
 <Video />
 
-<Say who="assistente">Il video di dbt Labs presenta l'idea del livello semantico. È in inglese: usa i sottotitoli.</Say>
+<Say who="assistente">Il video presenta l'idea del livello semantico. È in inglese: usa i sottotitoli.</Say>
 </Scene>
 
 {/* screen */}
@@ -221,6 +215,7 @@ Metriche, avvisi, controlli e costi: scenari da team di dati.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: «ricavi» è definita una sola volta (82,50 per marzo) e la dashboard legge quella metrica, invece di sommare tutti gli ordini grezzi (90,00).
 - Il livello semantico definisce ogni metrica una volta sola (con MetricFlow in dbt): gli strumenti di BI la leggono per nome e non riscrivono la regola.
 - Un cambio di definizione si comunica prima: che cosa, perché, da quando, effetto sui numeri passati. I cambiamenti che rompono si fanno con versioni e data di ritiro.
 - Osservabilità (freschezza, test, volumi, esecuzioni) e costo (colonne, filtri, materializzazione) si misurano prima di ottimizzare.

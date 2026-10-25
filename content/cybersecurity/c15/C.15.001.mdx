@@ -147,15 +147,7 @@ Rinnovare a mano ogni pochi mesi non regge. La risposta è l'**automazione**: un
 Il rinnovo manuale è un guasto che aspetta di accadere. Si automatizza, si **monitora la scadenza** con un allarme (per esempio 21 giorni prima) e si tiene un inventario di tutti i certificati.
 </Callout>
 
-<Compare
-  caption="Rinnovo dei certificati: a mano o in automatico."
-  left={{ title: "Rinnovo a mano", points: ["Dipende dalla memoria di una persona", "Una scadenza dimenticata ferma il portale", "Un certificato fuori elenco scade senza che nessuno lo sappia"] }}
-  right={{ title: "Rinnovo automatico", points: ["Il client ACME rinnova da solo", "Un allarme avvisa 21 giorni prima", "Un inventario elenca tutti i certificati"] }}
-/>
-
-<Say who="sensei">Il tecnico di Officine Bianchi non ha sbagliato per cattiveria. Ha dipinto un calendario sulla memoria di una persona. Non si fa.</Say>
-
-Rimettiamo in ordine il portale di Officine Bianchi. Ecco come ragiona chi progetta bene il rinnovo.
+Il tecnico di Officine Bianchi non ha sbagliato per cattiveria: la scadenza abitava nella memoria di una persona. Ecco come ragiona chi progetta bene il rinnovo.
 
 <Guided
   steps={[
@@ -202,5 +194,5 @@ Scenari su catene, errori e scadenze: scegli la lettura giusta.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: il certificato c'è, ma il server lo usa bene? Vediamo come si configura TLS.</Say>
+<Say who="sensei">Caso chiuso: il portale si è fermato per una scadenza dimenticata. Con inventario, rinnovo ACME e allarme a 21 giorni non succede più. Prossima lezione: il certificato c'è, ma il server lo usa bene? Vediamo come si configura TLS.</Say>
 </Scene>

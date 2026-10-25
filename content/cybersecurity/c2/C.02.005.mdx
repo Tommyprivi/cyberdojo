@@ -51,7 +51,7 @@ Con le due chiavi della lezione scorsa si può fare una cosa nuova: **firmare**.
 <Guided
   steps={[
     "Il mittente calcola l'hash del messaggio (l'impronta).",
-    "Cifra quell'hash con la sua chiave privata: questa è la firma.",
+    "Con la sua chiave privata «firma» quell'hash (in parole semplici: lo cifra). Il risultato è la firma.",
     "Il destinatario decifra la firma con la chiave pubblica del mittente e ottiene l'hash.",
     "Calcola da solo l'hash del messaggio ricevuto e confronta i due.",
     "Se coincidono: il messaggio è proprio quello firmato.",
@@ -98,9 +98,7 @@ C'è un buco. La segreteria verifica la firma con la chiave pubblica del diretto
 
 Serve qualcuno di cui tutti si fidano, che attesti: «Questa chiave pubblica appartiene a questa persona (o a questo sito)». Questo attestato è il **certificato digitale**.
 
-<Callout kind="curiosita">
-Il certificato contiene il nome del proprietario, la sua chiave pubblica, la data di scadenza e la **firma di chi lo ha emesso**.
-</Callout>
+Un certificato contiene queste quattro cose:
 
 <Layers
   caption="Che cosa c'è dentro un certificato."
@@ -181,5 +179,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: TLS e HTTPS. Metteremo insieme tutto quello che hai imparato, in un solo lucchetto.</Say>
+<Say who="sensei">Caso chiuso: la segreteria cambia l'IBAN solo se la firma si verifica con un certificato valido; altrimenti telefona al direttore. Prossima lezione: TLS e HTTPS. Metteremo insieme tutto quello che hai imparato, in un solo lucchetto.</Say>
 </Scene>

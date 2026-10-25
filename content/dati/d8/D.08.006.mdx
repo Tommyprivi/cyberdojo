@@ -174,10 +174,6 @@ E un controllo semplice, sempre: **conta le righe prima e dopo**. Con una unione
   ]}
 />
 
-<Callout kind="trucco">
-Tre controlli in fila: righe prima e dopo, orfani con `indicator=True`, `validate` nella chiamata. Costano tre righe di codice.
-</Callout>
-
 <Callout kind="attenzione">
 Le chiavi devono avere lo stesso tipo: un `id_cliente` numerico da una parte e testo (`'1'`) dall'altra non si uniscono. Controlla con `dtypes` prima.
 </Callout>
@@ -224,6 +220,7 @@ Cinque domande su chiavi, righe orfane, `merge` e `validate`. Servono tutte e ci
 - Per unire due tabelle serve una chiave; `how` decide quali righe restano (inner, left, outer).
 - Una riga senza coppia è orfana: trovala con `indicator=True`, non la lasciare sparire in silenzio.
 - Controlla la cardinalità con `validate` e conta le righe prima e dopo.
+- Caso chiuso: con left tutti e cinque gli ordini restano e l'ordine 13 è segnato come orfano (cliente 5 inesistente). Dario, senza ordini, semplicemente non compare.
 </Recap>
 
 <Flashcards

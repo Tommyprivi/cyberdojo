@@ -36,14 +36,14 @@ commands: []
 ---
 
 <Scene title="L'indice c'è, ma serve?">
-Marta ha creato l'indice `idx_ordini_cliente` sulla tabella da tre milioni di righe. Poi chiede al database di aiutarla con la query lenta, e il programma risponde con un blocco di testo che non capisce:
+Marta ha una query lenta sulla tabella da tre milioni di righe. Chiede al database di mostrarle come la sta eseguendo, e riceve un blocco di testo che non capisce:
 
 <Log lines={[
   "Seq Scan on ordini  (cost=0.00..21850.00 rows=98 width=36)",
   "  Filter: (cliente_id = 4217)",
 ]} caption="Che cosa sta dicendo il database?" />
 
-La domanda del caso: **l'indice viene usato, oppure no?**
+La domanda del caso: **il database sta usando un indice, oppure no?**
 
 <Say who="sensei">Il database non indovina e non spiega a parole: scrive un piano. Si impara a leggerlo, riga per riga.</Say>
 </Scene>
@@ -96,7 +96,7 @@ Vuoi sentirlo spiegare da un'altra voce? Il video è in inglese e mostra come le
 {/* screen */}
 
 <Scene title="Dopo l'indice">
-Se l'indice è utile, il piano della stessa query diventa:
+Dopo aver creato l'indice `idx_ordini_cliente` (lezione 2), il piano della stessa query diventa:
 
 <Log lines={[
   "Index Scan using idx_ordini_cliente on ordini  (cost=0.43..394.18 rows=98 width=36)",
@@ -171,6 +171,7 @@ Cinque domande su EXPLAIN e sui piani. Servono tutte e cinque giuste. Hai 3 tent
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: il piano di Marta diceva Seq Scan, quindi nessun indice era usato. Con l'indice su cliente_id il piano diventa Index Scan e il lavoro stimato scende di circa 55 volte.
 - EXPLAIN mostra il piano stimato; EXPLAIN ANALYZE esegue la query e aggiunge tempi e righe reali.
 - Seq Scan legge tutta la tabella; Index Scan usa l'indice. Il costo è in unità astratte, utile solo per confrontare.
 - Il piano dipende dalle statistiche: dati pochi o statistiche vecchie possono far scegliere il metodo sbagliato.
@@ -185,5 +186,5 @@ Cinque domande su EXPLAIN e sui piani. Servono tutte e cinque giuste. Hai 3 tent
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: viste e CTE ricorsive, per riutilizzare query e percorrere gerarchie.</Say>
+<Say who="sensei">Prossima lezione: viste e CTE ricorsive, per riutilizzare query e percorrere gerarchie.</Say>
 </Scene>

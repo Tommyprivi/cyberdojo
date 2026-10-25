@@ -105,7 +105,7 @@ Ora ragiona sull'elenco, come un cacciatore:
 2. Quali sono **strani**? Un accesso di notte, a un account amministratore, da un indirizzo mai visto.
 3. Ogni accesso strano va **verificato**: chiedere al proprietario dell'account, controllare cosa ha fatto dopo.
 
-Se trovi il caso strano, hai un'**intrusione da gestire**. Se non lo trovi, non hai perso tempo: hai **dimostrato** che quell'ipotesi, con quei dati, non ha trovato nulla.
+Se trovi il caso strano e si conferma, hai un'**intrusione da gestire**. Se non lo trovi, non hai perso tempo: hai **dimostrato** che quell'ipotesi, con quei dati, non ha trovato nulla.
 
 <Callout kind="attenzione">
 Quei dati sono fittizi, in un laboratorio. Cercare tracce nei log della tua azienda è difesa. Entrare nei sistemi altrui è reato (in Italia, art. 615-ter del codice penale): si agisce solo su ciò che è tuo o con permesso scritto.
@@ -168,6 +168,7 @@ Cinque scenari sulla caccia alle minacce. Servono **cinque risposte giuste**. Ha
 <Practice generator="c19-hunting" pass="5/5" retries={3} />
 
 <Recap xp={25}>
+- Caso chiuso: il silenzio del SIEM della «Rossi Forniture» non provava nulla. Una caccia con un'ipotesi precisa dice cosa guardare, e può finire in una regola nuova.
 - Il threat hunting cerca attivamente attaccanti che nessuna regola ha ancora visto; parte da un'ipotesi, non dall'esplorazione a caso.
 - Una buona ipotesi è specifica, verificabile con i log disponibili e legata a un comportamento.
 - Ogni caccia termina con un esito riutilizzabile: un incidente, un filtro o una nuova regola.

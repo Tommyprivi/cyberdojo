@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Il cliente">
-Dopo mesi di SOC, è il momento di progettare. Una piccola azienda, **Bianchi Servizi** (nome inventato), sta per trasferirsi in un nuovo ufficio e chiede a te la rete.
+Dopo i mesi passati in sala SOC, è il momento di progettare. Una piccola azienda, **Bianchi Servizi** (nome inventato), sta per trasferirsi in un nuovo ufficio e chiede a te la rete.
 
 Questi sono i fatti, raccolti in un colloquio:
 
@@ -85,7 +85,7 @@ Da qui nasce l'idea: **una VLAN per ogni gruppo**. Cinque gruppi, cinque VLAN: a
   ]}
 />
 
-<Say who="assistente">Cinque gruppi, cinque VLAN, cinque sottoreti. Il conto è facile: per ora.</Say>
+<Say who="assistente">Cinque gruppi, cinque VLAN, cinque sottoreti. Il conto è facile, per ora: la parte difficile è scegliere quanto grande farle.</Say>
 </Scene>
 
 {/* screen */}
@@ -193,6 +193,7 @@ Cinque domande sul progetto: sottoreti, indirizzi, gateway e regole. Cinque su c
 - Si parte dai flussi (chi parla con chi), poi una VLAN e una sottorete per gruppo.
 - Si dimensiona sul massimo con margine: /24 = 254, /26 = 62, /27 = 30, /28 = 14 indirizzi utilizzabili.
 - Regole minime: vietare tutto e permettere solo ciò che serve, con un motivo scritto per ogni permit.
+- Caso chiuso: Bianchi Servizi ha cinque VLAN, cinque sottoreti con margine e regole scritte. Gli ospiti vedono solo Internet.
 </Recap>
 
 <Flashcards

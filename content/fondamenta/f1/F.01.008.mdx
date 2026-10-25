@@ -60,6 +60,8 @@ Apri il **terminale**, la finestra in cui si scrivono i comandi. Poi:
 - `sudo apt full-upgrade` **installa** gli aggiornamenti.
 - `sudo` vuol dire «eseguilo con i permessi di amministratore»: ti chiede la tua password.
 
+Se al termine viene chiesto di riavviare, riavvia.
+
 <Flow
   caption="L'ordine dei primi dieci minuti."
   steps={[
@@ -69,8 +71,6 @@ Apri il **terminale**, la finestra in cui si scrivono i comandi. Poi:
     { icon: "folder", title: "Snapshot", text: "Il punto sicuro" },
   ]}
 />
-
-Se al termine viene chiesto di riavviare, riavvia.
 
 <Callout kind="trucco">
 Gli aggiornamenti correggono errori e **falle di sicurezza**. Un laboratorio per la sicurezza che non si aggiorna è un controsenso.
@@ -157,6 +157,7 @@ Cinque domande su avvio, aggiornamento e regole. Servono **cinque giuste**. Hai 
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: nei primi dieci minuti si aggiorna, si fa lo snapshot e si fissano le regole, prima di provare qualsiasi cosa.
 - Dopo il primo avvio: aggiornare con sudo apt update e sudo apt full-upgrade, poi fare lo snapshot.
 - Se qualcosa si rompe, si ripristina l'ultimo snapshot funzionante; lo snapshot non è un backup.
 - Si prova solo ciò che è tuo o con permesso scritto: mai contro sistemi altrui (art. 615-ter c.p.).

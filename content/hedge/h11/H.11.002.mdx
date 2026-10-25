@@ -77,16 +77,6 @@ Il fondo, in un periodo del 1998, aveva posizioni per oltre **20 volte** il prop
   "2 milioni su 4 milioni di capitale = 50% del capitale",
 ]} />
 
-<Flow
-  caption="Come con leva 25 a 1 un errore del 2% pesa metà del capitale (milioni, esempio fittizio)."
-  steps={[
-    { icon: "coin", title: "Capitale", text: "4 milioni" },
-    { icon: "chart", title: "Posizione", text: "100 milioni (leva 25 a 1)" },
-    { icon: "warning", title: "Perde il 2%", text: "Perdita di 2 milioni" },
-    { icon: "skull", title: "Sul capitale", text: "2 su 4: metà del capitale" },
-  ]}
-/>
-
 <Callout kind="regola">
 Con leva 25 a 1, un calo del **4%** sulle posizioni azzera il capitale. Ecco perché i margini di errore sono minuscoli.
 </Callout>
@@ -119,16 +109,6 @@ Le lezioni, in sintesi:
 - **Rischio di modello**: i modelli usavano dati del passato e consideravano quasi impossibili eventi che invece accaddero.
 - **Correlazioni**: in crisi cose indipendenti perdono insieme.
 - **Stress test**: serve provare scenari estremi, non solo quelli recenti.
-
-<Layers
-  caption="Le quattro lezioni di LTCM."
-  items={[
-    { icon: "bolt", title: "Leva", text: "Poco capitale, posizioni enormi, nessun margine d'errore" },
-    { icon: "code", title: "Rischio di modello", text: "Dati del passato, eventi rari considerati quasi impossibili" },
-    { icon: "link", title: "Correlazioni", text: "In crisi cose indipendenti perdono insieme" },
-    { icon: "fire", title: "Stress test", text: "Provare anche scenari estremi, non solo quelli recenti" },
-  ]}
-/>
 
 <Callout kind="curiosita">
 I modelli di LTCM erano costruiti da persone bravissime. Il problema non era la poca intelligenza, ma la troppa fiducia.
@@ -169,6 +149,7 @@ Domande sul caso LTCM, con numeri fittizi.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: un fondo di esperti ha rischiato di trascinare con sé il mercato perché aveva poco capitale, posizioni enormi (leva) e modelli che escludevano gli scenari estremi.
 - LTCM faceva convergenza con posizioni enormi e molta leva: piccoli errori diventano grandi perdite.
 - La crisi russa del 1998 allargò le differenze di prezzo; il salvataggio fu privato, con 14 banche.
 - Lezioni: leva, rischio di modello, correlazioni in crisi, stress test.
@@ -183,5 +164,5 @@ Domande sul caso LTCM, con numeri fittizi.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: un fallimento di tipo diverso. Qui i soldi erano stati investiti. Nel prossimo caso, invece, gli investimenti non esistevano.</Say>
+<Say who="sensei">Prossima lezione: un fallimento di tipo diverso. Qui i soldi erano investiti davvero, e male. Nel prossimo caso gli investimenti non esistevano.</Say>
 </Scene>

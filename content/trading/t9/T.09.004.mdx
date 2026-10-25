@@ -92,7 +92,7 @@ Dati fittizi: dalla storia, lo spread medio è **10** e la sua deviazione standa
 | 2 | 55 | 44 | 11 | 0,5 |
 | 3 | 58 | 44 | 14 | 2,0 |
 
-Il giorno 3: (14 - 10) / 2 = 2. Regola d'esempio: «con z maggiore di 2 (soglia esclusa) vendi X e compri Y; esci quando z torna vicino a 0».
+Il giorno 3: (14 - 10) / 2 = 2. Regola d'esempio: «con z di 2 o più vendi X e compri Y; esci quando z torna vicino a 0». Il caso di Davide (divario a 14) è proprio questo.
 
 <PythonTerminal code={"media, dev = 10, 2\nfor x, y in [(52, 42), (55, 44), (58, 44)]:\n    spread = x - y\n    print(spread, (spread - media) / dev)"} />
 
@@ -128,10 +128,10 @@ Gli esempi sono numeri inventati: nessuna coppia reale è «garantita». Control
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Spread medio 10, deviazione standard 2. Oggi X = 60 e Y = 46. Qual è lo z-score dello spread e che cosa suggerisce la regola «vendi X, compra Y se z > 2»?"
-  options={["Spread 14, z = 2,0: non supera 2, quindi la regola non entra", "Spread 14, z = 7: la regola entra subito", "Spread 106, z = 48: la regola entra", "Spread 14, z = 2,0: la regola entra perché è vicino a 2"]}
+  question="Spread medio 10, deviazione standard 2. Oggi X = 60 e Y = 47. Qual è lo z-score dello spread e che cosa suggerisce la regola «vendi X, compra Y se z è 2 o più»?"
+  options={["Spread 13, z = 1,5: sotto 2, la regola non entra", "Spread 13, z = 6,5: la regola entra subito", "Spread 107, z = 48,5: la regola entra", "Spread 13, z = 1,5: la regola entra perché è vicino a 2"]}
   answer={0}
-  explain="Spread = 60 - 46 = 14. z = (14 - 10) / 2 = 2,0. La regola dice «sopra 2»: 2,0 non è sopra 2, quindi non entra. Chi calcola 7 ha dimenticato di dividere per la deviazione standard."
+  explain="Spread = 60 - 47 = 13. z = (13 - 10) / 2 = 1,5. La regola chiede 2 o più: 1,5 non basta, quindi non entra. Chi calcola 6,5 ha dimenticato di sottrarre la media; chi dice che «è vicino a 2» trasforma una soglia in un'opinione."
 />
 
 <Say who="sensei">Sopra non vuol dire uguale. Le soglie si leggono con precisione.</Say>
@@ -151,6 +151,7 @@ Spread, z-score e rischi delle coppie. Servono **cinque giuste su cinque**. Hai 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il divario a 14 di Davide ha uno z-score di 2 e fa scattare la regola, ma non dice che tornerà a 10: la coppia può rompersi.
 - Una coppia usa due titoli collegati e guarda lo spread (differenza dei prezzi): quando si allarga molto si vende il caro e si compra l'economico, sperando nel ritorno.
 - Lo z-score dello spread = (spread - media) / deviazione standard.
 - Neutrale al mercato non è senza rischio: la relazione può rompersi, i costi sono doppi, la vendita allo scoperto ha perdite potenzialmente illimitate.

@@ -127,15 +127,6 @@ Nella cella «Milano» il contesto tiene solo le righe 1 e 2: importo 100 + 50 =
 Per prevedere una cella, chiediti: «quali righe restano con i filtri di questa riga e di questa colonna?». Poi applica la formula solo a quelle.
 </Callout>
 
-<Flow
-  caption="Il caso della cella «Milano»."
-  steps={[
-    { icon: "search", title: "Filtro", text: "Negozio = Milano" },
-    { icon: "file", title: "Righe", text: "Restano la 1 e la 2" },
-    { icon: "chart", title: "Formula", text: "Margine 70 su 150: 46,7%" },
-  ]}
-/>
-
 Vuoi sentirlo spiegare da un'altra voce? È in inglese, sul contesto di filtro:
 
 <Video />
@@ -170,6 +161,7 @@ Scenari su misure, colonne calcolate e contesto di filtro, con calcoli sulle rig
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il 50% era la media delle percentuali di riga, il 48% è somma diviso somma. Vale il 48%.
 - Una colonna è calcolata riga per riga e resta scritta; una misura si calcola sui dati filtrati in quel momento.
 - Le percentuali si calcolano come somma diviso somma, mai come media delle percentuali di riga.
 - Lo stesso calcolo dà risultati diversi in celle diverse perché cambia il contesto di filtro.

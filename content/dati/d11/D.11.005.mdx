@@ -99,7 +99,7 @@ Tre casi tipici:
 - si calcola la media usata per «scalare» i numeri su **tutte** le righe, prima di dividere: il test ha già influenzato l'addestramento.
 
 <Compare
-  caption="Il caso di Sara: stesso modello, due punteggi."
+  caption="Stesso modello, due punteggi: uno truccato, uno onesto."
   left={{ title: "Con perdita di dati", points: ["Una colonna contiene già la risposta", "Il test ha influenzato l'addestramento", "Punteggio truccato: poi crolla"] }}
   right={{ title: "Senza perdita di dati", points: ["Solo informazioni note al momento della previsione", "Il test non si vede prima della fine", "Punteggio onesto"] }}
 />
@@ -145,6 +145,7 @@ Cinque domande su divisioni, test e perdita di dati. Hai 3 tentativi.
 - Si divide in addestramento (per imparare) e test (per misurare), per esempio 80/20: 200 righe diventano 160 e 40.
 - Il punteggio che conta è quello sul test, su dati mai visti.
 - Perdita di dati: informazioni del test o del futuro che arrivano all'addestramento; il punteggio diventa troppo bello per essere vero.
+- Caso chiuso: il 100% di Sara era misurato su dati già visti. Il punteggio vero è il 65% sui clienti nuovi.
 </Recap>
 
 <Flashcards

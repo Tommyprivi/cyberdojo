@@ -202,7 +202,7 @@ Output:
 test ok
 ```
 
-Una porta valida va da 1 a 65535, e il confronto `1 <= n <= 65535` si legge come in matematica. Se domani cambi la funzione e sbagli, gli `assert` ti avvisano subito.
+Una porta utilizzabile va da 1 a 65535 (la 0 è riservata), e il confronto `1 <= n <= 65535` si legge come in matematica. Se domani cambi la funzione e sbagli, gli `assert` ti avvisano subito.
 
 <Callout kind="curiosita">
 Nei progetti seri le prove si scrivono **prima** o insieme alla funzione. Non serve un programma speciale per cominciare: bastano due o tre `assert`.
@@ -245,6 +245,7 @@ Cinque domande: cosa stampa il codice, quale riga contiene l'errore. Nel testo i
 - `def nome(parametri):` definisce la funzione, che parte solo quando la chiami; i parametri possono avere un valore predefinito.
 - `return` restituisce un valore e chiude la funzione; senza `return` si ottiene `None`.
 - Le variabili create dentro una funzione non esistono fuori; funzioni piccole si provano con `assert`.
+- Caso chiuso: il controllo «questa porta è pericolosa?» vive in una funzione sola, e se la regola cambia si corregge in un punto solo.
 </Recap>
 
 <Flashcards

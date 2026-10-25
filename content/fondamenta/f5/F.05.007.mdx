@@ -39,7 +39,7 @@ La postazione .66 vuole parlare con il router della sua rete, **192.168.1.1**. C
 
 Come fa a scoprirlo? Chiedendolo. A tutti.
 
-<Say who="sensei">Un computer non può consegnare a un indirizzo che non sa tradurre. Prima si chiede. È il protocollo più antico e più ingenuo della rete.</Say>
+<Say who="sensei">Un computer non può consegnare a un indirizzo che non sa tradurre. Prima si chiede. È uno dei protocolli più semplici e più ingenui della rete.</Say>
 </Scene>
 
 {/* screen */}
@@ -135,6 +135,7 @@ Cinque domande su ARP. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni 
 
 <Scene title="Fiducia cieca">
 <Recap xp={20}>
+- Caso chiuso: la .66 non sa il MAC del router, quindi lo chiede a tutti con ARP e il router risponde.
 - ARP traduce un indirizzo IP nel MAC corrispondente, dentro la rete locale.
 - La richiesta va a tutti (broadcast), la risposta solo a chi ha chiesto; la coppia si salva in una tabella.
 - Per uscire dalla rete serve il MAC del router. ARP non verifica nessuno: per questo si può ingannare.

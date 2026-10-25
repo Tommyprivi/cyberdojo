@@ -103,7 +103,7 @@ Quattro verbi, due significati diversi:
 ]} caption="Servono i permessi di amministratore, quindi sudo." />
 
 <Callout kind="attenzione">
-`enable` **non avvia** il servizio adesso: lo programma per la prossima accensione. Per averlo subito acceso e anche per sempre servono entrambi: `start` e `enable`.
+`enable` **non avvia** il servizio adesso: lo programma per la prossima accensione. Per averlo acceso subito e a ogni accensione servono entrambi: `start` e `enable` (oppure `enable --now`).
 </Callout>
 
 <Callout kind="trucco">
@@ -153,6 +153,7 @@ Cinque domande su servizi, demoni e systemctl. Servono **cinque giuste su cinque
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: sshd e gli altri servizi si sono avviati da soli, perché systemd li ha lanciati all'accensione.
 - Un servizio (demone) è un programma che gira in sottofondo; systemd lo gestisce con systemctl.
 - status guarda lo stato; start e stop agiscono adesso; enable e disable agiscono dall'accensione successiva.
 - I servizi inutili si fermano e si disattivano: meno programmi, meno porte aperte.

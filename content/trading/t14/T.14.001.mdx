@@ -85,9 +85,9 @@ Ogni numero che puoi cambiare (lunghezza di una media, soglia di un indicatore, 
 
 Prova questo piccolo conteggio:
 
-<PythonTerminal code={"idee = [\n    ('Media mobile a 3 giorni', 1),\n    ('Incrocio di due medie', 2),\n    ('RSI, MACD e Bollinger insieme', 9),\n    ('Rete neurale con 40 indicatori', 40),\n]\nfor nome, parametri in idee:\n    giudizio = 'ok' if parametri <= 3 else 'troppo complessa'\n    print(nome, '->', parametri, 'parametri:', giudizio)"} />
+<PythonTerminal code={"idee = [\n    ('Media mobile a 3 giorni', 1),\n    ('Incrocio di due medie', 2),\n    ('RSI, MACD e Bollinger insieme', 8),\n    ('Rete neurale con 40 indicatori', 40),\n]\nfor nome, parametri in idee:\n    giudizio = 'ok' if parametri <= 3 else 'troppo complessa'\n    print(nome, '->', parametri, 'parametri:', giudizio)"} />
 
-Risultato atteso: le prime due idee sono «ok», le ultime due «troppo complessa». La soglia di tre parametri è una regola pratica di questo corso, non una legge.
+Risultato atteso: le prime due idee sono «ok», le ultime due «troppo complessa». Il conteggio di RSI, MACD e Bollinger è approssimativo (dipende da come si impostano). La soglia di tre parametri è una regola pratica di questo corso, non una legge.
 
 Vuoi sentire un'altra voce sul backtest in Python? Il video è in inglese, con i sottotitoli:
 
@@ -148,7 +148,7 @@ Rifacciamo il lavoro del Sensei sulla lista di Livia, un controllo alla volta.
     "Rete neurale con 40 indicatori: tante manopole, regole difficili da spiegare. Fuori.",
     "Strategia sui cicli della luna: non ha un motivo che si possa verificare. Fuori.",
     "Strategia sulle notizie: servono dati di testo che Livia non ha e non può usare liberamente. Fuori.",
-    "RSI, MACD e Bollinger insieme: nove parametri da regolare. Troppi per un primo progetto.",
+    "RSI, MACD e Bollinger insieme: circa otto parametri da regolare (RSI: periodo e due soglie; MACD: tre periodi; Bollinger: periodo e ampiezza). Troppi per un primo progetto.",
     "Incrocio di due medie, o una media sola: pochi parametri, regole chiare, dati disponibili. Può avere torto, perché la si confronta con il buy and hold. Resta.",
   ]}
 />
@@ -176,6 +176,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: dalla lista di Livia resta un'idea sola, la media mobile a 3 giorni confrontata con il buy and hold: poche manopole, regole chiare, può avere torto.
 - Un'idea per il progetto ha una domanda sola, regole chiare, pochi parametri, dati disponibili e può avere torto.
 - Più parametri si regolano sul passato, più cresce il rischio di overfitting.
 - Il progetto è educazione: dati fittizi, nessuna promessa di guadagno, nessun denaro reale.

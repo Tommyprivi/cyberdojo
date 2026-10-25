@@ -126,16 +126,6 @@ Ora la risposta al capo. Un pezzo alla volta:
   ]}
 />
 
-<Flow
-  caption="La pipeline passo per passo: da otto righe a una classifica."
-  steps={[
-    { icon: "search", title: "grep", text: "4 righe con FALLITO" },
-    { icon: "code", title: "cut", text: "Solo gli indirizzi" },
-    { icon: "chart", title: "sort | uniq -c", text: "Raggruppa e conta" },
-    { icon: "warning", title: "sort -rn", text: "In cima: 203.0.113.9" },
-  ]}
-/>
-
 <Log lines={[
   "studente@lab:~$ grep FALLITO accessi.log | cut -d' ' -f2 | sort | uniq -c | sort -rn",
   "      3 203.0.113.9",
@@ -199,6 +189,7 @@ Cinque domande su pipeline di filtraggio: cosa stampano, quale comando serve. Ne
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: l'indirizzo con più accessi falliti è 203.0.113.9, con 3 tentativi, e lo trova una sola pipeline.
 - `cut -d' ' -f2` estrae una colonna; `wc -l` conta le righe.
 - `sort | uniq -c` conta i duplicati; `sort -n` ordina i numeri, `-r` inverte.
 - `tr` cambia o toglie caratteri. Una pipeline si legge da sinistra a destra, un pezzo alla volta.

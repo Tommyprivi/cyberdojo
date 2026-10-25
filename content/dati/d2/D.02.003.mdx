@@ -131,7 +131,7 @@ Un caso con una tabellina. In **A2:A4** ci sono 1, 2, 3 e in **B1:D1** ci sono 1
   explain="La colonna A è bloccata (resta $A), la riga cambia da 2 a 3: $A3. La riga 1 è bloccata (resta $1), la colonna cambia da B a C: C$1. Risultato: =$A3*C$1."
 />
 
-Per vedere se hai capito, confronta anche con il caso di Sara: lì i dollari servono perché **un solo numero** (lo sconto) deve valere per tutte le righe. Quando nella formula entrano due serie di numeri (righe e colonne), servono i riferimenti misti.
+Confronta con il caso di Sara: lì basta $E$1, perché **un solo numero** deve valere per tutte le righe. Quando entrano due serie di numeri (una per riga, una per colonna), servono i riferimenti misti.
 
 Un video riprende tutto con esempi dal vivo:
 
@@ -159,6 +159,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 - Un riferimento relativo (E1) si sposta insieme alla formula copiata; uno assoluto ($E$1) resta fermo.
 - Il $ blocca la colonna o la riga che segue: $E1 blocca la colonna, E$1 la riga, $E$1 entrambe.
 - Valori come lo sconto o l'IVA vanno in una cella sola, richiamata con $: si cambiano una volta e tutto si aggiorna.
+- Caso chiuso: con =B2*(1-$E$1) lo sconto di Sara resta fermo su E1 e tutti i prezzi (45, 18, 72) sono scontati.
 </Recap>
 
 <Flashcards

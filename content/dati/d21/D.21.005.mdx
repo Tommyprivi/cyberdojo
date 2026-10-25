@@ -154,7 +154,7 @@ Per non ricostruire tutto a ogni modifica, la CI può costruire **solo ciò che 
 ]} caption="Costruisce i modelli modificati e quelli a valle; per gli altri legge la produzione. Serve il file manifest.json salvato dall'ultimo rilascio in prod-artifacts/." />
 
 <Callout kind="curiosita">
-Il servizio a pagamento dbt Cloud offre la stessa idea già pronta, con un'impostazione. Con dbt Core, gratuito, la scrivi tu nel sistema di CI.
+Il servizio dbt Cloud (con piani anche a pagamento) offre la stessa idea già pronta. Con dbt Core, gratuito, la scrivi tu nel sistema di CI.
 </Callout>
 
 <Video />
@@ -194,6 +194,7 @@ Branch, ambienti, CI: che cosa si fa prima di rilasciare, e che cosa mai.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la riga di Marta sarebbe stata provata su un branch, rivista in una pull request e fermata dalla CI rossa, con la storia in Git per tornare indietro.
 - Le modifiche si fanno su un branch, si rivedono con una pull request e si uniscono in main solo con test verdi. Nessuno scrive su main.
 - Sviluppo e produzione hanno schemi diversi, scelti dal target (dev o prod): si prova in sviluppo, la produzione serve alle persone.
 - L'integrazione continua costruisce e testa in automatico a ogni pull request, in uno schema temporaneo. Password e chiavi mai in Git.

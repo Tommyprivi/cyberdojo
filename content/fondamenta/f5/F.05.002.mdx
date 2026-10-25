@@ -69,7 +69,7 @@ Per scrivere 256 servirebbe un **nono bit**, e un ottetto ne ha solo otto. Per q
 </Callout>
 
 <Callout kind="curiosita">
-Con 32 bit si possono scrivere circa **4,3 miliardi** di indirizzi (2 elevato alla 32 fa 4.294.967.296). Sembrano tanti, ma non bastano: nel 2011 sono stati assegnati gli ultimi blocchi liberi. Per questo esiste IPv6, che usa 128 bit.
+Con 32 bit si possono scrivere circa **4,3 miliardi** di indirizzi (2 elevato alla 32 fa 4.294.967.296). Sembrano tanti, ma non bastano: nel 2011 l'organismo che li distribuisce (IANA) ha assegnato gli ultimi blocchi liberi. Per questo esiste IPv6, che usa 128 bit.
 </Callout>
 
 <Video />
@@ -90,12 +90,6 @@ Gli indirizzi non validi che incontrerai sono quasi sempre di quattro tipi. Impa
     "10.0.o.1: c'è una lettera «o» al posto di uno zero. Capita davvero copiando da un documento.",
     "Un indirizzo valido, invece: 8.8.8.8. Quattro numeri, tutti tra 0 e 255.",
   ]}
-/>
-
-<Compare
-  caption="Indirizzi sbagliati e indirizzi validi: conta i numeri e il loro valore."
-  left={{ title: "Non validi", points: ["192.168.1.300: il 300 supera 255", "10.0.0: solo tre numeri", "172.16.0.1.5: cinque numeri"] }}
-  right={{ title: "Validi", points: ["8.8.8.8: quattro numeri", "10.0.0.1: tutti tra 0 e 255", "192.168.1.66: tutti tra 0 e 255"] }}
 />
 
 <Say who="assistente">Controlla sempre due cose: quanti numeri sono, e se qualcuno supera 255.</Say>
@@ -128,6 +122,7 @@ Otto indirizzi: per ognuno, dì se è **valido o no**. Ne servono **sette giusti
 
 <Scene title="Regola chiusa">
 <Recap xp={20}>
+- Caso chiuso: 192.168.1.300 non esiste, perché il 300 supera 255 e non entra in un ottetto; il firewall ha fatto bene a rifiutarlo.
 - Un indirizzo IPv4 sono 32 bit: quattro ottetti da 8 bit.
 - Ogni ottetto va da 0 a 255, perché con 8 bit non si scrive di più.
 - È valido solo con quattro numeri, tutti tra 0 e 255.

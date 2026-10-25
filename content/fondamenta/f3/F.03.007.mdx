@@ -135,7 +135,7 @@ Prima di aggiungere una fonte esterna chiediti: chi la gestisce? È il sito uffi
 {/* screen */}
 
 <Scene title="Aggiornare è difendersi">
-Quasi tutti gli attacchi riusciti sfruttano **vulnerabilità già note**: difetti per cui esiste da tempo la correzione, ma che qualcuno non ha installato.
+Molti attacchi riusciti sfruttano **vulnerabilità già note**: difetti per cui esiste da tempo la correzione, ma che qualcuno non ha installato.
 
 <Quiz
   question="Perché è importante fare con regolarità gli aggiornamenti di sicurezza?"
@@ -161,6 +161,7 @@ Cinque domande su apt, repository e fiducia nelle fonti. Servono **cinque giuste
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: Luca non scarica il programma da un sito, ma lo installa con apt dal repository ufficiale, controllato e firmato.
 - apt installa pacchetti dai repository: update aggiorna l'elenco, upgrade aggiorna i programmi, install e remove aggiungono e tolgono.
 - I repository ufficiali sono controllati e firmati: aggiungere fonti sconosciute significa fidarsi di chi non conosci.
 - Gli aggiornamenti di sicurezza chiudono vulnerabilità note: vanno fatti con regolarità.

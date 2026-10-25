@@ -131,7 +131,7 @@ Rispondiamo alla domanda del caso, passo per passo, sul file di cattura di esemp
 <Guided
   steps={[
     "Domanda: che cosa ha fatto 192.168.1.20 sulla porta 53 tra le 10:00 e le 10:05?",
-    "Primo filtro: ip.addr == 192.168.1.20 && udp.port == 53. Resta solo il DNS di quel computer.",
+    "Primo filtro: ip.addr == 192.168.1.20 && dns. Resta solo il DNS di quel computer.",
     "Per l'orario si usa un filtro sul tempo: frame.time >= \"2026-10-14 10:00:00\" && frame.time <= \"2026-10-14 10:05:00\" (ricorda di controllare il fuso della cattura).",
     "Si aggiunge dns.qry.name e si guardano i nomi richiesti: sono tutti normali? Ce n'è uno strano, lungo e casuale?",
     "Si salva solo ciò che serve: File, Esporta pacchetti specificati, «Solo visualizzati». Il file originale resta intatto.",
@@ -191,5 +191,5 @@ Scenari sui filtri: quale scrivere e in quale campo. Cinque su cinque, tre tenta
   ]}
 />
 
-<Say who="sensei">Sai tagliare il rumore. Prossima lezione: leggere DNS, HTTP e TLS, i tre protocolli che raccontano quasi tutto.</Say>
+<Say who="sensei">Caso chiuso: dal pagliaio da 2 GB al solo DNS di 192.168.1.20 in cinque minuti, con il file originale intatto. Sai tagliare il rumore. Prossima lezione: leggere DNS, HTTP e TLS, i tre protocolli che raccontano quasi tutto.</Say>
 </Scene>

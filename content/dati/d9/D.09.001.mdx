@@ -94,10 +94,6 @@ Esempio con cinque ordini fittizi:
   "Torino  40",
 ]} />
 
-Vuoi sentire la stessa differenza da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
-
-<Video />
-
 <Flow
   caption="Un'analisi pesante sullo stesso database rallenta i clienti."
   steps={[
@@ -107,7 +103,11 @@ Vuoi sentire la stessa differenza da un'altra voce? Qualche minuto, in inglese c
   ]}
 />
 
-<Say who="sensei">Con cinque righe è un gioco. Con cinquanta milioni occupa il database per minuti. Ecco chi ha rallentato il sito.</Say>
+Vuoi sentire la stessa differenza da un'altra voce? Qualche minuto, in inglese con i sottotitoli:
+
+<Video />
+
+<Say who="sensei">Con cinque righe è un gioco. Con tre anni di ordini sono milioni di righe, e il database resta occupato per minuti. Ecco chi ha rallentato il sito.</Say>
 </Scene>
 
 {/* screen */}
@@ -174,6 +174,7 @@ Scenari sui luoghi dei dati: scegli la sorgente o il tipo di database giusto.
 - Il database operazionale (OLTP) serve l'app: tante operazioni piccole e veloci.
 - Il database analitico (OLAP) serve le analisi: tante righe lette in una volta.
 - I dati arrivano da database, file, API e strumenti esterni: le analisi si fanno su una copia.
+- Caso chiuso: il sito di Tavola Bella era lento perché Giulia leggeva tre anni di ordini sullo stesso database che incassa i pagamenti. La soluzione è una copia dedicata alle analisi.
 </Recap>
 
 <Flashcards

@@ -229,6 +229,7 @@ Quale test serve, che cosa fa fallire un controllo, come si documenta.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: un test unique su dim_clienti avrebbe fatto fallire dbt test per l'id 3 doppio, prima che il report arrivasse al capo.
 - not_null, unique, relationships e accepted_values sono i quattro test generici: si dichiarano in YAML sotto data_tests. Un test passa se non trova righe sbagliate.
 - Le regole di business si scrivono come test singolari: una query in tests/ che restituisce le righe che violano la regola.
 - Descrizioni, dbt docs e un proprietario (owner in meta) rendono il modello comprensibile e dicono chi risponde se si rompe.

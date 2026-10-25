@@ -68,7 +68,7 @@ ordine = {
 
 - `symbol`: il simbolo dello strumento (qui un titolo inventato).
 - `side`: `buy` compra, `sell` vende.
-- `type`: `limit` vuol dire «non pagare più di questo prezzo».
+- `type`: `limit` vuol dire «non accettare un prezzo peggiore di questo»: in acquisto non paghi di più, in vendita non incassi di meno.
 - `time_in_force`: `day` vale fino a fine giornata.
 - `client_order_id`: un codice **deciso da te**, unico per ogni ordine.
 
@@ -137,15 +137,15 @@ Vuoi vedere un'altra voce usare `requests` per leggere e inviare dati? Il video 
 
 <Scene title="Tocca a te">
 <Quiz
-  question="Il programma invia un ordine, ma la risposta non arriva. Ripeti l'invio con lo stesso client_order_id. Perché è più sicuro che cambiare codice?"
+  question="Il programma invia un ordine, ma la risposta non arriva. Qual è la mossa più prudente?"
   options={[
-    "Il broker può riconoscere che l'ordine è lo stesso e non crearne un secondo",
-    "Il broker è obbligato a eseguire l'ordine due volte per sicurezza",
-    "Il codice identificativo fa arrivare la risposta più in fretta",
-    "Con lo stesso codice il prezzo limite non conta più",
+    "Controllare lo stato dell'ordine, o ripetere l'invio con lo stesso client_order_id",
+    "Inviare subito un ordine nuovo con un identificativo diverso",
+    "Raddoppiare la quantità per recuperare il tempo perso",
+    "Togliere il timeout, così il programma aspetta di più",
   ]}
   answer={0}
-  explain="Un identificativo scelto da te e riusato permette al broker di riconoscere un tentativo ripetuto come lo stesso ordine. Chi invia ogni volta un ordine «nuovo» rischia di ottenerne due. Non tutti i broker lo gestiscono allo stesso modo: si legge la documentazione."
+  explain="L'ordine potrebbe essere già arrivato. Con lo stesso client_order_id il broker può riconoscere il tentativo come lo stesso ordine e non crearne un secondo (non tutti i broker lo gestiscono allo stesso modo: si legge la documentazione). Un ordine «nuovo» a ogni tentativo rischia di raddoppiare la posizione, come nel caso di Marta."
 />
 
 <Say who="assistente">Prima di ripetere un invio, chiediti: potrebbe essere già arrivato? Se sì, controlla lo stato dell'ordine.</Say>
@@ -165,6 +165,7 @@ Scenari su ordini simulati: campi, controlli e sicurezza dell'ambiente.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: l'ordine doppio di Marta si evita con un client_order_id fisso, un controllo dello stato prima di ripetere e un timeout.
 - Un ordine è un dizionario di campi (simbolo, lato, tipo, quantità, prezzo limite) con un client_order_id deciso da te.
 - Si controlla prima: formato, ambiente demo, limiti. Se un controllo fallisce, non parte niente.
 - L'invio usa chiave dall'ambiente, indirizzo demo e timeout. Mai un ordine «nuovo» a ogni tentativo.

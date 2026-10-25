@@ -84,12 +84,6 @@ Prezzi fittizi: 100, 101, 102, 103, 104, 105. Ieri e oggi sono sempre molto simi
 L'autocorrelazione si calcola sui **rendimenti**, non sui prezzi. Nei mercati liquidi, quella dei rendimenti giornalieri è di solito **molto vicina a zero**: ieri aiuta pochissimo a prevedere oggi.
 </Callout>
 
-<Compare
-  caption="Su che cosa si calcola l'autocorrelazione."
-  left={{ title: "Sui prezzi", points: ["Quasi sempre altissima", "Il prezzo di oggi è quello di ieri più poco", "Non dice niente di utile"] }}
-  right={{ title: "Sui rendimenti", points: ["Di solito vicina a zero", "È la misura da guardare", "Ieri aiuta pochissimo a prevedere oggi"] }}
-/>
-
 <Say who="sensei">Un prezzo che somiglia a quello di ieri non è una scoperta. È il minimo sindacale.</Say>
 </Scene>
 
@@ -168,6 +162,7 @@ Domande su autocorrelazione, prezzi contro rendimenti e soglia di rumore. Hai 3 
 - Autocorrelazione di ordine 1: correlazione tra il rendimento di oggi e quello di ieri; si calcola sui rendimenti, non sui prezzi.
 - I rendimenti giornalieri sono di solito poco autocorrelati, ma la volatilità viene a grappoli.
 - Dentro ±1,96/√n (circa ±2/√n) si è nel rumore: con 100 giorni, ±0,196.
+- Caso chiuso: la regola di Lucia («se sale oggi, sale domani») funzionava per qualche giorno, poi no: con pochi dati l'autocorrelazione può sembrare diversa da zero per puro caso. Quel numero va confrontato con il limite del rumore.
 </Recap>
 
 <Flashcards

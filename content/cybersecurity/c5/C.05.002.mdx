@@ -57,7 +57,7 @@ La domanda del caso: **esiste una mappa dei rischi più comuni, e come si legge?
 La sua lista più famosa è la **OWASP Top 10**: le dieci **categorie** di rischio più diffuse nelle applicazioni web, ricavate dai dati di molte organizzazioni.
 
 <Callout kind="curiosita">
-La lista viene **aggiornata ogni qualche anno** (versioni 2017, 2021, 2025). Le categorie cambiano nome, ordine e peso. L'idea resta la stessa: sapere da dove arrivano i guai più frequenti.
+La lista viene **aggiornata ogni qualche anno** (versioni 2017, 2021, 2025). Le categorie cambiano nome, ordine e peso: nel 2025, per esempio, compaiono i guasti nella catena di fornitura del software e la gestione delle condizioni eccezionali. L'idea resta la stessa: sapere da dove arrivano i guai più frequenti. In questa lezione seguiamo la versione 2021, quella del video.
 </Callout>
 
 <Say who="assistente">Non è una legge e non è un esame: è una bussola. Serve a chi sviluppa, a chi testa e a chi decide dove investire.</Say>
@@ -73,17 +73,6 @@ Nella versione 2021, in sintesi:
 - **Injection**: dati dell'utente trattati come comandi (compreso lo XSS).
 - **Progettazione insicura**: il difetto sta nell'idea, prima del codice.
 - **Configurazioni errate**: impostazioni di default, pannelli aperti, messaggi d'errore troppo ricchi.
-
-<Layers
-  caption="Cinque famiglie di errori della Top 10 (versione 2021)."
-  items={[
-    { icon: "key", title: "Controllo degli accessi", text: "Si fa o si vede ciò che non si deve" },
-    { icon: "lock", title: "Errori crittografici", text: "Dati non cifrati o cifrati male" },
-    { icon: "terminal", title: "Injection", text: "Dati trattati come comandi" },
-    { icon: "code", title: "Progettazione insicura", text: "Il difetto è nell'idea" },
-    { icon: "gear", title: "Configurazioni errate", text: "Default, pannelli aperti" },
-  ]}
-/>
 
 <Say who="sensei">Cinque categorie. Leggile come famiglie di errori, non come dieci trucchi diversi.</Say>
 </Scene>
@@ -107,7 +96,7 @@ Vuoi sentirla spiegare da un'altra voce? Dieci minuti, con esempi:
 
 <Video />
 
-<Say who="assistente">Ogni categoria diventerà una lezione di questo modulo, o del modulo sulle vulnerabilità del database.</Say>
+<Say who="assistente">Alcune di queste categorie diventano lezioni di questo modulo, altre le ritroverai più avanti.</Say>
 </Scene>
 
 {/* screen */}
@@ -156,5 +145,5 @@ Cinque casi da riportare alla famiglia giusta. Hai 3 tentativi, e a ogni tentati
   ]}
 />
 
-<Say who="sensei">Mappa in mano. Ora si entra nei territori: la prossima lezione parla di injection, il dato che diventa comando.</Say>
+<Say who="sensei">Caso chiuso: i tre incidenti erano controllo degli accessi, injection (XSS) e configurazione errata. Mappa in mano. Ora si entra nei territori: la prossima lezione parla di injection, il dato che diventa comando.</Say>
 </Scene>

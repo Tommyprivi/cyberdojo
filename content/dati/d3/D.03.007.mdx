@@ -73,12 +73,8 @@ Una funzione finestra si riconosce da `OVER (...)`. Dentro le parentesi si dice 
 
 Otto ordini in ingresso, otto righe in uscita. Il 58.00 del cliente 1 compare tre volte, una per ogni suo ordine. Con `GROUP BY cliente_id` ne avresti avuta una sola.
 
-<Callout kind="regola">
-`GROUP BY` **riduce** le righe. `OVER` **aggiunge** una colonna e lascia le righe come sono.
-</Callout>
-
 <Compare
-  caption="Stessi 8 ordini, due modi di sommare la spesa dei clienti."
+  caption="Stessi 8 ordini: GROUP BY riduce le righe, OVER aggiunge una colonna."
   left={{ title: "Con GROUP BY", points: ["8 ordini diventano 4 righe", "Una riga per cliente", "Il dettaglio degli ordini sparisce"] }}
   right={{ title: "Con OVER", points: ["8 ordini restano 8 righe", "Una colonna in più: spesa del cliente", "Il dettaglio resta visibile"] }}
 />
@@ -118,7 +114,7 @@ Con `ORDER BY` dentro `OVER` le righe si mettono in fila e si possono numerare. 
 - `RANK`: i pari merito hanno lo **stesso** numero e poi si **salta** (4, 4, 6).
 - `DENSE_RANK`: stesso numero per i pari merito e **nessun salto** (4, 4, 5).
 
-<Say who="sensei">Guarda gli ordini 2 e 3. Pari merito al quarto posto. RANK salta il quinto e arriva al sesto. DENSE_RANK no. Ricordalo.</Say>
+Guarda gli ordini 2 e 3: pari merito al quarto posto. RANK salta il quinto e arriva al sesto, DENSE_RANK no.
 
 **Il migliore di ogni gruppo.** Un uso classico: **il primo di ogni gruppo**. Per esempio, l'ordine più grande di ogni cliente. Si numera dentro ogni partizione e si tiene il numero 1.
 
@@ -144,7 +140,7 @@ Con `ORDER BY` dentro `OVER` le righe si mettono in fila e si possono numerare. 
 Una funzione finestra **non si può usare nel WHERE** (si calcola dopo). Per filtrarla, come qui, la si mette in una CTE o in una sottoquery e si filtra fuori.
 </Callout>
 
-<Say who="assistente">Prima numeri dentro ogni gruppo, poi tieni solo il numero uno. Due passi, ecco perché la CTE.</Say>
+<Say who="sensei">Per il migliore di ogni gruppo: prima numeri dentro ogni gruppo, poi tieni solo il numero uno. Due passi, ecco perché la CTE. E con i pari merito, scegli la funzione giusta.</Say>
 </Scene>
 
 {/* screen */}
@@ -240,6 +236,7 @@ Cinque domande sulle funzioni finestra. Servono tutte e cinque giuste. Hai 3 ten
 - OVER calcola su una finestra di righe senza far sparire le righe; PARTITION BY divide in gruppi, ORDER BY mette in fila.
 - ROW_NUMBER numera senza pari merito, RANK salta dopo un pari merito, DENSE_RANK non salta.
 - SUM OVER (ORDER BY) dà il totale progressivo; LAG e LEAD guardano la riga prima e dopo (NULL ai bordi).
+- Caso chiuso: la classifica, la spesa del cliente accanto a ogni ordine e il totale progressivo (fino a 154.50) escono tutti senza perdere nessuna riga.
 </Recap>
 
 <Flashcards

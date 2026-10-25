@@ -50,7 +50,7 @@ La domanda del caso: **chi decide quando e in che ordine partono i compiti?**
 <Scene title="Il direttore d'orchestra">
 L'**orchestratore** è il programma che fa partire i compiti **al momento giusto**, nell'**ordine giusto**, e controlla come vanno.
 
-Non suona nessuno strumento: **non trasforma i dati**. Dice a ciascuno quando entrare. Strumenti conosciuti: **Apache Airflow**, Dagster, Prefect. Sono gratuiti e liberi da usare.
+Non suona nessuno strumento: **non trasforma i dati**. Dice a ciascuno quando entrare. Strumenti conosciuti: **Apache Airflow**, Dagster, Prefect. Hanno tutti una versione libera (open source) che si può usare gratis.
 
 Sa fare quattro cose:
 
@@ -160,6 +160,7 @@ Scenari di orchestrazione: pianificazioni, dipendenze e guasti.
 - L'orchestratore decide quando e in che ordine partono i compiti; non elabora i dati.
 - Cron: minuto, ora, giorno del mese, mese, giorno della settimana; * vuol dire qualunque.
 - Le dipendenze si disegnano come DAG: frecce senza giri; un compito parte solo se i precedenti sono riusciti.
+- Caso chiuso: con le dipendenze dichiarate il report di Tavola Bella aspetta gli import. Anche con Giulia malata, nessun report vuoto.
 </Recap>
 
 <Flashcards

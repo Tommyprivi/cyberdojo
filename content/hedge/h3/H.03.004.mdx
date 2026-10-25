@@ -82,15 +82,6 @@ Numeri fittizi: tasso privo di rischio 2%, mercato atteso 8%, premio = 6%.
 Più beta, più rendimento atteso richiesto. Beta zero = tasso privo di rischio.
 </Callout>
 
-<Flow
-  caption="La formula del CAPM con beta 1,5."
-  steps={[
-    { icon: "coin", title: "Privo di rischio", text: "2%" },
-    { icon: "chart", title: "Beta x premio", text: "1,5 x 6% = 9%" },
-    { icon: "check", title: "Rendimento atteso", text: "2% + 9% = 11%" },
-  ]}
-/>
-
 <Say who="sensei">Sono rendimenti attesi, non promessi. Un beta alto significa anche perdere di più quando il mercato scende.</Say>
 </Scene>
 
@@ -130,7 +121,7 @@ Il beta di un portafoglio è la media pesata dei beta. Esempio: 60% con beta 1,5
     "12%",
   ]}
   answer={0}
-  explain="2% + 2 x (8% - 2%) = 2% + 12% = 14%. Chi risponde 16% ha dimenticato di togliere il tasso privo di rischio dal premio; chi risponde 10% o 12% ha usato il beta sbagliato."
+  explain="2% + 2 x (8% - 2%) = 2% + 12% = 14%. Chi risponde 16% ha dimenticato di togliere il tasso privo di rischio dal premio; chi risponde 10% o 12% ha usato un beta diverso da 2."
 />
 
 <Callout kind="attenzione">
@@ -157,12 +148,13 @@ Calcoli con il CAPM e domande sul beta. Numeri fittizi.
 - Il beta misura quanto un titolo si muove rispetto al mercato.
 - CAPM: rendimento atteso = tasso privo di rischio + beta x premio di mercato.
 - Il modello premia solo il rischio di mercato, ma si basa su assunzioni semplificatrici e stime sul passato.
+- Caso chiuso: con i numeri fittizi della lezione (privo di rischio 2%, mercato 8%), la prima azione ha beta 1,2 e rendimento atteso 2% + 1,2 x 6% = 9,2%; la seconda ha beta 0,5 e 5%. È un rendimento atteso, non promesso.
 </Recap>
 
 <Flashcards
   cards={[
     { q: "rf 2%, mercato 8%, beta 1,5: rendimento atteso CAPM?", a: "11%" },
-    { q: "Che cosa dice un beta 0,8?", a: "Il titolo si muove meno del mercato (in media 8 su 10)" },
+    { q: "Che cosa dice un beta 0,8?", a: "Il titolo si muove meno del mercato (in media, 8 punti ogni 10 del mercato)" },
     { q: "Beta di 60% a 1,5 e 40% a 0,5?", a: "1,1" },
     { q: "Quale rischio non viene pagato dal CAPM?", a: "Il rischio specifico, eliminabile diversificando" },
   ]}

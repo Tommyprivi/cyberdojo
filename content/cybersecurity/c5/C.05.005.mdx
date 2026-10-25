@@ -105,12 +105,6 @@ Cosa fa un sito fatto bene:
 - genera token di sessione **casuali e lunghi**, li fa **scadere** e li invalida al logout;
 - dà **un solo messaggio** d'errore generico per login sbagliato.
 
-<Compare
-  caption="Login e sessione: un sito fragile e uno fatto bene."
-  left={{ title: "Sito fragile", points: ["Tentativi di login illimitati", "Token progressivi, senza scadenza"] }}
-  right={{ title: "Sito fatto bene", points: ["Tentativi limitati e secondo fattore", "Token casuali, con scadenza"] }}
-/>
-
 <Callout kind="trucco">
 Dopo il login, il sito deve anche cambiare il token di sessione. Se ne riutilizza uno già visto prima del login, qualcuno potrebbe averlo preparato in anticipo.
 </Callout>
@@ -164,5 +158,5 @@ Cinque scenari su login e sessioni. Hai 3 tentativi, e a ogni tentativo gli scen
   ]}
 />
 
-<Say who="sensei">Prossima lezione: sei dentro, ma cosa puoi vedere? Il controllo degli accessi rotto.</Say>
+<Say who="sensei">Caso chiuso: il codice 1043 era fragile perché prevedibile; un token deve essere casuale. Prossima lezione: sei dentro, ma cosa puoi vedere? Il controllo degli accessi rotto.</Say>
 </Scene>

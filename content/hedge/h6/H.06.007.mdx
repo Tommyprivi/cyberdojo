@@ -50,7 +50,7 @@ La domanda del caso: **come può fallire il fondo più brillante del mondo?**
 <Scene title="La strategia">
 LTCM faceva soprattutto **scommesse di convergenza**: due titoli simili hanno prezzi un po' diversi; il modello dice che si avvicineranno. Si compra quello che costa meno e si vende quello che costa di più.
 
-Le differenze di prezzo erano minuscole. Per ricavarne qualcosa di interessante serviva una **leva enorme**:
+Le differenze di prezzo erano minuscole. Per ricavarne qualcosa di interessante serviva una **leva enorme**. Le cifre sono ordini di grandezza, arrotondati:
 
 <Log lines={[
   "capitale:           circa  4,7 miliardi",
@@ -58,16 +58,6 @@ Le differenze di prezzo erano minuscole. Per ricavarne qualcosa di interessante 
   "leva = 129 / 4,7  = oltre 25 volte",
   "con leva 25, un calo del 4% azzera il capitale (1/25 = 4%)",
 ]} />
-
-<Flow
-  caption="Perché LTCM era così fragile."
-  steps={[
-    { icon: "coin", title: "Capitale", text: "Circa 4,7 miliardi" },
-    { icon: "chart", title: "Posizioni", text: "Circa 129 miliardi" },
-    { icon: "bolt", title: "Leva", text: "Oltre 25 volte" },
-    { icon: "skull", title: "Un calo del 4%", text: "Azzera il capitale" },
-  ]}
-/>
 
 <Say who="assistente">Piccoli guadagni, moltiplicati per tanta leva. Funziona, finché non si rompe niente.</Say>
 </Scene>
@@ -108,10 +98,10 @@ Vuoi vedere la storia raccontata da un'altra voce? Il video è in inglese, con i
 <Video />
 
 <Callout kind="curiosita">
-Il fondo fu liquidato e chiuso all'inizio del 2000.
+Il fondo fu liquidato e chiuso tra la fine del 1999 e l'inizio del 2000.
 </Callout>
 
-<Say who="sensei">Non fu un'assoluzione. I soci persero quasi tutto: il salvataggio protesse il sistema, non loro.</Say>
+<Say who="sensei">Non fu un'assoluzione. I soci persero la gran parte del loro capitale: il salvataggio proteggeva il sistema, non loro.</Say>
 </Scene>
 
 {/* screen */}
@@ -157,6 +147,7 @@ Il caso LTCM e i rischi del modulo. Numeri in sintesi e conti fittizi.
 - LTCM (1994-2000): scommesse di convergenza con leva oltre 25 volte; nel 1998 la crisi russa allargò le differenze di prezzo.
 - Posizioni enormi e poco liquide, modelli sul passato e correlazioni in crisi la portarono al salvataggio del 23 settembre 1998.
 - Lezione: modelli non bastano; servono limiti di leva, stress test e attenzione alla liquidità.
+- Caso chiuso: il fondo più brillante fallì per leva altissima, posizioni troppo grandi per essere chiuse, modelli fondati sul passato e correlazioni che in crisi salirono. Non per mancanza di intelligenza.
 </Recap>
 
 <Flashcards

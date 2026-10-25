@@ -101,7 +101,7 @@ Un'opzione frequente è lo **split tunnel**: nel tunnel passa solo il traffico d
 Un tunnel ha bisogno di un **protocollo**: regole concordate per cifrare e per autenticare. Ne vedi due, a livello concettuale.
 
 - **IPsec**: una famiglia di protocolli che lavora a livello IP, cifrando e autenticando i pacchetti. È lo standard storico, presente su moltissimi router e firewall, molto usato per le VPN site-to-site. Ricco di opzioni, e perciò non semplice da configurare.
-- **WireGuard**: più recente, **molto semplice** e con pochissimo codice. Usa chiavi pubbliche, simili a quelle che si scambiano gli interlocutori di una chat cifrata, e gira su UDP. Più facile da capire e da controllare.
+- **WireGuard**: più recente, **molto semplice** e con pochissimo codice. Usa coppie di chiavi (una pubblica e una privata) e gira su UDP. Più facile da capire e da controllare.
 
 <Callout kind="regola">
 Una VPN fa **due cose** insieme: **cifra** (nasconde il contenuto) e **autentica** (verifica chi sta dall'altra parte). Una VPN che cifra ma non sa con chi parla sarebbe una buona serratura su una porta aperta al primo venuto.
@@ -164,6 +164,7 @@ Cinque domande sulle VPN. Cinque su cinque, 3 tentativi.
 - Una VPN è un tunnel cifrato e autenticato su una rete pubblica: i pacchetti viaggiano dentro altri pacchetti.
 - Accesso remoto (un utente) e site-to-site (due sedi). IPsec è lo standard storico, WireGuard il più semplice.
 - Protegge il tragitto e permette di tenere i servizi interni, ma non rende anonimi né ferma malware e phishing.
+- Caso chiuso: Marta raggiunge il gestionale da casa attraverso il tunnel, e il gestionale resta dentro la rete interna, non esposto su Internet.
 </Recap>
 
 <Flashcards

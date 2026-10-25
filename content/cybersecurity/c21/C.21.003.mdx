@@ -35,7 +35,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="Duecento voci, tre giorni">
+<Scene title="Duecento voci in elenco">
 Nel laboratorio di prova che Marta ha costruito per un corso (una rete di macchine virtuali di sua proprietà, isolata da tutto), un controllo automatico restituisce **duecento voci**. Un'allieva dice: «Quindi è tutto rotto?»
 
 Marta risponde: «Non lo sappiamo ancora. Una lista non è un risultato».
@@ -154,7 +154,7 @@ Per capire se una voce è vera si usa il **minimo impatto**:
 Mai una verifica che possa **bloccare il servizio o alterare dati**. Se il cliente non ha detto di sì, la risposta è no: la voce resta «da verificare» nel rapporto, con l'indicazione di come farlo in sicurezza.
 </Callout>
 
-<Say who="assistente">«Da verificare» è una risposta onesta. «Vulnerabile» senza prova è un'accusa.</Say>
+«Da verificare» è una risposta onesta. «Vulnerabile» senza prova è un'accusa.
 
 <Quiz
   question="Un controllo segnala come «critica» (9,8) una debolezza su un computer del laboratorio che non è collegato a niente e non contiene dati. Un'altra, «media» (5,0), è su un server raggiungibile da tutti con l'archivio clienti. Quale tratti per prima?"
@@ -185,6 +185,7 @@ Cinque domande su enumerazione, valutazione, priorità e falsi positivi. A ogni 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: le duecento voci non sono «tutto rotto». Con inventario, gravità, valore e raggiungibilità diventano un elenco in ordine di priorità, con i falsi positivi da verificare.
 - Enumerare è fare l'inventario di che cosa c'è; valutare è confrontarlo con le debolezze note; il penetration test dimostra col minimo impatto che sono reali.
 - La priorità dipende da gravità, valore del sistema e raggiungibilità, non solo dal punteggio.
 - Un falso positivo si verifica con il minimo impatto; senza accordo scritto, la voce resta «da verificare».

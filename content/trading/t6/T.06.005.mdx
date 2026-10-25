@@ -35,7 +35,7 @@ known_pitfalls:
 commands: []
 ---
 
-<Scene title="Dieci perdite di fila">
+<Scene title="Quattro perdite di fila">
 Elia, uno studente fittizio, ha un conto demo da **1.000 €** e una strategia che vince **la metà** delle volte. Rischia **il 20%** del conto a ogni operazione, per «guadagnare in fretta».
 
 La strategia è onesta: una moneta, testa o croce. Ma per caso arrivano **quattro perdite consecutive**. Il conto è sceso del 59%. Elia non riesce più ad aprire posizioni utili: troppo poco capitale, troppa paura.
@@ -87,12 +87,6 @@ Quante perdite consecutive servono per **dimezzare** il capitale?
 | 5% | 14 |
 | 10% | 7 |
 | 20% | 4 |
-
-<Compare
-  caption="Dopo 10 perdite consecutive, partendo da 100."
-  left={{ title: "Rischio 20%", points: ["Il capitale scende a 10,7", "Dimezzato già dopo 4 perdite", "Quasi fuori dal gioco"] }}
-  right={{ title: "Rischio 1%", points: ["Il capitale resta a 90,4", "Dimezzato dopo 69 perdite", "Si resta in gioco"] }}
-/>
 
 <Say who="sensei">Con l'1% ti servono 69 perdite per dimezzarti. Con il 20%, quattro. Guarda la differenza e poi decidi quanto rischiare.</Say>
 </Scene>
@@ -158,6 +152,7 @@ Cinque domande su serie di perdite, capitale residuo e rovina, con numeri puliti
 - Il rischio di rovina è la probabilità di arrivare a un capitale da cui non si può più continuare.
 - Dopo n perdite consecutive con percentuale fissa f il capitale vale (1 − f)^n: rischiare il 20% a operazione lo dimezza in 4 perdite, l'1% in 69.
 - Le serie di perdite sono normali: con probabilità 50%, 5 perdite di fila valgono 1/32.
+- Caso chiuso: quattro perdite di fila con una moneta onesta capitano (1/16, circa 6%). Con il 20% a operazione costano −59%; con l'1% sarebbero stati circa −4%.
 </Recap>
 
 <Flashcards

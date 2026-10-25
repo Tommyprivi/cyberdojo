@@ -255,7 +255,7 @@ Vuoi vedere altri esempi con un'altra voce?
   explain="Il file usa il punto e virgola come separatore e pandas ha cercato la virgola: ha trovato un solo campo per riga. Si risolve con sep=';'. decimal serve per la virgola dei numeri, encoding per le lettere accentate sbagliate."
 />
 
-<Say who="assistente">Riconosci il sintomo, poi scegli il rimedio. Una colonna sola: separatore. Numeri che sono testo: decimal o na_values. Lettere strane: encoding.</Say>
+Riconosci il sintomo, poi scegli il rimedio. Una colonna sola: separatore. Numeri che sono testo: `decimal` o `na_values`. Lettere strane: `encoding`.
 
 Cinque domande su `read_csv`: quale opzione serve, perché la tabella è entrata sbagliata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 
@@ -271,6 +271,7 @@ Cinque domande su `read_csv`: quale opzione serve, perché la tabella è entrata
 - `pd.read_csv("file.csv")` cerca il file nella cartella di lavoro: se non lo trova, FileNotFoundError. Usa un percorso relativo o assoluto.
 - Una sola colonna: `sep=";"`. Numeri con la virgola: `decimal=","`. Lettere accentate strane: `encoding="latin-1"`.
 - Tipi: `dtype={"cap": str}` per tenere gli zeri, `na_values=["n.d."]` per i valori mancanti. Controlla con `head()` e `dtypes`.
+- Caso chiuso: il file di Marco finiva in una colonna sola perché usava il punto e virgola: con `sep=";"` (e `decimal=","`) la tabella entra giusta.
 </Recap>
 
 <Flashcards

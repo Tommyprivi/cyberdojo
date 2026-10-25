@@ -83,12 +83,6 @@ Funziona così: l'applicazione identifica un oggetto con un valore che l'utente 
   "GET /referti/5822   (utente: Marta)   ->  403, accesso negato        <-- corretto",
 ]} />
 
-<Compare
-  caption="Lo stesso indirizzo, con e senza controllo di proprietà."
-  left={{ title: "Senza controllo", points: ["/referti/5822 mostra il referto di un altro", "Il sito sa chi sei, non di chi è l'oggetto"] }}
-  right={{ title: "Con controllo", points: ["Il server verifica il proprietario", "Risposta 403: accesso negato"] }}
-/>
-
 <Callout kind="attenzione">
 Usare identificativi lunghi e casuali al posto dei numeri progressivi rende più difficile **indovinarli**, ma non sostituisce il controllo. Se qualcuno scopre un identificativo, il sito deve comunque rifiutare.
 </Callout>
@@ -167,5 +161,5 @@ Cinque scenari su autorizzazione e IDOR. Hai 3 tentativi, e a ogni tentativo gli
   ]}
 />
 
-<Say who="sensei">Prossima lezione: i difetti che non stanno nel codice, ma nelle impostazioni e negli aggiornamenti.</Say>
+<Say who="sensei">Caso chiuso: il sito di Marta sapeva chi era lei, ma non controllava di chi fosse il referto. Prossima lezione: i difetti che non stanno nel codice, ma nelle impostazioni e negli aggiornamenti.</Say>
 </Scene>

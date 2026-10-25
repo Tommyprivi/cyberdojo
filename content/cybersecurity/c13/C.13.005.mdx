@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="La cattura che nessuno vuole aprire">
-Un'azienda fittizia, **Officina Verdi**, ti manda un file di cattura di **sei minuti** del computer di prova **192.168.1.30**, registrato nel proprio laboratorio con permesso scritto. Il capo dice: «Il computer ha fatto qualcosa tra le 14:02 e le 14:08. Ricostruiscimi la storia».
+Un'azienda fittizia, **Officina Verdi**, ti manda un file di cattura di **quattro minuti** del computer di prova **192.168.1.30**, registrato nel proprio laboratorio con permesso scritto. Il capo dice: «Il computer ha fatto qualcosa tra le 14:02 e le 14:06. Ricostruiscimi la storia».
 
 Per questa lezione la cattura è **descritta nel testo**, con righe inventate. Nella pratica reale si usano file di esempio pubblici, aperti in una **macchina virtuale isolata** del tuo laboratorio, mai sul computer di tutti i giorni.
 
@@ -138,7 +138,7 @@ Rimettiamo tutto in ordine.
 
 <Guided
   steps={[
-    "Cronologia UTC (supponiamo ora locale = UTC): 14:02 download zip via HTTP; 14:03 nomi DNS casuali, NXDOMAIN; 14:04 primo contatto TLS; 14:05, 14:06 invii da 212 byte.",
+    "Cronologia: la vedi nello schema qui sotto. Per semplicità supponiamo che l'ora locale coincida con l'UTC; nella realtà si controlla sempre.",
     "Indicatori: 203.0.113.90 (sito del download), offerte-viaggi.example, controllo-esempio.example, 198.51.100.33, aggiorna-esempio.example, nome del file foglio-prezzi.zip.",
     "Fatti: tutto ciò che è nella tabella sopra. Ipotesi: file scaricato → attività successiva; beaconing; possibile infezione.",
     "Ciò che la cattura NON mostra: che cosa conteneva lo zip, se è stato aperto, quale programma ha generato i contatti, quali dati sono stati inviati.",
@@ -209,5 +209,5 @@ Scenari di lettura di catture inventate: cronologia, indicatori, fatti e ipotesi
   ]}
 />
 
-<Say who="sensei">Sai leggere una cattura sospetta. Prossima lezione: quando il traffico è troppo per leggerlo a mano. Zeek e NetFlow.</Say>
+<Say who="sensei">Caso chiuso: la storia di 192.168.1.30 è download, nomi strani, contatto regolare. È coerente con un'infezione, ma per provarla serve il computer. Sai leggere una cattura sospetta. Prossima lezione: quando il traffico è troppo per leggerlo a mano. Zeek e NetFlow.</Say>
 </Scene>

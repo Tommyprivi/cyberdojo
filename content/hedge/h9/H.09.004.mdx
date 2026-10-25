@@ -144,16 +144,6 @@ Un analista di Nova Capital vuole comprare per sé le azioni che il fondo sta pe
   ]}
 />
 
-<Flow
-  caption="Che cosa fa l'analista che vuole comprare le stesse azioni del fondo."
-  steps={[
-    { icon: "warning", title: "Il conflitto", text: "Può guadagnare grazie a informazioni del fondo" },
-    { icon: "book", title: "La politica", text: "Autorizzazione preventiva e divieti" },
-    { icon: "lock", title: "Compliance", text: "Chiede l'autorizzazione, non decide da solo" },
-    { icon: "cross", title: "Se negata", text: "Non compra, nemmeno tramite parenti" },
-  ]}
-/>
-
 <Say who="sensei">Comprare a nome di un parente non cancella il conflitto. Lo rende solo più grave.</Say>
 </Scene>
 
@@ -173,6 +163,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: l'occasione limitata di Nova Capital non va al fondo Alfa solo perché paga di più. Si applica una regola di ripartizione scritta prima, uguale per i due fondi e documentata.
 - Un conflitto di interessi è una situazione in cui l'interesse del gestore può contrastare con quello degli investitori.
 - Si individua, si gestisce con regole scritte e separazione, e si informa quando non si può evitare.
 - Zone tipiche: ripartizione delle operazioni, commissioni di performance, valutazioni, operazioni personali, regali.

@@ -68,12 +68,6 @@ Il risultato è giusto, ma il database deve calcolare `extract` su **ogni riga**
   "WHERE data >= '2025-04-01' AND data < '2025-05-01' ORDER BY id;",
 ]} caption="Stesso risultato: ordini 4, 5, 6 e 7. Ma ora l'indice sulla data lavora." />
 
-<Compare
-  caption="Lo stesso risultato, due strade per arrivarci."
-  left={{ title: "Funzione sulla colonna", points: ["extract(month from data) = 4", "Calcolo su ogni riga", "L'indice sulla data non si usa"] }}
-  right={{ title: "Intervallo di date", points: ["data >= aprile e data < maggio", "Colonna da sola nel confronto", "L'indice va dritto alle righe"] }}
-/>
-
 <Callout kind="regola">
 Lascia la colonna **da sola** nel confronto, e sposta il calcolo dall'altra parte. Colonna a sinistra, calcoli a destra.
 </Callout>
@@ -148,7 +142,7 @@ Torniamo alla casella di ricerca del sito. Il programma costruisce la query inco
 
 <Log lines={[
   "SELECT * FROM clienti WHERE nome = '' OR '1'='1'",
-]} caption="La condizione è sempre vera: la query restituisce tutte e sei le righe di clienti." />
+]} caption="La condizione è sempre vera: la query restituisce tutta la tabella clienti (sei righe, nel nostro negozio) e non un cliente solo." />
 
 Chi scrive quel testo ha trasformato un dato in **codice**. È la **SQL injection**, vista nel modulo C6 di cybersecurity: tra i difetti più comuni delle applicazioni. Si previene con le **query parametrizzate**: il testo dell'utente viaggia separato dalla query e non viene mai eseguito.
 
@@ -216,6 +210,7 @@ Cinque domande su prestazioni e sicurezza. Servono tutte e cinque giuste. Hai 3 
 
 <Scene title="Rapporto finale">
 <Recap xp={30}>
+- Caso chiuso: il report di aprile diventa veloce con un intervallo di date al posto di extract, e la casella di ricerca si difende con query parametrizzate e permessi minimi.
 - Query lente: non applicare funzioni alla colonna filtrata, tieni aggiornate le statistiche, usa partizioni solo su tabelle enormi e un pool di connessioni.
 - Sicurezza: permessi minimi, un ruolo per applicazione, query parametrizzate contro la SQL injection.
 - Cifra in transito (TLS), a riposo (disco e backup) e, per i dati più delicati, nelle colonne; le password si salvano come hash.
@@ -230,5 +225,5 @@ Cinque domande su prestazioni e sicurezza. Servono tutte e cinque giuste. Hai 3 
   ]}
 />
 
-<Say who="sensei">Caso chiuso, e ramo completato. Hai in mano gli strumenti di chi gestisce un database vero. Usali con rispetto per i dati di chi ti ha dato fiducia.</Say>
+<Say who="sensei">Ramo completato. Hai in mano gli strumenti di chi gestisce un database vero. Usali con rispetto per i dati di chi ti ha dato fiducia.</Say>
 </Scene>

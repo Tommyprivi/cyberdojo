@@ -159,12 +159,6 @@ Quando mescoli AND e OR, l'**AND si calcola per primo**. `A OR B AND C` signific
   "profumatore",
 ]} caption="Con le parentesi: (saponi o profumi) e prezzo sopra 10." />
 
-<Compare
-  caption="Stesse condizioni, parentesi diverse, risultati diversi."
-  left={{ title: "Senza parentesi", points: ["saponi OR (profumi AND prezzo > 10)", "AND si calcola per primo", "Risultato: 3 prodotti"] }}
-  right={{ title: "Con parentesi", points: ["(saponi OR profumi) AND prezzo > 10", "Prima si risolve la parentesi", "Risultato: 1 prodotto"] }}
-/>
-
 <Say who="sensei">Stesse condizioni, parentesi diverse, risultati diversi. In un report, questa differenza sono soldi.</Say>
 </Scene>
 
@@ -305,6 +299,7 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 - SELECT sceglie le colonne, FROM la tabella, WHERE tiene solo le righe che rispettano la condizione.
 - AND vuole tutte le condizioni vere, OR ne basta una, NOT capovolge; l'AND si calcola prima dell'OR.
 - NULL significa «non so»: si controlla con IS NULL, mai con =.
+- Caso chiuso: la domanda di Marta diventa una query con tre condizioni in AND e dà due candele da mettere in vetrina, vaniglia e mirra.
 </Recap>
 
 <Flashcards

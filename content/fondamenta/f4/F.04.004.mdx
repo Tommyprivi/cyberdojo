@@ -54,7 +54,7 @@ Devi preparare un rapporto per il capo. Parti dal solito `accessi.log`, ma il ca
 
 Due attrezzi fanno al caso tuo: **`sed`** modifica il testo, **`awk`** lavora per colonne. Qui ne vediamo solo gli usi di base: sono due linguaggi interi, ma per ora ti bastano tre o quattro mosse.
 
-<Say who="sensei">Impara poche mosse e falle bene. sed e awk sono potentissimi, ma l'80 per cento del lavoro si fa con quattro frasi.</Say>
+<Say who="sensei">Impara poche mosse e falle bene. sed e awk sono potentissimi, ma la maggior parte del lavoro si fa con poche frasi.</Say>
 </Scene>
 
 {/* screen */}
@@ -190,6 +190,7 @@ Cinque domande su sed e awk: cosa stampa, quale comando estrae la colonna. Ne se
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: `sed 's/FALLITO/NEGATO/'` sostituisce la parola e `awk '{print $1, $5}'` estrae ora e utente, senza toccare l'originale.
 - `sed 's/vecchio/nuovo/g'` sostituisce testo (senza g solo la prima occorrenza per riga); `-i` modifica il file davvero.
 - `sed -n '2p'` stampa una riga, `sed '/testo/d'` toglie le righe che contengono il testo.
 - `awk '{print $2}'` stampa colonne; con una condizione e `END` conta e somma.

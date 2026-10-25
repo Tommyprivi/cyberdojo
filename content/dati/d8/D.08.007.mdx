@@ -57,14 +57,14 @@ Un lavoro di pulizia ben fatto ha tre qualità: è **ripetibile** (rilanciando i
 {/* screen */}
 
 <Scene title="La checklist">
-Ecco l'ordine che abbiamo costruito nel modulo. Usalo ogni volta:
+Ecco l'ordine da usare ogni volta. Non è quello delle lezioni: i duplicati si cercano dopo aver sistemato tipi e testo.
 
 1. **Salva l'originale** e non toccarlo mai: lavori su una copia.
 2. **Guarda**: righe, colonne, `dtypes`, qualche riga di esempio.
 3. **Valori mancanti**: conta con `isna().sum()` e decidi.
-4. **Duplicati**: scegli la chiave e controlla anche i conflitti.
-5. **Formati e tipi**: date, numeri, unità di misura.
-6. **Testo**: spazi, maiuscole, varianti.
+4. **Formati e tipi**: date, numeri, unità di misura.
+5. **Testo**: spazi, maiuscole, varianti.
+6. **Duplicati**: scegli la chiave e controlla anche i conflitti.
 7. **Outlier**: impossibili, sospetti, vere eccezioni.
 8. **Unioni**: chiave, orfani, cardinalità.
 9. **Controlli automatici** sul risultato.
@@ -216,6 +216,7 @@ Cinque domande su checklist, registro, controlli e confronto. Servono tutte e ci
 - Mai toccare l'originale: tutta la pulizia sta in codice ripetibile e produce un file nuovo.
 - Ogni trasformazione scrive nel registro quante righe ha toccato; `assert` fa da controllo automatico.
 - Confronta sempre prima e dopo (righe, buchi, tipi): un cambiamento grande è un segnale, non una vittoria.
+- Caso chiuso: se il capo chiede perché le età non coincidono, il registro risponde (un doppione tolto, un'età di −5 messa a NaN) e l'originale è ancora lì.
 </Recap>
 
 <Flashcards

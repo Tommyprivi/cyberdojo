@@ -37,7 +37,7 @@ commands: []
 <Scene title="Una foto, una canzone, un testo">
 Sul disco del tuo computer ci sono una foto, una canzone e un messaggio. Sembrano tre cose diversissime.
 
-Eppure, per il computer, **sono la stessa cosa**: lunghe file di **0 e 1**.
+Eppure, per il computer, **sono la stessa cosa**: lunghe sequenze di **0 e 1**.
 
 <Callout kind="attenzione">
 La domanda del caso: **come fa una macchina a ricordare una foto usando solo due simboli?**
@@ -84,6 +84,8 @@ Il byte che abbiamo visto, **01000001**, può significare cose diverse a seconda
 - il **numero 65**
 - la **lettera A**, se il programma lo tratta come testo
 - una parte dei colori di un pixel, in una foto
+
+Ecco la risposta al caso: una foto è fatta di milioni di puntini (pixel), e ogni colore è un numero, cioè bit. Tanti byte messi in fila bastano per una foto, una canzone o un messaggio.
 
 I bit non hanno un significato scritto sopra. Il significato lo decide **chi li legge**.
 
@@ -134,6 +136,7 @@ Cinque domande su bit e byte. Servono **cinque giuste**. Hai 3 tentativi, e a og
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: foto, canzone e testo sono tutti byte in fila; cambia solo come il programma li legge.
 - Un bit è 0 o 1: l'informazione più piccola, come un interruttore.
 - Otto bit formano un byte, che ha 256 valori possibili.
 - I bit non hanno un significato proprio: dipende da come il programma li interpreta.

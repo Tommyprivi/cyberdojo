@@ -53,6 +53,8 @@ Una **feature** è una colonna che il modello usa per imparare. **Scalare** vuol
 
 Esempio min-max sull'età con minimo 20 e massimo 60: l'età 30 diventa (30 − 20) / 40 = **0,25**. L'età 40 diventa **0,5**.
 
+Il caso di Nora: con il min-max il reddito (da 1000 a 3000) e l'età (da 20 a 60) stanno entrambi tra 0 e 1. Ora 1000 euro di differenza (0,5) e 20 anni di differenza (0,5) pesano uguale.
+
 Vuoi sentirlo spiegare da un'altra voce? Normalizzazione e standardizzazione a confronto, in inglese (puoi attivare i sottotitoli):
 
 <Video />
@@ -113,12 +115,6 @@ La **perdita di dati** (data leakage) è quando il modello vede, durante l'addes
 
 Giusto: calcoli minimo e massimo **solo sul train**, poi li applichi al test. Esempio: nel train le età vanno da 20 a 40. Una persona del test ha 60 anni: il suo valore min-max è (60 − 20) / (40 − 20) = **2**. Sì, può uscire da 0-1: è normale.
 
-<Compare
-  caption="Dove si calcolano minimo e massimo fa la differenza."
-  left={{ title: "Perdita di dati", points: ["Minimo e massimo su tutto il dataset", "Poi la divisione in train e test", "Il test ha già influenzato la preparazione"] }}
-  right={{ title: "Procedura corretta", points: ["Prima la divisione in train e test", "Minimo e massimo solo sul train", "Poi si applicano al test"] }}
-/>
-
 <Log lines={[
   "from sklearn.compose import ColumnTransformer",
   "from sklearn.pipeline import Pipeline",
@@ -156,6 +152,7 @@ Scalatura, one-hot, variabili nuove e perdita di dati. Cinque domande, senza err
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: dopo la scalatura il reddito non domina più le distanze di Nora, e la scalatura si impara solo dal train.
 - Scalare (min-max o standardizzazione) porta colonne diverse su scale paragonabili.
 - Le categorie si codificano con il one-hot, non con numeri che inventano un ordine; le variabili nuove si creano dalle vecchie.
 - Scaler e codifiche si imparano solo dal train: altrimenti c'è perdita di dati.

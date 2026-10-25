@@ -78,12 +78,6 @@ A scadenza il grano vale **220**. Chi è long ha l'obbligo di comprare a 200 una
   ]}
 />
 
-<Compare
-  caption="Grano a 220 a scadenza: quello che guadagna uno lo perde l'altro."
-  left={{ title: "Chi è short", points: ["Deve vendere a 200 ciò che vale 220", "Perde 200 euro"] }}
-  right={{ title: "Chi è long", points: ["Compra a 200 ciò che vale 220", "Guadagna 200 euro"] }}
-/>
-
 Un'altra voce, in italiano, spiega che cosa sono i derivati in generale:
 
 <Video />
@@ -101,16 +95,6 @@ Numeri fittizi: valore del contratto 10 × 200 = **2.000 euro**; margine inizial
 <Callout kind="attenzione">
 Se il grano scende a 170 euro, il long perde (170 - 200) × 10 = **300 euro**. Il margine era 200: la perdita è **superiore al capitale versato**. Il broker chiede di versare altro denaro (**richiamo di margine**), oppure chiude la posizione.
 </Callout>
-
-<Flow
-  caption="Come un future con margine può far perdere più del capitale versato."
-  steps={[
-    { icon: "lock", title: "Margine", text: "Si versano 200 euro" },
-    { icon: "chart", title: "Prezzo a 170", text: "Il grano scende da 200" },
-    { icon: "warning", title: "Perdita 300", text: "Più del margine versato" },
-    { icon: "bell", title: "Richiamo", text: "Il broker chiede altro denaro" },
-  ]}
-/>
 
 <Say who="sensei">La leva ingrandisce tutto, anche gli errori. Il margine non è la tua perdita massima: è solo la tua caparra.</Say>
 </Scene>
@@ -165,6 +149,7 @@ Domande su futures, margine, long e short. Numeri fittizi, senza commissioni.
 - Il future è un obbligo standardizzato di comprare (long) o vendere (short) un sottostante a prezzo e data fissati.
 - Guadagno del long: (prezzo finale - prezzo del contratto) × quantità; lo short ha l'opposto. La somma tra le parti è zero.
 - Il margine è una garanzia, non la perdita massima: con la leva si può perdere più del capitale versato.
+- Caso chiuso: con un future long Elio blocca oggi il grano a circa 200 euro la tonnellata. Chi sta dall'altra parte (short) perde se il prezzo sale e guadagna se scende, e col margine può perdere più di quanto ha versato.
 </Recap>
 
 <Flashcards

@@ -57,12 +57,6 @@ Aldo ha il 50%, Bruno il 36%. Ma Bruno ha tirato **più di 40 volte** quanto Ald
 
 Con 250 tiri, un canestro in più sposta la percentuale di molto poco. Per questo la percentuale di Bruno è molto più **affidabile**.
 
-<Compare
-  caption="Con pochi tiri la percentuale balla; con molti si stabilizza."
-  left={{ title: "Aldo: 6 tiri", points: ["3 canestri: 50%", "Uno o due canestri in più o in meno: 33% o 67%", "Rumore, non segnale"] }}
-  right={{ title: "Bruno: 250 tiri", points: ["90 canestri: 36%", "Un canestro sposta la percentuale pochissimo", "Una stima molto più affidabile"] }}
-/>
-
 Un docente universitario spiega come la matematica ha cambiato la scelta dei giocatori nel baseball (è in inglese, ma il filo è lo stesso: usare i numeri per decidere):
 
 <Video />
@@ -75,7 +69,7 @@ Un docente universitario spiega come la matematica ha cambiato la scelta dei gio
 <Scene title="Rumore contro segnale">
 Il **segnale** è ciò che dura e dipende dalla bravura. Il **rumore** è la fortuna, che cambia da una partita all'altra.
 
-I punti di Carlo nelle ultime 5 partite: 8, 22, 10, 18, 12. La media è 70 / 5 = **14**. Ma la partita da 22 è nel suo normale: tra 8 e 22 la variazione è naturale.
+I punti di Carlo nelle ultime 5 partite: 8, 22, 10, 18, 12. La media è 70 / 5 = **14**. Una partita da 22 non fa di lui un fenomeno: per Carlo, tra 8 e 22 la variazione è naturale.
 
 <Callout kind="regola">
 Una striscia di buoni risultati non è un miglioramento finché non si ripete con abbastanza partite. Spesso il giorno dopo i numeri **tornano verso la media**: è la regressione verso la media.
@@ -126,7 +120,7 @@ Nessun numero riassume tutto: contano ruolo, avversari, compagni e allenatore. U
   question="Aldo ha segnato 3 tiri da tre su 6 (50%), Bruno 90 su 250 (36%). Chi è più probabile che sia davvero il miglior tiratore?"
   options={["Non si può dire: 6 tiri sono troppo pochi per fidarsi del 50%", "Aldo, perché ha la percentuale più alta", "Bruno, perché ha segnato più canestri in totale", "Sono per forza uguali"]}
   answer={0}
-  explain="Con 6 tiri la percentuale oscilla moltissimo: è rumore, non segnale. Bruno ha più dati, ma non si può nemmeno dire con certezza che sia migliore: serve più campione per Aldo. Chi sceglie Aldo si fida dei piccoli numeri."
+  explain="Con 6 tiri la percentuale oscilla moltissimo: è rumore, non segnale. Il 36% di Bruno poggia su 250 tiri ed è molto più affidabile, ma avere più canestri in totale non vuol dire essere più bravo. Chi sceglie Aldo si fida dei piccoli numeri."
 />
 
 <Say who="sensei">La percentuale più alta non vince da sola. Vince quella che hai visto abbastanza a lungo.</Say>
@@ -138,9 +132,9 @@ Nessun numero riassume tutto: contano ruolo, avversari, compagni e allenatore. U
     "Domanda: Aldo va in quintetto perché è il cecchino?",
     "Dati: Aldo 3 su 6 (50%); Bruno 90 su 250 (36%).",
     "Il campione di Aldo è piccolissimo: 50% può essere fortuna.",
-    "Prudenza: dargli più minuti da tiratore per qualche partita e raccogliere altri tiri, senza cambiare tutto subito.",
-    "Se dopo 100 tiri è ancora sopra il 40%, il segnale diventa credibile.",
-    "Decisione: provarlo in panchina con ruolo da tiratore, rivedere i numeri dopo un campione più grande.",
+    "Prudenza: non cambiare il quintetto per 6 tiri; farlo tirare di più in partite a basso rischio e raccogliere altri tiri.",
+    "Se dopo altri 100 tiri è ancora alto il segnale diventa più credibile, ma ne servono molti per esserne certi.",
+    "Decisione: Aldo resta in panchina con il ruolo di tiratore; i numeri si rivedono con un campione più grande.",
   ]}
 />
 
@@ -161,6 +155,7 @@ Cinque casi su eFG%, campioni piccoli, rumore e metriche di valore. Hai 3 tentat
 
 <Scene title="Rapporto finale">
 <Recap xp={30}>
+- Caso chiuso: il 3 su 6 di Aldo è troppo poco per dire che sia un cecchino. Resta in panchina da tiratore, e i numeri si rivedono con più tiri.
 - Poche osservazioni, tanto rumore: una percentuale su 6 tiri non è un segnale.
 - eFG% = (canestri + 0,5 × canestri da tre) / tiri: mette sullo stesso metro stili diversi.
 - Le metriche di valore del giocatore dipendono anche da compagni e contesto: sono indizi.
@@ -175,5 +170,5 @@ Cinque casi su eFG%, campioni piccoli, rumore e metriche di valore. Hai 3 tentat
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: la logistica, dove un ritardo si paga in scorte e in camion.</Say>
+<Say who="sensei">Prossima lezione: la logistica, dove un ritardo si paga in scorte e in camion.</Say>
 </Scene>

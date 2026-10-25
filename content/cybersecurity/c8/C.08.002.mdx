@@ -84,10 +84,6 @@ Le VM comunicano attraverso una rete virtuale. Per un laboratorio la scelta gius
   right={{ title: "Rete solo-host", points: ["Le VM vedono solo se stesse e il tuo computer", "Né Internet né rete di casa"] }}
 />
 
-<Callout kind="attenzione">
-Altre modalità di rete (come quella «a ponte») mettono la VM sulla rete reale. Per la macchina fragile sono la scelta sbagliata.
-</Callout>
-
 <Say who="sensei">Un laboratorio senza isolamento è una porta aperta con un cartello «interno». Il cartello non ferma nessuno.</Say>
 </Scene>
 
@@ -148,7 +144,7 @@ Anche i servizi «di prova» pubblicati su Internet vanno usati solo se i propri
     "Non la sposto: una macchina volutamente fragile non va mai sulla rete reale; cerco il problema restando in solo-host",
     "La sposto un attimo, tanto in casa non c'è nessuno di pericoloso",
     "La sposto e la lascio così, è più comodo",
-    "La sposto ma spengo il Wi-Fi dei vicini",
+    "La sposto e metto una password sulla macchina fragile, così è protetta",
   ]}
   answer={0}
   explain="Una macchina fragile sulla rete di casa è raggiungibile da ogni dispositivo collegato. L'isolamento si rompe in un attimo, e l'attimo può diventare giorni. Si risolve il problema senza toccare la rete."
@@ -185,5 +181,5 @@ Cinque domande su laboratorio, rete solo-host e snapshot. A ogni tentativo le do
   ]}
 />
 
-<Say who="sensei">Il laboratorio è pronto. Prossima lezione: la ricognizione, cioè capire che cosa è già pubblico prima di toccare qualunque cosa.</Say>
+<Say who="sensei">Caso chiuso: due VM tue, rete solo-host, snapshot pulito, e la macchina fragile non esce più di casa. Il laboratorio è pronto. Prossima lezione: la ricognizione, cioè capire che cosa è già pubblico prima di toccare qualunque cosa.</Say>
 </Scene>

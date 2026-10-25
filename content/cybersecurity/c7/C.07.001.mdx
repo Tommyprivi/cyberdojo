@@ -36,7 +36,7 @@ commands: []
 ---
 
 <Scene title="Che cosa è successo ieri notte?">
-Lunedì mattina il titolare di una piccola azienda, la «Rossi Forniture», scopre che un file dei clienti è stato modificato. Nessuno ricorda di averlo toccato.
+Mercoledì mattina il titolare di una piccola azienda, la «Rossi Forniture», scopre che un file dei clienti è stato modificato. Nessuno ricorda di averlo toccato.
 
 Come si scopre chi, quando e da dove? Non c'era nessuno a guardare. Ma il sistema **scrive tutto quello che succede** in dei registri: i **log**.
 
@@ -56,7 +56,7 @@ La domanda del caso: **che storia raccontano queste tre righe?**
 <Scene title="Che cosa registra un log">
 Un **log** è un diario tenuto dal computer. Ogni riga è un **evento**: qualcosa che è successo, con l'orario.
 
-Di solito dice quattro cose: **quando**, **su quale macchina**, **quale programma** ha scritto la riga, **che cosa** è successo.
+Una riga di auth.log di solito contiene sei informazioni: **quando**, **su quale macchina**, **quale programma** l'ha scritta, **che cosa** è successo, **chi** c'entra e **da dove** arriva la richiesta.
 
 Sui sistemi Linux i log stanno spesso in `/var/log`. Due esempi:
 
@@ -84,12 +84,14 @@ Riprendiamo la prima riga del caso, un pezzo alla volta.
     "Oct 14 02:41:07 → quando: 14 ottobre, alle due e quaranta di notte.",
     "srv1 → su quale macchina è successo: il server chiamato srv1.",
     "sshd[2210] → quale programma scrive: sshd, il servizio degli accessi remoti. Il numero tra parentesi è il suo codice di processo.",
-    "Failed password for utente_bianchi from 203.0.113.40 → password sbagliata per l'utente «utente_bianchi», proveniente da quell'indirizzo.",
+    "Failed password → che cosa: una password sbagliata.",
+    "utente_bianchi → chi c'entra: l'utente per cui è stata provata.",
+    "203.0.113.40 → da dove: l'indirizzo da cui è arrivato il tentativo.",
   ]}
 />
 
 <Callout kind="regola">
-Si legge sempre così: **quando, dove, chi lo dice, che cosa, chi c'entra, da dove**.
+Si legge sempre così, nello stesso ordine: **quando, dove, chi lo dice, che cosa, chi c'entra, da dove**.
 </Callout>
 
 <Say who="sensei">Sei campi, sempre gli stessi. Quando li hai trovati, la riga smette di essere un codice.</Say>
@@ -204,5 +206,5 @@ Cinque righe di log da leggere, una per volta. Servono **cinque risposte giuste*
   ]}
 />
 
-<Say who="sensei">I log sono la materia prima. Ma una macchina ne scrive milioni: la prossima lezione vediamo come metterli insieme e farli parlare tra loro.</Say>
+<Say who="sensei">Caso chiuso: due password sbagliate, poi quella giusta, di notte e a ritmo di macchina. Non è una prova, è il punto da cui partire. I log sono la materia prima. Ma una macchina ne scrive milioni: la prossima lezione vediamo come metterli insieme e farli parlare tra loro.</Say>
 </Scene>

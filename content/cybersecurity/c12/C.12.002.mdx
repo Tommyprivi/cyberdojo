@@ -44,7 +44,6 @@ La «Verdi Assicurazioni» installa un nuovo server per il portale dei clienti. 
   "LISTEN 0.0.0.0:80     nginx     (portale)",
   "LISTEN 0.0.0.0:631    cupsd     (stampa)",
   "LISTEN 0.0.0.0:111    rpcbind   (servizi di rete vecchio stile)",
-  "LISTEN 0.0.0.0:25     postfix   (posta in uscita)",
 ]} caption="Il server fa il portale web. Gli altri servizi chi li ha chiesti?" />
 
 La domanda del caso: **quali di queste porte servono davvero, e che cosa si fa delle altre?**
@@ -176,5 +175,5 @@ Scenari di hardening: scegli la misura più sensata e più prudente.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: AppArmor e SELinux. Anche se un servizio viene compromesso, gli impediamo di fare danni oltre il suo compito.</Say>
+<Say who="sensei">Caso chiuso: del server di Verdi restano solo il portale e l'accesso degli amministratori; stampa e rpcbind sono spenti e annotati. Prossima lezione: AppArmor e SELinux. Anche se un servizio viene compromesso, gli impediamo di fare danni oltre il suo compito.</Say>
 </Scene>

@@ -52,15 +52,6 @@ Si dividono i dati in tre parti:
 - **validazione**: si confrontano modelli e impostazioni;
 - **test**: l'esame finale, da guardare **una sola volta**.
 
-<Flow
-  caption="Tre insiemi, tre compiti diversi."
-  steps={[
-    { icon: "book", title: "Train", text: "Il modello impara" },
-    { icon: "search", title: "Validazione", text: "Si confrontano modelli e impostazioni" },
-    { icon: "check", title: "Test", text: "Esame finale, una volta sola" },
-  ]}
-/>
-
 Quando un modello va bene sul train e male sui dati nuovi, si dice **overfitting** (sovradattamento). Qui il divario è 0,99 − 0,72 = **0,27**: enorme.
 
 Vuoi sentirlo spiegare da un'altra voce? La validazione incrociata in pochi minuti, in inglese (con sottotitoli):
@@ -120,7 +111,7 @@ Solo ora, **una volta**, si guarda il test. Se provassi 20 modelli sul test e te
 <Scene title="Tocca a te">
 <Quiz
   question="Hai provato 15 modelli e il migliore ha 0,91 sul test set. Perché non puoi fidarti ciecamente di quel 0,91?"
-  options={["Hai usato il test per scegliere, quindi il voto è gonfiato dalla scelta", "Il test set è sempre troppo piccolo", "0,91 è un voto troppo alto per essere vero", "La validazione incrociata lo vieta per legge"]}
+  options={["Hai usato il test per scegliere, quindi il voto è gonfiato dalla scelta", "Il test set è sempre troppo piccolo", "0,91 è un voto troppo alto per essere vero", "Un voto sul test non conta mai: conta solo quello sul train"]}
   answer={0}
   explain="Scegliere il migliore tra tanti sul test fa entrare il test nel processo di scelta: il voto è ottimista. Si sceglie con la validazione incrociata sul train e si guarda il test una volta sola."
 />
@@ -142,6 +133,7 @@ Overfitting, k-fold, iperparametri e uso del test. Cinque domande, senza errori.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il 99% di Ivo era un voto sul ripasso. Quello vero è il 72%, e il divario di 0,27 è overfitting.
 - Il voto sul train inganna: conta il voto su dati mai visti. Un grande divario è overfitting.
 - La validazione incrociata a k parti fa k addestramenti e ne media i voti, solo sul train.
 - Gli iperparametri si scelgono con la validazione; il test set si guarda una volta sola, alla fine.

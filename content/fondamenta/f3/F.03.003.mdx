@@ -160,6 +160,7 @@ Cinque domande: «quale chmod serve», «cosa significa questo numero», «cosa 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: lo script non partiva perché mancava la x; `chmod u+x controllo.sh` la aggiunge solo al proprietario.
 - chmod cambia i permessi: simbolico (`u+x`, `go-w`) oppure ottale (r=4, w=2, x=1, sommati: 755, 644).
 - chown cambia proprietario e gruppo (`chown marta:team file`), di solito con sudo.
 - Mai 777 «per far funzionare»: dai solo i permessi necessari.

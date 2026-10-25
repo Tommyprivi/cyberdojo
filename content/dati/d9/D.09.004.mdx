@@ -73,7 +73,7 @@ Mettendo la tabella dei fatti **al centro** e le dimensioni intorno, il disegno 
   "  dim_data --- fatti_vendite --- dim_cliente",
 ]} />
 
-Le tabelle, con pochi dati fittizi.
+Le tabelle, con pochi dati fittizi. Ti mostro due dimensioni su tre: `dim_data` funziona allo stesso modo.
 
 **dim_prodotto**
 
@@ -83,17 +83,24 @@ Le tabelle, con pochi dati fittizi.
 | 2 | Latte | Alimentari |
 | 3 | Sapone | Casa |
 
+**dim_cliente**
+
+| id_cliente | nome | citta |
+|------------|--------|--------|
+| 1 | Anna | Roma |
+| 2 | Bruno | Milano |
+
 **fatti_vendite**
 
-| id_data | id_prodotto | quantita | importo |
-|---------|-------------|----------|---------|
-| 1 | 1 | 2 | 4 |
-| 1 | 2 | 1 | 2 |
-| 2 | 3 | 1 | 3 |
-| 2 | 1 | 3 | 6 |
-| 3 | 3 | 2 | 6 |
+| id_data | id_prodotto | id_cliente | quantita | importo |
+|---------|-------------|------------|----------|---------|
+| 1 | 1 | 1 | 2 | 4 |
+| 1 | 2 | 2 | 1 | 2 |
+| 2 | 3 | 1 | 1 | 3 |
+| 2 | 1 | 2 | 3 | 6 |
+| 3 | 3 | 1 | 2 | 6 |
 
-Ogni riga dei fatti ha **lo stesso livello di dettaglio**: una vendita di un prodotto in un giorno.
+Ogni riga dei fatti ha **lo stesso livello di dettaglio**: una vendita di un prodotto a un cliente in un giorno. Le colonne `id_...` sono i codici che puntano alle dimensioni.
 
 <Say who="sensei">La stella ha un vantaggio: ogni domanda è un solo JOIN, non una caccia al tesoro.</Say>
 </Scene>
@@ -174,6 +181,7 @@ Scenari sul warehouse: fatti o dimensioni, e che cosa è andato storto in un mod
 - Il data warehouse è un magazzino di dati organizzato per rispondere a domande.
 - Lo schema a stella ha una tabella dei fatti al centro (misure) e dimensioni intorno (contesto).
 - Una domanda tipica è: JOIN fatti-dimensione, SUM sui fatti, GROUP BY sulla dimensione.
+- Caso chiuso: la domanda del capo («vendite per categoria») ora è una sola query con un JOIN: Alimentari 12, Casa 9.
 </Recap>
 
 <Flashcards
@@ -181,7 +189,7 @@ Scenari sul warehouse: fatti o dimensioni, e che cosa è andato storto in un mod
     { q: "Che cosa contiene la tabella dei fatti?", a: "Gli eventi misurati: numeri come quantità e importo, e i codici delle dimensioni" },
     { q: "Che cosa contiene una dimensione?", a: "Il contesto: chi, che cosa, quando, dove" },
     { q: "Perché si chiama schema a stella?", a: "I fatti sono al centro, le dimensioni intorno" },
-    { q: "Che cosa vuol dire livello di dettaglio dei fatti?", a: "Che cosa rappresenta una riga: per esempio una vendita di un prodotto in un giorno" },
+    { q: "Che cosa vuol dire livello di dettaglio dei fatti?", a: "Che cosa rappresenta una riga: per esempio una vendita di un prodotto a un cliente in un giorno" },
   ]}
 />
 

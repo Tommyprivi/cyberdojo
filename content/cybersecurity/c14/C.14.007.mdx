@@ -79,12 +79,6 @@ Ricollega ciò che hai imparato. Ogni difesa riduce un rischio preciso.
 - **Limitare NTLM**, con audit prima e blocco poi.
 - **AppLocker o WDAC**: fanno girare solo programmi autorizzati.
 
-<Compare
-  caption="Ogni difesa risponde a un rischio preciso."
-  left={{ title: "Il rischio", points: ["Hash riutilizzati su altri PC", "Credenziali rubate dalla memoria (lsass)", "Protocolli vecchi (SMBv1, LLMNR, NetBIOS)", "Programmi non autorizzati"] }}
-  right={{ title: "La difesa", points: ["LAPS: una password locale diversa per PC", "Credential Guard: credenziali isolate", "Disattivarli quando non servono", "AppLocker o WDAC"] }}
-/>
-
 <Callout kind="trucco">
 Una scheda a due colonne vale più di cento pagine: **attacco → difesa**. Se non sai dire quale rischio riduce una modifica, forse non serve.
 </Callout>
@@ -132,11 +126,11 @@ Il metodo sicuro:
 
 <Guided
   steps={[
-    "1. Misura: attiva gli audit (per esempio sull'uso di NTLM) per capire che cosa c'è davvero.",
-    "2. Prova: applica la modifica a un piccolo gruppo di computer (una OU di prova).",
-    "3. Osserva: che cosa ha smesso di funzionare? Parla con chi usa quei sistemi.",
-    "4. Estendi: allarga a gruppi più grandi, con data e piano di ritorno indietro.",
-    "5. Verifica e ripeti: controlla le differenze rispetto alla baseline ogni tanto, perché la configurazione cambia nel tempo.",
+    "Misura: attiva gli audit (per esempio sull'uso di NTLM) per capire che cosa c'è davvero.",
+    "Prova: applica la modifica a un piccolo gruppo di computer (una OU di prova).",
+    "Osserva: che cosa ha smesso di funzionare? Parla con chi usa quei sistemi.",
+    "Estendi: allarga a gruppi più grandi, con data e piano di ritorno indietro.",
+    "Verifica e ripeti: controlla le differenze rispetto alla baseline ogni tanto, perché la configurazione cambia nel tempo.",
   ]}
 />
 
@@ -189,5 +183,5 @@ Scenari di hardening: scegli la difesa giusta e il metodo giusto di introduzione
   ]}
 />
 
-<Say who="sensei">Modulo concluso. Hai visto Windows e Active Directory come li vede chi difende. Il prossimo passo è provarli in un laboratorio tuo.</Say>
+<Say who="sensei">Caso chiuso: la direzione ha un piano a piccoli passi. Prima LAPS e le patch rapide, poi i livelli amministrativi e NTLM, sempre provando su un gruppo ristretto. Modulo concluso. Hai visto Windows e Active Directory come li vede chi difende. Il prossimo passo è provarli in un laboratorio tuo.</Say>
 </Scene>

@@ -35,7 +35,7 @@ commands: []
 ---
 
 <Scene title="La cattura della contabilità">
-Il capo del SOC ti consegna una cattura di **venti secondi**, fatta sul computer di prova del laboratorio (un computer dell'azienda, con il permesso del responsabile). Dentro c'è una visita a una pagina web interna di prova.
+Il capo del SOC ti consegna una cattura di **venti secondi**, fatta sul computer di prova del laboratorio (un computer dell'azienda, con il permesso del responsabile). Dentro c'è la visita a una pagina web di prova.
 
 Tu devi rispondere a tre domande: **che nome ha cercato? con chi ha parlato? che cosa si sono detti?**
 
@@ -175,6 +175,7 @@ Cinque domande: flusso TCP, DNS e HTTP. Cinque su cinque, 3 tentativi, domande d
 - Prima il DNS (porta 53) trasforma il nome in indirizzo; poi TCP apre la connessione con SYN, SYN-ACK, ACK.
 - HTTP viaggia in chiaro (porta 80): con «Segui flusso TCP» leggi tutto il dialogo. HTTPS (443) lo cifra.
 - Anche i silenzi contano: SYN senza risposta, RST e 404 raccontano cose diverse.
+- Caso chiuso: il computer ha cercato portale.esempio.it (DNS), ha parlato con 203.0.113.80 sulla porta 80 (TCP) e ha chiesto /listino.html, ricevendo 200 OK (HTTP).
 </Recap>
 
 <Flashcards

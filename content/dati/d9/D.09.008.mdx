@@ -125,7 +125,7 @@ Un esempio con prezzi **inventati**: 5 euro per ogni terabyte (TB) letto. Una qu
   right={{ title: "Una colonna sola", points: ["Legge circa 0,1 TB", "0,5 euro per ogni esecuzione", "720 volte al mese: 360 euro"] }}
 />
 
-Ripetuta ogni ora per un mese (720 volte), la prima costa 7200 euro, la seconda 360 euro.
+Una query ogni ora per un mese fa 720 esecuzioni: è lì che la differenza diventa una bolletta.
 
 Per risparmiare:
 
@@ -176,6 +176,7 @@ Scenari su permessi, dati personali e costi.
 - Privilegio minimo: ognuno ha solo i permessi che servono, tramite ruoli, anche per i programmi.
 - Cifratura a riposo e in transito; dati personali ridotti al minimo, con viste e codici al posto delle persone.
 - Le query si pagano in base ai dati letti: poche colonne, poche date, niente ripetizioni inutili.
+- Caso chiuso: la bolletta cinque volte più alta veniva da un SELECT * ripetuto ogni ora, e l'email al fornitore da una tabella non filtrata. Si risolvono con meno colonne, meno ripetizioni e una vista senza dati riservati.
 </Recap>
 
 <Flashcards

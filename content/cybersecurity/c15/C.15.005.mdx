@@ -68,7 +68,7 @@ Usano di norma **AES**, in modalità pensate per i dischi (per esempio **XTS**).
 />
 
 <Callout kind="regola">
-Disco cifrato = protegge **a computer spento o bloccato** dal furto fisico. Non protegge un computer **acceso e sbloccato**: lì i dati sono già accessibili a chi usa la sessione, o a un malware che gira.
+Disco cifrato = protegge soprattutto **a computer spento** dal furto fisico. Non protegge un computer **acceso e sbloccato**: lì i dati sono già accessibili a chi usa la sessione, o a un malware che gira.
 </Callout>
 
 <Say who="assistente">È come una cassaforte: solo chiusa serve. Se la lasci aperta mentre vai a prendere un caffè, non ti difende.</Say>
@@ -102,7 +102,7 @@ Il portatile è cifrato, ma i **backup**? Se la copia dei dati su un disco ester
 Regole per i backup:
 
 - **Cifrarli** sempre, prima che lascino l'azienda o finiscano nel cloud.
-- Usare una **chiave diversa** da quella del disco di origine, tenuta altrove (lezione precedente): se un attaccante entra nel sistema, non deve trovare anche la chiave del backup.
+- Usare una **chiave diversa** da quella del disco di origine, tenuta altrove (lezione sulle chiavi): se un attaccante entra nel sistema, non deve trovare anche la chiave del backup.
 - Seguire la regola **3-2-1**: tre copie, su due supporti diversi, una fuori sede. Una delle copie dovrebbe essere **non modificabile** o scollegata, per resistere ai ransomware.
 - **Provare il ripristino** a intervalli regolari. Un backup che non si riesce a riaprire non è un backup.
 
@@ -125,7 +125,7 @@ Se una chiave di backup si perde, i backup sono persi: è il lato oscuro della c
     "La cifratura del disco serve solo contro i virus",
   ]}
   answer={0}
-  explain="La cifratura del disco serve proprio contro il furto fisico del dispositivo spento o bloccato. Con un PIN di avvio la protezione è ancora migliore. Non serve invece contro un malware o contro chi usa il computer acceso e sbloccato."
+  explain="La cifratura del disco serve proprio contro il furto fisico del dispositivo spento. Con un PIN di avvio la protezione è ancora migliore. Non serve invece contro un malware o contro chi usa il computer acceso e sbloccato."
 />
 
 <Say who="sensei">Il disco cifrato risponde a una domanda precisa: che cosa vede chi ha il mio computer in mano e non ha la chiave? Quasi niente.</Say>
@@ -148,7 +148,7 @@ Se una chiave di backup si perde, i backup sono persi: è il lato oscuro della c
 La cifratura del disco è una riduzione del rischio, non una cancellazione: va documentata. In caso di perdita, aiuta a dimostrare che i dati non erano leggibili. Le prove di recupero si fanno sempre su dischi e macchine propri.
 </Callout>
 
-<Say who="sensei">Marta ha perso il portatile ma non i clienti. Cifratura attiva, chiave altrove. È questo il lavoro.</Say>
+<Say who="sensei">Caso chiuso: Marta ha perso il portatile ma non i clienti. Cifratura attiva, chiave di ripristino altrove, backup cifrati. È questo il lavoro.</Say>
 </Scene>
 
 {/* screen */}
@@ -165,7 +165,7 @@ Scenari su disco cifrato, TPM, chiavi di ripristino e backup.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
-- La cifratura del disco (BitLocker, FileVault, LUKS) protegge i dati a riposo dal furto del dispositivo spento o bloccato, non da un computer acceso e sbloccato.
+- La cifratura del disco (BitLocker, FileVault, LUKS) protegge i dati a riposo dal furto del dispositivo spento, non da un computer acceso e sbloccato.
 - La chiave sta nel TPM, con PIN per più sicurezza; la chiave di ripristino va custodita fuori dal computer protetto.
 - I backup si cifrano con una chiave separata, secondo la regola 3-2-1, con una copia non modificabile e ripristino provato.
 </Recap>

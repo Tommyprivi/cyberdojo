@@ -96,7 +96,7 @@ Dopo la regola, qualcuno modifica `/etc/passwd`. Per cercare gli eventi:
 
 <Log lines={[
   "$ sudo ausearch -k identita -i",
-  "type=SYSCALL ... success=yes exit=0 ... auid=elena uid=root comm=\"useradd\" exe=\"/usr/sbin/useradd\" key=\"identita\"",
+  "type=SYSCALL ... success=yes exit=0 ... auid=luca uid=root comm=\"useradd\" exe=\"/usr/sbin/useradd\" key=\"identita\"",
   "type=PATH ... name=\"/etc/passwd\" ... nametype=NORMAL",
 ]} caption="-i traduce i numeri in nomi; auid è l'utente che ha fatto il login originale." />
 
@@ -196,5 +196,5 @@ Scenari su auditd: regole, chiavi, lettura degli eventi, scelte sensate su cosa 
   ]}
 />
 
-<Say who="sensei">Prossima lezione: utenti e sudo avanzati. Chi può fare cosa, e come lo si dimostra.</Say>
+<Say who="sensei">Caso chiuso: con la regola sull'identità, ogni nuovo utente anomalo lascia un nome e un orario. Prossima lezione: utenti e sudo avanzati. Chi può fare cosa, e come lo si dimostra.</Say>
 </Scene>

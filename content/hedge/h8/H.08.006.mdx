@@ -76,6 +76,7 @@ Due sigle aiutano a giudicare un piano:
     "Backup ogni 4 ore: nel caso peggiore perdi fino a 4 ore di dati. RPO reale = 4 ore.",
     "Se l'obiettivo è 4 ore, va bene. Con backup ogni 6 ore, no: nel caso peggiore perdi 6 ore, più delle 4 accettate.",
     "RTO obiettivo 2 ore. Una prova di ripristino ne impiega 5: il piano non rispetta l'obiettivo.",
+    "Il caso di Aurora: ultimo backup alle 21 di ieri, guasto alle 9 di oggi. Sono 12 ore di ordini e dati persi: troppo per un fondo che lavora a mercati aperti.",
     "Conclusione: i numeri reali si misurano con una prova, non si indovinano.",
   ]}
 />
@@ -162,6 +163,7 @@ Domande su continuità, RPO, RTO e punti deboli. Numeri fittizi.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: ad Aurora serviva già pronto un piano provato, con backup frequenti (RPO), tempi di ripristino noti (RTO) e un modo per avvisare gli investitori.
 - La continuità operativa riguarda tutta l'attività; il disaster recovery rimette in funzione i sistemi informatici.
 - RPO misura quanti dati si possono perdere, RTO quanto tempo si può restare fermi: si verificano con prove vere.
 - Punti deboli tipici: persone chiave, fornitori critici, attacchi informatici, backup nello stesso posto, piani mai provati.

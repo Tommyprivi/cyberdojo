@@ -151,8 +151,8 @@ Torniamo al risultato di Officine Bianchi e ragioniamo su ogni riga.
   steps={[
     "«TLS 1.1 sì, TLS 1.0 sì»: versioni ritirate. Si spengono. Si lasciano TLS 1.2 e 1.3.",
     "«Suite senza segretezza in avanti»: si tolgono le suite TLS 1.2 senza ECDHE. Il traffico di oggi non dovrà dipendere dalla chiave privata di domani.",
-    "«HSTS assente»: HSTS è un'intestazione con cui il sito dice al browser «da ora in poi parlami solo in HTTPS». Evita che qualcuno dirotti la prima richiesta verso la versione non cifrata. Si attiva con una durata lunga, dopo aver verificato che tutto il sito funzioni in HTTPS.",
-    "Il reindirizzamento da HTTP a HTTPS resta, ma da solo non basta: la prima richiesta passa ancora in chiaro, ed è questo che HSTS chiude.",
+    "«HSTS assente»: HSTS è un'intestazione con cui il sito dice al browser «da ora in poi parlami solo in HTTPS». Dopo la prima visita il browser non tenta più il collegamento non cifrato, e un dirottamento verso HTTP non funziona. Per proteggere anche la prima visita serve il **preload**, un elenco di siti già noto al browser. Si attiva con una durata lunga, dopo aver verificato che tutto il sito funzioni in HTTPS.",
+    "Il reindirizzamento da HTTP a HTTPS resta, ma da solo non basta: ogni volta la richiesta parte in chiaro e qualcuno in mezzo può dirottarla. HSTS chiude questo buco per le visite successive; la prima visita resta scoperta, a meno che il sito sia nel preload.",
     "Si riesegue il test (sul proprio portale) e si salva il risultato come riferimento. La configurazione va ricontrollata dopo ogni aggiornamento del server.",
   ]}
 />
@@ -192,5 +192,5 @@ Scenari di configurazione: versioni, suite, segretezza in avanti e HSTS.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: le chiavi stanno sotto tutto questo. Dove si tengono, chi le tocca, quando si cambiano.</Say>
+<Say who="sensei">Caso chiuso: il voto C veniva da tre cose, versioni vecchie accese, suite senza segretezza in avanti e HSTS assente. Prossima lezione: le chiavi stanno sotto tutto questo. Dove si tengono, chi le tocca, quando si cambiano.</Say>
 </Scene>

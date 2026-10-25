@@ -75,12 +75,7 @@ Un **KMS** (*Key Management Service*) è un servizio, spesso offerto da un forni
 
 Se non vuoi dare ai programmi la chiave stessa, la cifratura a busta fa così: i dati si cifrano con una **chiave dati** (DEK) generata ogni volta; la DEK viene a sua volta cifrata da una **chiave principale** (KEK) che resta nel KMS o nell'HSM.
 
-<Log lines={[
-  "dati dell'archivio",
-  "  └─ cifrati con DEK (chiave dati, una per file)",
-  "        └─ DEK cifrata con KEK (chiave principale, nel KMS/HSM)",
-  "Il file cifrato porta con sé la DEK cifrata: senza il KMS non si apre.",
-]} />
+Il file cifrato porta con sé la DEK già cifrata: senza il KMS non si apre.
 
 <Flow
   caption="Cifratura a busta: due chiavi, due livelli."
@@ -192,5 +187,5 @@ Scenari sulla vita delle chiavi: ruoli, rotazione, busta, HSM e KMS.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: una firma sul software. Come si sa che un programma è davvero di chi dice e non è stato toccato.</Say>
+<Say who="sensei">Caso chiuso: lo Studio Ferri ha la chiave principale in un KMS, permessi stretti, rotazione e registro. L'addio della collaboratrice non è più un problema. Prossima lezione: una firma sul software. Come si sa che un programma è davvero di chi dice e non è stato toccato.</Say>
 </Scene>

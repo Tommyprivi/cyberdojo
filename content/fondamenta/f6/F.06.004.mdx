@@ -82,7 +82,7 @@ Ogni /26 ha 6 bit per i dispositivi: blocchi da **64** indirizzi. Partendo da 19
 | 192.168.1.128/26 | .129 – .190 | .191 |
 | 192.168.1.192/26 | .193 – .254 | .255 |
 
-Ogni sottorete ha **62 host utilizzabili**. In tutto gli host utilizzabili sono 4 × 62 = 248, contro i 254 della rete unica: sei indirizzi in più di servizio. È il prezzo della separazione.
+Ogni sottorete ha **62 host utilizzabili**. In tutto sono 4 × 62 = 248, contro i 254 della rete unica: sei indirizzi in meno, perché ogni sottorete ha il suo indirizzo di rete e il suo broadcast. È il prezzo della separazione.
 
 <Say who="sensei">Guarda come i blocchi si chiudono: l'ultimo broadcast è .255, lo stesso della rete intera. Non manca niente e niente si sovrappone.</Say>
 </Scene>
@@ -96,7 +96,7 @@ Ricordi la postazione 192.168.1.66 della contabilità? Con la nuova divisione, i
   steps={[
     "Le sottoreti partono da 0, 64, 128, 192.",
     "66 sta tra 64 e 127: appartiene alla sottorete 192.168.1.64/26.",
-    "Il suo vicino 192.168.1.100 è nella stessa sottorete. Il 192.168.1.10, invece, sta nella 192.168.1.0/26.",
+    "Il suo vicino 192.168.1.70 (quello della prima lezione) e il 192.168.1.100 sono nella stessa sottorete. Il 192.168.1.10, invece, sta nella 192.168.1.0/26.",
     "Conclusione: .66 e .10 non sono più vicini di casa. Per parlarsi devono passare dal router.",
   ]}
 />
@@ -152,6 +152,7 @@ Cinque domande sulle sottoreti. Servono **tutte e cinque** giuste. Hai 3 tentati
 - Subnetting: si prendono s bit dalla parte dei dispositivi e si ottengono 2^s sottoreti; il prefisso aumenta di s.
 - Per N sottoreti si cerca il più piccolo s con 2^s uguale o maggiore di N (5 sottoreti: 3 bit).
 - Le sottoreti partono da multipli della loro dimensione e permettono di separare i reparti e limitare i danni.
+- Caso chiuso: la rete piatta 192.168.1.0/24 diventa quattro /26, una per reparto; il traffico tra reparti passa dal router.
 </Recap>
 
 <Flashcards

@@ -156,6 +156,7 @@ Cinque domande su ps, top, PID, kill e background. Servono **cinque giuste su ci
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: a rallentare il server era uno script nostro, il PID 3071, che usava il 97% della CPU; trovato con ps e fermato con kill.
 - Un processo è un programma in esecuzione, con un PID e un proprietario. `ps` lo fotografa, `top` lo mostra in diretta.
 - `kill PID` chiede di chiudersi (SIGTERM); `kill -9 PID` lo forza (SIGKILL): solo come ultima scelta.
 - Con `&` un comando parte in background; Ctrl+C interrompe quello in primo piano.

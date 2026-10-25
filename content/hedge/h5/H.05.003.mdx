@@ -54,15 +54,6 @@ Il **payoff** è il risultato a scadenza. Convenzioni di questa lezione: opzioni
 - **Put comprata**: (K - S se K supera S, altrimenti 0), meno il premio.
 - Le posizioni **vendute** sono lo specchio: quello che guadagna il compratore lo perde il venditore.
 
-<Flow
-  caption="Come si calcola il risultato netto di un'opzione comprata."
-  steps={[
-    { icon: "clock", title: "A scadenza", text: "Si guarda il prezzo S" },
-    { icon: "gear", title: "Valore", text: "S - K (call) o K - S (put), mai sotto zero" },
-    { icon: "coin", title: "Meno il premio", text: "Si sottrae ciò che si è pagato" },
-  ]}
-/>
-
 <Callout kind="regola">
 **Break-even** (pareggio): call = K + premio; put = K - premio. Per la call, sotto quel prezzo il compratore è in perdita; per la put, sopra.
 </Callout>
@@ -132,12 +123,6 @@ Chi **vende** ha il grafico capovolto:
 Il venditore di opzioni ha un guadagno **limitato** (il premio) e una perdita **molto grande o illimitata**. È una scommessa sbilanciata: è facile guadagnare poco spesso e perdere tanto una volta.
 </Callout>
 
-<Compare
-  caption="Call venduta e call comprata a confronto."
-  left={{ title: "Call venduta", points: ["Guadagno massimo: il premio", "Perdita teoricamente illimitata"] }}
-  right={{ title: "Call comprata", points: ["Perdita massima: il premio", "Guadagno teoricamente illimitato"] }}
-/>
-
 <Say who="sensei">Un premio piccolo incassato oggi può nascondere una perdita enorme domani. Guarda sempre il lato peggiore.</Say>
 </Scene>
 
@@ -176,6 +161,7 @@ Calcoli di payoff e pareggio su call e put, comprate e vendute. Numeri fittizi.
 - Payoff netto di una call comprata: max(S - K, 0) meno premio; di una put comprata: max(K - S, 0) meno premio. Pareggio: K + premio (call), K - premio (put).
 - Chi compra rischia al massimo il premio; la call ha guadagno potenziale illimitato, la put ha guadagno massimo K meno premio.
 - Chi vende guadagna al massimo il premio e può perdere molto di più: la call venduta senza copertura ha perdita illimitata.
+- Caso chiuso: con Alfa a 108 la call di Marta (strike 100, premio 5) vale 8 a scadenza ma il risultato netto è +3. Aveva ragione Dario: il guadagno si conta dopo il premio.
 </Recap>
 
 <Flashcards

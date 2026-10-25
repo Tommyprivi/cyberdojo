@@ -39,7 +39,7 @@ commands: []
 Marta apre un secondo negozio e crea una tabella `vendite` con tutto dentro:
 
 <Log lines={[
-  "ordine | cliente      | città  | prodotto         | categoria | prezzo",
+  "ordine | cliente      | citta  | prodotto         | categoria | prezzo",
   "1      | Giulia Ferri | Torino | candela vaniglia | candele   | 12.50",
   "3      | Giulia Ferri | Turin  | candela cedro    | candele   | 18.00",
   "7      | Giulia Ferri | Torino | sapone argilla   | saponi    | 7.50",
@@ -210,6 +210,7 @@ Cinque domande su tipi, vincoli, normalizzazione e indici. Servono tutte e cinqu
 - Ogni colonna ha un tipo: NUMERIC per i soldi, testo per telefoni e CAP, DATE per le date.
 - I vincoli (PRIMARY KEY, FOREIGN KEY, NOT NULL, UNIQUE, CHECK) proteggono i dati da errori.
 - Normalizzare vuol dire scrivere ogni informazione una volta sola; un indice accelera le ricerche ma rallenta le scritture.
+- Caso chiuso: la tabella piatta di Marta, con «Turin» e «Torino», diventa tre tabelle collegate dove la città di Giulia è scritta in un solo posto.
 </Recap>
 
 <Flashcards

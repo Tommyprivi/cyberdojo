@@ -87,7 +87,7 @@ Quando in una libreria viene scoperta una falla, viene pubblicata e prende un id
 />
 
 <Callout kind="curiosita">
-Spesso le falle più sfruttate non sono nuovissime: sono falle note da mesi, in sistemi che nessuno ha aggiornato. Aggiornare è noioso, ma è una difesa vera.
+Spesso le falle più sfruttate non sono nuovissime: sono falle note da mesi, in sistemi che nessuno ha aggiornato. Aggiornare è noioso, ma è una difesa vera. Nella Top 10 del 2025 questo tema si allarga e si chiama «guasti nella catena di fornitura del software».
 </Callout>
 
 <Say who="sensei">Non puoi correggere un difetto che non sai di avere. Prima serve sapere cosa usi.</Say>
@@ -102,16 +102,6 @@ Una squadra attenta fa quattro cose:
 - usa **strumenti di scansione delle dipendenze** che avvisano quando una versione ha una falla nota;
 - **aggiorna con regolarità**, provando prima su un ambiente di test;
 - ha un **modello di configurazione sicura** ripetibile, uguale in test e in produzione, e lo rivede con una lista di controllo.
-
-<Layers
-  caption="Le quattro abitudini di una squadra attenta."
-  items={[
-    { icon: "file", title: "Inventario", text: "Librerie e versioni usate" },
-    { icon: "search", title: "Scansione", text: "Avvisa delle falle note" },
-    { icon: "clock", title: "Aggiornamenti", text: "Regolari, provati su un ambiente di test" },
-    { icon: "gear", title: "Configurazione sicura", text: "Ripetibile e rivista con una lista" },
-  ]}
-/>
 
 <Callout kind="attenzione">
 Aggiornare in fretta senza provare può rompere il sito. Aggiornare mai lascia la porta aperta. La via giusta è un ritmo regolare, con un ambiente di prova.
@@ -166,5 +156,5 @@ Cinque scenari su configurazioni e componenti. Hai 3 tentativi, e a ogni tentati
   ]}
 />
 
-<Say who="sensei">Ultima lezione del modulo: mettiamo insieme le difese. Validare, codificare, intestazioni, WAF e aggiornamenti.</Say>
+<Say who="sensei">Caso chiuso: il pannello admin/admin era una finestra dimenticata, non un difetto del codice. Ultima lezione del modulo: mettiamo insieme le difese. Validare, codificare, intestazioni, WAF e aggiornamenti.</Say>
 </Scene>

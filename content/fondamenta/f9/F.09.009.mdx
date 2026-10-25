@@ -45,7 +45,7 @@ Poi, nella seconda parte, automatizzi due compiti noiosi del SOC: rinominare fil
 La domanda del caso: **come si scrive un programma che ascolta su una porta, e come si fa lavorare lo script senza di te?**
 
 <Callout kind="regola">
-In questa lezione ti colleghi **solo** a `127.0.0.1`, l'indirizzo del tuo stesso computer. Provare le porte di computer altrui senza un permesso scritto è una scansione non autorizzata, e in Italia l'accesso abusivo a un sistema informatico è un reato (art. 615-ter del codice penale). Si prova solo ciò che è tuo.
+In questa lezione ti colleghi **solo** a `127.0.0.1`, l'indirizzo del tuo stesso computer. Provare le porte di computer altrui senza un permesso scritto è una scansione non autorizzata, e in Italia può configurare il reato di accesso abusivo a un sistema informatico (art. 615-ter del codice penale). Si prova solo ciò che è tuo.
 </Callout>
 
 <Say who="sensei">Il laboratorio è il tuo computer. Il bersaglio sei tu. Mai nient'altro, nemmeno per curiosità.</Say>
@@ -264,6 +264,7 @@ Cinque domande: cosa stampa il codice, quale chiamata fa il server o il client, 
 - Il server fa `bind`, `listen`, `accept`; il client fa `connect`; il testo si converte in byte con `encode()` e si riconverte con `decode()`.
 - Si prova solo su `127.0.0.1`: le scansioni di computer altrui senza permesso scritto non si fanno.
 - Gli script si automatizzano con `pathlib` e funzioni piccole, e si pianificano con cron usando percorsi assoluti.
+- Caso chiuso: hai visto con i tuoi occhi che una «porta aperta» è un programma in ascolto, e i compiti noiosi di Marta ora girano da soli.
 </Recap>
 
 <Flashcards

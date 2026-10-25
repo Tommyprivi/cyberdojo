@@ -284,7 +284,7 @@ Se modifichi un pezzo filtrato (per esempio aggiungi una colonna) e pandas segna
   explain="Con loc l'estremo finale è incluso: 1, 2 e 3 sono tre righe. Chi risponde 2 ha applicato la regola di iloc e delle liste, in cui l'estremo è escluso."
 />
 
-<Say who="assistente">Ripeti la regola a voce: loc include, iloc esclude. Pochi sbagli di indice sopravvivono.</Say>
+Ripeti la regola a voce: `loc` include, `iloc` esclude. Pochi sbagli di indice sopravvivono.
 
 Cinque domande su colonne, `loc`, `iloc` e filtri: cosa restituisce un codice, quale riga è sbagliata. Ne servono **quattro giuste**. Hai 3 tentativi, e a ogni tentativo le domande cambiano.
 
@@ -300,6 +300,7 @@ Cinque domande su colonne, `loc`, `iloc` e filtri: cosa restituisce un codice, q
 - `df["col"]` è una Series, `df[["a", "b"]]` un DataFrame. `loc` usa le etichette (estremo incluso), `iloc` le posizioni (estremo escluso).
 - Filtrare: `df[df["importo"] > 25]`; condizioni combinate con `&`, `|`, `~`, ciascuna tra parentesi; `isin` per più valori.
 - Dopo un filtro l'indice non si rinumera. `query("citta == 'Roma' and importo > @soglia")` è la forma scritta come frase.
+- Caso chiuso: gli ordini di Roma sopra i 25 euro sono 3 (Anna 40, Carla 40, Anna 30).
 </Recap>
 
 <Flashcards

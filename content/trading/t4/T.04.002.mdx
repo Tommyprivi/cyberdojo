@@ -101,8 +101,8 @@ volatilità annua = volatilità giornaliera × √252
 
 <Log lines={[
   "√252 = 15,87 (circa)",
-  "Gamma: 2% × 15,87 = 31,75% annuo",
-  "Beta:  0,5% × 15,87 = 7,94% annuo",
+  "Gamma: 2% × 15,87 = 31,7% annuo (circa)",
+  "Beta:  0,5% × 15,87 = 7,9% annuo (circa)",
 ]} />
 
 <Flow
@@ -110,7 +110,7 @@ volatilità annua = volatilità giornaliera × √252
   steps={[
     { icon: "chart", title: "Giornaliera", text: "2% al giorno" },
     { icon: "gear", title: "× √252", text: "Circa 15,87" },
-    { icon: "bolt", title: "Annua", text: "Circa 31,75%" },
+    { icon: "bolt", title: "Annua", text: "Circa 31,7%" },
   ]}
 />
 
@@ -156,6 +156,7 @@ Calcoli di deviazione standard, annualizzazione e confronti. Hai 3 tentativi, e 
 - La volatilità è la deviazione standard dei rendimenti: dice quanto balla il titolo, non dove va.
 - Campione: scarti, quadrati, divisione per n − 1, radice quadrata. Giornaliera 2% su rendimenti +3, −1, +3, −1, +1.
 - Annua = giornaliera × √252 (circa 15,87), convenzione di 252 giorni di borsa.
+- Caso chiuso: Beta e Gamma hanno la stessa media (+1%) ma non lo stesso rischio: Gamma balla il 2% al giorno (circa 32% all'anno), Beta lo 0,5% (circa 8%). Non sono uguali.
 </Recap>
 
 <Flashcards

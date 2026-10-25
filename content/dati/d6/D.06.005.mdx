@@ -80,18 +80,14 @@ Torniamo ai 400 studenti. Per una **percentuale**, l'errore standard è la radic
 
 Margine al 95%: 1,96 per 0,025 = 0,049, cioè circa **4,9 punti**. Intervallo: da circa **45,1% a 54,9%**.
 
+È la formula semplice: vale bene quando il campione è una piccola parte della popolazione. Qui 400 su mille è una quota grande, e la correzione per popolazione finita (che non vediamo) stringerebbe l'intervallo a circa 3,8 punti. Per semplicità la ignoriamo.
+
 <Guided
   steps={[
     "Se gli studenti intervistati fossero 1600 (quattro volte tanti), l'errore standard sarebbe 0,0125.",
     "Margine al 95%: 1,96 per 0,0125 = 0,0245, circa 2,5 punti.",
     "Quadruplicando il campione, il margine si è dimezzato: da circa 4,9 a circa 2,5.",
   ]}
-/>
-
-<Compare
-  caption="Stesso sondaggio, campioni di dimensione diversa (p = 0,5, confidenza 95%)."
-  left={{ title: "400 intervistati", points: ["Errore standard: 2,5 punti", "Margine: circa 4,9 punti", "Intervallo: da 45,1% a 54,9%"] }}
-  right={{ title: "1600 intervistati", points: ["Errore standard: 1,25 punti", "Margine: circa 2,5 punti", "Intervallo: circa da 47,5% a 52,5%"] }}
 />
 
 <Callout kind="curiosita">
@@ -154,6 +150,7 @@ Cinque domande su intervalli, errore standard e margini. Hai 3 tentativi. Usa 1,
 - Intervallo di confidenza al 95% per una media: media del campione ± 1,96 per l'errore standard (σ diviso la radice di n).
 - Dice che il metodo, ripetuto, contiene il valore vero nel 95% dei campioni. Non dice che il 95% dei dati è dentro, né corregge un campione non rappresentativo.
 - Più dati, intervallo più stretto (quadruplicare n dimezza il margine). Più confidenza, intervallo più largo.
+- Caso chiuso: il «50%» del giornalino va scritto come «tra circa il 45% e il 55%», e vale solo se i 400 sono stati scelti a caso.
 </Recap>
 
 <Flashcards

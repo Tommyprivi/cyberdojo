@@ -127,15 +127,6 @@ Manca l'ultimo ottetto. Poi rimettiamo insieme l'indirizzo.
 Le reti private sono tre e conviene saperle a memoria: **10**.x.x.x, **172.16–31**.x.x e **192.168**.x.x. Se una di queste compare come sorgente in un registro interno, il traffico è partito da dentro.
 </Callout>
 
-<Layers
-  caption="Le tre reti private: se compaiono come sorgente, il traffico parte da dentro."
-  items={[
-    { icon: "laptop", title: "10.x.x.x", text: "Reti aziendali grandi" },
-    { icon: "server", title: "172.16-31.x.x", text: "Reti private intermedie" },
-    { icon: "wifi", title: "192.168.x.x", text: "Reti domestiche e piccoli uffici" },
-  ]}
-/>
-
 <Say who="sensei">L'intruso non bussava da fuori. Era già in casa. Ricordalo, la prossima volta che guardi un log.</Say>
 </Scene>
 
@@ -155,6 +146,7 @@ Hai 3 tentativi, e a ogni tentativo gli ottetti cambiano.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: i quattro ottetti del pacchetto delle 03:12 danno 192.168.1.66, un indirizzo privato: la connessione parte da dentro l'azienda.
 - Ogni bit è una moneta: 1 c'è, 0 non c'è. Monete da 128 a 1, raddoppiando da destra.
 - Il valore di un ottetto è il totale delle monete, da 0 a 255.
 - 192.168, 10 e 172.16–31 sono reti private: come sorgente in un log interno, il traffico parte da dentro.

@@ -108,10 +108,10 @@ Le impostazioni sono in un file di testo. Una versione molto semplificata:
 {/* screen */}
 
 <Scene title="I rischi: bloccarsi da soli">
-Un blocco automatico colpisce chi rispetta la regola, **non chi ha ragione**.
+Un blocco automatico colpisce chiunque corrisponda alla regola, **anche chi ha ragione**.
 
 <Callout kind="attenzione">
-Immagina: il tecnico sbaglia la password quattro volte, la quinta sbaglia ancora. fail2ban lo blocca per un'ora, dal suo stesso ufficio, nel mezzo di un'emergenza. Il rischio di **chiudersi fuori** è reale.
+Immagina: il tecnico sbaglia la password cinque volte di fila. fail2ban lo blocca per un'ora, dal suo stesso ufficio, nel mezzo di un'emergenza. Il rischio di **chiudersi fuori** è reale.
 </Callout>
 
 Altri rischi:
@@ -177,7 +177,7 @@ Cinque scenari su blocchi automatici. Servono **cinque risposte giuste**. Hai 3 
 <Recap xp={25}>
 - fail2ban legge i log, riconosce errori ripetuti e blocca l'indirizzo per un tempo stabilito.
 - Il rischio principale è bloccare chi non deve: indirizzi condivisi, utenti distratti, se stessi.
-- Whitelist, blocchi brevi e un secondo accesso di emergenza rendono il blocco automatico sicuro.
+- Whitelist, blocchi brevi e un secondo accesso di emergenza rendono il blocco automatico più sicuro.
 </Recap>
 
 <Flashcards
@@ -189,5 +189,5 @@ Cinque scenari su blocchi automatici. Servono **cinque risposte giuste**. Hai 3 
   ]}
 />
 
-<Say who="sensei">Abbiamo visto la difesa. Ultima lezione del modulo: conoscere chi attacca e come ragiona.</Say>
+<Say who="sensei">Caso chiuso: sì, il server può difendersi da solo, con filtro, soglia e blocco temporaneo, purché resti un'uscita di emergenza. Abbiamo visto la difesa. Ultima lezione del modulo: conoscere chi attacca e come ragiona.</Say>
 </Scene>

@@ -48,15 +48,6 @@ Questa è l'idea del **boosting**: tanti modelli piccoli, uno dopo l'altro, cias
 <Scene title="Un passo alla volta, con i numeri">
 Spese vere: **10, 20, 30** euro.
 
-<Flow
-  caption="Con tasso 0,5, ogni passo toglie metà dell'errore rimasto."
-  steps={[
-    { icon: "chart", title: "Passo 0", text: "20, 20, 20: la media" },
-    { icon: "gear", title: "Passo 1", text: "15, 20, 25" },
-    { icon: "check", title: "Passo 2", text: "17,5, 20, 22,5" },
-  ]}
-/>
-
 **Passo 0.** Previsione uguale per tutti: la media, 20. Gli **errori** (valore vero meno previsione) sono −10, 0, +10.
 
 **Passo 1.** Un piccolo albero impara a prevedere gli errori. Per cautela non applichiamo tutta la correzione, ma solo la metà: il **tasso di apprendimento** vale 0,5. Nuova previsione: 20 + 0,5 × (−10, 0, +10) = **15, 20, 25**.
@@ -79,7 +70,7 @@ Calcoliamo l'errore medio assoluto (la media degli errori senza segno):
 - Passo 1: (5 + 0 + 5) / 3 = **3,33**.
 - Passo 2: (2,5 + 0 + 2,5) / 3 = **1,67**.
 
-Ogni passo dimezza l'errore: con tasso 0,5 è proprio così. Con un tasso più basso (per esempio 0,1) si va più piano ma con più sicurezza: servono più alberi.
+Ogni passo dimezza l'errore: con tasso 0,5 è così, perché in questo esempio ogni albero prevede gli errori alla perfezione. Nei dati veri non succede, ma la direzione è la stessa. Con un tasso più basso (per esempio 0,1) si va più piano ma con più sicurezza: servono più alberi.
 
 <Callout kind="regola">
 Il boosting ha due leve: il **numero di alberi** e il **tasso di apprendimento**. Tasso basso + molti alberi spesso funziona meglio, ma costa più tempo.
@@ -138,6 +129,7 @@ Correzioni passo dopo passo, tasso di apprendimento, rischi del boosting. Cinque
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la media (errore medio 6,67) diventa, dopo due correzioni, una previsione con errore medio 1,67. È il lavoro dei due colleghi di Nora.
 - Il boosting costruisce tanti piccoli alberi in fila: ognuno corregge gli errori dei precedenti.
 - Il tasso di apprendimento dice quanta parte della correzione si applica; con 0,5 l'errore dimezza a ogni passo.
 - Sui dati in tabella spesso è molto preciso, ma può andare in overfitting e inseguire il rumore: serve fermarsi in tempo.

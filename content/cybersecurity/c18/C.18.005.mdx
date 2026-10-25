@@ -142,7 +142,7 @@ Ripercorriamo il caso, con il ragionamento di un analista.
 />
 
 <Callout kind="regola">
-Si condividono gli **indicatori**, non il programma dannoso. Mandare in giro il malware stesso, anche a fin di bene, può configurare la diffusione di programmi dannosi (art. 615-quinquies c.p.). Si analizza solo in un laboratorio isolato e di proprietà.
+Si condividono gli **indicatori**, non il programma dannoso. Mandare in giro il malware stesso, anche a fin di bene, può configurare la diffusione di programmi dannosi (art. 635-quater.1 c.p.). Si analizza solo in un laboratorio isolato e di proprietà.
 </Callout>
 
 <Say who="sensei">Condividi l'impronta, non l'arma. È la differenza tra un avviso e un pericolo.</Say>
@@ -162,6 +162,7 @@ Cinque domande su indicatori, piramide del dolore e regole. Hai 3 tentativi.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la Biblioteca Ferrari ha condiviso con la Moretti gli indicatori (dominio, cartella, hash), non il file: in un'ora due computer infetti sono stati trovati.
 - Un indicatore di compromissione (IoC) è un segno osservabile di un malware: hash, dominio, indirizzo, nome di file, chiave di configurazione.
 - Hash e indirizzi sono facili da cambiare; strumenti e comportamenti sono difficili: la piramide del dolore.
 - Una regola YARA descrive un file con elementi e condizione: troppo generica dà falsi positivi, troppo precisa lascia passare le varianti.

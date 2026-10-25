@@ -181,6 +181,7 @@ Cinque domande su cron: cosa significa questa riga, quale riga serve, perché no
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: sì, la riga `30 2 * * * /home/studente/backup.sh` fa partire il backup da solo ogni notte alle 02:30.
 - cron esegue comandi a orari fissi; `crontab -e` modifica l'elenco, `crontab -l` lo mostra.
 - Cinque campi: minuto, ora, giorno del mese, mese, giorno della settimana; `*` = qualsiasi, `*/15` = ogni 15, `1-5` = intervallo.
 - Errori tipici: PATH minimo (usa percorsi assoluti), `%` da scrivere `\%`, output non salvato (aggiungi `>> file 2>&1`).

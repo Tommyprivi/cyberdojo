@@ -55,16 +55,6 @@ Le **greche** (si indicano con lettere greche) misurano **quanto cambia il premi
 - **Theta**: quanto premio si perde ogni giorno che passa.
 - **Vega**: quanto cambia il premio se la volatilità attesa sale di 1 punto percentuale.
 
-<Layers
-  caption="Le quattro greche e che cosa guardano."
-  items={[
-    { icon: "chart", title: "Delta", text: "Il prezzo dell'azione" },
-    { icon: "gear", title: "Gamma", text: "Come cambia il delta" },
-    { icon: "clock", title: "Theta", text: "Il passare del tempo" },
-    { icon: "bolt", title: "Vega", text: "La volatilità attesa" },
-  ]}
-/>
-
 <Callout kind="regola">
 Le greche sono **sensibilità**, non previsioni. Dicono «se succede X, di quanto si muove il premio», non «succederà X».
 </Callout>
@@ -84,16 +74,7 @@ Esempio fittizio: call con delta **0,50**. Se Alfa sale di **2 euro**, il premio
     "Delta 0,50: il premio si muove circa la metà dell'azione.",
     "Opzione su 100 azioni con delta 0,40: si comporta come circa 40 azioni.",
     "Una put ha delta negativo: guadagna quando l'azione scende.",
-    "Call molto «dentro» ai soldi: delta vicino a 1. Molto «fuori»: vicino a 0.",
-  ]}
-/>
-
-<Flow
-  caption="Il delta in azione, con i numeri dell'esempio."
-  steps={[
-    { icon: "chart", title: "Azione", text: "Sale di 2 euro" },
-    { icon: "gear", title: "Delta 0,50", text: "0,50 x 2 = 1" },
-    { icon: "coin", title: "Premio", text: "Sale di circa 1 euro" },
+    "Call molto «dentro ai soldi» (già in guadagno se scadesse oggi): delta vicino a 1. Molto «fuori dai soldi»: vicino a 0.",
   ]}
 />
 
@@ -157,6 +138,7 @@ Domande su delta, gamma, theta e vega con piccoli calcoli. Numeri fittizi, valor
 - Delta: variazione del premio per 1 euro di movimento dell'azione; call tra 0 e 1, put tra -1 e 0. Gamma: variazione del delta.
 - Theta: perdita di valore per il passare del tempo (la paga chi compra, la incassa chi vende). Vega: effetto della volatilità attesa.
 - Le greche sono sensibilità approssimate e cambiano continuamente: non sono previsioni.
+- Caso chiuso: il premio di Marta è sceso da 5 a 4,50 con l'azione ferma per il theta (circa -0,05 al giorno per 10 giorni). Per chi compra opzioni il tempo costa.
 </Recap>
 
 <Flashcards

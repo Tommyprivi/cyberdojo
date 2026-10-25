@@ -40,7 +40,7 @@ Bianchi Logistica (azienda fittizia) ha avuto il ransomware con furto di dati: t
 
 <Log lines={[
   "mer 09:00  il Responsabile IR conferma: dati di clienti usciti (nomi, indirizzi)",
-  "mer 09:30  inizio conteggio: 'consapevolezza della violazione' annotata nel diario",
+  "mer 09:05  nel diario si annota l'ora di conoscenza della violazione: 09:00",
   "mer 10:00  avvisati: direzione, legale, assicurazione (numero verde della polizza)",
   "mer 15:00  contattata la Polizia Postale per la denuncia",
   "gio 12:00  bozza di notifica al Garante, in attesa di conferma sul rischio",
@@ -62,7 +62,7 @@ Sono due cose **diverse**:
 Non si sostituiscono: la denuncia **non** vale come notifica al Garante, e viceversa.
 
 <Callout kind="attenzione">
-Tutto questo è un **quadro di sintesi** (ottobre 2026). Le norme cambiano e dipendono dal settore e dalla dimensione dell'organizzazione: nei casi reali si controllano le **fonti ufficiali** (per esempio i siti del Garante e dell'Agenzia per la cybersicurezza nazionale) e si coinvolge il legale.
+Tutto questo è un **quadro di sintesi**, aggiornato a ottobre 2026 e da ricontrollare. Le norme cambiano e dipendono dal settore e dalla dimensione dell'organizzazione: nei casi reali si controllano le **fonti ufficiali** (per esempio i siti del Garante e dell'Agenzia per la cybersicurezza nazionale) e si coinvolge il legale.
 </Callout>
 
 <Say who="assistente">Una regola semplice: «violazione» si notifica a chi controlla, «reato» si denuncia a chi indaga.</Say>
@@ -71,9 +71,9 @@ Tutto questo è un **quadro di sintesi** (ottobre 2026). Le norme cambiano e dip
 {/* screen */}
 
 <Scene title="GDPR e NIS2 in sintesi">
-**GDPR** (regolamento europeo sulla protezione dei dati). Se c'è una **violazione di dati personali** che comporta un **rischio per le persone**, il titolare del trattamento notifica al Garante **entro 72 ore** da quando ne è venuto **a conoscenza**. Se il rischio è **alto**, informa anche gli **interessati** (le persone coinvolte), in modo chiaro. Non tutte le violazioni vanno notificate: se è improbabile un rischio, basta **registrarla** in un registro interno e **motivare** la scelta.
+**GDPR** (regolamento europeo sulla protezione dei dati). Se c'è una **violazione di dati personali** che comporta un **rischio per le persone**, il titolare del trattamento notifica al Garante, ove possibile, **entro 72 ore** da quando ne è venuto **a conoscenza**. Se il rischio è **alto**, informa anche gli **interessati** (le persone coinvolte), in modo chiaro. Non tutte le violazioni vanno notificate: se è improbabile un rischio, basta **registrarla** in un registro interno e **motivare** la scelta.
 
-**NIS2** (direttiva europea sulla sicurezza di reti e sistemi, recepita in Italia). Si applica a certi soggetti, detti «essenziali» e «importanti», di settori come energia, trasporti, sanità, acqua, servizi digitali e altri. In sintesi, per un **incidente significativo** è previsto un **preallarme entro 24 ore**, una **notifica entro 72 ore** e una **relazione finale entro un mese**, all'autorità nazionale competente (in Italia l'Agenzia per la cybersicurezza nazionale, tramite il suo CSIRT). Quali soggetti rientrano e come si comunica va **verificato sulle fonti ufficiali**.
+**NIS2** (direttiva europea sulla sicurezza di reti e sistemi, recepita in Italia). Si applica a certi soggetti, detti «essenziali» e «importanti», di settori come energia, trasporti, sanità, acqua, servizi digitali e altri. In sintesi, per un **incidente significativo** è previsto un **preallarme entro 24 ore**, una **notifica entro 72 ore** e una **relazione finale entro un mese** (il punto esatto da cui parte il mese va letto nel testo ufficiale), all'autorità nazionale competente (in Italia l'Agenzia per la cybersicurezza nazionale, tramite il suo CSIRT). Quali soggetti rientrano e come si comunica va **verificato sulle fonti ufficiali**.
 
 <Flow
   caption="I tempi della NIS2 in sintesi, per un incidente significativo."
@@ -164,6 +164,7 @@ Scenari su notifiche, denunce, GDPR, NIS2 in sintesi e assicurazioni.
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: per il furto di dati a Bianchi Logistica si annota l'ora di conoscenza, si avvisano assicurazione e legale, si valuta la notifica al Garante e, a parte, la denuncia.
 - Notificare una violazione (obbligo di legge) e denunciare un reato (forze dell'ordine) sono due cose diverse; una non sostituisce l'altra.
 - GDPR: notifica al Garante entro 72 ore dalla conoscenza se c'è rischio per le persone, anche per fasi. NIS2, in sintesi: preallarme 24 ore, notifica 72 ore, relazione finale un mese, per i soggetti che rientrano. Si controllano le fonti ufficiali.
 - La polizza cyber si attiva subito, con i fornitori che indica, e si leggono prima i requisiti minimi.

@@ -90,7 +90,7 @@ Per evitare che si cancellino, si **eleva al quadrato** ogni scarto. Un quadrato
 La **varianza** è la «media» dei quadrati degli scarti. La **deviazione standard** è la sua radice quadrata: torna nell'unità di misura dei dati (minuti, non minuti al quadrato).
 
 <Callout kind="regola">
-In tutto il corso la varianza si calcola **sul campione**: la somma dei quadrati degli scarti si divide per **n − 1**, non per n. È la scelta di Fogli Google (VAR.S e STDEV.S, nelle versioni in inglese) e di LibreOffice. Dividere per n dà la varianza della popolazione: un numero un po' più piccolo.
+In tutto il corso la varianza si calcola **sul campione**: la somma dei quadrati degli scarti si divide per **n − 1**, non per n. È la scelta di pandas e dei fogli di calcolo (in Excel e Fogli Google le funzioni VAR.S e STDEV.S, in italiano VAR.CAMP e DEV.ST.CAMP). Dividere per n dà la varianza della popolazione: un numero un po' più piccolo.
 </Callout>
 
 Con pochi dati, dividere per n − 1 corregge una piccola sottostima. Per ora ti basta ricordare la regola.
@@ -162,6 +162,7 @@ Cinque domande su campo di variazione, varianza e deviazione standard. Ricorda: 
 - Il campo di variazione è massimo meno minimo: semplice ma fragile.
 - Varianza: somma dei quadrati degli scarti divisa per n − 1. Deviazione standard: la sua radice, nell'unità dei dati.
 - Stessa media non vuol dire stessi dati: la deviazione standard dice quanto sono sparsi.
+- Caso chiuso: le due linee hanno entrambe 6 minuti di ritardo medio, ma la Linea 2 ha deviazione standard 3 contro 1,6: è molto meno prevedibile.
 </Recap>
 
 <Flashcards

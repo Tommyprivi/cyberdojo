@@ -131,6 +131,8 @@ Altre informazioni utili: la data in cui il file è stato costruito, le funzioni
 <Scene title="Dove la statica si ferma">
 L'analisi statica è veloce e sicura, ma ha limiti. Chi scrive malware sa che qualcuno lo guarderà e può **offuscare** il contenuto (renderlo illeggibile) o **comprimerlo** in una forma che nasconde le stringhe. In quel caso il file «statico» sembra quasi vuoto.
 
+Immagina che il file della chiavetta sia fatto così:
+
 <Guided
   steps={[
     "Guardo il file: nome e tipo non coincidono. Primo sospetto.",
@@ -141,7 +143,7 @@ L'analisi statica è veloce e sicura, ma ha limiti. Chi scrive malware sa che qu
 />
 
 <Callout kind="regola">
-Si analizza solo in un laboratorio isolato e di proprietà. Studiare un campione è lecito per difendersi, ma diffondere programmi diretti a danneggiare un sistema è reato (art. 615-quinquies c.p.): un campione non si manda a colleghi, amici o forum, e non si carica su servizi pubblici se contiene dati dell'azienda.
+Si analizza solo in un laboratorio isolato e di proprietà. Studiare un campione è lecito per difendersi, ma diffondere programmi diretti a danneggiare un sistema è reato (art. 635-quater.1 c.p.): un campione non si manda a colleghi, amici o forum, e non si carica su servizi pubblici se contiene dati dell'azienda.
 </Callout>
 
 <Say who="sensei">Un'analisi che si ferma al primo limite è un'analisi incompleta. Quando la statica tace, cambia strumento.</Say>
@@ -161,6 +163,7 @@ Cinque domande su cosa fa l'analisi statica, cosa dicono hash e stringhe e quali
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il file della chiavetta è un programma travestito da documento, con hash ignoto e indizi sospetti. Non si apre; si passa alla sandbox.
 - L'analisi statica esamina il file senza eseguirlo: hash, tipo vero del file, stringhe leggibili, funzioni dichiarate.
 - Un hash sconosciuto non dimostra che il file sia sicuro; le stringhe danno indizi, non prove.
 - Offuscamento e compressione limitano la statica: allora si passa all'analisi dinamica, sempre in laboratorio isolato.

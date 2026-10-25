@@ -110,7 +110,7 @@ Alcune regole sudo, a prima vista innocue, sono porte aperte:
 <Log lines={[
   "davide ALL=(ALL) NOPASSWD: ALL                  # tutto, senza password",
   "davide ALL=(root) /usr/bin/vim /etc/nginx/*     # editor: da vim si apre una shell",
-  "davide ALL=(root) /usr/bin/systemctl *          # tutto systemctl, compreso spegnere i controlli",
+  "davide ALL=(root) /usr/bin/systemctl *          # tutto systemctl: qualsiasi servizio, non solo nginx",
   "davide ALL=(root) /bin/cp * /etc/nginx/         # il carattere jolly consente di copiare altro",
 ]} caption="Quattro regole da evitare." />
 
@@ -178,5 +178,5 @@ Scenari su gruppi, account di servizio, `usermod`, `visudo` e regole sudo.
   ]}
 />
 
-<Say who="sensei">Prossima lezione: il firewall del server, con ufw e nftables.</Say>
+<Say who="sensei">Caso chiuso: Davide riavvia nginx e basta, e se il suo account venisse rubato il danno resterebbe piccolo. Prossima lezione: il firewall del server, con ufw e nftables.</Say>
 </Scene>

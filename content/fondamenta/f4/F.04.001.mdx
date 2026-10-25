@@ -199,6 +199,7 @@ Cinque domande su redirezioni e pipe: cosa stampa, cosa contiene il file, quale 
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: `cat accessi.log | wc -l` dice che il registro ha 8 righe, e con `>` o `>>` un pezzo di output si salva in un file da mandare al capo.
 - Ogni comando ha tre canali: stdin (0), stdout (1), stderr (2). Si possono deviare.
 - `>` scrive in un file (e sovrascrive), `>>` aggiunge in fondo, `<` legge da un file, `2>` devia gli errori.
 - `|` collega l'output di un comando all'ingresso del successivo: così si compongono comandi semplici.

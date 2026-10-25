@@ -58,7 +58,8 @@ Il vantaggio di una strategia può ridursi, e si parla di **decadimento** (in in
 - **Cambio di regime**: il mercato cambia (tassi, crisi, regole, tecnologia) e la relazione di prima non vale più.
 - **Overfitting**: la regola era tagliata sul passato, con troppi parametri scelti guardando i dati: era fortuna, non vantaggio (modulo T5).
 - **Costi e capacità**: più capitale si usa, più si muove il prezzo; con costi alti il margine sparisce (modulo T8).
-- **Le strategie viste in questo modulo**: trend, mean reversion, momentum, coppie, breakout, volatilità. Ognuna ha periodi buoni e periodi cattivi, e nessuna vince sempre.
+
+Anche le strategie viste in questo modulo (trend, mean reversion, momentum, coppie, breakout, volatilità) hanno periodi buoni e periodi cattivi: nessuna vince sempre.
 
 <Layers
   caption="Quattro cause che fanno perdere il vantaggio a una strategia."
@@ -162,6 +163,7 @@ Cause del decadimento, calcoli sui margini e regole per accorgersene. Servono **
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: il backtest di Irene era troppo bello per durare: affollamento, overfitting e costi possono aver consumato il vantaggio, e lo si scopre solo confrontando con i risultati reali.
 - Una strategia può perdere il vantaggio per affollamento, cambio di regime, overfitting, costi e capacità.
 - Un margine piccolo è fragile: netto = vantaggio lordo - costi, e basta poco per renderlo zero o negativo.
 - Si decide in anticipo come accorgersene: confronto con il backtest, limite di perdita scritto, diario, niente ritocchi a ogni perdita.

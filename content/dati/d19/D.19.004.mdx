@@ -88,11 +88,11 @@ Qui il testo è scritto dentro il codice, con `I()`. Per un file vero si scrive 
 Se usi `read_csv()` su un file con punto e virgola, ottieni **una sola colonna** con tutto dentro. È il segnale: hai sbagliato funzione.
 </Callout>
 
-Vuoi vedere un esempio completo di pulizia fatto da un'altra persona? Il video usa readr, dplyr e stringr su dati veri; è in inglese, con sottotitoli:
+Vuoi vedere un esempio completo di pulizia fatto da un'altra persona? Il video mostra una pulizia di dati in R; è in inglese, con sottotitoli:
 
 <Video />
 
-<Say who="assistente">Excel per i file con le virgole decimali usa il punto e virgola. È la causa numero uno dei file letti male.</Say>
+<Say who="assistente">Un Excel impostato in italiano, esportando in CSV, di solito separa con il punto e virgola e usa la virgola decimale. È una delle cause più comuni di file letti male.</Say>
 </Scene>
 
 {/* screen */}
@@ -278,6 +278,7 @@ Cinque domande su lettura, valori mancanti, stringhe e join. Ne servono **quattr
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: la tabella di Giulia diventa pulita (spazi e maiuscole sistemati) con tre righe: Carla è esclusa perché senza importo, e va segnalato a Giulia. La regione arriva con un join, e Torino resta con NA.
 - `read_csv()` per virgole e punto decimale, `read_csv2()` per punto e virgola e virgola decimale: la funzione sbagliata dà una colonna sola o numeri letti come testo.
 - `NA` vuol dire «non lo so»: `na.rm = TRUE`, `drop_na()` e `replace_na()` sono scelte da motivare.
 - `left_join` tiene la sinistra, `inner_join` solo gli abbinamenti, `anti_join` i non abbinati: pulisci le chiavi con `str_trim` e `str_to_title` prima di unire.

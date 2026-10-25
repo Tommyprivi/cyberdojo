@@ -93,12 +93,6 @@ Fondo B (media 5%): scarti -10, +10, +10, -10. Quadrati: 100 ognuno. Media: 100.
 Stessa media, volatilità 2% contro 10%: B è molto più rischioso. Non sono equivalenti.
 </Callout>
 
-<Compare
-  caption="Stessa media del 5%, ma oscillazioni molto diverse."
-  left={{ title: "Fondo B", points: ["Scarti di 10 punti dalla media", "Volatilità 10%"] }}
-  right={{ title: "Fondo A", points: ["Scarti di 2 punti dalla media", "Volatilità 2%"] }}
-/>
-
 <Say who="sensei">La media dice dove si arriva. La volatilità dice quanto si balla per arrivarci.</Say>
 </Scene>
 
@@ -114,15 +108,6 @@ Una trappola classica: le percentuali non si sommano.
     "Anno 2: +25%. Si ha 80 x 1,25 = 100 euro.",
     "Risultato: zero, non +5%. Dopo una perdita serve un guadagno più grande per recuperare.",
     "Caso estremo: -50% porta a 50; per tornare a 100 serve +100%.",
-  ]}
-/>
-
-<Flow
-  caption="Meno 20% e più 25% non fanno più 5%."
-  steps={[
-    { icon: "coin", title: "Partenza", text: "100 euro fittizi" },
-    { icon: "warning", title: "Anno 1", text: "-20%: restano 80 euro" },
-    { icon: "check", title: "Anno 2", text: "+25%: si torna a 100 euro" },
   ]}
 />
 
@@ -164,6 +149,7 @@ Calcoli di rendimento atteso e di volatilità, con numeri fittizi e puliti.
 - Il rendimento atteso di un portafoglio è la media pesata dei rendimenti attesi: una stima, non una promessa.
 - La volatilità (deviazione standard) misura quanto i rendimenti oscillano intorno alla media.
 - Di solito più rendimento atteso richiede più rischio; ma la volatilità non è l'unico rischio, e si può perdere denaro.
+- Caso chiuso: i fondi A e B hanno la stessa media del 5% ma non sono equivalenti: la volatilità è 2% per A e 10% per B.
 </Recap>
 
 <Flashcards

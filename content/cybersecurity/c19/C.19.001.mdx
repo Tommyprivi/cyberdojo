@@ -141,7 +141,7 @@ Prova con il database di esempio: questa interrogazione conta i fallimenti per i
 
 <SqlPlayground db="log" query="SELECT ip, COUNT(*) AS tentativi_falliti, MIN(data_ora) AS primo, MAX(data_ora) AS ultimo FROM accessi WHERE esito = 'fallito' GROUP BY ip HAVING COUNT(*) >= 5 ORDER BY tentativi_falliti DESC;" height={420} />
 
-Guarda quanti indirizzi superano la soglia di 5: sono quelli che la regola avrebbe segnalato. Cambia il numero e osserva come cambia l'elenco.
+Guarda quanti indirizzi superano la soglia di 5: sono i candidati che la regola avrebbe segnalato. Attenzione: questa interrogazione conta i fallimenti senza finestra di tempo, la regola vera aggiungerebbe i 5 minuti e l'accesso riuscito. Cambia il numero e osserva come cambia l'elenco.
 
 Vuoi sentire il processo spiegato da un'altra voce? Un video in inglese (attiva i sottotitoli) mostra come da un comportamento si arriva a una regola:
 
@@ -182,6 +182,7 @@ Cinque scenari su come costruire una regola. Servono **cinque risposte giuste**.
 <Practice generator="c19-minaccia-regola" pass="5/5" retries={3} />
 
 <Recap xp={25}>
+- Caso chiuso: alla «Rossi Forniture» bastava la regola «almeno 5 errori in 5 minuti seguiti da un accesso riuscito» per far suonare l'allarme.
 - Il detection engineering progetta, scrive, collauda e mantiene le regole: cinque passi dalla minaccia alla regola accesa.
 - Si rileva il comportamento, non solo l'indicatore; due segnali deboli insieme ne fanno uno forte.
 - Ogni regola si prova sui log passati prima di accenderla, e poi si misura e si corregge.

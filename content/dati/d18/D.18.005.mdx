@@ -104,15 +104,6 @@ Una **procedura** non restituisce un valore: **fa delle cose** (modifica tabelle
 
 Effetto: la giacenza della candela cedro passa da 12 a **10**, e compare un nuovo ordine con totale **36.00** (2 pezzi per 18.00). Le due operazioni stanno insieme: se una fallisce, l'altra viene annullata.
 
-<Flow
-  caption="Una chiamata, due operazioni che stanno insieme."
-  steps={[
-    { icon: "terminal", title: "CALL", text: "registra_vendita(2, 3, 2)" },
-    { icon: "folder", title: "Magazzino", text: "Giacenza da 12 a 10" },
-    { icon: "file", title: "Ordine", text: "Nuova riga: totale 36.00" },
-  ]}
-/>
-
 Vuoi sentirlo spiegare da un'altra voce? Un video in inglese sulla differenza tra funzioni, procedure e trigger:
 
 <Video />
@@ -214,6 +205,7 @@ Cinque domande su funzioni, procedure e trigger. Servono tutte e cinque giuste. 
 
 <Scene title="Rapporto finale">
 <Recap xp={25}>
+- Caso chiuso: l'IVA vive in una funzione sola, e la registrazione di una vendita in una procedura che toglie i pezzi e scrive l'ordine insieme. Le regole sui dati si scrivono una volta.
 - Una funzione restituisce un valore e si usa dentro le query; una procedura esegue operazioni e si lancia con CALL.
 - Un trigger scatta da solo a un evento (INSERT, UPDATE, DELETE): utile per audit e controlli, ma nascosto.
 - Rischi: logica invisibile, effetti a catena, prestazioni, permessi SECURITY DEFINER e SQL dinamica. Nel database le regole sui dati, nell'applicazione la logica complessa.
@@ -228,5 +220,5 @@ Cinque domande su funzioni, procedure e trigger. Servono tutte e cinque giuste. 
   ]}
 />
 
-<Say who="sensei">Caso chiuso. Prossima lezione: PostgreSQL in pratica, con ruoli, schemi, JSONB e una visita guidata di pgAdmin.</Say>
+<Say who="sensei">Prossima lezione: PostgreSQL in pratica, con ruoli, schemi, JSONB e una visita guidata di pgAdmin.</Say>
 </Scene>

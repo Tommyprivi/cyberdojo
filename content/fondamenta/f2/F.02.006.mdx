@@ -40,9 +40,9 @@ Il collega del SOC ti dà un compito semplice, ma con un ostacolo:
 
 «Scrivi le tue note sul caso in un file, così le leggo domani. Ricorda: niente mouse.»
 
-Per **scrivere** in un file dal terminale serve un **editor di testo**. Hai già visto che cat e less leggono soltanto. Gli editor invece permettono di **modificare**.
+Per **scrivere** in un file dal terminale serve un **editor di testo**. cat e less leggono soltanto; un editor permette di **modificare**.
 
-C'è un secondo problema, che trovi in tutti i corsi Linux: **a volte un editor parte da solo** (per esempio quando una guida ti dice di cambiare un file) e se non sai come si esce, resti bloccato.
+C'è un secondo problema: a volte un editor parte da solo (per esempio quando una guida ti fa cambiare un file). Se non sai come si esce, resti bloccato.
 
 La domanda del caso: **come si scrive un file dal terminale, e come si esce da un editor senza panico?**
 
@@ -87,7 +87,7 @@ Ecco la sequenza completa, dalla prima riga alla chiusura.
 />
 
 <Callout kind="curiosita">
-Se nano parla italiano, la domanda «Save modified buffer?» diventa «Salvare il buffer modificato?» e il tasto per dire sì è **S**, non Y. Il resto non cambia.
+Se nano parla italiano, la domanda «Save modified buffer?» diventa «Salvare il buffer modificato?» e il tasto per dire sì può essere **S** invece di Y. Il resto non cambia.
 </Callout>
 
 <Say who="sensei">Salva, esci, verifica con cat. Tre gesti. Non fidarti mai di un salvataggio che non hai controllato.</Say>
@@ -162,6 +162,7 @@ Cinque domande su nano e vim. Ne servono **quattro giuste**. Hai 3 tentativi e a
 
 <Scene title="Rapporto finale">
 <Recap xp={20}>
+- Caso chiuso: le note si scrivono con nano (Ctrl+O salva, Ctrl+X esce) e se resti bloccato in vim, Esc e :q! ti liberano.
 - nano è l'editor più semplice: Ctrl+O salva, Ctrl+X esce, in basso vedi le scorciatoie.
 - vim ha le modalità: i per scrivere, Esc per tornare ai comandi.
 - Per uscire da vim: :wq salva ed esce, :q! esce senza salvare.

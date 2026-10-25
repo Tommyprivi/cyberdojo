@@ -40,7 +40,7 @@ Alle **05:00** il collegamento tra la sede e la filiale si interrompe. Il router
 
 Il traffico si ferma? Dipende da **chi ha scritto quella riga**: una persona, o i router stessi.
 
-<Say who="sensei">Una tabella è fotografia del momento in cui è stata scritta. Se la rete cambia, la fotografia mente.</Say>
+<Say who="sensei">Una tabella è la fotografia del momento in cui è stata scritta. Se la rete cambia, la fotografia mente.</Say>
 </Scene>
 
 {/* screen */}
@@ -156,6 +156,7 @@ Rimetti insieme tutto il modulo con il pacchetto delle 03:12, dalla .66 al serve
 - Subnet mask, CIDR e AND dicono quale rete è un indirizzo; con 2^n − 2 si contano gli host e con i blocchi si trovano rete e broadcast.
 - Le sottoreti separano i reparti; VLSM dà a ognuna la misura giusta. Il gateway porta fuori ciò che non è locale.
 - Il router sceglie dalla tabella con il prefisso più lungo, poi la default. Le route sono scritte a mano (statiche) o imparate (RIP, OSPF, BGP).
+- Caso chiuso: il collegamento delle 05:00 con una route statica la riga resta in tabella anche se non porta più da nessuna parte; con il routing dinamico i vicini avvisano e le tabelle cambiano da sole.
 </Recap>
 
 <Flashcards

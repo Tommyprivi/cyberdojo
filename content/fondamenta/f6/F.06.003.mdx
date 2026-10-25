@@ -64,7 +64,7 @@ Ogni bit in più **raddoppia** gli indirizzi: 1, 2, 4, 8, 16, 32, 64, 128, 256. 
 Su 256 indirizzi, due hanno un compito speciale:
 
 - **indirizzo di rete**: tutti i bit dei dispositivi a **0**. È il «nome» della rete, quello che trovi con l'AND. Nessun computer può usarlo.
-- **indirizzo di broadcast**: tutti i bit dei dispositivi a **1**. Un messaggio inviato qui arriva a **tutti** i dispositivi della rete (come nell'ARP). Nessun computer può usarlo.
+- **indirizzo di broadcast**: tutti i bit dei dispositivi a **1**. Un messaggio inviato qui arriva a **tutti** i dispositivi della rete. Nessun computer può usarlo.
 
 Restano **2^n − 2** indirizzi per i dispositivi, gli **host utilizzabili**.
 
@@ -133,7 +133,7 @@ Un'altra voce che mostra gli stessi passaggi, con altri numeri:
   question="Hai 40 computer da collegare. Qual è il prefisso della rete più piccola che li contiene tutti?"
   options={["/26", "/27", "/28", "/30"]}
   answer={0}
-  explain="/26 offre 62 host utilizzabili: bastano per 40. /27 ne offre solo 30, /28 solo 14, /30 solo 2. Chi sceglie /27 conta gli indirizzi totali (32) e dimentica che quelli utilizzabili sono 30, e comunque meno di 40."
+  explain="/26 offre 62 host utilizzabili: bastano per 40. /27 ne offre solo 30, /28 solo 14, /30 solo 2. Chi sceglie /27 si ferma a 30 host, meno dei 40 computer del reparto."
 />
 
 <Say who="assistente">Parti dalla più piccola e sali. Quando gli host utilizzabili superano 40, ti fermi.</Say>
@@ -156,6 +156,7 @@ Cinque domande su indirizzi di rete, broadcast e host. Servono **tutte e cinque*
 - I bit per i dispositivi sono 32 meno il prefisso; gli indirizzi totali sono 2 elevato a quel numero.
 - Il primo indirizzo (rete) e l'ultimo (broadcast) non si assegnano: gli host utilizzabili sono 2^n − 2.
 - Con il blocco si trova tutto: rete = inizio, broadcast = fine, primo host = rete + 1, ultimo host = broadcast − 1.
+- Caso chiuso: per 40 scrivanie una /27 (30 host) non basta; serve una /26 (62 host).
 </Recap>
 
 <Flashcards

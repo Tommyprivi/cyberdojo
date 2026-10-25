@@ -237,6 +237,7 @@ Cinque domande su `groupby`, `agg`, `value_counts` e `pivot_table`: cosa restitu
 - `df.groupby("chiave")["colonna"].sum()` divide, calcola e riunisce; con `agg(nome=("colonna", "calcolo"))` si ottengono più calcoli con nomi chiari.
 - `value_counts()` conta le categorie (con `normalize=True` le proporzioni); `size` conta le righe, `count` le celle piene, `nunique` i valori diversi.
 - `pivot_table(index, columns, values, aggfunc)` fa la tabella a doppia entrata; NaN significa «combinazione assente», non zero.
+- Caso chiuso: il rapporto del lunedì è una riga di `groupby`: Roma 110 euro in 3 ordini, Milano 50 in 2, Torino 20 in 1.
 </Recap>
 
 <Flashcards

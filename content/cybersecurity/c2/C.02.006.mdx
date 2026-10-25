@@ -59,7 +59,7 @@ La domanda del caso: **che cosa succede, in pochi istanti, quando il browser mos
 />
 
 <Callout kind="curiosita">
-Prima di TLS c'era **SSL**, ma le sue versioni sono considerate rotte e non si usano più. La gente dice ancora «certificato SSL» per abitudine: oggi si parla di TLS, e la versione attuale è la **1.3**.
+Prima di TLS c'era **SSL**, ma le sue versioni sono considerate rotte e non si usano più. La gente dice ancora «certificato SSL» per abitudine: oggi si parla di TLS, e oggi si usano la **1.2** e, sempre di più, la **1.3**.
 </Callout>
 
 <Say who="assistente">Quando leggi https:// davanti all'indirizzo, la «s» sta per «secure». Il tunnel TLS è già pronto.</Say>
@@ -75,13 +75,13 @@ Prima di mandare qualsiasi dato, browser e sito fanno una **stretta di mano** (h
     "Il browser saluta il sito e dice quali algoritmi di cifratura sa usare.",
     "Il sito sceglie quelli da usare e manda il suo certificato (lezione scorsa).",
     "Il browser controlla il certificato: firmato da una CA fidata? Non scaduto? Valido proprio per quel dominio?",
-    "I due si accordano su una chiave segreta usando la cifratura asimmetrica, senza mai mandarla in chiaro.",
-    "Da quella chiave ognuno ricava la stessa chiave di sessione, simmetrica.",
+    "I due si scambiano dei valori pubblici, creati al momento, con uno scambio di chiavi (Diffie-Hellman). Ognuno ci unisce un proprio segreto che non viaggia mai.",
+    "Con quel calcolo, ognuno ottiene la stessa chiave di sessione, simmetrica, senza che nessuno l'abbia mandata.",
     "Da qui in poi tutto il traffico è cifrato con la chiave di sessione (per esempio con AES).",
   ]}
 />
 
-<Say who="sensei">Riconosci tutti i pezzi? Certificati per l'identità, asimmetrica per accordarsi, simmetrica per il carico. Il quadro si completa qui.</Say>
+<Say who="sensei">Riconosci tutti i pezzi? Certificati per l'identità, matematica asimmetrica per accordarsi, simmetrica per il carico. Il quadro si completa qui.</Say>
 
 Vuoi sentirlo spiegare da un'altra voce? Ecco i punti chiave in pochi minuti:
 
@@ -107,7 +107,7 @@ Con HTTPS, chi sta in mezzo (il Wi-Fi del bar, un provider) non può:
 />
 
 <Callout kind="trucco">
-La chiave di sessione dura **solo** quella connessione. Alla successiva se ne crea una nuova. Anche se una chiave venisse scoperta, ne sarebbe compromessa solo una conversazione, non tutte le altre.
+La chiave di sessione dura **solo** quella connessione. Alla successiva se ne crea una nuova. Anche se una chiave venisse scoperta, ne sarebbe compromessa solo una conversazione, non tutte le altre. Questo vale perché le chiavi dello scambio sono temporanee.
 </Callout>
 
 <Say who="assistente">Chiara può stare tranquilla sul Wi-Fi del bar: l'ascoltatore vede solo dati incomprensibili.</Say>
@@ -177,5 +177,5 @@ Hai 3 tentativi, e a ogni tentativo le domande cambiano.
   ]}
 />
 
-<Say who="sensei">Prossima lezione, l'ultima del modulo: gli errori comuni. Perché la crittografia giusta, usata male, non protegge.</Say>
+<Say who="sensei">Caso chiuso: sul Wi-Fi del bar Chiara era protetta dal tunnel, ma restava a lei controllare il nome del sito. Prossima lezione, l'ultima del modulo: gli errori comuni. Perché la crittografia giusta, usata male, non protegge.</Say>
 </Scene>
