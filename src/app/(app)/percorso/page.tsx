@@ -260,24 +260,26 @@ async function PercorsoContent() {
       </div>
 
       {/* Mappa dei corsi: telefono, moduli a fisarmonica */}
-      <div className="grid gap-12 pt-4 lg:hidden">
+      <div className="grid gap-4 pt-2 lg:hidden">
         {COURSES.map((course) => {
           const all = lessons.filter((l) => l.course === course.folder);
           const doneAll = all.filter((l) => completed.has(l.id)).length;
           const empty = course.modules.filter((m) => !all.some((l) => l.module === m.n));
           return (
-            <section key={course.id} aria-labelledby={`p-${course.id}`} className="grid gap-4">
-              <div className="flex items-end justify-between gap-4 border-b-2 border-foreground pb-3">
-                <div>
+            <details key={course.id} open={course.folder === next?.course} className="group/course grid gap-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 [&::-webkit-details-marker]:hidden">
+                <span className="grid min-w-0 gap-1.5">
                   <Eyebrow className="text-muted">Corso {COURSES.indexOf(course) + 1}</Eyebrow>
-                  <h2 id={`p-${course.id}`} className="font-display text-2xl font-bold lg:text-3xl">
+                  <span id={`p-${course.id}`} className="font-display text-xl font-bold leading-tight">
                     {course.title}
-                  </h2>
-                </div>
-                <p className="shrink-0 pb-1 font-mono text-sm text-muted">
-                  {doneAll}/{all.length} lezioni
-                </p>
-              </div>
+                  </span>
+                  <Bar pct={all.length ? Math.round((doneAll / all.length) * 100) : 0} label={`Avanzamento: ${course.title}`} className="max-w-56" />
+                  <span className="font-mono text-xs text-muted">
+                    {doneAll}/{all.length} lezioni
+                  </span>
+                </span>
+                <ChevronDownIcon width={24} height={24} className="shrink-0 text-muted transition-transform group-open/course:rotate-180" />
+              </summary>
 
               <div className="grid gap-3">
                 {course.modules.map((m) => {
@@ -379,7 +381,7 @@ async function PercorsoContent() {
                   </ul>
                 </div>
               )}
-            </section>
+            </details>
           );
         })}
       </div>
