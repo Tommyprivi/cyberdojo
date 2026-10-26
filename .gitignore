@@ -53,3 +53,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Copie di sicurezza del database (dati personali)
+/backups/

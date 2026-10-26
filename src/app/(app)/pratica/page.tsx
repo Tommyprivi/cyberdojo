@@ -20,6 +20,16 @@ type Tool = {
 
 const READY: Tool[] = [
   {
+    href: "/pratica/calcolatrice",
+    kind: "calc",
+    tag: "Strumento libero",
+    title: "Calcolatrice",
+    text: "Una calcolatrice sempre a portata di mano per i conti delle lezioni: percentuali, potenze e parentesi.",
+    level: "Facile",
+    minutes: "1 min",
+    learn: ["Precedenza delle operazioni", "Percentuali e potenze"],
+  },
+  {
     href: "/pratica/calcolatore",
     kind: "calc",
     tag: "Missione guidata",
