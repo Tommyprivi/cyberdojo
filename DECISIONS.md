@@ -89,3 +89,8 @@ Il titolare ha giudicato il design precedente «da app qualsiasi, troppo affolla
 - **PC:** barra laterale fissa; Percorso come pannello a due colonne (programma a sinistra, «Oggi» a destra); lezioni con indice laterale delle schermate e colonna di lettura; **laboratorio a tutto schermo** (strumento + tutor a destra a tutta altezza, senza menu).
 - **Telefono:** intestazione e barra in basso, una colonna; nel laboratorio il tutor è un pannello che sale dal basso.
 - Le animazioni del Percorso restano, leggere.
+
+## Database separato e migrazioni protette (2026-10-26, su richiesta del titolare)
+- Tre rami Neon: production (dati veri, protetto), dev (prove, dati finti), preview (anteprime Vercel). Il dominio e la revisione legale restano fuori da questo aggiornamento.
+- `db:migrate` rifiuta il ramo di produzione (`PRODUCTION_DB_HOST`); `db:migrate:prod` richiede una copia di sicurezza fatta lo stesso giorno. Codice: `src/lib/db/migrate-guard.ts`, `scripts/db-migrate.mts`.
+- Regola fissa: nessuna migrazione sulla produzione senza copia di sicurezza di quel giorno, e sempre di sera.

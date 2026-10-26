@@ -4,6 +4,15 @@
 1. Crea un progetto su Neon e copia la stringa di connessione in `.env.local` come `DATABASE_URL`. Mai in chat o nel repository.
 2. Applica le migrazioni: `pnpm db:migrate`. In alternativa incolla `drizzle/0000_init.sql` in pgAdmin.
 
+## Rami: sviluppo e produzione separati (dal 2026-10)
+Su Neon il database ha tre rami (copie istantanee): **production** (i dati veri), **dev** (le prove sul computer, con dati finti) e **preview** (le anteprime di Vercel).
+- `.env.local` contiene SOLO le chiavi del ramo **dev**, più `PRODUCTION_DB_HOST` (il nome del server di production, senza password).
+- Vercel, ambiente Production: chiavi di **production**. Ambiente Preview: chiavi di **preview**.
+- In ogni ramo esiste il ruolo `cyberdojo_app` (vedi sotto), con una password diversa per ramo.
+- `pnpm db:migrate` parte solo sul ramo dev e si rifiuta di toccare production.
+- Sulla produzione: `pnpm db:migrate:prod -- --backup <file>`, solo con una copia di sicurezza (`pg_dump`) fatta lo stesso giorno. Prima si prova sempre su dev e su un ramo copiato da production.
+- Il ramo dev non deve contenere dati personali veri: dopo averlo creato si anonimizzano (email, nomi, sessioni).
+
 ## RLS: ruolo non proprietario (obbligatorio)
 Le policy RLS non si applicano al proprietario delle tabelle. Se l'app si collega con il ruolo che ha creato le tabelle, le policy sono ignorate e resta solo la barriera lato server.
 

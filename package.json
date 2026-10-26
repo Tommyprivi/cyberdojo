@@ -15,7 +15,8 @@
     "check:videos": "tsx scripts/check-videos.ts",
     "check:video-candidates": "tsx scripts/check-video-candidates.ts",
     "db:generate": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs generate",
-    "db:migrate": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs migrate"
+    "db:migrate": "node --env-file=.env.local node_modules/tsx/dist/cli.mjs scripts/db-migrate.mts",
+    "db:migrate:prod": "node --env-file=.env.local node_modules/tsx/dist/cli.mjs scripts/db-migrate.mts --prod"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.10",
