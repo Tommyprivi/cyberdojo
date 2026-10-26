@@ -87,6 +87,9 @@ export default function Manutenzione() {
         <p className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-[#a02a1a] sm:text-xs sm:tracking-[0.2em]">Il più grande aggiornamento di sempre</p>
         <h1 className="font-display text-3xl font-bold sm:text-6xl">Sito in manutenzione</h1>
         <p className="max-w-xl text-lg">Stiamo costruendo CyberDojo 2.0. Riapriamo sabato 31 ottobre alle 15:00.</p>
+        <p className="max-w-xl rounded-2xl border-2 border-[#1c3d6e]/25 bg-white/60 px-4 py-3 font-semibold">
+          Vuoi continuare? Puoi proseguire il corso che avevi iniziato: i tuoi progressi si salvano e restano anche nella versione 2.0, così non perdi la serie.
+        </p>
         {reopensAt !== null ? (
           <div className="w-full max-w-3xl">
             <MaintenanceClock endsAt={reopensAt} />
@@ -144,7 +147,7 @@ async function ContinueCard() {
     return (
       <section className="grid gap-3 rounded-2xl border-2 border-primary bg-surface p-5">
         <h2 className="font-display text-2xl font-bold">Hai già iniziato un corso?</h2>
-        <p>Durante la manutenzione puoi continuare solo i corsi che hai già iniziato, così non perdi la serie. Accedi per riprendere.</p>
+        <p>Durante la manutenzione puoi continuare solo i corsi che hai già iniziato. I progressi si salvano e restano nella versione 2.0, così non perdi la serie. Accedi per riprendere.</p>
         <Link href="/accedi" className="btn btn-primary min-h-12 w-full sm:w-fit">
           Accedi
         </Link>
@@ -175,7 +178,7 @@ async function ContinueCard() {
   return (
     <section className="grid gap-3 rounded-2xl border-2 border-primary bg-surface p-5">
       <h2 className="font-display text-2xl font-bold">Continua il tuo corso</h2>
-      <p>Puoi proseguire solo i corsi che hai già iniziato, così non perdi la serie.</p>
+      <p>Puoi proseguire solo i corsi che hai già iniziato. I progressi si salvano e restano nella versione 2.0, così non perdi la serie.</p>
       {options.length === 0 ? (
         <p className="font-semibold">Hai finito tutte le lezioni dei corsi che avevi iniziato. Bravo!</p>
       ) : (
