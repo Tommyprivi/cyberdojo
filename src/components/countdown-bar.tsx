@@ -104,11 +104,11 @@ export function CountdownBar({
     state === "running" ? (
       <>
         <span aria-hidden>⏳</span>
-        <span>{maintenance ? "Manutenzione" : "Aggiornamento"}{label ? `: ${label}` : ""} tra</span>
+        <span>{maintenance ? "Sito in manutenzione, riapriamo tra" : `Aggiornamento${label ? `: ${label}` : ""} tra`}</span>
         <span className="font-mono font-extrabold tabular-nums">{formatRemaining(endsAt - now)}</span>
         {variant === "bar" ? (
           <>
-            <span className="font-normal">{maintenance ? "· poi il sito va in manutenzione. Studia pure, per ora." : "· puoi continuare a studiare."}</span>
+            <span className="font-normal">{maintenance ? "· continua il tuo corso." : "· puoi continuare a studiare."}</span>
             <Link href="/aggiornamenti" className="font-bold underline">
               Scopri di più
             </Link>
@@ -120,7 +120,7 @@ export function CountdownBar({
         <span aria-hidden>✨</span>
         <span>
           {maintenance
-            ? "Il sito sta per entrare in manutenzione: finisci la lezione e salva."
+            ? "Il sito è di nuovo aperto! Ricarica la pagina a fine lezione."
             : `L'aggiornamento${label ? ` (${label})` : ""} è arrivato. ${variant === "bar" ? "Ricarica la pagina quando hai finito la lezione." : "Ricarica a fine lezione."}`}
         </span>
       </>

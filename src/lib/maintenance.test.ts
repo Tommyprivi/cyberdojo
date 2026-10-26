@@ -5,31 +5,32 @@ const T = Date.parse("2026-10-26T18:00:00Z");
 const cfg = { endsAt: "2026-10-26T18:00:00Z", maintenance: true };
 
 describe("maintenanceActive", () => {
-  it("non è attiva prima dello scadere del timer", () => {
-    expect(maintenanceActive(cfg, T - 1)).toBe(false);
+  it("è attiva fino allo scadere del timer", () => {
+    expect(maintenanceActive(cfg, T - 60_000)).toBe(true);
+    expect(maintenanceActive(cfg, T - 1)).toBe(true);
   });
 
-  it("si attiva allo scadere del timer", () => {
-    expect(maintenanceActive(cfg, T)).toBe(true);
-    expect(maintenanceActive(cfg, T + 60_000)).toBe(true);
+  it("alla scadenza il sito riapre da solo", () => {
+    expect(maintenanceActive(cfg, T)).toBe(false);
+    expect(maintenanceActive(cfg, T + 60_000)).toBe(false);
   });
 
   it("senza interruttore non si attiva mai", () => {
-    expect(maintenanceActive({ endsAt: cfg.endsAt }, T + 1)).toBe(false);
-    expect(maintenanceActive({ ...cfg, maintenance: false }, T + 1)).toBe(false);
+    expect(maintenanceActive({ endsAt: cfg.endsAt }, T - 1)).toBe(false);
+    expect(maintenanceActive({ ...cfg, maintenance: false }, T - 1)).toBe(false);
   });
 
   it("con una data non valida non blocca nessuno", () => {
-    expect(maintenanceActive({ endsAt: "boh", maintenance: true }, T + 1)).toBe(false);
-    expect(maintenanceActive({ maintenance: true }, T + 1)).toBe(false);
+    expect(maintenanceActive({ endsAt: "boh", maintenance: true }, T - 1)).toBe(false);
+    expect(maintenanceActive({ maintenance: true }, T - 1)).toBe(false);
   });
 });
 
 describe("decideMaintenance", () => {
-  const on = T + 1;
+  const on = T - 1;
 
-  it("lascia passare tutto se la manutenzione non è attiva", () => {
-    expect(decideMaintenance("/percorso", cfg, T - 1, false)).toBe("pass");
+  it("lascia passare tutto dopo la riapertura", () => {
+    expect(decideMaintenance("/percorso", cfg, T, false)).toBe("pass");
   });
 
   it("mostra la pagina di manutenzione sulle pagine chiuse", () => {

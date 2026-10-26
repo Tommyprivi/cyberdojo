@@ -54,7 +54,7 @@ export function NewsCelebration({ onClose, big = false }: { onClose: () => void;
               <p className={`font-display font-bold leading-tight ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}>
                 {big ? "Sta arrivando il più grande aggiornamento!" : "Novità arrivate!"}
               </p>
-              <p className="text-sm text-muted">{big ? "Sabato 31 ottobre alle 15:00. Fino ad allora studia come sempre." : "Puoi continuare la lezione: non cambia niente."}</p>
+              <p className="text-sm text-muted">{big ? "Il sito riapre sabato 31 ottobre alle 15:00." :"Puoi continuare la lezione: non cambia niente."}</p>
             </div>
           </div>
           <ul className="grid gap-0.5 text-sm">
@@ -62,7 +62,7 @@ export function NewsCelebration({ onClose, big = false }: { onClose: () => void;
             <li>📱 App Android con notifiche e calcolatrice</li>
             <li>💬 Community più grande e nuovi corsi</li>
           </ul>
-          {big && <p className="text-sm text-muted">Durante la manutenzione potrai continuare solo i corsi che hai già iniziato.</p>}
+          {big && <p className="text-sm text-muted">Nel frattempo puoi continuare solo i corsi che hai già iniziato.</p>}
           <div className="flex flex-wrap items-center gap-2">
             <Link href="/aggiornamenti" data-sound="open" className="btn btn-primary min-h-11 px-4 text-sm">
               Scopri di più

@@ -1,8 +1,8 @@
 /**
- * Manutenzione del sito: quando scade il conto alla rovescia (content/countdown.json) e c'è
- * "maintenance": true, le pagine mostrano /manutenzione. Restano aperti solo l'accesso e le lezioni
- * dei corsi che l'utente ha già iniziato (per non perdere la serie). Per riaprire basta mettere
- * "maintenance": false (o toglierlo) e pubblicare. Funzioni pure, senza accesso ai file né al
+ * Manutenzione del sito: con "maintenance": true in content/countdown.json le pagine mostrano
+ * /manutenzione, con il conto alla rovescia a tutto schermo fino a "endsAt", quando il sito riapre.
+ * Restano aperti solo l'accesso e le lezioni dei corsi che l'utente ha già iniziato (per non perdere
+ * la serie). Per riaprire prima basta mettere "maintenance": false e pubblicare. Funzioni pure, senza accesso ai file né al
  * database: le usano il proxy e le pagine delle lezioni.
  */
 
@@ -12,10 +12,11 @@ export const MAINTENANCE_COOKIE = "dojo-accesso";
 /** Il proxy lo aggiunge alla richiesta delle lezioni: la pagina deve controllare il corso. */
 export const MAINTENANCE_HEADER = "x-dojo-manutenzione";
 
+/** Attiva da subito fino allo scadere del timer: a quel punto il sito riapre da solo, senza ripubblicare. */
 export function maintenanceActive(cfg: MaintenanceConfig, now: number): boolean {
   if (cfg.maintenance !== true) return false;
   const at = typeof cfg.endsAt === "string" ? Date.parse(cfg.endsAt) : NaN;
-  return Number.isFinite(at) && now >= at;
+  return Number.isFinite(at) && now < at;
 }
 
 const isPath = (pathname: string, base: string) => pathname === base || pathname.startsWith(`${base}/`);

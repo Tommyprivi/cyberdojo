@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { MaintenanceClock } from "@/components/maintenance-clock";
 import { loadCatalog, nextLesson } from "@/lib/content/catalog";
+import { readCountdown } from "@/lib/countdown";
 import { COURSES } from "@/lib/content/courses";
 import { startedCourses } from "@/lib/maintenance";
 import { getMemberData } from "@/lib/progress/queries";
@@ -66,30 +68,41 @@ const BLOCKS: { icon: string; title: string; items: string[] }[] = [
 ];
 
 export default function Manutenzione() {
+  const reopensAt = readCountdown()?.endsAt ?? null;
   return (
-    <main className="mx-auto grid w-full max-w-3xl gap-8 px-4 pb-16 pt-8 sm:pt-12">
-      <header className="grid gap-4 text-center">
+    <main className="w-full">
+      {/* Qui niente banner dei cookie: non ci sono video e coprirebbe il conto alla rovescia. Torna a sito aperto. */}
+      <style>{`[aria-labelledby="cookie-banner-title"]{display:none}`}</style>
+      {/* Prima schermata: tutto schermo, con i colori della grafica (fissi, anche col tema scuro). */}
+      <header className="grid min-h-dvh content-center justify-items-center gap-5 bg-[#f7eedc] px-4 py-8 text-center text-[#1c3d6e]">
         <Image
           src="/img/manutenzione.jpg"
           alt="Un orologio, ingranaggi, attrezzi e una rete: il sito è in lavorazione"
           width={1376}
           height={768}
           priority
-          sizes="(min-width: 768px) 720px, 100vw"
-          className="w-full rounded-3xl border-2 border-border"
+          sizes="(min-width: 1024px) 640px, 100vw"
+          className="max-h-[32dvh] w-auto max-w-full object-contain sm:max-h-[42dvh]"
         />
-        <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Il più grande aggiornamento di sempre</p>
-        <h1 className="font-display text-4xl font-bold sm:text-5xl">Sito in manutenzione</h1>
-        <p className="mx-auto max-w-xl text-lg text-muted">
-          Stiamo costruendo CyberDojo 2.0. Torniamo online appena è pronto. Qui sotto trovi tutto quello che stiamo aggiungendo.
-        </p>
+        <p className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-[#a02a1a] sm:text-xs sm:tracking-[0.2em]">Il più grande aggiornamento di sempre</p>
+        <h1 className="font-display text-3xl font-bold sm:text-6xl">Sito in manutenzione</h1>
+        <p className="max-w-xl text-lg">Stiamo costruendo CyberDojo 2.0. Riapriamo sabato 31 ottobre alle 15:00.</p>
+        {reopensAt !== null ? (
+          <div className="w-full max-w-3xl">
+            <MaintenanceClock endsAt={reopensAt} />
+          </div>
+        ) : null}
+        <a href="#novita" className="font-semibold underline underline-offset-4">
+          Guarda tutte le novità ↓
+        </a>
       </header>
 
+      <div className="mx-auto grid w-full max-w-3xl gap-8 px-4 pb-16 pt-10">
       <Suspense fallback={null}>
         <ContinueCard />
       </Suspense>
 
-      <section aria-label="Le novità in arrivo" className="grid gap-4">
+      <section id="novita" aria-label="Le novità in arrivo" className="grid scroll-mt-6 gap-4">
         {BLOCKS.map((b) => (
           <article key={b.title} className="grid gap-3 rounded-2xl border-2 border-border bg-surface p-5">
             <h2 className="flex items-center gap-3 font-display text-2xl font-bold">
@@ -119,6 +132,7 @@ export default function Manutenzione() {
         </Link>
         .
       </p>
+      </div>
     </main>
   );
 }
