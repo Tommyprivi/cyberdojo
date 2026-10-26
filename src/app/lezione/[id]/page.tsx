@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import { compileMDX } from "next-mdx-remote/rsc";
@@ -11,6 +12,8 @@ import { readAnnouncements } from "@/lib/announcements";
 import { readCountdown } from "@/lib/countdown";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
+import { loadCatalog } from "@/lib/content/catalog";
+import { allowedDuringMaintenance, MAINTENANCE_HEADER } from "@/lib/maintenance";
 import { canOpenLesson } from "@/lib/progress/unlock";
 import { requireMember } from "@/lib/session";
 
@@ -49,6 +52,11 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
   const member = await requireMember(`/lezione/${lesson.fm.id}`);
   if (!canOpenLesson(lesson.fm, { completed: member.completed })) redirect("/percorso");
 
+  // In manutenzione si continua solo un corso già iniziato (per non perdere la serie).
+  if ((await headers()).get(MAINTENANCE_HEADER) === "1" && !allowedDuringMaintenance(lesson.fm.id, member.completed, loadCatalog())) {
+    redirect("/manutenzione");
+  }
+
   const screens: PlayerScreen[] = await Promise.all(
     splitScreens(lesson.body).map(async (source, i) => {
       const { content } = await compileMDX({
@@ -68,7 +76,7 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
     <>
       <UiSounds />
       <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} />
-      {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} newsVersion={readAnnouncements()[0]?.id ?? ""} /> : null}
+      {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} newsVersion={readAnnouncements()[0]?.id ?? ""} maintenance={countdown.maintenance} /> : null}
     </>
   );
 }

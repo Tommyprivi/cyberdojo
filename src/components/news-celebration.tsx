@@ -52,16 +52,17 @@ export function NewsCelebration({ onClose, big = false }: { onClose: () => void;
             <Mascot size={big ? 88 : 56} animate />
             <div className="min-w-0">
               <p className={`font-display font-bold leading-tight ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}>
-                {big ? "Benvenuto! Ecco le novità" : "Novità arrivate!"}
+                {big ? "Sta arrivando il più grande aggiornamento!" : "Novità arrivate!"}
               </p>
-              <p className="text-sm text-muted">{big ? "Una cosa da vedere, poi si studia." : "Puoi continuare la lezione: non cambia niente."}</p>
+              <p className="text-sm text-muted">{big ? "Sabato 31 ottobre alle 15:00. Fino ad allora studia come sempre." : "Puoi continuare la lezione: non cambia niente."}</p>
             </div>
           </div>
           <ul className="grid gap-0.5 text-sm">
-            <li>🎨 Nuova grafica, più semplice da telefono</li>
-            <li>🧭 Il tuo piano di studio consigliato</li>
-            <li>💬 Community con feedback e sfide</li>
+            <li>🧭 Percorso a livelli e test d&apos;ingresso</li>
+            <li>📱 App Android con notifiche e calcolatrice</li>
+            <li>💬 Community più grande e nuovi corsi</li>
           </ul>
+          {big && <p className="text-sm text-muted">Durante la manutenzione potrai continuare solo i corsi che hai già iniziato.</p>}
           <div className="flex flex-wrap items-center gap-2">
             <Link href="/aggiornamenti" data-sound="open" className="btn btn-primary min-h-11 px-4 text-sm">
               Scopri di più

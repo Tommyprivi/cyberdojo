@@ -30,10 +30,13 @@ export function CountdownBar({
   label,
   variant = "bar",
   newsVersion = "",
+  maintenance = false,
 }: {
   endsAt: number;
   label: string;
   variant?: "bar" | "floating";
+  /** Allo scadere il sito va in manutenzione: il testo lo dice, invece di invitare a ricaricare. */
+  maintenance?: boolean;
   /** Id dell'ultima novità: segnata come vista quando parte la festa, così all'ingresso successivo non si ripete. */
   newsVersion?: string;
 }) {
@@ -101,11 +104,11 @@ export function CountdownBar({
     state === "running" ? (
       <>
         <span aria-hidden>⏳</span>
-        <span>Aggiornamento{label ? `: ${label}` : ""} tra</span>
+        <span>{maintenance ? "Manutenzione" : "Aggiornamento"}{label ? `: ${label}` : ""} tra</span>
         <span className="font-mono font-extrabold tabular-nums">{formatRemaining(endsAt - now)}</span>
         {variant === "bar" ? (
           <>
-            <span className="font-normal">· puoi continuare a studiare.</span>
+            <span className="font-normal">{maintenance ? "· poi il sito va in manutenzione. Studia pure, per ora." : "· puoi continuare a studiare."}</span>
             <Link href="/aggiornamenti" className="font-bold underline">
               Scopri di più
             </Link>
@@ -116,7 +119,9 @@ export function CountdownBar({
       <>
         <span aria-hidden>✨</span>
         <span>
-          L&apos;aggiornamento{label ? ` (${label})` : ""} è arrivato. {variant === "bar" ? "Ricarica la pagina quando hai finito la lezione." : "Ricarica a fine lezione."}
+          {maintenance
+            ? "Il sito sta per entrare in manutenzione: finisci la lezione e salva."
+            : `L'aggiornamento${label ? ` (${label})` : ""} è arrivato. ${variant === "bar" ? "Ricarica la pagina quando hai finito la lezione." : "Ricarica a fine lezione."}`}
         </span>
       </>
     );

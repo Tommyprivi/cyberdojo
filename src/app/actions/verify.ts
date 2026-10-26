@@ -1,6 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { headers } from "next/headers";
 import { and, count, desc, eq, gte, isNotNull, isNull, sql } from "drizzle-orm";
 import { schema } from "@/lib/db";
 import { withUser } from "@/lib/db/scoped";
@@ -8,6 +9,9 @@ import { getRawLesson } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
 import { GENERATORS, isGeneratorId, type GeneratorId, type PublicQuestion } from "@/lib/practice/generators";
 import { applyStreak, localDay } from "@/lib/progress/streak";
+import { loadCatalog } from "@/lib/content/catalog";
+import { allowedDuringMaintenance, MAINTENANCE_HEADER } from "@/lib/maintenance";
+import { getMemberData } from "@/lib/progress/queries";
 import { canOpenLesson } from "@/lib/progress/unlock";
 import { xpForPass } from "@/lib/progress/xp";
 import { getSessionUser } from "@/lib/session";
@@ -49,9 +53,19 @@ export type StartResult =
   | { blocked: false; attemptId: string; questions: PublicQuestion[]; retries: number; generator: GeneratorId; needed: number; attemptNumber: number }
   | { blocked: true; until: string; minutes: number; retries: number };
 
+/** In manutenzione la verifica parte solo per i corsi già iniziati (il proxy segna la richiesta). */
+async function assertMaintenanceAccess(userId: string, lessonId: string) {
+  if ((await headers()).get(MAINTENANCE_HEADER) !== "1") return;
+  const { completed } = await getMemberData(userId);
+  if (!allowedDuringMaintenance(lessonId, completed, loadCatalog())) {
+    throw new Error("Il sito è in manutenzione: puoi continuare solo i corsi che hai già iniziato.");
+  }
+}
+
 export async function startVerification(lessonId: string): Promise<StartResult> {
   const user = await requireUser();
   const { gen, need, total, retries, prerequisites } = config(lessonId);
+  await assertMaintenanceAccess(user.id, lessonId);
 
   return withUser(user.id, async (tx) => {
     // Si può fare la verifica solo se i prerequisiti sono stati completati (avanzamento in ordine).

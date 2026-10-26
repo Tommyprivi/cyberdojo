@@ -20,6 +20,10 @@ describe("formatRemaining", () => {
     expect(formatRemaining(3_600_000)).toBe("1:00:00");
     expect(formatRemaining(3_725_000)).toBe("1:02:05");
   });
+  it("mostra i giorni da un giorno in su", () => {
+    expect(formatRemaining(24 * 3_600_000)).toBe("1g 00:00:00");
+    expect(formatRemaining(5 * 24 * 3_600_000 - 1_000)).toBe("4g 23:59:59");
+  });
   it("non va mai sotto zero", () => {
     expect(formatRemaining(-500)).toBe("0:00");
   });
@@ -28,7 +32,11 @@ describe("formatRemaining", () => {
 describe("readCountdown", () => {
   it("legge data e testo", () => {
     const c = readCountdown(tmp(JSON.stringify({ endsAt: "2026-10-26T20:00:00Z", label: "novità sui social" })));
-    expect(c).toEqual({ endsAt: Date.parse("2026-10-26T20:00:00Z"), label: "novità sui social" });
+    expect(c).toEqual({ endsAt: Date.parse("2026-10-26T20:00:00Z"), label: "novità sui social", maintenance: false });
+  });
+  it("legge l'interruttore della manutenzione", () => {
+    const c = readCountdown(tmp(JSON.stringify({ endsAt: "2026-10-31T14:00:00Z", maintenance: true })));
+    expect(c?.maintenance).toBe(true);
   });
   it("senza file, con data non valida o vuota non mostra niente", () => {
     expect(readCountdown(path.join(tmpdir(), "non-esiste.json"))).toBeNull();

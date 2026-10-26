@@ -27,8 +27,9 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
       <UiSounds />
       <Sidebar latestAnnouncementId={newsVersion} />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
-        {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} newsVersion={newsVersion} /> : null}
-        <WelcomeNews version={newsVersion} countdownEndsAt={countdown?.endsAt ?? null} />
+        {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} newsVersion={newsVersion} maintenance={countdown.maintenance} /> : null}
+        {/* L'avviso del grande aggiornamento parte subito, una volta sola: non aspetta la fine del conto alla rovescia. */}
+        <WelcomeNews version={newsVersion} countdownEndsAt={null} />
         <NewsBanner />
         <div className="lg:hidden">
           <SiteHeader app />
