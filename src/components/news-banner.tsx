@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 
 /** Versione del banner: cambiala quando c'è un nuovo aggiornamento, così tutti lo rivedono una volta. */
-const VERSION = "2026-10-24";
+const VERSION = "2026-10-26";
 const KEY = "news-banner-dismissed";
 
 function read(): string | null {
@@ -28,7 +28,7 @@ export function NewsBanner() {
     <aside role="region" aria-label="Novità" className="border-b border-border bg-deep text-deep-fg">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-2 text-sm">
         <p className="flex-1">
-          <strong>Novità:</strong> nuovi corsi di <strong>trading con Python</strong> e <strong>hedge fund</strong>, approfondimenti di cybersecurity, terminale Python e Linux nel browser, classifica e amici con codice (solo per chi attiva la partecipazione), autenticazione a due fattori.
+          <strong>Novità:</strong> nuova grafica più semplice anche da telefono, <strong>piano di studio consigliato</strong> in base al tuo obiettivo, lezioni con schemi illustrati, cinture per livello.
         </p>
         <button
           type="button"

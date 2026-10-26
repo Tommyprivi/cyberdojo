@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { countdownState, formatRemaining } from "@/lib/countdown";
+import { countdownState, formatRemaining } from "@/lib/countdown-format";
 
 /**
  * Barretta sottile con il conto alla rovescia dell'aggiornamento. Non interrompe nessuno:
