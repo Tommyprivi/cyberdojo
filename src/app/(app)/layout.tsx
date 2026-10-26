@@ -1,8 +1,10 @@
 import type { Viewport } from "next";
 import { BottomNav } from "@/components/bottom-nav";
+import { CountdownBar } from "@/components/countdown-bar";
 import { NewsBanner } from "@/components/news-banner";
 import { Sidebar } from "@/components/sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { readCountdown } from "@/lib/countdown";
 
 // Serve per usare l'area sicura del telefono (tacca, barra dei gesti) sotto la barra in basso.
 export const viewport: Viewport = { viewportFit: "cover" };
@@ -15,10 +17,12 @@ export const viewport: Viewport = { viewportFit: "cover" };
  *   solo dentro un pannello, se serve davvero.
  */
 export default function AppLayout({ children }: LayoutProps<"/">) {
+  const countdown = readCountdown();
   return (
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
       <Sidebar />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
+        {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} /> : null}
         <NewsBanner />
         <div className="lg:hidden">
           <SiteHeader app />
