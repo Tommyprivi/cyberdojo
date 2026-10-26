@@ -33,6 +33,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Niente file statici, immagini e icone: il proxy gira solo su pagine e API.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|webp|ico|txt|xml|webmanifest|mp3|mp4|woff2?)$).*)"],
+  // Niente file statici, immagini, icone, manifest e service worker: il proxy gira solo su pagine e API.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|.*\\.(?:svg|png|jpg|jpeg|webp|ico|txt|xml|html|js|css|webmanifest|mp3|mp4|woff2?)$).*)"],
 };

@@ -8,6 +8,7 @@ import { BeltArt, MedalArt, StreakCalendar } from "@/components/profilo/graphics
 import { ProfileTabs } from "@/components/profilo/profile-tabs";
 import { SecuritySection } from "@/components/profilo/security-section";
 import { ReminderSettings } from "@/components/reminder-settings";
+import { InstallApp } from "@/components/pwa";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
@@ -98,6 +99,7 @@ async function ProfiloContent() {
               <SoundToggle withLabel />
             </span>
           </div>
+          <InstallApp />
           <Link
             href="/social"
             className="flex min-h-11 items-center justify-between gap-3 rounded-xl border-2 border-primary bg-background p-3 hover:bg-surface-muted"

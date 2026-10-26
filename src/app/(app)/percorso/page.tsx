@@ -8,6 +8,7 @@ import { Mascot } from "@/components/mascot";
 import { readAnnouncements } from "@/lib/announcements";
 import { ChevronDownIcon } from "@/components/nav-icons";
 import { CourseMap, type MapCourse } from "@/components/percorso/course-map";
+import { LessonPath } from "@/components/percorso/path";
 import { COURSES } from "@/lib/content/courses";
 import { moduleCover } from "@/lib/content/covers";
 import { loadCatalog, type LessonInfo } from "@/lib/content/catalog";
@@ -258,6 +259,16 @@ async function PercorsoContent() {
       <div className="hidden min-h-0 lg:col-start-1 lg:flex lg:flex-col">
         <CourseMap courses={mapCourses} initialCourse={nextCourse?.id ?? "F"} initialModule={next?.module ?? 1} />
       </div>
+
+      {/* Il sentiero del modulo in corso: solo telefono (su PC c'è la mappa) */}
+      {next && nextModule ? (
+        <div className="lg:hidden">
+          <LessonPath
+            title={`${nextCourse?.id}${next.module} · ${nextModule.title}`}
+            lessons={sameModule.map((l) => ({ id: l.id, title: l.title, minutes: l.minutes, state: stateOf(l) }))}
+          />
+        </div>
+      ) : null}
 
       {/* Mappa dei corsi: telefono, moduli a fisarmonica */}
       <div className="grid gap-4 pt-2 lg:hidden">
