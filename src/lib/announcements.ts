@@ -16,6 +16,8 @@ export type Announcement = {
   title: string;
   summary: string;
   body: string;
+  /** Etichette facoltative (novità, corsi, community, importante), mostrate come in una chat. */
+  tags: string[];
 };
 
 /** Prima data in cui il servizio è stato aperto al pubblico: da qui nascono gli account fondatori. */
@@ -27,14 +29,16 @@ export function readAnnouncements(dir = DIR): Announcement[] {
   for (const file of readdirSync(dir)) {
     if (!file.endsWith(".md")) continue;
     const parsed = matter(readFileSync(path.join(dir, file), "utf8"));
-    const { id, date, title, summary } = parsed.data as {
+    const { id, date, title, summary, tags } = parsed.data as {
       id?: string;
       date?: string;
       title?: string;
       summary?: string;
+      tags?: unknown;
     };
     if (!id || !date || !title) continue;
-    out.push({ id, date, title, summary: summary ?? "", body: parsed.content });
+    const cleanTags = Array.isArray(tags) ? tags.filter((t): t is string => typeof t === "string") : [];
+    out.push({ id, date, title, summary: summary ?? "", body: parsed.content, tags: cleanTags });
   }
   return out.sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
 }

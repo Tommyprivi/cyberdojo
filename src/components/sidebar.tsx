@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/config";
+import { AnnouncementsLink } from "./announcements/unread";
 import { APP_NAV, isActive } from "./nav-items";
 import { Seal } from "./seal";
 import { SoundToggle } from "./sound-toggle";
@@ -13,7 +14,7 @@ import { UserMenu } from "./user-menu";
  * Barra laterale: l'impianto del sito su PC. Fissa a sinistra, sempre a vista.
  * Su telefono e tablet non c'è (si usano l'intestazione compatta e la barra in basso).
  */
-export function Sidebar() {
+export function Sidebar({ latestAnnouncementId = "" }: { latestAnnouncementId?: string }) {
   const pathname = usePathname();
   return (
     <aside className="sticky top-0 hidden h-dvh flex-col gap-8 border-r border-border bg-surface px-5 py-7 lg:flex">
@@ -45,6 +46,18 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className="grid gap-1">
+        <p className="mb-1 px-3 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-muted">Comunità</p>
+        <AnnouncementsLink latestId={latestAnnouncementId} />
+        <Link
+          href="/social"
+          aria-current={isActive(pathname, "/social") ? "page" : undefined}
+          className="nav-press flex min-h-11 items-center rounded-md px-3 font-semibold text-muted hover:bg-surface-muted hover:text-foreground"
+        >
+          # community
+        </Link>
+      </div>
 
       <div className="mt-auto grid gap-3 border-t border-border pt-5">
         <UserMenu variant="card" />

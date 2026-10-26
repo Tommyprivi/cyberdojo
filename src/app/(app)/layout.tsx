@@ -25,7 +25,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
       <UiSounds />
-      <Sidebar />
+      <Sidebar latestAnnouncementId={newsVersion} />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
         {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} newsVersion={newsVersion} /> : null}
         <WelcomeNews version={newsVersion} countdownEndsAt={countdown?.endsAt ?? null} />

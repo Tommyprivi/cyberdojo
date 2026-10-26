@@ -3,7 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense, type CSSProperties } from "react";
 import { BeltIcon, BoltIcon, CheckIcon, FlameIcon, LockIcon, PlayIcon, TargetIcon } from "@/components/icons";
+import { AnnouncementsLink } from "@/components/announcements/unread";
 import { Mascot } from "@/components/mascot";
+import { readAnnouncements } from "@/lib/announcements";
 import { ChevronDownIcon } from "@/components/nav-icons";
 import { CourseMap, type MapCourse } from "@/components/percorso/course-map";
 import { COURSES } from "@/lib/content/courses";
@@ -211,6 +213,8 @@ async function PercorsoContent() {
           </span>
           <span aria-hidden className="font-bold text-primary">→</span>
         </Link>
+
+        <AnnouncementsLink variant="card" latestId={readAnnouncements()[0]?.id ?? ""} />
 
         <section aria-label="Obiettivo di oggi" className="grid gap-3 rounded-lg border border-border bg-surface p-4">
           <div className="flex items-center gap-3">
