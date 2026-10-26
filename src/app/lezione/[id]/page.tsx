@@ -7,6 +7,7 @@ import { CountdownBar } from "@/components/countdown-bar";
 import { LessonPlayer, type PlayerScreen } from "@/components/lesson/player";
 import { lessonComponents } from "@/components/lesson/mdx-components";
 import { UiSounds } from "@/components/ui-sounds";
+import { readAnnouncements } from "@/lib/announcements";
 import { readCountdown } from "@/lib/countdown";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
@@ -66,7 +67,7 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
     <>
       <UiSounds />
       <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} />
-      {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} /> : null}
+      {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} newsVersion={readAnnouncements()[0]?.id ?? ""} /> : null}
     </>
   );
 }

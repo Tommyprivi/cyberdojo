@@ -5,6 +5,8 @@ import { NewsBanner } from "@/components/news-banner";
 import { Sidebar } from "@/components/sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { UiSounds } from "@/components/ui-sounds";
+import { WelcomeNews } from "@/components/welcome-news";
+import { readAnnouncements } from "@/lib/announcements";
 import { readCountdown } from "@/lib/countdown";
 
 // Serve per usare l'area sicura del telefono (tacca, barra dei gesti) sotto la barra in basso.
@@ -19,12 +21,14 @@ export const viewport: Viewport = { viewportFit: "cover" };
  */
 export default function AppLayout({ children }: LayoutProps<"/">) {
   const countdown = readCountdown();
+  const newsVersion = readAnnouncements()[0]?.id ?? "";
   return (
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
       <UiSounds />
       <Sidebar />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
-        {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} /> : null}
+        {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} newsVersion={newsVersion} /> : null}
+        <WelcomeNews version={newsVersion} countdownEndsAt={countdown?.endsAt ?? null} />
         <NewsBanner />
         <div className="lg:hidden">
           <SiteHeader app />

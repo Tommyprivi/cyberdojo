@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { countdownState, formatRemaining } from "@/lib/countdown-format";
 import { playSound } from "@/lib/sounds";
-import { NewsCelebration } from "./news-celebration";
+import { NEWS_SEEN_KEY, NewsCelebration } from "./news-celebration";
 
 const KEY = "countdown-dismissed";
 const CELEBRATED_KEY = "countdown-celebrated";
@@ -25,7 +25,18 @@ function readDismissed(): string | null {
  * Si può chiudere: la scelta vale per questo aggiornamento, in tutto il sito (nel browser).
  * Scaduto il tempo invita a ricaricare la pagina quando si ha finito.
  */
-export function CountdownBar({ endsAt, label, variant = "bar" }: { endsAt: number; label: string; variant?: "bar" | "floating" }) {
+export function CountdownBar({
+  endsAt,
+  label,
+  variant = "bar",
+  newsVersion = "",
+}: {
+  endsAt: number;
+  label: string;
+  variant?: "bar" | "floating";
+  /** Id dell'ultima novità: segnata come vista quando parte la festa, così all'ingresso successivo non si ripete. */
+  newsVersion?: string;
+}) {
   // Prima del montaggio non si conosce l'ora del browser: si evita così una differenza tra server e browser.
   const [now, setNow] = useState<number | null>(null);
   const dismissedFor = useSyncExternalStore(
@@ -50,6 +61,7 @@ export function CountdownBar({ endsAt, label, variant = "bar" }: { endsAt: numbe
         try {
           seen = localStorage.getItem(CELEBRATED_KEY) === String(endsAt);
           localStorage.setItem(CELEBRATED_KEY, String(endsAt));
+          if (newsVersion) localStorage.setItem(NEWS_SEEN_KEY, newsVersion);
         } catch {
           /* senza memoria nel browser la festa parte una volta per visita */
         }
@@ -62,7 +74,7 @@ export function CountdownBar({ endsAt, label, variant = "bar" }: { endsAt: numbe
     tick();
     const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
-  }, [endsAt]);
+  }, [endsAt, newsVersion]);
 
   if (now === null) return null;
   const celebration = party ? <NewsCelebration onClose={() => setParty(false)} /> : null;
