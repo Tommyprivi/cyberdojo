@@ -1,3 +1,4 @@
+import { canOpenLesson } from "@/lib/progress/unlock";
 import { readRawLessons } from "./load";
 import { isVisible, lessonFrontmatter } from "./schema";
 
@@ -24,5 +25,5 @@ export function loadCatalog(): LessonInfo[] {
 
 /** La prima lezione non completata i cui prerequisiti sono tutti completati: il «prossimo caso». */
 export function nextLesson(lessons: LessonInfo[], completed: ReadonlySet<string>): LessonInfo | undefined {
-  return lessons.find((l) => !completed.has(l.id) && l.prerequisites.every((p) => completed.has(p)));
+  return lessons.find((l) => !completed.has(l.id) && canOpenLesson(l, { completed }));
 }

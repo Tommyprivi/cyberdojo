@@ -13,6 +13,7 @@ import { moduleCover } from "@/lib/content/covers";
 import { loadCatalog, type LessonInfo } from "@/lib/content/catalog";
 import { firstName as firstNameOf } from "@/lib/display-name";
 import { beltOf, levelOf } from "@/lib/progress/profile-stats";
+import { canOpenLesson } from "@/lib/progress/unlock";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 
@@ -61,7 +62,7 @@ async function PercorsoContent() {
   const lessons = loadCatalog();
 
   const stateOf = (l: LessonInfo): "done" | "open" | "locked" =>
-    completed.has(l.id) ? "done" : l.prerequisites.every((p) => completed.has(p)) ? "open" : "locked";
+    completed.has(l.id) ? "done" : canOpenLesson(l, { completed }) ? "open" : "locked";
 
   const next = lessons.find((l) => stateOf(l) === "open");
   const nextCourse = next ? COURSES.find((c) => c.folder === next.course) : undefined;

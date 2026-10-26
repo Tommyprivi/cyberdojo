@@ -11,6 +11,7 @@ import { readAnnouncements } from "@/lib/announcements";
 import { readCountdown } from "@/lib/countdown";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
+import { canOpenLesson } from "@/lib/progress/unlock";
 import { requireMember } from "@/lib/session";
 
 export const viewport: Viewport = { viewportFit: "cover" };
@@ -46,7 +47,7 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
 
   // Le lezioni sono private: serve l'account, e si va in ordine (prerequisiti completati).
   const member = await requireMember(`/lezione/${lesson.fm.id}`);
-  if (!lesson.fm.prerequisites.every((id) => member.completed.has(id))) redirect("/percorso");
+  if (!canOpenLesson(lesson.fm, { completed: member.completed })) redirect("/percorso");
 
   const screens: PlayerScreen[] = await Promise.all(
     splitScreens(lesson.body).map(async (source, i) => {

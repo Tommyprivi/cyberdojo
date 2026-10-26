@@ -8,6 +8,7 @@ import { getRawLesson } from "@/lib/content/load";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
 import { GENERATORS, isGeneratorId, type GeneratorId, type PublicQuestion } from "@/lib/practice/generators";
 import { applyStreak, localDay } from "@/lib/progress/streak";
+import { canOpenLesson } from "@/lib/progress/unlock";
 import { xpForPass } from "@/lib/progress/xp";
 import { getSessionUser } from "@/lib/session";
 
@@ -60,7 +61,7 @@ export async function startVerification(lessonId: string): Promise<StartResult> 
         .from(schema.lessonProgress)
         .where(and(eq(schema.lessonProgress.userId, user.id), eq(schema.lessonProgress.status, "completata")));
       const doneIds = new Set(done.map((d) => d.id));
-      if (!prerequisites.every((p) => doneIds.has(p))) throw new Error("Completa prima le lezioni precedenti.");
+      if (!canOpenLesson({ id: lessonId, prerequisites }, { completed: doneIds })) throw new Error("Completa prima le lezioni precedenti.");
     }
 
     const since = new Date(Date.now() - WINDOW_MS);
