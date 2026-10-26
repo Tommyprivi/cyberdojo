@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { parseVerdict, scoreOf, type Verdict } from "@/lib/ai/verdict";
+import { playSound } from "@/lib/sounds";
 import { Mascot } from "../mascot";
 
 type Lesson = { id: string; title: string };
@@ -105,9 +106,13 @@ export function DojoApp({ catalog, initialLessonId, configured }: { catalog: Cat
         if (data.inactive) setInactive(true);
         const reply = data.reply;
         setMessages([...history, { role: "assistant", content: reply }]);
+        playSound("open");
         if (mode === "quiz") {
           const { verdict } = parseVerdict(reply);
-          if (verdict) setVerdicts((v) => [...v, verdict]);
+          if (verdict) {
+            setVerdicts((v) => [...v, verdict]);
+            if (verdict === "giusta") playSound("success");
+          }
         }
       } catch {
         if (abortRef.current === ctrl) setError("Il Sensei ci mette troppo o non c'è connessione. Riprova.");

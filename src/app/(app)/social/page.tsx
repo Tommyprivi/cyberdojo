@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { FeedbackBox } from "@/components/social/feedback-box";
 import { SocialApp, type SocialData } from "@/components/social/social-app";
 import { requireMember } from "@/lib/session";
 import * as social from "@/lib/social/service";
@@ -39,5 +40,10 @@ async function SocialContent() {
     ]);
     data = { ...data, leaderboard: board.rows, friends, groups, challenges: challenges.list, wins: challenges.wins };
   }
-  return <SocialApp data={data} />;
+  return (
+    <>
+      <SocialApp data={data} />
+      <FeedbackBox />
+    </>
+  );
 }

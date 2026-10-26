@@ -4,6 +4,7 @@ import { CountdownBar } from "@/components/countdown-bar";
 import { NewsBanner } from "@/components/news-banner";
 import { Sidebar } from "@/components/sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { UiSounds } from "@/components/ui-sounds";
 import { readCountdown } from "@/lib/countdown";
 
 // Serve per usare l'area sicura del telefono (tacca, barra dei gesti) sotto la barra in basso.
@@ -20,6 +21,7 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
   const countdown = readCountdown();
   return (
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
+      <UiSounds />
       <Sidebar />
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
         {countdown ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} /> : null}

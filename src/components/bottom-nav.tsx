@@ -23,12 +23,12 @@ export function BottomNav() {
               <Link
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-[3.75rem] flex-col items-center justify-center gap-0.5 text-[0.6875rem] font-semibold ${
+                className={`nav-press flex min-h-[3.75rem] flex-col items-center justify-center gap-0.5 text-[0.6875rem] font-semibold ${
                   active ? "text-primary" : "text-muted"
                 }`}
               >
                 <span
-                  className={`grid h-8 w-12 place-items-center rounded-full transition-colors ${active ? "bg-primary/15" : ""}`}
+                  className={`grid h-8 w-12 place-items-center rounded-full transition-colors ${active ? "nav-active-icon bg-primary/15" : ""}`}
                 >
                   <Icon width={26} height={26} strokeWidth={active ? 2.4 : 1.9} />
                 </span>

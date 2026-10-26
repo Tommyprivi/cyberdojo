@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 
 /** Versione del banner: cambiala quando c'è un nuovo aggiornamento, così tutti lo rivedono una volta. */
@@ -28,8 +29,11 @@ export function NewsBanner() {
     <aside role="region" aria-label="Novità" className="border-b border-border bg-deep text-deep-fg">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-2 text-sm">
         <p className="flex-1">
-          <strong>Novità:</strong> nuova grafica più semplice anche da telefono, <strong>piano di studio consigliato</strong> in base al tuo obiettivo, lezioni con schemi illustrati, cinture per livello.
+          <strong>Novità:</strong> nuova grafica più semplice anche da telefono, <strong>piano di studio consigliato</strong> in base al tuo obiettivo, lezioni con schemi illustrati, cinture per livello. In arrivo: app Android e calcolatrice integrata.
         </p>
+        <Link href="/aggiornamenti" className="font-bold underline">
+          Scopri di più
+        </Link>
         <button
           type="button"
           className="font-bold underline"

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/config";
 import { APP_NAV, isActive } from "./nav-items";
 import { Seal } from "./seal";
+import { SoundToggle } from "./sound-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 
@@ -33,12 +34,12 @@ export function Sidebar() {
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`relative flex min-h-11 items-center gap-3 rounded-md px-3 font-semibold transition-colors ${
+              className={`nav-press relative flex min-h-11 items-center gap-3 rounded-md px-3 font-semibold transition-colors ${
                 active ? "bg-surface-muted text-foreground" : "text-muted hover:bg-surface-muted hover:text-foreground"
               }`}
             >
               {active && <span aria-hidden className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-accent" />}
-              <Icon width={20} height={20} className={active ? "text-primary" : ""} />
+              <Icon width={20} height={20} className={active ? "nav-active-icon text-primary" : ""} />
               {label}
             </Link>
           );
@@ -47,7 +48,10 @@ export function Sidebar() {
 
       <div className="mt-auto grid gap-3 border-t border-border pt-5">
         <UserMenu variant="card" />
-        <ThemeToggle />
+        <div className="flex flex-wrap gap-2">
+          <ThemeToggle />
+          <SoundToggle />
+        </div>
       </div>
     </aside>
   );

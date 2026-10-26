@@ -2,6 +2,7 @@
 import { SITE } from "@/lib/config";
 import { TopNav } from "./bottom-nav";
 import { Seal } from "./seal";
+import { SoundToggle } from "./sound-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 
@@ -20,6 +21,7 @@ export function SiteHeader({ wide = false, app = false }: { wide?: boolean; app?
             {SITE.name}
           </Link>
           <div className="flex items-center gap-2">
+            <SoundToggle />
             <ThemeToggle />
             <UserMenu variant="avatar" />
           </div>

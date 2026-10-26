@@ -8,6 +8,7 @@ import { BeltArt, MedalArt, StreakCalendar } from "@/components/profilo/graphics
 import { ProfileTabs } from "@/components/profilo/profile-tabs";
 import { SecuritySection } from "@/components/profilo/security-section";
 import { ReminderSettings } from "@/components/reminder-settings";
+import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
 import { displayName } from "@/lib/display-name";
@@ -92,7 +93,10 @@ async function ProfiloContent() {
               <span className="block font-semibold">Tema</span>
               <span className="block text-sm text-muted">Chiaro, scuro o del dispositivo.</span>
             </p>
-            <ThemeToggle />
+            <span className="flex flex-wrap gap-2">
+              <ThemeToggle />
+              <SoundToggle withLabel />
+            </span>
           </div>
           <Link
             href="/social"
