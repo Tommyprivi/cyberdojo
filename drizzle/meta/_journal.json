@@ -43,6 +43,13 @@
       "when": 1792847937731,
       "tag": "0005_social",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793108562070,
+      "tag": "0006_aggiornamento-2",
+      "breakpoints": true
     }
   ]
 }

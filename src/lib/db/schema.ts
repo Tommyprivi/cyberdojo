@@ -123,6 +123,9 @@ export const profiles = pgTable(
     goal: text("goal"), // lavoro SOC, pentester, curiosità, sicurezza personale, scuola
     dailyMinutes: integer("daily_minutes"),
     placementDone: boolean("placement_done").notNull().default(false),
+    // Tutorial di benvenuto visto, e ultima novità (id dell'annuncio) già festeggiata: ricordati sull'account, non solo nel browser.
+    tutorialDone: boolean("tutorial_done").notNull().default(false),
+    seenNewsVersion: text("seen_news_version"),
     // Promemoria di studio via email: spenti di default. Si attivano solo con il consenso esplicito
     // dell'utente, che sceglie l'ora (nel proprio fuso). `lastReminderDay` evita il doppio invio nello stesso giorno.
     reminderEmail: boolean("reminder_email").notNull().default(false),
@@ -140,7 +143,8 @@ export const lessonProgress = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     lessonId: text("lesson_id").notNull(),
-    status: text("status", { enum: ["in_corso", "completata"] }).notNull(),
+    // «padroneggiata»: sbloccata con la prova di padronanza del modulo (nessun XP, ma sblocca le lezioni dopo).
+    status: text("status", { enum: ["in_corso", "completata", "padroneggiata"] }).notNull(),
     completedAt: timestamp("completed_at"),
     attempts: integer("attempts").notNull().default(0),
   },
@@ -298,3 +302,6 @@ export const legalConsents = pgTable(
 
 // Lato social (profilo pubblico, amici, gruppi, segnalazioni, sfide): vedi schema-social.ts e docs/social.md.
 export * from "./schema-social";
+
+// Aggiornamento 2.0 (annunci, reazioni, prove di padronanza, notifiche): vedi schema-grande.ts.
+export * from "./schema-grande";
