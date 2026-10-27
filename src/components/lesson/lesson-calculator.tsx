@@ -32,7 +32,8 @@ export function LessonCalculator() {
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className="fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] left-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-24 lg:left-auto lg:right-[8.5rem]"
+        // Sopra «Ascolta la lezione» (stessa colonna): telefono a sinistra, PC accanto agli altri bottoni. Mai nello stesso punto.
+        className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] left-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-36 lg:left-auto lg:right-40"
       >
         <span aria-hidden>🧮 </span>Calcolatrice
       </button>
