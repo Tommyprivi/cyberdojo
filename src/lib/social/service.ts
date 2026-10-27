@@ -378,7 +378,9 @@ export async function sendFriendRequest(userId: string, codeInput: string): Prom
   const code = normalizeCode(codeInput);
   if (!code) return fail("Il codice ha 8 caratteri, nel formato XXXX-XXXX.");
   if (tooManyAttempts(userId)) return fail("Troppi tentativi: aspetta qualche minuto e riprova.");
-  const generic = "Codice non valido o non disponibile.";
+  // Non dice quale dei motivi vale (per la privacy dell'altro), ma elenca tutti quelli possibili.
+  const generic =
+    "Non trovo questo codice. Controlla che sia giusto e che il tuo amico abbia attivato «Accetto richieste». Ricorda: si può diventare amici solo nella stessa fascia d'età (14-17 anni, oppure adulti).";
   try {
     return await withUser(userId, async (tx): Promise<Result> => {
       const { row } = await loadContext(tx, userId);
