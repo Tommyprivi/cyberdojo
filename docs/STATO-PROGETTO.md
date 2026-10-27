@@ -64,6 +64,14 @@ Lettere: W Sviluppo web, P Programmazione, A App per telefono, I Intelligenza ar
 11. APK Android: alla fine, dopo UI ottimizzata. Servono: licenze SDK accettate dal titolare, chiave di firma (copia privata!), `assetlinks.json`.
 12. Rimasti: revisione di un esperto per contenuti finanza, legali e C8; pulsante «Segnala un errore»; 4 lezioni senza video; copertine mancanti; voci ElevenLabs.
 
+## Aggiornamento del 27 ottobre, sera (commit e8e35f6)
+- Fatto: pagina pubblica `/app` (download APK con istruzioni, tabella delle differenze, impronta SHA-256 per verifica, Play Store «in arrivo»); i dati stanno in `content/app-release.json` e si aggiornano con `scripts/aggiorna-release-apk.mts`. Il file va in `public/downloads/cyberdojo.apk` (il proxy di manutenzione non lo blocca).
+- Fatto: `docs/prompt-immagini.md` RISCRITTO nello stile vero del sito (carta crema, inchiostro blu notte, sigillo rosso, Sensei onigiri esistente; immagine di riferimento `public/img/mascotte/sensei-riferimento.png`).
+- Fatto: prova a schermo da telefono (390 px) con account di prova locale (poi cancellato) di Percorso, Esplora, Prove, Profilo, Sfida, Cerca, Mappa, Ripasso, Glossario, Leghe, Eventi, CTF. Corretti: fasce in alto impilate (conto alla rovescia, novità, intestazione) ora compatte; tutorial e festa di benvenuto non si sovrappongono più; schede del Percorso in riquadro 2×2 da telefono; mappa che sbordava. Nessuna pagina sborda più in larghezza.
+- Negozio, Duelli, Segnalibri danno errore in locale perché le tabelle sono nelle migrazioni 0008/0009 (non applicate): atteso.
+- APK: Java 17 e strumenti Android scaricati in `%USERPROFILE%\.bubblewrap\android_sdk`, config Bubblewrap scritta. MANCA: il titolare deve accettare le licenze Google (`sdkmanager --licenses`), poi `sdkmanager "platform-tools" "build-tools;34.0.0" "platforms;android-34"`, creare la chiave di firma (`keytool`, password in `android/keystore-pass.txt`, ignorata da git, COPIA PRIVATA), `npx @bubblewrap/cli build` in `android/`, poi `scripts/aggiorna-release-apk.mts` e ripubblicare.
+- I 10 corsi nuovi li scrive l'altra IA (non questa).
+
 ## Limiti noti (da non nascondere al titolare)
 - Tutto il nuovo è provato solo con test automatici, non su un telefono vero né su un browser.
 - Offline: si riaprono solo le lezioni già aperte; verifiche e salvataggi richiedono la rete.
