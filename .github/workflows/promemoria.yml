@@ -1,0 +1,36 @@
+# Scheduler gratuito dei promemoria: ogni ora chiama le tre rotte del sito.
+# Ogni rotta decide da sola chi deve ricevere cosa (ora scelta, fuso, già inviato oggi, ha già studiato).
+# Serve il segreto CRON_SECRET nel repository: GitHub → Settings → Secrets and variables → Actions → New repository secret.
+# Quando c'è il dominio proprio, cambia SITE_URL qui sotto.
+name: Promemoria
+
+on:
+  schedule:
+    - cron: "5 * * * *"
+  workflow_dispatch:
+
+env:
+  SITE_URL: https://cyberdojo-nine.vercel.app
+
+jobs:
+  chiama:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Controllo del segreto
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then echo "Manca il segreto CRON_SECRET nel repository."; exit 1; fi
+      - name: Promemoria di studio (email)
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: curl --fail-with-body --silent --show-error --retry 2 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$SITE_URL/api/cron/reminders"
+      - name: Notifiche push
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: curl --fail-with-body --silent --show-error --retry 2 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$SITE_URL/api/cron/push"
+      - name: Riepilogo settimanale (email)
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: curl --fail-with-body --silent --show-error --retry 2 --max-time 120 -H "Authorization: Bearer $CRON_SECRET" "$SITE_URL/api/cron/weekly"
