@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { SHARE_PROGRESS_EXPLAIN, formatLastDay } from "@/lib/docente/rules";
 import { getTeacherClasses } from "@/lib/docente/service";
 import { getSessionUser } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Le mie classi", robots: { index: false } };
 
@@ -26,7 +27,8 @@ async function DocenteContent() {
 
   return (
     <div className="mx-auto grid max-w-3xl gap-5">
-      <header className="grid gap-2 border-b-2 border-border pb-4">
+      <header className="relative grid gap-2 border-b-2 border-border pb-4 pr-20">
+        <PageArt art="docente" priority className="top-0" />
         <h1 className="font-display text-3xl font-bold">Le mie classi</h1>
         <p className="text-muted">
           Le classi sono i gruppi di studio: si creano da <Link href="/social" className="font-semibold text-primary underline">Social, scheda Gruppi</Link> (scegli «Ragazzi di 14-17 anni» per una classe di minorenni). Gli studenti entrano col codice.

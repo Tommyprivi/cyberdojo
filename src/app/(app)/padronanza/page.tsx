@@ -5,6 +5,7 @@ import { COURSES } from "@/lib/content/courses";
 import { loadCatalog } from "@/lib/content/catalog";
 import { lessonIdsOfModule, masteryAvailable, modulesWithLessons, placementSet } from "@/lib/mastery/server";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Prove di padronanza" };
 
@@ -22,7 +23,8 @@ async function PadronanzaContent() {
 
   return (
     <div className="mx-auto grid max-w-3xl gap-6">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="padronanza" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Sai già qualcosa?</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Prove di padronanza</h1>
         <p className="text-muted">

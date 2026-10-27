@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { parseVerdict, scoreOf, type Verdict } from "@/lib/ai/verdict";
 import { playSound } from "@/lib/sounds";
-import { Mascot } from "../mascot";
 import { MicButton, ReadAloud } from "./voice-controls";
+import { PageArt } from "@/components/page-art";
 
 type Lesson = { id: string; title: string };
 type Catalog = { id: string; title: string; modules: { n: number; title: string; lessons: Lesson[] }[] }[];
@@ -260,7 +260,7 @@ export function DojoApp({ catalog, initialLessonId, configured }: { catalog: Cat
       {/* Scelte: a sinistra su PC, a tendina su telefono */}
       <aside className="dossier hidden min-h-0 gap-5 overflow-y-auto p-5 lg:grid lg:content-start" aria-label="Scelta di modalità e lezione">
         <div className="flex items-center gap-3">
-          <Mascot size={56} animate />
+          <PageArt art="senseiStudia" size={56} inline priority />
           <div className="leading-tight">
             <h1 className="font-display text-2xl font-bold">AI Dojo</h1>
             <p className="text-sm text-muted">Il Sensei ti risponde e ti interroga.</p>

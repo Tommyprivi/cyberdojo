@@ -5,6 +5,7 @@ import { listing } from "@/lib/ctf/catalog";
 import { withUser } from "@/lib/db/scoped";
 import { solvedIds } from "@/lib/ctf/server";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Laboratori di hacking guidati (CTF)" };
 
@@ -23,7 +24,8 @@ async function CtfContent() {
 
   return (
     <div className="mx-auto grid max-w-4xl gap-5">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="ctf" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Trova la bandiera</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Laboratori di hacking guidati</h1>
         <p className="text-muted">

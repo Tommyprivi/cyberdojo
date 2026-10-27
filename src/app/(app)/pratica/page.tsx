@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mascot } from "@/components/mascot";
 import { PhoneNotice } from "@/components/practice/phone-notice";
-import { Quiz } from "@/components/practice/quiz";
+import { QuizLazy } from "@/components/practice/quiz-lazy";
 import { ToolPreview, type PreviewKind } from "@/components/practice/tool-preview";
 
 export const metadata: Metadata = { title: "Pratica" };
@@ -162,7 +162,7 @@ export default function Pratica() {
           <p className="mt-1 text-muted">Ripassa con domande veloci, quando vuoi.</p>
         </header>
         <PhoneNotice />
-        <Quiz />
+        <QuizLazy />
       </div>
 
       {/* PC E TABLET: hub degli strumenti */}

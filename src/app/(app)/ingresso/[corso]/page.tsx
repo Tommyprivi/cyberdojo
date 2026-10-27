@@ -6,6 +6,7 @@ import { TestRunner } from "@/components/mastery/test-runner";
 import { COURSES } from "@/lib/content/courses";
 import { courseByLetter, placementSet } from "@/lib/mastery/server";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Test d'ingresso" };
 
@@ -32,7 +33,8 @@ async function IngressoContent({ params }: Params) {
 
   return (
     <div className="mx-auto grid max-w-2xl gap-5">
-      <header>
+      <header className="relative pr-20">
+        <PageArt art="ingresso" priority />
         <Link href="/padronanza" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-muted hover:text-foreground">
           <span aria-hidden>←</span> Prove di padronanza
         </Link>

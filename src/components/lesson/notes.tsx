@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { loadNote, saveNote } from "@/app/actions/notes";
 import { NOTE_MAX } from "@/lib/notes/note-core";
+import { PageArt } from "@/components/page-art";
 
 /**
  * Appunti personali della lezione: bottone discreto + pannello con una casella di testo semplice.
@@ -81,7 +82,10 @@ export function LessonNotes({ lessonId }: { lessonId: string }) {
       {open ? (
         <div role="dialog" aria-label="I tuoi appunti" className="fixed inset-x-0 bottom-0 z-50 grid gap-3 border-t border-border bg-background p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-lg lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[26rem] lg:rounded-lg lg:border">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="font-display text-lg font-bold">I tuoi appunti</h2>
+            <div className="flex items-center gap-3">
+              {text === "" && status !== "loading" ? <PageArt art="vuotoAppunti" size={48} inline /> : null}
+              <h2 className="font-display text-lg font-bold">I tuoi appunti</h2>
+            </div>
             <button type="button" onClick={close} className="min-h-11 px-3 text-sm font-semibold underline">
               Chiudi
             </button>

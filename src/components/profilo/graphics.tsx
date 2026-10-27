@@ -1,9 +1,21 @@
+import Image from "next/image";
 import type { CSSProperties } from "react";
 import { BeltIcon, BoltIcon, BookIcon, CheckIcon, FlameIcon, TargetIcon } from "../icons";
 import { lastDays, type BeltColor, type MedalIcon } from "@/lib/progress/profile-stats";
 
+const BELT_IMG: Partial<Record<BeltColor, string>> = { white: "bianca", yellow: "gialla", orange: "arancione", green: "verde", blue: "blu", black: "nera" };
+
 /** Cintura illustrata: fascia, nodo centrale e due code. Il colore è quello della cintura (variabili dell'app). */
 export function BeltArt({ color, name, className = "" }: { color: BeltColor; name: string; className?: string }) {
+  const img = BELT_IMG[color];
+  if (img) {
+    // Illustrazione: su riquadro crema per restare leggibile nel tema scuro. Le dimensioni vere sono 334x212.
+    return (
+      <span className={`inline-grid place-items-center rounded-xl bg-[#f4efe4] p-2 ${className}`}>
+        <Image src={`/img/premi/cintura-${img}.png`} alt={`Cintura ${name.toLowerCase()}`} width={334} height={212} sizes="(min-width: 1024px) 256px, 60vw" className="h-auto w-full max-w-64 object-contain" />
+      </span>
+    );
+  }
   const fill = `var(--belt-${color})`;
   const edge = "var(--belt-outline)";
   return (
@@ -20,8 +32,20 @@ export function BeltArt({ color, name, className = "" }: { color: BeltColor; nam
 
 const GLYPH: Record<MedalIcon, typeof BoltIcon> = { check: CheckIcon, bolt: BoltIcon, flame: FlameIcon, belt: BeltIcon, book: BookIcon, target: TargetIcon };
 
+/** Medaglie con illustrazione, per id (profile-stats.ts). Le altre restano disegnate in SVG. */
+const MEDAL_IMG: Record<string, string> = { first: "primo-caso", s3: "serie-3", s7: "serie-7", s30: "serie-30", challenge1: "sfida", challenge5: "sfida" };
+
 /** Medaglia con nastro. Sbloccata: sigillo rosso e scintilla; bloccata: tratteggiata e spenta. */
-export function MedalArt({ icon, unlocked, size = 64 }: { icon: MedalIcon; unlocked: boolean; size?: number }) {
+export function MedalArt({ icon, unlocked, size = 64, id }: { icon: MedalIcon; unlocked: boolean; size?: number; id?: string }) {
+  const img = id ? MEDAL_IMG[id] : undefined;
+  if (img) {
+    // Decorativa: nome e stato sono già scritti nel testo accanto. Bloccata = grigia e spenta.
+    return (
+      <span aria-hidden className={`inline-grid place-items-center rounded-xl bg-[#f4efe4] p-1 ${unlocked ? "pop" : "opacity-50 grayscale"}`} style={{ width: size, height: size * 1.125 }}>
+        <Image src={`/img/premi/medaglia-${img}.png`} alt="" width={232} height={336} sizes={`${size}px`} className="h-full w-full object-contain" />
+      </span>
+    );
+  }
   const Glyph = GLYPH[icon];
   return (
     <svg viewBox="0 0 64 72" width={size} height={size * 1.125} aria-hidden className={unlocked ? "pop" : ""}>

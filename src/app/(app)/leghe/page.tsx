@@ -6,6 +6,7 @@ import { getLeagueState } from "@/lib/leagues/service";
 import { requireMember } from "@/lib/session";
 import * as social from "@/lib/social/service";
 import { resetLabel, weekBounds } from "@/lib/social/week";
+import { ArtImage } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Leghe", robots: { index: false } };
 
@@ -52,7 +53,8 @@ async function LegheContent() {
         </p>
       </header>
 
-      <section className="grid gap-2 rounded-lg border border-border bg-surface p-5">
+      <section className="relative grid gap-2 rounded-lg border border-border bg-surface p-5 pr-28">
+        <ArtImage src={`/img/premi/lega-${div.id}.png`} width={248} height={332} size={96} className="absolute right-4 top-4" />
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">La tua divisione</p>
         <p className="font-display text-4xl font-bold" style={{ color: div.color }}>
           {div.name}
@@ -71,8 +73,11 @@ async function LegheContent() {
         <h2 className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Le divisioni</h2>
         <ol className="mt-2 grid gap-1 text-sm">
           {DIVISIONS.map((d, i) => (
-            <li key={d.id} className={i === league.currentIdx ? "font-bold" : ""}>
-              <span style={{ color: d.color }}>●</span> {d.name} · da {d.minXp} XP a settimana
+            <li key={d.id} className={`flex items-center gap-2 ${i === league.currentIdx ? "font-bold" : ""}`}>
+              <ArtImage src={`/img/premi/lega-${d.id}.png`} width={248} height={332} size={40} />
+              <span>
+                <span style={{ color: d.color }}>●</span> {d.name} · da {d.minXp} XP a settimana
+              </span>
             </li>
           ))}
         </ol>

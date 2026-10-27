@@ -21,24 +21,26 @@ export type ShopItem = {
   price: number;
   description: string;
   look: SenseiLook;
+  /** Illustrazione opzionale (percorso in public/img/negozio). Non cambia id, prezzo né logica. */
+  img?: { src: string; width: number; height: number };
 };
 
 export const SLOT_LABELS: Record<ShopSlot, string> = { band: "Fascia", hat: "Cappello", background: "Sfondo" };
 
 export const SHOP_ITEMS: readonly ShopItem[] = [
   { id: "fascia-indaco", name: "Fascia indaco", slot: "band", price: 10, description: "Il colore del dojo.", look: { band: "#1f3a5f" } },
-  { id: "fascia-verde", name: "Fascia verde", slot: "band", price: 20, description: "Fresca come il tè matcha.", look: { band: "#3f7d4e" } },
+  { id: "fascia-verde", name: "Fascia verde", slot: "band", price: 20, description: "Fresca come il tè matcha.", look: { band: "#3f7d4e" }, img: { src: "/img/negozio/fascia-verde.png", width: 266, height: 180 } },
   { id: "fascia-viola", name: "Fascia viola", slot: "band", price: 35, description: "Un tocco di mistero.", look: { band: "#6b3fa0" } },
   { id: "sfondo-alba", name: "Alba", slot: "background", price: 40, description: "Il sole che sorge dietro il Sensei.", look: { background: "alba" } },
-  { id: "cappello-paglia", name: "Cappello di paglia", slot: "hat", price: 50, description: "Per i lunghi viaggi tra i casi.", look: { hat: "paglia" } },
-  { id: "fascia-oro", name: "Fascia d'oro", slot: "band", price: 70, description: "Brilla anche di notte.", look: { band: "#c9971c" } },
+  { id: "cappello-paglia", name: "Cappello di paglia", slot: "hat", price: 50, description: "Per i lunghi viaggi tra i casi.", look: { hat: "paglia" }, img: { src: "/img/negozio/cappello-paglia.png", width: 310, height: 236 } },
+  { id: "fascia-oro", name: "Fascia d'oro", slot: "band", price: 70, description: "Brilla anche di notte.", look: { band: "#c9971c" }, img: { src: "/img/negozio/fascia-oro.png", width: 268, height: 180 } },
   { id: "sfondo-bambu", name: "Bosco di bambù", slot: "background", price: 85, description: "Calma e canne verdi.", look: { background: "bambu" } },
   { id: "cappello-ninja", name: "Bandana ninja", slot: "hat", price: 110, description: "Silenzioso e veloce.", look: { hat: "ninja" } },
   { id: "sfondo-notte", name: "Notte stellata", slot: "background", price: 140, description: "Stelle e luna per studiare tardi.", look: { background: "notte" } },
-  { id: "fascia-nera", name: "Fascia nera", slot: "band", price: 180, description: "Il colore dei veri maestri.", look: { band: "#1a1612" } },
-  { id: "cappello-cuoco", name: "Cappello da cuoco", slot: "hat", price: 230, description: "Il Sensei è pur sempre un onigiri.", look: { hat: "cuoco" } },
+  { id: "fascia-nera", name: "Fascia nera", slot: "band", price: 180, description: "Il colore dei veri maestri.", look: { band: "#1a1612" }, img: { src: "/img/negozio/fascia-nera.png", width: 268, height: 180 } },
+  { id: "cappello-cuoco", name: "Cappello da cuoco", slot: "hat", price: 230, description: "Il Sensei è pur sempre un onigiri.", look: { hat: "cuoco" }, img: { src: "/img/negozio/cappello-cuoco.png", width: 260, height: 230 } },
   { id: "sfondo-sakura", name: "Fiori di ciliegio", slot: "background", price: 300, description: "Petali che cadono piano.", look: { background: "sakura" } },
-  { id: "cappello-corona", name: "Corona del maestro", slot: "hat", price: 500, description: "Per chi arriva fino in fondo.", look: { hat: "corona" } },
+  { id: "cappello-corona", name: "Corona del maestro", slot: "hat", price: 500, description: "Per chi arriva fino in fondo.", look: { hat: "corona" }, img: { src: "/img/negozio/corona.png", width: 262, height: 192 } },
 ];
 
 const BY_ID = new Map(SHOP_ITEMS.map((i) => [i.id, i]));

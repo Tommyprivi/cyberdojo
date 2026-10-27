@@ -5,6 +5,7 @@ import { ReviewRunner } from "@/components/mastery/review-runner";
 import { withUser } from "@/lib/db/scoped";
 import { loadDueReview } from "@/lib/mastery/review";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Ripasso" };
 
@@ -22,7 +23,8 @@ async function RipassoContent() {
 
   return (
     <div className="mx-auto grid max-w-2xl gap-5">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="ripasso" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Ripasso intelligente</p>
         <h1 className="font-display text-3xl font-bold">Ripassa quello che dimentichi</h1>
         <p className="text-muted">Le domande che sbagli nelle prove tornano qui: domani, poi tra 3, 7 e 21 giorni, se continui a rispondere bene.</p>
@@ -30,7 +32,8 @@ async function RipassoContent() {
       {batch.questions.length > 0 ? (
         <ReviewRunner questions={batch.questions} />
       ) : (
-        <section className="grid gap-3 rounded-2xl border-2 border-border bg-surface p-5">
+        <section className="relative grid gap-3 rounded-2xl border-2 border-border bg-surface p-5 pr-24">
+          <PageArt art="senseiFelice" size={72} className="top-5 right-5" />
           <h2 className="font-display text-xl font-bold">Niente da ripassare adesso</h2>
           <p className="text-muted">
             {batch.waiting > 0

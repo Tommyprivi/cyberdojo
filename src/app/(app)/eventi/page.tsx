@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import raw from "../../../../content/events.json";
 import { EventCard } from "@/components/events/event-card";
 import { parseEvents } from "@/lib/events/events";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Eventi dal vivo", robots: { index: false } };
 
@@ -21,7 +22,8 @@ async function EventiContent() {
   const events = parseEvents(raw, now);
   return (
     <div className="grid gap-4">
-      <header>
+      <header className="relative pr-20">
+        <PageArt art="eventi" priority />
         <h1 className="font-display text-3xl font-bold">Eventi dal vivo</h1>
         <p className="mt-1 text-sm text-muted">Appuntamenti a data fissa. Nessuna iscrizione: basta esserci.</p>
       </header>

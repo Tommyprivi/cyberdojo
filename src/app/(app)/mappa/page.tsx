@@ -5,6 +5,7 @@ import { loadCatalog } from "@/lib/content/catalog";
 import { COURSES } from "@/lib/content/courses";
 import { buildKnowledgeMap, type MapCourseNode, type ModuleState } from "@/lib/map/map-core";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Mappa del sapere" };
 
@@ -21,7 +22,8 @@ async function Mappa() {
   const map = buildKnowledgeMap(COURSES, loadCatalog(), member.completed);
   return (
     <div className="mx-auto grid max-w-3xl grid-cols-1 gap-8 lg:mx-0">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="mappa" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Mappa del sapere</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Dove sei arrivato</h1>
         <p className="text-muted">Ogni cerchio è un modulo. Si procede in ordine, dal primo all&apos;ultimo.</p>

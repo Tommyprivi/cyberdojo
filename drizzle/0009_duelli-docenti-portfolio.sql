@@ -59,7 +59,8 @@ AS $$
          (theirs.user_id IS NOT NULL),
          CASE WHEN mine.user_id IS NOT NULL OR d.status IN ('done','expired') THEN theirs.score END,
          sp.nickname
-  FROM duels d, me
+  FROM duels d
+  CROSS JOIN me
   LEFT JOIN duel_results mine ON mine.duel_id = d.id AND mine.user_id = me.uid
   LEFT JOIN duel_results theirs ON theirs.duel_id = d.id AND theirs.user_id <> me.uid
   LEFT JOIN social_profiles sp ON sp.user_id = CASE WHEN d.challenger_id = me.uid THEN d.opponent_id ELSE d.challenger_id END

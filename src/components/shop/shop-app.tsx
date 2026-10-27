@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { buyItemAction, equipItemAction } from "@/app/actions/shop";
 import { Mascot } from "@/components/mascot";
 import { lookFromEquipped, SHOP_ITEMS, SLOT_LABELS, type ShopItem } from "@/lib/shop/items";
+import { ArtImage, ART } from "@/components/page-art";
 
 /** Negozio del Sensei: anteprima, acquisto ed equipaggiamento. Il saldo mostrato arriva dal server. */
 export function ShopApp({ coins, owned, equipped }: { coins: number; owned: string[]; equipped: string[] }) {
@@ -23,10 +24,15 @@ export function ShopApp({ coins, owned, equipped }: { coins: number; owned: stri
 
   return (
     <div className="grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
+      <div className="flex items-center gap-3 lg:col-span-2">
+        <ArtImage src={ART.negozio.src} width={ART.negozio.width} height={ART.negozio.height} size={72} alt="" wide />
+        <p className="text-sm text-muted">Scegli, guarda l&apos;anteprima e indossa.</p>
+      </div>
       <div className="grid content-start justify-items-center gap-3 rounded-lg border border-border bg-surface p-5 lg:sticky lg:top-4">
         <Mascot size={160} look={look} animate />
         <p className="text-sm text-muted">{preview ? `Anteprima: ${preview.name}` : "Il tuo Sensei"}</p>
-        <p className="rounded-md bg-deep px-3 py-1.5 font-mono text-sm font-bold text-deep-fg">
+        <p className="flex items-center gap-2 rounded-md bg-deep px-3 py-1.5 font-mono text-sm font-bold text-deep-fg">
+          <ArtImage src={ART.moneta.src} width={ART.moneta.width} height={ART.moneta.height} size={28} className="!p-0.5" />
           {coins} {coins === 1 ? "moneta" : "monete"}
         </p>
         <p className="text-center text-xs text-muted">Le monete sono punti di gioco: 10 XP = 1 moneta. Nessun soldo vero.</p>
@@ -43,8 +49,11 @@ export function ShopApp({ coins, owned, equipped }: { coins: number; owned: stri
             const afford = coins >= item.price;
             return (
               <li key={item.id} className="grid gap-2 rounded-lg border border-border bg-surface p-4">
-                <div className="flex items-baseline justify-between gap-2">
-                  <p className="font-bold">{item.name}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    {item.img ? <ArtImage src={item.img.src} width={item.img.width} height={item.img.height} size={48} /> : null}
+                    <p className="font-bold">{item.name}</p>
+                  </div>
                   <span className="font-mono text-xs text-muted">{SLOT_LABELS[item.slot]}</span>
                 </div>
                 <p className="text-sm text-muted">{item.description}</p>

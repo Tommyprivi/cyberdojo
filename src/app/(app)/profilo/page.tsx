@@ -255,7 +255,7 @@ async function ProfiloContent() {
           <ul className="grid min-h-0 grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-4 xl:overflow-y-auto">
             {medals.map((m) => (
               <li key={m.id} className="grid justify-items-center gap-1 text-center">
-                <MedalArt icon={m.icon} unlocked={m.unlocked} size={56} />
+                <MedalArt icon={m.icon} unlocked={m.unlocked} size={56} id={m.id} />
                 <p className="text-sm font-semibold leading-tight">{m.label}</p>
                 <p className="text-xs text-muted">{m.unlocked ? "Sbloccata" : m.hint}</p>
               </li>

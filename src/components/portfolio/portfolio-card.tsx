@@ -21,7 +21,7 @@ export function PortfolioCard({ p }: { p: PublicPortfolio }) {
       {p.belt && (
         <section aria-label="Cintura e punti" className="grid gap-2 rounded-lg border border-border bg-surface p-4">
           <h2 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted">Cintura</h2>
-          <BeltArt color={p.belt.color} name={p.belt.beltName} className="h-14 w-auto max-w-56" />
+          <BeltArt color={p.belt.color} name={p.belt.beltName} className="w-44 max-w-full" />
           <p>
             Cintura <strong>{p.belt.beltName.toLowerCase()}</strong> · livello {p.belt.levelName} · <strong>{p.belt.xp}</strong> XP
           </p>

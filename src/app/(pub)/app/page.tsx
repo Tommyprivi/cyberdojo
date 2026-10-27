@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { formatSize, readAppRelease } from "@/lib/app-release";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = {
   title: "Scarica l'app",
@@ -20,7 +21,8 @@ export default function AppPage() {
   const r = readAppRelease();
   return (
     <div className="mx-auto grid w-full max-w-3xl gap-8 px-4 py-10">
-      <header className="grid gap-2">
+      <header className="relative grid gap-2 pr-20">
+        <PageArt art="app" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">App Android</p>
         <h1 className="font-display text-3xl font-bold">Scarica CyberDojo sul telefono</h1>
         <p className="text-lg text-muted">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { COURSES } from "@/lib/content/courses";
 import { GLOSSARY, glossarySlug } from "@/lib/glossary/terms";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = {
   title: "Glossario",
@@ -14,7 +15,8 @@ export default function Glossario() {
 
   return (
     <div className="mx-auto grid max-w-3xl gap-6 lg:mx-0">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="glossario" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Glossario</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Le parole dei corsi</h1>
         <p className="text-muted">{sorted.length} termini, in ordine alfabetico. Per cercarne uno usa la ricerca del browser o la pagina Cerca.</p>

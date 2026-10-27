@@ -76,7 +76,30 @@ Tutte con spazio vuoto, sigillo rosso piccolo in basso a destra, nessun testo.
 `vuoto-appunti`, `vuoto-segnalibri`, `errore-404` (Sensei con una mappa, perso), `manutenzione` (Sensei con attrezzi), `successo` (Sensei con un segno di spunta a pennellata). Esiste già `public/img/manutenzione.jpg`: stessa famiglia.
 
 ## 8. App e negozi (dimensioni esatte)
-- `icona-app.png` — 1024×1024: il Sensei (riferimento allegato) su sfondo blu notte #1f3a5f o crema, margini ampi: la parte importante nel 70% centrale.
+- `icona-app.png` — vedi la sezione «Icona divertente» qui sotto.
+
+### Icona divertente dell'app (stile Duolingo)
+Idea: come l'icona di Duolingo, il personaggio È l'icona: enorme, che riempie quasi tutto lo spazio, con una faccia molto espressiva, su un colore pieno. Funziona anche a 48 px sul telefono.
+Regole tecniche (valgono per tutti): quadrato 1024×1024, **a tutto campo** (niente angoli arrotondati, niente ombra esterna, niente cornice: li mette Android), il Sensei dentro il 75% centrale, **nessun testo**.
+Allega sempre `public/img/mascotte/sensei-riferimento.png`.
+
+**Blocco di stile per l'icona (incolla prima del prompt)**
+> App icon, 1024x1024, full-bleed square. Flat vector character, very bold and playful, thick rounded dark-navy outline #1a1612, big glossy-but-flat eyes with white highlights, huge friendly expression, cream rice-ball body #f4efe4, red headband #b8321c with a white circle, navy nori band #1f3a5f, rosy cheeks. One solid flat background color, a few tiny sparkles at most. The character fills about 75% of the canvas, centered, slightly tilted for energy. No text, no letters, no border, no drop shadow, no gradient background, no 3D. Cheerful, simple, instantly readable at tiny sizes. Use the attached character exactly (same face shape, headband and nori band), only more expressive.
+
+**Varianti (genera tutte e scegli)**
+1. `icona-a-sorriso-grande` — sfondo **verde brillante #58cc02**; Sensei con un enorme sorriso a bocca aperta e occhi felici, una piccola scintilla gialla in alto a destra.
+2. `icona-b-saluta` — sfondo **blu notte #1f3a5f** (il colore del sito); Sensei che fa ciao con una manina, occhi sorridenti a mezzaluna, tre piccoli coriandoli rossi e gialli.
+3. `icona-c-salto` — sfondo **giallo sole #ffc800**; Sensei che salta di gioia con le braccia in alto, bocca aperta, linee di movimento sottili sotto.
+4. `icona-d-strizza` — sfondo **rosso sigillo #c0341f**; Sensei che strizza l'occhio con un pollice in su, sorriso furbo.
+5. `icona-e-studia` — sfondo **azzurro #1d63c9**; Sensei con occhiali tondi e un libro aperto sotto il mento, sguardo curioso, una lampadina d'inchiostro sopra la testa.
+6. `icona-f-ninja` — sfondo **verde scuro #1a7a35**; Sensei con fascia nera (invece che rossa) in posa da ninja, occhi determinati ma sorridenti, una stellina ninja gialla.
+Consiglio: per un'icona che si distingue sul telefono, sfondo con colore saturo (1, 3 o 4). Quella con lo sfondo blu notte (2) è la più coerente con il sito.
+
+**Versione monocromatica per le notifiche (facoltativa, 96×96)**
+> Simple white silhouette of the onigiri mascot head with the headband as a cut-out, on a fully transparent background, flat, no outline, no gradient. (Android richiede una sagoma bianca per l'icona della barra di stato.)
+
+**Quando me la dai**
+Dammi il file 1024×1024 della variante scelta: lo uso per l'icona dell'app, per la scheda del sito, per l'APK e per lo store, e genero io tutte le misure.
 - `grafica-funzione-1024x500.png` — Sensei a sinistra, schermate di telefono stilizzate a destra, sfondo crema, spazio per il titolo.
 - `schermata-1..5.png` — 1080×1920: veri screenshot dell'app (li facciamo dal telefono); niente riempitivi.
 - `immagine-condivisione.png` — 1200×630: Sensei grande al centro, pochi elementi, sigillo rosso.

@@ -11,6 +11,7 @@ import { AskPush } from "../push/ask-push";
 import { LessonNotes } from "./notes";
 import { LessonBookmark } from "./bookmark";
 import { PlayerContext, type LessonVideo } from "./player-context";
+import { PageArt } from "@/components/page-art";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
 
@@ -203,7 +204,7 @@ export function LessonPlayer({
             <article className="mx-auto w-full max-w-2xl rounded-lg border border-border bg-surface p-5 sm:p-8 lg:mx-0 lg:max-w-[84rem] lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:text-[1.0625rem]">
               {done ? (
                 <div className="rise grid justify-items-center gap-4 py-10 text-center">
-                  <Mascot size={160} mood="happy" animate />
+                  <PageArt art="senseiCelebra" size={160} inline priority />
                   <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Lezione finita</p>
                   <h1 className="font-display text-4xl font-bold lg:text-5xl">Ottimo lavoro!</h1>
                   <p className="max-w-md text-muted">

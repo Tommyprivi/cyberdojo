@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Quiz } from "@/components/practice/quiz";
+import { QuizLazy } from "@/components/practice/quiz-lazy";
 
 export const metadata: Metadata = { title: "Quiz veloci" };
 
@@ -13,7 +13,7 @@ export default function QuizPage() {
         </Link>
         <h1 className="font-display text-3xl font-semibold">Quiz veloci</h1>
       </header>
-      <Quiz />
+      <QuizLazy />
     </div>
   );
 }

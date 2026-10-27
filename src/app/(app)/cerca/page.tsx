@@ -7,6 +7,7 @@ import { search, tokenize } from "@/lib/search/search-core";
 import { getSearchIndex } from "@/lib/search/search-index";
 import { canOpenLesson } from "@/lib/progress/unlock";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Cerca" };
 
@@ -29,7 +30,8 @@ async function Cerca({ searchParams }: { searchParams: PageProps<"/cerca">["sear
 
   return (
     <div className="mx-auto grid max-w-3xl gap-5 lg:mx-0">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="cerca" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Ricerca</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Cerca nelle lezioni</h1>
         <p className="text-muted">Titoli, testi e glossario. Non serve scrivere la parola intera né fare attenzione agli accenti.</p>

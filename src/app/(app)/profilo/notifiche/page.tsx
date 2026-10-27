@@ -8,6 +8,7 @@ import { withUser } from "@/lib/db/scoped";
 import { pushConfig } from "@/lib/push/config";
 import { PUSH_KINDS, type PushKind } from "@/lib/push/rules";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Notifiche", robots: { index: false } };
 
@@ -38,9 +39,12 @@ async function NotificheContent() {
   return (
     <div className="mx-auto grid w-full max-w-3xl content-start gap-4 lg:mx-0 lg:max-w-4xl">
       <header className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Profilo · Notifiche</p>
-          <h1 className="font-display text-3xl font-bold leading-tight">Notifiche</h1>
+        <div className="flex items-center gap-3">
+          <div>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Profilo · Notifiche</p>
+            <h1 className="font-display text-3xl font-bold leading-tight">Notifiche</h1>
+          </div>
+          <PageArt art="notifiche" inline priority />
         </div>
         <Link href="/profilo" className="inline-flex min-h-11 items-center rounded-md border border-border bg-surface px-3 text-sm font-semibold hover:bg-surface-muted">
           Torna al profilo

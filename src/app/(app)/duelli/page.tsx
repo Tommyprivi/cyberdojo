@@ -5,6 +5,7 @@ import { DuelInviteButtons } from "@/components/duels/duel-invite-buttons";
 import { timeLeftLabel } from "@/lib/duels/rules";
 import { listDuels, type DuelView } from "@/lib/duels/service";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Duelli", robots: { index: false } };
 
@@ -38,7 +39,8 @@ async function DuelliContent() {
 
   return (
     <div className="mx-auto grid max-w-2xl gap-6">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="duello" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Tra amici</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Duelli</h1>
         <p className="text-muted">

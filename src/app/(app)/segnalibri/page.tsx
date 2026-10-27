@@ -8,6 +8,7 @@ import { loadCatalog } from "@/lib/content/catalog";
 import { getRawLesson, splitScreens } from "@/lib/content/load";
 import { canOpenLesson } from "@/lib/progress/unlock";
 import { requireMember } from "@/lib/session";
+import { PageArt } from "@/components/page-art";
 
 export const metadata: Metadata = { title: "Segnalibri" };
 
@@ -51,7 +52,8 @@ async function SegnalibriContent() {
 
   return (
     <div className="mx-auto grid max-w-2xl gap-5">
-      <header className="grid gap-1">
+      <header className="relative grid gap-1 pr-20">
+        <PageArt art="segnalibro" priority />
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Segnalibri</p>
         <h1 className="font-display text-3xl font-bold">I punti che vuoi ritrovare</h1>
         <p className="text-muted">Dentro una lezione tocca «Segnalibro» per segnare la schermata che stai leggendo.</p>
@@ -59,7 +61,10 @@ async function SegnalibriContent() {
       {rows === null ? (
         <p className="rounded-2xl border-2 border-border bg-surface p-5 text-muted">I segnalibri non sono disponibili in questo momento. Riprova tra poco.</p>
       ) : items.length === 0 ? (
-        <p className="rounded-2xl border-2 border-border bg-surface p-5 text-muted">Non hai ancora nessun segnalibro.</p>
+        <div className="flex items-center gap-4 rounded-2xl border-2 border-border bg-surface p-5">
+          <PageArt art="vuotoSegnalibri" size={80} inline />
+          <p className="text-muted">Non hai ancora nessun segnalibro.</p>
+        </div>
       ) : (
         <ul className="grid gap-3">
           {items.map((i) => (
