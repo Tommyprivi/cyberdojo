@@ -110,7 +110,7 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
   const nextCover = nextCourse && next ? moduleCover(nextCourse.id, next.module) : null;
 
   return (
-    <div className="grid gap-x-8 gap-y-6 lg:h-full lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_auto_minmax(0,1fr)] lg:gap-y-5 xl:grid-cols-[minmax(0,1fr)_23rem] xl:gap-x-10">
+    <div className="grid gap-x-8 gap-y-6 lg:h-full lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_auto_auto_minmax(0,1fr)] lg:gap-y-5 xl:grid-cols-[minmax(0,1fr)_23rem] xl:gap-x-10">
       {!profile.tutorialDone && <Tutorial />}
 
       {/* Saluto */}
@@ -185,7 +185,7 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
       )}
 
       {/* Oggi: sotto il caso su telefono, colonna fissa a destra su PC */}
-      <aside aria-label="Oggi" className="grid content-start gap-4 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:min-h-0 lg:content-start">
+      <aside aria-label="Oggi" className="grid content-start gap-4 lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:min-h-0 lg:content-start">
         <section aria-label="I tuoi numeri" className="rounded-lg border border-border bg-surface">
           <div className="hidden items-center justify-between border-b border-border px-4 py-3 lg:flex">
             <Eyebrow className="text-muted">Oggi</Eyebrow>
