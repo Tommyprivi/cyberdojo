@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { CallRoom } from "@/components/social/call-room";
 import { requireMember } from "@/lib/session";
 import * as social from "@/lib/social/service";
 
@@ -33,13 +34,10 @@ async function Chiamata({ params }: Params) {
         </Link>
         <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Studia insieme</p>
         <h1 className="font-display text-3xl font-bold">Chiamata con {call.friendName ?? "il tuo amico"}</h1>
-        <p className="text-muted">Chat, voce, video e condivisione dello schermo, nella stanza privata vostra.</p>
+        <p className="text-muted">Voce, video e chat, dentro CyberDojo, solo tra voi due.</p>
       </header>
 
-      <a href={call.callUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-h-14 w-full justify-center text-lg">
-        Avvia la chiamata
-      </a>
-      <p className="-mt-3 text-sm text-muted">Si apre in una nuova scheda. Il tuo amico entra dallo stesso pulsante, nella sua pagina.</p>
+      <CallRoom friendshipId={id} friendName={call.friendName} fallbackUrl={call.callUrl} />
 
       <section aria-labelledby="consigli" className="grid gap-2 rounded-lg border border-border bg-surface p-4">
         <h2 id="consigli" className="font-semibold">
@@ -47,7 +45,8 @@ async function Chiamata({ params }: Params) {
         </h2>
         <ul className="grid list-disc gap-1.5 pl-5 text-sm">
           <li>Usa le cuffie: si sente meglio e non c&apos;è eco.</li>
-          <li>Il microfono serve; la fotocamera parte spenta e la puoi accendere dopo, se vuoi.</li>
+          <li>Il microfono serve; la fotocamera parte spenta e la accendi tu quando vuoi.</li>
+          <li>Il tuo amico deve aprire questa pagina per collegarsi: finché non entra, vedi «In attesa».</li>
           <li>Se il browser chiede il permesso di microfono o fotocamera, scegli «Consenti» solo per questa chiamata.</li>
         </ul>
       </section>
@@ -58,7 +57,7 @@ async function Chiamata({ params }: Params) {
         </h2>
         <ul className="grid list-disc gap-1.5 pl-5 text-sm">
           <li>Non condividere dati personali (indirizzo, telefono, password, documenti). Puoi bloccare o segnalare l&apos;amico dal pannello amici.</li>
-          <li>La chiamata passa dal servizio Jitsi Meet, non dai server di CyberDojo. CyberDojo non registra né salva nulla: né audio, né video, né messaggi.</li>
+          <li>Voce, video e chat vanno direttamente tra voi due. CyberDojo non registra né salva nulla: né audio, né video, né messaggi.</li>
         </ul>
       </section>
 
