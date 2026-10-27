@@ -30,6 +30,7 @@ const mono = IBM_Plex_Mono({
 const SHARE_IMAGE = { url: "/img/app/immagine-condivisione.png", width: 634, height: 338, alt: "CyberDojo: la scuola di cybersecurity con il Sensei" };
 
 export const metadata: Metadata = {
+  icons: { icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }], apple: "/apple-touch-icon.png" },
   // L'indirizzo vero del sito (su Vercel è quello gratuito finché non c'è il dominio proprio).
   metadataBase: new URL(process.env.BETTER_AUTH_URL || `https://${SITE.domain}`),
   title: { default: SITE.name, template: `%s | ${SITE.name}` },
