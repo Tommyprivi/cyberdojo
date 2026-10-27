@@ -15,6 +15,7 @@ import { UiSounds } from "@/components/ui-sounds";
 import { readAnnouncements } from "@/lib/announcements";
 import { readCountdown } from "@/lib/countdown";
 import { getRawLesson, readRawLessons, splitScreens } from "@/lib/content/load";
+import { lessonWantsCalculator } from "@/lib/lesson-calculator";
 import { isVisible, LESSON_ID, lessonFrontmatter } from "@/lib/content/schema";
 import { loadCatalog } from "@/lib/content/catalog";
 import { allowedDuringMaintenance, MAINTENANCE_HEADER } from "@/lib/maintenance";
@@ -81,7 +82,7 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
     <>
       <UiSounds />
       <OfflineSupport lessonId={lesson.fm.id} />
-      <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} />
+      <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} calculator={lessonWantsCalculator(lesson.fm.id, lesson.body)} />
       <ListenLesson lessonId={lesson.fm.id} title={lesson.fm.title} screens={splitScreens(lesson.body).map(extractSayTexts)} />
       {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} newsVersion={readAnnouncements()[0]?.id ?? ""} maintenance={countdown.maintenance} /> : null}
     </>

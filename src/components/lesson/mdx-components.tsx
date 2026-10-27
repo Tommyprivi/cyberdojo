@@ -12,6 +12,7 @@ import { Video } from "./video";
 import { LinuxTerminal } from "../linux/linux-terminal";
 import { VirtualMachine } from "../linux/virtual-machine";
 import { PythonTerminal } from "../python/python-terminal";
+import { Calculator as Calcolatrice } from "../practice/calculator";
 import { SqlPlayground } from "../sql/sql-playground";
 
 type P<T extends keyof React.JSX.IntrinsicElements> = ComponentPropsWithoutRef<T>;
@@ -35,6 +36,7 @@ export const lessonComponents = {
   Compare,
   Video,
   PythonTerminal,
+  Calcolatrice,
   LinuxTerminal,
   VirtualMachine,
   SqlPlayground,

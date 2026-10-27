@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
 import { Mascot } from "../mascot";
 import { ThemeToggle } from "../theme-toggle";
 import { AskPush } from "../push/ask-push";
+import { LessonCalculator } from "./lesson-calculator";
 import { LessonNotes } from "./notes";
 import { LessonBookmark } from "./bookmark";
 import { PlayerContext, type LessonVideo } from "./player-context";
@@ -31,11 +32,14 @@ export function LessonPlayer({
   title,
   screens,
   video,
+  calculator = false,
 }: {
   lessonId: string;
   title: string;
   screens: PlayerScreen[];
   video?: LessonVideo;
+  /** Mostra la calcolatrice nella lezione (decide la pagina: vedi src/lib/lesson-calculator.ts). */
+  calculator?: boolean;
 }) {
   const [index, setIndex] = useState(0);
   const [reached, setReached] = useState(0); // schermata più avanti raggiunta: fin lì l'indice è cliccabile
@@ -299,6 +303,7 @@ export function LessonPlayer({
           </nav>
         </div>
       </div>
+      {calculator ? <LessonCalculator /> : null}
       <LessonNotes lessonId={lessonId} />
       <LessonBookmark lessonId={lessonId} screen={index} />
     </PlayerContext.Provider>
