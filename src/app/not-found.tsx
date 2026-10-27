@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Mascot } from "@/components/mascot";
 import { Seal } from "@/components/seal";
 
 /**
@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <main className="grid min-h-dvh place-items-center px-4 py-16">
       <div className="grid max-w-md justify-items-center gap-5 text-center">
-        <Mascot size={140} mood="attento" animate />
+        <Image src="/img/stati/errore-404.png" alt="Il Sensei con una mappa, un po' perso" width={296} height={188} priority className="h-auto w-64" />
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Errore 404</p>
         <h1 className="font-display text-3xl font-bold">Questa pagina non esiste</h1>
         <p className="text-muted">

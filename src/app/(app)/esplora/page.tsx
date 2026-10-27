@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { EXPLORE_GROUPS } from "@/components/explore-items";
 
@@ -23,8 +24,8 @@ export default function Esplora() {
                   href={i.href as any}
                   className="flex min-h-16 items-center gap-3 rounded-2xl border-2 border-border bg-surface p-3 hover:border-primary"
                 >
-                  <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-xl bg-surface-muted text-2xl">
-                    {i.emoji}
+                  <span aria-hidden className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-xl bg-surface-muted text-2xl">
+                    {i.img ? <Image src={i.img} alt="" width={44} height={44} className="size-10 object-contain" /> : i.emoji}
                   </span>
                   <span className="min-w-0">
                     <span className="block font-semibold leading-tight">{i.label}</span>

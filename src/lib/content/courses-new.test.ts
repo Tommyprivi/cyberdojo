@@ -32,7 +32,7 @@ describe("i 10 nuovi corsi", () => {
       expect(def.blocks!.map((b) => [b.from, b.to])).toEqual([[1, 4], [5, 8], [9, 12], [13, 16], [17, 20]]);
       expect(def.blurb?.lead.length).toBeGreaterThan(40);
       expect(getCourseByFolder(c.cartella)?.id).toBe(c.id);
-      expect(COURSE_COVER[def.id]).toMatch(/^\/img\/corsi\/.+\.svg$/);
+      expect(COURSE_COVER[def.id]).toMatch(/^\/img\/corsi\/.+\.(svg|png)$/);
     }
   });
 

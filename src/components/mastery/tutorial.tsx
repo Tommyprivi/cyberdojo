@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { completeTutorial } from "@/app/actions/tutorial";
-import { Mascot } from "@/components/mascot";
+import Image from "next/image";
 
 const STEPS = [
-  { title: "Benvenuto nel dojo", body: "Qui impari la sicurezza informatica un caso alla volta. Ogni lezione dura pochi minuti e finisce con una verifica." },
-  { title: "Si va in ordine", body: "Una lezione si apre quando hai finito quelle prima. Gli XP, la serie di giorni e le cinture raccontano i tuoi progressi." },
-  { title: "Sai già qualcosa?", body: "Puoi fare il test d'ingresso di un corso e le prove di padronanza dei moduli. Se le superi, le lezioni risultano «padroneggiate»: si aprono le successive, ma senza XP." },
-  { title: "Ripassa quello che dimentichi", body: "Le domande sbagliate tornano nel ripasso, a intervalli sempre più lunghi. Pochi minuti al giorno bastano. Buono studio!" },
+  { img: "/img/funzioni/tutorial-1-porta.png", title: "Benvenuto nel dojo", body: "Qui impari la sicurezza informatica un caso alla volta. Ogni lezione dura pochi minuti e finisce con una verifica." },
+  { img: "/img/funzioni/tutorial-2-sentiero.png", title: "Si va in ordine", body: "Una lezione si apre quando hai finito quelle prima. Gli XP, la serie di giorni e le cinture raccontano i tuoi progressi." },
+  { img: "/img/funzioni/test-ingresso.png", title: "Sai già qualcosa?", body: "Puoi fare il test d'ingresso di un corso e le prove di padronanza dei moduli. Se le superi, le lezioni risultano «padroneggiate»: si aprono le successive, ma senza XP." },
+  { img: "/img/funzioni/ripasso.png", title: "Ripassa quello che dimentichi", body: "Le domande sbagliate tornano nel ripasso, a intervalli sempre più lunghi. Pochi minuti al giorno bastano. Buono studio!" },
 ];
 
 /** Benvenuto di 4 schermate al primo accesso. Si può saltare in ogni momento; il server ricorda che è stato visto. */
@@ -50,7 +50,7 @@ export function Tutorial() {
             Salta
           </button>
         </div>
-        <Mascot size={72} animate className="justify-self-center" />
+        <Image src={STEPS[step].img} alt="" width={156} height={148} className="h-28 w-auto justify-self-center rounded-lg object-contain" priority={step === 0} />
         <h2 id="tutorial-title" className="font-display text-2xl font-bold">
           {STEPS[step].title}
         </h2>
