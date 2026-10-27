@@ -16,8 +16,8 @@
     "startUrl":  "/percorso",
     "iconUrl":  "https://cyberdojo-nine.vercel.app/icons/icon-512.png",
     "maskableIconUrl":  "https://cyberdojo-nine.vercel.app/icons/icon-maskable-512.png",
-    "appVersion":  "1.0.1",
-    "appVersionCode":  2,
+    "appVersion":  "1.1.0",
+    "appVersionCode":  3,
     "signingKey":  {
                        "path":  "./cyberdojo.keystore",
                        "alias":  "cyberdojo"
@@ -32,7 +32,24 @@
     "isChromeOSOnly":  false,
     "isMetaQuest":  false,
     "shortcuts":  [
-
+                      {
+                          "name":  "Continua a studiare",
+                          "shortName":  "Percorso",
+                          "url":  "https://cyberdojo-nine.vercel.app/percorso",
+                          "chosenIconUrl":  "https://cyberdojo-nine.vercel.app/icons/icon-192.png"
+                      },
+                      {
+                          "name":  "Sfida del giorno",
+                          "shortName":  "Sfida",
+                          "url":  "https://cyberdojo-nine.vercel.app/sfida",
+                          "chosenIconUrl":  "https://cyberdojo-nine.vercel.app/icons/icon-192.png"
+                      },
+                      {
+                          "name":  "Calcolatrice",
+                          "shortName":  "Calcolatrice",
+                          "url":  "https://cyberdojo-nine.vercel.app/pratica/calcolatrice",
+                          "chosenIconUrl":  "https://cyberdojo-nine.vercel.app/icons/icon-192.png"
+                      }
                   ],
     "generatorApp":  "bubblewrap-cli",
     "fullScopeUrl":  "https://cyberdojo-nine.vercel.app/",
