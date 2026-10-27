@@ -134,3 +134,11 @@ export async function reportSocial(input: unknown): Promise<R> {
   await sendReportEmail({ ...p.data, reportId: r.reportId, at: new Date() });
   return { ok: true };
 }
+
+/** Accetta un invito arrivato da un link: amicizia subito. Il consenso deve essere dato esplicitamente. */
+export async function acceptFriendInvite(code: unknown, consent: unknown): Promise<R<{ nickname: string | null; avatar: string | null }>> {
+  const user = await getSessionUser();
+  if (!user) return NO_SESSION;
+  const p = codeInput.safeParse(code);
+  return p.success && typeof consent === "boolean" ? social.acceptInvite(user.id, p.data, consent) : BAD;
+}

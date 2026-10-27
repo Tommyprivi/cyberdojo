@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { addFriendByCode, answerFriendRequest, manageFriendCode, removeFriend, saveSocialToggles } from "@/app/actions/social";
 import { BoltIcon, FlameIcon } from "../icons";
@@ -8,6 +9,7 @@ import type { FriendRow, SocialSettings } from "@/lib/social/service";
 import { Avatar } from "./avatar";
 import { ChallengeButton } from "@/components/duels/challenge-button";
 import { CodeBox } from "./code-box";
+import { InviteShare } from "./invite-share";
 import { ReportButton } from "./report-button";
 import { NoticeLine, useAction } from "./use-action";
 
@@ -21,6 +23,7 @@ export function FriendsPanel({ settings, friends }: { settings: SocialSettings; 
   const outgoing = friends.filter((f) => f.status === "pending" && !f.incoming);
   const accepted = friends.filter((f) => f.status === "accepted");
   const name = (f: FriendRow) => f.nickname ?? "Utente nascosto";
+  const adult = settings.ageGroup === "adulti";
 
   return (
     <div className="grid gap-4 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_21rem]">
@@ -54,6 +57,12 @@ export function FriendsPanel({ settings, friends }: { settings: SocialSettings; 
           </p>
         )}
 
+        {accepted.length > 0 && !adult && (
+          <p className="rounded-md border border-border bg-background p-3 text-sm">
+            Le chiamate sono per ora solo tra adulti. Con i ragazzi si studia insieme nelle classi con un docente.
+          </p>
+        )}
+
         <ul className="grid gap-2">
           {accepted.map((f) => (
             <li key={f.id} className="flex flex-wrap items-center gap-3 rounded-md border border-border bg-background p-2.5">
@@ -77,6 +86,11 @@ export function FriendsPanel({ settings, friends }: { settings: SocialSettings; 
               <button type="button" disabled={busy} className="btn btn-ghost" onClick={() => run(() => removeFriend(f.id), "Amico rimosso.")}>
                 Rimuovi
               </button>
+              {adult && (
+                <Link href={`/chiamata/${f.id}`} className="btn btn-primary min-h-12">
+                  Studia insieme
+                </Link>
+              )}
               {f.nickname && f.visible && <ChallengeButton friendshipId={f.id} name={f.nickname} />}
               {f.nickname && <ReportButton kind="user" targetId={f.ref} what={`il soprannome ${f.nickname}`} />}
             </li>
@@ -106,7 +120,8 @@ export function FriendsPanel({ settings, friends }: { settings: SocialSettings; 
           {settings.acceptRequests && settings.friendCode ? (
             <>
               <CodeBox code={settings.friendCode} label="Il tuo codice invito" />
-              <p className="text-sm text-muted">Dallo tu, di persona o con un messaggio tuo: chi lo inserisce ti manda una richiesta e decidi tu. Se lo rinnovi, il vecchio smette subito di funzionare.</p>
+              <InviteShare code={settings.friendCode} nickname={settings.showToFriends ? settings.nickname : null} />
+              <p className="text-sm text-muted">Oppure dallo tu, di persona o con un messaggio tuo: chi lo inserisce ti manda una richiesta e decidi tu. Chi invece apre il tuo link di invito e lo accetta diventa subito tuo amico: per questo il link va dato solo a persone che conosci. Se lo rinnovi, il vecchio smette subito di funzionare.</p>
               <div className="flex flex-wrap gap-2">
                 <button type="button" disabled={busy} className="btn btn-ghost" onClick={() => run(() => manageFriendCode("renew"), "Nuovo codice generato.")}>
                   Rinnova

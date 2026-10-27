@@ -11,7 +11,7 @@ L'unico testo libero visibile ad altri è il soprannome (molto vincolato). I nom
 ## Regole per i minori (14-17)
 - Tutto è opt-in e spento di default (tre interruttori separati: classifica, mostra agli amici, accetta richieste).
 - Due fasce separate: minori e adulti non si vedono mai in classifica e non possono essere amici (controllo nell'app, nelle funzioni SQL e nei trigger).
-- Amici solo con codice invito scambiato fuori dal sito; serve l'accettazione di entrambi; massimo 30.
+- Amici solo con codice invito scambiato fuori dal sito (richiesta da accettare, oppure link di invito: vedi «Invito per WhatsApp»); massimo 30.
 - I minori non creano gruppi: entrano solo con codice, in gruppi "per 14-17" creati da un adulto responsabile (unica eccezione alla separazione). Ogni gruppo dichiara «visibile ai membri». Massimo 40 persone, 5 gruppi per persona, 3 gruppi creati per adulto.
 - Se la fascia d'età nel profilo cambia, il social si azzera (soprannome, amici, gruppi): `resetSocialIfAgeChanged` in `saveProfile`.
 - Segnala = blocco immediato (reciproco per la visibilità); salva solo tipo, id pubblico, motivo (elenco chiuso) e data, e manda un'email a `CONTACT_EMAIL` senza dati personali.
@@ -52,3 +52,20 @@ Codice: `src/lib/docente/*` (regole pure con test), `src/app/actions/docente.ts`
 - **`/docente`**: controllo SEMPRE lato server (ruolo letto dal database; chi non è docente vede «non trovata»). I progressi arrivano solo da `class_progress(gruppo)`, che ripete il controllo (docente o admin E creatore del gruppo) e restituisce solo gli studenti consenzienti. `toProgressRow` tiene solo i campi permessi.
 - **Non fatto di proposito:** «mentore» con messaggi tra utenti (rischio per i minori).
 - **Da verificare dopo la migrazione 0009:** `class_progress` sul database vero (finora mai provata) e il flusso docente -> classe -> studente consenziente.
+
+## Invito per WhatsApp e «Studia insieme»
+Codice: `src/lib/social/invite.ts` e `call-room.ts` (funzioni pure con test), `service.ts` (`getInvitePreview`, `acceptInvite`, `getCall`), azione `acceptFriendInvite`, componenti `invite-share.tsx` e `invite-accept.tsx`, pagine `/invito/[codice]` (pubblica) e `/chiamata/[id]` (protetta). Database: migrazione 0011 (tre funzioni SQL, nessuna tabella; **da applicare**, mai provata sul database vero).
+
+**Invito**
+- Ogni persona ha UN solo codice amico; il link è `<origine>/invito/<CODICE>`. Il pannello amici offre «Invita su WhatsApp» (`wa.me`), «Copia il link» e, se il telefono lo permette, «Condividi». Il testo contiene solo il link e il soprannome, e solo se la persona lo mostra agli amici: mai nome, email o altro.
+- La pagina valida il codice (`normalizeCode`) e usa lo stesso limite di tentativi di `sendFriendRequest`. Senza accesso rimanda a `/accedi` o `/registrati` con `next=/invito/<codice>`; senza profilo completo passa da `/benvenuto`.
+- **Amicizia immediata**: chi accetta diventa subito amico (riga `accepted`, requester = chi usa il link). Lo fa la funzione `friend_accept_by_code` (SECURITY DEFINER), solo se: chi accetta ha un soprannome; il proprietario ha «accetta richieste» attivo e un soprannome; stessa fascia d'età; utenti diversi; nessun blocco; nessuna amicizia già esistente. Il trigger `friendships_guard` ripete età e limite di 30. `friend_invite_preview` (sola lettura) dà soprannome e avatar di chi invita, solo se si mostra agli amici (altrimenti «un amico»).
+- **Consenso**: chi accetta vede cosa vedrà l'amico (soprannome, avatar, serie, XP della settimana; mai email né nome) e deve spuntare la casella; l'accettazione imposta `show_to_friends = true` nella stessa transazione. Senza soprannome, un primo passo (soprannome e avatar) con le azioni esistenti.
+- **Motivo non rivelato**: codice inesistente, proprietario che non accetta richieste, fasce d'età diverse, blocchi, amicizia già esistente e limite dell'altra persona danno lo stesso messaggio gentile, che ricorda la regola delle fasce d'età. Rischio noto: chi ha il link può diventare amico senza che il proprietario approvi, quindi il link va dato solo a persone fidate; basta «Rinnova» o «Spegni» il codice per annullarlo.
+
+**Studia insieme (chiamate)**
+- Chat, voce, video e schermo con Jitsi Meet, senza server nostri e senza nuove tabelle. Base configurabile con `JITSI_BASE_URL` (solo https, default `https://meet.jit.si`; da aggiungere a `.env.example`).
+- **Solo adulti.** Il pulsante appare solo agli adulti; ai minori una nota («Le chiamate sono per ora solo tra adulti…»). Il controllo vero è sempre sul server: `/chiamata/[id]` chiama `getCall`, che legge dal database (`friend_call_info`) la fascia d'età di ENTRAMBI, lo stato dell'amicizia e i blocchi, e applica `isCallAllowed` (adulti con adulti, amicizia accettata, nessun blocco). Altrimenti «non trovata».
+- **Stanza**: `cyberdojo-` + 24 caratteri esadecimali di HMAC-SHA256(`BETTER_AUTH_SECRET`, id amicizia). Uguale per i due amici, stabile, non indovinabile; il segreto non lascia il server.
+- Pre-ingresso Jitsi attivo, video spento all'inizio, nome mostrato = proprio soprannome. CyberDojo non registra né salva nulla; avviso in pagina che la chiamata passa da Jitsi e di non condividere dati personali.
+- **Da valutare**: la fascia d'età è dichiarata, non verificata (vedi rischi sopra): un minore che si dichiara adulto potrebbe entrare nelle chiamate tra adulti. Gli ospiti Jitsi non sono controllati da noi.

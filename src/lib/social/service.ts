@@ -12,6 +12,7 @@ import {
   type ChallengeEntry,
   type ProgressData,
 } from "./challenges";
+import { callRoomName, isCallAllowed, jitsiBaseUrl, jitsiCallUrl } from "./call-room";
 import { generateCode, generatePublicId, normalizeCode } from "./codes";
 import { composeGroupName } from "./group-names";
 import { canChangeNickname, nextChangeAt, validateNickname, type NicknameContext } from "./nickname";
@@ -427,6 +428,89 @@ export async function removeFriendship(userId: string, friendshipId: string): Pr
       .returning({ id: schema.friendships.id }),
   );
   return gone.length ? { ok: true } : fail("Amicizia non trovata.");
+}
+
+// ---------- invito per WhatsApp ----------
+
+const INVITE_GENERIC =
+  "Questo invito non è disponibile. Può essere scaduto o cambiato, oppure la persona non accetta richieste. Ricorda: si può diventare amici solo nella stessa fascia d'età (14-17 anni, oppure adulti).";
+
+export type InvitePreview = { nickname: string | null; avatar: string | null };
+
+/** Chi ha mandato l'invito, se il link è valido per chi guarda. Il motivo di un rifiuto non si rivela (messaggio sempre uguale). */
+export async function getInvitePreview(userId: string, codeInput: string): Promise<{ ok: true; invite: InvitePreview } | { ok: false; error: string }> {
+  const code = normalizeCode(codeInput);
+  if (!code) return fail(INVITE_GENERIC);
+  if (tooManyAttempts(userId)) return fail("Troppi tentativi: aspetta qualche minuto e riprova.");
+  return withUser(userId, async (tx) => {
+    const { ageGroup } = await loadContext(tx, userId);
+    if (!ageGroup) return fail("Completa prima il profilo (fascia d'età): serve a tenere i ragazzi separati dagli adulti.");
+    const rows = (await tx.execute(sql`select * from friend_invite_preview(${code})`)).rows as { nickname: string | null; avatar: string | null; age_group: string }[];
+    const r = rows[0];
+    // La fascia si controlla sempre, anche per chi non ha ancora il profilo social.
+    if (!r || r.age_group !== ageGroup) return fail(INVITE_GENERIC);
+    return { ok: true as const, invite: { nickname: r.nickname, avatar: r.avatar } };
+  });
+}
+
+/**
+ * Accetta l'invito: amicizia subito (nessuna richiesta in sospeso). Serve un soprannome già scelto e il consenso esplicito
+ * di mostrarsi agli amici (vale per QUESTA amicizia: da qui in poi gli amici vedono soprannome, avatar, serie, cintura e XP).
+ * Le regole (fascia d'età, blocchi, limiti) sono nella funzione SQL friend_accept_by_code e nei trigger.
+ */
+export async function acceptInvite(userId: string, codeInput: string, consent: boolean): Promise<Result<{ nickname: string | null; avatar: string | null }>> {
+  const code = normalizeCode(codeInput);
+  if (!code) return fail(INVITE_GENERIC);
+  if (!consent) return fail("Per diventare amici serve il tuo consenso: spunta la casella.");
+  if (tooManyAttempts(userId)) return fail("Troppi tentativi: aspetta qualche minuto e riprova.");
+  try {
+    return await withUser(userId, async (tx): Promise<Result<{ nickname: string | null; avatar: string | null }>> => {
+      const { row } = await loadContext(tx, userId);
+      if (!row?.nickname) return fail("Prima scegli un soprannome e un avatar.");
+      const rows = (await tx.execute(sql`select * from friend_accept_by_code(${code})`)).rows as { friendship_id: string; nickname: string | null; avatar: string | null }[];
+      if (!rows.length) return fail(INVITE_GENERIC);
+      // Il consenso esplicito all'amicizia vale come «mostro agli amici». Nella stessa transazione dell'amicizia.
+      if (!row.showToFriends) await tx.update(schema.socialProfiles).set({ showToFriends: true }).where(eq(schema.socialProfiles.userId, userId));
+      return { ok: true, nickname: rows[0].nickname, avatar: rows[0].avatar };
+    });
+  } catch (e) {
+    const m = dbMessage(e);
+    if (m.includes("social_friend_limit") && !m.includes("social_friend_limit_other")) return fail(friendlyDbError(e));
+    if (dbCode(e) === "23505") return fail("Siete già amici.");
+    // Gli altri motivi (limite dell'altra persona, regole di età) restano generici.
+    return fail(INVITE_GENERIC);
+  }
+}
+
+// ---------- «Studia insieme» (chiamata con Jitsi, solo adulti) ----------
+
+/** Segreto del server per i nomi delle stanze (lo stesso delle altre prove). Mai verso il browser. */
+function roomSecret(): string {
+  const secret = process.env.BETTER_AUTH_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") throw new Error("Manca BETTER_AUTH_SECRET");
+  return secret ?? "solo-sviluppo";
+}
+
+export type CallView = { friendName: string | null; callUrl: string };
+
+/** Dati della chiamata per UNA amicizia: la fascia d'età di entrambi si legge dal database, mai dal browser. null se non consentita. */
+export async function getCall(userId: string, friendshipId: string): Promise<CallView | null> {
+  const info = await withUser(userId, async (tx) => {
+    const r = await tx.execute(sql`select * from friend_call_info(${friendshipId})`);
+    return (r.rows[0] ?? null) as {
+      status: string;
+      my_age_group: string;
+      their_age_group: string;
+      blocked: boolean;
+      their_nickname: string | null;
+      my_nickname: string | null;
+    } | null;
+  });
+  if (!info) return null;
+  const asGroup = (g: string): AgeGroup | null => (g === "minori" || g === "adulti" ? g : null);
+  if (!isCallAllowed({ status: info.status, myGroup: asGroup(info.my_age_group), theirGroup: asGroup(info.their_age_group), blocked: info.blocked })) return null;
+  const room = callRoomName(roomSecret(), friendshipId);
+  return { friendName: info.their_nickname, callUrl: jitsiCallUrl(jitsiBaseUrl(process.env.JITSI_BASE_URL), room, info.my_nickname) };
 }
 
 // ---------- gruppi ----------
