@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 
 /** Versione del banner: cambiala quando c'è un nuovo aggiornamento, così tutti lo rivedono una volta. */
-const VERSION = "2026-10-26";
+const VERSION = "2026-10-27";
 const KEY = "news-banner-dismissed";
 
 function read(): string | null {
@@ -30,7 +30,7 @@ export function NewsBanner() {
       <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-1.5 text-xs sm:gap-3 sm:py-2 sm:text-sm">
         {/* Da telefono una riga sola: il testo intero sta in /aggiornamenti. */}
         <p className="min-w-0 flex-1 truncate sm:whitespace-normal">
-          <strong>Novità:</strong> nuova grafica più semplice anche da telefono, <strong>piano di studio consigliato</strong> in base al tuo obiettivo, lezioni con schemi illustrati, cinture per livello. In arrivo: app Android e calcolatrice integrata.
+          <strong>Novità:</strong> CyberDojo 2.0 è qui! Sfida del giorno, negozio, leghe, duelli, laboratori di hacking e l&apos;<strong>app Android</strong> da scaricare.
         </p>
         <Link href="/aggiornamenti" className="shrink-0 font-bold underline">
           Scopri
