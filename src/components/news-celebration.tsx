@@ -52,17 +52,16 @@ export function NewsCelebration({ onClose, big = false }: { onClose: () => void;
             <Mascot size={big ? 88 : 56} animate />
             <div className="min-w-0">
               <p className={`font-display font-bold leading-tight ${big ? "text-2xl sm:text-3xl" : "text-xl"}`}>
-                {big ? "Sta arrivando il più grande aggiornamento!" : "Novità arrivate!"}
+                {big ? "È arrivato il più grande aggiornamento!" : "Novità arrivate!"}
               </p>
-              <p className="text-sm text-muted">{big ? "Il sito riapre sabato 31 ottobre alle 15:00." :"Puoi continuare la lezione: non cambia niente."}</p>
+              <p className="text-sm text-muted">{big ? "CyberDojo 2.0 è qui. Il tuo progresso è al sicuro." : "Puoi continuare la lezione: non cambia niente."}</p>
             </div>
           </div>
           <ul className="grid gap-0.5 text-sm">
-            <li>🧭 Percorso a livelli e test d&apos;ingresso</li>
-            <li>📱 App Android con notifiche e calcolatrice</li>
-            <li>💬 Community più grande e nuovi corsi</li>
+            <li>🧭 Percorso a livelli, test d&apos;ingresso e prove di padronanza</li>
+            <li>🎮 Sfida del giorno, duelli, leghe, negozio e laboratori di hacking</li>
+            <li>🔎 Ricerca, glossario, ripasso, segnalibri e notifiche</li>
           </ul>
-          {big && <p className="text-sm text-muted">Nel frattempo puoi continuare solo i corsi che hai già iniziato.</p>}
           <div className="flex flex-wrap items-center gap-2">
             <Link href="/aggiornamenti" data-sound="open" className="btn btn-primary min-h-11 px-4 text-sm">
               Scopri di più
