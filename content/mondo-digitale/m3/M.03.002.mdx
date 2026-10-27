@@ -1,0 +1,152 @@
+---
+id: M.03.002
+course: mondo-digitale
+module: 3
+title: "Creare un account di posta"
+belt: bianca
+duration_min: 9
+prerequisites: [M.03.001]
+objectives:
+  - "Elencare i passi per creare un account di posta gratuito"
+  - "Scegliere una password lunga e diversa da quelle già usate"
+  - "Spiegare a che cosa servono il recupero dell'account e la verifica in due passaggi"
+verification:
+  type: generated-numeric
+  generator: m03-creare-account
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare la stessa password della posta anche su altri servizi"
+  - "Scrivere una password troppo corta o fatta con il proprio nome e la data di nascita"
+  - "Non impostare un modo per recuperare l'account e restare chiusi fuori se si dimentica la password"
+commands: []
+---
+
+<Scene title="Nonna Rosa apre la sua casella">
+Rosa ora vuole il suo indirizzo. Davide le dice: «Si fa in cinque minuti e non costa niente». Rosa però ha paura: «E se sbaglio qualcosa e mi rubano la posta?».
+
+La paura è sensata: la casella di posta è una chiave importante, perché molti altri servizi mandano lì i codici per recuperare le password. Va aperta con attenzione.
+
+La domanda del caso: **quali scelte rendono sicuro un nuovo account?**
+
+<Say who="sensei">Creare un account è facile. Farlo bene richiede tre scelte: l'indirizzo, la password e il modo per rientrare se la dimentichi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I passi, uno alla volta">
+Molti servizi di posta sono **gratuiti**: tu non paghi in denaro, il servizio si finanzia in altri modi (per esempio con la pubblicità). Le schermate cambiano da servizio a servizio, ma i passi sono gli stessi.
+
+<Flow
+  caption="Creare un account, in breve."
+  steps={[
+    { icon: "globe", title: "Apri il sito ufficiale", text: "Scrivi tu l'indirizzo, non cliccare su un link ricevuto" },
+    { icon: "user", title: "Scegli il nome utente", text: "Il tuo indirizzo, che deve essere libero" },
+    { icon: "key", title: "Crea la password", text: "Lunga e solo per la posta" },
+    { icon: "shield", title: "Imposta il recupero", text: "Telefono o altro indirizzo per rientrare" },
+  ]}
+/>
+
+<Say who="assistente">Cerca il servizio con un motore di ricerca o digitando l'indirizzo del sito: così sei sicuro di essere nel posto giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il nome utente">
+Il nome utente diventa il tuo indirizzo, quindi sceglilo con cura. Se è già occupato, il servizio te lo dice e propone alternative.
+
+<Callout kind="trucco">
+Per una posta che userai anche con scuole, uffici e aziende, scegli un nome **semplice e serio**: nome e cognome, per esempio `rosa.bianchi`. Evita soprannomi o frasi scherzose: tra qualche anno non ti faranno più ridere.
+</Callout>
+
+- Non mettere nel nome utente dati che non vuoi mostrare, come l'anno di nascita completo.
+- Evita nomi difficili da dettare al telefono, con molte lettere doppie o simboli.
+
+<Say who="sensei">Un buon indirizzo si può dettare a voce una volta sola, senza chiedere «come si scrive».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La password e il recupero">
+La **password** è la chiave della casella. Una buona password è:
+
+- **lunga** (meglio una frase di 4 o 5 parole che una parola corta con un numero);
+- **solo per la posta**: mai la stessa usata su altri servizi;
+- **non indovinabile**: niente nome, data di nascita o `123456`.
+
+<Layers
+  caption="Dalla più debole alla più forte."
+  items={[
+    { icon: "cross", title: "rosa1956", text: "Nome e anno: si indovina in fretta" },
+    { icon: "warning", title: "Rosa!2024", text: "Un po' meglio, ma corta e prevedibile" },
+    { icon: "lock", title: "gatto-vecchio-bicicletta-luna", text: "Lunga e facile da ricordare, per te" },
+  ]}
+/>
+
+Poi il **recupero dell'account**: un numero di telefono o un secondo indirizzo che il servizio usa per aiutarti a rientrare se dimentichi la password. E la **verifica in due passaggi**: oltre alla password, il servizio chiede un codice che arriva sul telefono. Anche se qualcuno scopre la password, senza il tuo telefono non entra.
+
+<Callout kind="attenzione">
+I codici che arrivano sul telefono sono personali: **nessun servizio serio te li chiede per telefono o per messaggio**. Se qualcuno te li chiede, è una truffa.
+</Callout>
+
+<Say who="assistente">La password può essere scritta su un quaderno tenuto a casa, in un posto sicuro. Meglio un quaderno che una password debole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Rosa deve scegliere la password della sua nuova casella.
+
+<Quiz
+  question="Quale password è la scelta migliore per una nuova casella di posta?"
+  options={[
+    "tazza-mulino-pioggia-quaderno",
+    "rosa1956",
+    "12345678",
+    "La stessa del conto online, per non dimenticarla",
+  ]}
+  answer={0}
+  explain="Una frase lunga, fatta di parole senza legame con i tuoi dati, è difficile da indovinare e facile da ricordare. Nome e anno si indovinano, 12345678 è tra le prime che si provano, e riusare la stessa password ovunque mette in pericolo tutti i servizi se ne cade uno."
+/>
+
+<Say who="sensei">Una password per servizio. La posta ha la sua, e va protetta più di tutte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come creare un account in sicurezza. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-creare-account" pass="4/5" retries={3} />
+
+<Say who="sensei">Sito giusto, nome serio, password lunga, recupero impostato. Il resto viene da sé.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Molti servizi di posta sono gratuiti: si apre il sito ufficiale e si segue la creazione dell'account.
+- Il nome utente diventa il tuo indirizzo: meglio semplice e serio.
+- La password è lunga, solo per la posta e non indovinabile.
+- Il recupero e la verifica in due passaggi proteggono la casella; i codici ricevuti non si danno a nessuno.
+- Caso chiuso: Rosa ha una casella nuova, con una password che ricorda e il telefono come aiuto per rientrare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come deve essere una buona password?", a: "Lunga, diversa per ogni servizio e non legata ai propri dati" },
+    { q: "A che cosa serve il recupero dell'account?", a: "A rientrare nella casella se si dimentica la password" },
+    { q: "Che cos'è la verifica in due passaggi?", a: "Oltre alla password serve un codice, di solito inviato al telefono" },
+    { q: "Puoi dare a qualcuno il codice ricevuto sul telefono?", a: "No: è personale, e chi lo chiede sta provando a truffarti" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: apri la casella, leggi i messaggi e impari a rispondere.</Say>
+</Scene>

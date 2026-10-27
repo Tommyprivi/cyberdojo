@@ -1,0 +1,155 @@
+---
+id: I.03.006
+course: intelligenza-artificiale
+module: 3
+title: "Dati sporchi, mancanti e sbilanciati"
+belt: bianca
+duration_min: 9
+prerequisites: [I.03.005]
+objectives:
+  - "Riconoscere dati sporchi: duplicati, errori di scrittura, formati diversi e valori impossibili"
+  - "Elencare le scelte possibili davanti a valori mancanti"
+  - "Spiegare perché un modello può avere un'accuratezza alta e non servire a niente con classi sbilanciate"
+verification:
+  type: generated-numeric
+  generator: i03-dati-sporchi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi dell'accuratezza senza guardare quanti casi rari il modello trova davvero"
+  - "Riempire i valori mancanti senza chiedersi perché mancano"
+  - "Cancellare un valore strano senza controllare se è un errore o un caso vero ma raro"
+commands: []
+---
+
+<Scene title="Il 99% che non trova niente">
+Il laboratorio della scuola produce piccoli bulloni con la stampante 3D. Dario fotografa 1.000 bulloni per far riconoscere quelli difettosi: 990 sono buoni e 10 sono difettosi. Allena il modello e ottiene il 99% di risposte giuste.
+
+Marta guarda i risultati e nota una cosa: il modello dice «buono» sempre, per tutti i bulloni.
+
+La domanda del caso: **perché un 99% di risposte giuste può essere inutile?**
+
+<Say who="sensei">Un modello che risponde sempre «buono» azzecca 990 casi su 1.000 senza aver capito niente. E non trova mai ciò che ti interessa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati sporchi">
+Prima ancora di allenare, si controllano i dati. I tipi di «sporco» più comuni:
+
+- **Duplicati**: la stessa riga ripetuta due volte (pesa il doppio e può finire sia in addestramento sia in prova).
+- **Errori di scrittura**: «Roma», «roma» e «Rma» contati come tre città.
+- **Formati diversi**: altezza in centimetri in una riga (170) e in metri in un'altra (1,70); date scritte 03/10 e 2025-10-03.
+- **Valori impossibili**: un'età di 150 anni o un'altezza negativa.
+
+<Callout kind="regola">
+Controlla i dati prima di allenare: duplicati, scritture diverse della stessa cosa, unità di misura e valori impossibili.
+</Callout>
+
+Gli strumenti per pulire le tabelle sono spiegati nel corso Analista di dati (modulo D8): qui ci interessa riconoscere il problema.
+
+<Say who="assistente">Un valore strano non va cancellato subito: prima chiedi se è un errore o un caso vero ma raro. Una persona alta 2 metri e 10 esiste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati mancanti">
+A volte in una riga manca un valore: il sensore dell'umidità si è spento, un modulo è stato lasciato in bianco. Le scelte principali sono tre:
+
+<Layers
+  caption="Che cosa fare con un valore che manca."
+  items={[
+    { icon: "cross", title: "Togliere la riga", text: "Semplice, ma si perdono esempi" },
+    { icon: "gear", title: "Riempire il buco", text: "Con un valore tipico: la media, la mediana o il più frequente" },
+    { icon: "eye", title: "Segnalare che manca", text: "Una colonna in più dice «qui mancava»" },
+  ]}
+/>
+
+La **mediana** è il valore che sta in mezzo quando i numeri sono messi in ordine: tra 2, 3 e 100 è 3, mentre la media (35) è trascinata dal 100.
+
+<Callout kind="attenzione">
+Chiediti perché manca il dato. Se i valori mancano a caso, riempirli va bene. Se mancano per un motivo (per esempio solo i ragazzi più timidi non rispondono a una domanda), riempirli con la media nasconde il problema.
+</Callout>
+
+<Say who="sensei">Un buco è un'informazione: a volte dice più del valore che manca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati sbilanciati">
+I dati sono **sbilanciati** quando una categoria ha molti più esempi delle altre: 990 bulloni buoni e 10 difettosi. Il modello impara che rispondere «buono» conviene quasi sempre.
+
+L'**accuratezza** (quante risposte giuste su tutte) inganna: dire sempre «buono» dà 990 su 1.000, cioè 99%. Ma i difettosi trovati sono 0 su 10.
+
+<Compare
+  caption="Due modi di guardare lo stesso modello."
+  left={{ title: "Solo l'accuratezza", points: ["99% di risposte giuste", "Sembra ottimo", "Non dice nulla sui casi rari"] }}
+  right={{ title: "Guardando ogni categoria", points: ["Difettosi trovati: 0 su 10", "Il modello è inutile", "Si vede il vero problema"] }}
+/>
+
+Che cosa si può fare:
+- raccogliere **più esempi** della categoria rara;
+- ripetere gli esempi rari (o ridurre quelli comuni) durante l'addestramento;
+- misurare, oltre all'accuratezza, **quanti casi rari vengono trovati**.
+
+<Say who="assistente">Quando una categoria è rara, la domanda giusta non è «quanto indovina?» ma «quanti di quelli che contano riesce a trovare?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un ospedale scolastico fittizio ha 2.000 analisi, di cui 20 con un valore anomalo. Un modello risponde «normale» sempre.
+
+<Quiz
+  question="Qual è l'accuratezza di un modello che risponde sempre «normale», e che cosa dice?"
+  options={[
+    "99%: sembra ottima ma non trova nessuna analisi anomala",
+    "50%: è sbagliato esattamente la metà delle volte",
+    "1%: il modello è quasi sempre sbagliato",
+    "100%: il modello non sbaglia mai",
+  ]}
+  answer={0}
+  explain="Le analisi normali sono 1.980 su 2.000, cioè 99%: rispondendo sempre «normale» il modello ha ragione 1.980 volte. Ma non trova nessuna delle 20 anomale, quindi è inutile. 50% e 1% non corrispondono al conto, e 100% richiederebbe di trovare anche le anomale."
+/>
+
+<Say who="sensei">Il numero riassuntivo è comodo ma può nascondere il caso raro. Guarda sempre anche dentro le categorie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su dati sporchi, mancanti e sbilanciati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-dati-sporchi" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima pulisci, poi controlla i buchi, poi guarda l'equilibrio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Dati sporchi: duplicati, scritture diverse, formati misti, valori impossibili.
+- Dati mancanti: si può togliere la riga, riempire il buco o segnalare che manca; prima chiedi perché manca.
+- Dati sbilanciati: una categoria rara fa sembrare ottima un'accuratezza che non trova niente.
+- Con dati sbilanciati si guarda quanti casi rari vengono trovati, non solo la percentuale totale.
+- Caso chiuso: il modello dei bulloni diceva sempre «buono»: 99% di accuratezza e zero difettosi trovati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato duplicato?", a: "Una riga ripetuta due volte, che pesa il doppio" },
+    { q: "Qual è la mediana di 2, 3 e 100?", a: "3, il valore che sta in mezzo" },
+    { q: "Che cosa vuol dire dati sbilanciati?", a: "Una categoria ha molti più esempi delle altre" },
+    { q: "Perché l'accuratezza può ingannare?", a: "Perché con una categoria rara un modello può indovinare quasi sempre senza trovare i casi rari" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: da dove vengono i dati, raccolti, acquistati o generati.</Say>
+</Scene>

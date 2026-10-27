@@ -1,0 +1,149 @@
+---
+id: I.01.005
+course: intelligenza-artificiale
+module: 1
+title: "IA stretta e IA generale: cosa esiste davvero"
+belt: bianca
+duration_min: 8
+prerequisites: [I.01.004]
+objectives:
+  - "Distinguere IA stretta e IA generale"
+  - "Dire quale tipo di IA esiste oggi e quale è solo un'ipotesi"
+  - "Spiegare perché un assistente di IA che parla di tutto non è per questo un'IA generale"
+verification:
+  type: generated-numeric
+  generator: i01-stretta-generale
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che l'IA generale esista già"
+  - "Pensare che un'IA brava a scacchi sia brava anche in altri compiti"
+  - "Confondere un assistente che risponde su tanti temi con una mente che capisce tutto"
+commands: []
+---
+
+<Scene title="Il robot dei film">
+Dopo un film di fantascienza, Davide dice a Teo: «Prima o poi ci sarà un'IA che fa tutto come un umano, e ce l'abbiamo già quasi».
+
+Teo non è sicuro. Gli assistenti di IA rispondono davvero a molte cose. Allora, siamo vicini?
+
+La domanda del caso: **che cosa esiste davvero oggi, e che cosa è solo un'ipotesi?**
+
+<Say who="sensei">Separare ciò che esiste da ciò che si immagina è metà del mestiere di chi capisce di IA.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IA stretta">
+Tutta l'IA che usiamo oggi è **IA stretta** (in inglese *narrow AI*): sistemi progettati e addestrati per **un tipo di compito**, o per una famiglia di compiti.
+
+- Un sistema che gioca a scacchi gioca a scacchi, non sa guidare un'auto.
+- Un sistema che riconosce i volti nelle foto non sa tradurre.
+- Un modello che traduce non sa leggere una radiografia.
+
+<Layers
+  caption="Esempi di IA stretta."
+  items={[
+    { icon: "eye", title: "Vista", text: "Riconoscere oggetti e volti in una foto" },
+    { icon: "book", title: "Linguaggio", text: "Tradurre, riassumere, rispondere" },
+    { icon: "chart", title: "Previsione", text: "Stimare per esempio il traffico di domani" },
+  ]}
+/>
+
+<Callout kind="regola">
+IA stretta = brava in un compito (o in una famiglia di compiti) per cui è stata addestrata. È l'unico tipo di IA che esiste oggi.
+</Callout>
+
+<Say who="assistente">Anche quando un sistema sembra molto versatile, è comunque stato costruito per uno scopo e ha limiti precisi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IA generale">
+Si chiama **IA generale** (*AGI*, da *artificial general intelligence*) un sistema ipotetico capace di imparare e svolgere **qualsiasi compito intellettuale** che sa fare una persona, passando da uno all'altro con flessibilità, come noi.
+
+<Compare
+  caption="Stretta e generale."
+  left={{ title: "IA stretta", points: ["Esiste oggi", "Brava in compiti precisi", "Fuori dal suo campo sbaglia o non serve"] }}
+  right={{ title: "IA generale (AGI)", points: ["Non esiste ancora", "Dovrebbe imparare qualsiasi compito", "Se e quando arriverà, è oggetto di dibattito tra gli esperti"] }}
+/>
+
+Gli esperti non sono d'accordo su che cosa significhi esattamente «generale», né su quando (o se) arriverà. Chi ti dà una data certa sta facendo una previsione, non riportando un fatto.
+
+Esiste anche l'idea di **superintelligenza**: un'IA molto più capace degli umani in tutto. È un'ipotesi di studio, non una tecnologia esistente.
+
+<Say who="sensei">Se un titolo dice «è nata l'IA generale», cerca la prova. Finora non c'è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="E gli assistenti che parlano di tutto?">
+Un assistente come quelli che scrivono testi risponde su sport, cucina, storia, programmazione. Sembra generale. Perché non lo è?
+
+- È un **modello di linguaggio**: il suo compito è produrre testo. Su moltissimi argomenti riesce, perché ha visto moltissimo testo.
+- Non impara dalle conversazioni mentre parla con te, come farebbe una persona che fa esperienza.
+- Non ha obiettivi suoi, non agisce nel mondo da solo, e può sbagliare in modo grossolano.
+
+<Callout kind="attenzione">
+«Molto versatile» non vuol dire «generale». Gli esperti discutono su quanto siano vicini questi sistemi all'IA generale, ma nessun organismo scientifico ha dichiarato che esista.
+</Callout>
+
+<Say who="assistente">Un coltellino svizzero ha molti attrezzi, ma non è per questo un laboratorio intero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale tipo di intelligenza artificiale esiste oggi?"
+  options={[
+    "IA stretta: sistemi bravi in compiti precisi",
+    "IA generale: sistemi che sanno fare qualsiasi cosa come una persona",
+    "Superintelligenza: sistemi più capaci degli umani in tutto",
+    "Nessuna: l'IA non esiste ancora",
+  ]}
+  answer={0}
+  explain="Oggi esiste solo l'IA stretta, anche quando è molto versatile. L'IA generale e la superintelligenza sono ipotesi, e dire che l'IA non esiste è sbagliato: la usiamo ogni giorno."
+/>
+
+<Say who="sensei">Esiste ciò che si può provare. Il resto è un'ipotesi: interessante, ma un'ipotesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su IA stretta e IA generale. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-stretta-generale" pass="4/5" retries={3} />
+
+<Say who="sensei">Stretta esiste, generale è un'ipotesi. Semplice da dire, utile da ricordare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA stretta è addestrata per un compito o una famiglia di compiti: è tutta l'IA che esiste oggi.
+- L'IA generale (AGI) saprebbe imparare qualsiasi compito intellettuale come una persona: non esiste ancora.
+- La superintelligenza è un'ipotesi di studio, non una tecnologia.
+- Un assistente che parla di tutto è un modello di linguaggio versatile, non un'IA generale.
+- Caso chiuso: Davide aveva visto un film; la realtà è IA stretta, anche se molto brava.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'IA stretta?", a: "Un'IA addestrata per un compito (o una famiglia di compiti) preciso" },
+    { q: "Che cosa significa AGI?", a: "Artificial general intelligence: IA generale, capace di imparare qualsiasi compito come una persona" },
+    { q: "L'IA generale esiste oggi?", a: "No, è solo un'ipotesi" },
+    { q: "Un assistente che risponde su molti temi è un'IA generale?", a: "No: è un modello di linguaggio versatile ma con limiti precisi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: dove incontri l'IA nelle cose di ogni giorno.</Say>
+</Scene>

@@ -1,4 +1,5 @@
 import type { Viewport } from "next";
+import { Suspense } from "react";
 import { BottomNav } from "@/components/bottom-nav";
 import { CountdownBar } from "@/components/countdown-bar";
 import { NewsBanner } from "@/components/news-banner";
@@ -25,20 +26,26 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
     <div className="lg:grid lg:h-dvh lg:grid-cols-[14rem_minmax(0,1fr)] lg:overflow-hidden xl:grid-cols-[16rem_minmax(0,1fr)]">
       <UiSounds />
-      <Sidebar latestAnnouncementId={newsVersion} />
+      <Suspense fallback={null}>
+        <Sidebar latestAnnouncementId={newsVersion} />
+      </Suspense>
       <div className="flex min-w-0 flex-col lg:h-dvh lg:min-h-0">
         {countdown && !countdown.maintenance ? <CountdownBar endsAt={countdown.endsAt} label={countdown.label} newsVersion={newsVersion} maintenance={countdown.maintenance} /> : null}
         {/* L'avviso del grande aggiornamento parte subito, una volta sola: non aspetta la fine del conto alla rovescia. */}
         <WelcomeNews version={newsVersion} countdownEndsAt={null} />
         <NewsBanner />
         <div className="lg:hidden">
-          <SiteHeader app />
+          <Suspense fallback={null}>
+            <SiteHeader app />
+          </Suspense>
         </div>
         <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-[calc(6rem+env(safe-area-inset-bottom))] pt-5 lg:mx-0 lg:min-h-0 lg:max-w-none lg:flex-none lg:overflow-y-auto lg:p-6 lg:h-full xl:p-10 2xl:px-14">
           {children}
         </main>
       </div>
-      <BottomNav />
+      <Suspense fallback={null}>
+        <BottomNav />
+      </Suspense>
     </div>
   );
 }

@@ -1,0 +1,185 @@
+---
+id: P.02.001
+course: programmazione
+module: 2
+title: "Installare Python e scrivere print"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.010]
+objectives:
+  - "Installare Python e controllare che funzioni con python --version"
+  - "Scrivere ed eseguire un programma con print"
+  - "Riconoscere un errore di sintassi e correggerlo"
+verification:
+  type: generated-numeric
+  generator: p02-print
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere print senza parentesi o dimenticare di chiudere le virgolette"
+  - "Scrivere Print con la P maiuscola: Python distingue maiuscole e minuscole"
+  - "Dimenticare di spuntare «Add python.exe to PATH» durante l'installazione su Windows"
+commands: []
+---
+
+<Scene title="Il primo saluto">
+Giulia, 15 anni, organizza il torneo di scacchi della sua scuola. Ha un elenco di 40 iscritti e vorrebbe che il computer stampasse un saluto per ognuno, invece di scriverli a mano.
+
+Per dare ordini al computer serve un linguaggio. Noi useremo **Python**: è semplice da leggere, gratuito e usato in tutto il mondo. Un **programma** è un file di testo con istruzioni che Python esegue una dopo l'altra, dall'alto in basso.
+
+La domanda del caso: **come si fa stampare una frase al computer?**
+
+<Say who="sensei">Una riga di Python è un ordine. Il computer lo esegue alla lettera, senza interpretare. Per questo bisogna scriverlo giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Installare Python">
+Python è gratuito. Si scarica dal sito ufficiale **python.org** (sezione Downloads). Scegli sempre Python **3**.
+
+<Layers
+  caption="Che cosa serve per cominciare."
+  items={[
+    { icon: "terminal", title: "Il terminale", text: "Dove si lanciano i comandi" },
+    { icon: "code", title: "Un editor", text: "Dove si scrive il codice (va bene anche IDLE, che arriva con Python)" },
+    { icon: "gear", title: "Python", text: "L'interprete che esegue le istruzioni" },
+  ]}
+/>
+
+- **Windows:** nella prima schermata dell'installazione spunta la casella **Add python.exe to PATH**, poi premi Install Now. Così il terminale trova Python.
+- **macOS:** apri il pacchetto scaricato da python.org e segui i passi.
+- **Linux:** Python 3 spesso è già presente.
+
+Per controllare che sia andato tutto bene, apri il terminale e scrivi:
+
+```bash
+python --version
+```
+
+Su macOS e Linux il comando è spesso `python3 --version`. Se vedi una scritta come `Python 3.x.y`, funziona. Non vuoi installare nulla? Nella sezione Pratica di CyberDojo c'è un terminale Python che funziona nel browser.
+
+<Say who="assistente">Se il terminale dice che non trova Python, di solito è la casella PATH dimenticata. Basta rifare l'installazione spuntandola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il comando print">
+Crea un file chiamato `saluto.py` e scrivi dentro una riga:
+
+```python
+print("Ciao, Giulia!")
+```
+
+Lo esegui dal terminale, nella cartella del file:
+
+```bash
+python saluto.py
+```
+
+<Log lines={[
+  "Ciao, Giulia!",
+]} caption="Che cosa compare sullo schermo." />
+
+- `print` è una **funzione**: un comando già pronto che stampa sullo schermo.
+- Le **parentesi** contengono ciò che vuoi stampare.
+- Il testo sta tra **virgolette**, doppie o singole: `"ciao"` e `'ciao'` sono uguali. Un testo si chiama **stringa**.
+
+<Flow
+  caption="Che cosa succede quando lanci il programma."
+  steps={[
+    { icon: "file", title: "Il file", text: "saluto.py con le tue istruzioni" },
+    { icon: "gear", title: "Python", text: "Legge una riga alla volta" },
+    { icon: "terminal", title: "Lo schermo", text: "Compare Ciao, Giulia!" },
+  ]}
+/>
+
+<Say who="sensei">Dall'alto in basso, una riga alla volta. Se un giorno il programma ti sorprende, torna a questa regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più righe, più trucchi">
+Ogni `print` va a capo da solo. Con più `print` ottieni più righe:
+
+```python
+print("Torneo di scacchi")
+print("Iscrizioni aperte")
+print("Ciao", "Giulia", 15)
+```
+
+<Log lines={[
+  "Torneo di scacchi",
+  "Iscrizioni aperte",
+  "Ciao Giulia 15",
+]} caption="Con la virgola, print mette uno spazio tra i pezzi." />
+
+- Il testo va tra virgolette, i **numeri** no: `15`, non `"15"`.
+- Una riga che comincia con `#` è un **commento**: Python la ignora. Serve a spiegare il codice a chi lo legge.
+
+<Callout kind="attenzione">
+Python distingue **maiuscole e minuscole**: `print` funziona, `Print` no. E ogni virgoletta aperta va chiusa, ogni parentesi aperta va chiusa.
+</Callout>
+
+Se sbagli, Python non esegue il programma e ti dice dove: per esempio `SyntaxError` significa «errore di scrittura». Leggi il messaggio: indica la riga e quasi sempre il problema.
+
+<Say who="assistente">Gli errori non sono un giudizio su di te. Sono indizi: il computer ti sta dicendo dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia scrive questa riga ma non compare niente e Python protesta:
+
+<Quiz
+  question="Quale riga stampa correttamente la parola Scacchi?"
+  options={[
+    "print(\"Scacchi\")",
+    "Print(\"Scacchi\")",
+    "print(\"Scacchi)",
+    "print Scacchi",
+  ]}
+  answer={0}
+  explain="print va in minuscolo, con le parentesi e con il testo tra virgolette chiuse. Print con la P maiuscola non esiste, nella terza riga manca la virgoletta di chiusura e nella quarta mancano parentesi e virgolette."
+/>
+
+<Say who="sensei">Prima di dire «il computer sbaglia», ricontrolla le virgolette. Quasi sempre è colpa loro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su installazione e print. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-print" pass="4/5" retries={3} />
+
+<Say who="sensei">Nome minuscolo, parentesi, virgolette. Tre cose da controllare, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Python 3 è gratuito e si scarica da python.org; su Windows si spunta Add python.exe to PATH.
+- Con python --version (o python3 --version) si controlla che sia installato.
+- print stampa sullo schermo; il testo va tra virgolette, i numeri no.
+- Python legge il file dall'alto in basso e distingue maiuscole e minuscole; un commento comincia con il cancelletto.
+- Caso chiuso: Giulia ha una riga che stampa il saluto; presto lo farà per tutti i 40 iscritti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa print?", a: "Stampa sullo schermo ciò che metti tra le parentesi" },
+    { q: "Come si chiama un testo in un programma?", a: "Stringa, scritta tra virgolette" },
+    { q: "Come si scrive un commento in Python?", a: "Con il cancelletto all'inizio della riga" },
+    { q: "Che cosa significa SyntaxError?", a: "Errore di scrittura nel codice" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le variabili, le scatole con un nome dove il programma tiene i dati.</Say>
+</Scene>

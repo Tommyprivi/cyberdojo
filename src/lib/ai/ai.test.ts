@@ -214,3 +214,39 @@ describe("provider Groq (fetch simulata)", () => {
     await expect(g(200, JSON.stringify({ choices: [{ message: { content: "" } }] })).generate(req)).rejects.toBeInstanceOf(AiError);
   });
 });
+
+describe("punti deboli nel prompt e nel handler", () => {
+  it("il blocco compare solo in chat e solo se non vuoto", () => {
+    const base = { label: "L", context: "c" };
+    expect(buildSystemPrompt({ ...base, mode: "chat", weak: "Lo studente sbaglia spesso: Reti." })).toContain("PUNTI DEBOLI NOTI");
+    expect(buildSystemPrompt({ ...base, mode: "chat", weak: "" })).not.toContain("PUNTI DEBOLI");
+    expect(buildSystemPrompt({ ...base, mode: "quiz", weak: "x" })).not.toContain("PUNTI DEBOLI");
+  });
+  it("handleDojo passa il contesto al modello e sopravvive a un errore", async () => {
+    const body = { mode: "chat", scope: { courseId: "F" }, messages: [{ role: "user", content: "ciao" }] };
+    const ctx = () => ({ label: "L", text: "t", topics: [], courseId: "F" });
+    const p = new FakeProvider({ reply: "ok" });
+    await handleDojo("user-segreto", body, { provider: p, limiter: { take: () => ok }, loadContext: ctx, loadWeak: async () => "Lo studente sbaglia spesso: Reti." });
+    expect(p.calls[0].system).toContain("Lo studente sbaglia spesso: Reti.");
+    expect(p.calls[0].system).not.toContain("user-segreto");
+    const p2 = new FakeProvider({ reply: "ok" });
+    const out = await handleDojo("user-segreto", body, { provider: p2, limiter: { take: () => ok }, loadContext: ctx, loadWeak: async () => { throw new Error("db"); } });
+    expect(out.status).toBe(200);
+  });
+});
+
+describe("handleCodeReview", () => {
+  it("valida, limita e manda il codice delimitato", async () => {
+    const { handleCodeReview } = await import("./code-review-handler");
+    const p = new FakeProvider({ reply: "indizio" });
+    const deps = { provider: p, limiter: { take: () => ok } };
+    expect((await handleCodeReview("u", { code: "x".repeat(4001) }, deps)).status).toBe(400);
+    expect((await handleCodeReview("u", { code: "a", extra: 1 }, deps)).status).toBe(400);
+    const out = await handleCodeReview("u", { code: "print(x)", error: "NameError" }, deps);
+    expect(out.status).toBe(200);
+    expect(p.calls[0].system).toContain("DATI NON FIDATI");
+    expect(p.calls[0].messages[0].content).toContain("<<<CODICE_STUDENTE");
+    const lim = { take: () => ({ ok: false as const, retryAfterSec: 120, scope: "hour" as const }) };
+    expect((await handleCodeReview("u", { code: "a" }, { provider: p, limiter: lim })).status).toBe(429);
+  });
+});

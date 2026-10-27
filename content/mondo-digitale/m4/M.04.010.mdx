@@ -1,0 +1,154 @@
+---
+id: M.04.010
+course: mondo-digitale
+module: 4
+title: "Esercizi: sistemare un telefono pieno di cose"
+belt: bianca
+duration_min: 10
+prerequisites: [M.04.009]
+objectives:
+  - "Scegliere l'ordine giusto per sistemare un telefono pieno di problemi"
+  - "Applicare insieme le regole su app, notifiche, batteria, spazio, aggiornamenti e rete"
+  - "Riconoscere la causa di un problema dal sintomo"
+verification:
+  type: generated-numeric
+  generator: m04-telefono-pieno
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cancellare foto o app prima di aver fatto una copia di sicurezza"
+  - "Cercare di risolvere tutto insieme invece di un problema alla volta"
+  - "Ripristinare il telefono come prima soluzione: cancella tutto e di solito non serve"
+commands: []
+---
+
+<Scene title="Il telefono di Giorgio, dopo un anno">
+Un anno dopo, il telefono di Giorgio è in cattivo stato: la memoria è piena, la batteria dura mezza giornata, le notifiche suonano di continuo, il sistema non è aggiornato da mesi e i giga sono finiti presto. Giorgio vuole sistemare tutto in una sera.
+
+La domanda del caso: **da dove si comincia, e in quale ordine?**
+
+<Say who="sensei">Questa è l'ultima lezione del modulo. Metti insieme tutto ciò che sai: un problema alla volta, nell'ordine giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dal sintomo alla causa">
+Un buon tecnico parte dal sintomo e cerca la causa più probabile.
+
+<Compare
+  caption="Che cosa vedo, che cosa controllo."
+  left={{ title: "Sintomo", points: ["«Spazio esaurito»", "Batteria che dura poco", "Suonerie in continuazione", "Giga finiti prima del tempo"] }}
+  right={{ title: "Dove guardare", points: ["Archiviazione: foto, video, chat", "Batteria: luminosità e app", "Notifiche: app una per una", "Utilizzo dati: video e Wi-Fi"] }}
+/>
+
+- Un telefono che si blocca o va lento può avere poco spazio libero o aggiornamenti arretrati.
+- Un'app che si comporta in modo strano si aggiorna o si reinstalla dal negozio ufficiale.
+
+<Say who="assistente">Ogni lezione di questo modulo risponde a un sintomo. Ora ti serve solo ricordare quale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ordine giusto">
+<Flow
+  caption="Un ordine sensato per sistemare un telefono."
+  steps={[
+    { icon: "folder", title: "1. Copia di sicurezza", text: "Salva foto e dati importanti" },
+    { icon: "bolt", title: "2. Aggiornamenti", text: "Sistema e app, con Wi-Fi e carica" },
+    { icon: "code", title: "3. App e spazio", text: "Togli le app inutili, libera memoria" },
+    { icon: "bell", title: "4. Notifiche e batteria", text: "Spegni gli avvisi e abbassa i consumi" },
+    { icon: "wifi", title: "5. Rete e permessi", text: "Controlla i dati e i permessi delle app" },
+  ]}
+/>
+
+La copia di sicurezza viene **per prima**, perché dopo cancelli e cambi cose. Gli aggiornamenti vengono prima di tutto il resto: correggono anche problemi che poi non devi cercare.
+
+<Callout kind="regola">
+Se non sai se una cosa è importante, non cancellarla. Prima salva, poi decidi.
+</Callout>
+
+<Say who="sensei">Se salti la copia di sicurezza e cancelli, un errore diventa una perdita. Se la fai, è solo un passo indietro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esercizio guidato">
+Metti in pratica sul telefono di Giorgio (o sul tuo):
+
+<Guided
+  steps={[
+    "Collegati al Wi-Fi e metti il telefono in carica.",
+    "Fai una copia di sicurezza di foto e contatti, sul cloud o sul computer.",
+    "Dalle impostazioni cerca Aggiornamento software e aggiorna il sistema; poi aggiorna le app dal negozio.",
+    "Apri Archiviazione e vedi chi occupa più spazio: cancella doppioni, video inutili e file delle chat.",
+    "Elimina le app che non usi da mesi e controlla i permessi di quelle che restano.",
+    "Apri le notifiche, app per app, e spegni quelle che disturbano.",
+    "Guarda Batteria e Utilizzo dati: individua i tre consumi più grandi e decidi che cosa cambiare.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Segna su un foglio che cosa hai cambiato. Se qualcosa non va più, saprai che cosa tornare a controllare.
+</Callout>
+
+<Say who="assistente">Con calma, un passo alla volta. Non servono tutti insieme: puoi farli in più sere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio ha il telefono con memoria piena, aggiornamenti arretrati e nessuna copia di foto.
+
+<Quiz
+  question="Qual è il primo passo giusto per sistemare un telefono pieno di problemi?"
+  options={[
+    "Fare una copia di sicurezza di foto e dati importanti",
+    "Cancellare tutte le foto per fare spazio",
+    "Ripristinare il telefono alle impostazioni di fabbrica",
+    "Togliere subito tutte le notifiche e basta",
+  ]}
+  answer={0}
+  explain="La copia di sicurezza viene per prima, così quello che fai dopo non rischia di far perdere dati importanti. Cancellare tutto o ripristinare il telefono può far perdere ricordi, e spegnere le notifiche da sola non risolve spazio e aggiornamenti."
+/>
+
+<Say who="sensei">Prima proteggi, poi cambia. È la regola di ogni intervento serio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande che mettono insieme tutto il modulo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-telefono-pieno" pass="4/5" retries={3} />
+
+<Say who="sensei">Ripassa il modulo: ogni lezione è un sintomo con la sua cura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Si parte dal sintomo e si cerca la causa: spazio, batteria, notifiche, aggiornamenti o rete.
+- L'ordine giusto: copia di sicurezza, aggiornamenti, app e spazio, notifiche e batteria, rete e permessi.
+- Si cambia un problema alla volta e si annota ciò che si è fatto.
+- Il ripristino del telefono cancella tutto: è l'ultima risorsa, non la prima.
+- Caso chiuso: Giorgio ha fatto la copia, aggiornato, liberato spazio e spento gli avvisi inutili: il telefono è di nuovo come nuovo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il primo passo per sistemare un telefono pieno?", a: "Fare una copia di sicurezza dei dati importanti" },
+    { q: "Dove si vede che cosa occupa lo spazio?", a: "Nelle impostazioni, alla voce Archiviazione" },
+    { q: "Che cosa fa un ripristino di fabbrica?", a: "Cancella tutto e riporta il telefono come nuovo" },
+    { q: "Dove si controllano le app che consumano più batteria?", a: "Nelle impostazioni, alla voce Batteria" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo concluso. Sai usare telefono e tablet con sicurezza: prossimo passo, i servizi online di ogni giorno.</Say>
+</Scene>

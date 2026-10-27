@@ -94,3 +94,12 @@ Il titolare ha giudicato il design precedente «da app qualsiasi, troppo affolla
 - Tre rami Neon: production (dati veri, protetto), dev (prove, dati finti), preview (anteprime Vercel). Il dominio e la revisione legale restano fuori da questo aggiornamento.
 - `db:migrate` rifiuta il ramo di produzione (`PRODUCTION_DB_HOST`); `db:migrate:prod` richiede una copia di sicurezza fatta lo stesso giorno. Codice: `src/lib/db/migrate-guard.ts`, `scripts/db-migrate.mts`.
 - Regola fissa: nessuna migrazione sulla produzione senza copia di sicurezza di quel giorno, e sempre di sera.
+
+## Percorso e livelli (aggiornamento 2.0)
+- **Prove di padronanza:** una per modulo, circa 8 domande a scelta, si supera con l'**80%**. Le domande si ricavano sul server dalle banche (`src/lib/practice/banks-*`) e dai `<Quiz>` delle lezioni; le risposte giuste non arrivano al browser prima dell'invio. Il seme del tentativo è derivato da un segreto del server. Dopo 3 prove fallite negli ultimi 10 minuti si aspetta. Ogni tentativo è in `mastery_attempts` (scope `modulo:F.05`; il tentativo ancora aperto ha punteggio -1).
+- **Chi supera la prova:** le lezioni del modulo non ancora completate diventano «padroneggiata» (`lesson_progress`), contano come prerequisito soddisfatto e restano apribili, ma **non danno XP né serie**. Se poi la lezione viene completata con la sua verifica, gli XP arrivano normalmente.
+- **Test d'ingresso** (uno per corso, scope `ingresso:F`): 2 domande per ognuno di al massimo 5 moduli sparsi lungo il corso. Consiglia il primo modulo non del tutto noto e rimanda alla prova di padronanza dei moduli precedenti: **non sblocca nulla da solo**. Facoltativo e saltabile.
+- **Livelli** (dalla cintura scritta nella lezione): bianca e gialla = **Base**; arancione e verde = **Medio**; blu, marrone e nera = **Avanzato**. Filtro a chip nella pagina Percorso (`?livello=`): nasconde soltanto, non cambia sblocchi né conteggi.
+- **Tutorial** di 4 schermate al primo accesso, saltabile; `profiles.tutorial_done` lo ricorda.
+- **Ripasso intelligente** (`/ripasso`): le domande sbagliate nelle prove entrano in `review_items` (scatole 1, 3, 7, 21 giorni). Risposta giusta: si sale di scatola; sbagliata: si torna alla 1. La risposta giusta si rivela solo dopo l'invio. Nessun XP.
+- In manutenzione queste pagine restano chiuse come il resto dell'area privata; le lezioni seguono la regola di sempre.

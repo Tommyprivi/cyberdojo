@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { getCourseById } from "@/lib/content/courses";
 import { LESSON_ID } from "@/lib/content/schema";
 import { LIMITS } from "./limits";
 
 export const scopeSchema = z
   .object({
-    courseId: z.enum(["F", "C", "D", "T", "H"]),
+    courseId: z.string().refine((id) => getCourseById(id) !== undefined, { message: "Corso sconosciuto." }),
     module: z.number().int().min(1).max(30).optional(),
     lessonId: z.string().regex(LESSON_ID).optional(),
   })

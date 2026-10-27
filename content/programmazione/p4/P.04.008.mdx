@@ -1,0 +1,177 @@
+---
+id: P.04.008
+course: programmazione
+module: 4
+title: "Il formato JSON"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.007]
+objectives:
+  - "Descrivere il formato JSON e i suoi tipi di valore"
+  - "Salvare e rileggere dati con json.dump e json.load"
+  - "Prevedere come i tipi di Python diventano JSON e viceversa"
+verification:
+  type: generated-numeric
+  generator: p04-json
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere JSON a mano con apici singoli o virgola finale: in JSON le stringhe vogliono i doppi apici"
+  - "Dimenticare che le chiavi di un oggetto JSON sono sempre testo, anche se in Python erano numeri"
+  - "Confondere json.load (legge da un file) con json.loads (legge da una stringa)"
+commands: []
+---
+
+<Scene title="Un attore, tante informazioni">
+Elena vuole salvare la scheda di un attore: nome, ruolo, anni e l'elenco delle date delle prove. Non è una tabella semplice: ci sono una lista dentro un'altra cosa.
+
+Il CSV qui sta stretto. Serve un formato che permetta di annidare i dati.
+
+La domanda del caso: **come si salva un dato composto, con liste e dizionari dentro?**
+
+<Say who="sensei">Un CSV è una tabella. Un JSON è un albero: puoi mettere cose dentro altre cose.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il JSON">
+**JSON** (*JavaScript Object Notation*) è un formato di testo per scambiare dati. Lo usano quasi tutti i linguaggi e quasi tutti i servizi su internet. Somiglia molto ai dizionari e alle liste di Python.
+
+```json
+{
+  "nome": "Anna",
+  "eta": 17,
+  "ruoli": ["Giulietta", "Narratrice"],
+  "tesserata": true,
+  "note": null
+}
+```
+
+I tipi che esistono in JSON:
+- **oggetto** `{ }`: coppie chiave e valore, come un dizionario;
+- **array** `[ ]`: un elenco, come una lista;
+- **stringa** tra doppi apici, **numero**, **true** e **false**, **null** (nessun valore).
+
+<Callout kind="attenzione">
+Il JSON è più rigido di Python: le stringhe vogliono **doppi apici** (mai singoli), le chiavi sono sempre stringhe, non si possono scrivere commenti e non si può mettere una virgola dopo l'ultimo elemento.
+</Callout>
+
+<Say who="assistente">Se hai capito liste e dizionari, hai già capito il JSON. Cambiano solo alcuni nomi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Python e JSON">
+Il modulo `json` converte in entrambe le direzioni.
+
+<Compare
+  caption="Come si traducono i tipi."
+  left={{ title: "Python", points: ["dict", "list e tuple", "str, int, float", "True, False", "None"] }}
+  right={{ title: "JSON", points: ["oggetto", "array", "stringa, numero", "true, false", "null"] }}
+/>
+
+```python
+import json
+
+scheda = {"nome": "Anna", "eta": 17, "ruoli": ["Giulietta"]}
+testo = json.dumps(scheda)
+print(testo)
+print(json.loads(testo)["nome"])
+```
+
+<Log lines={[
+  "{\"nome\": \"Anna\", \"eta\": 17, \"ruoli\": [\"Giulietta\"]}",
+  "Anna",
+]} caption="dumps trasforma in testo, loads lo trasforma di nuovo in dizionario." />
+
+La **s** finale sta per *string*: `dumps` e `loads` lavorano con stringhe; `dump` e `load` lavorano con file.
+
+<Say who="sensei">Con la s lavori in memoria, senza la s lavori su un file. Un trucco semplice, ma ti salva da molti errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Salvare e rileggere">
+```python
+import json
+
+attori = [{"nome": "Anna", "eta": 17}, {"nome": "Marco", "eta": 16}]
+
+with open("attori.json", "w", encoding="utf-8") as f:
+    json.dump(attori, f, ensure_ascii=False, indent=2)
+
+with open("attori.json", encoding="utf-8") as f:
+    letti = json.load(f)
+print(letti[1]["nome"])
+```
+
+- `indent=2` scrive il file con rientri, così si legge bene.
+- `ensure_ascii=False` lascia le lettere accentate come sono: senza, «è» diventa `è`, valido ma illeggibile.
+- `json.load(f)` restituisce di nuovo liste e dizionari: l'ultima riga stampa `Marco`.
+
+Qualche differenza da conoscere: una **tupla** salvata diventa un array, e quando la rileggi è una **lista**. Una chiave numerica come `1` diventa il testo `"1"`.
+
+<Callout kind="regola">
+Se il file è danneggiato o scritto male, `json.load` solleva `json.JSONDecodeError`, che è un tipo di `ValueError`. Come per ogni lettura da file, conviene un `try` ed `except`.
+</Callout>
+
+<Say who="assistente">Il JSON non conosce date o insiemi. Per quelli, prima li converti in testo o in liste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena confronta due modi di salvare la stessa scheda.
+
+<Quiz
+  question="Che cosa restituisce json.loads('[1, 2, 3]') in Python?"
+  options={[
+    "Una lista con i numeri 1, 2 e 3",
+    "Una stringa con il testo [1, 2, 3]",
+    "Un dizionario con tre chiavi",
+    "Una tupla con tre elementi",
+  ]}
+  answer={0}
+  explain="Un array JSON diventa una lista di Python, quindi json.loads di un array con tre numeri dà una lista con 1, 2 e 3. Non resta una stringa (è stata proprio decodificata), non diventa un dizionario né una tupla."
+/>
+
+<Say who="sensei">Un array torna lista, un oggetto torna dizionario. Questo basta per quasi ogni uso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul formato JSON. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-json" pass="4/5" retries={3} />
+
+<Say who="sensei">Doppi apici, nessuna virgola finale, chiavi di testo. Il JSON è severo ma prevedibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il JSON è un formato di testo per dati annidati: oggetti, array, stringhe, numeri, true, false e null.
+- In Python dump e load lavorano con i file, dumps e loads con le stringhe.
+- dict diventa oggetto, list e tuple diventano array, None diventa null; le chiavi diventano sempre testo.
+- Caso chiuso: la scheda dell'attore, con ruoli e date in una lista, si salva in un unico file JSON e si rilegge identica.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra json.dump e json.dumps?", a: "dump scrive su un file, dumps restituisce una stringa" },
+    { q: "In che cosa si trasforma None in JSON?", a: "In null" },
+    { q: "Che apici vuole il JSON per le stringhe?", a: "Solo i doppi apici" },
+    { q: "Che cosa fa ensure_ascii=False?", a: "Lascia le lettere accentate leggibili nel file" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i percorsi dei file e delle cartelle, per sapere sempre dove sono i tuoi dati.</Say>
+</Scene>

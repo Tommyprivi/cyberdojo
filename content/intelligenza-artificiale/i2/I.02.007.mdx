@@ -1,0 +1,144 @@
+---
+id: I.02.007
+course: intelligenza-artificiale
+module: 2
+title: "Chiedere fonti: cosa funziona e cosa no"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.006]
+objectives:
+  - "Spiegare perché le fonti scritte a memoria dall'assistente possono essere inventate"
+  - "Distinguere un assistente con ricerca sul web da uno senza"
+  - "Controllare un link o una citazione aprendoli davvero"
+verification:
+  type: generated-numeric
+  generator: i02-fonti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Copiare nella ricerca un link o una citazione dell'assistente senza averli aperti"
+  - "Pensare che se c'è un link la risposta sia per forza vera"
+  - "Credere che l'assistente sappia dire da dove ha imparato un fatto"
+commands: []
+---
+
+<Scene title="Il link che non si apre">
+Marta ha imparato la lezione del libro inventato, e stavolta scrive: «Dammi tre fonti con link per l'ultima eruzione del Vesuvio». L'assistente risponde con tre link ordinati. Marta li clicca: il primo dà «pagina non trovata», il secondo porta a un sito che non c'entra, il terzo funziona ma parla d'altro.
+
+Eppure aveva chiesto le fonti, come si fa.
+
+La domanda del caso: **si possono chiedere le fonti all'assistente?**
+
+<Say who="sensei">Chiedere le fonti è un'ottima idea. Fidarsi di quelle che arrivano, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché le fonti possono essere inventate">
+Un modello **senza ricerca sul web** non ha una lista di dove ha letto ogni cosa. Durante l'addestramento ha imparato come sono fatti i testi, non una scheda con gli indirizzi. Quando gli chiedi un link, ne **scrive uno plausibile**: il nome di un sito vero, un percorso che sembra credibile, magari una pagina che non è mai esistita.
+
+Lo stesso vale per citazioni, titoli di articoli e numeri di pagina.
+
+<Callout kind="attenzione">
+Un link o una citazione scritti dal modello a memoria sono **testo generato** come tutto il resto: possono essere giusti, sbagliati o inventati. Vanno aperti e controllati.
+</Callout>
+
+<Say who="assistente">Anche quando il link si apre, non è detto che la pagina dica ciò che l'assistente sostiene. Bisogna leggerla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Con la ricerca sul web è diverso">
+<Compare
+  caption="Due modi di lavorare."
+  left={{ title: "Senza ricerca sul web", points: ["Risponde da ciò che ha imparato", "Le fonti sono scritte a memoria", "Possono essere inventate"] }}
+  right={{ title: "Con ricerca sul web", points: ["Cerca pagine vere e le legge", "Può indicare i link che ha usato", "Va comunque controllato"] }}
+/>
+
+Quando la ricerca è attiva, l'assistente di solito mostra i link delle pagine che ha consultato. È un passo avanti: i link esistono davvero. Ma restano due rischi:
+- può **riassumere male** la pagina, o attribuirle ciò che non dice;
+- può scegliere una **fonte poco affidabile**.
+
+<Callout kind="regola">
+Con ricerca o senza, la regola è la stessa: **apri la fonte e leggi tu** la parte che conta.
+</Callout>
+
+<Say who="sensei">Il link è una promessa. Aprirlo è la verifica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come chiedere meglio">
+Invece di «dammi le fonti», prova richieste che funzionano di più:
+
+- «**Che parole chiave** posso cercare per trovare fonti affidabili su questo argomento?»
+- «**Che tipo di fonte** è adatta: un istituto di ricerca, un libro, una rivista?»
+- «Se **non sei sicuro** di una fonte, dillo; non inventare titoli o link.»
+- Con un testo tuo: «Riassumi **solo** quello che c'è in questo testo e indica la frase da cui lo prendi».
+
+Poi fai tu la ricerca e controlli:
+
+1. il **sito** esiste ed è quello che dice di essere;
+2. il **link** si apre e parla davvero dell'argomento;
+3. la **frase** citata c'è nel testo, scritta così;
+4. la **data** e l'autore sono indicati.
+
+<Say who="assistente">Usa l'assistente come guida per cercare, non come bibliotecario che ti consegna i libri già controllati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un assistente senza ricerca sul web ti dà un link con una citazione. Che cosa devi fare?"
+  options={[
+    "Aprire il link e controllare che la citazione ci sia davvero",
+    "Usarla subito, perché un link è una prova",
+    "Chiedere all'assistente di giurare che è vera",
+    "Copiare la citazione senza il link",
+  ]}
+  answer={0}
+  explain="Un link scritto a memoria può essere inventato o non contenere la frase: va aperto e letto. Un link non prova niente da solo, l'assistente non può «giurare», e una citazione senza fonte controllata è ancora più rischiosa."
+/>
+
+<Say who="sensei">Se non puoi aprire la fonte, non la citare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su fonti e assistenti. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-fonti" pass="4/5" retries={3} />
+
+<Say who="sensei">Chiedi, apri, leggi. In questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un assistente senza ricerca sul web scrive fonti e link a memoria: possono essere inventati.
+- Con la ricerca attiva i link sono veri, ma il riassunto può essere sbagliato e la fonte poco affidabile.
+- Si chiedono parole chiave e tipi di fonte, poi si cerca e si controlla da soli.
+- Un link non è una prova: va aperto, e la frase citata va ritrovata nel testo.
+- Caso chiuso: i tre link di Marta erano scritti a memoria; solo aprendoli ha scoperto che non reggevano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché un assistente senza ricerca può inventare un link?", a: "Perché scrive un indirizzo plausibile invece di consultare una lista di fonti" },
+    { q: "Che cosa cambia con la ricerca sul web attiva?", a: "L'assistente legge pagine vere e può indicarne i link, ma va comunque controllato" },
+    { q: "Che cosa chiedere al posto di «dammi le fonti»?", a: "Parole chiave da cercare e il tipo di fonte adatto" },
+    { q: "Che cosa si fa con un link ricevuto?", a: "Si apre e si controlla che dica davvero quello che l'assistente sostiene" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: usare l'IA per studiare senza barare.</Say>
+</Scene>

@@ -1,0 +1,159 @@
+---
+id: W.03.008
+course: sviluppo-web
+module: 3
+title: "Titoli e struttura della pagina: l'indice del documento"
+belt: bianca
+duration_min: 8
+prerequisites: [W.03.007]
+objectives:
+  - "Usare i livelli di titolo da h1 a h6 in ordine, senza salti"
+  - "Leggere l'indice del documento costruito dai titoli"
+  - "Correggere una struttura di titoli sbagliata"
+verification:
+  type: generated-numeric
+  generator: w03-titoli-struttura
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scegliere il livello di un titolo in base alla grandezza del testo invece che al suo posto nella gerarchia"
+  - "Saltare un livello, per esempio da h2 a h4"
+  - "Mettere più h1 o nessun h1 nella pagina"
+commands: []
+---
+
+<Scene title="Il titolo piccolo">
+Marco vuole un titolo più piccolo per la sezione «Dove siamo», e siccome un `<h1>` è grande, usa un `<h4>`. Sullo schermo sembra perfetto.
+
+Ma Elena, con il suo lettore di schermo, apre l'elenco dei titoli della pagina e trova un caos: un h1, poi subito un h4, poi un h2. Non capisce che cosa sta sotto che cosa.
+
+La domanda del caso: **come si usano i titoli per dare una struttura alla pagina?**
+
+<Say who="sensei">I titoli non sono formati di testo, sono il sommario della pagina. La dimensione la decide il CSS, il livello lo decidi tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I sei livelli">
+HTML ha sei livelli di titolo, da `<h1>` (il più importante) a `<h6>` (il meno importante).
+
+<Layers
+  caption="La gerarchia dei titoli."
+  items={[
+    { icon: "book", title: "h1", text: "Il titolo della pagina: uno solo" },
+    { icon: "file", title: "h2", text: "Le sezioni principali" },
+    { icon: "folder", title: "h3", text: "Le parti di una sezione" },
+  ]}
+/>
+
+Funziona come l'indice di un libro: capitoli, paragrafi dentro i capitoli, sotto-paragrafi dentro i paragrafi.
+
+```html
+<h1>Amici dell'Orto</h1>
+  <h2>Chi siamo</h2>
+  <h2>Cosa facciamo</h2>
+    <h3>Semina</h3>
+    <h3>Raccolta</h3>
+  <h2>Dove siamo</h2>
+```
+
+<Say who="assistente">I rientri nel codice sono solo per leggere meglio: il browser li ignora. Ma mostrano bene la gerarchia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole">
+<Callout kind="regola">
+1. Un solo `<h1>` per pagina, per il titolo principale.
+2. Non saltare i livelli: dopo un `<h2>` viene un `<h3>`, non un `<h4>`.
+3. Scegli il livello per il **posto** che il titolo ha nella struttura, mai per la grandezza del testo.
+</Callout>
+
+Si può tornare indietro di più livelli: dopo un `<h3>` può venire un nuovo `<h2>` (è una nuova sezione). Quello che non si fa è **saltare avanti**.
+
+Perché conta: chi usa un lettore di schermo può sentire l'elenco dei titoli e saltare direttamente alla sezione che vuole. Molti usano questa funzione per orientarsi. Anche i motori di ricerca leggono i titoli per capire gli argomenti.
+
+<Callout kind="curiosita">
+Esiste un'idea vecchia secondo cui `<section>` e `<article>` annidati azzerano il livello dei titoli e permettono di usare sempre h1. I browser e i lettori di schermo **non** la applicano: la struttura la fanno i livelli dei titoli che scrivi tu.
+</Callout>
+
+<Say who="sensei">Ti serve un titolo più piccolo? Scrivi il livello giusto e poi lo rimpicciolisci con il CSS.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere l'indice">
+Un modo comodo per controllare la pagina: elencare solo i titoli, con i rientri, e vedere se ha senso come sommario.
+
+<Compare
+  caption="Stessa pagina, due strutture."
+  left={{ title: "Struttura sbagliata", points: ["h1 poi subito h4", "Due h1 nella pagina", "Livelli scelti per la grandezza"] }}
+  right={{ title: "Struttura giusta", points: ["h1, poi h2, poi h3 in ordine", "Un solo h1", "Livelli scelti per la gerarchia"] }}
+/>
+
+Per provare a vedere la struttura puoi fare così: leggi solo i titoli, uno dopo l'altro. Se il sommario è chiaro, la struttura è buona. Se c'è un buco o un salto, correggilo.
+
+<Callout kind="trucco">
+Gli strumenti di controllo dell'HTML che hai incontrato nel modulo 2 (validatore e strumenti per sviluppatori) segnalano anche i salti di livello nei titoli.
+</Callout>
+
+<Say who="assistente">Una pagina con titoli ben messi si legge anche senza immagini e senza colori. È il test migliore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un titolo `<h2>` è seguito da una sua sottosezione.
+
+<Quiz
+  question="Quale livello di titolo si usa per una sottosezione dentro una sezione con titolo h2?"
+  options={[
+    "h3",
+    "h1",
+    "h4",
+    "h2",
+  ]}
+  answer={0}
+  explain="La sottosezione è un livello sotto: h3. Un secondo h1 non va (uno solo per pagina), h4 salterebbe un livello e h2 indicherebbe una sezione allo stesso livello, non una sottosezione."
+/>
+
+<Say who="sensei">Un passo alla volta: mai saltare un gradino della scala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su titoli e struttura. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-titoli-struttura" pass="4/5" retries={3} />
+
+<Say who="sensei">Gerarchia, non grandezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I titoli da `<h1>` a `<h6>` formano l'indice della pagina: contano i livelli, non la grandezza.
+- Un solo `<h1>`; non si saltano livelli andando avanti.
+- I lettori di schermo permettono di navigare per titoli, quindi una struttura chiara aiuta tanto.
+- Caso chiuso: Marco ha rimesso i titoli nell'ordine giusto e ha ridotto la dimensione con il CSS.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanti h1 ci vogliono in una pagina?", a: "Uno solo, per il titolo principale" },
+    { q: "Si può passare da h2 a h4 senza h3?", a: "No: non si saltano i livelli andando avanti" },
+    { q: "Come si sceglie il livello di un titolo?", a: "In base al suo posto nella struttura, non alla grandezza del testo" },
+    { q: "Come si cambia la grandezza di un titolo?", a: "Con il CSS, non scegliendo un altro livello" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: accessibilità, lettori di schermo e tastiera.</Say>
+</Scene>

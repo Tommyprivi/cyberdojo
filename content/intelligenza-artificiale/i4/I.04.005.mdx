@@ -1,0 +1,143 @@
+---
+id: I.04.005
+course: intelligenza-artificiale
+module: 4
+title: "Diritto d'autore e IA: le questioni aperte"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.004]
+objectives:
+  - "Spiegare che cos'è il diritto d'autore e a che cosa serve"
+  - "Descrivere le due grandi questioni aperte: i dati usati per addestrare e chi è l'autore di ciò che l'IA produce"
+  - "Indicare comportamenti prudenti quando si usano immagini e testi creati o modificati con l'IA"
+verification:
+  type: generated-numeric
+  generator: i04-copyright
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che ciò che si trova in rete sia libero da usare: di solito appartiene a qualcuno"
+  - "Pensare che tutto sia già deciso: su molti punti le leggi e i tribunali stanno ancora decidendo"
+  - "Dire che un'opera creata dall'IA sia sempre protetta, o che non lo sia mai: dipende dal contributo creativo umano e dal Paese"
+commands: []
+---
+
+<Scene title="Il disegno nello stile di Elena">
+Elena è un'illustratrice. Un giorno vede su internet immagini create dall'IA «nello stile di Elena». Sono bellissime, e lei non ha mai dato il permesso a nessuno di usare i suoi disegni per addestrare un modello.
+
+Marta, che segue Elena sui social, si chiede: è permesso? E chi possiede le immagini che l'IA crea?
+
+La domanda del caso: **a chi appartengono i contenuti usati e prodotti dall'IA?**
+
+<Say who="sensei">Attenzione: questa è una lezione di fatti e di domande aperte, non una consulenza legale. Il diritto d'autore sull'IA si sta ancora scrivendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è il diritto d'autore">
+Il **diritto d'autore** protegge le opere creative (testi, musica, disegni, foto, programmi) e dà all'autore il controllo su come vengono copiate e diffuse. Nasce **da solo** quando si crea l'opera: non serve registrarla.
+
+In pratica, per usare un'opera di altri di solito serve:
+- il **permesso** dell'autore, oppure
+- una **licenza** che lo consente (per esempio le licenze libere come Creative Commons, con le loro condizioni), oppure
+- un caso previsto dalla legge (per esempio una breve citazione con indicazione della fonte).
+
+<Callout kind="regola">
+«Si trova su internet» non vuol dire «è libero». Prima di riusare un'immagine o un testo, controlla la licenza e indica la fonte.
+</Callout>
+
+<Say who="assistente">Il diritto d'autore non è contro la creatività: serve a far vivere chi crea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima questione: i dati di addestramento">
+I modelli generativi imparano da enormi quantità di testi, immagini e suoni, spesso presi da internet. Qui nasce la prima grande domanda: **è lecito usare opere protette per addestrare un modello, senza chiedere il permesso agli autori?**
+
+<Compare
+  caption="Due posizioni a confronto, semplificate."
+  left={{ title: "Chi sviluppa i modelli dice", points: ["Il modello impara schemi, non copia le opere", "È come imparare leggendo tanti libri", "Esistono eccezioni di legge per l'analisi di testi e dati"] }}
+  right={{ title: "Molti autori rispondono", points: ["Le opere sono usate senza permesso né compenso", "Il modello può imitare uno stile o riprodurre parti", "Chi crea rischia di fare concorrenza a se stesso"] }}
+/>
+
+Su questo punto ci sono cause in corso in vari Paesi e le decisioni non sono uguali dappertutto. In Unione Europea esiste una regola sull'estrazione di testi e dati (la direttiva sul diritto d'autore del 2019): permette l'uso per l'addestramento, ma **gli autori possono dire di no** in forma leggibile dalle macchine (il cosiddetto *opt-out*). Come si applica ai modelli generativi è ancora oggetto di discussione.
+
+<Say who="sensei">Non c'è ancora una risposta unica e definitiva. Chi ti dice il contrario ha fretta di vincere una discussione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Seconda questione: chi è l'autore di ciò che l'IA crea">
+Se scrivi una richiesta e l'IA produce un'immagine, di chi è l'immagine?
+
+- In molti ordinamenti, **l'autore è una persona**: un'opera creata *interamente* da una macchina, senza un contributo creativo umano, può non essere protetta.
+- Se la persona dà un contributo creativo vero (scelte, modifiche, composizione, ritocchi), può essere protetta la **parte** dovuta a quel contributo.
+- Una richiesta breve e generica, da sola, in genere non basta a dimostrare un contributo creativo.
+
+In Italia la legge sul diritto d'autore tutela le opere dell'ingegno **umano**, anche quando sono create con l'aiuto di strumenti di IA, purché siano frutto del lavoro intellettuale dell'autore. In altri Paesi le regole possono essere diverse.
+
+<Callout kind="attenzione">
+Ogni strumento di IA ha anche **condizioni d'uso** proprie: dicono cosa puoi fare con i contenuti prodotti (per esempio se puoi usarli a scopo commerciale). Leggile prima di usarli per qualcosa di importante. Un contenuto può inoltre assomigliare troppo a un'opera esistente: controlla sempre.
+</Callout>
+
+<Say who="assistente">Per un compito a scuola o un progetto personale rischi poco. Per vendere o pubblicare, i controlli diventano importanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Vuoi usare un'immagine generata dall'IA per la locandina di un evento pubblico.
+
+<Quiz
+  question="Quale comportamento è il più prudente?"
+  options={[
+    "Leggere le condizioni d'uso dello strumento, evitare imitazioni di opere o stili riconoscibili e, se serve, indicare che è creata con l'IA",
+    "Usarla subito: se l'ha fatta l'IA non appartiene a nessuno, quindi non ci sono limiti",
+    "Chiedere all'IA di imitare lo stile di un artista vivo, così sembra professionale",
+    "Cancellare i dettagli della licenza dai file così nessuno controlla",
+  ]}
+  answer={0}
+  explain="Condizioni d'uso, attenzione alle somiglianze e trasparenza sono i comportamenti prudenti. Pensare che «non appartenga a nessuno» è una semplificazione sbagliata; imitare uno stile o nascondere informazioni peggiora la situazione."
+/>
+
+<Say who="sensei">Dove la legge non è chiara, la correttezza e la trasparenza fanno da bussola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su diritto d'autore e IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-copyright" pass="4/5" retries={3} />
+
+<Say who="sensei">Due questioni: cosa usa l'IA per imparare, e chi è l'autore di ciò che produce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il diritto d'autore protegge le opere creative fin da quando sono create, senza registrazione.
+- Prima questione aperta: si possono usare opere protette per addestrare i modelli? In UE c'è l'eccezione con possibilità di opt-out, ma il dibattito continua.
+- Seconda questione: un'opera interamente prodotta dall'IA può non essere protetta; conta il contributo creativo umano, e le regole cambiano da Paese a Paese.
+- Controlla sempre le condizioni d'uso dello strumento e la somiglianza con opere esistenti.
+- Caso chiuso: Elena ha ragione a chiedersi se sia lecito, ma la risposta completa è ancora in discussione; nel frattempo conta la correttezza.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando nasce il diritto d'autore?", a: "Quando l'opera viene creata, senza bisogno di registrarla" },
+    { q: "«Si trova online» significa «è libero da usare»?", a: "No: di solito appartiene a qualcuno e va controllata la licenza" },
+    { q: "Che cos'è l'opt-out nell'estrazione di testi e dati?", a: "La possibilità per l'autore di dire di no all'uso delle sue opere per addestrare, in forma leggibile dalle macchine" },
+    { q: "Un'opera fatta solo dall'IA è sempre protetta?", a: "No: in molti ordinamenti serve un contributo creativo umano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: privacy e IA, cioè che fine fanno i tuoi dati.</Say>
+</Scene>

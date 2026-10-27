@@ -1,12 +1,22 @@
+import { NEW_COURSES } from "./courses-new";
+
 /** Albero dei corsi: fonte unica per titoli di corsi e moduli (sezione 3 della spec + C11). */
 
-export type CourseId = "F" | "C" | "D" | "T" | "H";
+/**
+ * Lettera del corso = prima parte dell'ID lezione (F.05.003). F, C, D, T, H sono i corsi storici;
+ * W, P, A, I, B, L, R, E, X, M sono i 10 nuovi corsi da 200 lezioni (courses-new.ts, docs/nuovi-corsi.md).
+ */
+export type CourseId = "F" | "C" | "D" | "T" | "H" | "W" | "P" | "A" | "I" | "B" | "L" | "R" | "E" | "X" | "M";
 
 export type CourseDef = {
   id: CourseId;
   folder: string;
   title: string;
   modules: { n: number; title: string; summary: string }[];
+  /** Solo corsi nuovi: presentazione per la pagina Corsi. */
+  blurb?: { lead: string; for: string };
+  /** Solo corsi nuovi: i 5 blocchi (dal facile al difficile); ogni blocco copre i moduli da `from` a `to`. */
+  blocks?: { title: string; summary: string; from: number; to: number }[];
 };
 
 export const COURSES: CourseDef[] = [
@@ -148,6 +158,7 @@ export const COURSES: CourseDef[] = [
       { n: 24, title: "Prepararsi alla professione", summary: "Ruoli, studi e certificazioni, colloqui, etica professionale, track record onesto" },
     ],
   },
+  ...NEW_COURSES,
 ];
 
 export function getCourseById(id: string) {

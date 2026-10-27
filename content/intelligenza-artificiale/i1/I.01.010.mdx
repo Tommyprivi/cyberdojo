@@ -1,0 +1,159 @@
+---
+id: I.01.010
+course: intelligenza-artificiale
+module: 1
+title: "Un'IA in un esperimento: addestra un riconoscitore di immagini senza codice"
+belt: bianca
+duration_min: 10
+prerequisites: [I.01.009]
+objectives:
+  - "Addestrare un piccolo riconoscitore di immagini con uno strumento gratuito, senza codice"
+  - "Spiegare il ruolo di classi, esempi, addestramento e prova"
+  - "Capire perché pochi esempi poco vari danno un modello fragile"
+verification:
+  type: generated-numeric
+  generator: i01-esperimento-immagini
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare pochi esempi tutti uguali (stessa luce, stesso sfondo) e aspettarsi un modello che funzioni ovunque"
+  - "Riprendere altre persone senza il loro permesso: meglio usare oggetti"
+  - "Credere che una percentuale alta nella prova dimostri che il modello funziona sempre"
+commands: []
+---
+
+<Scene title="Insegnare a una macchina">
+Per chiudere il modulo, Teo vuole provare l'IA con le sue mani. L'idea: costruire un riconoscitore che distingue una **matita** da una **penna**, usando la webcam del computer.
+
+Servirà solo un browser e uno strumento gratuito, senza scrivere codice. Il lavoro è lo stesso che hai visto nelle lezioni: dati, modello, compito.
+
+La domanda del caso: **bastano pochi esempi per insegnare a un computer a distinguere due oggetti?**
+
+<Say who="sensei">Imparare facendo vale dieci spiegazioni. Oggi l'addestratore sei tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo strumento">
+Lo strumento si chiama **Teachable Machine**, un esperimento gratuito di Google che funziona nel browser. Si cerca il nome con un motore di ricerca; al momento serve scegliere il tipo di progetto «Immagine» e usare la webcam (il browser chiederà il permesso).
+
+Un consiglio sulla privacy: **riprendi solo oggetti, non persone**, e leggi cosa dichiara il sito su dove restano i dati prima di caricare o salvare il modello. Se non hai una webcam, puoi caricare foto di oggetti dal computer.
+
+<Callout kind="attenzione">
+Non serve registrarsi né dare dati personali per provare. Se uno strumento te li chiede, fermati e valuta se ti conviene continuare.
+</Callout>
+
+<Say who="assistente">Gli strumenti online cambiano aspetto e funzioni nel tempo: se qualche pulsante è in un altro posto, segui i nomi delle fasi, che restano gli stessi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I passi dell'esperimento">
+<Flow
+  caption="Le fasi di un riconoscitore di immagini."
+  steps={[
+    { icon: "folder", title: "Classi", text: "Crei due gruppi: «matita» e «penna»" },
+    { icon: "database", title: "Esempi", text: "Per ogni classe, registri molte immagini" },
+    { icon: "gear", title: "Addestramento", text: "Premi il pulsante di addestramento e aspetti" },
+    { icon: "check", title: "Prova", text: "Mostri un oggetto e leggi le percentuali" },
+  ]}
+/>
+
+<Say who="sensei">Classi, esempi, addestramento, prova. Sono le stesse parole della lezione 3.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fai tu, passo dopo passo">
+<Guided
+  steps={[
+    "Apri lo strumento e scegli un nuovo progetto di tipo «Immagine».",
+    "Rinomina la prima classe «matita» e la seconda «penna».",
+    "Con la webcam registra almeno 30-50 immagini della matita, cambiando posizione, angolo e distanza.",
+    "Fai lo stesso per la penna, con la stessa varietà.",
+    "Premi il pulsante di addestramento e aspetta la fine.",
+    "Mostra alla webcam una matita e poi una penna e guarda le percentuali che il modello assegna a ogni classe.",
+    "Prova a cambiare luce o sfondo e osserva se il modello sbaglia.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Fai variare gli esempi: angoli diversi, luce diversa, mano in vista e non. Più il modello vede casi vari, meno è fragile.
+</Callout>
+
+<Say who="assistente">Se le due classi hanno sfondi diversi, il modello può imparare lo sfondo invece dell'oggetto. È un errore classico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa hai visto">
+Ciò che accade in piccolo succede anche in grande:
+
+- **Pochi esempi, sempre uguali** (stessa luce, stesso sfondo): il modello va bene in quelle condizioni e sbaglia altrove.
+- **Il modello dà percentuali**, non certezze: «80% matita» è una stima di quanto somigli agli esempi visti, non una prova.
+- **Un oggetto mai visto** (per esempio un pennarello) verrà comunque classificato come matita o penna: il modello conosce solo le classi con cui è stato addestrato.
+- **Più esempi vari** migliorano il risultato: è la lezione 3 in pratica.
+
+<Callout kind="regola">
+Un'alta percentuale nella prova non dimostra che il modello funzioni sempre: dimostra che funziona sugli esempi simili a quelli che ha visto.
+</Callout>
+
+<Say who="sensei">Hai appena visto da dove vengono i pregiudizi: da ciò che è stato mostrato al modello, e da ciò che è mancato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Il tuo riconoscitore funziona bene davanti allo sfondo bianco con cui lo hai addestrato, ma sbaglia davanti a una finestra luminosa. Qual è la causa più probabile?"
+  options={[
+    "Gli esempi erano poco vari: il modello ha imparato anche lo sfondo e la luce",
+    "Il computer si è stancato e funziona peggio",
+    "Il modello ha deciso di non collaborare",
+    "Le percentuali sono sempre sbagliate nelle stanze luminose",
+  ]}
+  answer={0}
+  explain="Se gli esempi hanno sempre lo stesso sfondo e la stessa luce, il modello lega queste cose alle classi. La soluzione è aggiungere esempi vari. Un computer non si stanca, un modello non ha volontà, e le percentuali non sbagliano per principio: dipendono dagli esempi."
+/>
+
+<Say who="sensei">Quando un'IA sbaglia, guarda prima i dati con cui è stata addestrata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'esperimento. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-esperimento-immagini" pass="4/5" retries={3} />
+
+<Say who="sensei">Classi, esempi vari, addestramento, prova. E guarda sempre i dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un riconoscitore di immagini si costruisce con classi, esempi, addestramento e prova.
+- Si può fare senza codice con uno strumento gratuito nel browser, riprendendo oggetti e non persone.
+- Esempi pochi o troppo simili danno un modello fragile, che impara anche lo sfondo.
+- Le percentuali sono stime di somiglianza, non certezze; il modello conosce solo le sue classi.
+- Caso chiuso: bastano pochi esempi per un modello che funziona in una stanza, ma servono esempi vari perché funzioni ovunque.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una classe in un riconoscitore di immagini?", a: "Una categoria da riconoscere, come «matita» o «penna»" },
+    { q: "Perché servono esempi vari?", a: "Perché il modello non impari lo sfondo o la luce al posto dell'oggetto" },
+    { q: "Che cosa indica una percentuale come 80%?", a: "Quanto l'immagine somiglia a quella classe secondo il modello, non una certezza" },
+    { q: "Che cosa succede se mostri un oggetto mai visto?", a: "Il modello lo mette comunque in una delle classi che conosce" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo concluso. Prossimo modulo: come usare bene gli assistenti di IA, a cominciare da che cos'è un assistente e come risponde.</Say>
+</Scene>

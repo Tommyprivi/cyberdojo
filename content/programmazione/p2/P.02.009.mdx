@@ -1,0 +1,188 @@
+---
+id: P.02.009
+course: programmazione
+module: 2
+title: "Cicli dentro cicli"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.008]
+objectives:
+  - "Scrivere un ciclo for dentro un altro ciclo for"
+  - "Calcolare quante volte viene eseguito il blocco interno"
+  - "Usare print con end per stampare più valori sulla stessa riga"
+verification:
+  type: generated-numeric
+  generator: p02-cicli-annidati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Sbagliare il numero totale di ripetizioni: si moltiplicano, non si sommano"
+  - "Sbagliare l'indentazione del print finale e stamparlo a ogni giro invece che una sola volta per riga"
+  - "Usare lo stesso nome di variabile nel ciclo esterno e in quello interno"
+commands: []
+---
+
+<Scene title="La griglia dei tavoli">
+Per il torneo servono 3 file di tavoli, con 4 tavoli per fila: i tavoli si chiamano 1-1, 1-2, 1-3, 1-4, poi 2-1, 2-2 e così via. Sono 12 etichette.
+
+Un ciclo ripete una cosa. Ma qui c'è una ripetizione dentro un'altra: per **ogni fila** bisogna fare **tutti i tavoli**. Si risolve mettendo un ciclo **dentro** un altro: i **cicli annidati**.
+
+La domanda del caso: **come si scrive un programma che gira in una griglia di file e tavoli?**
+
+<Say who="sensei">Pensa alle lancette di un orologio: per ogni ora, i minuti fanno un giro completo. Il ciclo interno è il più veloce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un ciclo dentro l'altro">
+```python
+for fila in range(1, 4):
+    for tavolo in range(1, 5):
+        print("Tavolo", fila, "-", tavolo)
+```
+
+Il ciclo esterno gira 3 volte (`fila` vale 1, 2, 3). Per **ogni** valore di `fila`, quello interno fa il suo giro completo con 4 valori di `tavolo`.
+
+<Log lines={[
+  "Tavolo 1 - 1",
+  "Tavolo 1 - 2",
+  "Tavolo 1 - 3",
+  "Tavolo 1 - 4",
+  "Tavolo 2 - 1",
+  "...",
+  "Tavolo 3 - 4",
+]} caption="12 righe in tutto: 3 file per 4 tavoli." />
+
+<Callout kind="regola">
+Le ripetizioni si **moltiplicano**: il blocco interno si esegue (giri esterni) × (giri interni) volte. Qui 3 × 4 = 12.
+</Callout>
+
+L'indentazione dice a quale ciclo appartiene ogni riga: il secondo `for` è rientrato di 4 spazi, il `print` di 8.
+
+<Flow
+  caption="Il modo di procedere dei due cicli."
+  steps={[
+    { icon: "gear", title: "Fila 1", text: "Parte il ciclo esterno" },
+    { icon: "clock", title: "Giro interno", text: "Tavoli 1, 2, 3, 4" },
+    { icon: "bolt", title: "Fila 2", text: "Il ciclo interno ricomincia da capo" },
+  ]}
+/>
+
+<Say who="assistente">Segui la traccia con due colonne, una per fila e una per tavolo: vedrai che il tavolo cambia più spesso della fila.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Disegnare una riga alla volta">
+Di solito `print` va a capo. Con `end=""` invece resta sulla stessa riga: l'argomento `end` dice con che cosa finire. Si può mettere uno spazio con `end=" "`.
+
+```python
+for fila in range(1, 4):
+    for tavolo in range(1, 5):
+        print(fila * tavolo, end=" ")
+    print()
+```
+
+Qui il `print()` vuoto, rientrato come il ciclo interno ma **fuori** da esso, va a capo una volta sola, quando una fila è finita.
+
+<Log lines={[
+  "1 2 3 4 ",
+  "2 4 6 8 ",
+  "3 6 9 12 ",
+]} caption="Ogni riga è un giro del ciclo esterno; dopo ogni numero c'è uno spazio." />
+
+Controllo a mano: nella fila 1 i valori `fila * tavolo` sono 1, 2, 3, 4; nella fila 2 sono 2, 4, 6, 8; nella fila 3 sono 3, 6, 9, 12.
+
+<Callout kind="attenzione">
+Se per errore rientri il `print()` finale dentro il ciclo interno, andrà a capo dopo ogni numero e la griglia sarà una colonna sola. Controlla sempre il rientro.
+</Callout>
+
+<Say who="sensei">Dove sta il print() vuoto decide la forma del disegno. Una riga di rientro cambia tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un disegno di asterischi">
+Un classico: un triangolo, in cui il ciclo interno dipende da quello esterno.
+
+```python
+for riga in range(1, 5):
+    for _ in range(riga):
+        print("*", end="")
+    print()
+```
+
+<Log lines={[
+  "*",
+  "**",
+  "***",
+  "****",
+]} caption="La riga numero k ha k asterischi." />
+
+Alla riga 1 il ciclo interno gira 1 volta, alla riga 2 gira 2 volte, e così via. In questo caso il totale non è una moltiplicazione semplice: sono 1 + 2 + 3 + 4 = 10 asterischi.
+
+<Callout kind="trucco">
+Se ti perdi, riduci il problema: prova con 2 file e 2 colonne, scrivi a mano che cosa succede, poi aumenta i numeri.
+</Callout>
+
+<Say who="assistente">I cicli annidati sembrano difficili finché non li srotoli sul foglio. Poi diventano un gioco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia vuole sapere quante etichette stamperà questo programma.
+
+<Quiz
+  question="Quante volte viene eseguito il print in: for a in range(4) con dentro for b in range(5) con dentro print(a, b)?"
+  options={[
+    "20 volte",
+    "9 volte",
+    "4 volte",
+    "5 volte",
+  ]}
+  answer={0}
+  explain="Il ciclo esterno gira 4 volte e per ciascuna il ciclo interno gira 5 volte: 4 × 5 = 20. Le ripetizioni si moltiplicano, non si sommano (9 sarebbe 4 + 5)."
+/>
+
+<Say who="sensei">Esterno per interno. Se lo ricordi, sai già quanto lavoro farà il tuo programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui cicli annidati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-cicli-annidati" pass="4/5" retries={3} />
+
+<Say who="sensei">Moltiplica i giri e controlla il rientro: sono i due punti deboli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un ciclo annidato è un ciclo dentro un altro: per ogni giro esterno, l'interno fa il suo giro completo.
+- Le ripetizioni si moltiplicano: 3 giri esterni e 4 interni danno 12 esecuzioni del blocco interno.
+- print con end="" o end=" " resta sulla stessa riga; un print() vuoto va a capo.
+- Il rientro stabilisce a quale ciclo appartiene ogni riga.
+- Caso chiuso: Giulia genera le 12 etichette dei tavoli con due cicli di poche righe.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quante volte gira il blocco interno con range(3) fuori e range(2) dentro?", a: "6 volte, perché 3 per 2 fa 6" },
+    { q: "Che cosa fa print(x, end=\" \")?", a: "Stampa x e poi uno spazio, senza andare a capo" },
+    { q: "Come si va a capo con print?", a: "Con un print() vuoto" },
+    { q: "Quale ciclo ricomincia da capo a ogni giro dell'altro?", a: "Quello interno" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: due esercizi completi che mettono insieme tutto, la tabellina e l'indovina il numero.</Say>
+</Scene>

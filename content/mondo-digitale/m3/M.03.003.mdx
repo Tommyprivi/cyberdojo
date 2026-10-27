@@ -1,0 +1,149 @@
+---
+id: M.03.003
+course: mondo-digitale
+module: 3
+title: "Leggere e rispondere"
+belt: bianca
+duration_min: 8
+prerequisites: [M.03.002]
+objectives:
+  - "Riconoscere le cartelle principali della casella: Posta in arrivo, Inviata, Bozze, Cestino e Spam"
+  - "Distinguere Rispondi, Rispondi a tutti e Inoltra"
+  - "Leggere con attenzione mittente e oggetto prima di aprire un messaggio"
+verification:
+  type: generated-numeric
+  generator: m03-leggere-rispondere
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare Rispondi a tutti quando basta rispondere solo a chi ha scritto"
+  - "Aprire un messaggio senza guardare chi lo ha mandato"
+  - "Cercare un messaggio mandato nella Posta in arrivo invece che in Inviata"
+commands: []
+---
+
+<Scene title="Il messaggio per tutti">
+Rosa ha ricevuto la sua prima email: l'ufficio del Comune le scrive per confermare l'iscrizione al corso. Davide le dice: «Rispondi tu, nonna!». Rosa preme un bottone e... il suo «Grazie» arriva anche alle altre diciannove persone che erano nell'elenco.
+
+Quale bottone ha premuto? E come si evita?
+
+La domanda del caso: **come si risponde a un messaggio senza disturbare tutti?**
+
+<Say who="sensei">I bottoni di risposta sono tre e fanno cose diverse. Conoscerli ti evita figuracce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le cartelle della casella">
+Una casella di posta è divisa in **cartelle**. Le principali:
+
+<Layers
+  caption="Le cartelle più comuni."
+  items={[
+    { icon: "mail", title: "Posta in arrivo", text: "I messaggi che ricevi" },
+    { icon: "file", title: "Inviata", text: "Una copia di ciò che hai mandato" },
+    { icon: "folder", title: "Bozze", text: "Messaggi iniziati e non ancora inviati" },
+    { icon: "warning", title: "Spam", text: "Messaggi sospetti messi da parte dal servizio" },
+  ]}
+/>
+
+C'è anche il **Cestino**, dove vanno i messaggi eliminati: di solito si svuota da solo dopo un po' di tempo, quindi un messaggio cancellato per errore si può spesso ancora recuperare.
+
+Quando arriva un messaggio nuovo, in elenco compare in grassetto: chi lo ha mandato (**mittente**), l'**oggetto** e l'inizio del testo.
+
+<Say who="assistente">Se non trovi un messaggio che hai mandato, guarda in Inviata. Se hai iniziato a scriverlo e ti sei fermato, è in Bozze.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima di aprire: guarda chi scrive">
+Nell'elenco dei messaggi controlla due cose, prima ancora di aprire:
+
+- il **mittente**: lo conosci? Il nome mostrato può essere finto, quindi guarda anche l'indirizzo;
+- l'**oggetto**: ha senso rispetto a ciò che ti aspetti?
+
+<Callout kind="regola">
+Aprire un messaggio non è pericoloso in sé. Il rischio sta nel **cliccare i link** o nell'**aprire gli allegati** di un messaggio che non ti aspetti. Se non conosci il mittente, non cliccare: ne parliamo nella lezione sullo spam.
+</Callout>
+
+<Say who="sensei">Prima guarda, poi apri, poi (se serve) clicca. Mai al contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rispondi, Rispondi a tutti, Inoltra">
+Dentro un messaggio trovi tre azioni:
+
+<Compare
+  caption="Chi riceve la tua risposta."
+  left={{ title: "Rispondi", points: ["Scrivi solo a chi ha mandato il messaggio", "Va bene nella maggior parte dei casi", "L'oggetto comincia con «Re:»"] }}
+  right={{ title: "Rispondi a tutti", points: ["Scrivi a mittente e a tutti gli altri destinatari", "Usalo solo se tutti devono leggere", "Qui è finita la risposta di Rosa"] }}
+/>
+
+E poi **Inoltra**: manda il messaggio ricevuto a una persona nuova, che sceglie chi lo riceve. Prima di inoltrare chiediti se il messaggio contiene dati personali di altri o cose riservate: in quel caso meglio non farlo senza permesso.
+
+<Callout kind="trucco">
+Prima di premere Invia su una risposta, guarda la riga **A:** (e **Cc:**). Ti dice con certezza chi leggerà.
+</Callout>
+
+<Say who="assistente">Quasi sempre basta «Rispondi». «Rispondi a tutti» serve quando una riunione si organizza davvero tra tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il Comune ha scritto a venti persone per ricordare l'orario del corso. Rosa vuole solo ringraziare l'ufficio.
+
+<Quiz
+  question="Quale azione deve usare Rosa per ringraziare solo l'ufficio che ha scritto?"
+  options={[
+    "Rispondi",
+    "Rispondi a tutti",
+    "Inoltra",
+    "Elimina",
+  ]}
+  answer={0}
+  explain="Rispondi manda il messaggio solo a chi lo ha scritto. Rispondi a tutti raggiunge anche gli altri destinatari, Inoltra manda il messaggio a una persona nuova ed Elimina non invia niente."
+/>
+
+<Say who="sensei">Un secondo di attenzione sulla riga A: e hai evitato la figuraccia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su cartelle e risposte. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-leggere-rispondere" pass="4/5" retries={3} />
+
+<Say who="sensei">Cartelle, mittente, tre bottoni. È tutta qui la lettura della posta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La casella ha cartelle: Posta in arrivo, Inviata, Bozze, Spam e Cestino.
+- Prima di aprire un messaggio, controlla mittente e oggetto.
+- Rispondi scrive solo al mittente, Rispondi a tutti anche agli altri, Inoltra manda il messaggio a una persona nuova.
+- Prima di inviare guarda sempre la riga A: e Cc:.
+- Caso chiuso: Rosa doveva premere Rispondi, non Rispondi a tutti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove trovi una copia dei messaggi che hai mandato?", a: "Nella cartella Inviata" },
+    { q: "Che differenza c'è tra Rispondi e Rispondi a tutti?", a: "Rispondi scrive solo al mittente, Rispondi a tutti anche agli altri destinatari" },
+    { q: "Che cosa fa Inoltra?", a: "Manda il messaggio ricevuto a una persona nuova" },
+    { q: "Che cosa sono le Bozze?", a: "Messaggi iniziati e salvati, non ancora inviati" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si scrive un'email chiara e cortese.</Say>
+</Scene>

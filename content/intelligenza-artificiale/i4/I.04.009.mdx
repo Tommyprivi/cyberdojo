@@ -1,0 +1,155 @@
+---
+id: I.04.009
+course: intelligenza-artificiale
+module: 4
+title: "Impatto ambientale dell'IA"
+belt: bianca
+duration_min: 8
+prerequisites: [I.04.008]
+objectives:
+  - "Spiegare perché l'IA consuma energia e acqua"
+  - "Distinguere il consumo dell'addestramento da quello dell'uso quotidiano"
+  - "Indicare scelte semplici per usare l'IA in modo più sobrio"
+verification:
+  type: generated-numeric
+  generator: i04-ambiente
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che l'IA sia «immateriale»: gira su computer veri, in edifici veri, che usano elettricità"
+  - "Affermare cifre precise sul consumo di una singola richiesta: le stime variano molto da modello a modello"
+  - "Pensare che l'IA serva solo a consumare: può anche aiutare a risparmiare energia, per esempio nelle reti elettriche"
+commands: []
+---
+
+<Scene title="La nuvola ha un indirizzo">
+Marta pensa che l'IA stia «nella nuvola», come una cosa leggera che non pesa su nulla. Il professor Ricci le mostra la foto di un enorme capannone senza finestre, pieno di computer, con grandi impianti di raffreddamento.
+
+«La nuvola», le dice, «è in un capannone vero».
+
+La domanda del caso: **quanto pesa l'IA sull'ambiente, e che cosa possiamo fare?**
+
+<Say who="sensei">Nessuna esagerazione, nessun allarmismo: guardiamo da dove viene il consumo e quanto è noto davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da dove viene il consumo">
+Un modello di IA gira in **data center**: grandi edifici pieni di computer (con chip speciali, come le GPU) collegati tra loro.
+
+<Layers
+  caption="Dove si consuma."
+  items={[
+    { icon: "bolt", title: "Elettricità", text: "Per far funzionare i computer, giorno e notte" },
+    { icon: "fire", title: "Raffreddamento", text: "I chip scaldano e vanno raffreddati" },
+    { icon: "server", title: "Produzione dei chip", text: "Materiali, fabbriche e trasporti" },
+    { icon: "globe", title: "Rete", text: "I dati viaggiano tra data center e utenti" },
+  ]}
+/>
+
+Il raffreddamento può usare molta **acqua**, specie in certi impianti e in certe zone. Quanto dipende dal posto, dal clima e da come è costruito il data center.
+
+<Callout kind="curiosita">
+Secondo l'Agenzia internazionale dell'energia, nel 2024 i data center (di ogni tipo, non solo per l'IA) usavano circa l'1,5% dell'elettricità del mondo, e la quota è prevista in crescita con la diffusione dell'IA.
+</Callout>
+
+<Say who="assistente">Non è l'IA in sé: è il fatto che calcolare tanto richiede tanta energia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Addestrare e usare">
+Il consumo ha due momenti diversi:
+
+<Compare
+  caption="Due fasi, due tipi di consumo."
+  left={{ title: "Addestramento", points: ["Si fa una volta (o poche) per modello", "Richiede enormi quantità di calcolo", "Costa tanto in un colpo solo"] }}
+  right={{ title: "Uso (inferenza)", points: ["Ogni richiesta consuma poco", "Ma le richieste sono miliardi", "Col tempo può superare l'addestramento"] }}
+/>
+
+Quanto consumi con una singola richiesta? **Dipende**: dal modello, dalla lunghezza della risposta e dal tipo di richiesta (un'immagine o un video costano più di una frase). Le stime pubblicate sono molto diverse tra loro, quindi diffida di chi dà un numero unico e sicuro.
+
+<Say who="sensei">«Una richiesta consuma poco» e «tutte le richieste consumano molto» sono vere insieme. Il trucco è moltiplicare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa si può fare">
+Le scelte più importanti le fanno le aziende e i governi (energia da fonti rinnovabili, chip più efficienti, modelli più piccoli, trasparenza sui consumi). Anche tu puoi fare qualcosa di semplice:
+
+<Flow
+  caption="Un uso più sobrio."
+  steps={[
+    { icon: "search", title: "Serve davvero?", text: "A volte una ricerca o il tuo cervello bastano" },
+    { icon: "gear", title: "Modello adatto", text: "Per compiti semplici basta uno strumento piccolo" },
+    { icon: "file", title: "Richiesta chiara", text: "Meno tentativi inutili, meno consumo" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Non esagerare nemmeno al contrario: sentirsi in colpa per ogni domanda non serve. L'impatto di una singola persona è piccolo; ciò che pesa sono le scelte su larga scala.
+</Callout>
+
+L'IA può anche **ridurre** consumi in altri campi: per esempio aiutare a prevedere la domanda di energia, a gestire meglio le reti elettriche o a progettare materiali. Il bilancio completo è ancora oggetto di studio.
+
+<Say who="assistente">Sobrietà non vuol dire rinunciare: vuol dire scegliere lo strumento giusto per ogni compito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un compagno afferma: «Ogni richiesta all'IA consuma esattamente 10 volte una ricerca web, lo dicono tutti».
+
+<Quiz
+  question="Qual è la risposta più corretta?"
+  options={[
+    "Le stime sul consumo di una richiesta variano molto da modello a modello: non esiste un numero unico e sicuro",
+    "È vero, il rapporto è fisso e non cambia mai",
+    "L'IA non consuma energia perché sta nella nuvola",
+    "Consuma energia solo durante l'addestramento, mai quando si usa",
+  ]}
+  answer={0}
+  explain="Il consumo dipende dal modello, dal tipo e dalla lunghezza della richiesta, e le stime sono diverse. L'IA gira su computer veri che usano elettricità, e il consumo c'è sia nell'addestramento sia nell'uso."
+/>
+
+<Say who="sensei">Un numero sicuro dove non c'è sicurezza è il segnale che qualcuno semplifica troppo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'impatto ambientale dell'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-ambiente" pass="4/5" retries={3} />
+
+<Say who="sensei">Data center, elettricità, raffreddamento. Poi addestramento e uso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA gira in data center, che usano elettricità, acqua per il raffreddamento e chip prodotti con materiali ed energia.
+- Il consumo c'è sia nell'addestramento (grande, concentrato) sia nell'uso quotidiano (piccolo per richiesta, ma moltiplicato per miliardi).
+- Le stime sul consumo di una richiesta sono molto diverse: diffida dei numeri sicuri.
+- Un uso sobrio: chiediti se serve, scegli lo strumento adatto, scrivi richieste chiare.
+- Caso chiuso: la «nuvola» è un capannone vero, e Marta sa che l'IA ha un costo ambientale che va conosciuto senza esagerare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove gira l'IA?", a: "In data center: edifici pieni di computer che consumano elettricità" },
+    { q: "Perché serve acqua?", a: "Per raffreddare i chip e gli impianti, in alcuni data center" },
+    { q: "Qual è la differenza tra addestramento e uso?", a: "L'addestramento è grande e concentrato; l'uso consuma poco per richiesta ma si ripete miliardi di volte" },
+    { q: "Si può dare un consumo esatto per ogni richiesta?", a: "No: dipende dal modello e dal tipo di richiesta, e le stime variano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: scrivi le tue regole personali per usare l'IA.</Say>
+</Scene>

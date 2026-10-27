@@ -1,0 +1,152 @@
+---
+id: W.01.005
+course: sviluppo-web
+module: 1
+title: "Gli strumenti dello sviluppatore del browser"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.004]
+objectives:
+  - "Aprire gli strumenti per sviluppatori del browser e riconoscere i pannelli Elementi, Console e Rete"
+  - "Provare una modifica a una pagina senza rovinare il sito vero"
+  - "Leggere in Rete il codice di stato di ogni richiesta"
+verification:
+  type: generated-numeric
+  generator: w01-strumenti-browser
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che modificare una pagina negli strumenti cambi il sito vero: cambia solo ciò che vedi tu, fino al ricaricamento"
+  - "Incollare nella console un codice trovato online senza capirlo: può rubare i tuoi dati"
+  - "Non guardare la scheda Rete quando una pagina non carica: lì c'è il codice di stato"
+commands: []
+---
+
+<Scene title="Il banco da lavoro nascosto">
+Lucia vuole capire perché il titolo del suo sito preferito è così grande. «Posso vedere come è fatto?», ti chiede. «E posso provare a cambiarlo, senza rovinare niente?».
+
+Sì: ogni browser moderno ha un banco da lavoro già installato e gratuito, gli **strumenti per sviluppatori** (in inglese *DevTools*). Chi sviluppa siti li usa tutti i giorni.
+
+La domanda del caso: **come si guarda dentro una pagina e come si prova a cambiarla senza fare danni?**
+
+<Say who="sensei">Il browser non è solo una finestra. È anche un'officina. Imparare a usarla ti farà risparmiare ore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aprire gli strumenti">
+Apri una pagina qualsiasi e premi **F12** (Windows e Linux) oppure **Ctrl + Maiusc + I**. Su Mac: **Cmd + Opzione + I**. Oppure fai clic destro sulla pagina e scegli **Ispeziona**.
+
+Si apre un pannello con delle schede. Per ora te ne servono tre.
+
+<Layers
+  caption="Le tre schede da conoscere subito."
+  items={[
+    { icon: "file", title: "Elementi", text: "Il codice della pagina, con HTML e CSS" },
+    { icon: "terminal", title: "Console", text: "Messaggi ed errori di JavaScript" },
+    { icon: "globe", title: "Rete", text: "Tutte le richieste, con i codici di stato" },
+  ]}
+/>
+
+I nomi cambiano un po' tra i browser (in inglese *Elements*, *Console*, *Network*), ma le funzioni sono le stesse.
+
+<Say who="assistente">All'inizio sembra un pannello pieno di roba. Non ti serve capirlo tutto: oggi usi solo tre schede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Elementi: guardare e provare">
+Nella scheda **Elementi** vedi il codice HTML della pagina come un albero. Se passi il mouse su una riga, l'elemento si illumina nella pagina. A destra vedi gli **stili CSS** che gli sono applicati.
+
+Puoi anche **modificare**: fai doppio clic su un testo, cambialo e premi Invio, e la pagina cambia subito.
+
+<Flow
+  caption="Una prova nel banco da lavoro."
+  steps={[
+    { icon: "search", title: "Ispeziona", text: "Scegli un elemento sulla pagina" },
+    { icon: "gear", title: "Modifica", text: "Cambia un testo o un colore" },
+    { icon: "eye", title: "Guarda", text: "Il risultato si vede subito" },
+    { icon: "bolt", title: "Ricarica", text: "Con F5 tutto torna come prima" },
+  ]}
+/>
+
+<Callout kind="regola">
+Quello che cambi negli strumenti resta **solo nel tuo browser** e sparisce quando ricarichi. Il sito vero, sul server, non se ne accorge. È il motivo per cui è un posto sicuro per fare prove.
+</Callout>
+
+<Say who="sensei">Nessuno può dire che hai rotto il sito. Prova, sbaglia, ricarica. Questo è un campo di allenamento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Console e Rete">
+La **Console** mostra i messaggi del sito e gli **errori di JavaScript**, in rosso. Se digiti `2 + 3` e premi Invio, risponde `5`.
+
+<Log lines={[
+  "> 2 + 3",
+  "5",
+  "> console.log(\"Ciao Lucia\")",
+  "Ciao Lucia",
+]} caption="La console come calcolatrice e come blocco appunti." />
+
+La scheda **Rete** elenca **ogni richiesta** della pagina: il file HTML, ogni foglio di stile, ogni immagine. Per ognuna vedi il nome, il **codice di stato** (200, 404...) e quanto pesa. Ricarica la pagina con la scheda aperta e vedrai la lista riempirsi.
+
+<Callout kind="attenzione">
+Nella console non incollare mai codice trovato online o mandato da sconosciuti senza capirlo: gira con i **tuoi** permessi nella pagina e può leggere dati tuoi. È una truffa diffusa.
+</Callout>
+
+<Say who="assistente">Una foto non si vede? Vai in Rete: se accanto c'è un 404, il file non c'è. Hai trovato il guasto in dieci secondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un allievo scrive a Lucia: «Nella pagina dei corsi la foto del vaso non si vede».
+
+<Quiz
+  question="Quale scheda ti dice subito se il server non ha trovato il file dell'immagine?"
+  options={["Rete, dove accanto al file vedi il codice 404", "Elementi, dove vedi i colori", "Console, dove puoi fare i calcoli", "Nessuna: gli strumenti non vedono le immagini"]}
+  answer={0}
+  explain="La scheda Rete elenca ogni richiesta con il suo codice di stato. Se per l'immagine compare 404, il server non ha trovato quel file: forse il nome è sbagliato o il file non è stato caricato."
+/>
+
+<Say who="sensei">Sempre lo stesso metodo: apri gli strumenti, guarda la scheda giusta, leggi il codice. Non indovinare, osserva.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli strumenti del browser. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-strumenti-browser" pass="4/5" retries={3} />
+
+<Say who="sensei">Elementi per vedere, Console per gli errori, Rete per le richieste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli strumenti si aprono con F12 o con il clic destro su «Ispeziona».
+- Elementi mostra HTML e CSS e permette prove; Console mostra gli errori di JavaScript; Rete elenca le richieste e i codici di stato.
+- Le modifiche fatte negli strumenti restano solo sul tuo browser e spariscono al ricaricamento.
+- Caso chiuso: la foto del vaso non si vedeva perché in Rete il file risultava 404.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si aprono gli strumenti per sviluppatori?", a: "Con F12, oppure con il clic destro e «Ispeziona»" },
+    { q: "Che cosa mostra la scheda Rete?", a: "Tutte le richieste fatte dalla pagina, con codice di stato e peso" },
+    { q: "Le modifiche fatte in Elementi cambiano il sito vero?", a: "No, restano solo nel tuo browser e spariscono al ricaricamento" },
+    { q: "Dove compaiono gli errori di JavaScript?", a: "Nella Console, di solito in rosso" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: ti prepari il posto di lavoro, con un editor e una cartella per il progetto.</Say>
+</Scene>

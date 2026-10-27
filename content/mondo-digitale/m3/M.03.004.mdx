@@ -1,0 +1,156 @@
+---
+id: M.03.004
+course: mondo-digitale
+module: 3
+title: "Scrivere un'email fatta bene"
+belt: bianca
+duration_min: 8
+prerequisites: [M.03.003]
+objectives:
+  - "Elencare le parti di un'email: destinatario, oggetto, saluto, testo, chiusura e firma"
+  - "Scrivere un oggetto chiaro e un testo breve e cortese"
+  - "Rileggere il messaggio prima di inviare"
+verification:
+  type: generated-numeric
+  generator: m03-scrivere-email
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Lasciare l'oggetto vuoto o scrivere solo «Ciao» o «Importante»"
+  - "Scrivere tutto in maiuscolo: sembra che si stia gridando"
+  - "Premere Invia senza rileggere e senza controllare il destinatario"
+commands: []
+---
+
+<Scene title="Il messaggio che nessuno apre">
+Davide scrive al professore di informatica: oggetto vuoto, testo «ciao volevo sapere una cosa sul compito scusi». Dopo tre giorni nessuna risposta. Il professore riceve decine di messaggi al giorno: uno senza oggetto e senza nome sembra poco importante.
+
+La sorella di Davide, Giulia, riscrive la stessa richiesta con poche righe ordinate. Risposta in un'ora.
+
+La domanda del caso: **che cosa rende un'email facile da capire e da rispondere?**
+
+<Say who="sensei">Un'email non è un messaggio al volo. Chi legge non può chiederti «che cosa intendevi?» in tempo reale. Devi essere chiaro tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti di un'email">
+<Flow
+  caption="Le parti di un buon messaggio."
+  steps={[
+    { icon: "user", title: "A:", text: "Il destinatario, controllato" },
+    { icon: "search", title: "Oggetto", text: "Di che cosa parla, in poche parole" },
+    { icon: "mail", title: "Testo", text: "Saluto, richiesta, chiusura, firma" },
+  ]}
+/>
+
+- **A:** l'indirizzo di chi deve leggere.
+- **Oggetto:** la riga che si vede nell'elenco. Deve dire di che cosa parla il messaggio.
+- **Testo:** saluto, corpo, chiusura e firma con il tuo nome.
+
+<Say who="assistente">Pensa all'oggetto come al titolo di un giornale: chi legge decide in due secondi se aprire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un oggetto che aiuta">
+<Compare
+  caption="Lo stesso messaggio, due oggetti."
+  left={{ title: "Poco chiaro", points: ["Ciao", "Importante!!!", "Una domanda"] }}
+  right={{ title: "Chiaro", points: ["Domanda sul compito di venerdì", "Richiesta di un colloquio", "Iscrizione al corso di computer"] }}
+/>
+
+Un buon oggetto dice **di che cosa** si tratta ed è breve. Evita il punto esclamativo ripetuto e le parole come «URGENTE» se non lo è davvero.
+
+<Callout kind="attenzione">
+Scrivere **TUTTO IN MAIUSCOLO** nella lettura equivale a gridare. Usa le maiuscole solo dove servono: inizio frase e nomi propri.
+</Callout>
+
+<Say who="sensei">Un oggetto fatto bene è metà della risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un testo breve e cortese">
+Un modello semplice, in quattro mosse:
+
+1. **Saluto** con il nome: «Gentile professor Verdi,» (per chi non conosci bene) oppure «Ciao Marta,» (tra amici).
+2. **Chi sei e che cosa chiedi**, in due o tre frasi.
+3. **Chiusura**: «Grazie e cordiali saluti,» (formale) oppure «Grazie, a presto» (informale).
+4. **Firma**: il tuo nome e cognome.
+
+```
+Oggetto: Domanda sul compito di venerdì
+
+Gentile professor Verdi,
+sono Davide Bianchi della classe 3B.
+Posso consegnare il compito di venerdì lunedì mattina?
+Grazie e cordiali saluti,
+Davide Bianchi
+```
+
+<Callout kind="trucco">
+Scrivi frasi corte, una idea per frase. E una richiesta per messaggio: se ne hai tre, meglio in un elenco numerato.
+</Callout>
+
+<Say who="assistente">Il tono cambia con la persona: formale con chi non conosci, più libero con amici e parenti. In dubbio, scegli il formale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Prima di premere Invia, c'è un ultimo gesto che salva da molti errori.
+
+<Quiz
+  question="Quale abitudine evita di mandare un messaggio sbagliato o a una persona sbagliata?"
+  options={[
+    "Rileggere il testo e controllare l'indirizzo nella riga A: prima di inviare",
+    "Scrivere tutto in maiuscolo per farsi notare",
+    "Lasciare vuoto l'oggetto per fare prima",
+    "Mettere molti punti esclamativi nell'oggetto",
+  ]}
+  answer={0}
+  explain="Rileggere e controllare il destinatario ti fa trovare errori e indirizzi sbagliati. Il maiuscolo sembra un grido, l'oggetto vuoto rende il messaggio poco chiaro e troppi punti esclamativi sembrano insistenza."
+/>
+
+<Say who="sensei">Un messaggio inviato non si può riprendere (a parte alcuni servizi, e per pochi secondi). Rileggi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come si scrive un'email. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-scrivere-email" pass="4/5" retries={3} />
+
+<Say who="sensei">Oggetto chiaro, saluto, richiesta breve, chiusura, firma. Controlla il destinatario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'email ha destinatario, oggetto, saluto, testo, chiusura e firma.
+- L'oggetto dice di che cosa si parla, in poche parole.
+- Il testo è breve, cortese, con una richiesta chiara.
+- Niente tutto maiuscolo e niente punti esclamativi a raffica.
+- Caso chiuso: Giulia ha avuto risposta perché il suo messaggio era ordinato; Davide lo riscrive allo stesso modo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve l'oggetto?", a: "A dire in poche parole di che cosa parla il messaggio" },
+    { q: "Che cosa sembra scrivere tutto in maiuscolo?", a: "Gridare" },
+    { q: "Qual è l'ultimo controllo prima di inviare?", a: "Rileggere il testo e controllare il destinatario" },
+    { q: "Come si apre un messaggio formale?", a: "Con un saluto e il nome, per esempio: Gentile professor Verdi," },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: allegare un file a un messaggio e aprire quelli che arrivano.</Say>
+</Scene>

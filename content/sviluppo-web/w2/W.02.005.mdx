@@ -1,0 +1,181 @@
+---
+id: W.02.005
+course: sviluppo-web
+module: 2
+title: "Elenchi puntati e numerati"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.004]
+objectives:
+  - "Scrivere un elenco puntato con ul e uno numerato con ol"
+  - "Annidare un elenco dentro un altro nel modo corretto"
+  - "Scegliere tra elenco puntato e numerato in base al contenuto"
+verification:
+  type: generated-numeric
+  generator: w02-elenchi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere del testo o un altro elenco direttamente dentro ul o ol, fuori da un li"
+  - "Usare un elenco numerato quando l'ordine non conta, o uno puntato quando conta"
+  - "Annidare un elenco accanto a un li invece che dentro un li"
+commands: []
+---
+
+<Scene title="La lista del materiale">
+Lucia deve spiegare agli iscritti che cosa portare al primo corso: grembiule, un asciugamano, un quaderno. Poi vuole scrivere i passi per preparare l'argilla: prima si taglia, poi si impasta, poi si appoggia sul tornio.
+
+Sono due liste diverse. Nella prima l'ordine non conta, nella seconda sì.
+
+La domanda del caso: **quale elenco serve per il materiale e quale per i passi?**
+
+<Say who="sensei">Un elenco ben fatto si legge in due secondi. Un paragrafo con tutto dentro, no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Elenco puntato: ul">
+Un elenco **puntato** si scrive con `<ul>` (*unordered list*, «lista non ordinata»). Ogni voce sta in un `<li>` (*list item*).
+
+```html
+<ul>
+  <li>Grembiule</li>
+  <li>Asciugamano</li>
+  <li>Quaderno</li>
+</ul>
+```
+
+Il browser mette un pallino davanti a ogni voce. Si usa quando l'**ordine non conta**.
+
+<Callout kind="regola">
+Dentro `ul` ci sono solo elementi `li`. Il testo scritto direttamente dentro `ul`, fuori da un `li`, è un errore.
+</Callout>
+
+<Say who="assistente">`ul` è il contenitore, `li` è ogni singola voce. Sempre insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Elenco numerato: ol">
+Un elenco **numerato** si scrive con `<ol>` (*ordered list*, «lista ordinata»). Le voci sono sempre dei `<li>`:
+
+```html
+<ol>
+  <li>Taglia l'argilla</li>
+  <li>Impastala</li>
+  <li>Appoggiala sul tornio</li>
+</ol>
+```
+
+Il browser conta da solo: 1, 2, 3. Se sposti una voce, i numeri si aggiornano.
+
+Qualche attributo utile:
+- `start="5"` fa cominciare il conteggio da 5.
+- `reversed` conta al contrario.
+- `type="a"` usa le lettere (a, b, c) al posto dei numeri.
+
+<Compare
+  caption="Quale elenco scegliere?"
+  left={{ title: "ul (puntato)", points: ["L'ordine non conta", "Esempio: il materiale da portare", "Un pallino per voce"] }}
+  right={{ title: "ol (numerato)", points: ["L'ordine conta", "Esempio: i passi di una ricetta", "Un numero per voce"] }}
+/>
+
+<Say who="sensei">Se spostare una voce cambia il significato, serve il numero. Altrimenti, il pallino.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Elenchi dentro elenchi">
+Una voce può avere a sua volta un sotto-elenco. Si mette **dentro** il `li` della voce, mai fuori:
+
+```html
+<ul>
+  <li>Materiale
+    <ul>
+      <li>Grembiule</li>
+      <li>Asciugamano</li>
+    </ul>
+  </li>
+  <li>Quaderno</li>
+</ul>
+```
+
+Qui «Materiale» ha due sotto-voci. Il sotto-elenco comincia prima di chiudere `</li>` della voce che lo contiene.
+
+<Callout kind="attenzione">
+L'errore più comune è chiudere il `li` e poi aprire il sotto-elenco subito dopo, come figlio diretto di `ul`. Non è valido: l'elenco interno va dentro un `li`.
+</Callout>
+
+<Callout kind="curiosita">
+Esiste anche l'elenco di **descrizione** `dl`, con `dt` (termine) e `dd` (spiegazione): serve per i glossari. Per ora ti bastano `ul` e `ol`.
+</Callout>
+
+<Say who="assistente">Rientrare bene il codice ti fa vedere subito se il sotto-elenco è al posto giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Lucia scrive i quattro passi per preparare lo smalto di un vaso. L'ordine dei passi è importante. Quale elenco usa?"
+  options={[
+    "ol con un li per ogni passo",
+    "ul con un li per ogni passo",
+    "Quattro p separati da hr",
+    "Un solo li con quattro br",
+  ]}
+  answer={0}
+  explain="Quando l'ordine conta serve l'elenco numerato ol, con un li per ogni voce. L'elenco ul non numera i passi, i p con hr non formano un elenco e un solo li con br non è un elenco di quattro voci."
+/>
+
+<Guided
+  steps={[
+    "Scrivi un ul con tre li: il materiale per un corso.",
+    "Scrivi un ol con tre li: i passi per preparare l'argilla.",
+    "Dentro un li dell'elenco puntato aggiungi un sotto-elenco.",
+    "Aggiungi start a un ol per far partire il conteggio da 3.",
+    "Controlla che ogni elenco sia chiuso e che il testo stia sempre dentro un li.",
+  ]}
+/>
+
+<Say who="sensei">Domanda da farti: l'ordine conta? Sì, ol. No, ul.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli elenchi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-elenchi" pass="4/5" retries={3} />
+
+<Say who="sensei">Contenitore, voci, sotto-elenco dentro la voce. Basta questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `ul` fa un elenco puntato, `ol` un elenco numerato; ogni voce è un `li`.
+- Si usa `ol` quando l'ordine conta, `ul` quando non conta.
+- Un sotto-elenco va dentro il `li` della voce che lo contiene.
+- `ol` ha attributi come `start` e `reversed`.
+- Caso chiuso: il materiale di Lucia è un `ul`, i passi per preparare l'argilla sono un `ol`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che tag serve per un elenco puntato?", a: "ul, con un li per ogni voce" },
+    { q: "Che tag serve per un elenco numerato?", a: "ol, con un li per ogni voce" },
+    { q: "Dove si mette un sotto-elenco?", a: "Dentro il li della voce che lo contiene" },
+    { q: "A che cosa serve l'attributo start su ol?", a: "A far cominciare il conteggio da un numero diverso da 1" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i link, cioè quello che rende il web una rete.</Say>
+</Scene>

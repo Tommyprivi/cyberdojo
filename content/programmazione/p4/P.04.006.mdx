@@ -1,0 +1,183 @@
+---
+id: P.04.006
+course: programmazione
+module: 4
+title: "Leggere e scrivere file di testo"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.005]
+objectives:
+  - "Scrivere e leggere un file di testo con open e with"
+  - "Scegliere la modalità giusta: lettura, scrittura o aggiunta"
+  - "Gestire un file mancante con FileNotFoundError"
+verification:
+  type: generated-numeric
+  generator: p04-file-di-testo
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aprire un file con la modalità w e cancellarne tutto il contenuto senza volerlo"
+  - "Dimenticare il carattere di a capo nei write: le righe finiscono tutte attaccate"
+  - "Non indicare la codifica UTF-8 e vedere le lettere accentate storte"
+commands: []
+---
+
+<Scene title="I dati che spariscono">
+Il programma di Elena tiene il conto delle presenze alle prove. Ma quando lo chiude, tutto sparisce: le variabili vivono solo mentre il programma gira.
+
+Per far **durare** i dati servono i **file**: Elena li scrive su disco e li rilegge la volta dopo.
+
+La domanda del caso: **come si salva un elenco su un file e lo si ritrova il giorno dopo?**
+
+<Say who="sensei">La memoria del programma è come la lavagna dell'aula: la sera si cancella. Un file è il quaderno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="open e with">
+Per usare un file lo si **apre** con `open`, poi lo si usa, e infine va **chiuso**. Il modo più sicuro è `with`, che lo chiude da solo anche se nel mezzo c'è un errore.
+
+```python
+with open("presenze.txt", "w", encoding="utf-8") as f:
+    f.write("Anna\n")
+    f.write("Marco\n")
+```
+
+- `"presenze.txt"` è il nome del file.
+- `"w"` è la **modalità** (*write*, scrittura).
+- `encoding="utf-8"` dice come salvare le lettere accentate: scrivilo sempre.
+- `f` è il nome che diamo al file aperto. Finito il blocco `with`, il file è chiuso.
+
+<Callout kind="attenzione">
+`write` **non** va a capo da solo: devi scrivere tu `\n` (il carattere di «a capo»). Senza, «Anna» e «Marco» finiscono attaccati: `AnnaMarco`.
+</Callout>
+
+<Say who="assistente">Ricordati il with: dimenticare di chiudere un file può farlo restare incompleto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le modalità">
+<Compare
+  caption="La modalità decide che cosa succede al contenuto già presente."
+  left={{ title: "w (scrivi)", points: ["Crea il file se non esiste", "Se esiste lo SVUOTA e riparte da zero", "Attenzione: cancella i dati vecchi"] }}
+  right={{ title: "a (aggiungi)", points: ["Crea il file se non esiste", "Se esiste, scrive in fondo", "Mantiene i dati vecchi"] }}
+/>
+
+La modalità predefinita è `"r"` (*read*, lettura): se non scrivi niente, il file viene solo letto. Se il file non esiste, Python solleva `FileNotFoundError`.
+
+```python
+with open("presenze.txt", "a", encoding="utf-8") as f:
+    f.write("Giulia\n")
+```
+
+<Callout kind="regola">
+Vuoi **aggiungere** una riga a un file esistente? Usa `"a"`. Usare `"w"` per sbaglio è uno dei modi più rapidi per perdere i dati.
+</Callout>
+
+<Say who="sensei">Tre lettere: r legge, w riscrive da capo, a aggiunge in fondo. Impara la differenza prima di fare danni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere">
+Per leggere ci sono due modi comodi.
+
+```python
+# tutto il contenuto in un'unica stringa
+with open("presenze.txt", encoding="utf-8") as f:
+    testo = f.read()
+
+# una riga alla volta
+with open("presenze.txt", encoding="utf-8") as f:
+    for riga in f:
+        print(riga.strip())
+```
+
+Quando leggi riga per riga, ogni riga **porta con sé** il carattere di a capo alla fine. Il metodo `.strip()` toglie gli spazi e gli a capo ai bordi; senza, `print` ne aggiungerebbe un altro e vedresti una riga vuota tra una e l'altra.
+
+<Log lines={[
+  "Anna",
+  "Marco",
+  "Giulia",
+]} caption="Il risultato, dopo aver scritto due nomi e aggiunto un terzo." />
+
+E se il file manca? Si gestisce come hai imparato:
+
+```python
+try:
+    with open("presenze.txt", encoding="utf-8") as f:
+        print(f.read())
+except FileNotFoundError:
+    print("Nessun file ancora: parto da un elenco vuoto.")
+```
+
+<Say who="assistente">All'inizio il file non esiste ancora: è normale. Un except sul FileNotFoundError ti toglie ogni preoccupazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena vuole aggiungere un nome a un file che contiene già altri nomi.
+
+<Quiz
+  question="Quale modalità di open aggiunge una riga in fondo a un file esistente senza cancellarne il contenuto?"
+  options={[
+    "\"a\"",
+    "\"w\"",
+    "\"r\"",
+    "\"x\" per cancellare il vecchio",
+  ]}
+  answer={0}
+  explain="La modalità a (append) scrive in fondo al file mantenendo i dati già presenti. La modalità w svuota il file, la modalità r serve solo a leggere. E la x non si usa per cancellare: crea un file nuovo e dà errore se esiste già."
+/>
+
+<Guided
+  steps={[
+    "Apri presenze.txt in modalità w con with e scrivi due nomi, ognuno con \\n.",
+    "Riaprilo in modalità a e aggiungi un terzo nome.",
+    "Aprilo in lettura e stampa ogni riga con strip().",
+    "Prova a leggere un file che non esiste e gestisci FileNotFoundError.",
+  ]}
+/>
+
+<Say who="sensei">Scrivi, aggiungi, leggi. Poi prova a fare apposta l'errore, per vedere che cosa succede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su file di testo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-file-di-testo" pass="4/5" retries={3} />
+
+<Say who="sensei">Con w pensaci due volte. Con a e con r vai tranquillo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un file conserva i dati anche dopo la chiusura del programma.
+- with open(...) as f apre il file e lo chiude da solo; encoding="utf-8" salva bene gli accenti.
+- r legge, w scrive svuotando, a aggiunge in fondo; write non va a capo da solo.
+- Caso chiuso: Elena scrive le presenze in presenze.txt e le ritrova a ogni avvio; se il file manca, parte da un elenco vuoto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa la modalità w?", a: "Crea il file o lo svuota completamente, poi scrive" },
+    { q: "Che cosa fa la modalità a?", a: "Aggiunge in fondo al file senza cancellare il contenuto" },
+    { q: "Perché si usa with con open?", a: "Perché chiude il file da solo, anche se avviene un errore" },
+    { q: "Quale errore dà open in lettura su un file che non esiste?", a: "FileNotFoundError" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il formato CSV, per salvare tabelle di dati.</Say>
+</Scene>

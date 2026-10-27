@@ -1,0 +1,151 @@
+---
+id: W.01.006
+course: sviluppo-web
+module: 1
+title: "Un editor di testo e la cartella del progetto"
+belt: bianca
+duration_min: 7
+prerequisites: [W.01.005]
+objectives:
+  - "Scegliere un editor adatto a scrivere codice e dire perché un programma di videoscrittura non va bene"
+  - "Creare una cartella di progetto con una struttura ordinata"
+  - "Dare ai file nomi corretti: minuscole, niente spazi, estensione giusta"
+verification:
+  type: generated-numeric
+  generator: w01-editor-cartella
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere codice in Word: aggiunge formattazione nascosta e il browser non capisce il file"
+  - "Mettere spazi, accenti e maiuscole nei nomi dei file: i link si rompono sul server"
+  - "Salvare file sul desktop sparsi invece che in una cartella di progetto"
+commands: []
+---
+
+<Scene title="Dove si scrive il codice">
+Lucia ha aperto il programma di videoscrittura che usa per le lettere, ha scritto la sua prima pagina con tanto di grassetti e l'ha salvata. Il browser mostra solo righe di simboli strani.
+
+Il codice è **testo semplice**: solo caratteri, senza grassetti, colori o immagini. Serve un programma fatto per scriverlo.
+
+La domanda del caso: **con quale programma e in quale ordine si lavora a un sito?**
+
+<Say who="sensei">Il codice è testo puro. Un programma di videoscrittura ci aggiunge cose invisibili che il browser non sa leggere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'editor di codice">
+Un **editor di codice** è un programma per scrivere testo semplice, con aiuti pensati per chi programma: righe numerate, colori diversi per ogni parte del codice, suggerimenti e correzione di molti errori di battitura.
+
+Scelte gratuite e diffuse:
+- **Visual Studio Code**: gratuito, per Windows, Mac e Linux. È il più usato.
+- **Notepad++**: gratuito, solo per Windows, leggero.
+- **Il Blocco note** (o simili): va bene per una prova, ma non ha aiuti.
+
+<Compare
+  caption="Videoscrittura o editor di codice."
+  left={{ title: "Programma di videoscrittura", points: ["Salva formattazione nascosta", "Cambia le virgolette in modo «intelligente»", "Il browser non capisce il file"] }}
+  right={{ title: "Editor di codice", points: ["Salva solo testo semplice", "Colora e numera le righe", "Il file funziona nel browser"] }}
+/>
+
+<Callout kind="attenzione">
+Le virgolette «intelligenti» dei programmi di videoscrittura (curve, come “ciao”) **non sono** quelle del codice (dritte, come "ciao"). Un codice con virgolette curve non funziona.
+</Callout>
+
+<Say who="assistente">Non cercare l'editor perfetto. Scegline uno, usalo per tutto il corso e imparane le scorciatoie.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La cartella del progetto">
+Un sito è fatto di più file. Tienili tutti in **una cartella sola**, che si chiama *cartella del progetto*, per esempio `bottega-lucia`. Dentro metti sottocartelle ordinate.
+
+<Log lines={[
+  "bottega-lucia/",
+  "  index.html     la pagina principale",
+  "  css/",
+  "    stile.css    l'aspetto",
+  "  js/",
+  "    script.js    il comportamento",
+  "  img/",
+  "    vaso.jpg     le immagini",
+]} caption="Una struttura semplice e ordinata." />
+
+Il file `index.html` ha un nome speciale: quando un browser chiede una cartella senza dire quale file, i server mandano di solito proprio `index.html`.
+
+<Say who="sensei">Prima l'ordine, poi il codice. Un progetto con file sparsi diventa un incubo dopo una settimana.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si chiamano i file">
+Sul server i nomi dei file contano più che sul tuo computer. Le regole d'oro:
+
+- tutto in **minuscolo**: su molti server `Vaso.jpg` e `vaso.jpg` sono file diversi;
+- **niente spazi**: usa il trattino, come in `corso-ceramica.html`;
+- **niente accenti** né simboli strani;
+- l'**estensione** dice che tipo di file è: `.html`, `.css`, `.js`, `.jpg`.
+
+<Callout kind="trucco">
+Se sei in dubbio, usa solo lettere minuscole, numeri e trattini. Non sbagli mai.
+</Callout>
+
+<Callout kind="attenzione">
+Su Windows le estensioni spesso sono nascoste. Un file chiamato `index.html.txt` sembra `index.html` ma è un file di testo. Attiva «Mostra estensioni nomi file» nelle opzioni della cartella.
+</Callout>
+
+<Say who="assistente">Quasi metà dei «non funziona!» dei principianti sono nomi di file sbagliati. Controllali per primi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia deve scegliere il nome per la pagina dei suoi corsi.
+
+<Quiz
+  question="Quale nome di file è il più sicuro per la pagina dei corsi di Lucia?"
+  options={["corsi-ceramica.html", "Corsi Ceramica.html", "corsi ceramica.HTM", "Corsi-Ceràmica.html.txt"]}
+  answer={0}
+  explain="Minuscolo, trattino al posto dello spazio, niente accenti ed estensione .html. Gli altri hanno spazi, maiuscole, accenti o un'estensione sbagliata che il server o il browser potrebbero non riconoscere."
+/>
+
+<Say who="sensei">Un nome fatto bene non ti dà mai problemi. Uno fatto male te li dà nel momento peggiore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'editor e sulla cartella del progetto. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-editor-cartella" pass="4/5" retries={3} />
+
+<Say who="sensei">Testo semplice, cartella ordinata, nomi minuscoli e senza spazi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il codice è testo semplice: si scrive con un editor di codice, non con un programma di videoscrittura.
+- Un progetto sta in una sola cartella, con sottocartelle ordinate per stile, script e immagini.
+- Nomi di file: minuscole, niente spazi né accenti, estensione corretta.
+- Caso chiuso: la pagina di Lucia non funzionava perché era stata salvata dal programma di videoscrittura.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché non si scrive codice in Word?", a: "Perché salva formattazione nascosta: il browser vuole testo semplice" },
+    { q: "Come si chiama la pagina principale di un sito?", a: "index.html" },
+    { q: "Come si scrive un nome di file sicuro?", a: "Minuscolo, senza spazi né accenti, con trattini e l'estensione giusta" },
+    { q: "Un editor di codice gratuito molto usato?", a: "Visual Studio Code" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: scrivi davvero la tua prima pagina.</Say>
+</Scene>

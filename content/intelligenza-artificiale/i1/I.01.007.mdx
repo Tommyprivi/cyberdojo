@@ -1,0 +1,144 @@
+---
+id: I.01.007
+course: intelligenza-artificiale
+module: 1
+title: "Cosa sa fare bene l'IA"
+belt: bianca
+duration_min: 8
+prerequisites: [I.01.006]
+objectives:
+  - "Elencare i compiti in cui l'IA è molto brava"
+  - "Spiegare perché velocità, scala e pazienza sono i suoi punti di forza"
+  - "Riconoscere quando conviene usarla come aiuto e non come sostituto di una persona"
+verification:
+  type: generated-numeric
+  generator: i01-punti-di-forza
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che brava in un compito voglia dire brava in tutto"
+  - "Fidarsi di un risultato solo perché è arrivato molto in fretta"
+  - "Credere che l'IA possa fare da sola cose delicate come una diagnosi medica"
+commands: []
+---
+
+<Scene title="Mille foto da ordinare">
+Dopo la festa della scuola, Teo ha 3.000 foto da ordinare: chi è in quali scatti, quali sono sfocate, quali mostrano il palco. A mano servirebbero giorni.
+
+Il programma di gestione foto del computer, con un riconoscimento automatico, le raggruppa in pochi minuti.
+
+La domanda del caso: **in quali lavori l'IA batte una persona, e in quali no?**
+
+<Say who="sensei">Prima di diffidare dell'IA, impariamo dove è davvero forte. Conoscere i punti forti serve a usarla bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I punti di forza">
+L'IA dà il meglio quando il compito ha queste caratteristiche:
+
+<Layers
+  caption="Dove l'IA è forte."
+  items={[
+    { icon: "bolt", title: "Velocità", text: "Elabora in secondi ciò che a una persona richiederebbe ore" },
+    { icon: "database", title: "Scala", text: "Gestisce milioni di esempi senza stancarsi" },
+    { icon: "search", title: "Schemi nascosti", text: "Trova regolarità che un occhio umano non nota" },
+    { icon: "clock", title: "Pazienza", text: "Ripete lo stesso lavoro mille volte con lo stesso impegno" },
+  ]}
+/>
+
+<Say who="assistente">Una persona si stanca, si distrae, si annoia. Un modello ripete lo stesso compito senza cali di attenzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempi dove funziona bene">
+- **Riconoscere immagini**: ordinare foto, leggere targhe, trovare difetti in pezzi prodotti in fabbrica.
+- **Tradurre e trascrivere**: portare un testo in un'altra lingua o trascrivere un audio in testo, di solito con buona qualità per le lingue molto diffuse.
+- **Riassumere e riscrivere**: accorciare un testo lungo o riformularlo in modo più semplice (da controllare sempre).
+- **Analizzare grandi quantità di dati**: trovare un pagamento sospetto tra milioni di pagamenti.
+- **Aiutare i professionisti**: in medicina, per esempio, alcuni sistemi evidenziano zone sospette nelle immagini, e il medico decide.
+- **Suggerire idee e bozze**: una prima versione da cui partire.
+
+<Callout kind="regola">
+Dove l'IA funziona meglio: compiti con **molti esempi**, **risposte controllabili** e **errori poco gravi**. Se l'errore è grave, serve sempre una persona che controlli.
+</Callout>
+
+<Say who="sensei">Nota il verbo: «aiutare». Nei lavori delicati l'IA suggerisce, la persona decide.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lavorare in coppia">
+Il modo più sensato di usare l'IA è in coppia con una persona.
+
+<Flow
+  caption="IA e persona, ognuna per ciò che sa fare."
+  steps={[
+    { icon: "bolt", title: "L'IA propone", text: "Bozza, ordine, segnalazione in pochi secondi" },
+    { icon: "eye", title: "La persona controlla", text: "Verifica, corregge, usa il buon senso" },
+    { icon: "check", title: "Si decide", text: "La responsabilità resta della persona" },
+  ]}
+/>
+
+Teo lascia che il programma raggruppi le foto, poi dà un'occhiata e corregge due o tre errori. In totale: venti minuti invece di tre giorni.
+
+<Say who="assistente">Il risparmio più grande si ha proprio così: la macchina fa la parte noiosa, tu la parte che richiede giudizio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="In quale situazione l'IA è un buon aiuto?"
+  options={[
+    "Raggruppare migliaia di foto per persona, con un controllo finale umano",
+    "Decidere da sola una terapia medica, senza alcun controllo",
+    "Condannare una persona in un processo senza giudice",
+    "Prendere decisioni importanti solo perché risponde in fretta",
+  ]}
+  answer={0}
+  explain="Raggruppare foto è un compito con molti esempi, con errori poco gravi e un controllo finale. Le altre scelte sono compiti delicati in cui servono responsabilità e giudizio umano, e la velocità non basta a giustificarle."
+/>
+
+<Say who="sensei">Più grave è l'errore, più forte deve essere il controllo di una persona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui punti di forza dell'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-punti-di-forza" pass="4/5" retries={3} />
+
+<Say who="sensei">Velocità, scala, schemi nascosti e pazienza. Poi, sempre, un controllo umano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA è forte in velocità, scala, riconoscimento di schemi e pazienza.
+- Funziona bene su compiti con molti esempi, risposte controllabili ed errori poco gravi.
+- Il modo migliore è la coppia: l'IA propone, la persona controlla e decide.
+- Nei compiti delicati (salute, giustizia) serve sempre un responsabile umano.
+- Caso chiuso: Teo ha ordinato 3.000 foto in venti minuti, controllando i risultati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono quattro punti di forza dell'IA?", a: "Velocità, scala, riconoscimento di schemi nascosti, pazienza" },
+    { q: "Quando l'IA funziona meglio?", a: "Con molti esempi, risposte controllabili ed errori poco gravi" },
+    { q: "Come conviene usare l'IA nei lavori delicati?", a: "Come aiuto, con una persona che controlla e decide" },
+    { q: "Chi risponde di una decisione presa con l'aiuto dell'IA?", a: "La persona, non la macchina" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: che cosa l'IA non sa fare, e perché sembra di sì.</Say>
+</Scene>

@@ -1,4 +1,5 @@
 import { handleDojo } from "@/lib/ai/handler";
+import { loadWeakContext } from "@/lib/ai/weak-server";
 import { getSessionUser } from "@/lib/session";
 
 export const maxDuration = 30;
@@ -18,6 +19,6 @@ export async function POST(req: Request) {
     return Response.json({ error: "Richiesta non valida." }, { status: 400 });
   }
 
-  const out = await handleDojo(user.id, body);
+  const out = await handleDojo(user.id, body, { loadWeak: loadWeakContext });
   return Response.json(out.body, { status: out.status, headers: { "Cache-Control": "no-store", ...out.headers } });
 }

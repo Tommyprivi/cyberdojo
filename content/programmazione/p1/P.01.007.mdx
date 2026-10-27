@@ -1,0 +1,185 @@
+---
+id: P.01.007
+course: programmazione
+module: 1
+title: "AND, OR e NOT con le tabelle di verità"
+belt: bianca
+duration_min: 9
+prerequisites: [P.01.006]
+objectives:
+  - "Combinare condizioni con AND, OR e NOT"
+  - "Costruire e leggere una tabella di verità"
+  - "Usare le parentesi per rendere chiara una condizione composta"
+verification:
+  type: generated-numeric
+  generator: p01-and-or-not
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere AND (servono entrambe) con OR (basta una)"
+  - "Dimenticare che NOT inverte il valore: NOT vero è falso"
+  - "Non usare le parentesi in una condizione mista e leggerla nell'ordine sbagliato"
+commands: []
+---
+
+<Scene title="Consegna gratis">
+Elia decide: «La consegna è gratis se l'ordine supera i 30 euro **e** il cliente abita entro 3 chilometri». Un cliente ordina per 40 euro ma abita a 5 chilometri. La consegna è gratis?
+
+Dipende da quella piccola parola, «e». Se la regola fosse stata «oppure», la risposta sarebbe cambiata.
+
+La domanda del caso: **come si combinano più condizioni in una sola?**
+
+<Say who="sensei">E, oppure, non: tre parolette. Con queste costruisci qualunque regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="AND: servono tutte e due">
+**AND** (in italiano «e») è vero **solo se entrambe** le condizioni sono vere. Una **tabella di verità** elenca tutte le combinazioni possibili e il risultato:
+
+<Log lines={[
+  "A       B       A AND B",
+  "vero    vero    vero",
+  "vero    falso   falso",
+  "falso   vero    falso",
+  "falso   falso   falso",
+]} caption="Tabella di verità di AND." />
+
+Nel caso del cliente: «ordine oltre 30 euro» è vero (40), «abita entro 3 km» è falso (5 km). Vero AND falso fa **falso**: niente consegna gratis.
+
+<Callout kind="regola">
+Con AND basta **una** condizione falsa perché tutto sia falso. Pensa a una catena: se un anello cede, si spezza.
+</Callout>
+
+<Say who="assistente">AND è severo: tutte le condizioni devono essere soddisfatte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="OR: ne basta una">
+**OR** (in italiano «oppure») è vero **se almeno una** delle due condizioni è vera.
+
+<Log lines={[
+  "A       B       A OR B",
+  "vero    vero    vero",
+  "vero    falso   vero",
+  "falso   vero    vero",
+  "falso   falso   falso",
+]} caption="Tabella di verità di OR." />
+
+Un esempio: «Sconto se è il tuo compleanno OR hai la tessera fedeltà». Se è il tuo compleanno ma non hai la tessera, hai lo sconto. Se hai la tessera ma non è il compleanno, hai lo sconto. Se hai tutte e due, lo sconto c'è comunque. Non c'è solo se non hai né l'una né l'altra.
+
+<Callout kind="attenzione">
+Nel linguaggio di tutti i giorni «oppure» a volte significa «o l'uno o l'altro, non tutti e due». In logica, OR è **inclusivo**: è vero anche quando sono vere tutte e due.
+</Callout>
+
+<Say who="sensei">OR è generoso: gli basta un motivo per dire vero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="NOT: il contrario">
+**NOT** (in italiano «non») **inverte** il valore: vero diventa falso e falso diventa vero. Si applica a una sola condizione.
+
+<Log lines={[
+  "A       NOT A",
+  "vero    falso",
+  "falso   vero",
+]} caption="Tabella di verità di NOT." />
+
+Un esempio: «il locale è aperto» è falso di lunedì. Allora NOT «il locale è aperto» è vero: è chiuso.
+
+Si possono combinare tutti e tre. Con le **parentesi** si dice cosa va calcolato prima:
+
+```text
+(prezzo >= 30 AND distanza <= 3) OR NOT cliente_nuovo
+```
+
+Si calcola prima ciò che sta dentro le parentesi, poi il resto. Senza parentesi, per convenzione (come in Python e nella maggior parte dei linguaggi) NOT viene prima, poi AND, poi OR.
+
+<Callout kind="trucco">
+Nel dubbio, **metti le parentesi**: costano due caratteri e tolgono ogni ambiguità, anche a chi leggerà il tuo codice fra un anno.
+</Callout>
+
+<Say who="assistente">Se per capire una condizione devi pensarci tanto, aggiungi parentesi o spezzala in due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una regola utile">
+Esiste una regola che trasforma un NOT davanti a una condizione composta (si chiama legge di De Morgan, dal logico Augustus De Morgan):
+
+- NOT (A AND B) equivale a (NOT A) OR (NOT B)
+- NOT (A OR B) equivale a (NOT A) AND (NOT B)
+
+Esempio: «Non è vero che il cliente è nuovo e ordina molto» significa che **o non è nuovo, o non ordina molto** (o tutte e due).
+
+<Flow
+  caption="Come si legge una condizione composta."
+  steps={[
+    { icon: "search", title: "Valuta le parti", text: "Ogni confronto diventa vero o falso" },
+    { icon: "gear", title: "Parentesi", text: "Calcola prima quello che sta dentro" },
+    { icon: "link", title: "NOT, AND, OR", text: "In quest'ordine, se non ci sono parentesi" },
+    { icon: "check", title: "Risultato", text: "Un solo vero o falso" },
+  ]}
+/>
+
+<Say who="sensei">Non devi imparare De Morgan a memoria: basta sapere che esiste, e provare con la tabella di verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="A è vero e B è falso. Quale di queste espressioni è vera?"
+  options={[
+    "A OR B",
+    "A AND B",
+    "NOT A",
+    "(NOT A) OR B",
+  ]}
+  answer={0}
+  explain="A OR B è vera perché basta che una sia vera. A AND B è falsa perché B è falso. NOT A è falsa perché A è vero. (NOT A) OR B è falsa perché sono false entrambe le parti: NOT A è falso e B è falso."
+/>
+
+<Say who="sensei">Se ti confondi, scrivi la tabella: nessuno ha mai sbagliato leggendo una tabella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su AND, OR e NOT. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-and-or-not" pass="4/5" retries={3} />
+
+<Say who="sensei">AND: tutte. OR: almeno una. NOT: il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- AND è vero solo se tutte e due le condizioni sono vere.
+- OR è vero se almeno una è vera (anche tutte e due).
+- NOT inverte il valore: vero diventa falso e viceversa.
+- Una tabella di verità elenca tutte le combinazioni e il risultato; le parentesi chiariscono l'ordine.
+- Caso chiuso: con ordine di 40 euro ma distanza di 5 km, «oltre 30 E entro 3 km» è falso, quindi la consegna non è gratis.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando A AND B è vero?", a: "Solo quando A e B sono tutti e due veri" },
+    { q: "Quando A OR B è falso?", a: "Solo quando A e B sono tutti e due falsi" },
+    { q: "Che cosa fa NOT?", a: "Inverte il valore: vero diventa falso e falso diventa vero" },
+    { q: "In che ordine si calcolano NOT, AND e OR senza parentesi?", a: "Prima NOT, poi AND, poi OR" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le scelte con più di due strade.</Say>
+</Scene>

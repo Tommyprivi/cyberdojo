@@ -1,0 +1,158 @@
+---
+id: M.04.002
+course: mondo-digitale
+module: 4
+title: "Lo schermo principale e i gesti"
+belt: bianca
+duration_min: 8
+prerequisites: [M.04.001]
+objectives:
+  - "Usare i gesti di base: tocco, doppio tocco, pressione lunga, scorrimento e pizzico"
+  - "Descrivere la schermata principale: icone, cartelle, widget e barra in basso"
+  - "Tornare alla schermata principale e vedere le app aperte"
+verification:
+  type: generated-numeric
+  generator: m04-schermo-gesti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Premere troppo poco o troppo a lungo: un tocco non è una pressione lunga"
+  - "Scambiare l'eliminazione di un'icona dalla schermata con la cancellazione dell'app"
+  - "Pensare che i gesti siano identici su ogni telefono: possono variare con modello e impostazioni"
+commands: []
+---
+
+<Scene title="Il telefono non risponde">
+Giorgio ha il telefono acceso ma non riesce a fare niente. Tocca l'icona della fotocamera e non succede nulla; poi la tocca troppo a lungo e compare un menu strano. Scorre e sposta le icone senza volerlo.
+
+La domanda del caso: **quali sono i gesti con cui si comanda uno schermo tattile?**
+
+<Say who="sensei">Lo schermo ha una sola regola: ogni gesto ha un significato diverso. Impara i sei gesti e hai imparato il telefono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I gesti di base">
+<Layers
+  caption="I gesti con le dita."
+  items={[
+    { icon: "bolt", title: "Tocco", text: "Un contatto breve: apre un'app o preme un pulsante" },
+    { icon: "clock", title: "Pressione lunga", text: "Tieni premuto un secondo o due: compaiono altre opzioni" },
+    { icon: "link", title: "Scorrimento", text: "Fai scivolare il dito: cambia pagina o scorre un elenco" },
+    { icon: "search", title: "Pizzico", text: "Due dita che si avvicinano o si allontanano: zoom" },
+  ]}
+/>
+
+- Il **doppio tocco** (due tocchi veloci) in molte app, per esempio nelle foto, ingrandisce.
+- Il **trascinamento** (tieni premuto e sposta) muove un'icona o un elemento.
+
+<Callout kind="trucco">
+Se l'icona non si apre, forse hai premuto troppo a lungo. Un tocco è rapido, come battere il dito su un tavolo.
+</Callout>
+
+<Say who="assistente">All'inizio capita di sbagliare gesto: niente paura. Il telefono non si rompe con un tocco sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La schermata principale">
+La **schermata principale** (in inglese *home*) è la prima che vedi dopo aver sbloccato il telefono.
+
+- Le **icone** sono i collegamenti alle app.
+- Le **cartelle** raccolgono più icone insieme: trascini un'icona sopra un'altra e se ne crea una.
+- I **widget** sono riquadri che mostrano informazioni senza aprire l'app, come il meteo o l'orologio.
+- In basso c'è una **barra** con le app che usi di più: resta ferma quando cambi pagina.
+- Scorrendo a lato trovi altre **pagine** della schermata principale.
+
+Su molti Android c'è anche un **elenco di tutte le app** (si apre scorrendo verso l'alto). Su iPhone, scorrendo oltre l'ultima pagina c'è la **Libreria app**, che le raggruppa per tipo.
+
+<Callout kind="attenzione">
+Togliere un'icona dalla schermata non sempre disinstalla l'app. Su iPhone, per esempio, «Rimuovi dalla schermata Home» la nasconde soltanto: l'app resta nella Libreria.
+</Callout>
+
+<Say who="sensei">Metti in basso le tre app che usi di più. Il resto, in ordine, in cartelle con un nome chiaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tornare indietro e cambiare app">
+Su quasi tutti i telefoni moderni ci sono **i gesti di navigazione**, che sostituiscono i vecchi pulsanti.
+
+<Flow
+  caption="Navigare senza perdersi."
+  steps={[
+    { icon: "phone", title: "Scorri verso l'alto dal bordo basso", text: "Torni alla schermata principale" },
+    { icon: "clock", title: "Scorri e fermati a metà", text: "Vedi le app aperte e scegli" },
+    { icon: "search", title: "Dal bordo laterale", text: "Su Android torni indietro di un passo" },
+  ]}
+/>
+
+- Su **iPhone con Face ID** si scorre verso l'alto dal bordo basso per tornare alla schermata principale; scorrendo e fermandosi a metà si vedono le app aperte.
+- Su **Android** c'è la stessa idea, ma si può scegliere anche la navigazione con **tre pulsanti** (indietro, home, app aperte).
+- Gli iPhone più vecchi hanno un pulsante fisico sotto lo schermo che riporta alla schermata principale.
+
+<Callout kind="regola">
+Nelle impostazioni (voce di accessibilità o di sistema) puoi scegliere il tipo di navigazione che ti sembra più facile. Non c'è un modo giusto in assoluto.
+</Callout>
+
+<Say who="assistente">Se i gesti ti confondono, i tre pulsanti di Android sono un buon punto di partenza: si vedono sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio vuole spostare l'icona del meteo nella barra in basso.
+
+<Quiz
+  question="Quale gesto serve per spostare un'icona da un punto all'altro della schermata?"
+  options={[
+    "Tenerla premuta e trascinarla",
+    "Toccarla una volta sola",
+    "Fare il pizzico con due dita",
+    "Scorrere verso l'alto dal bordo basso",
+  ]}
+  answer={0}
+  explain="Si tiene premuta l'icona e la si trascina nel punto scelto. Un tocco semplice la apre, il pizzico ingrandisce o rimpicciolisce, e scorrere dal bordo basso riporta alla schermata principale."
+/>
+
+<Say who="sensei">Premere e trascinare: è lo stesso gesto che faresti con un oggetto su un tavolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su gesti e schermata principale. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-schermo-gesti" pass="4/5" retries={3} />
+
+<Say who="sensei">Tocco, pressione lunga, scorrimento. Il resto sono variazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I gesti base sono tocco, doppio tocco, pressione lunga, scorrimento, trascinamento e pizzico.
+- La schermata principale ha icone, cartelle, widget e una barra in basso con le app preferite.
+- Per tornare alla schermata principale si scorre verso l'alto dal bordo basso, oppure si usa il pulsante.
+- I gesti possono variare con il modello: nelle impostazioni si sceglie la navigazione preferita.
+- Caso chiuso: Giorgio ha capito che il problema era la durata del tocco, non il telefono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un widget?", a: "Un riquadro sulla schermata principale che mostra informazioni, come il meteo" },
+    { q: "Come si crea una cartella di app?", a: "Trascinando un'icona sopra un'altra" },
+    { q: "Che cosa fa il pizzico con due dita?", a: "Ingrandisce o rimpicciolisce" },
+    { q: "Che cosa fa una pressione lunga su un'icona?", a: "Mostra altre opzioni, come spostarla o toglierla" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: scaricare nuove app e toglierle quando non servono.</Say>
+</Scene>

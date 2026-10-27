@@ -7,6 +7,8 @@ import { dojoRequest } from "./schema";
 export type DojoDeps = {
   provider?: AiProvider;
   limiter?: { take(userId: string): { ok: true } | { ok: false; retryAfterSec: number; scope: "hour" | "day" } };
+  /** Punti deboli dello studente (frase breve). Assente = nessun contesto personale. */
+  loadWeak?: (userId: string) => Promise<string>;
   loadContext?: (scope: Parameters<typeof loadScopeContext>[0]) => ScopeContext;
 };
 
@@ -45,7 +47,8 @@ export async function handleDojo(userId: string, raw: unknown, deps: DojoDeps = 
 
   const count = req.count ?? LIMITS.quizMin;
   const answered = req.mode === "quiz" ? answeredCount(req.messages) : 0;
-  const system = buildSystemPrompt({ mode: req.mode, label: ctx.label, context: ctx.text, count, answered });
+  const weak = req.mode === "chat" && deps.loadWeak ? await deps.loadWeak(userId).catch(() => "") : "";
+  const system = buildSystemPrompt({ mode: req.mode, label: ctx.label, context: ctx.text, count, answered, weak });
 
   try {
     const result = await (deps.provider ?? getProvider()).generate({

@@ -98,6 +98,8 @@ export const groupMembers = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
+    // Consenso esplicito (spento di default) a far vedere i propri progressi al docente che ha creato la classe.
+    shareProgress: boolean("share_progress").notNull().default(false),
   },
   (t) => [primaryKey({ columns: [t.groupId, t.userId] }), index("group_members_user_idx").on(t.userId), ownRow("user_id")],
 ).enableRLS();

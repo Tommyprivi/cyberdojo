@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import { loadCourseLeaderboard } from "@/app/actions/community";
 import { saveSocialToggles } from "@/app/actions/social";
+import { COURSES } from "@/lib/content/courses";
 import { BoltIcon } from "../icons";
 import type { LeaderRow, SocialSettings } from "@/lib/social/service";
 import { AGE_GROUP_LABEL } from "@/lib/social/rules";
@@ -8,8 +11,34 @@ import { Avatar } from "./avatar";
 import { NoticeLine, useAction } from "./use-action";
 import { ReportButton } from "./report-button";
 
-export function LeaderboardPanel({ settings, rows, resetIn }: { settings: SocialSettings; rows: LeaderRow[]; resetIn: string }) {
+export function LeaderboardPanel({ settings, rows: allRows, resetIn }: { settings: SocialSettings; rows: LeaderRow[]; resetIn: string }) {
   const { busy, notice, run } = useAction();
+  // "" = classifica generale; una lettera = classifica di quel corso (XP delle sole lezioni del corso).
+  const [course, setCourse] = useState("");
+  const [courseRows, setCourseRows] = useState<LeaderRow[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [courseError, setCourseError] = useState<string | null>(null);
+  const rows = course ? courseRows : allRows;
+
+  async function pick(next: string) {
+    setCourse(next);
+    setCourseError(null);
+    if (!next) return;
+    setLoading(true);
+    try {
+      const r = await loadCourseLeaderboard(next);
+      if (r.ok) setCourseRows(r.rows);
+      else {
+        setCourseRows([]);
+        setCourseError(r.error);
+      }
+    } catch {
+      setCourseRows([]);
+      setCourseError("Connessione persa. Riprova.");
+    } finally {
+      setLoading(false);
+    }
+  }
   const toggles = { joinLeaderboard: settings.joinLeaderboard, showToFriends: settings.showToFriends, acceptRequests: settings.acceptRequests };
   const me = rows.find((r) => r.isMe);
   const group = settings.ageGroup ? AGE_GROUP_LABEL[settings.ageGroup] : "";
@@ -40,6 +69,21 @@ export function LeaderboardPanel({ settings, rows, resetIn }: { settings: Social
           <h2 className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted">Classifica · {group}</h2>
           <p className="font-mono text-xs text-muted">si azzera tra {resetIn}</p>
         </header>
+        <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2">
+          <label htmlFor="course-board" className="text-sm font-semibold">
+            Corso
+          </label>
+          <select id="course-board" value={course} disabled={loading} onChange={(e) => void pick(e.target.value)} className="min-h-11 rounded-md border-2 border-border bg-background px-2 text-sm">
+            <option value="">Tutti i corsi</option>
+            {COURSES.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title}
+              </option>
+            ))}
+          </select>
+          {loading && <span className="text-sm text-muted" aria-live="polite">Carico…</span>}
+          {courseError && <span role="alert" className="text-sm font-semibold text-accent">{courseError}</span>}
+        </div>
         {rows.length <= 1 && <p className="px-4 pt-3 text-sm text-muted">Per ora ci sei solo tu. Più persone partecipano, più la classifica diventa interessante.</p>}
         <ol className="grid gap-1 p-2 lg:min-h-0 lg:overflow-y-auto">
           {rows.map((r) => (

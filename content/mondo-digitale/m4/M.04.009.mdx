@@ -1,0 +1,151 @@
+---
+id: M.04.009
+course: mondo-digitale
+module: 4
+title: "Accessibilità: testo grande, voce e altri aiuti"
+belt: bianca
+duration_min: 8
+prerequisites: [M.04.008]
+objectives:
+  - "Ingrandire il testo e aumentare il contrasto del telefono"
+  - "Usare la voce per dettare un messaggio e parlare con l'assistente vocale"
+  - "Dire che cosa fanno lettori di schermo, sottotitoli e altri aiuti"
+verification:
+  type: generated-numeric
+  generator: m04-accessibilita
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'accessibilità serva solo a chi ha una disabilità: aiuta anche chi ha la vista stanca o le mani occupate"
+  - "Ingrandire il testo al massimo e non vedere più i pulsanti: si regola un po' alla volta"
+  - "Non provare la dettatura vocale perché «tanto non capisce»"
+commands: []
+---
+
+<Scene title="Lettere troppo piccole">
+Giorgio fa fatica a leggere i messaggi: le lettere sono piccolissime e sbaglia i tasti. La nipote gli dice: «Nonno, il telefono ha mille aiuti, basta cercarli».
+
+La domanda del caso: **quali aiuti ha il telefono per leggere, sentire e scrivere più facilmente?**
+
+<Say who="sensei">L'accessibilità è fatta per adattare il telefono a te, non il contrario. Non c'è niente di cui vergognarsi: li usano milioni di persone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vedere meglio">
+Le impostazioni di **Accessibilità** (si trovano nelle impostazioni, su Android e su iPhone) contengono molti aiuti. Per la vista:
+
+<Layers
+  caption="Aiuti per vedere meglio."
+  items={[
+    { icon: "eye", title: "Testo grande", text: "Fa le lettere più grandi in tutto il telefono" },
+    { icon: "bolt", title: "Grassetto e contrasto", text: "Lettere più spesse e colori più distinti" },
+    { icon: "search", title: "Zoom e lente", text: "Ingrandiscono una parte dello schermo" },
+  ]}
+/>
+
+- La **dimensione del testo** si regola con un cursore: un passo alla volta, fino a leggere bene.
+- La **Lente d'ingrandimento** usa la fotocamera per ingrandire un oggetto, come un menù scritto piccolo.
+- Il **tema scuro** o i colori ad alto contrasto riposano gli occhi di sera.
+
+<Callout kind="trucco">
+Se ingrandisci troppo, alcuni testi non entrano nei pulsanti. Aumenta un passo, prova, e fermati quando leggi bene senza che si rompa la pagina.
+</Callout>
+
+<Say who="assistente">Giorgio ha messo il testo un livello più grande e il grassetto: ora legge senza occhiali, e il telefono è lo stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Parlare invece di scrivere">
+<Flow
+  caption="Dettare un messaggio con la voce."
+  steps={[
+    { icon: "phone", title: "Apri la tastiera", text: "Dentro un messaggio o una nota" },
+    { icon: "bell", title: "Tocca il microfono", text: "L'icona è sulla tastiera" },
+    { icon: "user", title: "Parla", text: "Di' anche punteggiatura, come «virgola»" },
+    { icon: "check", title: "Controlla", text: "Rileggi prima di inviare" },
+  ]}
+/>
+
+- La **dettatura vocale** trasforma ciò che dici in testo. Si sbaglia qualche parola: rileggi sempre.
+- L'**assistente vocale** si chiama **Siri** su iPhone e **Assistente Google** su Android (le frasi per attivarlo sono nelle impostazioni). Puoi chiedergli di chiamare qualcuno, mettere un timer o dirti il meteo.
+- Alcune funzioni di ascolto continuo possono essere spente nelle impostazioni, se non le vuoi.
+
+<Say who="sensei">Se scrivere con le dita è faticoso, parla. Il telefono ha imparato ad ascoltare: usalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Altri aiuti">
+- **Lettore di schermo**: legge ad alta voce ciò che c'è sullo schermo. Si chiama **TalkBack** su Android e **VoiceOver** su iPhone. È pensato per chi non vede, e cambia il modo di usare i gesti.
+- **Sottotitoli**: scritti in tempo reale per video e audio, utili per chi sente poco o è in un posto rumoroso.
+- **Avvisi con luce e vibrazione**: per chi non sente la suoneria.
+- **Aiuti per le mani**: tocchi più lunghi o pulsanti virtuali, per chi ha difficoltà con i gesti.
+- **Dimensione dei pulsanti e dello schermo**: lo **zoom schermo** rende tutto più grande.
+
+<Callout kind="attenzione">
+Alcuni aiuti, come il lettore di schermo, cambiano i gesti: un tocco singolo legge, un doppio tocco apre. Se li accendi per sbaglio il telefono sembra «impazzito»: spegnili dalle stesse impostazioni di Accessibilità.
+</Callout>
+
+<Say who="assistente">Prova gli aiuti uno alla volta e tieni quelli che ti rendono la vita più facile. Gli altri puoi spegnerli quando vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio vuole che il telefono legga ad alta voce ciò che compare sullo schermo, per chi non vede bene.
+
+<Quiz
+  question="Come si chiama il lettore di schermo di un iPhone?"
+  options={[
+    "VoiceOver",
+    "TalkBack",
+    "Siri",
+    "Lente d'ingrandimento",
+  ]}
+  answer={0}
+  explain="VoiceOver è il lettore di schermo dell'iPhone. TalkBack è quello di Android, Siri è l'assistente vocale (non legge tutto lo schermo) e la Lente d'ingrandimento ingrandisce gli oggetti con la fotocamera."
+/>
+
+<Say who="sensei">Lettore, dettatura, assistente: tre cose diverse. Non confonderle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli aiuti di accessibilità. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-accessibilita" pass="4/5" retries={3} />
+
+<Say who="sensei">Gli aiuti sono strumenti: tieni quelli che ti servono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le impostazioni di Accessibilità contengono aiuti per vedere, sentire e usare meglio il telefono.
+- Per leggere meglio: testo grande, grassetto, contrasto, zoom e lente.
+- Si può dettare con il microfono della tastiera e parlare all'assistente vocale (Siri, Assistente Google).
+- TalkBack (Android) e VoiceOver (iPhone) leggono lo schermo; esistono anche sottotitoli e avvisi con luce.
+- Caso chiuso: Giorgio ha ingrandito il testo e ora legge e scrive senza fatica.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si trovano gli aiuti per leggere meglio?", a: "Nelle impostazioni, alla voce Accessibilità" },
+    { q: "Come si chiama il lettore di schermo di Android?", a: "TalkBack" },
+    { q: "A che cosa serve la dettatura vocale?", a: "A trasformare ciò che dici in testo" },
+    { q: "A che cosa servono i sottotitoli?", a: "Mostrare per iscritto ciò che si dice nei video e nell'audio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: un telefono pieno di cose da sistemare, con tutto ciò che hai imparato.</Say>
+</Scene>

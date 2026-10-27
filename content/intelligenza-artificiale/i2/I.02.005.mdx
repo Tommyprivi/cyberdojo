@@ -1,0 +1,144 @@
+---
+id: I.02.005
+course: intelligenza-artificiale
+module: 2
+title: "Le risposte inventate (allucinazioni)"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.004]
+objectives:
+  - "Spiegare che cos'è una allucinazione e perché succede"
+  - "Riconoscere i punti in cui l'errore è più probabile: nomi, numeri, date, citazioni"
+  - "Non fidarsi del tono sicuro come prova di correttezza"
+verification:
+  type: generated-numeric
+  generator: i02-allucinazioni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un testo ben scritto e sicuro sia per forza corretto"
+  - "Pensare che le allucinazioni siano rare e quindi ignorabili"
+  - "Chiedere «sei sicuro?» e fidarsi della conferma come se fosse una prova"
+commands: []
+---
+
+<Scene title="Il libro che non esiste">
+Marta deve citare un libro per la ricerca sui vulcani. Chiede all'assistente: «Dammi un libro di un autore italiano sui vulcani, con titolo e anno». Arriva una risposta precisa: titolo, autore, casa editrice e anno. Sembra perfetta.
+
+Marta cerca il libro in biblioteca e online. Non lo trova da nessuna parte: titolo e autore non risultano. Il libro, così com'è descritto, **non esiste**.
+
+La domanda del caso: **come può un assistente inventare, e farlo con tanta sicurezza?**
+
+<Say who="sensei">Questa è la lezione più importante del modulo. Leggila due volte, se serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una allucinazione">
+Si chiama **allucinazione** una risposta che suona giusta ma è **falsa o inventata**: un fatto che non esiste, una citazione mai scritta, un dato sbagliato.
+
+Perché succede? Ricordi la prima lezione: il modello genera il testo **più plausibile**, un pezzetto alla volta. Se gli chiedi un libro con titolo, autore e anno, produce qualcosa che **assomiglia** a un libro vero: un titolo credibile, un nome credibile, un anno credibile. Se non ha un'informazione solida, può comunque completare il testo.
+
+<Callout kind="regola">
+Il modello è fatto per scrivere testo plausibile, non per fermarsi quando non sa. L'errore non si presenta con un avviso: sembra identico a una risposta giusta.
+</Callout>
+
+<Say who="assistente">Succede anche ai modelli migliori. Non è un difetto di un assistente solo: è una caratteristica di come funzionano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove succede più spesso">
+<Layers
+  caption="Dove stare più attenti."
+  items={[
+    { icon: "book", title: "Libri, articoli, citazioni", text: "Titoli, autori e frasi «dette da» qualcuno" },
+    { icon: "link", title: "Link e indirizzi", text: "Pagine che sembrano vere ma non si aprono" },
+    { icon: "chart", title: "Numeri, date, statistiche", text: "Cifre precise ma sbagliate" },
+    { icon: "search", title: "Cose rare o molto recenti", text: "Argomenti poco presenti nei testi, o successivi alla data di addestramento" },
+  ]}
+/>
+
+Il rischio sale anche quando la domanda **contiene già un'ipotesi falsa**. Se chiedi «Perché la Luna è fatta di formaggio?», un assistente può provare a spiegarlo, invece di correggerti. Per questo conviene fare domande neutre.
+
+<Callout kind="attenzione">
+Il tono sicuro non è una prova. Chiedere «sei sicuro?» non risolve: spesso l'assistente risponde di sì, oppure cambia risposta, senza aver controllato niente.
+</Callout>
+
+<Say who="sensei">Più un dettaglio è preciso e raro, più è probabile che vada verificato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come ridurre il rischio">
+Non c'è un modo per azzerarlo, ma puoi ridurlo:
+
+- **Fai domande neutre**, senza dare per vera una cosa che non sai.
+- **Dai il testo di partenza**: se incolli tu l'articolo e chiedi un riassunto, l'assistente ha un riferimento. Resta da controllare, ma sbaglia meno.
+- **Permetti il «non lo so»**: scrivi «se non sei sicuro, dillo».
+- **Chiedi come cercare**, non solo che cosa: «Che parole chiave uso per trovare libri sui vulcani?» È più sicuro di «dammi i titoli».
+- **Verifica sempre** i dettagli che contano: ne parliamo nella lezione dopo.
+
+<Callout kind="trucco">
+Il tuo cartello di allarme: se l'assistente ti dà un **nome, un numero o una fonte precisa** e la cosa ti serve davvero, cerca conferma altrove prima di usarla.
+</Callout>
+
+<Say who="assistente">Il caso di Marta si poteva evitare: bastava cercare il titolo nel catalogo di una biblioteca prima di scriverlo nella ricerca.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="L'assistente ti indica un libro con titolo, autore e anno precisi, ma non lo trovi in nessun catalogo. Che cosa è più probabile?"
+  options={[
+    "Il libro è stato inventato: è una allucinazione",
+    "Il catalogo è sbagliato e il libro esiste di sicuro",
+    "L'assistente ha controllato in biblioteca, quindi esiste",
+    "Il libro esiste, ma solo in versione digitale",
+  ]}
+  answer={0}
+  explain="Titoli e autori precisi ma introvabili sono il caso tipico di allucinazione: il modello produce qualcosa di plausibile. L'assistente non va in biblioteca a controllare, e non c'è motivo di pensare che il libro esista solo in digitale."
+/>
+
+<Say who="sensei">Un dettaglio preciso non è un dettaglio vero. È solo un dettaglio preciso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle risposte inventate. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-allucinazioni" pass="4/5" retries={3} />
+
+<Say who="sensei">Plausibile non è vero. Se solo ricordi questo, hai già evitato metà dei guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una allucinazione è una risposta plausibile ma falsa o inventata, detta con tono sicuro.
+- Succede perché il modello genera testo credibile e non sa fermarsi da solo.
+- Il rischio è più alto con titoli, citazioni, link, numeri, date e argomenti rari o recenti.
+- Si riduce con domande neutre, testo di partenza, permesso di dire «non lo so» e controlli.
+- Caso chiuso: il libro di Marta non esisteva; il modello aveva composto un titolo e un autore credibili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una allucinazione dell'IA?", a: "Una risposta plausibile ma falsa o inventata" },
+    { q: "Perché il tono sicuro non è una prova?", a: "Perché il modello scrive sempre in modo scorrevole, anche quando sbaglia" },
+    { q: "Dove sono più probabili gli errori?", a: "Su titoli, citazioni, link, numeri, date e argomenti rari o recenti" },
+    { q: "Chiedere «sei sicuro?» risolve il problema?", a: "No: la conferma non è un controllo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si verifica una risposta, passo per passo.</Say>
+</Scene>

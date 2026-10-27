@@ -1,0 +1,150 @@
+---
+id: I.04.002
+course: intelligenza-artificiale
+module: 4
+title: "IA e scuola"
+belt: bianca
+duration_min: 8
+prerequisites: [I.04.001]
+objectives:
+  - "Distinguere gli usi dell'IA che aiutano a imparare da quelli che sostituiscono lo studio"
+  - "Spiegare perché i programmi che «scoprono» i testi scritti dall'IA non sono affidabili"
+  - "Dire che cosa fare quando le regole della scuola sull'IA non sono chiare"
+verification:
+  type: generated-numeric
+  generator: i04-scuola
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che se l'IA scrive il compito si impari lo stesso: per imparare bisogna fare almeno una parte del lavoro"
+  - "Fidarsi dei programmi che dicono «scritto dall'IA»: sbagliano, anche accusando testi scritti da persone"
+  - "Usare l'IA di nascosto senza chiedere le regole all'insegnante"
+commands: []
+---
+
+<Scene title="Il tema perfetto">
+Nella classe di Marta, Luca consegna un tema bellissimo. Troppo bello: frasi tutte uguali, nessun errore, e un esempio che nessuno ha mai visto in classe. L'insegnante chiede a Luca di spiegare a voce un passaggio, e Luca non sa dire nulla.
+
+Marta si chiede: l'IA a scuola è un aiuto o un guaio?
+
+La domanda del caso: **quando l'IA aiuta a imparare e quando invece ruba lo studio a chi la usa?**
+
+<Say who="sensei">Il voto non è lo scopo della scuola. Lo scopo è che nella tua testa resti qualcosa. Parti da qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aiuto o scorciatoia">
+Come studiare bene con un assistente di IA lo hai visto nel modulo I2 («IA per studiare senza barare»). Qui guardiamo la scuola nel suo insieme.
+
+Un test semplice: **chi ha fatto la fatica di pensare?**
+
+<Compare
+  caption="Due modi di usare lo stesso strumento."
+  left={{ title: "Aiuta a imparare", points: ["Ti spiega un passaggio in un altro modo", "Ti fa domande per ripassare", "Controlla i tuoi esercizi e ti dice dove sbagli"] }}
+  right={{ title: "Sostituisce lo studio", points: ["Scrive il tema al posto tuo", "Fa i compiti che poi consegni come tuoi", "Ti dà la risposta senza che tu la capisca"] }}
+/>
+
+Nel secondo caso il compito è finito ma tu no: all'interrogazione o alla verifica in classe la differenza si vede. E c'è un problema in più: consegnare un lavoro non tuo come tuo è, per quasi tutte le scuole, una scorrettezza.
+
+<Say who="assistente">Se alla fine sai rifare da solo ciò che hai chiesto all'IA, l'hai usata bene. Se non sai, l'hai usata al posto tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rilevatori di IA non sono affidabili">
+Alcune persone pensano di risolvere il problema con programmi che «scoprono» se un testo è scritto dall'IA. Purtroppo **non funzionano in modo affidabile**.
+
+- Possono dare un **falso positivo**: dire «scritto dall'IA» di un testo scritto davvero da uno studente.
+- Possono dare un **falso negativo**: non accorgersi di un testo generato.
+- Alcune ricerche hanno mostrato che sbagliano di più con chi scrive in una lingua che non è la propria.
+
+<Callout kind="attenzione">
+Un risultato di questi programmi non è una prova. Accusare qualcuno solo perché un programma lo dice è ingiusto. Per questo molte scuole preferiscono altri metodi: verifiche orali, lavori fatti in classe, bozze consegnate passo dopo passo.
+</Callout>
+
+<Say who="sensei">Uno strumento che sbaglia a volte, usato come giudice, rovina innocenti. Non è un giudice: al massimo, un indizio debole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole: chiedile e rispettale">
+Ogni scuola e ogni insegnante possono avere regole diverse: c'è chi permette l'IA per cercare idee, chi la vieta nei compiti a casa, chi la chiede come strumento. Non c'è un'unica regola per tutti.
+
+Che cosa fare:
+
+<Flow
+  caption="Quando non sei sicuro."
+  steps={[
+    { icon: "book", title: "Chiedi", text: "Che cosa è permesso per questo compito?" },
+    { icon: "check", title: "Rispetta", text: "Usa l'IA solo come permesso" },
+    { icon: "file", title: "Dichiara", text: "Scrivi se e come l'hai usata" },
+    { icon: "eye", title: "Verifica", text: "Controlla fatti e fonti prima di consegnare" },
+  ]}
+/>
+
+Ricorda anche che le risposte dell'IA possono contenere errori e dati inventati (lo hai visto in I2): se copi senza controllare, l'errore è tuo.
+
+Un'ultima nota sulle regole europee: nell'AI Act (lo vedremo nella lezione 7) i sistemi usati per valutare gli studenti sono considerati **ad alto rischio** e hanno obblighi speciali, perché un errore può cambiare il futuro di una persona.
+
+<Say who="assistente">Chiedere «posso usarla?» non è ammettere una colpa. È il modo più sicuro di non averne.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un insegnante ti dà un testo da riassumere. Non ha detto niente sull'IA.
+
+<Quiz
+  question="Qual è la mossa migliore prima di usare un assistente di IA per quel riassunto?"
+  options={[
+    "Chiedere all'insegnante se e come si può usare l'IA per quel compito",
+    "Usarla di nascosto, tanto non si può dimostrare",
+    "Usarla e consegnare il riassunto senza leggerlo",
+    "Usare un programma «rilevatore» per cambiare le parole",
+  ]}
+  answer={0}
+  explain="Se le regole non sono chiare, la cosa giusta è chiedere. Usarla di nascosto o consegnare senza leggere è scorretto e rischioso; e i programmi che aggirano o scoprono l'IA non sono affidabili."
+/>
+
+<Say who="sensei">Se hai dubbi, chiedi. L'insegnante ti rispetterà di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su IA e scuola. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-scuola" pass="4/5" retries={3} />
+
+<Say who="sensei">Pensare resta compito tuo. L'IA può accompagnare, non camminare al posto tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA aiuta a imparare quando ti spiega, ti fa domande e controlla i tuoi esercizi; sostituisce lo studio quando fa il lavoro al posto tuo.
+- I programmi che «scoprono» i testi dell'IA sbagliano, anche accusando testi veri: non sono una prova.
+- Le regole cambiano da scuola a scuola: chiedi, rispetta, dichiara come l'hai usata e controlla i fatti.
+- Nell'AI Act i sistemi che valutano gli studenti sono ad alto rischio.
+- Caso chiuso: Luca non sapeva spiegare il tema perché non lo aveva scritto lui; chi usa l'IA bene sa rifare ciò che ha chiesto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il test semplice per usare bene l'IA a scuola?", a: "Chiedersi chi ha fatto la fatica di pensare: se tu sai rifarlo da solo, l'hai usata bene" },
+    { q: "Perché i rilevatori di testi scritti dall'IA non sono prove?", a: "Perché danno falsi positivi e falsi negativi e sbagliano di più con chi scrive in una lingua non propria" },
+    { q: "Che cosa fai se non sai se l'IA è permessa per un compito?", a: "Chiedi all'insegnante" },
+    { q: "Come vengono considerati dall'AI Act i sistemi che valutano gli studenti?", a: "Sistemi ad alto rischio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: immagini, voci e video falsi creati dall'IA.</Say>
+</Scene>

@@ -1,0 +1,153 @@
+---
+id: I.02.006
+course: intelligenza-artificiale
+module: 2
+title: "Come verificare una risposta"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.005]
+objectives:
+  - "Applicare un metodo in tre mosse per controllare una risposta dell'assistente"
+  - "Scegliere dove controllare: fonti affidabili e indipendenti"
+  - "Rifare un calcolo o provare un codice invece di fidarsi dell'assistente"
+verification:
+  type: generated-numeric
+  generator: i02-verificare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Controllare una risposta chiedendo all'assistente stesso, o a un altro assistente, e fermarsi lì"
+  - "Fidarsi del primo risultato di ricerca senza guardare chi l'ha scritto"
+  - "Controllare tutto con lo stesso sforzo, invece di concentrarsi sui dettagli che contano"
+commands: []
+---
+
+<Scene title="Quanti abitanti ha?">
+Marta, nella sua ricerca, ha scritto: «Il Vesuvio ha eruttato l'ultima volta nel 1944». L'ha letto in una risposta dell'assistente. La sua insegnante le chiede: «Come lo sai?». Marta non sa rispondere: si è fidata.
+
+Controllare una frase come questa richiede due minuti. Ma bisogna sapere come.
+
+La domanda del caso: **come si controlla una risposta dell'assistente?**
+
+<Say who="sensei">Non devi controllare tutto. Devi controllare ciò che conta, e saperlo fare in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre mosse">
+Un metodo semplice, sempre uguale:
+
+<Flow
+  caption="Il metodo in tre mosse."
+  steps={[
+    { icon: "search", title: "1. Isola", text: "Individua i fatti da controllare: nomi, numeri, date" },
+    { icon: "book", title: "2. Cerca", text: "Cerca ciascun fatto in una fonte affidabile" },
+    { icon: "check", title: "3. Confronta", text: "Se coincide, tienilo. Se no, correggi" },
+  ]}
+/>
+
+Dalla risposta di Marta, i fatti da isolare sono: «Vesuvio», «ultima eruzione», «1944». La mossa 2 è cercare «ultima eruzione del Vesuvio» in una fonte seria, per esempio il sito di un istituto di ricerca o un'enciclopedia. La mossa 3 è confrontare la data.
+
+<Callout kind="regola">
+Il controllo si fa **fuori** dalla chat. Chiedere all'assistente «sei sicuro?» non è un controllo.
+</Callout>
+
+<Say who="assistente">Se due fonti affidabili e indipendenti dicono la stessa cosa, puoi stare abbastanza tranquillo. Se dicono cose diverse, indaga ancora.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove cercare">
+Non tutte le fonti valgono uguale.
+
+<Layers
+  caption="Dalle più alle meno affidabili, di solito."
+  items={[
+    { icon: "shield", title: "Fonti ufficiali e primarie", text: "Istituti di ricerca, enti pubblici, il testo originale" },
+    { icon: "book", title: "Libri, enciclopedie, riviste serie", text: "Con autori e redazione identificabili" },
+    { icon: "globe", title: "Siti e articoli con autore e data", text: "Meglio se citano le loro fonti" },
+    { icon: "warning", title: "Post anonimi e pagine senza fonte", text: "Da non usare da soli" },
+  ]}
+/>
+
+Due regole in più:
+- **Fonti indipendenti**: due siti che si copiano a vicenda contano come una sola fonte.
+- **Chi lo dice e perché**: chiediti chi ha scritto la pagina, e se ha un interesse (per esempio vendere qualcosa).
+
+<Say who="sensei">Una fonte primaria è quella più vicina al fatto: il documento originale, non chi lo racconta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Calcoli e codice">
+Alcune risposte si verificano senza cercare niente: si **provano**.
+
+- **Calcoli**: rifalli con una calcolatrice o a mano. Un assistente può sbagliare un conto anche semplice, e lo scrive con calma.
+- **Codice**: eseguilo e guarda se funziona, con dati di prova piccoli. Un programma che sembra giusto può non partire, o dare risultati sbagliati.
+- **Spiegazioni di passaggi**: chiedi «mostrami i passaggi uno per uno» e controlla tu che ognuno segua dal precedente.
+
+Esempio: l'assistente dice «il 15% di 80 è 14». Rifai il conto: 80 diviso 100 fa 0,8; per 15 fa 12. La risposta giusta è 12, non 14.
+
+<Callout kind="trucco">
+Concentra i controlli dove un errore farebbe più danno: dati e date in una ricerca, numeri in un compito, qualunque cosa riguardi salute, soldi o leggi. Lì ti serve una fonte seria o una persona qualificata.
+</Callout>
+
+<Say who="assistente">Il codice dell'assistente va provato come qualsiasi altro: se non lo fai partire, non sai se funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="L'assistente ti dà una data storica. Qual è il modo migliore di controllarla?"
+  options={[
+    "Cercarla in un'enciclopedia o in una fonte ufficiale e confrontarla",
+    "Chiedere all'assistente se è sicuro della data",
+    "Fidarsi, perché la risposta era scritta bene",
+    "Chiedere di nuovo finché la data non cambia",
+  ]}
+  answer={0}
+  explain="Il controllo va fatto fuori dalla chat, su una fonte affidabile. Chiedere «sei sicuro?» non verifica niente, la qualità dello stile non prova la correttezza, e rifare la domanda più volte può solo produrre risposte diverse, non vere."
+/>
+
+<Say who="sensei">Il controllo giusto è quello che potrebbe dimostrarti che l'assistente ha sbagliato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come verificare le risposte. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-verificare" pass="4/5" retries={3} />
+
+<Say who="sensei">Isola, cerca, confronta. Tre mosse, due minuti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il metodo: isola i fatti, cercali in una fonte affidabile, confronta.
+- Il controllo si fa fuori dalla chat, non chiedendo «sei sicuro?».
+- Le fonti migliori sono quelle ufficiali o primarie; due fonti che si copiano contano come una.
+- Calcoli e codice si verificano rifacendo il conto e provando il programma.
+- Caso chiuso: Marta ha cercato l'ultima eruzione del Vesuvio in una fonte seria e ha potuto rispondere alla sua insegnante con una fonte.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le tre mosse per verificare una risposta?", a: "Isolare i fatti, cercarli in una fonte affidabile, confrontare" },
+    { q: "Chiedere all'assistente «sei sicuro?» è un controllo?", a: "No: il controllo si fa fuori dalla chat" },
+    { q: "Che cos'è una fonte primaria?", a: "La fonte più vicina al fatto, come il documento originale" },
+    { q: "Come si verifica un calcolo dell'assistente?", a: "Rifacendolo con una calcolatrice o a mano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chiedere fonti all'assistente, cosa funziona e cosa no.</Say>
+</Scene>

@@ -1,0 +1,158 @@
+---
+id: I.02.002
+course: intelligenza-artificiale
+module: 2
+title: "Scrivere una buona richiesta (prompt)"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.001]
+objectives:
+  - "Riconoscere una richiesta vaga e renderla precisa"
+  - "Indicare in una richiesta compito, argomento, destinatario e lunghezza"
+  - "Migliorare una risposta con una richiesta di correzione invece di ricominciare da capo"
+verification:
+  type: generated-numeric
+  generator: i02-buona-richiesta
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere richieste di poche parole e poi lamentarsi che la risposta è generica"
+  - "Mettere in una sola richiesta cinque compiti diversi mescolati"
+  - "Dimenticare di dire a chi è destinato il testo, e quindi che livello di difficoltà usare"
+commands: []
+---
+
+<Scene title="«Parlami di Roma»">
+Marta scrive all'assistente: «Parlami di Roma». Arriva un testo lunghissimo con storia, monumenti, cucina e traffico. Lei voleva solo tre cose da visitare in una gita scolastica di un giorno.
+
+Non è colpa dell'assistente: la richiesta non diceva né quanto, né perché, né per chi.
+
+La domanda del caso: **come si scrive una richiesta che ottiene quello che serve?**
+
+<Say who="sensei">Un assistente non legge nel pensiero. Ti risponde in base a ciò che scrivi, non a ciò che volevi scrivere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vago contro preciso">
+<Compare
+  caption="La stessa idea, due richieste."
+  left={{ title: "Richiesta vaga", points: ["«Parlami di Roma»", "Nessun limite di lunghezza", "Nessuno scopo dichiarato"] }}
+  right={{ title: "Richiesta precisa", points: ["«Suggerisci 3 luoghi di Roma da visitare in un giorno con una classe»", "Numero di risultati chiaro", "Scopo e destinatari chiari"] }}
+/>
+
+Una buona richiesta risponde, in poche righe, a quattro domande:
+
+- **Che compito?** (spiegare, elencare, confrontare, correggere...)
+- **Su che cosa?** L'argomento preciso.
+- **Per chi?** Un ragazzo di 15 anni, un esperto, un bambino.
+- **Quanto?** Cinque righe, tre punti, una pagina.
+
+<Callout kind="regola">
+Meno l'assistente deve indovinare, più la risposta sarà vicina a ciò che volevi.
+</Callout>
+
+<Say who="assistente">Se una persona ti chiedesse «parlami di Roma», ti chiederebbe subito «in che senso?». L'assistente, di solito, parte a rispondere e basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio completo">
+Ecco una richiesta scritta bene:
+
+```text
+Spiegami come funziona la fotosintesi.
+Il testo è per un ragazzo di 14 anni.
+Usa al massimo 6 righe e un esempio con una pianta di casa.
+```
+
+Che cosa c'è dentro?
+
+<Layers
+  caption="I pezzi della richiesta."
+  items={[
+    { icon: "book", title: "Compito e argomento", text: "Spiegami come funziona la fotosintesi" },
+    { icon: "user", title: "Destinatario", text: "Per un ragazzo di 14 anni" },
+    { icon: "clock", title: "Limite", text: "Al massimo 6 righe" },
+    { icon: "check", title: "Dettaglio utile", text: "Un esempio con una pianta di casa" },
+  ]}
+/>
+
+<Say who="sensei">Quattro righe di fatica per te, dieci minuti risparmiati dopo. È un buon affare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Migliorare dopo, non ricominciare">
+La prima risposta di rado è quella finale, ed è normale. Puoi **correggerla** nella stessa conversazione, con richieste brevi:
+
+- «Più corta: massimo 3 righe.»
+- «Usa parole più semplici, come per un bambino di 10 anni.»
+- «Togli le parentesi e trasforma tutto in un elenco.»
+- «Il secondo punto non mi è chiaro: spiegalo con un esempio.»
+
+L'assistente vede la conversazione in corso, quindi capisce a che cosa ti riferisci.
+
+<Callout kind="trucco">
+Un compito per volta. Se chiedi insieme di riassumere, tradurre, correggere e inventare un titolo, di solito qualcosa viene fatto male. Meglio quattro richieste brevi in fila.
+</Callout>
+
+<Say who="assistente">Non devi azzeccare la richiesta al primo colpo. Devi solo saperla aggiustare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale di queste richieste è la più precisa per avere una buona risposta?"
+  options={[
+    "Elenca 5 consigli per ripassare storia prima di un'interrogazione, per un ragazzo di 15 anni, in una riga ciascuno",
+    "Dammi dei consigli",
+    "Storia: aiutami",
+    "Dimmi tutto sullo studio",
+  ]}
+  answer={0}
+  explain="La prima indica compito (elencare consigli), argomento (ripassare storia), destinatario (15 anni), quantità (5) e lunghezza (una riga). Le altre sono troppo generiche: l'assistente dovrebbe indovinare tutto."
+/>
+
+<Say who="sensei">Quando una risposta ti delude, rileggi prima la tua richiesta. Spesso la causa è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come scrivere una buona richiesta. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-buona-richiesta" pass="4/5" retries={3} />
+
+<Say who="sensei">Compito, argomento, per chi, quanto. Quattro domande, ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una richiesta vaga porta una risposta generica: l'assistente non può indovinare cosa volevi.
+- Una buona richiesta dice compito, argomento, destinatario e lunghezza.
+- Se la risposta non va bene, si corregge con richieste brevi nella stessa conversazione.
+- Meglio un compito per volta che cinque mescolati.
+- Caso chiuso: «Parlami di Roma» diventa «Suggerisci 3 luoghi da visitare in un giorno con una classe», e Marta ottiene ciò che le serve.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le quattro cose da indicare in una buona richiesta?", a: "Compito, argomento, destinatario e lunghezza" },
+    { q: "Perché «Parlami di Roma» è una cattiva richiesta?", a: "Perché non dice cosa vuoi, per chi e quanto: l'assistente deve indovinare" },
+    { q: "Come si migliora una risposta che non va bene?", a: "Con una richiesta di correzione breve nella stessa conversazione" },
+    { q: "Meglio un compito per volta o molti insieme?", a: "Uno per volta: i risultati sono più precisi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: dare un contesto, un ruolo e un formato.</Say>
+</Scene>

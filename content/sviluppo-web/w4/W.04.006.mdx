@@ -1,0 +1,165 @@
+---
+id: W.04.006
+course: sviluppo-web
+module: 4
+title: "Unità di misura: px, em, rem e percentuali"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.005]
+objectives:
+  - "Distinguere unità fisse (px) da unità relative (em, rem, percentuali)"
+  - "Calcolare la dimensione in pixel di un valore in rem o in em"
+  - "Scegliere l'unità adatta per testo, spazi e larghezze"
+verification:
+  type: generated-numeric
+  generator: w04-unita
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che 1em e 1rem siano sempre uguali: em dipende dall'elemento genitore, rem dalla radice"
+  - "Dimenticare l'unità: 18 da solo non è valido, serve 18px (solo lo zero si può scrivere senza unità)"
+  - "Fissare larghezze in pixel enormi: sullo schermo del telefono la pagina esce dai bordi"
+commands: []
+---
+
+<Scene title="Il testo che non cambia">
+Un lettore anziano scrive a Lucia: «Ho ingrandito i caratteri nelle impostazioni del browser, ma il tuo sito è rimasto piccolo». Lucia aveva scritto tutte le dimensioni in pixel.
+
+Non tutte le unità di misura si comportano allo stesso modo: alcune sono fisse, altre si adattano a ciò che le circonda, compreso ciò che ha scelto chi legge.
+
+La domanda del caso: **quale unità conviene usare per far adattare la pagina a chi la guarda?**
+
+<Say who="sensei">Un sito rigido va bene solo sul tuo schermo. Un sito che si adatta va bene sullo schermo di tutti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pixel e unità relative">
+Il **pixel** (`px`) è l'unità più semplice: una misura fissa, che non dipende da altri valori. È ottima per bordi sottili (`1px`) e ombre. Per i caratteri, però, non segue le impostazioni di dimensione del testo scelte da chi legge.
+
+Le **unità relative** si calcolano a partire da altri valori:
+
+- `rem`: relativa alla dimensione del carattere dell'elemento radice, cioè `html`. Nei browser vale di base 16px, quindi `1rem` è 16px, `2rem` è 32px e `0.5rem` è 8px. Se chi legge cambia la dimensione di base del browser, i `rem` si adeguano.
+- `em`: relativa alla dimensione del carattere **dell'elemento stesso** (o, per `font-size`, del suo genitore).
+- `%`: una percentuale di un valore del genitore. `width: 50%` è la metà della larghezza del contenitore.
+
+<Layers
+  caption="Da che cosa dipende ogni unità."
+  items={[
+    { icon: "lock", title: "px", text: "Fissa, non dipende da niente" },
+    { icon: "file", title: "rem", text: "Dipende dal carattere della radice (html)" },
+    { icon: "folder", title: "em", text: "Dipende dal carattere dell'elemento o del genitore" },
+    { icon: "chart", title: "%", text: "Dipende dal contenitore" },
+  ]}
+/>
+
+<Say who="assistente">Per lo schermo di Lucia 16 pixel sono sempre 16 pixel. Per un'unità relativa, il risultato cambia con il contesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il calcolo, passo per passo">
+```css
+html {
+  font-size: 16px;
+}
+p {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.piccolo {
+  font-size: 0.75rem;
+}
+```
+
+- `p`: 1,5 volte 16 = **24 px**.
+- `.piccolo`: 0,75 volte 16 = **12 px**.
+- Il margine di `1rem` è 16 px.
+
+Con `em` il calcolo parte dal carattere del genitore, e a ogni livello si moltiplica. Se un elenco annidato ha `font-size: 0.8em` a ogni livello, il testo diventa sempre più piccolo: 0,8 per 0,8 fa 0,64 al secondo livello. Con `rem` questo non accade, perché si parte sempre dalla radice.
+
+<Callout kind="regola">
+Regola pratica: **rem** per i caratteri e per gli spazi della pagina, **percentuali** per le larghezze dei contenitori, **px** per bordi sottili e piccoli dettagli.
+</Callout>
+
+<Say who="sensei">Se parti dalla radice, il calcolo è uno solo. Se parti dal genitore, devi tenere in mente tutta la catena.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Larghezze che si adattano">
+Una larghezza in percentuale cambia con lo schermo.
+
+```css
+.colonna {
+  width: 80%;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+```
+
+- `width: 80%` occupa l'80% del contenitore.
+- `max-width: 40rem` pone un limite: oltre 640 px (40 per 16) la colonna smette di allargarsi. Su un monitor grande il testo non diventa una riga lunghissima.
+- `margin: 0 auto` centra la colonna.
+
+Esiste anche `vw`, che vale l'1% della larghezza della finestra del browser: `50vw` è metà schermo.
+
+<Say who="assistente">Una colonna con un limite massimo è comoda ovunque: stretta sul telefono, ordinata sul monitor.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="La radice html ha font-size 16px. Quanto vale, in pixel, un testo con font-size: 1.25rem?"
+  options={[
+    "20 px",
+    "1,25 px",
+    "16 px",
+    "25 px",
+  ]}
+  answer={0}
+  explain="1,25 volte 16 fa 20 px. 1,25 px sarebbe il valore senza moltiplicare; 16 px è 1rem; 25 non corrisponde a nessun calcolo corretto."
+/>
+
+<Say who="sensei">Con la radice a 16 pixel, ogni rem è un multiplo di 16. È il primo conto che farai a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle unità. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-unita" pass="4/5" retries={3} />
+
+<Say who="sensei">rem parte dalla radice, em dal genitore, la percentuale dal contenitore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il `px` è una misura fissa; `rem`, `em` e `%` sono relative.
+- `rem` parte dal carattere della radice (di base 16px, quindi 1,5rem sono 24px); `em` dal carattere dell'elemento o del genitore; `%` dal contenitore.
+- Con `em` annidati i valori si moltiplicano a ogni livello; con `rem` no.
+- Per le larghezze conviene `width` in percentuale con un `max-width` che le limita.
+- Caso chiuso: Lucia ha passato i caratteri da pixel a rem, e ora il sito segue la dimensione scelta dal lettore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa è relativo 1rem?", a: "Alla dimensione del carattere dell'elemento radice html (di base 16px)" },
+    { q: "Quanti pixel sono 2rem con la radice a 16px?", a: "32 pixel" },
+    { q: "Che cosa significa width: 50%?", a: "La metà della larghezza del contenitore" },
+    { q: "A che cosa serve max-width?", a: "A porre un limite: oltre quella larghezza l'elemento smette di allargarsi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: sfondi, bordi e ombre, per dare corpo agli elementi.</Say>
+</Scene>

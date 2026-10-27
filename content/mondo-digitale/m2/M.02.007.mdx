@@ -1,0 +1,164 @@
+---
+id: M.02.007
+course: mondo-digitale
+module: 2
+title: "Siti sicuri: il lucchetto e cosa vuol dire davvero"
+belt: bianca
+duration_min: 9
+prerequisites: [M.02.006]
+objectives:
+  - "Spiegare la differenza tra http e https"
+  - "Dire che cosa garantisce il lucchetto e che cosa non garantisce"
+  - "Applicare tre controlli prima di inserire dati su un sito"
+verification:
+  type: generated-numeric
+  generator: m02-siti-sicuri
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il lucchetto voglia dire «sito onesto e sicuro»"
+  - "Inserire dati su un sito che mostra «Non sicuro» perché la pagina «sembra normale»"
+  - "Guardare l'aspetto della pagina e non il dominio"
+commands: []
+---
+
+<Scene title="«Ma c'è il lucchetto!»">
+Il nonno Aldo ha un'offerta: un telefono nuovo a pochissimo. Il sito chiede la carta di credito. Dice: «Non può essere una truffa: c'è il lucchetto!».
+
+Marta lo ferma. Il lucchetto vuol dire qualcosa di preciso, ma **non** quello che pensa il nonno.
+
+La domanda del caso: **che cosa garantisce davvero il lucchetto?**
+
+<Say who="sensei">Il lucchetto è utile. Ma lo si fraintende da sempre: fermiamoci a capirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="http e https">
+L'indirizzo di un sito comincia con **http** oppure **https**. Quella **s** finale sta per *secure*, «sicuro».
+
+<Compare
+  caption="http e https."
+  left={{ title: "http", points: ["I dati viaggiano in chiaro", "Chi sta in mezzo può leggerli", "Il browser avvisa: Non sicuro"] }}
+  right={{ title: "https", points: ["I dati viaggiano cifrati", "In mezzo nessuno li legge", "Il browser mostra un'icona, di solito un lucchetto"] }}
+/>
+
+**Cifrati** vuol dire trasformati in modo che solo chi manda e chi riceve possano leggerli. Su un wifi pubblico, per esempio, un altro utente non può leggere la tua password se il sito usa https.
+
+<Callout kind="regola">
+Se il browser scrive **Non sicuro** accanto all'indirizzo, non inserire mai password, carte o dati personali in quella pagina.
+</Callout>
+
+<Say who="assistente">Pensa a una lettera: con http è una cartolina che tutti possono leggere, con https è una busta sigillata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa dice il lucchetto">
+Con https il browser verifica un **certificato**, una specie di carta d'identità del sito. Il lucchetto (o l'icona simile, che cambia da browser a browser) significa due cose:
+
+<Layers
+  caption="Che cosa garantisce https."
+  items={[
+    { icon: "lock", title: "Connessione cifrata", text: "I dati tra te e il sito non si leggono in mezzo" },
+    { icon: "globe", title: "Dominio corretto", text: "Stai parlando con il dominio che vedi nella barra" },
+  ]}
+/>
+
+E cosa **non** dice:
+
+- non dice che il sito sia **onesto** o che il negozio **spedisca** davvero;
+- non dice che il sito sia **quello che credi** (se il dominio è sbagliato, hai il lucchetto sul sito sbagliato);
+- non dice che i tuoi dati saranno al sicuro **dopo** che li hai dati.
+
+<Callout kind="attenzione">
+Anche i siti falsi possono avere il lucchetto: ottenere un certificato per un dominio è facile e spesso gratuito. Il lucchetto protegge il **viaggio** dei dati, non ti dice chi li riceve.
+</Callout>
+
+<Say who="sensei">Il lucchetto è la busta sigillata. Non ti dice chi c'è dall'altra parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre controlli prima di dare dati">
+Prima di inserire una password, un numero di carta o un documento, fai questi tre controlli.
+
+<Flow
+  caption="Tre controlli prima di dare dati."
+  steps={[
+    { icon: "link", title: "1. Dominio", text: "È quello giusto? Letto da destra" },
+    { icon: "lock", title: "2. https", text: "C'è, e il browser non dice Non sicuro" },
+    { icon: "search", title: "3. Reputazione", text: "Cerca il nome del sito con la parola recensioni" },
+  ]}
+/>
+
+Altri segnali di allarme:
+
+- un prezzo **troppo basso** per essere vero;
+- fretta, minacce o offerte «solo per oggi»;
+- errori di scrittura, nessun indirizzo fisico o nessun modo di contattare l'azienda;
+- richiesta di **pagamenti in modi strani** (bonifico a un privato, carte regalo).
+
+<Callout kind="trucco">
+Se hai dubbi su un negozio online, chiedi un parere a una persona di fiducia prima di inserire i dati della carta. Dieci minuti di attesa costano meno di un errore.
+</Callout>
+
+<Say who="assistente">Se il nonno aspetta cinque minuti e fa tre controlli, perde un'offerta falsa. Poco male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un sito ha il lucchetto nella barra degli indirizzi. Che cosa puoi concludere con certezza?"
+  options={[
+    "I dati tra te e il sito viaggiano cifrati, ma il sito potrebbe comunque essere una truffa",
+    "Il sito è onesto e puoi comprare senza controllare altro",
+    "Il sito appartiene a una grande azienda conosciuta",
+    "Il sito non potrà usare i tuoi dati in modo scorretto",
+  ]}
+  answer={0}
+  explain="Il lucchetto garantisce solo che la connessione è cifrata e che il dominio è quello mostrato. Non dice se il sito è onesto, né di chi sia, né come tratterà i tuoi dati dopo."
+/>
+
+<Say who="sensei">Busta sigillata, sì. Mittente onesto, non è detto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui siti sicuri. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-siti-sicuri" pass="4/5" retries={3} />
+
+<Say who="sensei">Dominio, https, reputazione. Tre controlli, pochi secondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- https cifra i dati tra te e il sito; con http viaggiano in chiaro e il browser dice Non sicuro.
+- Il lucchetto garantisce connessione cifrata e dominio corretto, non l'onestà del sito.
+- Anche i siti truffa possono avere il lucchetto.
+- Prima di dare dati: controlla il dominio, https e la reputazione, e diffida di prezzi troppo bassi e di fretta.
+- Caso chiuso: il telefono a pochissimo non era una garanzia, anche se il sito aveva il lucchetto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire la s di https?", a: "Secure: la connessione è cifrata" },
+    { q: "Che cosa garantisce il lucchetto?", a: "Connessione cifrata e dominio corretto, non l'onestà del sito" },
+    { q: "Un sito truffa può avere il lucchetto?", a: "Sì, ottenere un certificato per un dominio è facile" },
+    { q: "Che cosa fai se il browser scrive Non sicuro?", a: "Non inserisci password né dati personali" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: scaricare file e che cosa controllare.</Say>
+</Scene>

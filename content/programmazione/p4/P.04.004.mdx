@@ -1,0 +1,179 @@
+---
+id: P.04.004
+course: programmazione
+module: 4
+title: "Le eccezioni: try ed except"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.003]
+objectives:
+  - "Usare try ed except per gestire un errore invece di far fermare il programma"
+  - "Scegliere il tipo di eccezione da catturare, senza un except generico"
+  - "Spiegare quando servono else e finally"
+verification:
+  type: generated-numeric
+  generator: p04-try-except
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un except vuoto che cattura tutto e nasconde anche gli errori veri del programma"
+  - "Mettere dentro try troppe righe: conviene proteggere solo quella che può fallire"
+  - "Pensare che except risolva il problema: serve a gestirlo, poi bisogna decidere che cosa fare"
+commands: []
+---
+
+<Scene title="Un numero scritto male">
+Elena ha fatto un programma che chiede quanti biglietti ha venduto ciascun attore. Un compagno, per sbaglio, scrive «tre» invece di 3. Il programma si ferma con `ValueError` e perde tutto il lavoro fatto fino a quel momento.
+
+Un buon programma non deve crollare per un errore di battitura di chi lo usa. Deve accorgersene, dire che cosa non va e chiedere di riprovare.
+
+La domanda del caso: **come si fa a «prendere» un errore invece di lasciare che fermi il programma?**
+
+<Say who="sensei">Un errore a runtime in Python si chiama eccezione. Un'eccezione si può prevedere, e quindi gestire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="try ed except">
+Con `try` dici: «prova a fare questo». Con `except` dici: «se va storto in questo modo, fai quest'altro».
+
+```python
+try:
+    biglietti = int(input("Biglietti venduti: "))
+    print("Registrati:", biglietti)
+except ValueError:
+    print("Scrivi un numero intero, per esempio 3.")
+```
+
+Se scrivi `3`, il blocco `try` va in fondo e `except` viene saltato. Se scrivi `tre`, `int("tre")` solleva un `ValueError`: Python salta il resto di `try`, entra in `except`, stampa il messaggio e **il programma continua**.
+
+<Flow
+  caption="Che cosa succede quando l'errore avviene."
+  steps={[
+    { icon: "code", title: "try", text: "Python esegue le righe una per una" },
+    { icon: "bug", title: "Eccezione", text: "Una riga fallisce: il resto di try è saltato" },
+    { icon: "shield", title: "except", text: "Il blocco giusto gestisce l'errore" },
+    { icon: "check", title: "Si prosegue", text: "Il programma va avanti dopo il blocco" },
+  ]}
+/>
+
+<Say who="assistente">Non devi evitare tutti gli errori. Devi decidere che cosa fare quando succedono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale errore catturare">
+Dopo `except` si scrive il **tipo** di errore. È importante essere precisi.
+
+```python
+try:
+    quota = totale / persone
+except ZeroDivisionError:
+    print("Nessuna persona: non posso dividere.")
+except (ValueError, TypeError):
+    print("Dati non validi.")
+```
+
+- Si possono mettere più `except`, uno per ogni caso.
+- Con una tupla tra parentesi, come `(ValueError, TypeError)`, si gestiscono più tipi nello stesso modo.
+- Con `except ValueError as e` ottieni l'errore in una variabile `e`: `print(e)` mostra il suo messaggio.
+
+<Callout kind="attenzione">
+Evita l'`except:` vuoto, o `except Exception:` usato a caso. Cattura **tutto**, anche errori che non hai previsto (come un nome scritto male), e li nasconde: il programma continua, ma sbaglia in silenzio. Cattura solo gli errori che sai gestire.
+</Callout>
+
+<Say who="sensei">Un buon except è come un cartello preciso: «se manca il file, avvisa». Uno generico è un tappeto sotto cui nascondi la polvere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="else e finally">
+Due parti facoltative completano il blocco.
+
+```python
+try:
+    eta = int(input("Età: "))
+except ValueError:
+    print("Scrivi un numero intero.")
+else:
+    print("Tra un anno avrai", eta + 1)
+finally:
+    print("Fine del controllo.")
+```
+
+- `else` viene eseguito **solo se non c'è stata nessuna eccezione**. Qui mette il codice che ha senso solo se la lettura è riuscita.
+- `finally` viene eseguito **sempre**, che ci sia stato un errore oppure no. Serve per le operazioni di chiusura.
+
+<Callout kind="regola">
+Tieni dentro `try` soltanto la riga che può fallire. Il resto mettilo in `else`: così non catturi per sbaglio errori che arrivano da altre righe.
+</Callout>
+
+<Say who="assistente">Se all'inizio ti confondi, ricorda: try prova, except gestisce, else premia il successo, finally chiude sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena vuole ripetere la domanda finché l'utente non scrive un numero.
+
+<Quiz
+  question="Quando viene eseguito il blocco else di un try/except?"
+  options={[
+    "Solo se nel blocco try non è stata sollevata nessuna eccezione",
+    "Sempre, anche se c'è stato un errore",
+    "Solo se c'è stata un'eccezione",
+    "Solo se il blocco finally è vuoto",
+  ]}
+  answer={0}
+  explain="Il blocco else parte solo quando try è finito senza eccezioni. Quello che gira sempre è finally. Il blocco che gira solo in caso di errore è except. E else non dipende da finally."
+/>
+
+```python
+while True:
+    try:
+        n = int(input("Biglietti: "))
+        break
+    except ValueError:
+        print("Numero intero, per favore.")
+```
+
+<Say who="sensei">Un ciclo con try dentro è lo schema classico per chiedere un dato finché è valido. Fermati sul codice e capisci perché `break` sta nel try.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su eccezioni, try ed except. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-try-except" pass="4/5" retries={3} />
+
+<Say who="sensei">Prova, gestisci, prosegui. Ma gestisci solo ciò che sai gestire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- try esegue il codice, except lo gestisce se avviene l'errore indicato, e il programma prosegue.
+- Si cattura un tipo preciso di errore; l'except generico nasconde anche gli errori veri.
+- else gira solo se non ci sono stati errori; finally gira sempre.
+- Caso chiuso: il numero scritto male da un compagno ora produce un avviso, e il programma di Elena non perde più il lavoro fatto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve except?", a: "A gestire un'eccezione sollevata nel blocco try" },
+    { q: "Quando gira il blocco else?", a: "Solo se try finisce senza eccezioni" },
+    { q: "Quando gira il blocco finally?", a: "Sempre, con o senza errore" },
+    { q: "Perché è meglio non usare un except vuoto?", a: "Perché cattura anche errori imprevisti e li nasconde" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: sollevare tu stesso un errore con raise, quando i dati non vanno bene.</Say>
+</Scene>

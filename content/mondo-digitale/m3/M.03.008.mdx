@@ -1,0 +1,143 @@
+---
+id: M.03.008
+course: mondo-digitale
+module: 3
+title: "Messaggi istantanei e gruppi"
+belt: bianca
+duration_min: 8
+prerequisites: [M.03.007]
+objectives:
+  - "Spiegare la differenza tra email e messaggio istantaneo"
+  - "Capire i segni di consegna e lettura e le regole di buona educazione nei gruppi"
+  - "Usare un gruppo con rispetto della privacy e senza diffondere notizie non verificate"
+verification:
+  type: generated-numeric
+  generator: m03-messaggi-gruppi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Inoltrare a tutti una notizia senza verificarla"
+  - "Aggiungere una persona a un gruppo senza chiederglielo"
+  - "Pensare che un messaggio spedito sia stato letto: i segni dicono cose diverse"
+commands: []
+---
+
+<Scene title="Il gruppo del corso">
+Il corso di computer ha creato un gruppo di messaggi. In un giorno arrivano quaranta notifiche: foto, catene, una notizia allarmante su una nuova truffa. Rosa la inoltra subito a tutti i suoi contatti. Poi scopre che era falsa.
+
+La domanda del caso: **come si usa bene un gruppo, senza stancare gli altri e senza diffondere notizie false?**
+
+<Say who="sensei">Un gruppo è uno spazio comune. Ciò che mandi lo leggono in tanti: quindi pensa prima di inviare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Email e messaggi istantanei">
+Un **messaggio istantaneo** è un testo breve mandato con un'app di messaggi (per esempio WhatsApp, Telegram, Signal o altre). Arriva in pochi secondi sul telefono di chi lo riceve, che di solito risponde subito.
+
+<Compare
+  caption="Quando scegliere l'una o l'altra."
+  left={{ title: "Email", points: ["Per testi più lunghi o formali", "Per allegati e documenti importanti", "Si risponde con calma"] }}
+  right={{ title: "Messaggio istantaneo", points: ["Per cose brevi e veloci", "Per amici, famiglia e gruppi", "Si risponde in fretta"] }}
+/>
+
+Le app di messaggi usano un **numero di telefono** o un nome utente invece di un indirizzo email. Alcune, come WhatsApp e Signal, **cifrano** i messaggi per impostazione predefinita: li trasformano in un codice che solo mittente e destinatario possono leggere.
+
+<Say who="assistente">Per una richiesta a un ufficio o a una scuola, meglio l'email: resta scritta e ha un oggetto. Per «arrivo tra dieci minuti», va benissimo un messaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I segni di spunta">
+In molte app, sotto ogni messaggio compaiono dei **segni di spunta** che raccontano che cosa è successo. In WhatsApp, per esempio:
+
+<Layers
+  caption="I segni di spunta di WhatsApp."
+  items={[
+    { icon: "check", title: "Una spunta grigia", text: "Il messaggio è partito dal tuo telefono" },
+    { icon: "check", title: "Due spunte grigie", text: "È arrivato sul telefono del destinatario" },
+    { icon: "eye", title: "Due spunte blu", text: "Il destinatario lo ha letto" },
+  ]}
+/>
+
+Altre app usano segni diversi: guarda la guida dell'app. E ricorda: due spunte blu dicono che il messaggio è stato letto, non che la persona ha avuto tempo di rispondere. Non serve offendersi.
+
+<Say who="sensei">Il silenzio non è sempre un rifiuto. Spesso è solo una persona occupata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole di un gruppo">
+In un gruppo ci sono uno o più **amministratori** (chi lo ha creato e lo gestisce) e i **partecipanti**. Poche regole di buona educazione:
+
+- **Non aggiungere** nessuno senza averlo chiesto, e non condividere pubblicamente il link d'invito.
+- Scrivi **messaggi brevi e utili**; per questioni personali usa un messaggio privato.
+- Non mandare catene e **non inoltrare notizie** senza controllarle (vedi sotto).
+- Non pubblicare **foto di altre persone**, soprattutto di minorenni, senza il loro permesso.
+- Se il gruppo è troppo rumoroso, **silenzia le notifiche**: resti nel gruppo ma il telefono non suona.
+
+<Callout kind="regola">
+Prima di inoltrare una notizia, chiediti: chi l'ha scritta? C'è una fonte che posso controllare? Se non lo sai, non inoltrare. Una voce falsa, rimbalzata in cento gruppi, fa danni.
+</Callout>
+
+<Say who="assistente">Nel dubbio, cerca la notizia con un motore di ricerca: se è vera la trovi su più fonti attendibili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Nel gruppo del corso arriva questo: «URGENTE! Inoltra a tutti i tuoi contatti: una nuova truffa svuota i conti! Non si sa chi lo ha scritto».
+
+<Quiz
+  question="Qual è il comportamento migliore davanti a un messaggio urgente senza fonte?"
+  options={[
+    "Non inoltrarlo e cercare la notizia su fonti affidabili",
+    "Inoltrarlo subito a tutti, per sicurezza",
+    "Inoltrarlo solo ai contatti che si fidano di me",
+    "Rispondere al gruppo con altre notizie simili",
+  ]}
+  answer={0}
+  explain="Un messaggio senza fonte, che chiede di essere diffuso in fretta, è un segnale di allarme: prima si verifica. Inoltrarlo, anche a pochi, lo diffonde, e rispondere con altre notizie non controllate aggrava la confusione."
+/>
+
+<Say who="sensei">Prima verifica, poi eventualmente condividi. Il pulsante Inoltra non ha fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su messaggi e gruppi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-messaggi-gruppi" pass="4/5" retries={3} />
+
+<Say who="sensei">Brevi, rispettosi, verificati. Un buon partecipante di gruppo fa così.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il messaggio istantaneo è breve e veloce; l'email è più adatta a testi lunghi, formali o con allegati.
+- Le spunte dicono se un messaggio è partito, arrivato o letto, ma non se riceverai una risposta.
+- Nei gruppi: non aggiungere persone senza chiedere, messaggi brevi, notifiche silenziabili.
+- Le notizie senza fonte non si inoltrano; si controllano prima.
+- Caso chiuso: Rosa ha avvisato il gruppo che la notizia era falsa e ha imparato a controllare prima di inoltrare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando è meglio un'email rispetto a un messaggio?", a: "Per testi lunghi, formali o con allegati importanti" },
+    { q: "Che cosa significano due spunte blu in WhatsApp?", a: "Il destinatario ha letto il messaggio" },
+    { q: "Si può aggiungere una persona a un gruppo senza chiederglielo?", a: "No: è meglio chiedere prima" },
+    { q: "Che cosa si fa prima di inoltrare una notizia?", a: "Si controlla la fonte" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le videochiamate.</Say>
+</Scene>

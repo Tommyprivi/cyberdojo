@@ -1,0 +1,160 @@
+---
+id: W.04.003
+course: sviluppo-web
+module: 4
+title: "Colori: nomi, esadecimale e rgb"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.002]
+objectives:
+  - "Dare un colore al testo e allo sfondo con le proprietà color e background-color"
+  - "Scrivere un colore come nome, come esadecimale e come rgb"
+  - "Scegliere colori con abbastanza contrasto tra testo e sfondo"
+verification:
+  type: generated-numeric
+  generator: w04-colori
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il cancelletto davanti a un colore esadecimale: senza, il colore non funziona"
+  - "Confondere color (colore del testo) con background-color (colore dello sfondo)"
+  - "Scegliere un testo grigio chiaro su fondo bianco: bello da vedere per chi vede bene, illeggibile per molti"
+commands: []
+---
+
+<Scene title="Il colore della terracotta">
+Lucia vuole il titolo color terracotta e un fondo crema per la pagina. Cerca un nome adatto, ma «terracotta» non funziona: il browser non lo conosce.
+
+Esistono molti modi di scrivere un colore, e uno solo di essi usa i nomi. Per avere la tonalità giusta serve un codice.
+
+La domanda del caso: **come si scrive un colore preciso in CSS?**
+
+<Say who="sensei">Il browser sa mostrare milioni di colori. Per chiederglieli ti servono i numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Testo e sfondo">
+Due proprietà fanno quasi tutto:
+
+- `color` cambia il colore del **testo**.
+- `background-color` cambia il colore dello **sfondo**.
+
+```css
+body {
+  background-color: #fdf6e3;
+  color: #333333;
+}
+h1 {
+  color: darkred;
+}
+```
+
+Il testo del `body` viene **ereditato** dai discendenti: i paragrafi, per esempio, avranno lo stesso colore, a meno che una regola non dica altro. Ne riparleremo.
+
+<Say who="assistente">Una regola sul body è un buon punto di partenza: colori base per tutta la pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre modi di scrivere un colore">
+**Per nome.** Il CSS conosce circa 140 nomi in inglese: `red`, `darkred`, `tomato`, `navy`, `white`. Comodi per le prove, ma limitati.
+
+**In esadecimale.** Un cancelletto seguito da sei cifre: `#rrggbb`. Le prime due indicano il rosso (*red*), le seconde il verde (*green*), le ultime il blu (*blue*). Ogni coppia va da `00` (nessuna luce) a `ff` (massimo), cioè da 0 a 255. Il sistema esadecimale usa le cifre da 0 a 9 e le lettere da a ad f.
+
+- `#ff0000` è rosso puro; `#0000ff` è blu puro.
+- `#000000` è nero e `#ffffff` è bianco.
+- Se ogni coppia ha due cifre uguali, si può abbreviare: `#fff` è `#ffffff`, e `#f0c` è `#ff00cc`.
+
+**In rgb.** La stessa idea con numeri normali da 0 a 255: `rgb(255, 0, 0)` è rosso puro. È utile quando hai i tre valori e non vuoi convertirli.
+
+<Layers
+  caption="Lo stesso colore (un rosso mattone) in tre scritture."
+  items={[
+    { icon: "book", title: "Per nome", text: "firebrick" },
+    { icon: "code", title: "In esadecimale", text: "#b22222" },
+    { icon: "gear", title: "In rgb", text: "rgb(178, 34, 34)" },
+  ]}
+/>
+
+<Callout kind="curiosita">
+Rosso, verde e blu sono i colori della luce dello schermo: mescolandoli al massimo si ottiene il bianco (`#ffffff`), e senza nessuno si ottiene il nero. Attenzione: `#00ff00` è il verde della luce pura, che in CSS si chiama `lime`; il nome `green` indica invece un verde più scuro, `#008000`.
+</Callout>
+
+<Say who="sensei">Per la terracotta di Lucia basta un codice come #c2552d: il browser lo disegna uguale su ogni schermo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contrasto">
+Un colore bello ma illeggibile è un colore sbagliato. Il **contrasto** è la differenza di luminosità tra testo e sfondo. Con poco contrasto le persone con vista debole, o chiunque stia guardando lo schermo sotto il sole, non riescono a leggere.
+
+- Testo scuro su sfondo chiaro, o l'opposto, va bene.
+- Grigio chiaro su bianco, giallo su bianco, rosso su verde sono combinazioni da evitare.
+- Le linee guida sull'accessibilità (WCAG, livello AA) chiedono per il testo normale un rapporto di contrasto di almeno **4,5 a 1**. Non devi calcolarlo a mano: esistono verificatori gratuiti online e gli strumenti del browser lo mostrano per te.
+
+<Callout kind="regola">
+Non affidare mai un'informazione al solo colore. Se un campo con errore diventa «rosso», aggiungi anche una scritta: chi non distingue il rosso dal verde deve poter capire lo stesso.
+</Callout>
+
+<Say who="assistente">Prova a guardare la tua pagina da lontano, con gli occhi socchiusi: se non leggi più il testo, il contrasto è troppo basso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia vuole un avviso scritto in rosso puro, usando un codice esadecimale.
+
+<Quiz
+  question="Quale dichiarazione dà al testo il colore rosso puro?"
+  options={[
+    "color: #ff0000;",
+    "color: #00ff00;",
+    "background-color: #ff0000;",
+    "color: ff0000;",
+  ]}
+  answer={0}
+  explain="La prima coppia di un colore esadecimale è il rosso: ff0000 è rosso al massimo, verde e blu a zero. #00ff00 è verde; background-color cambierebbe lo sfondo, non il testo; senza il cancelletto il valore non è valido."
+/>
+
+<Say who="sensei">Le prime due cifre sono il rosso, le seconde il verde, le ultime il blu. Sempre in questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui colori. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-colori" pass="4/5" retries={3} />
+
+<Say who="sensei">Cancelletto, sei cifre, rosso-verde-blu. Il resto sono prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `color` cambia il colore del testo, `background-color` quello dello sfondo.
+- Un colore si scrive per nome (`darkred`), in esadecimale (`#b22222`) o in rgb (`rgb(178, 34, 34)`).
+- Nell'esadecimale le coppie di cifre sono rosso, verde e blu, da `00` a `ff`; `#fff` è l'abbreviazione di `#ffffff`.
+- Serve contrasto sufficiente tra testo e sfondo (almeno 4,5 a 1 per il testo normale) e il colore non deve essere l'unico segnale.
+- Caso chiuso: Lucia ha usato il codice della terracotta, perché il nome «terracotta» non esiste in CSS.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra color e background-color?", a: "color è il colore del testo, background-color quello dello sfondo" },
+    { q: "Che cosa indicano le tre coppie di cifre in #rrggbb?", a: "Quanto rosso, verde e blu, da 00 a ff" },
+    { q: "Quale colore è #ffffff?", a: "Il bianco: tutti e tre i colori al massimo" },
+    { q: "Qual è il contrasto minimo consigliato dalle WCAG AA per il testo normale?", a: "4,5 a 1" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: caratteri, dimensioni e interlinea, per rendere il testo piacevole da leggere.</Say>
+</Scene>

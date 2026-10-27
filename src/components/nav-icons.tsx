@@ -24,3 +24,6 @@ export const LogOutIcon = (p: P) => (
 export const UsersIcon = (p: P) => (
   <svg {...base} {...p}><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.4c2 .7 3.5 2.5 3.5 5.6" /></svg>
 );
+export const GridIcon = (p: P) => (
+  <svg {...base} {...p}><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></svg>
+);

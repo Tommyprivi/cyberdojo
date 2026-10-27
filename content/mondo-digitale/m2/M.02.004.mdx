@@ -1,0 +1,154 @@
+---
+id: M.02.004
+course: mondo-digitale
+module: 2
+title: "Cercare con un motore di ricerca"
+belt: bianca
+duration_min: 9
+prerequisites: [M.02.003]
+objectives:
+  - "Spiegare in breve come un motore di ricerca trova e ordina le pagine"
+  - "Scegliere parole chiave utili e precisarle con virgolette e segno meno"
+  - "Capire che un risultato in alto non è per forza il più vero"
+verification:
+  type: generated-numeric
+  generator: m02-motore-ricerca
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere nella ricerca una frase lunghissima invece di poche parole chiave"
+  - "Credere che il motore di ricerca conosca la verità: trova pagine, non le giudica"
+  - "Fermarsi al primo risultato senza guardare altro"
+commands: []
+---
+
+<Scene title="Il rubinetto che gocciola">
+Il rubinetto del bagno del nonno Aldo gocciola. Marta scrive nella ricerca: «ciao, sai dirmi come faccio che il mio rubinetto perde acqua dal manico?». I risultati sono strani e poco utili.
+
+Poi riprova con **rubinetto perde manico guarnizione** e trova subito una guida chiara.
+
+La domanda del caso: **come si scrive una ricerca che funziona?**
+
+<Say who="sensei">Il motore di ricerca non è una persona. È uno strumento veloce che capisce meglio le parole giuste.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come funziona un motore di ricerca">
+Un **motore di ricerca** (come Google, Bing o DuckDuckGo) è un sito che ti aiuta a trovare altre pagine. Lavora in tre passi, molto semplificati:
+
+<Flow
+  caption="Dentro un motore di ricerca."
+  steps={[
+    { icon: "search", title: "Esplora", text: "Programmi automatici visitano le pagine del web" },
+    { icon: "book", title: "Cataloga", text: "Ricorda di che cosa parla ogni pagina, in un grande indice" },
+    { icon: "chart", title: "Ordina", text: "Quando cerchi, mette in cima le pagine ritenute più adatte" },
+  ]}
+/>
+
+Quando scrivi una ricerca, il motore **non cerca in tempo reale su tutto internet**: guarda nel suo indice, già pronto. Per questo risponde in una frazione di secondo.
+
+<Callout kind="attenzione">
+L'ordine dei risultati dipende da regole del motore di ricerca. In alto non c'è per forza la pagina più vera o più giusta: c'è quella che il motore ritiene più adatta alla tua ricerca (e, come vedrai, ci sono anche gli annunci a pagamento).
+</Callout>
+
+<Say who="assistente">Il motore di ricerca è come il catalogo di una biblioteca: ti indica dove guardare, ma non garantisce che il libro dica la verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Parole chiave, non frasi">
+Le **parole chiave** sono le poche parole che descrivono quello che cerchi.
+
+- Meglio: `rubinetto perde manico guarnizione`.
+- Peggio: «ciao, sai dirmi come faccio che il mio rubinetto perde?».
+
+Come migliorare una ricerca:
+
+1. Parti con 2-4 parole importanti: **che cosa** e **che problema**.
+2. Se non trovi niente, **cambia una parola** con un sinonimo.
+3. Aggiungi un dettaglio utile: il modello, la città, l'anno.
+
+<Callout kind="trucco">
+Se leggi i primi risultati e nessuno ti convince, non insistere con la stessa ricerca: riscrivila con altre parole.
+</Callout>
+
+<Say who="sensei">Ogni parola in più deve servire. Una parola inutile confonde il motore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ricerche più precise">
+Nella maggior parte dei motori di ricerca puoi usare due trucchi semplici.
+
+- **Virgolette**: cercano la frase esatta. Se scrivi `"tavolo da giardino"` con le virgolette, trovi pagine che hanno proprio quelle parole una dopo l'altra.
+- **Segno meno**: esclude una parola. Se cerchi `giaguaro -auto`, il motore cerca pagine sul giaguaro che non contengono la parola «auto», così eviti la macchina.
+
+Altri esempi:
+
+```
+"ricetta della pizza" -ananas
+rubinetto perde manico guarnizione
+```
+
+Dopo aver cercato, puoi anche usare le schede sotto la barra di ricerca (di solito **Immagini**, **Notizie**, **Video**) per cambiare il tipo di risultato.
+
+<Say who="assistente">Non devi impararli a memoria: provali una volta e vedrai quanto cambiano i risultati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi trovare pagine sul giaguaro, l'animale, ed evitare quelle sull'auto. Quale ricerca è la più adatta nella maggior parte dei motori?"
+  options={[
+    "giaguaro animale -auto",
+    "giaguaro animale senza auto",
+    "giaguaro animale auto",
+    "-giaguaro animale auto",
+  ]}
+  answer={0}
+  explain="Il segno meno attaccato a una parola esclude i risultati che la contengono. Scrivendo «senza auto» o solo «auto», la parola «auto» viene cercata come le altre; con il meno davanti a «giaguaro» escluderesti proprio la parola che ti interessa."
+/>
+
+<Say who="sensei">Parole giuste, poche. Poi aggiusta con virgolette e segno meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui motori di ricerca. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-motore-ricerca" pass="4/5" retries={3} />
+
+<Say who="sensei">Poche parole chiave, e cambiale se non trovi. È tutto qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un motore di ricerca esplora le pagine, le cataloga in un indice e le ordina quando cerchi.
+- Funziona meglio con poche parole chiave che con una frase lunga.
+- Le virgolette cercano la frase esatta; il segno meno esclude una parola.
+- Il primo risultato non è per forza il più vero: decide l'ordine il motore, non la verità.
+- Caso chiuso: il rubinetto si è risolto con «rubinetto perde manico guarnizione».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sono le parole chiave?", a: "Le poche parole importanti che descrivono ciò che cerchi" },
+    { q: "A che cosa servono le virgolette in una ricerca?", a: "A cercare la frase esatta, con le parole una dopo l'altra" },
+    { q: "Che cosa fa il segno meno davanti a una parola?", a: "Esclude i risultati che contengono quella parola" },
+    { q: "Il primo risultato è sempre il più vero?", a: "No: l'ordine lo decide il motore, non la verità" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: leggere i risultati e capire cosa sono gli annunci.</Say>
+</Scene>

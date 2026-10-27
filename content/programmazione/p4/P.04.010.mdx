@@ -1,0 +1,214 @@
+---
+id: P.04.010
+course: programmazione
+module: 4
+title: "Progetto: un registro delle spese su file"
+belt: bianca
+duration_min: 10
+prerequisites: [P.04.009]
+objectives:
+  - "Costruire un programma che salva e rilegge dati da un file CSV"
+  - "Validare i dati con raise e gestire gli errori con try ed except"
+  - "Organizzare il programma in funzioni piccole e testabili"
+verification:
+  type: generated-numeric
+  generator: p04-progetto-spese
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere tutto in un blocco unico invece di separare caricare, salvare e calcolare"
+  - "Convertire l'importo con float senza gestire il ValueError quando l'utente scrive testo"
+  - "Riaprire il file in modalità w per aggiungere una riga e perdere le spese precedenti"
+commands: []
+---
+
+<Scene title="Il registro di Elena">
+Il gruppo di teatro di Elena ha una cassa comune. Ogni settimana si comprano luci, biglietti del treno, merende. Elena vuole un **registro delle spese** su file: ogni spesa ha una data, una categoria e un importo, e a fine mese vuole il totale per categoria.
+
+È il progetto che chiude il modulo: unisce file, CSV, errori e funzioni.
+
+La domanda del caso: **come si organizza un programma che salva dati su file e non crolla con un input sbagliato?**
+
+<Say who="sensei">Un progetto non è un programma lungo. È un programma in cui ogni pezzo ha un compito solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano">
+Prima di scrivere codice, dividi il lavoro in funzioni piccole.
+
+<Flow
+  caption="Le quattro funzioni del registro."
+  steps={[
+    { icon: "folder", title: "carica", text: "Legge spese.csv, oppure parte da un elenco vuoto" },
+    { icon: "check", title: "nuova_spesa", text: "Controlla i dati e crea la riga" },
+    { icon: "file", title: "salva", text: "Riscrive spese.csv con tutte le righe" },
+    { icon: "chart", title: "totali_per_categoria", text: "Somma gli importi per categoria" },
+  ]}
+/>
+
+Le spese in memoria sono una **lista di dizionari**, come quelle lette da `csv.DictReader`: `{"data": ..., "categoria": ..., "importo": ...}`, con l'importo come testo.
+
+<Say who="assistente">Quattro funzioni, quattro compiti. Se c'è un errore, sai già in quale funzione cercarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Caricare e salvare">
+```python
+import csv
+from pathlib import Path
+
+FILE = Path("spese.csv")
+CAMPI = ["data", "categoria", "importo"]
+
+def carica():
+    if not FILE.exists():
+        return []
+    with open(FILE, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+def salva(spese):
+    with open(FILE, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=CAMPI)
+        w.writeheader()
+        w.writerows(spese)
+```
+
+- `carica` gestisce il caso «file non ancora creato» restituendo una lista vuota.
+- `salva` usa la modalità `"w"`, e va bene: riscrive **tutte** le spese, quelle vecchie (già caricate in memoria) più le nuove. Se si dimentica di caricarle prima, si perdono.
+
+<Callout kind="regola">
+Il ciclo è sempre lo stesso: **carica**, cambia la lista in memoria, **salva**. Non scrivere mai su file senza aver letto prima quello che c'è.
+</Callout>
+
+<Say who="sensei">Dove c'è «w» chiediti sempre: i dati vecchi sono al sicuro? Qui sì, perché li carichiamo prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controllare i dati">
+```python
+def nuova_spesa(data, categoria, testo_importo):
+    try:
+        importo = float(testo_importo.replace(",", "."))
+    except ValueError:
+        raise ValueError("Importo non valido: " + testo_importo)
+    if importo <= 0:
+        raise ValueError("L'importo deve essere positivo")
+    return {"data": data, "categoria": categoria,
+            "importo": f"{importo:.2f}"}
+
+def totali_per_categoria(spese):
+    totali = {}
+    for s in spese:
+        c = s["categoria"]
+        totali[c] = totali.get(c, 0) + float(s["importo"])
+    return totali
+```
+
+- `.replace(",", ".")` permette di scrivere `12,50` come si fa in italiano.
+- `float("abc")` solleva `ValueError`: la funzione lo trasforma in un messaggio più chiaro con `raise`.
+- `f"{importo:.2f}"` scrive il numero con due decimali (`12.5` diventa `12.50`).
+- `totali.get(c, 0)` dà il totale già calcolato per quella categoria, oppure 0 se è la prima volta.
+
+<Say who="assistente">Controllare i dati all'ingresso è come controllare i biglietti: dopo, dentro il teatro, sei tranquillo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Mettere insieme">
+```python
+spese = carica()
+try:
+    spese.append(nuova_spesa("2026-03-01", "cibo", "12,50"))
+    spese.append(nuova_spesa("2026-03-02", "treno", "3,20"))
+except ValueError as errore:
+    print("Errore:", errore)
+salva(spese)
+
+for cat, tot in totali_per_categoria(spese).items():
+    print(cat, f"{tot:.2f}")
+```
+
+<Log lines={[
+  "cibo 12.50",
+  "treno 3.20",
+]} caption="Alla prima esecuzione. Alla seconda le spese si sommano a quelle già nel file, e i totali raddoppiano." />
+
+Il programma continua a funzionare anche con un importo sbagliato: l'errore viene stampato e quello che era valido resta.
+
+<Callout kind="trucco">
+Per estendere il progetto, prova a: chiedere i dati con `input` dentro un ciclo; esportare i totali anche in JSON con `json.dump`; salvare il file in una cartella `dati` creata con `mkdir(exist_ok=True)`.
+</Callout>
+
+<Say who="sensei">Un programma che si lascia riprendere il giorno dopo è già un programma vero. Il resto sono idee da aggiungere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena vuole ricominciare ogni volta dal file già salvato.
+
+<Quiz
+  question="Quale sequenza evita di perdere le spese vecchie quando si aggiunge una spesa e si riscrive il file in modalità w?"
+  options={[
+    "Caricare le spese dal file, aggiungere quella nuova alla lista, salvare tutta la lista",
+    "Aprire il file in modalità w e scrivere solo la spesa nuova",
+    "Cancellare il file e ricostruirlo a memoria",
+    "Salvare prima e caricare dopo",
+  ]}
+  answer={0}
+  explain="Con la modalità w il file viene svuotato, quindi tutte le spese devono essere già in memoria: si carica, si aggiunge e si salva l'intera lista. Scrivere solo la nuova spesa o salvare prima di caricare farebbe perdere i dati vecchi."
+/>
+
+<Guided
+  steps={[
+    "Scrivi carica() e prova con il file che non esiste: deve restituire una lista vuota.",
+    "Scrivi nuova_spesa() e provala con 12,50, con abc e con -3.",
+    "Scrivi salva() e controlla il file spese.csv con un editor di testo.",
+    "Scrivi totali_per_categoria() e confrontala con un conto fatto a mano.",
+    "Rilancia il programma due volte e verifica che le spese si sommino.",
+  ]}
+/>
+
+<Say who="sensei">Prova ogni funzione da sola prima di metterle insieme. Così gli errori hanno un solo indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul progetto e sull'intero modulo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-progetto-spese" pass="4/5" retries={3} />
+
+<Say who="sensei">Carica, controlla, salva. Se tieni questo schema, i dati sono al sicuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Un progetto si divide in funzioni piccole: carica, controlla, salva, calcola.
+- I dati su file si trattano con il ciclo: carica, modifica in memoria, salva.
+- raise rifiuta i dati sbagliati e try ed except li gestisce senza far crollare il programma.
+- Caso chiuso: il registro di Elena salva le spese in un CSV, rifiuta importi non validi e calcola i totali per categoria.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è lo schema sicuro per modificare dati su file?", a: "Caricare, cambiare in memoria, salvare tutto" },
+    { q: "Che cosa succede se un file CSV non esiste ancora in carica()?", a: "Si restituisce una lista vuota e si parte da zero" },
+    { q: "Perché dividere un programma in funzioni?", a: "Ogni compito sta in un posto solo e gli errori si trovano più facilmente" },
+    { q: "Che cosa fa la conversione float con una stringa come abc?", a: "Solleva ValueError, da gestire o da trasformare in un messaggio chiaro" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso e modulo finito. Hai imparato a leggere gli errori, a gestirli e a far durare i dati. Il prossimo modulo comincia a ragionare sugli algoritmi: cercare e ordinare.</Say>
+</Scene>

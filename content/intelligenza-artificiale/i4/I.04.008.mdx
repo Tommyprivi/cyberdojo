@@ -1,0 +1,162 @@
+---
+id: I.04.008
+course: intelligenza-artificiale
+module: 4
+title: "Rischi alti e usi vietati secondo l'AI Act"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.007]
+objectives:
+  - "Elencare alcuni usi dell'IA vietati dall'AI Act"
+  - "Riconoscere alcuni settori in cui l'IA è considerata ad alto rischio"
+  - "Descrivere gli obblighi principali dei sistemi ad alto rischio, tra cui la supervisione umana"
+verification:
+  type: generated-numeric
+  generator: i04-rischi-divieti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che «alto rischio» voglia dire «vietato»: i sistemi ad alto rischio sono permessi, con regole severe"
+  - "Credere che il riconoscimento facciale sia vietato sempre e ovunque: ci sono divieti e limiti precisi, con poche eccezioni"
+  - "Dimenticare che dietro un sistema ad alto rischio ci deve sempre essere una persona che controlla"
+commands: []
+---
+
+<Scene title="Il test per un posto di lavoro">
+Marta aiuta suo cugino Andrea, che cerca lavoro. Per un colloquio, l'azienda dice che le candidature sono «ordinate da un'IA» e che chi non supera il punteggio non viene nemmeno chiamato. Andrea si chiede: è giusto? E se l'IA sbaglia?
+
+È il tipo di situazione per cui esistono i livelli **alto rischio** e **vietato**.
+
+La domanda del caso: **quali usi dell'IA sono vietati, e quali sono permessi ma con regole severe?**
+
+<Say who="sensei">Un errore di un filtro antispam è un fastidio. Un errore su un lavoro, un esame o una condanna cambia una vita. Per questo le regole diventano più dure.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli usi vietati">
+L'AI Act vieta alcune pratiche, perché considerate troppo pericolose per i diritti delle persone. In sintesi, sono vietati:
+
+- sistemi che usano tecniche **subliminali o manipolative** per influenzare le persone in modo da causare loro danni;
+- sistemi che sfruttano le **vulnerabilità** di persone per età, disabilità o situazione sociale;
+- il **«punteggio sociale»** (*social scoring*): valutare le persone in base al comportamento o alle caratteristiche personali, con conseguenze ingiustificate;
+- la previsione del rischio che una persona commetta un reato basata **solo sulla profilazione**;
+- la raccolta non mirata di **volti da internet o da telecamere** per creare banche dati di riconoscimento facciale;
+- il riconoscimento delle **emozioni sul luogo di lavoro e nelle scuole**, salvo motivi medici o di sicurezza;
+- la categorizzazione biometrica per dedurre dati molto sensibili, come origine etnica, opinioni politiche o orientamento sessuale;
+- l'identificazione biometrica **in tempo reale** negli spazi pubblici da parte delle forze dell'ordine, salvo eccezioni molto limitate e con autorizzazioni.
+
+<Callout kind="attenzione">
+I divieti sono tra le prime regole dell'AI Act diventate applicabili (dal 2 febbraio 2025). Le sanzioni per chi li viola sono le più alte: fino a 35 milioni di euro o al 7% del fatturato mondiale annuo.
+</Callout>
+
+<Say who="assistente">Notare le parole: «solo sulla profilazione», «non mirata», «salvo eccezioni». I divieti sono precisi, non generici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I sistemi ad alto rischio">
+I sistemi **ad alto rischio** non sono vietati: sono permessi, ma con regole severe. Rientrano qui, tra gli altri, l'IA usata in:
+
+<Layers
+  caption="Alcuni settori ad alto rischio."
+  items={[
+    { icon: "book", title: "Istruzione", text: "Ammissioni, valutazione degli studenti" },
+    { icon: "users", title: "Lavoro", text: "Selezione dei candidati, valutazione dei dipendenti" },
+    { icon: "coin", title: "Servizi essenziali", text: "Per esempio la valutazione per un prestito" },
+    { icon: "shield", title: "Giustizia e polizia", text: "Strumenti per le autorità, controlli alle frontiere" },
+    { icon: "bolt", title: "Infrastrutture critiche", text: "Energia, trasporti e simili" },
+  ]}
+/>
+
+Il motivo è sempre lo stesso: una decisione sbagliata può cambiare la vita di una persona. Anche il caso di Andrea (selezione dei candidati) rientra tra gli usi ad alto rischio.
+
+<Say who="sensei">Alto rischio non significa «cattivo». Significa «qui si deve fare con più cura».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa deve fare chi li usa o li sviluppa">
+Per i sistemi ad alto rischio l'AI Act chiede, in sintesi:
+
+- una **gestione del rischio** continua;
+- **dati di buona qualità** per addestrare e provare il sistema, per ridurre pregiudizi ed errori;
+- **documentazione tecnica** e **registrazione** di ciò che il sistema fa (log);
+- **informazioni chiare** a chi lo usa;
+- **supervisione umana**: una persona deve poter capire, controllare e fermare il sistema;
+- livelli adeguati di **accuratezza, robustezza e sicurezza informatica**.
+
+<Flow
+  caption="La supervisione umana nel caso di Andrea."
+  steps={[
+    { icon: "file", title: "L'IA ordina", text: "Propone un punteggio ai candidati" },
+    { icon: "user", title: "Una persona controlla", text: "Può capire e correggere" },
+    { icon: "check", title: "Si decide", text: "La decisione finale è responsabilità di una persona" },
+  ]}
+/>
+
+<Callout kind="regola">
+Alto rischio: permesso, ma con qualità dei dati, documentazione, tracce, supervisione umana e sicurezza. Rischio inaccettabile: vietato.
+</Callout>
+
+<Say who="assistente">Per Andrea questo vuol dire che dietro un punteggio ci deve essere sempre una persona responsabile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Tre esempi: un filtro antispam, un sistema che valuta i candidati a un posto di lavoro, un sistema che dà un «punteggio sociale» ai cittadini.
+
+<Quiz
+  question="Come li classifica l'AI Act, nell'ordine?"
+  options={[
+    "Rischio minimo, alto rischio, vietato",
+    "Vietato, alto rischio, rischio minimo",
+    "Alto rischio, rischio minimo, vietato",
+    "Tutti e tre sono vietati",
+  ]}
+  answer={0}
+  explain="Il filtro antispam è a rischio minimo; la selezione dei candidati è tra gli usi ad alto rischio (permessa con regole severe); il punteggio sociale rientra tra le pratiche vietate."
+/>
+
+<Say who="sensei">Prima chiediti a che cosa serve il sistema. Poi guarda quanto può far male un suo errore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su rischi alti e usi vietati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-rischi-divieti" pass="4/5" retries={3} />
+
+<Say who="sensei">Vietato non è alto rischio. Alto rischio non è vietato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Sono vietati, tra gli altri, il punteggio sociale, la manipolazione dannosa, lo sfruttamento delle vulnerabilità e il riconoscimento delle emozioni a scuola e al lavoro.
+- I divieti sono precisi e prevedono pochissime eccezioni.
+- Ad alto rischio sono, per esempio, l'IA per la selezione dei candidati, la valutazione degli studenti, il credito e alcuni usi di polizia e giustizia.
+- Chi li usa o li sviluppa deve garantire qualità dei dati, documentazione, tracce, supervisione umana e sicurezza.
+- Caso chiuso: la selezione di Andrea è un uso ad alto rischio, e dietro il punteggio deve esserci una persona responsabile.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il social scoring?", a: "Valutare le persone in base al comportamento o alle caratteristiche personali con conseguenze ingiustificate: è vietato" },
+    { q: "Dove è vietato riconoscere le emozioni con l'IA?", a: "Sul luogo di lavoro e nelle scuole, salvo motivi medici o di sicurezza" },
+    { q: "Un sistema ad alto rischio è vietato?", a: "No, è permesso ma con obblighi severi" },
+    { q: "Che cosa significa supervisione umana?", a: "Una persona deve poter capire, controllare e fermare il sistema" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: quanta energia e acqua consuma l'IA.</Say>
+</Scene>

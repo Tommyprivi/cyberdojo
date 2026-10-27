@@ -1,0 +1,153 @@
+---
+id: M.02.005
+course: mondo-digitale
+module: 2
+title: "Leggere i risultati: cosa sono gli annunci"
+belt: bianca
+duration_min: 8
+prerequisites: [M.02.004]
+objectives:
+  - "Riconoscere un annuncio a pagamento tra i risultati di ricerca"
+  - "Leggere titolo, indirizzo e descrizione di un risultato prima di cliccare"
+  - "Controllare il dominio di un risultato prima di aprirlo"
+verification:
+  type: generated-numeric
+  generator: m02-risultati-annunci
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cliccare il primo risultato senza accorgersi che è un annuncio"
+  - "Credere che un annuncio sia più affidabile perché sta in cima"
+  - "Cliccare senza guardare l'indirizzo, e finire su un sito che imita quello cercato"
+commands: []
+---
+
+<Scene title="Il servizio clienti di una compagnia">
+Il nonno Aldo vuole il numero di telefono del servizio clienti della sua compagnia dell'energia. Cerca il nome della compagnia e clicca il primo risultato. Si ritrova su un sito che gli chiede subito dati personali.
+
+Marta guarda meglio: sopra il risultato c'era una piccola scritta, **Sponsorizzato**. Il nonno aveva cliccato un **annuncio**, non il sito vero.
+
+La domanda del caso: **come si distingue un annuncio da un risultato normale?**
+
+<Say who="sensei">Un buon cercatore non clicca il primo risultato: legge prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un annuncio">
+Un **annuncio** è un risultato **pagato** da un'azienda per comparire in alto quando cerchi certe parole. Il motore di ricerca guadagna così: quando clicchi, l'azienda paga.
+
+Gli annunci non sono per forza truffe: molte aziende vere li usano. Ma:
+
+- compaiono in cima perché **qualcuno ha pagato**, non perché siano i migliori;
+- alcuni annunci **imitano** il nome di aziende conosciute per ingannare;
+- sono segnati con una scritta come **Sponsorizzato** o **Annuncio**.
+
+<Compare
+  caption="Annuncio e risultato normale."
+  left={{ title: "Annuncio", points: ["Segnato con Sponsorizzato o Annuncio", "Qualcuno ha pagato per metterlo lì", "Di solito sta in cima o in fondo"] }}
+  right={{ title: "Risultato normale", points: ["Ordinato dalle regole del motore", "Nessuno ha pagato per metterlo lì", "Si trova sotto o tra gli annunci"] }}
+/>
+
+<Say who="assistente">Non devi temere gli annunci. Devi solo sapere che ci sono, e leggere la scritta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si legge un risultato">
+Ogni risultato ha tre parti.
+
+<Layers
+  caption="Un risultato di ricerca."
+  items={[
+    { icon: "link", title: "Indirizzo", text: "Il dominio del sito, di solito sopra o sotto il titolo" },
+    { icon: "book", title: "Titolo", text: "Il testo blu o colorato su cui clicchi" },
+    { icon: "file", title: "Descrizione", text: "Due righe che riassumono la pagina" },
+  ]}
+/>
+
+Prima di cliccare:
+
+1. Cerca la scritta **Sponsorizzato** o **Annuncio**.
+2. Guarda il **dominio** (come hai imparato nella lezione sull'indirizzo di un sito): è quello che ti aspetti?
+3. Leggi la **descrizione**: parla davvero di ciò che cerchi?
+
+<Callout kind="regola">
+Per trovare il sito di una banca, di un ente o di una compagnia, cerca il nome e **controlla il dominio**. Nel dubbio, usa l'indirizzo che ti ha dato la società sul contratto o sulla bolletta, oppure un segnalibro salvato da te.
+</Callout>
+
+<Say who="sensei">Il dominio decide. Il titolo lo può scrivere chiunque.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il numero del servizio clienti">
+Torniamo al nonno. Per trovare un numero di telefono o una pagina di assistenza online:
+
+- Apri il **sito ufficiale** della compagnia, quello che conosci dalla bolletta o dal contratto.
+- Cerca lì la sezione **Contatti** o **Assistenza**.
+- Diffida di chi chiede dati o soldi subito, prima di dirti chi è.
+
+<Callout kind="attenzione">
+Alcuni annunci imitano il servizio clienti di aziende vere e riportano numeri o moduli falsi. Non dare mai password, codici di sicurezza o dati della carta a chi ti ha raggiunto cliccando un annuncio non verificato.
+</Callout>
+
+<Say who="assistente">Se qualcosa ti mette fretta, fermati. La fretta è l'arma preferita di chi vuole ingannare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Che cosa indica la scritta «Sponsorizzato» accanto a un risultato di ricerca?"
+  options={[
+    "Che qualcuno ha pagato per far comparire quel risultato",
+    "Che il sito è stato controllato e garantito dal motore di ricerca",
+    "Che è il risultato più vero tra tutti",
+    "Che il sito è pericoloso e va evitato per forza",
+  ]}
+  answer={0}
+  explain="Sponsorizzato significa annuncio a pagamento. Non vuol dire che sia garantito né il più vero, e non vuol dire nemmeno che sia pericoloso: va solo letto con attenzione, controllando il dominio."
+/>
+
+<Say who="sensei">Una scritta piccola, una differenza grande. Cercala ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui risultati di ricerca. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-risultati-annunci" pass="4/5" retries={3} />
+
+<Say who="sensei">Leggi, controlla il dominio, poi clicca. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un annuncio è un risultato pagato da un'azienda ed è segnato con scritte come Sponsorizzato o Annuncio.
+- Essere in cima non vuol dire essere il migliore né il più vero.
+- Prima di cliccare guarda la scritta, il dominio e la descrizione.
+- Per banche, enti e compagnie usa il sito ufficiale che conosci, non il primo risultato a caso.
+- Caso chiuso: il nonno aveva cliccato un annuncio. Ora cerca Sponsorizzato prima di cliccare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un annuncio nei risultati di ricerca?", a: "Un risultato pagato da un'azienda per comparire in alto" },
+    { q: "Come si riconosce un annuncio?", a: "Dalla scritta Sponsorizzato o Annuncio accanto al risultato" },
+    { q: "Che cosa guardi prima di cliccare un risultato?", a: "Il dominio e la descrizione, oltre alla scritta Sponsorizzato" },
+    { q: "Dove cerchi il contatto vero di una compagnia?", a: "Sul suo sito ufficiale, conosciuto da bolletta o contratto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: segnalibri e cronologia, per ritrovare ciò che ti serve.</Say>
+</Scene>

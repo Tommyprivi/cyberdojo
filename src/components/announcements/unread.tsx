@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useSyncExternalStore } from "react";
+import { markNewsSeen, readNewsSeen } from "@/app/actions/community";
 
 const KEY = "announcements-read";
 const listeners = new Set<() => void>();
@@ -28,6 +29,8 @@ export function MarkAnnouncementsRead({ latestId }: { latestId: string }) {
         /* il pallino tornerà a ogni visita */
       }
       listeners.forEach((l) => l());
+      // Ricorda anche per account (vale su altri dispositivi). Senza sessione risponde errore: si ignora.
+      void markNewsSeen(latestId).catch(() => {});
     }, 800);
     return () => window.clearTimeout(id);
   }, [latestId]);
@@ -37,7 +40,28 @@ export function MarkAnnouncementsRead({ latestId }: { latestId: string }) {
 /** C'è un annuncio che questo browser non ha ancora aperto? Sul server si assume di no, per non mostrare un pallino sbagliato. */
 function useHasUnread(latestId: string): boolean {
   const seen = useSyncExternalStore(subscribe, read, () => latestId);
-  return Boolean(latestId) && seen !== latestId;
+  // Se un altro dispositivo ha già letto questa novità, qui il pallino non serve: lo si ricorda nel browser.
+  useEffect(() => {
+    if (!latestId || seen === latestId) return;
+    let cancelled = false;
+    readNewsSeen()
+      .then((r) => {
+        if (cancelled || r.version !== latestId) return;
+        try {
+          localStorage.setItem(KEY, latestId);
+        } catch {
+          /* resta il pallino */
+        }
+        listeners.forEach((l) => l());
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [latestId, seen]);
+  // Un id «db-…» è un annuncio scritto dal pannello staff, già visto nella pagina Annunci: la barra, che conosce
+  // solo gli annunci dei file, non deve rimostrare il pallino.
+  return Boolean(latestId) && seen !== latestId && !seen?.startsWith("db-");
 }
 
 /** Voce «# annunci» con il pallino rosso se c'è qualcosa di nuovo. */

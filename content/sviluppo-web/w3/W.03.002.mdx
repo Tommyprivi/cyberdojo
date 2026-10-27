@@ -1,0 +1,159 @@
+---
+id: W.03.002
+course: sviluppo-web
+module: 3
+title: "Perché la semantica conta (e per chi)"
+belt: bianca
+duration_min: 8
+prerequisites: [W.03.001]
+objectives:
+  - "Spiegare a chi serve la semantica: lettori di schermo, motori di ricerca, altri sviluppatori"
+  - "Distinguere un pulsante vero da un div travestito da pulsante"
+  - "Scegliere tra tag semantico e div in casi concreti"
+verification:
+  type: generated-numeric
+  generator: w03-perche-semantica
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che la semantica serva solo a far apparire la pagina diversa"
+  - "Usare un div con un clic al posto di un vero button o link"
+  - "Credere che usare tag semantici basti da solo a salire nei risultati di ricerca"
+commands: []
+---
+
+<Scene title="Il bottone che non si preme">
+Marco ha aggiunto un pulsante «Iscriviti all'orto». Lo ha fatto con un `<div>` colorato che sembra un pulsante. Con il mouse funziona. Ma Elena, una socia che non vede bene e usa un **lettore di schermo** (un programma che legge ad alta voce la pagina), scrive: «Non trovo il pulsante, la pagina dice solo "testo"».
+
+La domanda del caso: **perché un div che sembra un pulsante non basta?**
+
+<Say who="sensei">L'aspetto è per gli occhi. Il significato è per tutti gli altri: lettori di schermo, motori di ricerca, e te fra sei mesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Per chi lavora la semantica">
+I tag semantici servono a tre pubblici diversi.
+
+<Layers
+  caption="A chi serve la semantica."
+  items={[
+    { icon: "eye", title: "Lettori di schermo", text: "Annunciano header, menu, titoli e pulsanti" },
+    { icon: "search", title: "Motori di ricerca", text: "Capiscono meglio che cosa è importante" },
+    { icon: "code", title: "Altri sviluppatori", text: "Leggono il codice e capiscono la struttura" },
+  ]}
+/>
+
+- Un **lettore di schermo** permette di saltare da un titolo all'altro, o direttamente al menu. Senza tag semantici deve leggere tutto in fila.
+- I **motori di ricerca** leggono il codice: tag chiari li aiutano a capire di che cosa parla la pagina. Da soli, però, non garantiscono una posizione migliore.
+- **Tu**, tra qualche mese, o un'altra persona che apre il progetto, capirete a colpo d'occhio che cosa è ogni pezzo.
+
+<Say who="assistente">Costa quasi niente: scrivere `<nav>` invece di `<div>` richiede lo stesso tempo. Ma dà molto di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il pulsante vero">
+Il tag `<button>` regala molte cose senza che tu scriva altro codice. Un `<div>` no.
+
+<Compare
+  caption="Un button vero contro un div travestito."
+  left={{ title: "button", points: ["Si raggiunge con il tasto Tab", "Si attiva con Invio o Spazio", "Il lettore di schermo dice «pulsante»"] }}
+  right={{ title: "div con un clic", points: ["Non si raggiunge con la tastiera", "Si attiva solo con il mouse o il tocco", "Per il lettore di schermo è solo testo"] }}
+/>
+
+```html
+<!-- Sbagliato: sembra un pulsante, ma non lo è -->
+<div class="pulsante">Iscriviti</div>
+
+<!-- Giusto: lo è davvero -->
+<button type="button">Iscriviti</button>
+```
+
+<Callout kind="regola">
+Se una cosa **fa un'azione**, è un `<button>`. Se **porta in un altro posto**, è un link `<a>`. Aspetto e colori li decidi dopo con il CSS.
+</Callout>
+
+<Say who="sensei">Prima il significato giusto, poi la bellezza. Non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando basta un div">
+Il `<div>` non è un nemico. Serve quando ti serve una scatola **solo per lo stile** o per raggruppare cose, e nessun tag ha il significato giusto.
+
+```html
+<main>
+  <div class="griglia-foto">
+    <img src="zucche.jpg" alt="Tre zucche appena raccolte">
+    <img src="pomodori.jpg" alt="Una cassetta di pomodori">
+  </div>
+</main>
+```
+
+Qui il `<div>` serve solo a mettere le foto in griglia, più avanti con il CSS: non c'è un tag con quel significato, quindi va bene.
+
+<Callout kind="attenzione">
+La semantica **non** si vede a occhio. Una pagina può sembrare perfetta e avere solo div: la differenza la sente chi non usa il mouse o non vede lo schermo.
+</Callout>
+
+<Say who="assistente">La domanda da farti: «Esiste un tag che dice che cosa è questo pezzo?». Se sì, usalo. Se no, un div va bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco deve rifare il pulsante «Iscriviti».
+
+<Quiz
+  question="Perché un vero button è meglio di un div con un clic?"
+  options={[
+    "Si raggiunge con la tastiera e il lettore di schermo lo riconosce come pulsante",
+    "Perché è sempre più grande di un div",
+    "Perché i div non possono avere colori",
+    "Perché il button carica la pagina più in fretta",
+  ]}
+  answer={0}
+  explain="Il button vero funziona con Tab e Invio e viene annunciato come pulsante. Le dimensioni, i colori e la velocità non c'entrano: un div può avere colori e dimensioni, e non è più lento."
+/>
+
+<Say who="sensei">Un pulsante vero lavora anche per chi non usa il mouse. Ricordatelo ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul perché della semantica. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-perche-semantica" pass="4/5" retries={3} />
+
+<Say who="sensei">Significato prima dell'aspetto. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La semantica serve a lettori di schermo, motori di ricerca e altri sviluppatori, non solo all'aspetto.
+- Un `<button>` vero funziona con la tastiera e viene annunciato come pulsante; un `<div>` no.
+- Azione = `<button>`, spostamento = `<a>`; il `<div>` resta per quando serve solo una scatola per lo stile.
+- Caso chiuso: Marco ha sostituito il div con un vero button, e Elena ora lo trova.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un lettore di schermo?", a: "Un programma che legge ad alta voce ciò che c'è nella pagina" },
+    { q: "Quando si usa un button invece di un a?", a: "Quando la cosa fa un'azione; il link serve a portare in un altro posto" },
+    { q: "Perché un div con un clic non è accessibile da tastiera?", a: "Perché non è un controllo vero: Tab non lo raggiunge" },
+    { q: "Quando va bene usare un div?", a: "Quando serve una scatola solo per lo stile e nessun tag ha il significato giusto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le tabelle, per mettere i dati in righe e colonne.</Say>
+</Scene>

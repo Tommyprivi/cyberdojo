@@ -1,0 +1,144 @@
+---
+id: I.01.006
+course: intelligenza-artificiale
+module: 1
+title: "L'IA nelle cose di ogni giorno"
+belt: bianca
+duration_min: 8
+prerequisites: [I.01.005]
+objectives:
+  - "Riconoscere dove si usa l'IA nella vita quotidiana"
+  - "Dire quale compito svolge l'IA in ciascun esempio: classificare, prevedere, consigliare o generare"
+  - "Capire che l'IA lavora spesso nascosta, usando i nostri dati"
+verification:
+  type: generated-numeric
+  generator: i01-vita-quotidiana
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare di non usare l'IA se non si usa un assistente di testo"
+  - "Credere che i consigli dell'app siano neutri, mentre seguono ciò che l'app vuole mostrarti"
+  - "Dimenticare che molti servizi di IA funzionano grazie ai dati degli utenti"
+commands: []
+---
+
+<Scene title="Una giornata con l'IA">
+Teo dice a Davide: «Io l'IA non la uso, non ho mai aperto un assistente di testo». Davide sorride e gli chiede di raccontare la sua mattina.
+
+Teo: sveglia, sblocca il telefono con il volto, guarda il percorso più veloce per la scuola, ascolta musica consigliata e scorre i messaggi senza spam.
+
+La domanda del caso: **quante volte Teo ha già usato l'IA prima delle otto?**
+
+<Say who="sensei">L'IA più diffusa è quella che non vedi. Cerchiamola insieme.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro lavori dell'IA">
+Gli esempi di ogni giorno si possono sistemare in quattro grandi lavori:
+
+<Layers
+  caption="Che cosa fa l'IA in un'app."
+  items={[
+    { icon: "eye", title: "Riconoscere", text: "Volto per sbloccare il telefono, foto raggruppate per persone, voce trasformata in testo" },
+    { icon: "search", title: "Classificare", text: "Messaggio spam o normale, pagamento regolare o sospetto" },
+    { icon: "chart", title: "Prevedere", text: "Traffico dei prossimi minuti, arrivo del pacco, parola che stai per scrivere" },
+    { icon: "bolt", title: "Consigliare o creare", text: "Video e musica suggeriti, testi e immagini nuove" },
+  ]}
+/>
+
+<Say who="assistente">Quando incontri una funzione nuova, prova a chiederti: sta riconoscendo, classificando, prevedendo o creando?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Esempi concreti">
+- **Sblocco con il volto**: il telefono confronta ciò che vede con una rappresentazione numerica del tuo viso, non con una foto salvata come immagine qualsiasi.
+- **Mappe e percorsi**: l'app prevede i tempi usando i dati di molti telefoni in movimento e le informazioni sul traffico.
+- **Traduttori**: modelli addestrati su grandi quantità di testi in due lingue.
+- **Consigli di video e musica**: l'app prevede che cosa è probabile che ti piaccia, in base a ciò che hai guardato tu e persone simili a te.
+- **Antifrode della banca**: un modello segnala un pagamento insolito rispetto alle tue abitudini; a volte blocca anche pagamenti regolari.
+- **Dettatura vocale**: trasforma la tua voce in testo.
+
+<Callout kind="attenzione">
+I consigli non sono neutri: l'app mostra ciò che la tiene più a lungo attiva. Se ti accorgi di guardare sempre le stesse cose, è il modello che ti ha messo in una «corsia». Scegliere altro, ogni tanto, è una tua decisione.
+</Callout>
+
+<Say who="sensei">Un consiglio dell'app è una previsione su di te, non una verità su ciò che ti serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I dati dietro">
+Molti di questi servizi funzionano perché usano **dati**: la tua posizione, i video guardati, le foto, la voce. È lo scambio dei servizi «gratuiti»: tu ricevi un servizio comodo, l'azienda raccoglie dati per migliorare i modelli e per altri scopi.
+
+<Flow
+  caption="Il giro dei dati."
+  steps={[
+    { icon: "phone", title: "Tu usi l'app", text: "Guardi, scrivi, ti muovi" },
+    { icon: "database", title: "I dati vengono raccolti", text: "Per migliorare i modelli e il servizio" },
+    { icon: "bolt", title: "Il servizio cambia", text: "Consigli e funzioni più su misura" },
+  ]}
+/>
+
+Controllare i permessi delle app (posizione, microfono, fotocamera) e togliere quelli che non servono è un buon gesto di igiene digitale.
+
+<Say who="assistente">Non devi smettere di usare le app. Devi sapere che cosa cedi, e cedere solo ciò che ti serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un'app musicale ti propone brani nuovi in base ai brani ascoltati da te e da persone con gusti simili. Che lavoro sta facendo l'IA?"
+  options={[
+    "Consigliare, cioè prevedere che cosa è probabile che ti piaccia",
+    "Tradurre testi da una lingua all'altra",
+    "Riconoscere il tuo volto",
+    "Controllare la tua posizione per evitare il traffico",
+  ]}
+  answer={0}
+  explain="È un sistema di raccomandazione: prevede che cosa ti piacerà usando i dati di ascolto. Non traduce testi, non riconosce volti e non c'entra con la posizione né con il traffico."
+/>
+
+<Say who="sensei">Nomina il lavoro dell'IA e capirai la funzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'IA nella vita di ogni giorno. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-vita-quotidiana" pass="4/5" retries={3} />
+
+<Say who="sensei">Riconoscere, classificare, prevedere, creare: quattro verbi per capire quasi ogni app.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA è presente da tempo in sblocco con il volto, mappe, traduttori, consigli, antifrode e dettatura vocale.
+- I suoi lavori principali: riconoscere, classificare, prevedere, consigliare o creare.
+- Molti servizi funzionano con i dati degli utenti: conviene controllare i permessi.
+- I consigli delle app sono previsioni, non verità neutre.
+- Caso chiuso: prima delle otto Teo aveva già usato l'IA cinque o sei volte, senza accorgersene.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono quattro lavori tipici dell'IA nelle app?", a: "Riconoscere, classificare, prevedere, consigliare o creare" },
+    { q: "Che cosa fa un sistema di raccomandazione?", a: "Prevede quali contenuti ti piaceranno in base ai dati di utilizzo" },
+    { q: "Perché i servizi di IA hanno bisogno di dati?", a: "Perché i modelli imparano dagli esempi e si migliorano con nuovi dati" },
+    { q: "Che gesto aiuta a proteggere i tuoi dati nelle app?", a: "Controllare i permessi e togliere quelli che non servono" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: che cosa sa fare bene l'IA.</Say>
+</Scene>

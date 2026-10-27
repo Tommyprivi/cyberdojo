@@ -1,0 +1,186 @@
+---
+id: W.02.003
+course: sviluppo-web
+module: 2
+title: "Titoli e paragrafi"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.002]
+objectives:
+  - "Usare i titoli da h1 a h6 in ordine di importanza"
+  - "Scrivere paragrafi con il tag p e andare a capo con br"
+  - "Spiegare perché il browser unisce spazi e righe vuote"
+verification:
+  type: generated-numeric
+  generator: w02-titoli-paragrafi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare un titolo solo perché il testo diventa più grande: la dimensione si decide con il CSS"
+  - "Saltare i livelli, per esempio da h1 a h4, rompendo l'ordine della pagina"
+  - "Credere che premere Invio due volte nel file crei una riga vuota nella pagina"
+commands: []
+---
+
+<Scene title="Il testo tutto attaccato">
+Lucia scrive la presentazione della bottega nel file: tre righe, due righe vuote, un elenco di corsi. Apre la pagina e vede tutto in un unico blocco, senza titoli e senza pause.
+
+Nel file di testo andava a capo; nella pagina no. Il browser non legge come un foglio di carta: legge i **tag**.
+
+La domanda del caso: **come si dà una forma al testo, con titoli e paragrafi?**
+
+<Say who="sensei">Per HTML un testo senza tag è una zuppa. I tag dicono dove finisce un'idea e ne comincia un'altra.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I sei livelli di titolo">
+I titoli vanno da `h1` (il più importante) a `h6` (il meno importante). La lettera h viene da *heading*, «intestazione».
+
+```html
+<h1>La Bottega di Lucia</h1>
+<h2>I corsi</h2>
+<h3>Ceramica per principianti</h3>
+<h3>Tornio avanzato</h3>
+<h2>Dove siamo</h2>
+```
+
+<Layers
+  caption="I titoli sono un indice a più livelli."
+  items={[
+    { icon: "book", title: "h1", text: "Il titolo della pagina" },
+    { icon: "folder", title: "h2", text: "Le sezioni principali" },
+    { icon: "file", title: "h3", text: "Le parti di una sezione" },
+  ]}
+/>
+
+- Di solito si mette **un solo `h1`** per pagina, per dire di che cosa parla.
+- I livelli seguono l'ordine: dopo un `h2` viene un `h3`, non un `h5`.
+- I titoli diventano una specie di **indice** della pagina: chi usa un lettore di schermo può saltare da un titolo all'altro.
+
+<Callout kind="attenzione">
+Non usare un titolo solo perché «è più grosso». Il browser li mostra grandi e in grassetto, ma la dimensione si cambia con il CSS. Il titolo serve a dire che cosa significa quel testo: è un titolo.
+</Callout>
+
+<Say who="assistente">Pensa a un libro: titolo del libro, capitoli, paragrafi dei capitoli. Gli h1, h2 e h3 sono la stessa idea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I paragrafi">
+Il testo normale va dentro `<p>`, un paragrafo per ogni idea:
+
+```html
+<p>Corsi di ceramica per tutti.</p>
+<p>Si comincia con l'argilla e si finisce con un vaso.</p>
+```
+
+Il browser mette uno spazio verticale tra un paragrafo e il successivo, da solo.
+
+Due elementi per andare a capo e separare:
+- `<br>` va a capo **dentro** un paragrafo, per esempio in un indirizzo.
+- `<hr>` disegna una **linea orizzontale** che separa due parti del contenuto.
+
+```html
+<p>La Bottega di Lucia<br>Via dei Vasai 5<br>Faenza</p>
+<hr>
+```
+
+<Callout kind="trucco">
+Se ti viene voglia di mettere due `<br>` di fila per fare spazio, ti serve invece un nuovo paragrafo, oppure un margine con il CSS. Più avanti vedrai come.
+</Callout>
+
+<Say who="sensei">Un paragrafo, un'idea. Se l'idea cambia, nuovo paragrafo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché il browser unisce gli spazi">
+Nel codice HTML, gli spazi e gli a capo **si comprimono**: più spazi o righe vuote di fila diventano **uno spazio solo**. Il tuo file può essere scritto come vuoi: la pagina non cambia.
+
+```html
+<p>La   bottega
+di    Lucia</p>
+```
+
+Nella pagina apparirà: «La bottega di Lucia», tutto su una riga e con uno spazio solo tra le parole (se la riga è troppo lunga, il browser va a capo da solo).
+
+<Compare
+  caption="Il file contro la pagina."
+  left={{ title: "Nel file", points: ["Spazi ripetuti", "Righe vuote a piacere", "Rientri per ordine"] }}
+  right={{ title: "Nella pagina", points: ["Uno spazio solo", "Nessuna riga vuota", "Si va a capo da soli"] }}
+/>
+
+<Callout kind="regola">
+Per andare a capo nella pagina servono i tag (`<p>`, `<br>`), non il tasto Invio nel file.
+</Callout>
+
+<Say who="assistente">Questo è anche il motivo per cui puoi rientrare il codice quanto vuoi: la pagina non ne risente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Lucia vuole un titolo più piccolo per un sottocapitolo dentro una sezione già intitolata con h2. Qual è la scelta giusta?"
+  options={[
+    "Usare h3, che è il livello subito sotto h2",
+    "Usare h1, perché è il più comodo",
+    "Usare p con il testo tra asterischi",
+    "Usare h6 per averlo piccolissimo",
+  ]}
+  answer={0}
+  explain="Un sottocapitolo dentro una sezione h2 è un h3: i livelli seguono l'ordine. L'h1 è il titolo della pagina, un paragrafo con gli asterischi non è un titolo e saltare fino a h6 rompe l'ordine; la dimensione si cambia con il CSS."
+/>
+
+<Guided
+  steps={[
+    "Scrivi un h1 con il nome della tua pagina.",
+    "Sotto metti due h2: «Chi sono» e «Cosa faccio».",
+    "Sotto ogni h2 scrivi un paragrafo con p.",
+    "In un paragrafo metti un indirizzo scritto con br.",
+    "Aggiungi un hr per separare le due sezioni e controlla il risultato nel browser.",
+  ]}
+/>
+
+<Say who="sensei">La pagina deve avere un ordine che si capisce anche senza il colore e la dimensione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su titoli e paragrafi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-titoli-paragrafi" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima l'ordine dei livelli, poi lo stile. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I titoli vanno da `h1` a `h6`, in ordine di importanza e senza salti.
+- Di solito c'è un solo `h1` per pagina; il testo normale sta in `p`.
+- `br` va a capo dentro un paragrafo, `hr` separa due parti.
+- Il browser comprime spazi e righe vuote in uno spazio solo.
+- Caso chiuso: nel file di Lucia mancavano i tag; con `h1`, `h2` e `p` il testo ha preso forma.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale tag è il titolo più importante?", a: "h1" },
+    { q: "Che cosa fa br?", a: "Va a capo dentro un paragrafo" },
+    { q: "Che cosa succede a più spazi di fila nel codice HTML?", a: "Il browser li unisce in uno spazio solo" },
+    { q: "Si può usare h3 per avere il testo più piccolo?", a: "No: i titoli dicono che cosa significa il testo, la dimensione si cambia con il CSS" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: grassetto, corsivo e gli altri tag per dare valore alle parole.</Say>
+</Scene>

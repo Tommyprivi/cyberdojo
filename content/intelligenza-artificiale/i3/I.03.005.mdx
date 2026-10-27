@@ -1,0 +1,155 @@
+---
+id: I.03.005
+course: intelligenza-artificiale
+module: 3
+title: "Quanti dati servono"
+belt: bianca
+duration_min: 8
+prerequisites: [I.03.004]
+objectives:
+  - "Spiegare perché non esiste un numero unico di esempi valido per ogni compito"
+  - "Elencare i fattori che cambiano la quantità di dati necessaria"
+  - "Descrivere come capire se aggiungere altri dati migliora ancora il modello"
+verification:
+  type: generated-numeric
+  generator: i03-quanti-dati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cercare un numero magico di esempi valido sempre, per ogni compito"
+  - "Credere che raddoppiando i dati la qualità raddoppi: oltre un certo punto i miglioramenti si riducono"
+  - "Raccogliere tantissimi esempi tutti uguali invece di pochi ma vari"
+commands: []
+---
+
+<Scene title="Quante foto bastano?">
+Marta deve riconoscere con una app 5 tipi di foglie per un progetto di scienze. Chiede al professore: «Quante foto devo scattare?». Lui risponde: «Dipende».
+
+Marta ci resta male: «Ma un numero ci sarà!». In effetti, un numero valido per tutti non c'è. Però ci sono dei criteri per stimarlo.
+
+La domanda del caso: **da che cosa dipende il numero di esempi di cui hai bisogno?**
+
+<Say who="sensei">«Dipende» non è una scusa. È la risposta giusta, a patto di sapere da che cosa dipende.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa cambia il numero">
+Cinque fattori principali:
+
+- **Difficoltà del compito**: distinguere cani da gatti è più facile che distinguere cento razze di cani.
+- **Numero di categorie**: più classi ci sono, più esempi servono per ognuna.
+- **Varietà dei casi**: se i casi sono molto diversi tra loro (luci, sfondi, angoli), servono più esempi.
+- **Qualità dei dati**: pochi dati puliti battono tanti dati pieni di errori.
+- **Tipo di modello**: un modello semplice ha bisogno di meno dati di uno molto complesso.
+
+<Callout kind="regola">
+Non esiste un numero magico di esempi. Dipende dal compito, dalle categorie, dalla varietà e dalla qualità dei dati.
+</Callout>
+
+<Say who="assistente">Per le foglie di Marta: 5 categorie, foto in giardino con luci diverse. Meglio partire con qualche decina di foto per categoria e vedere come va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati piccoli e dati enormi">
+Per darti un'idea delle dimensioni, ecco insiemi di dati famosi:
+
+- **Iris**: 150 esempi di fiori (50 per ciascuna di 3 specie), usato per imparare i primi metodi.
+- **MNIST**: 70.000 immagini di cifre scritte a mano (60.000 per l'addestramento e 10.000 per la prova).
+- **ImageNet** (la versione usata nelle gare di riconoscimento): circa 1,2 milioni di immagini di addestramento, divise in 1.000 categorie.
+- **Modelli di linguaggio** come quelli degli assistenti di chat: addestrati su quantità di testo enormi, nell'ordine di miliardi di parole.
+
+<Layers
+  caption="Una scala di grandezze, dal piccolo al gigante."
+  items={[
+    { icon: "file", title: "Iris", text: "150 esempi: un esercizio da scuola" },
+    { icon: "chart", title: "MNIST", text: "70.000 immagini di cifre" },
+    { icon: "database", title: "ImageNet", text: "Oltre un milione di immagini" },
+    { icon: "cloud", title: "Modelli di linguaggio", text: "Miliardi di parole di testo" },
+  ]}
+/>
+
+Non serve sempre partire da zero: molti progetti partono da un modello già addestrato da altri su una grande quantità di dati e lo adattano al proprio caso con pochi esempi. Si chiama **trasferimento dell'apprendimento** (in inglese *transfer learning*).
+
+<Say who="sensei">Un compito semplice si impara con pochi esempi. Un compito aperto, come capire il linguaggio, richiede quantità immense.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più dati aiutano, ma sempre meno">
+Aggiungere dati migliora il modello, ma l'effetto di solito si riduce: i primi mille esempi fanno fare un balzo, gli ultimi mille quasi nessuno. Si chiamano **rendimenti decrescenti**.
+
+Un metodo pratico per decidere se vale la pena raccogliere altri dati: allena il modello con un quarto, metà e tutti i dati che hai, e guarda come cambia il punteggio sul gruppo di validazione.
+
+<Compare
+  caption="Che cosa mostra il test con porzioni di dati."
+  left={{ title: "Il punteggio sale ancora", points: ["Il modello ha ancora da imparare", "Vale la pena raccogliere altri esempi", "Soprattutto di casi nuovi"] }}
+  right={{ title: "Il punteggio si ferma", points: ["Altri dati simili non aiutano", "Meglio cambiare i dati o il modello", "Controlla errori ed esempi mancanti"] }}
+/>
+
+<Callout kind="attenzione">
+Gli esempi nuovi contano più di quelli ripetuti: 100 foto di foglie con luci e sfondi diversi insegnano più di 1.000 foto quasi identiche della stessa foglia.
+</Callout>
+
+<Say who="assistente">Prima di raccogliere altre mille foto, guarda dove il modello sbaglia: forse manca solo un tipo di caso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un gruppo ha allenato un riconoscitore di foglie con 200 foto. Con 100 foto il punteggio di validazione era 70%, con 200 è 85%. Poi prova 400 e ottiene 86%.
+
+<Quiz
+  question="Che cosa suggerisce questo risultato?"
+  options={[
+    "Aggiungere altre foto simili serve ormai poco: conviene guardare dove sbaglia o aggiungere casi diversi",
+    "Servono sicuramente altre 10.000 foto uguali alle precedenti",
+    "Il modello è perfetto e non serve fare altro",
+    "Il gruppo di validazione deve essere buttato via",
+  ]}
+  answer={0}
+  explain="Da 200 a 400 foto il punteggio sale solo di un punto: i rendimenti sono decrescenti, quindi altre foto simili aiuteranno poco. Meglio capire dove sbaglia o aggiungere casi diversi. Un 86% non è perfetto, e il gruppo di validazione serve proprio a misurare queste cose."
+/>
+
+<Say who="sensei">Un numero da solo non decide. Decide la curva: se sale ancora, continua; se si ferma, cambia strada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla quantità di dati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-quanti-dati" pass="4/5" retries={3} />
+
+<Say who="sensei">Dipende, ma ora sai da che cosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Non esiste un numero magico di esempi: dipende da compito, categorie, varietà, qualità e tipo di modello.
+- Gli insiemi di dati vanno da 150 esempi (Iris) a miliardi di parole per i modelli di linguaggio.
+- Aggiungere dati aiuta sempre meno (rendimenti decrescenti): si guarda se il punteggio di validazione sale ancora.
+- Esempi vari valgono più di esempi ripetuti.
+- Caso chiuso: Marta parte con qualche decina di foto per foglia e ne aggiunge guardando come cambia il punteggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Esiste un numero di esempi giusto per ogni compito?", a: "No, dipende da difficoltà, categorie, varietà e qualità dei dati" },
+    { q: "Che cosa sono i rendimenti decrescenti?", a: "Più dati aggiungi, meno il modello migliora a ogni aggiunta" },
+    { q: "Che cos'è il transfer learning?", a: "Adattare con pochi esempi un modello già addestrato da altri su molti dati" },
+    { q: "Che cosa vale di più: dati ripetuti o dati vari?", a: "I dati vari" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: quando i dati sono sporchi, mancanti o sbilanciati.</Say>
+</Scene>

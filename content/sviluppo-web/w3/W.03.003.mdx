@@ -1,0 +1,198 @@
+---
+id: W.03.003
+course: sviluppo-web
+module: 3
+title: "Le tabelle: righe, celle e intestazioni"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.002]
+objectives:
+  - "Costruire una tabella con table, tr, th e td"
+  - "Usare caption, thead e tbody per descrivere e raggruppare i dati"
+  - "Unire celle con colspan e rowspan"
+verification:
+  type: generated-numeric
+  generator: w03-tabelle
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare le tabelle per disporre la pagina invece che per dati davvero tabellari"
+  - "Scrivere le intestazioni con td invece che con th"
+  - "Dimenticare che il numero di celle per riga deve tornare, anche con colspan e rowspan"
+commands: []
+---
+
+<Scene title="Il calendario dei turni">
+Marco deve pubblicare i turni di annaffiatura dell'orto. Ogni volontario ha un giorno e un orario. Se li scrive in un elenco, il risultato è un pasticcio: nessuno capisce chi fa che cosa.
+
+I dati organizzati in righe e colonne si mettono in una **tabella**.
+
+La domanda del caso: **come si scrive una tabella in HTML?**
+
+<Say who="sensei">Una tabella è per i dati che hanno senso incrociando una riga e una colonna. Se non è questo il caso, non è una tabella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Righe e celle">
+Una tabella si costruisce con quattro tag:
+
+- `<table>`: la tabella intera.
+- `<tr>`: una **riga** (table row).
+- `<th>`: una cella di **intestazione** (table header), in grassetto e centrata di default.
+- `<td>`: una cella di **dati** (table data).
+
+```html
+<table>
+  <tr>
+    <th>Volontario</th>
+    <th>Giorno</th>
+  </tr>
+  <tr>
+    <td>Anna</td>
+    <td>Lunedì</td>
+  </tr>
+  <tr>
+    <td>Luca</td>
+    <td>Giovedì</td>
+  </tr>
+</table>
+```
+
+<Callout kind="regola">
+Si costruisce **riga per riga**, e dentro ogni riga si mettono le celle. Non esiste un tag «colonna»: le colonne nascono dalle celle che stanno in fila.
+</Callout>
+
+<Say who="assistente">Il browser, di base, non disegna i bordi. Per quelli serve il CSS, che vedrai più avanti nel corso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Titolo e gruppi">
+Per rendere la tabella chiara e leggibile da un lettore di schermo si aggiungono altri tag.
+
+<Layers
+  caption="Le parti di una tabella ordinata."
+  items={[
+    { icon: "book", title: "caption", text: "Il titolo della tabella, subito dopo table" },
+    { icon: "folder", title: "thead", text: "Il gruppo con la riga di intestazione" },
+    { icon: "file", title: "tbody", text: "Il gruppo con le righe dei dati" },
+  ]}
+/>
+
+```html
+<table>
+  <caption>Turni di annaffiatura</caption>
+  <thead>
+    <tr>
+      <th scope="col">Volontario</th>
+      <th scope="col">Giorno</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Anna</td><td>Lunedì</td></tr>
+    <tr><td>Luca</td><td>Giovedì</td></tr>
+  </tbody>
+</table>
+```
+
+- `scope="col"` dice che quel `<th>` intitola una **colonna**. Per intitolare una riga si usa `scope="row"`.
+- Esiste anche `<tfoot>` per una riga finale, come un totale.
+
+<Say who="sensei">Il `<caption>` dice di che cosa parla la tabella. Chi usa un lettore di schermo lo sente prima dei dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Unire le celle">
+A volte una cella deve occupare più posti. Si usano due attributi:
+
+- `colspan="2"`: la cella si estende su **2 colonne** (in orizzontale).
+- `rowspan="2"`: la cella si estende su **2 righe** (in verticale).
+
+```html
+<table>
+  <tr>
+    <th colspan="2">Sabato</th>
+  </tr>
+  <tr>
+    <td>Mattina</td>
+    <td>Semina</td>
+  </tr>
+  <tr>
+    <td>Pomeriggio</td>
+    <td>Raccolta</td>
+  </tr>
+</table>
+```
+
+Qui la prima riga ha una sola cella larga quanto due colonne; le altre righe hanno due celle ciascuna.
+
+<Callout kind="attenzione">
+Se unisci le celle, il totale deve comunque tornare: ogni riga deve riempire lo stesso numero di colonne. Se una riga ha troppe o poche celle, la tabella si sposta in modo strano.
+</Callout>
+
+<Callout kind="regola">
+Le tabelle sono per i **dati**. Non usarle per impaginare il sito (menu a sinistra, testo a destra): per quello si usa il CSS.
+</Callout>
+
+<Say who="assistente">Il test è semplice: «Ha senso leggere questo in righe e colonne?». Se sì, tabella. Se no, qualcos'altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco vuole mettere «Giorno» e «Volontario» come titoli di colonna.
+
+<Quiz
+  question="Quale tag si usa per una cella di intestazione, come il titolo di una colonna?"
+  options={[
+    "<th>",
+    "<td>",
+    "<tr>",
+    "<caption>",
+  ]}
+  answer={0}
+  explain="Il th è la cella di intestazione. Il td è una cella di dati normale, il tr è una riga intera e il caption è il titolo di tutta la tabella."
+/>
+
+<Say who="sensei">Intestazione con th, dati con td. Se le confondi, il lettore di schermo non capisce i titoli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle tabelle. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-tabelle" pass="4/5" retries={3} />
+
+<Say who="sensei">Riga, cella, intestazione. Poi i raggruppamenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una tabella si scrive con `<table>`, righe `<tr>` e celle `<th>` (intestazione) o `<td>` (dati).
+- `<caption>` dà il titolo; `<thead>`, `<tbody>` e `<tfoot>` raggruppano le righe; `scope` dice se un `<th>` intitola una colonna o una riga.
+- `colspan` e `rowspan` uniscono celle in orizzontale e in verticale.
+- Caso chiuso: Marco ha messo i turni in una tabella con titolo e intestazioni chiare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra th e td?", a: "Il th è una cella di intestazione, il td una cella di dati" },
+    { q: "A che cosa serve caption?", a: "A dare un titolo alla tabella" },
+    { q: "Che cosa fa colspan 2?", a: "Estende la cella su due colonne" },
+    { q: "Si possono usare le tabelle per impaginare il sito?", a: "No: sono per i dati, l'impaginazione si fa con il CSS" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i moduli, per ricevere dati dagli utenti.</Say>
+</Scene>

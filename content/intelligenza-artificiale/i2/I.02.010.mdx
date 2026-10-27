@@ -1,0 +1,153 @@
+---
+id: I.02.010
+course: intelligenza-artificiale
+module: 2
+title: "Regole d'uso: cosa non incollare mai in una chat"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.009]
+objectives:
+  - "Elencare i dati che non vanno incollati in una chat con un assistente di IA"
+  - "Spiegare perché ciò che scrivi può essere conservato e visto da altri"
+  - "Sostituire i dati sensibili con segnaposto prima di chiedere aiuto"
+verification:
+  type: generated-numeric
+  generator: i02-regole-uso
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Incollare password, codici o dati di documenti pensando che la chat sia privata come un diario"
+  - "Incollare dati di altre persone (amici, compagni, clienti) senza il loro permesso"
+  - "Non leggere le impostazioni sulla privacy del servizio che si usa"
+commands: []
+---
+
+<Scene title="Il messaggio con tutto dentro">
+Luca vuole che l'assistente lo aiuti a scrivere una lettera di reclamo a un negozio online. Incolla nella chat il suo nome completo, l'indirizzo di casa, il numero di telefono, il codice dell'ordine e perfino la foto della carta d'identità, «per fare prima».
+
+La lettera viene bene. Ma Luca ha appena consegnato a un servizio online una quantità di dati che non voleva condividere con nessuno.
+
+La domanda del caso: **che cosa non va mai scritto in una chat con un assistente?**
+
+<Say who="sensei">Una chat con un assistente non è un diario chiuso a chiave. È un servizio online di un'azienda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dove finisce ciò che scrivi">
+Quello che scrivi viene inviato ai **server** dell'azienda che gestisce l'assistente. Che cosa succede dopo **dipende dal servizio e dalle impostazioni**, e le regole cambiano. In generale, può capitare che:
+
+- i messaggi siano **conservati** per un certo periodo;
+- alcune persone autorizzate possano **leggerne** una parte, per controlli di sicurezza o qualità;
+- i testi siano usati per **migliorare i modelli**, a meno che tu disattivi questa opzione dove è prevista;
+- un account violato mostri a un estraneo **le tue conversazioni**.
+
+<Callout kind="regola">
+La domanda da farsi prima di incollare: «Se questo testo finisse davanti a uno sconosciuto, mi darebbe fastidio o danno?» Se sì, non incollarlo.
+</Callout>
+
+<Say who="assistente">Le regole si trovano nell'informativa sulla privacy e nelle impostazioni dell'account. Leggerle una volta ti evita sorprese.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa non incollare">
+<Layers
+  caption="Dati da tenere fuori dalla chat."
+  items={[
+    { icon: "key", title: "Password e codici", text: "Password, codici di verifica, chiavi di accesso, PIN" },
+    { icon: "user", title: "Dati personali", text: "Indirizzo, telefono, codice fiscale, documenti, foto di documenti" },
+    { icon: "users", title: "Dati di altre persone", text: "Nomi, messaggi o foto di amici e compagni senza il loro permesso" },
+    { icon: "lock", title: "Cose riservate", text: "Documenti di scuola o lavoro non pubblici, dati di clienti" },
+    { icon: "shield", title: "Salute e soldi", text: "Referti, diagnosi, numeri di carta e conto" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Se hai incollato per sbaglio una password o un codice, **cambiala subito** dal sito originale. Cancellare il messaggio dalla chat può non bastare.
+</Callout>
+
+<Say who="sensei">Una password incollata va considerata bruciata. Si cambia, non si spera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come chiedere aiuto senza dati">
+Spesso l'assistente può aiutarti anche **senza** i dati veri: basta sostituirli con **segnaposto**.
+
+```text
+Prima (da non fare):
+«Sono Luca Bianchi, via Roma 5, ordine 483920...»
+
+Dopo (si può fare):
+«Sono [NOME], abito in [INDIRIZZO], ordine [CODICE].
+Scrivi una lettera di reclamo cortese per un pacco arrivato in ritardo di 10 giorni.»
+```
+
+Poi **tu** sostituisci i segnaposto con i dati veri nel tuo programma di scrittura, non nella chat.
+
+Altre buone regole:
+- **Impostazioni**: guarda se puoi disattivare l'uso dei tuoi testi per migliorare il modello, e come cancellare la cronologia.
+- **Età minima**: ogni servizio indica da che età si può usare; rispettala e, se sei minorenne, parlane con un adulto di fiducia.
+- **Regole di scuola o lavoro**: se devi usare l'assistente per documenti che non sono solo tuoi, chiedi che cosa è permesso.
+- **Quando la cosa è seria** (salute, legge, soldi) l'assistente non sostituisce una persona qualificata.
+
+<Say who="assistente">I segnaposto funzionano quasi sempre bene: per scrivere una lettera, all'assistente non serve il tuo vero indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Vuoi un aiuto per scrivere una mail di reclamo. Qual è il modo più prudente di farlo?"
+  options={[
+    "Usare segnaposto come [NOME] e [CODICE] e inserire i dati veri solo dopo, nel tuo documento",
+    "Incollare nome, indirizzo e foto del documento per fare prima",
+    "Incollare solo la password dell'account del negozio",
+    "Incollare i messaggi privati di un amico per avere più contesto",
+  ]}
+  answer={0}
+  explain="I segnaposto danno all'assistente ciò che gli serve (la struttura della mail) senza consegnargli dati personali. Le altre opzioni mandano online dati personali, credenziali o dati di un'altra persona."
+/>
+
+<Say who="sensei">Ciò che non serve all'assistente, non si manda all'assistente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle regole d'uso. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-regole-uso" pass="4/5" retries={3} />
+
+<Say who="sensei">Ultima verifica del modulo. Prenditi il tempo di leggere ogni domanda.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ciò che scrivi in una chat va ai server di un'azienda e può essere conservato, letto in parte o usato per migliorare i modelli, a seconda del servizio.
+- Non incollare password, codici, documenti, dati personali tuoi o di altri, dati riservati, di salute o di soldi.
+- Se hai incollato una password, cambiala subito dal sito originale.
+- Si usano segnaposto al posto dei dati, e si controllano impostazioni, età minima e regole di scuola o lavoro.
+- Caso chiuso: Luca poteva avere la sua lettera di reclamo con [NOME] e [CODICE], senza consegnare a nessuno il suo documento.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Una chat con un assistente è privata come un diario?", a: "No: è un servizio online e i messaggi possono essere conservati o letti in parte" },
+    { q: "Che cosa non va mai incollato in una chat?", a: "Password, codici, documenti, dati personali o riservati, dati di altri senza permesso" },
+    { q: "Che cosa fare se incolli una password per errore?", a: "Cambiarla subito dal sito originale" },
+    { q: "Come chiedere aiuto senza dare dati veri?", a: "Usando segnaposto come [NOME] e inserendo i dati veri dopo, fuori dalla chat" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo concluso. Hai imparato a chiedere bene, a controllare e a proteggere i tuoi dati: la base per usare l'IA con testa. Avanti con il prossimo modulo.</Say>
+</Scene>

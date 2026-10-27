@@ -1,0 +1,202 @@
+---
+id: P.04.003
+course: programmazione
+module: 4
+title: "Il debug con le stampe e con il debugger"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.002]
+objectives:
+  - "Usare print per seguire i valori delle variabili durante l'esecuzione"
+  - "Usare breakpoint e i comandi base del debugger di Python (n, s, c, p, q)"
+  - "Applicare un metodo: riprodurre, restringere, correggere, riprovare"
+verification:
+  type: generated-numeric
+  generator: p04-debug
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cambiare il codice a caso sperando che funzioni, senza capire che cosa succede davvero"
+  - "Dimenticare le stampe di debug nel programma finito"
+  - "Confondere n (passa alla riga successiva) con s (entra dentro la funzione chiamata)"
+commands: []
+---
+
+<Scene title="Il totale che non torna">
+Elena ha scritto una funzione che somma i prezzi dei biglietti per le prove del gruppo di teatro. Non c'è nessun errore rosso, ma il risultato è sbagliato.
+
+```python
+def totale(prezzi):
+    somma = 0
+    for p in prezzi:
+        somma = p
+    return somma
+
+print(totale([5, 10, 3]))
+```
+
+Dovrebbe stampare 18. Stampa 3. Nessun messaggio ti dice dove guardare: è un errore di logica.
+
+La domanda del caso: **come si scopre che cosa succede dentro un programma mentre gira?**
+
+<Say who="sensei">Il debug è fare il detective. Non si indovina: si guardano gli indizi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il metodo">
+*Debug* significa «togliere i bachi» (in inglese *bug*). Un buon metodo ha quattro passi:
+
+<Flow
+  caption="Il ciclo del debug."
+  steps={[
+    { icon: "search", title: "Riproduci", text: "Trova dati con cui l'errore si ripete sempre" },
+    { icon: "eye", title: "Osserva", text: "Guarda i valori delle variabili passo per passo" },
+    { icon: "code", title: "Correggi", text: "Cambia una cosa sola" },
+    { icon: "check", title: "Riprova", text: "Controlla che sia sparito e che non ne sia nato un altro" },
+  ]}
+/>
+
+<Callout kind="regola">
+Cambia **una cosa alla volta**. Se ne cambi tre insieme e il programma funziona, non sai quale correzione ha servito. Se smette di funzionare, non sai quale ha rotto.
+</Callout>
+
+<Say who="assistente">Il passo più importante è «osserva»: prima di cambiare, devi vedere che cosa succede davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il debug con le stampe">
+Il modo più semplice per osservare è `print`: aggiungi righe che mostrano i valori.
+
+```python
+def totale(prezzi):
+    somma = 0
+    for p in prezzi:
+        somma = p
+        print("p =", p, "somma =", somma)
+    return somma
+
+print(totale([5, 10, 3]))
+```
+
+<Log lines={[
+  "p = 5 somma = 5",
+  "p = 10 somma = 10",
+  "p = 3 somma = 3",
+  "3",
+]} caption="Dopo il secondo giro la somma dovrebbe essere 15, non 10." />
+
+Ecco l'indizio: la somma non cresce, viene **sostituita** a ogni giro. La riga giusta è `somma += p` (cioè `somma = somma + p`), che aggiunge invece di sostituire.
+
+<Callout kind="attenzione">
+Le stampe di debug vanno **tolte** a lavoro finito. Un programma che stampa righe che nessuno ha chiesto confonde chi lo usa.
+</Callout>
+
+<Say who="sensei">Una print ben messa vale mille supposizioni. Ma poi toglila.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il debugger">
+Il **debugger** è uno strumento che ferma il programma e ti lascia guardare e avanzare con calma. In Python c'è già, si chiama **pdb**. Per usarlo basta scrivere `breakpoint()` dove vuoi fermarti.
+
+```python
+def totale(prezzi):
+    somma = 0
+    for p in prezzi:
+        somma = p
+        breakpoint()
+    return somma
+```
+
+Il programma si ferma e compare il prompt `(Pdb)`. Ecco i comandi principali:
+
+- `n` (*next*): esegui la riga corrente e passa alla successiva.
+- `s` (*step*): se la riga chiama una funzione, entra dentro la funzione.
+- `p nome`: stampa il valore di una variabile, per esempio `p somma`.
+- `c` (*continue*): riparti finché non incontri un altro `breakpoint()`, o fino alla fine.
+- `q` (*quit*): esci dal debugger e dal programma.
+
+<Log lines={[
+  "(Pdb) p p",
+  "5",
+  "(Pdb) p somma",
+  "5",
+  "(Pdb) c",
+]} caption="Una sessione di esempio: controlli i valori e riparti." />
+
+<Callout kind="curiosita">
+Anche gli editor come Visual Studio Code e IDLE hanno un debugger a pulsanti: puoi mettere un «punto di arresto» cliccando accanto al numero di riga. Funziona allo stesso modo, ma senza scrivere i comandi.
+</Callout>
+
+<Say who="assistente">Il debugger è più lento da usare di una print la prima volta. Ma quando i valori sono tanti, ti fa risparmiare un sacco di tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il programma è fermo sul prompt del debugger, dentro una funzione.
+
+<Quiz
+  question="Nel debugger di Python, quale comando esegue la riga corrente e passa alla successiva senza entrare nelle funzioni chiamate?"
+  options={[
+    "n",
+    "s",
+    "c",
+    "q",
+  ]}
+  answer={0}
+  explain="Il comando n (next) esegue la riga e passa alla successiva senza entrare nelle funzioni. Il comando s entra dentro la funzione chiamata, c prosegue fino al prossimo punto di arresto o alla fine, q esce dal debugger."
+/>
+
+<Guided
+  steps={[
+    "Riproduci l'errore con un esempio piccolo: totale([5, 10, 3]) deve dare 18.",
+    "Aggiungi una print dentro il ciclo, oppure un breakpoint().",
+    "Guarda come cambia somma a ogni giro.",
+    "Correggi una sola riga: somma += p.",
+    "Rilancia, controlla che il risultato sia 18 e togli la print.",
+  ]}
+/>
+
+<Say who="sensei">Se non riesci a riprodurre l'errore, non puoi sapere se l'hai corretto. Parti sempre da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su debug, stampe e debugger. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-debug" pass="4/5" retries={3} />
+
+<Say who="sensei">Osserva, cambia una cosa sola, riprova. Il resto è pazienza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il debug segue un metodo: riprodurre l'errore, osservare, correggere una cosa sola, riprovare.
+- Le stampe mostrano i valori delle variabili; vanno tolte a lavoro finito.
+- Con breakpoint() si apre il debugger pdb: n va alla riga successiva, s entra nelle funzioni, p stampa una variabile, c prosegue, q esce.
+- Caso chiuso: la somma di Elena veniva sostituita a ogni giro; con somma += p il totale è 18.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa breakpoint()?", a: "Ferma il programma e apre il debugger pdb" },
+    { q: "Che differenza c'è tra n e s nel debugger?", a: "n passa alla riga successiva, s entra dentro la funzione chiamata" },
+    { q: "Perché cambiare una cosa alla volta?", a: "Per sapere quale modifica ha risolto o peggiorato il problema" },
+    { q: "Che cosa si fa delle print di debug a lavoro finito?", a: "Si tolgono" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le eccezioni, per far sì che il programma sopravviva agli errori invece di fermarsi.</Say>
+</Scene>

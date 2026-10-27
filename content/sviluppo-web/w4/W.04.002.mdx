@@ -1,0 +1,191 @@
+---
+id: W.04.002
+course: sviluppo-web
+module: 4
+title: "Selettori di elemento, di classe e di id"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.001]
+objectives:
+  - "Scrivere un selettore di elemento, uno di classe e uno di id"
+  - "Scegliere quando usare una classe e quando un id"
+  - "Raggruppare più selettori e selezionare un elemento dentro un altro"
+verification:
+  type: generated-numeric
+  generator: w04-selettori
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il punto davanti al nome di una classe o il cancelletto davanti a un id"
+  - "Usare lo stesso id su più elementi: un id deve essere unico nella pagina"
+  - "Scrivere il punto o il cancelletto anche nell'attributo HTML: in HTML si scrive class=«avviso», non class=«.avviso»"
+commands: []
+---
+
+<Scene title="Evidenziare solo alcuni paragrafi">
+Lucia ha scritto `p { color: darkred; }` e **tutti** i paragrafi sono diventati rossi, anche quelli che voleva lasciare neri. Lei voleva colorare solo l'avviso sulle date dei corsi.
+
+Un selettore come `p` è come gridare «tutti quelli con la maglia rossa!»: colpisce chiunque abbia quel nome. Servono modi per indicare **solo alcuni** elementi.
+
+La domanda del caso: **come si sceglie a quali elementi applicare una regola?**
+
+<Say who="sensei">Prima di scrivere lo stile, scegli bene il bersaglio. Il selettore è la mira.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Selettore di elemento">
+Il selettore più semplice usa il **nome del tag**: colpisce tutti gli elementi di quel tipo.
+
+```css
+p {
+  color: #333333;
+}
+h2 {
+  text-align: center;
+}
+```
+
+Va bene per le regole generali («tutti i paragrafi hanno questo colore»). Non va bene quando vuoi distinguere un paragrafo dall'altro.
+
+Per **raggruppare** più selettori nella stessa regola, separali con una virgola:
+
+```css
+h1, h2, h3 {
+  color: darkred;
+}
+```
+
+<Say who="assistente">La virgola significa «e»: titoli h1 e h2 e h3, tutti con lo stesso colore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Classi e id">
+Per distinguere gli elementi, in HTML si dà loro un nome con un attributo, e in CSS lo si richiama.
+
+```html
+<p class="avviso">Il corso del 12 marzo è al completo.</p>
+<p id="orari">Apertura: martedì e giovedì.</p>
+```
+
+```css
+.avviso {
+  color: darkred;
+}
+#orari {
+  font-style: italic;
+}
+```
+
+- Una **classe** si scrive con il **punto**: `.avviso`. Più elementi possono avere la stessa classe, e un elemento può avere più classi, separate da spazi: `class="avviso grande"`.
+- Un **id** si scrive con il **cancelletto**: `#orari`. Deve essere **unico**: in una pagina un id si usa su un solo elemento.
+
+<Compare
+  caption="Classe contro id."
+  left={{ title: "Classe (punto)", points: ["Si può riusare su molti elementi", "Un elemento può averne più d'una", "Il caso più comune per lo stile"] }}
+  right={{ title: "Id (cancelletto)", points: ["Unico nella pagina", "Un solo id per elemento", "Serve anche per i link interni"] }}
+/>
+
+<Callout kind="regola">
+Nell'HTML il nome si scrive **senza** punto e senza cancelletto (`class="avviso"`). Il punto e il cancelletto servono solo nel CSS.
+</Callout>
+
+<Say who="sensei">Per lo stile usa le classi quasi sempre. L'id lo tieni per ciò che nella pagina esiste una volta sola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Combinare i selettori">
+Due combinazioni ti servono subito.
+
+**Elemento dentro un altro** (discendente): due selettori separati da uno spazio.
+
+```css
+nav a {
+  color: white;
+}
+```
+
+Significa: «tutti i link `a` che si trovano **dentro** un elemento `nav`». I link fuori dal `nav` non cambiano.
+
+**Elemento con una classe precisa**: il nome del tag attaccato alla classe, senza spazi.
+
+```css
+p.avviso {
+  color: darkred;
+}
+```
+
+Significa: «solo i paragrafi che hanno la classe `avviso`». Un titolo con la stessa classe non viene colpito. Attenzione alla differenza: `p .avviso` (con lo spazio) vuol dire «un elemento con classe avviso **dentro** un paragrafo».
+
+<Flow
+  caption="Come il browser applica una regola."
+  steps={[
+    { icon: "search", title: "Legge il selettore", text: "Per esempio .avviso" },
+    { icon: "file", title: "Cerca nella pagina", text: "Trova gli elementi con class avviso" },
+    { icon: "check", title: "Applica lo stile", text: "Solo a quegli elementi" },
+  ]}
+/>
+
+<Say who="assistente">Lo spazio è una parola: «dentro». Senza spazio, invece, le due cose descrivono lo stesso elemento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un paragrafo ha questo HTML: `<p class="avviso">Corso annullato</p>`.
+
+<Quiz
+  question="Quale selettore colpisce quel paragrafo, e solo gli elementi con la classe avviso?"
+  options={[
+    ".avviso",
+    "#avviso",
+    "avviso",
+    "p#avviso",
+  ]}
+  answer={0}
+  explain="Una classe si richiama con il punto davanti al nome. Il cancelletto è per gli id, e p#avviso cercherebbe un paragrafo con id avviso. Scritto senza punto, avviso sarebbe il nome di un tag, che non esiste."
+/>
+
+<Say who="sensei">Punto per la classe, cancelletto per l'id. Se li scambi, la regola non trova niente e non ti dice nulla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui selettori. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-selettori" pass="4/5" retries={3} />
+
+<Say who="sensei">Elemento, classe, id. Dal più generale al più preciso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il selettore di elemento usa il nome del tag e colpisce tutti gli elementi di quel tipo.
+- La classe si scrive con il punto (`.avviso`) e si può usare su molti elementi; l'id con il cancelletto (`#orari`) è unico nella pagina.
+- Con la virgola si raggruppano più selettori; con lo spazio si indica «dentro» (`nav a`).
+- Nell'HTML il nome si scrive senza punto e senza cancelletto.
+- Caso chiuso: Lucia ha dato la classe `avviso` solo al paragrafo giusto e ha colorato quello, lasciando neri gli altri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si scrive un selettore di classe?", a: "Con un punto davanti al nome, per esempio .avviso" },
+    { q: "Come si scrive un selettore di id?", a: "Con un cancelletto davanti al nome, per esempio #orari" },
+    { q: "Che cosa significa il selettore nav a?", a: "Tutti i link che si trovano dentro un elemento nav" },
+    { q: "Quanti elementi possono avere lo stesso id in una pagina?", a: "Uno solo: l'id deve essere unico" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i colori, per rendere finalmente visibile il tuo lavoro.</Say>
+</Scene>

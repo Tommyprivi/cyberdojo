@@ -1,0 +1,174 @@
+---
+id: W.03.009
+course: sviluppo-web
+module: 3
+title: "Accessibilità: lettori di schermo e tastiera"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.008]
+objectives:
+  - "Spiegare che cos'è l'accessibilità e a chi serve"
+  - "Controllare una pagina usando solo la tastiera"
+  - "Applicare le regole di base: testo alternativo, label, lang, contrasto e link chiari"
+verification:
+  type: generated-numeric
+  generator: w03-accessibilita
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Togliere il contorno del focus (outline) senza metterne uno al suo posto"
+  - "Scrivere link come «clicca qui» che fuori contesto non dicono niente"
+  - "Pensare che l'accessibilità serva a pochi: aiuta anche chi ha una mano occupata o un sole forte sullo schermo"
+commands: []
+---
+
+<Scene title="Una pagina senza mouse">
+Giorgio, un socio, si è rotto il braccio e usa solo la tastiera per qualche settimana. Apre il sito dell'associazione e premendo Tab non riesce a raggiungere il pulsante «Iscriviti», e non vede dove sta il cursore.
+
+L'**accessibilità** vuol dire costruire pagine che **tutti** possono usare: persone cieche o ipovedenti, sorde, con difficoltà motorie, o semplicemente in una situazione scomoda. Non è un extra: è parte di un lavoro fatto bene.
+
+La domanda del caso: **come si controlla e si migliora una pagina per chi non usa il mouse o non vede lo schermo?**
+
+<Say who="sensei">Se la tua pagina funziona solo con il mouse e gli occhi, funziona solo per una parte delle persone.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Provare con la tastiera">
+Il primo test costa zero: metti da parte il mouse e prova la pagina con la tastiera.
+
+- **Tab** sposta il **focus** (l'elemento attivo) avanti, al prossimo link, pulsante o campo.
+- **Maiusc + Tab** lo sposta indietro.
+- **Invio** apre un link o preme un pulsante; **Spazio** preme un pulsante o spunta una casella.
+
+<Flow
+  caption="Il percorso del focus con il tasto Tab."
+  steps={[
+    { icon: "link", title: "Link", text: "Il primo elemento della pagina" },
+    { icon: "file", title: "Campi", text: "Seguono l'ordine del codice" },
+    { icon: "bolt", title: "Pulsante", text: "Si preme con Invio o Spazio" },
+  ]}
+/>
+
+L'ordine del Tab segue l'**ordine nel codice HTML**. Si vede dove sta il focus grazie a un contorno attorno all'elemento.
+
+<Callout kind="attenzione">
+Alcuni tolgono il contorno con `outline: none` perché «brutto». Così chi usa la tastiera non vede più dove si trova. Se lo togli, devi sostituirlo con un altro segno ben visibile.
+</Callout>
+
+<Say who="assistente">Tutti i tag che hai visto, `<a>`, `<button>`, `<input>`, ricevono il focus da soli. Un `<div>` no: è un altro motivo per usare i tag giusti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I lettori di schermo">
+Un **lettore di schermo** legge a voce (o su una riga braille) ciò che c'è nella pagina e lo struttura per chi lo usa. Alcuni esempi: NVDA (gratuito, per Windows), VoiceOver (già incluso nei prodotti Apple), TalkBack (su Android), Narratore (incluso in Windows).
+
+Che cosa gli serve da te?
+
+<Layers
+  caption="Che cosa aiuta un lettore di schermo."
+  items={[
+    { icon: "file", title: "Tag semantici", text: "header, nav, main, titoli ordinati" },
+    { icon: "eye", title: "Testo alternativo", text: "alt su ogni immagine che porta informazione" },
+    { icon: "book", title: "Label", text: "Ogni campo con la sua etichetta" },
+  ]}
+/>
+
+- Immagini: `alt` descrive il contenuto. Per un'immagine solo decorativa si scrive `alt=""` (vuoto), così viene saltata.
+- La lingua: `<html lang="it">` dice al lettore con quale pronuncia leggere.
+- I link devono avere un testo che ha senso da solo: «Leggi il programma della festa», non «clicca qui».
+
+Se l'icona non ha testo, per esempio un pulsante con una lente, si dà un nome con `aria-label`:
+
+```html
+<button type="button" aria-label="Cerca nel sito">
+  <img src="lente.svg" alt="">
+</button>
+```
+
+<Say who="sensei">Scrivi alt e label come se spiegassi la pagina al telefono a un amico che non la vede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Colori e salto al contenuto">
+- **Contrasto:** il testo deve distinguersi dallo sfondo. Le linee guida WCAG (standard internazionale dell'accessibilità, scritto dal W3C) chiedono un rapporto di contrasto di almeno **4,5 a 1** per il testo normale (livello AA).
+- **Non solo colore:** non dire «clicca sul pulsante verde»: chi non distingue i colori non lo trova. Aggiungi anche testo o un simbolo.
+- **Salto al contenuto:** chi usa la tastiera deve passare dal menu a ogni pagina. Un link nascosto all'inizio lo fa saltare:
+
+```html
+<body>
+  <a href="#contenuto">Vai al contenuto</a>
+  <header>...</header>
+  <main id="contenuto">
+    ...
+  </main>
+</body>
+```
+
+<Callout kind="trucco">
+Strumenti gratuiti che aiutano: il controllo di accessibilità degli strumenti per sviluppatori del browser e il controllo dei contrasti. Non sostituiscono la prova con la tastiera, ma trovano molti errori.
+</Callout>
+
+<Say who="assistente">Un test finale per ogni pagina: tastiera, zoom al 200 per cento, e un controllo dei contrasti. Tre minuti, molti problemi trovati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio non riesce a vedere dove si trova il focus mentre preme Tab.
+
+<Quiz
+  question="Perché è dannoso togliere il contorno di focus (outline) senza sostituirlo?"
+  options={[
+    "Chi usa la tastiera non vede più quale elemento è attivo",
+    "Il lettore di schermo smette di leggere la pagina",
+    "I link smettono di funzionare con il mouse",
+    "La pagina non passa più la validazione HTML",
+  ]}
+  answer={0}
+  explain="Il contorno mostra dove sta il focus per chi naviga con Tab. Senza, ci si perde. Il lettore di schermo e i link con il mouse continuano a funzionare, e la validazione HTML non riguarda il CSS."
+/>
+
+<Say who="sensei">Se togli un segnale, mettine un altro. Mai lasciare l'utente al buio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su accessibilità. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-accessibilita" pass="4/5" retries={3} />
+
+<Say who="sensei">Tastiera, alt, label, lang, contrasto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Accessibilità vuol dire pagine usabili da tutti, anche senza mouse o senza vedere lo schermo.
+- Si prova con la tastiera: Tab, Maiusc + Tab, Invio e Spazio; il focus deve restare visibile.
+- Servono tag semantici, `alt` sulle immagini, label sui campi, `lang` e link con un testo chiaro.
+- Il testo normale vuole un contrasto di almeno 4,5 a 1; non dare informazioni solo con il colore.
+- Caso chiuso: ora Giorgio raggiunge il pulsante con Tab e vede dove si trova.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con quale tasto si sposta il focus al prossimo elemento?", a: "Tab (indietro con Maiusc + Tab)" },
+    { q: "Come si scrive l'alt di un'immagine solo decorativa?", a: "alt vuoto, cioè alt con due virgolette senza testo" },
+    { q: "Quale contrasto minimo chiede il livello AA per il testo normale?", a: "4,5 a 1" },
+    { q: "Perché «clicca qui» è un cattivo testo di link?", a: "Perché fuori contesto non dice dove porta" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il progetto che mette insieme tutto il modulo.</Say>
+</Scene>

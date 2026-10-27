@@ -1,0 +1,160 @@
+---
+id: W.01.001
+course: sviluppo-web
+module: 1
+title: "Che cosa succede quando apri un sito"
+belt: bianca
+duration_min: 7
+prerequisites: []
+objectives:
+  - "Descrivere in cinque passi che cosa succede tra l'indirizzo scritto e la pagina disegnata"
+  - "Distinguere browser, server e pagina web"
+  - "Spiegare perché una pagina arriva a pezzi (testo, stile, immagini) e non tutta insieme"
+verification:
+  type: generated-numeric
+  generator: w01-apri-un-sito
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il sito «sia dentro» il browser: il browser lo chiede e lo disegna, il sito sta su un altro computer"
+  - "Confondere internet con il web: il web è uno dei servizi che usano internet"
+  - "Credere che una pagina arrivi in un unico file: arrivano testo, stile, immagini e programmi separati"
+commands: []
+---
+
+<Scene title="Il sito di Lucia">
+Lucia ha una piccola bottega di ceramiche e vuole un sito per far conoscere i suoi corsi. Ti dice: «Io scrivo l'indirizzo e la pagina compare. Ma dove sta il sito? Dentro il mio computer?».
+
+Se vuoi costruire siti, questa è la prima cosa da capire. Capire **che cosa succede** tra il momento in cui premi Invio e il momento in cui vedi la pagina ti servirà in ogni lezione di questo corso.
+
+La domanda del caso: **dove vive un sito e come arriva davanti ai tuoi occhi?**
+
+<Say who="sensei">Chi costruisce siti senza sapere come viaggiano è come un cuoco che non sa come arrivano gli ingredienti. Cominciamo dal viaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due computer che si parlano">
+Quando apri un sito entrano in gioco **due computer**.
+
+Il primo è il tuo (o il tuo telefono): ha un programma che si chiama **browser**, per esempio Firefox, Chrome, Edge o Safari. Il browser sa chiedere pagine e disegnarle sullo schermo.
+
+Il secondo è un computer sempre acceso, in un edificio pieno di computer chiamato *data center*. Si chiama **server** perché «serve» le pagine a chi le chiede. Sul server c'è il sito: un insieme di file.
+
+<Compare
+  caption="Due ruoli diversi: chi chiede e chi serve."
+  left={{ title: "Il tuo dispositivo (client)", points: ["Ha il browser", "Chiede le pagine", "Disegna la pagina sullo schermo"] }}
+  right={{ title: "Il server", points: ["È sempre acceso", "Conserva i file del sito", "Risponde alle richieste"] }}
+/>
+
+<Callout kind="regola">
+Il sito **non sta nel tuo browser**. Sta su un server. Il browser lo chiede ogni volta e lo disegna.
+</Callout>
+
+<Say who="assistente">Il browser è come un cameriere: porta la richiesta in cucina e ti porta il piatto. La cucina è il server.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il viaggio in cinque passi">
+Scrivi nella barra del browser un indirizzo come `https://www.labottegadilucia.it` e premi Invio. Ecco che cosa succede, in ordine.
+
+<Flow
+  caption="Dall'indirizzo alla pagina."
+  steps={[
+    { icon: "search", title: "Indirizzo", text: "Il browser legge il nome del sito" },
+    { icon: "globe", title: "Ricerca", text: "Scopre a quale numero corrisponde il server" },
+    { icon: "server", title: "Richiesta", text: "Chiede la pagina a quel server" },
+    { icon: "file", title: "Risposta", text: "Il server manda i file del sito" },
+    { icon: "laptop", title: "Disegno", text: "Il browser mostra la pagina" },
+  ]}
+/>
+
+I **nomi** come `labottegadilucia.it` sono comodi per noi, ma i computer si trovano con dei **numeri**, chiamati indirizzi IP. Un servizio chiamato DNS fa da elenco telefonico: dal nome ricava il numero.
+
+<Callout kind="curiosita">
+Un indirizzo IP assomiglia a `203.0.113.9`. Questi numeri sono quelli veri del web, ma nessuno li impara a memoria: per questo esistono i nomi.
+</Callout>
+
+<Say who="sensei">Cinque passi. Ricordali nell'ordine: indirizzo, ricerca, richiesta, risposta, disegno. Ogni problema di un sito sta in uno di questi passi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una pagina arriva a pezzi">
+Una pagina web non è un file solo. Il primo file che arriva è un documento di testo, scritto in un linguaggio che si chiama **HTML**: dice che cosa c'è nella pagina (titoli, paragrafi, immagini).
+
+Mentre legge l'HTML, il browser si accorge che gli servono altre cose e le chiede al server una per una:
+
+<Layers
+  caption="Una pagina è fatta di più file, che il browser mette insieme."
+  items={[
+    { icon: "file", title: "HTML", text: "Che cosa c'è nella pagina" },
+    { icon: "gear", title: "CSS", text: "Come deve apparire: colori, spazi, caratteri" },
+    { icon: "code", title: "JavaScript", text: "Che cosa fa quando tocchi o clicchi" },
+    { icon: "folder", title: "Immagini e font", text: "Foto, loghi, caratteri speciali" },
+  ]}
+/>
+
+Per questo una pagina con tante foto si carica **più lentamente**: ogni foto è una richiesta in più.
+
+<Say who="assistente">Hai mai visto una pagina comparire prima senza immagini e poi riempirsi? Era il browser che aspettava i pezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia ti chiede un'ultima cosa: «Se un giorno il mio computer si rompe, il sito sparisce?».
+
+<Quiz
+  question="Il sito di Lucia è su un server. Che cosa succede al sito se si rompe il computer di Lucia?"
+  options={[
+    "Niente: il sito resta sul server e resta visibile",
+    "Sparisce, perché il sito è dentro il suo browser",
+    "Resta, ma solo per chi ha lo stesso browser di Lucia",
+    "Sparisce, perché i siti si cancellano senza il computer di chi li ha creati",
+  ]}
+  answer={0}
+  explain="Il sito sta su un server sempre acceso, non sul computer di chi lo ha creato. Lucia lo modifica dal suo computer, ma il sito esiste altrove. Per questo conviene tenere comunque una copia dei file sul proprio computer."
+/>
+
+<Say who="sensei">Un sito vive sul server. Il tuo computer serve per scriverlo e per guardarlo. Tienilo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul viaggio di una pagina web. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-apri-un-sito" pass="4/5" retries={3} />
+
+<Say who="sensei">Se sbagli, rileggi i cinque passi. Poi riprova: le domande cambiano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il sito sta su un server sempre acceso; il tuo browser lo chiede e lo disegna.
+- Il viaggio ha cinque passi: indirizzo, ricerca del numero, richiesta, risposta, disegno.
+- Una pagina arriva a pezzi: HTML, CSS, JavaScript, immagini.
+- Caso chiuso: il sito di Lucia vive su un server, non nel suo computer.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove sta un sito web?", a: "Su un server, un computer sempre acceso collegato a internet" },
+    { q: "Che cosa fa il browser?", a: "Chiede le pagine ai server e le disegna sullo schermo" },
+    { q: "A che cosa serve il DNS?", a: "A trasformare il nome di un sito nel numero (indirizzo IP) del server" },
+    { q: "Perché una pagina con molte foto è più lenta?", a: "Perché ogni foto è una richiesta in più da fare al server" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come è fatto un indirizzo, pezzo per pezzo.</Say>
+</Scene>

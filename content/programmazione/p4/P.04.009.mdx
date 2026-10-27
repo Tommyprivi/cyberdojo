@@ -1,0 +1,186 @@
+---
+id: P.04.009
+course: programmazione
+module: 4
+title: "Percorsi di file e cartelle"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.008]
+objectives:
+  - "Distinguere un percorso assoluto da uno relativo"
+  - "Costruire e analizzare percorsi con pathlib.Path"
+  - "Controllare se un file esiste e creare una cartella"
+verification:
+  type: generated-numeric
+  generator: p04-percorsi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il percorso relativo parta dalla cartella dello script: parte dalla cartella da cui si lancia il programma"
+  - "Scrivere i percorsi Windows con il backslash dentro una stringa normale: \\n diventa un a capo"
+  - "Incollare i percorsi a mano con + invece di usare l'operatore / di Path"
+commands: []
+---
+
+<Scene title="Il file che non si trova">
+Elena sposta il programma in una cartella nuova e lo riavvia: `FileNotFoundError`. Il file `spese.csv` c'è, lo vede nella cartella! Eppure Python dice che non esiste.
+
+Il guaio è il **percorso**: l'indirizzo del file nel computer. Python cerca nel posto dove si trova lui in quel momento, non dove si trova lo script.
+
+La domanda del caso: **dove cerca Python un file quando scrivo solo il suo nome?**
+
+<Say who="sensei">Per Python un file ha un indirizzo, come una casa. Se dai solo il nome, cerca nella via dove si trova in quel momento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Assoluto e relativo">
+<Compare
+  caption="Due modi di indicare un file."
+  left={{ title: "Percorso assoluto", points: ["Parte dalla radice del disco", "Esempio: /home/elena/spese.csv", "Esempio Windows: C:\\Utenti\\elena\\spese.csv", "Indica sempre lo stesso file"] }}
+  right={{ title: "Percorso relativo", points: ["Parte dalla cartella di lavoro corrente", "Esempio: dati/spese.csv", "Più corto e portabile", "Dipende da dove lanci il programma"] }}
+/>
+
+La **cartella di lavoro corrente** è la cartella da cui hai avviato il programma (quella in cui sta il terminale), che non coincide per forza con la cartella dove sta il file `.py`. Per scoprirla:
+
+```python
+from pathlib import Path
+print(Path.cwd())
+```
+
+Quando scrivi `open("spese.csv")` Python cerca in quella cartella. Per questo il programma funzionava in un posto e non in un altro.
+
+<Callout kind="trucco">
+Per un file che sta **accanto allo script** usa `Path(__file__).parent / "spese.csv"`: `__file__` è il percorso dello script, `.parent` è la sua cartella. (Funziona nei file `.py`, non nella console interattiva.)
+</Callout>
+
+<Say who="assistente">Quando un file «non si trova», stampa Path.cwd(): spesso scopri subito che Python guarda altrove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="pathlib">
+Il modulo `pathlib` rappresenta i percorsi come oggetti, e funziona uguale su Windows, Mac e Linux. L'operatore `/` unisce i pezzi.
+
+```python
+from pathlib import Path
+
+cartella = Path("dati")
+file = cartella / "spese.csv"
+print(file)
+print(file.name)
+print(file.stem)
+print(file.suffix)
+print(file.parent)
+```
+
+<Log lines={[
+  "dati/spese.csv",
+  "spese.csv",
+  "spese",
+  ".csv",
+  "dati",
+]} caption="Su Windows il primo risultato sarebbe dati\\spese.csv: pathlib sceglie il separatore giusto." />
+
+- `.name`: nome completo; `.stem`: nome senza estensione; `.suffix`: estensione, con il punto; `.parent`: la cartella che contiene il file.
+
+<Callout kind="attenzione">
+Su Windows un percorso scritto a mano come `"C:\nuovo\spese.csv"` si rompe: `\n` diventa un «a capo» e `\s` non è valido. Scrivilo come stringa **raw**, con una `r` davanti (`r"C:\nuovo\spese.csv"`), oppure usa `/` o `Path`.
+</Callout>
+
+<Say who="sensei">Mai incollare i percorsi a mano con il più. Lascia fare al Path: sa che separatore usa il tuo sistema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controllare e creare">
+Prima di usare un file o una cartella, puoi chiedere a `Path` se ci sono.
+
+```python
+from pathlib import Path
+
+cartella = Path("dati")
+cartella.mkdir(parents=True, exist_ok=True)
+
+file = cartella / "spese.csv"
+if file.exists():
+    print("Il file c'è")
+else:
+    print("Lo creo")
+    file.write_text("data,categoria,importo\n", encoding="utf-8")
+```
+
+- `.exists()`: esiste? `.is_file()`: è un file? `.is_dir()`: è una cartella?
+- `.mkdir(parents=True, exist_ok=True)` crea la cartella (e le cartelle superiori che mancano) **senza errore** se c'è già.
+- `.read_text(encoding="utf-8")` e `.write_text(testo, encoding="utf-8")` leggono e scrivono un file piccolo in una sola riga.
+- `Path("dati").glob("*.csv")` elenca i file `.csv` di una cartella.
+
+<Flow
+  caption="Il percorso sicuro: prima la cartella, poi il file."
+  steps={[
+    { icon: "folder", title: "Costruisci", text: "Path(\"dati\") / \"spese.csv\"" },
+    { icon: "search", title: "Controlla", text: "exists() dice se c'è già" },
+    { icon: "file", title: "Usa", text: "open(file) accetta anche un Path" },
+  ]}
+/>
+
+<Say who="assistente">Anche open accetta un Path al posto del testo: puoi usare quello che costruisci direttamente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena lancia il programma da una cartella diversa da quella dello script.
+
+<Quiz
+  question="Da quale cartella parte un percorso relativo come dati/spese.csv in un programma Python?"
+  options={[
+    "Dalla cartella di lavoro corrente, cioè da dove è stato lanciato il programma",
+    "Sempre dalla cartella in cui si trova il file .py",
+    "Sempre dalla radice del disco",
+    "Dalla cartella personale dell'utente",
+  ]}
+  answer={0}
+  explain="Un percorso relativo parte dalla cartella di lavoro corrente, quella da cui si avvia il programma, che può essere diversa da quella dello script. La radice del disco serve ai percorsi assoluti; la cartella personale non è usata automaticamente."
+/>
+
+<Say who="sensei">Se vuoi un file accanto allo script, ancoralo allo script con __file__. Se non lo fai, dipende da dove parti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su percorsi e pathlib. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-percorsi" pass="4/5" retries={3} />
+
+<Say who="sensei">Assoluto o relativo, cartella corrente, Path. Con questi tre concetti non ti perdi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un percorso assoluto parte dalla radice del disco; uno relativo parte dalla cartella di lavoro corrente.
+- pathlib.Path costruisce percorsi con / e offre name, stem, suffix, parent ed exists.
+- mkdir(parents=True, exist_ok=True) crea una cartella senza errori se esiste già.
+- Caso chiuso: il file di Elena non si trovava perché il programma partiva da un'altra cartella; con Path(__file__).parent trova sempre spese.csv.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove parte un percorso relativo?", a: "Dalla cartella di lavoro corrente (Path.cwd())" },
+    { q: "Che cosa restituisce .suffix per spese.csv?", a: "L'estensione, cioè .csv" },
+    { q: "Come si unisce una cartella a un nome di file con pathlib?", a: "Con l'operatore /, per esempio Path(\"dati\") / \"spese.csv\"" },
+    { q: "A che cosa serve exist_ok=True in mkdir?", a: "A non dare errore se la cartella esiste già" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: un progetto che mette insieme tutto, il registro delle spese su file.</Say>
+</Scene>

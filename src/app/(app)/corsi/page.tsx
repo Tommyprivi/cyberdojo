@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   description: "I due corsi di CyberDojo: Fondamenta IT, Linux e Reti, e Cybersecurity. Moduli, argomenti e obiettivi.",
 };
 
-const BLURB: Record<CourseId, { lead: string; for: string }> = {
+/** Presentazioni dei corsi storici; i corsi nuovi portano la loro in courses-new.ts (campo blurb). */
+const BLURB: Partial<Record<CourseId, { lead: string; for: string }>> = {
   T: {
     lead: "I mercati e il trading spiegati con Python: dati, indicatori, backtest, rischio e costi. Si impara a pensare in modo critico, su dati storici e ambienti demo: nessun soldo vero, nessuna promessa di guadagno. Non è consulenza finanziaria.",
     for: "Per chi sa già un po' di Python o ha finito il modulo Python di Fondamenta.",
@@ -60,8 +61,8 @@ export default function Corsi() {
               <div className="grid content-center gap-3 p-6 lg:p-8">
                 <p className="font-mono text-xs font-bold uppercase tracking-widest text-muted">Corso {COURSES.indexOf(c) + 1}</p>
                 <h2 id={`c-${c.id}`} className="font-display text-3xl font-bold">{c.title}</h2>
-                <p className="text-muted">{BLURB[c.id].lead}</p>
-                <p className="font-semibold">{BLURB[c.id].for}</p>
+                <p className="text-muted">{(BLURB[c.id] ?? c.blurb)?.lead}</p>
+                <p className="font-semibold">{(BLURB[c.id] ?? c.blurb)?.for}</p>
                 <p className="font-mono text-sm text-muted">{total} moduli · {available} con lezioni pronte</p>
               </div>
             </div>

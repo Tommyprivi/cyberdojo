@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { clearOfflineLessons } from "@/lib/offline/client";
 import { displayName, firstName } from "@/lib/display-name";
 import { LogOutIcon } from "./nav-icons";
 
 function useSignOut() {
   const router = useRouter();
   return async () => {
+    await clearOfflineLessons(); // le lezioni salvate sono private: via dal dispositivo
     await authClient.signOut();
     router.push("/");
     router.refresh();

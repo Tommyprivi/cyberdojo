@@ -1,0 +1,171 @@
+---
+id: P.03.007
+course: programmazione
+module: 3
+title: "Spezzare un programma in funzioni"
+belt: bianca
+duration_min: 9
+prerequisites: [P.03.006]
+objectives:
+  - "Scomporre un programma in funzioni piccole, ciascuna con un compito solo"
+  - "Scrivere una funzione main che coordina le altre"
+  - "Spiegare a che cosa serve il controllo sul nome del file"
+verification:
+  type: generated-numeric
+  generator: p03-spezzare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere una funzione enorme che fa tutto, dall'input al risultato"
+  - "Mischiare nella stessa funzione calcolo e stampa, così non si può riusare il calcolo"
+  - "Dimenticare di chiamare main alla fine del file"
+commands: []
+---
+
+<Scene title="Il programma da cinquanta righe">
+Elena scrive il programma che calcola la media dei voti dei suoi tre compagni di squadra a un corso di primo soccorso. Funziona, ma è una lista unica di righe: input, calcolo, giudizio, stampa, tutto mischiato. Quando vuole cambiare il giudizio, deve rileggere tutto per capire dove metterci le mani.
+
+La domanda del caso: **come si riordina un programma lungo, così che ogni parte sia facile da trovare e da cambiare?**
+
+<Say who="sensei">Un programma lungo è come una stanza disordinata. Non servono più mobili: serve mettere ogni cosa nel suo cassetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un compito, una funzione">
+La tecnica è questa: guarda che cosa fa il programma, scrivi la lista dei compiti, e fai una funzione per ciascuno.
+
+<Flow
+  caption="Dalla lista dei compiti alle funzioni."
+  steps={[
+    { icon: "list", title: "Elenca i compiti", text: "Chiedere, calcolare, giudicare, mostrare" },
+    { icon: "code", title: "Una funzione ciascuno", text: "Con un nome che dice cosa fa" },
+    { icon: "bolt", title: "Una funzione guida", text: "Le chiama nell'ordine giusto" },
+  ]}
+/>
+
+I compiti del programma di Elena sono tre: chiedere un voto, calcolare la media, dare un giudizio. Una buona funzione fa **una cosa sola** e ha un nome che la descrive. In più, separa il **calcolo** dalla **stampa**: una funzione che calcola e restituisce si può riusare ovunque, una che stampa sì o no.
+
+<Callout kind="regola">
+Tieni separati **calcolare** e **mostrare**. Le funzioni che calcolano usano `return`; solo la parte finale del programma usa `print`.
+</Callout>
+
+<Say who="assistente">Se a volte mi chiedo se una funzione fa troppo, provo a descriverla in una frase. Se serve un «e», probabilmente sono due funzioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le funzioni piccole">
+Ecco le tre funzioni di Elena:
+
+```python
+def chiedi_numero(domanda):
+    return float(input(domanda))
+
+def media(a, b, c):
+    return (a + b + c) / 3
+
+def giudizio(voto):
+    if voto >= 6:
+        return "sufficiente"
+    return "insufficiente"
+```
+
+Ognuna fa una cosa:
+- `chiedi_numero` legge un valore dall'utente e lo trasforma in numero (`float` converte il testo in numero decimale).
+- `media` calcola la media di tre numeri: nessuna stampa.
+- `giudizio` restituisce una parola in base al voto.
+
+Nota che `giudizio` non ha bisogno di `else`: se la condizione è vera, `return` chiude la funzione; altrimenti si passa alla riga dopo.
+
+<Say who="sensei">Funzioni brevi, nomi chiari. Se riesci a leggerle a voce alta come una frase, sei sulla strada giusta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La funzione main">
+Resta da coordinare tutto. Per convenzione si scrive una funzione chiamata `main` (in inglese «principale») che chiama le altre nell'ordine giusto.
+
+```python
+def main():
+    v1 = chiedi_numero("Voto 1: ")
+    v2 = chiedi_numero("Voto 2: ")
+    v3 = chiedi_numero("Voto 3: ")
+    m = media(v1, v2, v3)
+    print("Media:", round(m, 1), "-", giudizio(m))
+
+main()
+```
+
+<Log lines={[
+  "Voto 1: 6",
+  "Voto 2: 7",
+  "Voto 3: 8",
+  "Media: 7.0 - sufficiente",
+]} caption="Esempio di esecuzione con i voti 6, 7 e 8." />
+
+L'ultima riga, `main()`, fa partire tutto. Leggendo solo `main` capisci cosa fa il programma, senza guardare i dettagli.
+
+<Callout kind="curiosita">
+Nei file Python si trova spesso la riga `if __name__ == "__main__":` seguita da `main()`. Significa «esegui main solo se questo file è stato lanciato direttamente, non se un altro programma lo sta importando». Lo capirai meglio con i moduli, tra due lezioni.
+</Callout>
+
+<Say who="assistente">`main` è la scaletta: elenca i passi, senza spiegarli. I dettagli stanno nelle altre funzioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale funzione è scritta meglio, secondo il principio «un compito, una funzione»?"
+  options={[
+    "calcola_media(a, b, c), che restituisce la media",
+    "fai_tutto(), che chiede i voti, calcola la media e stampa il giudizio",
+    "media_e_stampa(a, b, c), che calcola e subito stampa la media",
+    "programma(), che contiene l'intero codice del programma",
+  ]}
+  answer={0}
+  explain="calcola_media fa una cosa sola e restituisce il risultato, quindi si può riusare in altri punti. fai_tutto e programma mettono insieme troppi compiti, mentre media_e_stampa mischia calcolo e stampa e non permette di usare la media senza mostrarla."
+/>
+
+<Say who="sensei">Se una funzione ha nel nome «e», di solito sono due funzioni travestite da una.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come suddividere un programma. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-spezzare" pass="4/5" retries={3} />
+
+<Say who="sensei">Pezzi piccoli, nomi chiari, una guida che li chiama. Questo è il programma ben fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per riordinare un programma elenca i compiti e fai una funzione per ciascuno.
+- Una buona funzione fa una cosa sola e ha un nome che la descrive.
+- Calcolo e stampa si tengono separati: il calcolo restituisce con return.
+- La funzione `main` chiama le altre nell'ordine giusto e si avvia con `main()`.
+- Caso chiuso: Elena divide il programma dei voti in `chiedi_numero`, `media`, `giudizio` e `main`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il principio per scrivere funzioni piccole?", a: "Ogni funzione fa una cosa sola" },
+    { q: "Perché separare calcolo e stampa?", a: "Così il calcolo si può riusare anche senza mostrarlo" },
+    { q: "A che cosa serve la funzione main?", a: "A chiamare le altre funzioni nell'ordine giusto" },
+    { q: "Come si capisce se una funzione fa troppo?", a: "Se per descriverla serve un «e» tra due compiti" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i moduli, cioè il codice scritto da altri che puoi usare.</Say>
+</Scene>

@@ -16,10 +16,10 @@ export function ConsentBanner() {
       role="dialog"
       aria-modal="false"
       aria-labelledby="cookie-banner-title"
-      className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-foreground bg-surface px-4 py-4 shadow-lg"
+      className="consent-banner fixed inset-x-0 bottom-0 z-40 border-t-2 border-foreground bg-surface px-4 py-4 shadow-lg"
     >
       <div className="mx-auto grid max-w-3xl gap-3">
-        <h2 id="cookie-banner-title" className="font-display text-lg font-bold">
+        <h2 id="cookie-banner-title" className="consent-title font-display text-lg font-bold">
           Due cookie tecnici, nient&apos;altro
         </h2>
         <p className="text-sm text-muted">

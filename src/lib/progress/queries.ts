@@ -9,6 +9,8 @@ export type MemberData = {
   profile: MemberProfile | null;
   /** ID delle lezioni con verifica superata. */
   completed: Set<string>;
+  /** ID delle lezioni sbloccate con la prova di padronanza (nessun XP). */
+  mastered: Set<string>;
   /** Quando ogni lezione è stata completata (per l'obiettivo giornaliero). */
   completedAt: Map<string, Date>;
   xp: number;
@@ -27,6 +29,11 @@ export async function getMemberData(userId: string): Promise<MemberData> {
       .from(schema.lessonProgress)
       .where(and(eq(schema.lessonProgress.userId, userId), eq(schema.lessonProgress.status, "completata")));
 
+    const masteredRows = await tx
+      .select({ lessonId: schema.lessonProgress.lessonId })
+      .from(schema.lessonProgress)
+      .where(and(eq(schema.lessonProgress.userId, userId), eq(schema.lessonProgress.status, "padroneggiata")));
+
     const [{ total }] = await tx
       .select({ total: sql<number>`coalesce(sum(${schema.xpEvents.amount}), 0)::int` })
       .from(schema.xpEvents)
@@ -37,6 +44,7 @@ export async function getMemberData(userId: string): Promise<MemberData> {
     return {
       profile: profile ?? null,
       completed: new Set(done.map((d) => d.lessonId)),
+      mastered: new Set(masteredRows.map((d) => d.lessonId)),
       completedAt: new Map(done.filter((d) => d.completedAt).map((d) => [d.lessonId, d.completedAt as Date])),
       xp: total,
       streak: streakRow

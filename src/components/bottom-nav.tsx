@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { APP_NAV, isActive, NAV_ITEMS } from "./nav-items";
 
 /**
- * Barra in basso, come in un'app: attaccata al bordo, quattro voci con icone grandi, area sicura
+ * Barra in basso, come in un'app: attaccata al bordo, cinque voci con icone grandi, area sicura
  * del telefono rispettata (serve viewport-fit=cover, impostato nel layout). Visibile sotto i 1024px.
  */
 export function BottomNav() {
@@ -13,9 +13,9 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Navigazione principale"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="app-bottom-nav fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
-      <ul className="mx-auto grid max-w-xl grid-cols-4">
+      <ul className="mx-auto grid max-w-xl grid-cols-5">
         {APP_NAV.map(({ href, label, Icon }) => {
           const active = isActive(pathname, href);
           return (

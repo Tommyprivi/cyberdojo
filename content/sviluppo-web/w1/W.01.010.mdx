@@ -1,0 +1,173 @@
+---
+id: W.01.010
+course: sviluppo-web
+module: 1
+title: "Come si impara a programmare: errori, pazienza e ricerca"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.009]
+objectives:
+  - "Leggere un messaggio d'errore come un indizio e non come un rimprovero"
+  - "Cercare aiuto in modo efficace e descrivere un problema in modo che altri possano aiutare"
+  - "Usare un assistente di intelligenza artificiale senza smettere di capire"
+verification:
+  type: generated-numeric
+  generator: w01-imparare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che i bravi programmatori non sbaglino: sbagliano di continuo e sanno trovare l'errore"
+  - "Copiare una soluzione trovata online senza capirla"
+  - "Chiedere aiuto scrivendo solo «non funziona» senza dire che cosa si è provato"
+commands: []
+---
+
+<Scene title="Il giorno in cui niente funziona">
+Dopo qualche giorno Lucia ti scrive scoraggiata: «La pagina non si vede, ho riletto dieci volte il codice e non trovo niente. Forse non fa per me».
+
+Succede a **tutti**, e succede ancora dopo vent'anni di mestiere. La differenza tra chi smette e chi continua non è il talento: è il **metodo** con cui si affrontano gli errori.
+
+La domanda del caso: **che cosa si fa quando un programma non funziona?**
+
+<Say who="sensei">Un programmatore passa più tempo a cercare errori che a scrivere codice nuovo. Non è un difetto del mestiere: è il mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'errore è un indizio">
+Un messaggio d'errore non è un rimprovero: è **un indizio** che il computer ti lascia. Spesso dice *che cosa* non va e *dove*.
+
+<Log lines={[
+  "Uncaught ReferenceError: nomee is not defined",
+  "    at script.js:3:13",
+]} caption="Un errore in console: «nomee non è definito», alla riga 3 del file script.js." />
+
+Come si legge:
+1. **Il tipo e il messaggio**: «nomee non è definito». Forse hai scritto male un nome.
+2. **Il posto**: il file `script.js`, riga 3. Vai lì.
+3. **Il sospetto**: una lettera in più. Correggi e riprova.
+
+<Callout kind="regola">
+Leggi l'errore **per intero**, dall'inizio. Quasi sempre contiene già la risposta, scritta in inglese semplice.
+</Callout>
+
+<Say who="assistente">Se non capisci una parola, traducila. Dopo un po' conoscerai le dieci parole che usano quasi tutti gli errori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un metodo per trovare i guasti">
+Quando non sai da dove cominciare, segui questi passi.
+
+<Flow
+  caption="Il metodo per trovare un errore."
+  steps={[
+    { icon: "eye", title: "Osserva", text: "Che cosa succede davvero?" },
+    { icon: "bug", title: "Restringi", text: "Dove può essere il problema?" },
+    { icon: "gear", title: "Prova", text: "Una modifica alla volta" },
+    { icon: "check", title: "Controlla", text: "È sparito? Perché?" },
+  ]}
+/>
+
+Un trucco usato da tutti: **spiegare il problema ad alta voce** a qualcuno, o anche a un oggetto, come una paperella di gomma. Spesso mentre lo racconti ti accorgi dell'errore. Si chiama *rubber duck debugging*.
+
+<Callout kind="trucco">
+Se sei fermo da più di 20 minuti, alzati, bevi un bicchiere d'acqua e torna dopo. Il cervello riposato vede cose che prima non vedeva.
+</Callout>
+
+<Say who="sensei">Sbagliare non ti rende un cattivo programmatore. Non capire perché hai sbagliato, sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cercare aiuto bene">
+Nessuno ricorda tutto: i professionisti **cercano** continuamente. Qualche regola:
+
+- Cerca con **parole precise**: il linguaggio, il tipo di errore e il messaggio copiato, per esempio «JavaScript ReferenceError is not defined».
+- Preferisci le **documentazioni ufficiali**. Per il web, una fonte gratuita e affidabile sono gli **MDN Web Docs**, curati da Mozilla e da una comunità di esperti.
+- Se chiedi aiuto a una persona o a un forum, racconta **che cosa volevi ottenere, che cosa hai provato e che cosa è successo**, e mostra il codice breve che causa il problema.
+
+<Compare
+  caption="Come chiedere aiuto."
+  left={{ title: "Poco utile", points: ["«Non funziona, aiuto»", "Nessun codice", "Nessun messaggio d'errore"] }}
+  right={{ title: "Utile", points: ["Cosa volevo ottenere", "Cosa ho provato e cosa è successo", "Il codice breve e il messaggio d'errore"] }}
+/>
+
+<Say who="assistente">Una domanda ben scritta si risolve in metà tempo. Spesso scrivendola trovi già la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'intelligenza artificiale come aiuto">
+Gli assistenti di intelligenza artificiale possono spiegare un errore, proporre un esempio o rivedere il tuo codice. Sono utili, ma **sbagliano**: possono inventare funzioni che non esistono o dare soluzioni che sembrano giuste e non lo sono.
+
+Usali così:
+- chiedi una **spiegazione**, non solo la soluzione;
+- **prova** sempre il codice e controllalo con la documentazione;
+- se non capisci una riga, chiedi di spiegartela.
+
+<Callout kind="attenzione">
+Se copi codice che non capisci, il giorno in cui si rompe non saprai ripararlo. E nei compiti e nelle verifiche perderai proprio ciò che dovevi imparare.
+</Callout>
+
+<Say who="sensei">Un assistente è un compagno di studi, non un sostituto del tuo cervello. Se non capisci, non hai ancora finito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+La console di Lucia mostra: «Uncaught ReferenceError: titolo is not defined, script.js riga 5».
+
+<Quiz
+  question="Qual è il primo passo giusto?"
+  options={[
+    "Aprire script.js alla riga 5 e cercare dove compare «titolo», controllando se è scritto bene",
+    "Cancellare tutto il codice e ricominciare",
+    "Cambiare browser",
+    "Aspettare: gli errori di solito passano da soli",
+  ]}
+  answer={0}
+  explain="L'errore indica il file, la riga e il nome che non esiste. Si va lì e si controlla se il nome è scritto uguale a come è stato creato. Ricominciare da capo o cambiare browser non risolve un errore di scrittura."
+/>
+
+<Say who="sensei">Leggi, vai nel posto indicato, cambia una cosa, riprova. Il metodo è sempre questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su errori, ricerca e pazienza. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-imparare" pass="4/5" retries={3} />
+
+<Say who="sensei">Se sei arrivato qui, hai già fatto una cosa che molti non fanno: continuare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un errore è un indizio: leggilo per intero, dice che cosa non va e dove.
+- Il metodo: osserva, restringi, prova una cosa alla volta, controlla.
+- Si cerca con parole precise, si preferiscono le documentazioni ufficiali (come MDN) e si chiede aiuto raccontando che cosa si è provato.
+- L'intelligenza artificiale aiuta se la si usa per capire, non per copiare.
+- Caso chiuso: l'errore di Lucia era una lettera sbagliata in un nome, trovata leggendo il messaggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un messaggio d'errore?", a: "Un indizio: dice che cosa non va e spesso dove" },
+    { q: "Quante cose si cambiano per volta quando si cerca un errore?", a: "Una sola" },
+    { q: "Che cosa sono gli MDN Web Docs?", a: "Una documentazione gratuita e affidabile su HTML, CSS e JavaScript" },
+    { q: "Come si usa bene un assistente di IA?", a: "Per capire, provando e controllando il codice invece di copiarlo" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Hai capito come funziona il web e hai la tua prima pagina. Nel prossimo modulo la riempi con l'HTML.</Say>
+</Scene>

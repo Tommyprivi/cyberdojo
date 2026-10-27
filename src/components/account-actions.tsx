@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { deleteMyAccount, exportMyData } from "@/app/actions/profile";
 import { authClient } from "@/lib/auth-client";
+import { clearOfflineLessons } from "@/lib/offline/client";
 
 /** Diritti sui dati (GDPR): scaricare tutto ciò che sappiamo di te, oppure cancellare l'account. */
 export function AccountActions({ email }: { email: string }) {
@@ -37,6 +38,7 @@ export function AccountActions({ email }: { email: string }) {
       setMessage(r.error);
       return setBusy(false);
     }
+    await clearOfflineLessons();
     await authClient.signOut().catch(() => {});
     router.push("/");
     router.refresh();

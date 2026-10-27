@@ -1,0 +1,163 @@
+---
+id: W.04.004
+course: sviluppo-web
+module: 4
+title: "Caratteri, dimensioni e interlinea"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.003]
+objectives:
+  - "Scegliere un carattere con font-family e una lista di alternative"
+  - "Cambiare dimensione, spessore e allineamento del testo"
+  - "Regolare l'interlinea con line-height per rendere il testo leggibile"
+verification:
+  type: generated-numeric
+  generator: w04-caratteri
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Indicare un solo carattere senza alternative: se non è installato sul dispositivo, il browser ne sceglie uno a caso"
+  - "Scrivere line-height con un'unità (per esempio 1.5px) invece di un numero semplice come 1.5"
+  - "Dimenticare le virgolette attorno ai nomi di carattere con spazi, come «Times New Roman»"
+commands: []
+---
+
+<Scene title="Il testo che stanca">
+Lucia ha colorato la pagina, ma chi legge il programma dei corsi si lamenta: il testo è piccolo, le righe sono appiccicate e il carattere è quello standard del browser.
+
+Un testo si legge bene o male in base a poche scelte: il **carattere**, la **dimensione** e lo **spazio tra le righe**.
+
+La domanda del caso: **come si rende un testo piacevole da leggere?**
+
+<Say who="sensei">Un buon testo quasi non si nota. Un testo cattivo lo nota chiunque, e se ne va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il carattere">
+La proprietà `font-family` sceglie il carattere. Si scrive **una lista**, in ordine di preferenza, che finisce con una **famiglia generica**.
+
+```css
+body {
+  font-family: Georgia, "Times New Roman", serif;
+}
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+```
+
+Perché una lista? Il carattere deve essere presente sul dispositivo di chi guarda la pagina. Se il primo non c'è, il browser prova il secondo, poi il terzo, e alla fine usa la famiglia generica:
+
+- `serif`: caratteri con le grazie (le piccole code), come il Times.
+- `sans-serif`: senza grazie, più lineari, come Arial.
+- `monospace`: tutte le lettere hanno la stessa larghezza, come nel codice.
+
+I nomi con **spazi** vanno tra virgolette: `"Times New Roman"`.
+
+<Say who="assistente">Il nome generico finale è la rete di sicurezza: non può mancare in nessun browser.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dimensione, spessore, allineamento">
+```css
+p {
+  font-size: 18px;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+}
+```
+
+- `font-size` è la dimensione. Nei browser il testo normale è alto 16 pixel in modo predefinito: scendere molto sotto questo valore rende la lettura faticosa, soprattutto da telefono.
+- `font-weight` è lo spessore: `normal` (400), `bold` (700), oppure un numero da 100 a 900.
+- `font-style: italic` rende il testo corsivo.
+- `text-align` allinea il testo: `left` (sinistra), `center`, `right`, `justify` (giustificato). Per paragrafi lunghi è meglio `left`: il giustificato lascia spazi irregolari.
+- `text-decoration: none` toglie la sottolineatura, per esempio dai link.
+
+<Callout kind="regola">
+Non usare i titoli `h1`…`h6` solo per ingrandire il testo, e non usare `p` con la dimensione grande per fingere un titolo: la scelta del tag è questione di **significato** (HTML), la dimensione è questione di **aspetto** (CSS).
+</Callout>
+
+<Say who="sensei">Il tag dice che cosa è. Il CSS dice come appare. Non scambiarli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'interlinea">
+`line-height` è l'altezza di ogni riga: lo spazio tra una riga e l'altra. Un valore troppo basso rende il testo un blocco compatto e faticoso.
+
+```css
+p {
+  font-size: 18px;
+  line-height: 1.5;
+}
+```
+
+Il numero senza unità è un **moltiplicatore** della dimensione del carattere: con `font-size: 18px` e `line-height: 1.5` ogni riga è alta 27 px (18 per 1,5). Se cambi la dimensione, l'interlinea si adegua da sola. Per i paragrafi si usano di solito valori tra 1,4 e 1,6.
+
+<Compare
+  caption="Stesso testo, interlinea diversa."
+  left={{ title: "line-height: 1", points: ["Righe stipate", "Le lettere si toccano quasi", "Stanca presto"] }}
+  right={{ title: "line-height: 1.5", points: ["Righe ariose", "Facile seguire la riga", "Lettura comoda"] }}
+/>
+
+<Say who="assistente">Quando ti sembra che un testo non si legga bene, prima di cambiare carattere prova a dare più interlinea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale regola dà ai paragrafi una dimensione di 18 pixel e un'interlinea di una volta e mezza?"
+  options={[
+    "p { font-size: 18px; line-height: 1.5; }",
+    "p { font-size: 1.5; line-height: 18px; }",
+    "p { font-family: 18px; line-height: 1.5px; }",
+    "p { text-size: 18px; line-height: 150; }",
+  ]}
+  answer={0}
+  explain="font-size imposta la dimensione, line-height con un numero semplice è un moltiplicatore. La seconda inverte i valori; font-family serve per il carattere e 1.5px sarebbe un'altezza fissa quasi nulla; text-size non esiste in CSS, e 150 farebbe righe enormi."
+/>
+
+<Say who="sensei">font-size per la dimensione, line-height per le righe, font-family per il carattere. Tre nomi da non confondere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su caratteri e testo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-caratteri" pass="4/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi, ricorda: la lista di caratteri finisce sempre con un nome generico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `font-family` accetta una lista di caratteri in ordine di preferenza, chiusa da una famiglia generica come `serif`, `sans-serif` o `monospace`.
+- `font-size`, `font-weight`, `font-style` e `text-align` cambiano dimensione, spessore, corsivo e allineamento.
+- `line-height` con un numero senza unità (1,4-1,6) è un moltiplicatore e rende il testo leggibile.
+- La dimensione si cambia con il CSS; il significato di un titolo si indica con il tag giusto.
+- Caso chiuso: Lucia ha portato il testo a 18 px con interlinea 1,5 e ora nessuno si lamenta più.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve la lista in font-family?", a: "A dare alternative nel caso il primo carattere non sia presente sul dispositivo" },
+    { q: "Che cosa significa line-height: 1.5?", a: "L'altezza di ogni riga è una volta e mezza la dimensione del carattere" },
+    { q: "Qual è la dimensione predefinita del testo nei browser?", a: "16 pixel" },
+    { q: "Come si scrive un nome di carattere con spazi?", a: "Tra virgolette, per esempio \"Times New Roman\"" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il box model, il segreto per capire spazi e misure.</Say>
+</Scene>

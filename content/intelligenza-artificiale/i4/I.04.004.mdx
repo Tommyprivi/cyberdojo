@@ -1,0 +1,145 @@
+---
+id: I.04.004
+course: intelligenza-artificiale
+module: 4
+title: "Riconoscere un contenuto creato dall'IA"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.003]
+objectives:
+  - "Elencare alcuni segnali che possono far sospettare un'immagine, un testo o una voce creati dall'IA"
+  - "Spiegare perché nessun segnale da solo è una prova"
+  - "Usare i metodi che funzionano meglio: fonte, ricerca dell'immagine, etichette e credenziali"
+verification:
+  type: generated-numeric
+  generator: i04-riconoscere
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che basti guardare le mani o i dettagli: i modelli migliorano e questi difetti spariscono"
+  - "Fidarsi ciecamente dei programmi che dicono «fatto dall'IA»: possono sbagliare in entrambi i sensi"
+  - "Concludere «è finto» perché sembra strano: anche le foto vere possono sembrare strane"
+commands: []
+---
+
+<Scene title="La foto del ponte">
+In classe circola una foto: un ponte che crolla in una città vicina, con tanta gente. Marta la trova convincente. Ma Sara, la sua compagna, nota che le persone sullo sfondo hanno forme strane e che sul cartello non si legge una parola sensata.
+
+Marta chiede: «Allora è finta?». Sara risponde: «Forse. Ma bisogna controllare, non basta il sospetto».
+
+La domanda del caso: **come si riconosce un contenuto creato dall'IA, e quanto ci si può fidare dei segnali?**
+
+<Say who="sensei">Esistono indizi, non certezze. Chi dice di avere un metodo sicuro al cento per cento, sta sbagliando o vendendo qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli indizi che si vedono e si sentono">
+Alcuni segnali possono insospettire. **Nessuno basta da solo.**
+
+<Layers
+  caption="Indizi da cercare."
+  items={[
+    { icon: "eye", title: "Immagini", text: "Dita o denti strani, testi illeggibili, ombre e riflessi incoerenti" },
+    { icon: "book", title: "Testi", text: "Tono generico, frasi tutte uguali, fonti o citazioni che non esistono" },
+    { icon: "bell", title: "Voci", text: "Ritmo troppo regolare, respiri assenti, accento che cambia" },
+    { icon: "user", title: "Video", text: "Bocca non sincronizzata, battito di ciglia strano, bordi del volto sfocati" },
+  ]}
+/>
+
+Il problema è che i modelli migliorano in fretta: i difetti di oggi spariscono tra pochi mesi. E le foto vere possono avere errori simili (compressione, mosso, luci strane). Un indizio fa nascere un dubbio: il dubbio va **verificato**.
+
+<Say who="assistente">Gli indizi sono come un campanello: ti dicono di guardare meglio, non ti dicono cosa è successo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Metodi che funzionano meglio">
+Più degli indizi, funzionano i controlli sul **contesto**.
+
+1. **La fonte.** Chi ha pubblicato per primo? Un giornale riconoscibile, un testimone, o un profilo anonimo nato da poco?
+2. **La ricerca inversa dell'immagine.** Molti motori di ricerca permettono di caricare una foto e vedere dove è già comparsa: spesso scopri che è vecchia o di un altro luogo.
+3. **Le conferme.** Se un ponte crolla davvero, lo scrivono giornali, autorità, testimoni con altre foto. Se solo un post lo dice, è un campanello.
+4. **Le etichette e le credenziali.** Alcune piattaforme e alcuni strumenti marcano i contenuti creati con l'IA. Esistono anche standard come le **Content Credentials** (dello standard C2PA): una specie di etichetta firmata dentro il file che dice come è stato creato. Quando ci sono aiutano, ma possono mancare o essere tolte.
+
+<Callout kind="regola">
+L'assenza di un'etichetta non prova che un contenuto sia vero. La presenza di un indizio non prova che sia falso. La prova viene dalla fonte e dalle conferme.
+</Callout>
+
+<Say who="sensei">Prima il contesto, poi i dettagli. Chi guarda solo i dettagli si fa ingannare dal falso ben fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché i rilevatori non bastano">
+Esistono programmi che dichiarano una probabilità «questo è creato dall'IA». Vanno usati con grande prudenza.
+
+<Compare
+  caption="Un rilevatore dice una probabilità, non la verità."
+  left={{ title: "Quando può aiutare", points: ["Come indizio in più", "Insieme a fonte e conferme", "Su contenuti con marcature tecniche"] }}
+  right={{ title: "Perché può sbagliare", points: ["Falsi positivi: accusa un contenuto vero", "Falsi negativi: non vede un falso", "Ogni nuovo modello può ingannarlo"] }}
+/>
+
+Per i testi il rischio è doppio: alcuni testi scritti da persone vengono scambiati per testi dell'IA (come visto nella lezione sulla scuola). Per questo il risultato non va mai usato per accusare qualcuno.
+
+<Say who="assistente">Il caso del ponte si risolve con una ricerca e due notizie serie, non con un programma magico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un post anonimo mostra una foto di un famoso monumento con un cartello dalle scritte senza senso.
+
+<Quiz
+  question="Che cosa dà la risposta più solida sul fatto che la foto sia vera o creata dall'IA?"
+  options={[
+    "Cercare la fonte originale e conferme da fonti serie, aiutandosi con la ricerca inversa dell'immagine",
+    "Contare quante dita ha una persona nella foto",
+    "Fidarsi del numero di like del post",
+    "Chiedere a un rilevatore e fidarsi del risultato senza altro",
+  ]}
+  answer={0}
+  explain="Fonte, conferme e ricerca inversa danno prove sul contesto. Le dita sono un indizio debole che sparisce con i modelli nuovi, i like non provano nulla e un rilevatore da solo può sbagliare in entrambi i sensi."
+/>
+
+<Say who="sensei">Un indizio ti fa partire. Le prove ti fanno arrivare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come riconoscere i contenuti creati dall'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-riconoscere" pass="4/5" retries={3} />
+
+<Say who="sensei">Indizi, poi fonte, poi conferme. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Alcuni indizi (dettagli strani, testi illeggibili, voci troppo regolari) possono insospettire, ma nessuno è una prova.
+- I difetti dei modelli spariscono in fretta, e anche le foto vere possono avere difetti.
+- Funzionano meglio fonte, ricerca inversa, conferme e, quando ci sono, etichette e credenziali come C2PA.
+- I rilevatori danno probabilità, non verità, e possono sbagliare.
+- Caso chiuso: la foto del ponte non aveva nessuna fonte né conferma di giornali, e il dubbio di Sara era giusto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Un indizio strano in una foto basta a dire che è creata dall'IA?", a: "No: è solo un campanello, va verificato" },
+    { q: "Che cosa mostra la ricerca inversa di un'immagine?", a: "Dove la stessa immagine è già comparsa, utile per scoprire se è vecchia o di un altro luogo" },
+    { q: "Che cosa sono le Content Credentials (C2PA)?", a: "Etichette firmate nel file che dichiarano come il contenuto è stato creato" },
+    { q: "Perché un rilevatore di IA non va usato per accusare?", a: "Perché può dare falsi positivi e falsi negativi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: chi possiede ciò che l'IA crea, e cosa dice il diritto d'autore.</Say>
+</Scene>

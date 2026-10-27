@@ -1,0 +1,140 @@
+---
+id: M.02.006
+course: mondo-digitale
+module: 2
+title: "I segnalibri e la cronologia"
+belt: bianca
+duration_min: 8
+prerequisites: [M.02.005]
+objectives:
+  - "Salvare una pagina nei preferiti (segnalibri) e ritrovarla"
+  - "Spiegare che cos'è la cronologia e come usarla per ritrovare una pagina"
+  - "Dire che cosa fa e che cosa non fa la navigazione privata"
+verification:
+  type: generated-numeric
+  generator: m02-segnalibri-cronologia
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che la navigazione privata renda invisibili a siti, scuola, lavoro o provider"
+  - "Cancellare la cronologia pensando di cancellare ogni traccia online"
+  - "Non uscire dai propri account su un computer che usano anche altri"
+commands: []
+---
+
+<Scene title="La ricetta sparita">
+Il nonno Aldo ha trovato ieri una ricetta di torta di mele perfetta. Oggi vuole rifarla, ma non ricorda né il sito né le parole della ricerca. «Era su una pagina con una foto di mele», dice.
+
+Marta apre il browser e in due click la ritrova. Come? Con la **cronologia**. E d'ora in poi, con un **segnalibro**.
+
+La domanda del caso: **come si ritrova una pagina vista tempo fa?**
+
+<Say who="sensei">Il browser ha una memoria. Basta sapere dove la tiene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I segnalibri">
+Un **segnalibro** (o **preferito**) è un collegamento a una pagina che **tu scegli** di salvare. Si crea subito, con un click: di solito sulla **stella** accanto alla barra degli indirizzi, oppure con **Ctrl + D**.
+
+- Scegli un nome chiaro e, se vuoi, una **cartella** (per esempio «Ricette» o «Banca»).
+- Dopo, apri i segnalibri dal menu o dalla barra sotto gli indirizzi.
+- Il segnalibro è anche un modo **sicuro** di tornare a un sito importante: non devi cercarlo né cliccare link ricevuti.
+
+<Callout kind="trucco">
+Salva con un segnalibro il sito della tua banca, della posta e dei servizi che usi spesso. Dovrai solo aprire il segnalibro, e saprai di essere sul sito giusto.
+</Callout>
+
+<Say who="assistente">Un segnalibro è come un adesivo colorato in un libro: lo metti tu, nel punto che ti serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La cronologia">
+La **cronologia** è la lista delle pagine che hai visitato, in ordine di tempo. Il browser la scrive **da solo**, senza che tu faccia niente.
+
+<Compare
+  caption="Segnalibri e cronologia."
+  left={{ title: "Segnalibri", points: ["Li salvi tu, apposta", "Restano finché non li togli", "Ordinati con nomi e cartelle"] }}
+  right={{ title: "Cronologia", points: ["La scrive il browser da solo", "Elenco per giorno e ora", "Si può cercare e cancellare"] }}
+/>
+
+Per aprirla: **Ctrl + H** oppure dal menu, voce **Cronologia**. Puoi cercare una parola e il browser filtra le pagine visitate.
+
+<Say who="sensei">Segnalibro: scelta tua. Cronologia: lo fa il browser. Tutto qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cancellare e navigazione privata">
+Nelle impostazioni puoi **cancellare la cronologia** (di solito con Ctrl + Maiusc + Canc). Questo toglie la lista dal **tuo** browser. Non cancella però le tracce che i siti, il tuo account o chi gestisce la rete possono aver salvato.
+
+La **navigazione privata** (chiamata anche anonima o finestra privata) è una finestra speciale. Quando la chiudi, il browser **non conserva** la cronologia di quella finestra su quel dispositivo.
+
+<Callout kind="attenzione">
+La navigazione privata **non rende invisibili**. I siti che visiti, il provider di internet, la scuola o l'azienda che gestisce la rete possono ancora vedere dove vai. Se entri in un tuo account (per esempio la posta), il sito sa chi sei. Serve soprattutto per non lasciare tracce su un computer usato da altri.
+</Callout>
+
+<Callout kind="regola">
+Su un computer che usano anche altri (scuola, biblioteca, amici) esci sempre dai tuoi account con **Esci** e chiudi le schede, anche se hai usato la navigazione privata.
+</Callout>
+
+<Say who="assistente">Privata non vuol dire segreta. Vuol dire: non lascio la lista sul computer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Che cosa fa la navigazione privata del browser?"
+  options={[
+    "Non conserva la cronologia di quella finestra sul dispositivo, ma non nasconde ciò che fai a siti e rete",
+    "Ti rende invisibile a tutti i siti e al provider di internet",
+    "Cancella per sempre ogni traccia dai server dei siti visitati",
+    "Impedisce a chiunque di sapere chi sei anche se entri nel tuo account",
+  ]}
+  answer={0}
+  explain="La navigazione privata evita che la cronologia resti sul dispositivo. Non nasconde la tua attività al sito, al provider, alla scuola o al lavoro, e non cancella ciò che i siti hanno già registrato."
+/>
+
+<Say who="sensei">Sai che cosa fa e cosa non fa: questo è già più della media.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su segnalibri e cronologia. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-segnalibri-cronologia" pass="4/5" retries={3} />
+
+<Say who="sensei">Segnalibri tuoi, cronologia del browser, privata non invisibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un segnalibro è una pagina che salvi tu (stella o Ctrl + D) per ritrovarla subito.
+- La cronologia è la lista delle pagine visitate, scritta in automatico dal browser (Ctrl + H).
+- Cancellare la cronologia toglie la lista dal tuo browser, non ogni traccia online.
+- La navigazione privata non lascia la cronologia sul dispositivo, ma non rende invisibili.
+- Caso chiuso: Marta ha ritrovato la ricetta dalla cronologia e il nonno ora la tiene nei segnalibri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra segnalibro e cronologia?", a: "Il segnalibro lo salvi tu; la cronologia la scrive il browser da solo" },
+    { q: "Con quale scorciatoia salvi un segnalibro?", a: "Ctrl + D" },
+    { q: "La navigazione privata ti rende invisibile al provider?", a: "No, non conserva la cronologia sul dispositivo ma non ti nasconde" },
+    { q: "Che cosa fai su un computer usato da altri quando finisci?", a: "Esci dai tuoi account e chiudi le schede" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: siti sicuri, il lucchetto e che cosa vuol dire davvero.</Say>
+</Scene>

@@ -1,0 +1,166 @@
+---
+id: W.04.001
+course: sviluppo-web
+module: 4
+title: "Che cos'è il CSS e come si collega a una pagina"
+belt: bianca
+duration_min: 8
+prerequisites: [W.03.010]
+objectives:
+  - "Spiegare che cosa fa il CSS rispetto all'HTML"
+  - "Scrivere una regola CSS con selettore, proprietà e valore"
+  - "Collegare un file CSS a una pagina con il tag link"
+verification:
+  type: generated-numeric
+  generator: w04-css-collegare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il punto e virgola alla fine di una dichiarazione: quella riga viene ignorata"
+  - "Scrivere il tag link fuori dall'head o sbagliare il percorso del file CSS: la pagina resta senza stile"
+  - "Credere che il browser segnali gli errori del CSS: li ignora in silenzio"
+commands: []
+---
+
+<Scene title="La pagina in bianco e nero">
+La pagina di Lucia funziona, ma è nera su bianco, con caratteri tutti uguali. Lei vorrebbe il titolo color terracotta, centrato, e i paragrafi un po' più grandi. Vuole farlo **senza** cambiare le parole della pagina.
+
+Per questo non serve più HTML: serve un altro linguaggio, pensato solo per l'aspetto.
+
+La domanda del caso: **come si dà un aspetto a una pagina senza toccarne il contenuto?**
+
+<Say who="sensei">L'HTML dice che cosa c'è nella pagina. Per dire come deve apparire, c'è il CSS.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="HTML e CSS: due compiti diversi">
+**CSS** sta per *Cascading Style Sheets*, cioè «fogli di stile a cascata». Il nome «a cascata» lo capirai nell'ultima lezione del modulo: per ora ricorda che il CSS descrive **l'aspetto**.
+
+<Compare
+  caption="Ognuno fa il suo mestiere."
+  left={{ title: "HTML", points: ["Contenuto e struttura", "Titolo, paragrafo, elenco, immagine", "Dice che cos'è ogni cosa"] }}
+  right={{ title: "CSS", points: ["Aspetto e disposizione", "Colori, caratteri, spazi, bordi", "Dice come appare ogni cosa"] }}
+/>
+
+Tenere i due compiti separati ha un vantaggio grande: con **un solo file CSS** puoi cambiare l'aspetto di cento pagine, senza riscrivere nemmeno una parola di HTML.
+
+<Say who="assistente">Pensa a una casa: l'HTML sono i muri e le stanze, il CSS è la tinteggiatura e l'arredamento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una regola CSS">
+Il CSS è fatto di **regole**. Ogni regola ha un **selettore** (a chi si applica) e, tra parentesi graffe, una o più **dichiarazioni** (che cosa cambiare).
+
+```css
+h1 {
+  color: darkred;
+  text-align: center;
+}
+```
+
+- `h1` è il **selettore**: «tutti i titoli principali».
+- `color` e `text-align` sono le **proprietà**: ciò che vuoi cambiare.
+- `darkred` e `center` sono i **valori**: come lo vuoi.
+- Ogni dichiarazione è `proprietà: valore;` e **finisce con il punto e virgola**.
+
+<Callout kind="attenzione">
+Se sbagli una dichiarazione, il browser **non ti avvisa**: la ignora e va avanti. Se un cambiamento non si vede, controlla subito punto e virgola, parentesi graffe e ortografia della proprietà.
+</Callout>
+
+Per scrivere un commento nel CSS si usa `/* così */`: il browser lo salta.
+
+<Say who="sensei">Selettore, graffe, proprietà, due punti, valore, punto e virgola. Questa frase è tutto il CSS, ripetuta mille volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre modi per collegare il CSS">
+Il modo migliore è un **file separato**, per esempio `stile.css`, collegato dentro l'`head` della pagina:
+
+```html
+<head>
+  <meta charset="UTF-8">
+  <title>La Bottega di Lucia</title>
+  <link rel="stylesheet" href="stile.css">
+</head>
+```
+
+`rel="stylesheet"` dice che il file collegato è un foglio di stile; `href` è il suo percorso, scritto come nei link. Il tag `link` non si chiude: non ha un contenuto.
+
+Gli altri due modi esistono, ma si usano meno:
+
+- Il tag `style` nell'head, con le regole scritte dentro: va bene per prove veloci o per una pagina sola.
+- L'attributo `style` su un singolo elemento, per esempio `<p style="color: green;">`: si applica solo a quell'elemento, ed è scomodo da tenere in ordine.
+
+<Flow
+  caption="Che cosa fa il browser."
+  steps={[
+    { icon: "file", title: "Legge l'HTML", text: "Trova il tag link nell'head" },
+    { icon: "link", title: "Chiede il CSS", text: "Scarica il file stile.css" },
+    { icon: "eye", title: "Disegna la pagina", text: "Applica le regole a ogni elemento" },
+  ]}
+/>
+
+<Say who="assistente">Un file CSS solo e un link in ogni pagina: così basta cambiare un posto per cambiare tutto il sito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia ha salvato `stile.css` nella stessa cartella di `index.html`, ma la pagina è ancora senza stile.
+
+<Quiz
+  question="Quale riga, scritta dentro l'head, collega correttamente il file stile.css?"
+  options={[
+    "<link rel=\"stylesheet\" href=\"stile.css\">",
+    "<style src=\"stile.css\"></style>",
+    "<css href=\"stile.css\">",
+    "<link rel=\"html\" href=\"stile.css\">",
+  ]}
+  answer={0}
+  explain="Il collegamento si fa con il tag link, con rel stylesheet e href con il percorso del file. Style serve per scrivere regole dentro la pagina e non ha l'attributo src; css non è un tag HTML; rel html indicherebbe un altro tipo di collegamento."
+/>
+
+<Say who="sensei">Se la pagina resta senza stile, controlla tre cose: il tag è nell'head, il nome del file è identico, il percorso è giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su CSS, regole e collegamento. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-css-collegare" pass="4/5" retries={3} />
+
+<Say who="sensei">Se sbagli, rileggi la regola: selettore, graffe, dichiarazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il CSS decide l'aspetto della pagina; l'HTML ne decide il contenuto e la struttura.
+- Una regola ha un selettore e, tra graffe, dichiarazioni nella forma `proprietà: valore;`.
+- Il modo migliore per collegare il CSS è un file separato, con il tag link dentro l'head.
+- Il browser ignora in silenzio le dichiarazioni sbagliate: conviene controllare con attenzione.
+- Caso chiuso: Lucia ha scritto un file stile.css e ha colorato e centrato il titolo senza cambiare nemmeno una parola.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa CSS?", a: "Cascading Style Sheets, cioè fogli di stile a cascata" },
+    { q: "Di che cosa si occupa il CSS?", a: "Dell'aspetto della pagina: colori, caratteri, spazi, bordi" },
+    { q: "Come si collega un file CSS a una pagina?", a: "Con il tag link, con rel stylesheet e href, dentro l'head" },
+    { q: "Come termina ogni dichiarazione CSS?", a: "Con il punto e virgola" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i selettori, cioè come scegliere a quali elementi dare lo stile.</Say>
+</Scene>

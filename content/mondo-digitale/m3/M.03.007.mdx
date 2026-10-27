@@ -1,0 +1,148 @@
+---
+id: M.03.007
+course: mondo-digitale
+module: 3
+title: "La posta indesiderata (spam)"
+belt: bianca
+duration_min: 9
+prerequisites: [M.03.006]
+objectives:
+  - "Spiegare che cos'è lo spam e che cos'è il phishing"
+  - "Riconoscere i segnali di un messaggio sospetto"
+  - "Sapere che cosa fare (e che cosa non fare) davanti a un messaggio sospetto"
+verification:
+  type: generated-numeric
+  generator: m03-spam
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cliccare un link «per verificare l'account» ricevuto da un messaggio inatteso"
+  - "Rispondere a un messaggio di spam: si conferma che l'indirizzo esiste"
+  - "Fidarsi del nome del mittente senza guardare l'indirizzo vero"
+commands: []
+---
+
+<Scene title="La banca che scrive a Rosa">
+Rosa riceve una email: «La tua banca. Il tuo conto verrà bloccato entro 24 ore. Clicca qui per verificare i dati». Si spaventa e sta per cliccare. Davide la ferma: «Nonna, guarda l'indirizzo di chi scrive».
+
+L'indirizzo è `assistenza@banca-verifica-conti.example`: non ha niente a che fare con la sua banca. È un tentativo di truffa.
+
+La domanda del caso: **come si riconosce un messaggio che vuole ingannarci?**
+
+<Say who="sensei">Chi ti truffa non ti scrive «sono un truffatore». Ti scrive con fretta, paura o una promessa. Impariamo a riconoscere i segnali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spam e phishing">
+Lo **spam** è la posta indesiderata: pubblicità e messaggi non richiesti, mandati in massa a moltissimi indirizzi. In genere è fastidioso ma non dannoso.
+
+Il **phishing** (si legge «fishing», come «pescare») è un messaggio che finge di arrivare da una banca, da un corriere, da un ufficio pubblico, per farti cliccare un link e inserire dati o password su un sito falso.
+
+<Compare
+  caption="Due cose diverse, spesso insieme."
+  left={{ title: "Spam", points: ["Pubblicità non richiesta", "Mandata a moltissime persone", "Di solito solo fastidiosa"] }}
+  right={{ title: "Phishing", points: ["Finge di essere una persona o un'azienda vera", "Vuole i tuoi dati o i tuoi soldi", "È una truffa"] }}
+/>
+
+<Say who="assistente">I filtri dei servizi di posta bloccano molto spam, ma non tutto. L'ultimo controllo sei tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I segnali da cercare">
+<Layers
+  caption="I segnali di un messaggio sospetto."
+  items={[
+    { icon: "clock", title: "Fretta e minacce", text: "«Entro 24 ore», «account bloccato»" },
+    { icon: "mail", title: "Mittente strano", text: "L'indirizzo non è quello dell'azienda vera" },
+    { icon: "link", title: "Link e allegati", text: "Un link per «verificare» o un allegato inatteso" },
+    { icon: "coin", title: "Premi e regali", text: "«Hai vinto», «eredità», offerte incredibili" },
+  ]}
+/>
+
+Altri indizi: errori di scrittura, saluti generici («Gentile cliente») invece del tuo nome, richieste di password, codici o numero di carta.
+
+<Callout kind="regola">
+Una banca, un ufficio pubblico o un negozio serio **non ti chiedono mai la password o i codici** per email o per telefono. Se hai dubbi, non cliccare: apri il sito ufficiale scrivendo tu l'indirizzo, oppure chiama il numero che trovi sul loro sito o sul tuo contratto.
+</Callout>
+
+<Say who="sensei">Se un messaggio ti mette fretta, fermati. La fretta è l'arma preferita di chi truffa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa fare, che cosa non fare">
+<Compare
+  caption="Davanti a un messaggio sospetto."
+  left={{ title: "Da fare", points: ["Non cliccare i link", "Usare «Segnala come spam» o «Segnala phishing»", "Eliminare il messaggio", "Avvisare chi potrebbe riceverlo"] }}
+  right={{ title: "Da non fare", points: ["Rispondere", "Aprire gli allegati", "Inserire password o dati", "Inoltrarlo ad altri per curiosità"] }}
+/>
+
+Se hai già cliccato e inserito la password di un servizio, **cambiala subito** (dal sito ufficiale) e, se hai dato i dati di una carta, chiama la banca al numero che trovi sul retro della carta.
+
+<Callout kind="trucco">
+Anche un messaggio che sembra arrivare da un amico può essere falso, se l'account dell'amico è stato rubato: se ti chiede soldi o codici, **chiamalo** e verifica.
+</Callout>
+
+<Say who="assistente">Segnalare lo spam non è inutile: aiuta il servizio a bloccare gli stessi messaggi per tutti gli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il messaggio che ha spaventato Rosa dice: «Il tuo conto sarà bloccato entro 24 ore. Clicca qui per verificare i dati».
+
+<Quiz
+  question="Che cosa fa Rosa con questo messaggio?"
+  options={[
+    "Non clicca, lo segnala come phishing e lo elimina",
+    "Clicca il link e inserisce i dati, per non far bloccare il conto",
+    "Risponde chiedendo chi sia il mittente",
+    "Lo inoltra a tutti i suoi compagni di corso",
+  ]}
+  answer={0}
+  explain="Fretta, minaccia e link sono i segnali tipici del phishing: non si clicca, si segnala e si elimina. Cliccare e inserire i dati regala le credenziali ai truffatori, rispondere conferma che l'indirizzo è attivo e inoltrare diffonde la truffa."
+/>
+
+<Say who="sensei">Nel dubbio, non cliccare e vai per conto tuo al sito ufficiale. Non perdi niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su spam e phishing. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-spam" pass="4/5" retries={3} />
+
+<Say who="sensei">Fretta, mittente, link: tre campanelli d'allarme da ricordare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lo spam è posta non richiesta; il phishing è un messaggio finto che vuole i tuoi dati.
+- Segnali: fretta, minacce, mittente strano, link da cliccare, premi incredibili.
+- Banche e uffici seri non chiedono password o codici per email.
+- Non si clicca, non si risponde, non si inoltra: si segnala e si elimina.
+- Caso chiuso: Rosa non ha cliccato, ha segnalato il messaggio e ha controllato il suo conto dal sito ufficiale.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il phishing?", a: "Un messaggio finto che cerca di rubare dati, password o soldi" },
+    { q: "Una banca ti chiede la password per email: è normale?", a: "No: una banca seria non la chiede mai" },
+    { q: "Che cosa fai con un messaggio sospetto?", a: "Non clicchi, lo segnali come spam o phishing e lo elimini" },
+    { q: "Qual è l'arma preferita dei truffatori?", a: "La fretta: ti spingono ad agire senza pensare" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: messaggi istantanei e gruppi.</Say>
+</Scene>

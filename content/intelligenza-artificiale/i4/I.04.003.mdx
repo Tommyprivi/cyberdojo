@@ -1,0 +1,153 @@
+---
+id: I.04.003
+course: intelligenza-artificiale
+module: 4
+title: "Informazione e falsi: immagini, voci e video creati dall'IA"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.002]
+objectives:
+  - "Spiegare che cos'è un deepfake e che cosa può imitare"
+  - "Descrivere perché i contenuti falsi sono un problema per l'informazione e per le persone"
+  - "Indicare che cosa fare davanti a un contenuto sospetto o a un falso che riguarda te"
+verification:
+  type: generated-numeric
+  generator: i04-falsi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un video sia vero perché «si vede benissimo»: oggi anche un video può essere sintetico"
+  - "Condividere subito un contenuto sconvolgente senza controllarlo, aiutando il falso a diffondersi"
+  - "Credere di non essere un possibile bersaglio: la voce o il volto di chiunque possono essere imitati"
+commands: []
+---
+
+<Scene title="La voce del nonno">
+La nonna di Marta riceve una telefonata: la voce è quella di suo nipote, che dice di essere nei guai e di aver bisogno di soldi subito. La voce è identica. Ma il nipote è a scuola e non ha chiamato nessuno.
+
+Qualcuno ha preso pochi secondi della sua voce da un video pubblico e l'ha imitata con un programma di IA.
+
+La domanda del caso: **come fa l'IA a creare falsi così credibili, e come ci si difende?**
+
+<Say who="sensei">Per millenni «ho visto e sentito» bastava come prova. Oggi non basta più. Meglio saperlo prima che servano le prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un deepfake">
+Un **deepfake** è un contenuto (immagine, audio o video) creato o modificato con l'IA per far sembrare che una persona dica o faccia qualcosa che non ha mai detto o fatto. Il nome unisce *deep learning* (apprendimento profondo, la tecnica) e *fake* (falso).
+
+L'IA generativa può oggi:
+- creare **immagini** realistiche di persone, luoghi ed eventi mai esistiti;
+- **clonare una voce** partendo da brevi registrazioni;
+- cambiare il **volto** in un video o far muovere le labbra su parole diverse.
+
+<Callout kind="attenzione">
+Non tutti i contenuti sintetici sono falsi con cattive intenzioni: ci sono film, giochi e satira dichiarata. Il problema nasce quando un contenuto è presentato come vero per ingannare.
+</Callout>
+
+<Say who="assistente">Non serve essere famosi per essere imitati: basta una voce o un volto messi in rete.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché i falsi sono un problema">
+<Layers
+  caption="Dove fanno danni i contenuti falsi."
+  items={[
+    { icon: "mask", title: "Truffe", text: "Voci clonate e falsi video per chiedere soldi o dati" },
+    { icon: "globe", title: "Disinformazione", text: "Notizie false che sembrano vere e si diffondono in fretta" },
+    { icon: "user", title: "Danno alle persone", text: "Immagini false per umiliare o diffamare qualcuno" },
+    { icon: "shield", title: "Perdita di fiducia", text: "Se tutto può essere falso, anche il vero diventa dubbio" },
+  ]}
+/>
+
+C'è anche un effetto sottile: quando i falsi sono molti, chi viene colto sul vero può dire «è un falso» e sperare di non essere creduto.
+
+Un caso a parte riguarda le immagini intime false di una persona, create senza che lo sappia. È un abuso grave. Se ti capita, o capita a un'amica o a un amico: non vergognarti, non rispondere ai ricatti, conserva le prove (schermate), segnala alla piattaforma e parlane subito con un adulto di fiducia. In Italia puoi rivolgerti anche alla Polizia Postale.
+
+<Say who="sensei">Chi è preso di mira non ha colpa. La colpa è di chi crea e diffonde il falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa fare davanti a un contenuto sospetto">
+Le regole sono semplici e valgono sempre:
+
+<Flow
+  caption="Prima di credere e prima di condividere."
+  steps={[
+    { icon: "clock", title: "Fermati", text: "I falsi puntano sulla fretta e sull'emozione" },
+    { icon: "search", title: "Cerca la fonte", text: "Chi l'ha pubblicato per primo?" },
+    { icon: "link", title: "Cerca conferme", text: "Lo dicono anche fonti serie e indipendenti?" },
+    { icon: "check", title: "Poi decidi", text: "Se non è verificato, non condividere" },
+  ]}
+/>
+
+Se è una telefonata o un messaggio che chiede soldi o dati con urgenza, anche se la voce sembra quella di un parente: **riattacca e richiama tu** il numero che conosci. Molte famiglie si accordano su una **parola in codice** da dire in caso di vera emergenza.
+
+<Callout kind="trucco">
+Più un contenuto ti fa arrabbiare, spaventare o commuovere, più devi fermarti a controllare. È proprio l'emozione che i falsi vogliono ottenere.
+</Callout>
+
+<Say who="assistente">Come riconoscere i segnali di un contenuto creato dall'IA lo vediamo nella prossima lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Ricevi un messaggio vocale dalla voce di un tuo amico: «Sono bloccato, mandami subito dei soldi con una ricarica, ti spiego dopo».
+
+<Quiz
+  question="Qual è la cosa più sicura da fare?"
+  options={[
+    "Non rispondere subito e contattare l'amico sul suo numero di sempre per controllare",
+    "Mandare i soldi subito, la voce è proprio la sua",
+    "Rispondere al messaggio e chiedere altri dettagli sulla ricarica",
+    "Inoltrare il messaggio a tutta la classe per avere consigli",
+  ]}
+  answer={0}
+  explain="La voce può essere clonata, quindi non è una prova. Prima si controlla per un'altra strada, con il numero che conosci. Pagare subito è ciò che la truffa vuole; rispondere sullo stesso canale può mettere in contatto con chi truffa; inoltrare diffonde il messaggio senza risolvere."
+/>
+
+<Say who="sensei">Un secondo canale, un minuto di pazienza. Ti salvano da quasi tutte le truffe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su falsi e informazione. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-falsi" pass="4/5" retries={3} />
+
+<Say who="sensei">Fermati, cerca la fonte, cerca conferme. Poi decidi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un deepfake è un contenuto creato o modificato con l'IA per far credere che qualcuno abbia detto o fatto ciò che non ha detto né fatto.
+- L'IA può creare immagini, clonare voci e cambiare volti nei video.
+- I falsi servono a truffe, disinformazione e a far male alle persone, e riducono la fiducia in ciò che vediamo.
+- Davanti a un contenuto sospetto: fermati, cerca la fonte, cerca conferme, e non condividere se non è verificato.
+- Caso chiuso: la nonna ha riattaccato e richiamato il nipote sul suo numero, scoprendo che la telefonata era falsa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un deepfake?", a: "Un contenuto (immagine, audio o video) creato o modificato con l'IA per far sembrare vero qualcosa di falso" },
+    { q: "Che cosa fai se una voce nota ti chiede soldi con urgenza?", a: "Riattacchi e richiami tu sul numero che conosci" },
+    { q: "Perché i falsi puntano sulle emozioni forti?", a: "Perché ti fanno agire in fretta, senza controllare" },
+    { q: "Che cosa fai se subisci un'immagine intima falsa?", a: "Conservi le prove, segnali alla piattaforma e ne parli subito con un adulto di fiducia" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i segnali per riconoscere un contenuto creato dall'IA, e i loro limiti.</Say>
+</Scene>

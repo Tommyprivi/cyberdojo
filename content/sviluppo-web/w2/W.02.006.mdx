@@ -1,0 +1,185 @@
+---
+id: W.02.006
+course: sviluppo-web
+module: 2
+title: "I link: collegare pagine e siti"
+belt: bianca
+duration_min: 9
+prerequisites: [W.02.005]
+objectives:
+  - "Scrivere un link con il tag a e l'attributo href"
+  - "Collegare una pagina del proprio sito, un sito esterno e un punto della stessa pagina"
+  - "Scrivere il testo di un link in modo che si capisca da solo"
+verification:
+  type: generated-numeric
+  generator: w02-link
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare href: senza questo attributo il link non porta da nessuna parte"
+  - "Scrivere come testo del link «clicca qui», che non dice dove si va"
+  - "Scrivere un indirizzo esterno senza https://, che il browser legge come un file del proprio sito"
+commands: []
+---
+
+<Scene title="Il web è fatto di link">
+Lucia ha due pagine: `index.html` (la home) e `corsi.html` (i corsi). Vuole che chi legge la home possa arrivare ai corsi con un clic, e che dalla pagina dei corsi si possa tornare indietro. Vuole anche un collegamento al sito del comune.
+
+Un clic che porta altrove si chiama **link** (o *collegamento*, o *iperlink*). È l'idea che ha reso il web una rete di pagine.
+
+La domanda del caso: **come si collega una pagina a un'altra?**
+
+<Say who="sensei">Senza link, il web sarebbe una pila di fogli sparsi. Il link è il filo che li lega.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tag a e href">
+Un link si scrive con `<a>` (da *anchor*, «àncora»). L'indirizzo di destinazione sta nell'attributo `href` (*hypertext reference*):
+
+```html
+<a href="corsi.html">Guarda i corsi</a>
+```
+
+- Il **testo** tra i tag è quello che si vede e su cui si clicca.
+- `href` è la destinazione: senza, il link non porta da nessuna parte.
+
+Un link verso un altro sito ha come destinazione l'indirizzo completo, con `https://`:
+
+```html
+<a href="https://www.example.com">Sito di esempio</a>
+```
+
+<Callout kind="attenzione">
+Se scrivi `href="www.example.com"` senza `https://`, il browser lo legge come un file di nome «www.example.com» nella tua cartella: il link non funzionerà. Un indirizzo esterno comincia sempre con `https://`.
+</Callout>
+
+<Say who="assistente">Il dominio `example.com` è riservato proprio per gli esempi: è sicuro da usare nelle prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre tipi di destinazione">
+<Layers
+  caption="Dove può portare un link."
+  items={[
+    { icon: "file", title: "Pagina del tuo sito", text: "href=«corsi.html»" },
+    { icon: "globe", title: "Sito esterno", text: "href=«https://www.example.com»" },
+    { icon: "link", title: "Punto della stessa pagina", text: "href=«#contatti»" },
+  ]}
+/>
+
+Il terzo tipo usa un **ancoraggio**: si dà un `id` a un elemento e si punta a quell'id con il simbolo `#`.
+
+```html
+<a href="#contatti">Vai ai contatti</a>
+
+<h2 id="contatti">Contatti</h2>
+```
+
+Il clic fa scorrere la pagina fino al titolo «Contatti».
+
+Altri due link utili:
+
+```html
+<a href="mailto:info@example.com">Scrivici</a>
+<a href="tel:+390000000000">Chiamaci</a>
+```
+
+`mailto:` apre il programma di posta e `tel:` avvia una chiamata sul telefono. Sono indirizzi di esempio inventati.
+
+<Say who="sensei">Pagina, sito, punto della pagina, email, telefono: sono tutti `a` con un `href` diverso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un testo che dice dove si va">
+Il testo del link deve dire da solo dove porta, anche se letto fuori dal resto della frase. Chi usa un lettore di schermo può sentire un elenco di soli link.
+
+<Compare
+  caption="Testo del link."
+  left={{ title: "Poco chiaro", points: ["«Clicca qui»", "«Leggi di più»", "Non dice la destinazione"] }}
+  right={{ title: "Chiaro", points: ["«Guarda il calendario dei corsi»", "«Scrivi a Lucia»", "Si capisce da solo"] }}
+/>
+
+Per aprire un link in una **nuova scheda** si aggiunge `target="_blank"`:
+
+```html
+<a href="https://www.example.com" target="_blank" rel="noopener noreferrer">Sito di esempio</a>
+```
+
+`rel="noopener noreferrer"` è una buona abitudine di sicurezza: la nuova scheda non può controllare quella da cui arriva. I browser recenti applicano già `noopener` ai link con `target="_blank"`, ma scriverlo non fa male.
+
+<Callout kind="trucco">
+Apri una nuova scheda solo quando serve davvero, per esempio per un sito esterno durante la compilazione di un modulo. Di solito è meglio lasciare scegliere a chi legge.
+</Callout>
+
+<Say who="assistente">Provaci: leggi solo il testo dei tuoi link, uno dopo l'altro. Se non si capisce dove portano, riscrivili.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale riga porta chi legge a un altro sito, in modo corretto?"
+  options={[
+    "<a href=\"https://www.example.com\">Sito di esempio</a>",
+    "<a src=\"https://www.example.com\">Sito di esempio</a>",
+    "<a href=\"www.example.com\">Sito di esempio</a>",
+    "<link href=\"https://www.example.com\">Sito di esempio</link>",
+  ]}
+  answer={0}
+  explain="Il link usa il tag a con l'attributo href e l'indirizzo completo con https. La seconda usa src, che è per le immagini; la terza non ha https e verrebbe letta come un file locale; link è un altro elemento, che va nell'head."
+/>
+
+<Guided
+  steps={[
+    "Crea due file, index.html e corsi.html, nella stessa cartella.",
+    "In index.html scrivi un link con testo «Guarda i corsi» che punta a corsi.html.",
+    "In corsi.html scrivi un link «Torna alla home» che punta a index.html.",
+    "Aggiungi un link a https://www.example.com con target blank.",
+    "Aggiungi un titolo con id e un link che porta a quel titolo con il simbolo cancelletto.",
+  ]}
+/>
+
+<Say who="sensei">Prova ogni link con un clic. Un link non provato è un link che si rompe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui link. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-link" pass="4/5" retries={3} />
+
+<Say who="sensei">Tag a, attributo href, testo chiaro. Tre cose, e il link funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un link si scrive con `a`; la destinazione sta nell'attributo `href`.
+- Una pagina del proprio sito si indica con il nome del file; un sito esterno con l'indirizzo completo `https://`.
+- Un punto della stessa pagina si raggiunge con `#` e l'`id` dell'elemento.
+- Il testo del link deve dire dove porta; `target=«_blank»` apre una nuova scheda.
+- Caso chiuso: Lucia collega la home ai corsi con `href=«corsi.html»` e il comune con un indirizzo `https://`.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale attributo dà la destinazione di un link?", a: "href" },
+    { q: "Con che cosa comincia l'indirizzo di un sito esterno?", a: "Con https://" },
+    { q: "Come si collega un punto della stessa pagina?", a: "Con href che comincia con # seguito dall'id dell'elemento" },
+    { q: "Perché «clicca qui» è un cattivo testo per un link?", a: "Perché non dice dove porta il link" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i percorsi dei file, cioè come scrivere bene gli indirizzi dei tuoi file.</Say>
+</Scene>

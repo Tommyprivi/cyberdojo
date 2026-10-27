@@ -6,6 +6,7 @@ import { BoltIcon, FlameIcon } from "../icons";
 import { MAX_FRIENDS } from "@/lib/social/rules";
 import type { FriendRow, SocialSettings } from "@/lib/social/service";
 import { Avatar } from "./avatar";
+import { ChallengeButton } from "@/components/duels/challenge-button";
 import { CodeBox } from "./code-box";
 import { ReportButton } from "./report-button";
 import { NoticeLine, useAction } from "./use-action";
@@ -76,6 +77,7 @@ export function FriendsPanel({ settings, friends }: { settings: SocialSettings; 
               <button type="button" disabled={busy} className="btn btn-ghost" onClick={() => run(() => removeFriend(f.id), "Amico rimosso.")}>
                 Rimuovi
               </button>
+              {f.nickname && f.visible && <ChallengeButton friendshipId={f.id} name={f.nickname} />}
               {f.nickname && <ReportButton kind="user" targetId={f.ref} what={`il soprannome ${f.nickname}`} />}
             </li>
           ))}

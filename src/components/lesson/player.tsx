@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode, type TouchEvent } from "react";
+import { haptic } from "@/lib/app/haptics";
 import { CheckIcon, LockIcon } from "../icons";
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
 import { Mascot } from "../mascot";
 import { ThemeToggle } from "../theme-toggle";
+import { AskPush } from "../push/ask-push";
+import { LessonNotes } from "./notes";
+import { LessonBookmark } from "./bookmark";
 import { PlayerContext, type LessonVideo } from "./player-context";
 
 export type PlayerScreen = { title: string; gated: boolean; node: ReactNode };
@@ -205,6 +209,7 @@ export function LessonPlayer({
                   <p className="max-w-md text-muted">
                     Hai finito «{title}». Il Sensei è soddisfatto, per oggi. Torna al percorso per la prossima.
                   </p>
+                  <AskPush />
                   <div className="flex flex-wrap justify-center gap-3">
                     <Link href="/percorso" className="btn btn-primary min-h-14 min-w-56 text-base">
                       Avanti con il percorso
@@ -252,7 +257,10 @@ export function LessonPlayer({
                 Avanti con il percorso
               </Link>
             ) : last ? (
-              <button type="button" onClick={() => setDone(true)} className="btn btn-primary min-h-14 flex-1 text-base">
+              <button type="button" onClick={() => {
+                setDone(true);
+                haptic("complete");
+              }} className="btn btn-primary min-h-14 flex-1 text-base">
                 Completa la lezione
               </button>
             ) : (
@@ -274,7 +282,10 @@ export function LessonPlayer({
                 Avanti con il percorso
               </Link>
             ) : last ? (
-              <button type="button" onClick={() => setDone(true)} className="btn btn-primary min-w-48">
+              <button type="button" onClick={() => {
+                setDone(true);
+                haptic("complete");
+              }} className="btn btn-primary min-w-48">
                 Completa la lezione
               </button>
             ) : (
@@ -287,6 +298,8 @@ export function LessonPlayer({
           </nav>
         </div>
       </div>
+      <LessonNotes lessonId={lessonId} />
+      <LessonBookmark lessonId={lessonId} screen={index} />
     </PlayerContext.Provider>
   );
 }

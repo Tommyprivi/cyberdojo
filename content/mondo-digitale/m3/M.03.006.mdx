@@ -1,0 +1,144 @@
+---
+id: M.03.006
+course: mondo-digitale
+module: 3
+title: "Rubrica, copia e copia nascosta"
+belt: bianca
+duration_min: 8
+prerequisites: [M.03.005]
+objectives:
+  - "Usare la rubrica per salvare e trovare i contatti"
+  - "Spiegare la differenza tra A, Cc e Ccn"
+  - "Scegliere Ccn quando si scrive a molte persone che non devono vedere gli indirizzi degli altri"
+verification:
+  type: generated-numeric
+  generator: m03-rubrica-cc-ccn
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere tutti gli indirizzi del gruppo nel campo A: tutti vedono gli indirizzi di tutti"
+  - "Credere che chi è in Ccn possa essere visto dagli altri destinatari"
+  - "Usare Cc per persone che non c'entrano con la conversazione"
+commands: []
+---
+
+<Scene title="L'invito con venti indirizzi">
+Rosa organizza una cena per il corso di computer e scrive a venti compagni. Mette tutti gli indirizzi nella riga A. Il giorno dopo una compagna le scrive: «Cara Rosa, ho ricevuto un messaggio strano da una persona della tua lista, che non conosco». Un indirizzo era finito in mani sbagliate: tutti potevano vederlo.
+
+La domanda del caso: **come si scrive a molte persone senza mostrare i loro indirizzi agli altri?**
+
+<Say who="sensei">Un indirizzo email è un dato personale. Mostrarlo a venti sconosciuti, senza chiedere, non è un bel gesto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La rubrica">
+La **rubrica** è l'elenco dei tuoi contatti: nome, indirizzo email, spesso anche telefono. Il programma di posta la usa per completare gli indirizzi mentre scrivi.
+
+- Salva un contatto aprendo un suo messaggio e scegliendo «Aggiungi alla rubrica» (il nome può cambiare).
+- Dai nomi chiari, per esempio nome e cognome, e controlla l'indirizzo.
+- Puoi creare **gruppi** (liste): scrivendo il nome del gruppo scrivi a tutti.
+
+<Callout kind="attenzione">
+Il completamento automatico può proporre l'indirizzo sbagliato se due contatti hanno nomi simili. Controlla sempre la riga A: prima di inviare.
+</Callout>
+
+<Say who="assistente">Tieni la rubrica in ordine: elimina i duplicati e correggi i nomi. Si trova tutto più in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="A, Cc e Ccn">
+Quando scrivi un messaggio hai tre campi per i destinatari:
+
+<Layers
+  caption="Tre campi, tre ruoli."
+  items={[
+    { icon: "user", title: "A", text: "Chi deve rispondere o agire" },
+    { icon: "users", title: "Cc (per conoscenza)", text: "Chi deve solo sapere; tutti vedono chi è in Cc" },
+    { icon: "mask", title: "Ccn (nascosta)", text: "Destinatari che gli altri non vedono" },
+  ]}
+/>
+
+**Cc** sta per «copia conoscenza» (in inglese *Carbon Copy*). **Ccn** sta per «copia conoscenza nascosta» (*Bcc*, Blind Carbon Copy).
+
+<Say who="sensei">A è per chi deve fare qualcosa. Cc è per chi deve sapere. Ccn è per chi non deve essere visto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando usare la Ccn">
+<Compare
+  caption="Cena del corso: due modi di scrivere."
+  left={{ title: "Tutti in A", points: ["Ognuno vede gli indirizzi di tutti", "Se qualcuno risponde a tutti, lo leggono in venti", "Meno privacy"] }}
+  right={{ title: "Tutti in Ccn", points: ["Ognuno vede il mittente, ma non gli altri destinatari", "Gli indirizzi restano riservati", "Più rispetto della privacy"] }}
+/>
+
+La regola pratica: **un messaggio a molte persone che non si conoscono tra loro** va mandato con gli indirizzi in **Ccn**. In A metti il tuo indirizzo (alcuni servizi lo richiedono): così, se qualcuno preme «Rispondi a tutti», la risposta arriva solo a te.
+
+Chi è in Ccn riceve il messaggio ma non compare agli altri destinatari, e a sua volta non vede chi altro è in Ccn.
+
+<Callout kind="regola">
+Per un gruppo che si conosce già (colleghi di un progetto, la famiglia) va bene la riga A o Cc: tutti sanno chi c'è. Per liste di persone che non si conoscono, usa la Ccn.
+</Callout>
+
+<Say who="assistente">Chiediti: «Queste persone sono contente che i loro indirizzi li vedano gli altri?». Se non sei sicuro, Ccn.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Rosa deve avvisare quindici compagni del corso che l'orario cambia. Non tutti si conoscono.
+
+<Quiz
+  question="Dove deve mettere Rosa gli indirizzi dei compagni, per non mostrarli agli altri?"
+  options={[
+    "Nel campo Ccn (copia conoscenza nascosta)",
+    "Nel campo A, uno dopo l'altro",
+    "Nel campo Cc",
+    "Nell'oggetto del messaggio",
+  ]}
+  answer={0}
+  explain="Gli indirizzi in Ccn non sono visibili agli altri destinatari. In A e in Cc tutti vedono tutti, e l'oggetto non è un campo per gli indirizzi: lì li vedrebbe chiunque."
+/>
+
+<Say who="sensei">Un clic in più per proteggere gli altri. Vale la pena.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su rubrica, Cc e Ccn. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-rubrica-cc-ccn" pass="4/5" retries={3} />
+
+<Say who="sensei">A fa, Cc sa, Ccn non si vede. Tieni a mente questa riga.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La rubrica conserva i contatti e completa gli indirizzi mentre scrivi: controlla sempre quello scelto.
+- A è per chi deve agire, Cc per chi deve solo sapere, Ccn per chi non deve essere visto dagli altri.
+- A molte persone che non si conoscono si scrive con gli indirizzi in Ccn.
+- Caso chiuso: Rosa rimanda l'invito con gli indirizzi in Ccn e nessuno vede più quelli degli altri.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa Cc?", a: "Copia conoscenza: chi è in Cc riceve il messaggio e tutti lo vedono" },
+    { q: "Che cosa significa Ccn?", a: "Copia conoscenza nascosta: gli altri destinatari non vedono chi è in Ccn" },
+    { q: "Quando conviene usare la Ccn?", a: "Quando scrivi a molte persone che non si conoscono tra loro" },
+    { q: "Che cos'è la rubrica?", a: "L'elenco dei contatti, con nomi e indirizzi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la posta indesiderata, lo spam.</Say>
+</Scene>

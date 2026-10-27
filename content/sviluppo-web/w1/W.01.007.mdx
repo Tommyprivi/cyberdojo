@@ -1,0 +1,165 @@
+---
+id: W.01.007
+course: sviluppo-web
+module: 1
+title: "La prima pagina web, salvata sul tuo computer"
+belt: bianca
+duration_min: 9
+prerequisites: [W.01.006]
+objectives:
+  - "Scrivere una pagina HTML minima con doctype, html, head e body"
+  - "Dire a che cosa servono title, h1 e p"
+  - "Distinguere ciò che sta in head (non si vede) da ciò che sta in body (si vede)"
+verification:
+  type: generated-numeric
+  generator: w01-prima-pagina
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il tag di chiusura: ogni tag aperto va chiuso"
+  - "Mettere il contenuto visibile dentro head invece che dentro body"
+  - "Dimenticare charset UTF-8: le lettere accentate compaiono storte"
+commands: []
+---
+
+<Scene title="Ciao, mondo">
+È il momento di scrivere codice vero. Lucia vuole una prima pagina con il nome della sua bottega e una frase. Una pagina che funzioni, anche senza internet, anche solo sul tuo computer.
+
+Una pagina HTML è un file di testo con una forma precisa. Oggi la scrivi per intero, riga per riga, e capisci a che cosa serve ogni riga.
+
+La domanda del caso: **qual è la pagina web più piccola che funziona?**
+
+<Say who="sensei">Tutti i siti del mondo, anche i più grandi, partono da questa forma. Imparala bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo scheletro">
+Crea nella cartella del progetto un file `index.html` con questo contenuto:
+
+```html
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <title>La Bottega di Lucia</title>
+  </head>
+  <body>
+    <h1>La Bottega di Lucia</h1>
+    <p>Corsi di ceramica per tutti.</p>
+  </body>
+</html>
+```
+
+Riga per riga:
+- `<!DOCTYPE html>` dice al browser che il documento è HTML moderno.
+- `<html lang="it">` racchiude tutta la pagina e dichiara che è scritta in italiano.
+- `<head>` contiene le informazioni **che non si vedono** nella pagina.
+- `<body>` contiene ciò che **si vede**.
+
+<Say who="assistente">Copiare lo scheletro va benissimo. Si impara capendolo, non a memoria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Head e body">
+<Layers
+  caption="Dentro un documento HTML."
+  items={[
+    { icon: "file", title: "html", text: "Contiene tutta la pagina" },
+    { icon: "gear", title: "head", text: "Informazioni per il browser: titolo, codifica" },
+    { icon: "eye", title: "body", text: "Ciò che l'utente vede" },
+  ]}
+/>
+
+Nell'`head` trovi due righe importanti:
+- `<meta charset="UTF-8">` dice come sono codificati i caratteri. Senza, le lettere accentate come «è» o «ù» possono comparire storte.
+- `<title>` è il **titolo della scheda** del browser e quello che compare nei risultati dei motori di ricerca.
+
+Nel `body` ci sono `<h1>` (il titolo principale, da *heading* 1) e `<p>` (un paragrafo, da *paragraph*).
+
+<Callout kind="regola">
+Quasi ogni tag ha un **tag di apertura** `<p>` e uno di **chiusura** `</p>` con la barra. Il testo sta in mezzo. Se dimentichi la chiusura, il browser prova a indovinare, e di solito sbaglia.
+</Callout>
+
+<Say who="sensei">Head è il retro del palco, body è il palco. Il pubblico guarda solo il palco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ogni passo, un controllo">
+<Guided
+  steps={[
+    "Apri l'editor e crea un file nuovo.",
+    "Scrivi lo scheletro: doctype, html, head e body.",
+    "Dentro head metti la codifica UTF-8 e il title.",
+    "Dentro body metti un h1 con il nome della bottega e un p con una frase.",
+    "Salva il file con il nome index.html nella cartella del progetto.",
+    "Controlla: ogni tag aperto è chiuso? Il contenuto visibile sta in body?",
+  ]}
+/>
+
+<Callout kind="trucco">
+Se ti perdi, controlla l'**indentazione**: ogni tag dentro un altro si rientra di due spazi. Il browser non ne ha bisogno, ma tu sì: ti fa vedere subito dove manca una chiusura.
+</Callout>
+
+<Say who="assistente">Rientrare il codice è come mettere in ordine una scrivania: non cambia il lavoro, ma si trova tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia ha aggiunto una riga e la pagina mostra una scritta strana al posto di una lettera accentata.
+
+<Quiz
+  question="Quale riga nell'head evita che le lettere accentate compaiano storte?"
+  options={[
+    "<meta charset=\"UTF-8\">",
+    "<title>UTF-8</title>",
+    "<body charset>",
+    "<p lang=\"it\">",
+  ]}
+  answer={0}
+  explain="La riga meta con charset UTF-8 dice al browser come leggere i caratteri, compresi quelli accentati. Il title è solo il titolo della scheda; gli altri tag non servono a questo."
+/>
+
+<Say who="sensei">Nell'head ci vanno le istruzioni per il browser. Nel body, il resto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla struttura della pagina. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-prima-pagina" pass="4/5" retries={3} />
+
+<Say who="sensei">Doctype, html, head, body. Ripetilo fino a quando viene da solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pagina HTML ha doctype, un elemento html con head e body.
+- Nell'head ci sono le informazioni non visibili (codifica, titolo); nel body ciò che si vede.
+- Ogni tag aperto va chiuso, e conviene rientrare il codice per vederlo.
+- Caso chiuso: Lucia ha scritto la sua prima pagina e l'ha salvata come index.html.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa contiene il body?", a: "Tutto ciò che si vede nella pagina" },
+    { q: "Che cosa fa il title?", a: "Dà il titolo alla scheda del browser" },
+    { q: "A che cosa serve meta charset UTF-8?", a: "A leggere correttamente le lettere accentate" },
+    { q: "Che cosa significa h1?", a: "Il titolo principale della pagina (heading 1)" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: apri la pagina nel browser e impari a ricaricarla.</Say>
+</Scene>

@@ -1,0 +1,150 @@
+---
+id: I.01.008
+course: intelligenza-artificiale
+module: 1
+title: "Cosa non sa fare (e perché sembra di sì)"
+belt: bianca
+duration_min: 9
+prerequisites: [I.01.007]
+objectives:
+  - "Elencare i principali limiti dell'IA: errori sicuri, pregiudizi nei dati, assenza di comprensione e di responsabilità"
+  - "Spiegare perché un testo fluente può sembrare più affidabile di quanto sia"
+  - "Applicare il controllo umano alle risposte dell'IA"
+verification:
+  type: generated-numeric
+  generator: i01-limiti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere a una risposta solo perché è scritta bene e con sicurezza"
+  - "Pensare che un modello non abbia pregiudizi perché è una macchina"
+  - "Credere che l'IA conosca sempre le notizie di oggi"
+commands: []
+---
+
+<Scene title="Una risposta perfetta (e falsa)">
+Per la puntata sulla storia della scuola, Teo chiede a un assistente di IA: «Chi era il primo preside?». La risposta è precisa, con nome, data e una frase elegante. Teo la legge in radio.
+
+Il giorno dopo, la segretaria lo corregge: nome e data erano sbagliati. L'assistente aveva inventato tutto, con il tono di chi sa.
+
+La domanda del caso: **perché l'IA può sbagliare con tanta sicurezza?**
+
+<Say who="sensei">La sicurezza del tono non misura la verità. Misura solo lo stile del testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché sembra capire">
+Un modello di linguaggio produce frasi molto scorrevoli. Noi persone siamo abituate a pensare che chi parla bene sappia ciò che dice: è un riflesso naturale, e con l'IA ci inganna. Già negli anni Sessanta, con ELIZA (lezione 2), le persone attribuivano comprensione a un programma semplicissimo.
+
+<Compare
+  caption="Sembrare e capire."
+  left={{ title: "Come sembra", points: ["Parla in modo fluente e sicuro", "Risponde a tutto", "Usa il tono di un esperto"] }}
+  right={{ title: "Che cosa fa davvero", points: ["Prevede testo probabile", "Non controlla i fatti da sola", "Può inventare dettagli, nomi e fonti"] }}
+/>
+
+Quando un modello inventa un dettaglio falso ma plausibile, si parla di **allucinazione**. Nel modulo successivo imparerai a riconoscerle e a verificarle.
+
+<Say who="assistente">Il modello non mente di proposito. Completa il testo nel modo più probabile, anche quando non ha il dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I limiti principali">
+<Layers
+  caption="Cinque limiti da ricordare."
+  items={[
+    { icon: "warning", title: "Errori sicuri", text: "Risposte false dette con tono convinto" },
+    { icon: "mask", title: "Pregiudizi nei dati", text: "Se gli esempi sono sbilanciati, lo è anche il modello" },
+    { icon: "clock", title: "Conoscenze ferme", text: "Un modello sa solo ciò che c'era nei dati fino alla data dell'addestramento, salvo strumenti di ricerca aggiuntivi" },
+    { icon: "eye", title: "Poco buon senso", text: "Può fallire in ragionamenti banali per una persona" },
+    { icon: "key", title: "Nessuna responsabilità", text: "Non risponde delle conseguenze: risponde la persona che lo usa" },
+  ]}
+/>
+
+<Callout kind="esempio">
+Esempio di **pregiudizio nei dati**: se un sistema per selezionare candidati impara da vecchie assunzioni in cui prevalevano uomini, può imparare a preferire gli uomini. Il modello non «odia» nessuno: ripete lo schema dei dati.
+</Callout>
+
+<Say who="sensei">L'IA riflette i dati su cui è stata addestrata, difetti compresi. Garbage in, garbage out: spazzatura dentro, spazzatura fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il controllo umano">
+La regola pratica: **più è importante la risposta, più la devi controllare**.
+
+<Flow
+  caption="Come usare una risposta dell'IA."
+  steps={[
+    { icon: "bolt", title: "Leggi", text: "Considerala una bozza, non un fatto" },
+    { icon: "search", title: "Controlla", text: "Cerca nomi, date e numeri in fonti affidabili" },
+    { icon: "check", title: "Usa", text: "Solo ciò che hai verificato" },
+  ]}
+/>
+
+Teo, la prossima volta, controllerà il nome del preside sull'annuario della scuola prima di parlare in radio.
+
+<Callout kind="trucco">
+Segnali di allarme: nomi, date, numeri, citazioni e riferimenti molto precisi che non sai controllare. Sono i punti in cui le invenzioni sono più frequenti.
+</Callout>
+
+<Say who="assistente">Ci sono ottime idee dentro le bozze dell'IA. Basta non confondere una bozza con una fonte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un assistente di IA ti dà una data precisa e una citazione con tono molto sicuro. Che cosa è giusto fare?"
+  options={[
+    "Verificare data e citazione in una fonte affidabile prima di usarle",
+    "Fidarsi, perché il tono sicuro significa che è vero",
+    "Fidarsi, perché le macchine non sbagliano",
+    "Chiedere all'assistente di giurare che è vero",
+  ]}
+  answer={0}
+  explain="Il tono sicuro non è una prova: un modello può inventare dettagli plausibili. Le macchine sbagliano, e farsi giurare non serve perché il modello non controlla i fatti: la verifica si fa su una fonte affidabile."
+/>
+
+<Say who="sensei">Fidarsi è bene, controllare è meglio. Con l'IA è obbligatorio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui limiti dell'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-limiti" pass="4/5" retries={3} />
+
+<Say who="sensei">Fluente non vuol dire vero. Tieni questa frase vicina quando usi l'IA.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un modello di linguaggio scrive in modo fluente, ma può inventare (allucinazioni) con tono sicuro.
+- I pregiudizi nei dati diventano pregiudizi del modello.
+- Le conoscenze di un modello si fermano alla data dell'addestramento, salvo strumenti aggiuntivi.
+- La responsabilità di ciò che si pubblica o si decide resta alla persona.
+- Caso chiuso: l'assistente aveva inventato il nome del preside; Teo ora controlla le date sull'annuario.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un'allucinazione dell'IA?", a: "Un dettaglio falso ma plausibile, inventato dal modello" },
+    { q: "Perché un modello può avere pregiudizi?", a: "Perché li impara dai dati sbilanciati su cui è addestrato" },
+    { q: "Perché un testo fluente può ingannare?", a: "Perché siamo portati a credere che chi parla bene sappia ciò che dice" },
+    { q: "Chi risponde di un errore pubblicato con l'aiuto dell'IA?", a: "La persona che lo ha pubblicato" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: miti e paure sull'IA, per separare i fatti dalle storie.</Say>
+</Scene>

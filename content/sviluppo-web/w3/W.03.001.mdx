@@ -1,0 +1,170 @@
+---
+id: W.03.001
+course: sviluppo-web
+module: 3
+title: "Header, nav, main, section, article, footer"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.010]
+objectives:
+  - "Riconoscere i tag semantici header, nav, main, section, article, aside e footer"
+  - "Scegliere il tag giusto per ogni parte di una pagina"
+  - "Costruire lo scheletro semantico di una pagina"
+verification:
+  type: generated-numeric
+  generator: w03-tag-semantici
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare div per tutto, anche dove esiste un tag con un significato preciso"
+  - "Mettere più di un main nella stessa pagina"
+  - "Confondere section (un gruppo di contenuti su un tema) con article (un contenuto che sta in piedi da solo)"
+commands: []
+---
+
+<Scene title="Una pagina tutta di div">
+Marco è il volontario che tiene il sito dell'associazione «Amici dell'Orto», un orto condiviso del quartiere. La sua pagina funziona, ma dentro ha solo `<div>` uno dentro l'altro: per il browser sono scatole anonime, tutte uguali.
+
+Un'amica che programma gli dice: «Il tuo codice non dice che cosa è ogni pezzo. Esistono tag con un nome che spiega il ruolo». Quei tag si chiamano **semantici**: la parola *semantica* vuol dire «significato».
+
+La domanda del caso: **come dico al browser che cosa è ogni parte della pagina?**
+
+<Say who="sensei">Un `<div>` è una scatola senza etichetta. Un tag semantico è una scatola con scritto sopra che cosa contiene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti della pagina">
+Quasi tutte le pagine hanno le stesse parti. HTML ha un tag per ciascuna:
+
+- `<header>`: l'intestazione, di solito con il logo e il titolo del sito.
+- `<nav>`: un blocco di **link di navigazione** (il menu).
+- `<main>`: il contenuto principale, quello per cui l'utente è venuto. Ce ne va **uno solo** per pagina.
+- `<footer>`: il piè di pagina, con contatti, autore e informazioni finali.
+
+<Layers
+  caption="Lo scheletro di una pagina semantica."
+  items={[
+    { icon: "file", title: "header", text: "Logo e titolo del sito" },
+    { icon: "link", title: "nav", text: "Il menu con i link" },
+    { icon: "book", title: "main", text: "Il contenuto principale, uno solo" },
+    { icon: "mail", title: "footer", text: "Contatti e informazioni finali" },
+  ]}
+/>
+
+<Say who="assistente">Non cambiano l'aspetto: senza stile sembrano tutti dei semplici blocchi. Cambia il significato che portano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Section, article, aside">
+Dentro il `<main>` ci sono altri tre tag utili.
+
+<Compare
+  caption="Section, article e aside."
+  left={{ title: "section", points: ["Un gruppo di contenuti su un tema", "Di solito ha un suo titolo", "Es. «Chi siamo», «Come aiutarci»"] }}
+  right={{ title: "article", points: ["Un contenuto che sta in piedi da solo", "Avrebbe senso anche copiato altrove", "Es. una notizia, un post del blog"] }}
+/>
+
+- `<aside>` è un contenuto **collaterale**: una nota a margine, un riquadro «Lo sapevi?», un elenco di link correlati.
+
+<Callout kind="trucco">
+Per scegliere tra `<section>` e `<article>` chiediti: «Se lo copio su un altro sito, ha senso da solo?». Se sì, è un `<article>`. Se è solo un capitolo della pagina, è una `<section>`.
+</Callout>
+
+<Say who="sensei">Nel dubbio, un tag semantico semplice è meglio di un `<div>`. Se nessuno calza, il `<div>` resta lì per i casi in cui serve solo una scatola per lo stile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo scheletro di Marco">
+Ecco la pagina dell'associazione, riordinata con i tag giusti.
+
+```html
+<body>
+  <header>
+    <h1>Amici dell'Orto</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="eventi.html">Eventi</a>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h2>Festa dei raccolti</h2>
+      <p>Sabato 12 ottobre apriamo l'orto a tutti.</p>
+    </article>
+    <aside>
+      <p>Porta un cestino da casa.</p>
+    </aside>
+  </main>
+  <footer>
+    <p>Contatti: info@esempio.it</p>
+  </footer>
+</body>
+```
+
+<Callout kind="regola">
+`header` e `footer` non sono solo della pagina intera: anche un `<article>` può avere il suo `<header>` (titolo e data) e il suo `<footer>` (autore). Il `<main>`, invece, è uno solo.
+</Callout>
+
+<Say who="assistente">Leggi il codice dall'alto: intestazione, menu, contenuto, nota a margine, piè di pagina. Si capisce senza vedere la pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco deve mettere il menu con i link «Home», «Eventi» e «Contatti».
+
+<Quiz
+  question="Quale tag semantico racchiude il menu principale con i link di navigazione?"
+  options={[
+    "<nav>",
+    "<aside>",
+    "<section>",
+    "<footer>",
+  ]}
+  answer={0}
+  explain="Il tag nav è fatto apposta per i blocchi di link di navigazione. Aside è un contenuto a margine, section un gruppo di contenuti su un tema, footer il piè di pagina."
+/>
+
+<Say who="sensei">Un tag, un ruolo. Quando lo scegli, stai già descrivendo la pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui tag semantici. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-tag-semantici" pass="4/5" retries={3} />
+
+<Say who="sensei">Header in alto, footer in basso, main nel mezzo, e uno solo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I tag semantici descrivono il ruolo di ogni parte della pagina; un `<div>` non dice niente.
+- `<header>`, `<nav>`, `<main>` e `<footer>` sono le parti principali; `<main>` è uno solo per pagina.
+- `<section>` raggruppa contenuti su un tema, `<article>` è un contenuto autonomo, `<aside>` è un contenuto a margine.
+- Caso chiuso: Marco ha sostituito i `<div>` con tag che dicono che cosa contengono.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa vuol dire tag semantico?", a: "Un tag il cui nome spiega il ruolo del contenuto" },
+    { q: "Quanti main ci vanno in una pagina?", a: "Uno solo" },
+    { q: "Che cosa contiene nav?", a: "I link di navigazione principali, cioè il menu" },
+    { q: "Qual è la differenza tra section e article?", a: "Section è un gruppo di contenuti su un tema; article è un contenuto che sta in piedi da solo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: perché tutto questo conta, e per chi.</Say>
+</Scene>

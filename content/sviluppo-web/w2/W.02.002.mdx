@@ -1,0 +1,185 @@
+---
+id: W.02.002
+course: sviluppo-web
+module: 2
+title: "Tag, attributi ed elementi"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.001]
+objectives:
+  - "Distinguere tag, attributo ed elemento"
+  - "Riconoscere gli elementi vuoti, che non hanno tag di chiusura"
+  - "Annidare gli elementi nell'ordine giusto"
+verification:
+  type: generated-numeric
+  generator: w02-tag-attributi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Chiudere i tag nell'ordine sbagliato: l'ultimo aperto deve essere il primo a chiudersi"
+  - "Dimenticare le virgolette attorno al valore di un attributo, o scrivere uno spazio dentro il nome"
+  - "Mettere una barra di chiusura su elementi come br e img pensando che sia obbligatoria: in HTML non lo è"
+commands: []
+---
+
+<Scene title="Il paragrafo che si mangia la pagina">
+Lucia prova a scrivere il testo per la pagina dei corsi, ma dimentica una chiusura: tutto quello che viene dopo compare in grassetto, fino in fondo alla pagina.
+
+Per capire dov'è l'errore serve un vocabolario preciso: si dice **tag**, **attributo**, **elemento**, e non sono la stessa cosa.
+
+La domanda del caso: **come si leggono e si scrivono i mattoncini dell'HTML?**
+
+<Say who="sensei">Chi parla con precisione, sbaglia di meno. Tre parole, tre significati diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tag, attributo, elemento">
+Guarda questa riga:
+
+```html
+<a href="corsi.html">I corsi</a>
+```
+
+- I **tag** sono i segnaposto tra parentesi angolari: `<a>` è il **tag di apertura**, `</a>` il **tag di chiusura** (ha la barra).
+- Il **contenuto** è il testo in mezzo: `I corsi`.
+- `href="corsi.html"` è un **attributo**: un'informazione in più, scritta nel tag di apertura come `nome="valore"`.
+- L'**elemento** è tutto insieme: tag di apertura, contenuto e tag di chiusura.
+
+<Flow
+  caption="Le parti di un elemento."
+  steps={[
+    { icon: "code", title: "Apertura", text: "Il tag con gli attributi" },
+    { icon: "file", title: "Contenuto", text: "Il testo o altri elementi" },
+    { icon: "check", title: "Chiusura", text: "Il tag con la barra" },
+  ]}
+/>
+
+<Say who="assistente">Il tag è l'etichetta, l'elemento è la scatola intera con l'etichetta e quello che c'è dentro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli attributi">
+Un attributo ha un **nome**, il segno `=` e un **valore** tra virgolette. Se ce ne sono due o più, si separano con uno spazio:
+
+```html
+<a href="corsi.html" class="bottone" id="menu-corsi">I corsi</a>
+```
+
+- `href` dice dove porta il link.
+- `class` dà un nome di gruppo, che servirà al CSS per decorare più elementi insieme.
+- `id` dà un nome **unico** a un solo elemento della pagina.
+
+Alcuni attributi sono **booleani**: contano solo se ci sono, come `disabled` o `checked`.
+
+<Callout kind="regola">
+Scrivi sempre il valore tra virgolette e i nomi di tag e attributi in minuscolo. Il browser accetta anche altre forme, ma uno stile coerente evita errori.
+</Callout>
+
+<Callout kind="attenzione">
+Un `id` deve essere usato **una sola volta** in una pagina. Se lo ripeti, il CSS e JavaScript possono comportarsi in modo imprevisto.
+</Callout>
+
+<Say who="sensei">Gli attributi sono le impostazioni di un elemento. Un link senza href non porta da nessuna parte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Elementi vuoti e annidamento">
+Alcuni elementi non hanno contenuto e **non hanno il tag di chiusura**. Si chiamano **elementi vuoti** (in inglese *void elements*):
+
+```html
+<br>
+<hr>
+<img src="vaso.jpg" alt="Un vaso blu">
+<meta charset="UTF-8">
+```
+
+`<br>` va a capo, `<hr>` disegna una linea, `<img>` mostra un'immagine, `<meta>` dà informazioni nell'head. Una barra finale (`<br />`) è ammessa, ma non serve.
+
+Gli elementi si **annidano**, cioè se ne mette uno dentro l'altro. L'ultimo aperto è il primo a chiudersi, come scatole una dentro l'altra:
+
+```html
+<p>Un <strong>vaso</strong> fatto a mano.</p>
+```
+
+<Compare
+  caption="Annidamento giusto e sbagliato."
+  left={{ title: "Giusto", points: ["p apre, strong apre", "strong chiude, p chiude", "Le scatole non si incrociano"] }}
+  right={{ title: "Sbagliato", points: ["p apre, strong apre", "p chiude prima di strong", "Le scatole si incrociano"] }}
+/>
+
+<Callout kind="trucco">
+Quando scrivi un tag di apertura, scrivi subito anche quello di chiusura, poi riempi in mezzo. Così non te lo dimentichi più.
+</Callout>
+
+<Say who="assistente">Per il caso di Lucia: il tag di chiusura mancante faceva continuare il grassetto fino alla fine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nell'elemento `<p class=«bottone»>Ciao</p>`, che cos'è class=«bottone»?"
+  options={[
+    "Un attributo",
+    "Un tag di chiusura",
+    "Un elemento vuoto",
+    "Il contenuto dell'elemento",
+  ]}
+  answer={0}
+  explain="È un attributo: un nome e un valore scritti nel tag di apertura. Il tag di chiusura ha la barra, un elemento vuoto non ha contenuto né chiusura e il contenuto è il testo tra i due tag."
+/>
+
+<Guided
+  steps={[
+    "Scrivi un paragrafo con il tag di apertura e quello di chiusura.",
+    "Dentro il paragrafo metti la parola «vaso» in un elemento strong.",
+    "Aggiungi un a capo con br, che non ha chiusura.",
+    "Aggiungi a un tag p l'attributo id con un nome tuo.",
+    "Controlla l'ordine: l'ultimo tag aperto è il primo a chiudersi?",
+  ]}
+/>
+
+<Say who="sensei">Se non sai dov'è un errore, controlla le chiusure una per una, partendo dall'ultima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tag, attributi ed elementi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-tag-attributi" pass="4/5" retries={3} />
+
+<Say who="sensei">Apertura, contenuto, chiusura. Poi gli attributi, sempre nel tag di apertura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un elemento è formato da tag di apertura, contenuto e tag di chiusura.
+- Gli attributi sono coppie `nome="valore"` scritte nel tag di apertura.
+- Gli elementi vuoti, come `br`, `hr`, `img` e `meta`, non hanno chiusura.
+- Gli elementi si annidano: l'ultimo aperto è il primo a chiudersi.
+- Caso chiuso: Lucia aveva dimenticato la chiusura di `strong`, e il grassetto continuava fino a fine pagina.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si scrivono gli attributi?", a: "Nel tag di apertura, nella forma nome=valore tra virgolette" },
+    { q: "Che cos'è un elemento vuoto?", a: "Un elemento senza contenuto e senza tag di chiusura, come br o img" },
+    { q: "Che cosa deve essere unico in una pagina?", a: "Il valore di un attributo id" },
+    { q: "Qual è l'ordine giusto per chiudere i tag annidati?", a: "L'ultimo aperto è il primo a chiudersi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i titoli e i paragrafi, cioè il testo della pagina.</Say>
+</Scene>

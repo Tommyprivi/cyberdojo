@@ -1,0 +1,180 @@
+---
+id: P.04.005
+course: programmazione
+module: 4
+title: "Sollevare errori: raise"
+belt: bianca
+duration_min: 8
+prerequisites: [P.04.004]
+objectives:
+  - "Sollevare un'eccezione con raise e un messaggio chiaro"
+  - "Scegliere il tipo di eccezione adatto, come ValueError o TypeError"
+  - "Spiegare come un errore sollevato in una funzione viene gestito da chi la chiama"
+verification:
+  type: generated-numeric
+  generator: p04-raise
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Restituire un valore speciale come -1 per segnalare un errore, invece di sollevare un'eccezione"
+  - "Scrivere messaggi vaghi come «errore» che non dicono che cosa è andato storto"
+  - "Sollevare un'eccezione e poi dimenticare di gestirla dove la funzione viene chiamata"
+commands: []
+---
+
+<Scene title="Il saldo che va sotto zero">
+La cassa del gruppo di teatro ha 50 euro. Un compagno prova a prelevarne 80 per comprare le luci. Il programma di Elena, senza controlli, accetta e il saldo diventa -30. Nessun errore, ma i conti sono sbagliati.
+
+Fino ad ora gli errori ci hanno fermato da soli. Ora impariamo a **fermarli noi**, quando i dati non hanno senso.
+
+La domanda del caso: **come può una funzione rifiutare un dato sbagliato e dirlo a chi la chiama?**
+
+<Say who="sensei">Una funzione onesta non accetta tutto. Quando i dati sono sbagliati, dice di no, e lo dice forte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="raise">
+Con `raise` si **solleva** un'eccezione di proposito. Si scrive il tipo e un messaggio.
+
+```python
+def preleva(saldo, importo):
+    if importo <= 0:
+        raise ValueError("L'importo deve essere positivo")
+    if importo > saldo:
+        raise ValueError("Saldo insufficiente")
+    return saldo - importo
+```
+
+Se `preleva(50, 80)` trova `importo > saldo`, la funzione si **interrompe subito** e solleva `ValueError: Saldo insufficiente`. La riga `return` non viene mai raggiunta.
+
+<Log lines={[
+  "Traceback (most recent call last):",
+  "  File \"cassa.py\", line 8, in <module>",
+  "    preleva(50, 80)",
+  "  File \"cassa.py\", line 5, in preleva",
+  "    raise ValueError(\"Saldo insufficiente\")",
+  "ValueError: Saldo insufficiente",
+]} caption="Un'eccezione sollevata da noi è un'eccezione come le altre." />
+
+<Say who="assistente">Il traceback è lo stesso di sempre: ora il messaggio l'hai scritto tu, quindi puoi renderlo chiaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quale tipo scegliere">
+Python ha già molti tipi di eccezione. Scegli quello che racconta meglio il problema:
+
+<Layers
+  caption="I tipi più usati per segnalare dati sbagliati."
+  items={[
+    { icon: "warning", title: "ValueError", text: "Il tipo è giusto, ma il valore no (importo negativo)" },
+    { icon: "cross", title: "TypeError", text: "Il tipo è sbagliato (testo al posto di un numero)" },
+    { icon: "search", title: "KeyError", text: "Una chiave che non esiste in un dizionario" },
+    { icon: "file", title: "FileNotFoundError", text: "Un file che non si trova (la lezione sui file)" },
+  ]}
+/>
+
+Il **messaggio** deve dire che cosa è andato storto e, se può, quale valore era sbagliato. Meglio «Saldo insufficiente: ci sono 50 euro, ne servono 80» di un generico «Errore».
+
+<Callout kind="trucco">
+Puoi anche creare un tipo tutto tuo: `class SaldoInsufficiente(Exception): pass`. Poi lo sollevi con `raise SaldoInsufficiente("...")`. Utile quando i programmi diventano grandi.
+</Callout>
+
+<Say who="sensei">Il nome del tipo è già metà del messaggio. Sceglilo con cura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi chiama, gestisce">
+Un'eccezione sollevata dentro una funzione **risale** a chi l'ha chiamata, e poi a chi ha chiamato quest'ultimo, finché qualcuno la gestisce con `except`. Se nessuno lo fa, il programma si ferma con il traceback.
+
+```python
+saldo = 50
+try:
+    saldo = preleva(saldo, 80)
+except ValueError as errore:
+    print("Operazione rifiutata:", errore)
+print("Saldo:", saldo)
+```
+
+<Log lines={[
+  "Operazione rifiutata: Saldo insufficiente",
+  "Saldo: 50",
+]} caption="Il saldo resta 50: l'assegnazione non è mai avvenuta." />
+
+Questa divisione dei compiti è la forza delle eccezioni: la funzione `preleva` **sa** che cosa non va, ma non decide come reagire; il programma che la chiama **decide** (avvisare, ritentare, chiudere).
+
+<Callout kind="attenzione">
+Non usare valori speciali come `-1` o `None` per segnalare un errore: è facile dimenticare di controllarli e il programma va avanti con un dato sbagliato. Un'eccezione, invece, non si può ignorare per distrazione.
+</Callout>
+
+<Say who="assistente">Dentro un except puoi anche scrivere solo raise, senza altro: rilancia l'errore appena catturato, dopo averlo per esempio annotato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Una funzione riceve un'età negativa.
+
+<Quiz
+  question="Quale istruzione solleva un errore di valore con un messaggio chiaro quando l'età è negativa?"
+  options={[
+    "raise ValueError(\"L'età non può essere negativa\")",
+    "return ValueError",
+    "except ValueError: eta = 0",
+    "print(ValueError)",
+  ]}
+  answer={0}
+  explain="Per sollevare un'eccezione si usa raise, il tipo e il messaggio. return ValueError restituirebbe solo il nome del tipo senza segnalare l'errore; except serve a gestire un errore, non a sollevarlo; print si limita a stampare."
+/>
+
+<Guided
+  steps={[
+    "Scrivi una funzione quota(totale, persone).",
+    "Se persone è minore o uguale a 0, solleva ValueError con un messaggio chiaro.",
+    "Altrimenti restituisci totale diviso persone.",
+    "Chiamala dentro try con il valore 0 e stampa il messaggio nell'except.",
+  ]}
+/>
+
+<Say who="sensei">Prima i controlli in testa alla funzione, poi il lavoro vero. Chi legge capisce subito quali dati sono accettati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su raise e tipi di eccezione. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-raise" pass="4/5" retries={3} />
+
+<Say who="sensei">Chi scopre l'errore lo solleva. Chi sa che cosa fare lo gestisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- raise solleva un'eccezione con un tipo e un messaggio chiaro, e interrompe la funzione.
+- Si sceglie il tipo che descrive meglio il problema: ValueError per valori sbagliati, TypeError per tipi sbagliati.
+- L'eccezione risale a chi ha chiamato la funzione, che la gestisce con try ed except.
+- Caso chiuso: preleva(50, 80) ora rifiuta il prelievo e il saldo della cassa resta 50.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa raise?", a: "Solleva un'eccezione e interrompe la funzione" },
+    { q: "Quando si usa ValueError?", a: "Quando il tipo è giusto ma il valore non è accettabile" },
+    { q: "Perché è meglio un'eccezione di un valore speciale come -1?", a: "Perché non si può ignorare per distrazione" },
+    { q: "Chi decide come reagire a un'eccezione sollevata da una funzione?", a: "Il codice che chiama la funzione, con try ed except" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: leggere e scrivere file di testo, per far durare i dati oltre la chiusura del programma.</Say>
+</Scene>

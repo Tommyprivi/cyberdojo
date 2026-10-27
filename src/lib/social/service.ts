@@ -302,6 +302,20 @@ export async function getLeaderboard(userId: string, now = new Date()): Promise<
   return { week, rows: rows.map((r) => ({ rank: r.rank, ref: r.public_id, nickname: r.nickname, avatar: r.avatar, xp: r.xp, isMe: r.is_me })) };
 }
 
+/** Classifica di un solo corso (lettera F, C, D, T, H): conta gli XP delle lezioni di quel corso nella settimana. Stessa fascia d'età, solo chi partecipa. */
+export async function getCourseLeaderboard(userId: string, course: string, now = new Date()): Promise<{ week: WeekBounds; rows: LeaderRow[] }> {
+  const week = weekBounds(now);
+  if (!/^[A-Z]$/.test(course)) return { week, rows: [] };
+  const rows = await withUser(userId, async (tx) => {
+    await loadContext(tx, userId);
+    const r = await tx.execute(
+      sql`select * from course_leaderboard(${course}, ${iso(week.start)}::timestamptz, ${iso(week.end)}::timestamptz, ${LEADERBOARD_LIMIT})`,
+    );
+    return r.rows as { rank: number; public_id: string; nickname: string; avatar: string; xp: number; is_me: boolean }[];
+  });
+  return { week, rows: rows.map((r) => ({ rank: r.rank, ref: r.public_id, nickname: r.nickname, avatar: r.avatar, xp: r.xp, isMe: r.is_me })) };
+}
+
 // ---------- amici ----------
 
 /** Cintura mostrata agli amici: gialla se il primo modulo di Fondamenta è completo (come nel Profilo). */

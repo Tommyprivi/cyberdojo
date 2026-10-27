@@ -1,0 +1,176 @@
+---
+id: M.03.010
+course: mondo-digitale
+module: 3
+title: "Esercizi: scrivere una richiesta formale a una scuola o a un ufficio"
+belt: bianca
+duration_min: 10
+prerequisites: [M.03.009]
+objectives:
+  - "Scrivere una richiesta formale con oggetto, saluto, richiesta chiara, chiusura e firma"
+  - "Usare un tono cortese e il «Lei» con chi non si conosce"
+  - "Controllare allegati e destinatario prima di inviare"
+verification:
+  type: generated-numeric
+  generator: m03-richiesta-formale
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dare del tu a un ufficio o scrivere con tono troppo informale"
+  - "Mettere troppe richieste nello stesso messaggio, senza ordine"
+  - "Dimenticare di indicare nome, cognome e un recapito per essere ricontattati"
+commands: []
+---
+
+<Scene title="La richiesta al Comune">
+Rosa vuole sapere se ci sono ancora posti nel corso di computer del Comune e come iscriversi. Davide le dice: «Scrivi all'ufficio. Ma bene, nonna: una richiesta chiara riceve risposta in fretta».
+
+In questa lezione metti insieme tutto il modulo: indirizzo, oggetto, tono, allegato, controllo finale.
+
+La domanda del caso: **come si scrive una richiesta formale che ottiene una risposta?**
+
+<Say who="sensei">Scriviamo un messaggio vero, passo dopo passo. È l'esame del modulo: hai già tutti gli attrezzi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La struttura">
+<Flow
+  caption="La struttura di una richiesta formale."
+  steps={[
+    { icon: "search", title: "Oggetto", text: "Di che cosa si tratta, in poche parole" },
+    { icon: "mail", title: "Saluto e presentazione", text: "Chi sei, in una riga" },
+    { icon: "file", title: "Richiesta", text: "Che cosa chiedi, chiaro e preciso" },
+    { icon: "user", title: "Chiusura e firma", text: "Ringraziamento, nome e recapito" },
+  ]}
+/>
+
+Si usa il **«Lei»** (non il «tu») con chi non si conosce o con un ufficio, e un linguaggio semplice e cortese. Frasi come «Vorrei sapere se...» o «Le chiedo cortesemente...» vanno benissimo.
+
+<Say who="assistente">Formale non vuol dire complicato. Più chiaro scrivi, più veloce arriva la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio completo">
+Questo è il messaggio di Rosa, con dati inventati:
+
+```
+A: ufficio.corsi@comune-esempio.example
+Oggetto: Richiesta di iscrizione al corso di informatica
+
+Gentile ufficio,
+mi chiamo Rosa Bianchi e vorrei iscrivermi al corso di
+informatica di base che inizia a novembre.
+
+Le chiedo cortesemente:
+1. se ci sono ancora posti disponibili;
+2. quali documenti devo portare per l'iscrizione.
+
+Resto a disposizione per qualsiasi chiarimento.
+Mi può contattare a questo indirizzo email.
+
+La ringrazio e porgo cordiali saluti,
+Rosa Bianchi
+```
+
+<Callout kind="trucco">
+Se la richiesta ha più punti, numerali: chi risponde può rispondere punto per punto, senza dimenticarne nessuno.
+</Callout>
+
+<Say who="sensei">Osserva: oggetto chiaro, chi sei, due domande numerate, chiusura gentile, firma. Fine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Allegati, destinatario e controllo finale">
+Se serve un documento (per esempio una scheda da compilare), **allegalo**, controlla il nome del file e scrivilo anche nel testo: «In allegato trova il modulo compilato».
+
+Prima di premere Invia fai la **lista di controllo**:
+
+<Layers
+  caption="Cinque controlli finali."
+  items={[
+    { icon: "mail", title: "Destinatario", text: "L'indirizzo è quello giusto?" },
+    { icon: "search", title: "Oggetto", text: "Dice di che cosa si tratta?" },
+    { icon: "file", title: "Allegato", text: "È davvero allegato?" },
+    { icon: "check", title: "Testo", text: "Chiaro, cortese, senza errori?" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Non scrivere nel messaggio dati che non servono (come numeri di carta o password). Un ufficio serio non li chiede per email. Per ogni dato personale, dai solo quello necessario.
+</Callout>
+
+<Say who="assistente">La risposta potrebbe arrivare dopo qualche giorno: gli uffici hanno tempi propri. Se passano molti giorni, puoi mandare un breve promemoria cortese.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Prova a scrivere un messaggio simile: chiedi a una scuola le date degli incontri con i genitori. Segui la struttura: oggetto, saluto, presentazione, richiesta, chiusura, firma.
+
+<Guided
+  steps={[
+    "Scrivi l'oggetto: Richiesta di informazioni sugli incontri con i genitori.",
+    "Scrivi il saluto: Gentile segreteria,",
+    "Presentati in una riga: nome, cognome e il ruolo (per esempio genitore di un alunno della classe 2B).",
+    "Scrivi la richiesta: Vorrei sapere in quali date sono previsti gli incontri con i genitori.",
+    "Chiudi con un ringraziamento: La ringrazio e porgo cordiali saluti, e la firma con nome e cognome.",
+    "Fai la lista di controllo: destinatario, oggetto, testo. Poi, solo se è un messaggio vero, invia.",
+  ]}
+/>
+
+<Quiz
+  question="Quale oggetto è più adatto per questa richiesta formale?"
+  options={[
+    "Richiesta di informazioni sugli incontri con i genitori",
+    "Ciao, una domanda!!!",
+    "URGENTE URGENTE",
+    "Salve",
+  ]}
+  answer={0}
+  explain="L'oggetto giusto dice di che cosa si tratta, in poche parole. «Ciao, una domanda» è vago e troppo informale, il maiuscolo con le ripetizioni sembra un grido e «Salve» non dice niente."
+/>
+
+<Say who="sensei">Se sai scrivere questa email, sai scrivere quasi tutte le email del mondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla richiesta formale. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-richiesta-formale" pass="4/5" retries={3} />
+
+<Say who="sensei">Oggetto, Lei, richiesta chiara, firma, controllo. È una formula che funziona.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Una richiesta formale ha oggetto chiaro, saluto, presentazione, richiesta precisa, chiusura e firma.
+- Si usa il «Lei» e un linguaggio semplice e cortese.
+- Se la richiesta ha più punti, si numerano.
+- Prima di inviare si controllano destinatario, oggetto, allegato e testo.
+- Caso chiuso: Rosa ha scritto all'ufficio, ha ricevuto la risposta e si è iscritta al corso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con chi si usa il «Lei»?", a: "Con chi non si conosce e con gli uffici" },
+    { q: "Che cosa deve dire l'oggetto?", a: "Di che cosa si tratta, in poche parole" },
+    { q: "Come si scrivono più domande in una richiesta?", a: "In un elenco numerato" },
+    { q: "Che cosa si controlla prima di inviare?", a: "Destinatario, oggetto, allegato e testo" },
+  ]}
+/>
+
+<Say who="sensei">Modulo chiuso. Prossimo modulo: smartphone e tablet, per usare bene il telefono che hai in tasca.</Say>
+</Scene>

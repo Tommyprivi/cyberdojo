@@ -1,0 +1,190 @@
+---
+id: P.03.008
+course: programmazione
+module: 3
+title: "Moduli: importare codice altrui"
+belt: bianca
+duration_min: 9
+prerequisites: [P.03.007]
+objectives:
+  - "Importare un modulo della libreria standard con import e usarne le funzioni"
+  - "Distinguere import modulo, from modulo import nome e import modulo as alias"
+  - "Creare un proprio modulo e importarlo da un altro file"
+verification:
+  type: generated-numeric
+  generator: p03-moduli
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare le funzioni di un modulo senza averlo importato: NameError"
+  - "Dare al proprio file lo stesso nome di un modulo di Python, come random.py o math.py"
+  - "Dimenticare il nome del modulo davanti alla funzione dopo un semplice import"
+commands: []
+---
+
+<Scene title="Il dado che non vuole uscire">
+Elena vuole simulare il lancio di un dado per decidere quale squadra batte per prima. Ha bisogno di numeri a caso, ma scrivere da sola un generatore di numeri casuali è complicato.
+
+La buona notizia è che qualcun altro l'ha già fatto, e Python lo mette a disposizione.
+
+La domanda del caso: **come si usa il codice che altri hanno già scritto?**
+
+<Say who="sensei">I programmatori non ricominciano mai da zero. Usano ciò che c'è già, e lo usano bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un modulo">
+Un **modulo** è un file Python che contiene funzioni (e altro) pronte da usare in altri programmi. Per usarlo si scrive `import` all'inizio del file.
+
+Python viene fornito con tanti moduli già inclusi, che formano la **libreria standard**. Alcuni esempi:
+
+- `math`: funzioni matematiche (radice quadrata, arrotondamenti, il valore di pi greco);
+- `random`: numeri casuali;
+- `datetime`: date e orari.
+
+```python
+import random
+
+dado = random.randint(1, 6)
+print("È uscito", dado)
+```
+
+`random.randint(1, 6)` restituisce un numero intero a caso **tra 1 e 6, estremi compresi**. Ad ogni esecuzione può uscire un numero diverso.
+
+<Callout kind="regola">
+Dopo `import modulo`, per usare una funzione scrivi il **nome del modulo**, un punto e il nome della funzione: `random.randint(...)`. Senza il prefisso, Python non la trova.
+</Callout>
+
+<Say who="assistente">Il punto significa «dentro». `random.randint` si legge: la funzione randint, che sta dentro random.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre modi di importare">
+Ci sono tre forme, e ognuna ha il suo uso.
+
+```python
+import math
+print(math.sqrt(16))        # 4.0
+
+from math import sqrt
+print(sqrt(16))             # 4.0
+
+import math as m
+print(m.sqrt(16))           # 4.0
+```
+
+<Compare
+  caption="Tre forme dell'importazione."
+  left={{ title: "import modulo", points: ["Porta tutto il modulo", "Si scrive math.sqrt", "Chiaro da dove viene la funzione"] }}
+  right={{ title: "from modulo import nome", points: ["Porta solo ciò che nomini", "Si scrive sqrt, senza prefisso", "Più breve, ma meno chiaro"] }}
+/>
+
+La terza forma, `import math as m`, dà al modulo un **nome più corto** (un *alias*): utile con nomi lunghi.
+
+Altre due cose utili del modulo `math`: `math.pi` vale circa 3,14159 e `math.floor(3.7)` dà 3 (arrotonda per difetto).
+
+<Callout kind="trucco">
+Per iniziare usa `import modulo`: quando leggi `math.sqrt` sai subito da dove arriva la funzione. Le altre forme servono quando il codice diventa lungo.
+</Callout>
+
+<Say who="sensei">Gli import si scrivono in cima al file, tutti insieme. Chi legge sa subito di cosa hai bisogno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tuo modulo">
+Ogni file Python che scrivi può diventare un modulo. Se nella cartella hai `utili.py` con questo contenuto:
+
+```python
+def saluta(nome):
+    return "Ciao, " + nome + "!"
+```
+
+in un altro file della **stessa cartella** puoi scrivere:
+
+```python
+import utili
+
+print(utili.saluta("Elena"))
+```
+
+<Log lines={[
+  "Ciao, Elena!",
+]} caption="Il file utili.py diventa il modulo utili." />
+
+Il nome del modulo è il nome del file **senza** `.py`.
+
+<Callout kind="attenzione">
+Non dare ai tuoi file il nome di un modulo di Python: un file chiamato `random.py` o `math.py` nella tua cartella prende il posto di quello vero, e i programmi smettono di funzionare in modo strano.
+</Callout>
+
+<Flow
+  caption="Il percorso di un import."
+  steps={[
+    { icon: "file", title: "import utili", text: "Python cerca il file utili.py" },
+    { icon: "folder", title: "Lo trova", text: "Nella cartella del programma o tra i moduli standard" },
+    { icon: "check", title: "Lo usa", text: "Ora utili.saluta è disponibile" },
+  ]}
+/>
+
+<Say who="assistente">Quando i tuoi programmi crescono, un modulo per le funzioni di utilità tiene in ordine il file principale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Dopo `import random`, quale riga estrae un numero intero a caso tra 1 e 6?"
+  options={[
+    "random.randint(1, 6)",
+    "randint(1, 6)",
+    "random(1, 6)",
+    "import randint(1, 6)",
+  ]}
+  answer={0}
+  explain="Dopo un semplice import serve il nome del modulo davanti: random.randint. Scrivere randint da solo darebbe NameError, perché il nome non è stato importato; random da sola è il modulo, non una funzione, e l'ultima forma non è sintassi valida."
+/>
+
+<Say who="sensei">Un punto che divide il modulo dalla funzione. Poca roba, molto potere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui moduli. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-moduli" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima import, poi il nome del modulo e il punto. Così si usa il codice degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un modulo è un file Python con funzioni pronte da usare.
+- La libreria standard è inclusa in Python: math, random, datetime e molti altri.
+- `import modulo` richiede il prefisso, `from modulo import nome` no, `import modulo as alias` accorcia il nome.
+- Un tuo file `.py` nella stessa cartella è un modulo importabile con il suo nome senza `.py`.
+- Caso chiuso: Elena usa `random.randint(1, 6)` per tirare il dado.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un modulo?", a: "Un file Python con funzioni da usare in altri programmi" },
+    { q: "Che cosa restituisce random.randint(1, 6)?", a: "Un numero intero a caso tra 1 e 6, estremi compresi" },
+    { q: "Che cosa fa import math as m?", a: "Importa math e lo rende disponibile con il nome m" },
+    { q: "Perché non chiamare un proprio file random.py?", a: "Prenderebbe il posto del modulo vero e i programmi funzionerebbero male" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: nomi, commenti e docstring, per scrivere codice che si legge.</Say>
+</Scene>

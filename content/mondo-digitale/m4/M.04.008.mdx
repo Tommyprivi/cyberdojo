@@ -1,0 +1,148 @@
+---
+id: M.04.008
+course: mondo-digitale
+module: 4
+title: "Il Wi-Fi e i dati del telefono"
+belt: bianca
+duration_min: 9
+prerequisites: [M.04.007]
+objectives:
+  - "Distinguere il Wi-Fi dai dati mobili"
+  - "Collegarsi a una rete Wi-Fi e usare con prudenza le reti pubbliche"
+  - "Controllare i consumi di dati e usare il punto di accesso personale"
+verification:
+  type: generated-numeric
+  generator: m04-wifi-dati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare operazioni bancarie o inserire password importanti su un Wi-Fi pubblico"
+  - "Guardare video per ore con i dati mobili e finire i gigabyte del piano"
+  - "Credere che il simbolo del Wi-Fi mostri che c'è internet: la rete può non avere collegamento"
+commands: []
+---
+
+<Scene title="I giga spariti">
+Giorgio ha un piano con 10 gigabyte al mese. A metà mese il telefono dice che ne ha già usati 9. Ha solo guardato qualche video e le mappe in viaggio.
+
+La domanda del caso: **come si collega il telefono a internet e come si tengono sotto controllo i dati?**
+
+<Say who="sensei">Ci sono due porte per internet: il Wi-Fi e i dati mobili. Sapere quale stai usando fa risparmiare soldi e guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due strade verso internet">
+<Compare
+  caption="Wi-Fi e dati mobili."
+  left={{ title: "Wi-Fi", points: ["Arriva da un router in casa, in ufficio o in un locale", "Non consuma i giga del tuo piano", "Funziona solo vicino al router"] }}
+  right={{ title: "Dati mobili", points: ["Arrivano dalla SIM, tramite le antenne del gestore", "Consumano i giga del piano", "Funzionano ovunque ci sia copertura"] }}
+/>
+
+- Il **router** è la scatola che porta internet in casa e crea la rete Wi-Fi.
+- Il telefono usa il **Wi-Fi** quando è collegato, altrimenti passa ai **dati mobili**.
+- La **Modalità aereo** spegne le comunicazioni del telefono, compresi Wi-Fi e dati mobili, anche se poi puoi riaccendere il solo Wi-Fi.
+
+<Callout kind="attenzione">
+Il simbolo del Wi-Fi non garantisce che internet funzioni: a volte il telefono è collegato al router, ma il router non ha connessione.
+</Callout>
+
+<Say who="assistente">Quando sei a casa o in un posto dove puoi collegarti, usa il Wi-Fi per i video e i download. Salvi i giga per quando servono davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Collegarsi a una rete Wi-Fi">
+<Flow
+  caption="Collegarsi al Wi-Fi."
+  steps={[
+    { icon: "gear", title: "Impostazioni", text: "Apri la voce Wi-Fi" },
+    { icon: "wifi", title: "Scegli la rete", text: "Tocca il nome della rete" },
+    { icon: "key", title: "Password", text: "Scrivi la password della rete" },
+    { icon: "check", title: "Collegato", text: "Il telefono ricorderà la rete" },
+  ]}
+/>
+
+- La password del Wi-Fi di casa di solito è stampata sul **router**, ma conviene cambiarla con una tua, lunga e difficile da indovinare.
+- Una rete senza password (aperta) si vede con un simbolo di avviso: chiunque può ascoltare ciò che passa.
+
+<Callout kind="regola">
+Su un Wi-Fi pubblico (bar, stazione, aeroporto) evita operazioni delicate, come l'app della banca o l'inserimento di password importanti. Per queste cose usa i dati mobili.
+</Callout>
+
+<Say who="sensei">Il Wi-Fi gratis di un locale va bene per leggere le notizie. Per il conto in banca, usa la tua connessione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tenere sotto controllo i dati">
+Nelle impostazioni, alla voce **Rete mobile** o **Utilizzo dati**, vedi quanti dati hai consumato e quali app li usano di più.
+
+- Il **video** è il consumo più pesante: guardarlo con i dati mobili consuma molti giga in fretta.
+- Puoi impostare un **risparmio dati** e vietare i dati mobili alle app che non servono fuori casa.
+- Molte app permettono di scaricare video, musica o mappe **con il Wi-Fi** per usarli poi senza connessione.
+- **Roaming**: se viaggi fuori dall'Unione Europea, i dati possono costare molto. Controlla le condizioni del tuo gestore prima di partire e, se non ti serve, spegni i dati mobili.
+
+**Punto di accesso personale** (*hotspot*): il telefono può condividere i suoi dati mobili con un computer o un altro telefono, creando una piccola rete Wi-Fi. Si attiva dalle impostazioni, con una password. Consuma batteria e giga del tuo piano.
+
+<Say who="assistente">Se non hai capito dove sono andati i giga, il grafico dell'utilizzo dati dice quale app li ha mangiati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio è in stazione, deve fare un pagamento con l'app della banca, e il telefono si è collegato al Wi-Fi gratuito della stazione.
+
+<Quiz
+  question="Che cosa è più prudente fare per il pagamento con l'app della banca?"
+  options={[
+    "Spegnere il Wi-Fi pubblico e usare i dati mobili",
+    "Restare sul Wi-Fi pubblico, tanto è gratis",
+    "Mandare la password della banca a un amico, per sicurezza",
+    "Attivare la Modalità aereo e fare il pagamento",
+  ]}
+  answer={0}
+  explain="Sui Wi-Fi pubblici è meglio evitare operazioni delicate: si usano i dati mobili, che passano dalla tua SIM. Restare sul Wi-Fi pubblico è meno prudente, la password non si dà a nessuno, e con la Modalità aereo il telefono non ha collegamento per pagare."
+/>
+
+<Say who="sensei">Un Wi-Fi che non conosci è un luogo pubblico. Non ci dici cose private.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su Wi-Fi e dati mobili. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-wifi-dati" pass="4/5" retries={3} />
+
+<Say who="sensei">Wi-Fi per le cose pesanti, dati mobili per le cose private fuori casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il Wi-Fi arriva da un router e non consuma i giga; i dati mobili arrivano dalla SIM e consumano il piano.
+- Per collegarsi al Wi-Fi si sceglie la rete e si scrive la password.
+- Sui Wi-Fi pubblici si evitano operazioni bancarie e password importanti.
+- Nelle impostazioni si vede quali app consumano più dati; il video è il consumo più pesante.
+- Caso chiuso: Giorgio ha scoperto che i video con i dati mobili gli avevano mangiato i giga; ora li guarda con il Wi-Fi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Il Wi-Fi consuma i giga del piano?", a: "No, usa il router; i dati mobili invece consumano il piano" },
+    { q: "Che cos'è il router?", a: "La scatola che porta internet e crea la rete Wi-Fi" },
+    { q: "Che cos'è l'hotspot?", a: "Il telefono che condivide i suoi dati mobili con altri dispositivi" },
+    { q: "Dove fare operazioni bancarie fuori casa?", a: "Con i dati mobili, non su un Wi-Fi pubblico" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: l'accessibilità, cioè gli aiuti per vedere, sentire e usare meglio il telefono.</Say>
+</Scene>

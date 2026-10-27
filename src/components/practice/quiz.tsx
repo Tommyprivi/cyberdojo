@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { haptic } from "@/lib/app/haptics";
 import { COURSES } from "@/lib/content/courses";
 import { ARP_BANK, ENCAPSULATION_BANK, makeBank, OSI_BANK, PACKET_BASICS, type BankItem } from "@/lib/practice/banks";
 import { ALL_BANK_ITEMS } from "@/lib/practice/banks-all";
@@ -196,7 +197,10 @@ function Session({
               type="button"
               disabled={answered}
               aria-pressed={isPicked}
-              onClick={() => setPicked(k)}
+              onClick={() => {
+                setPicked(k);
+                haptic(k === q.answer ? "right" : "wrong");
+              }}
               className={`flex min-h-14 items-center gap-3 rounded-lg border-2 px-3 py-2.5 text-left font-medium disabled:cursor-default ${state}`}
             >
               <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-md border border-border bg-surface font-mono text-sm font-bold">

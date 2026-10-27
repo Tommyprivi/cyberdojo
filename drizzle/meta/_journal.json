@@ -50,6 +50,34 @@
       "when": 1793108562070,
       "tag": "0006_aggiornamento-2",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793109213175,
+      "tag": "0007_verifica-certificati",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793109466206,
+      "tag": "0008_negozio-segnalibri",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793110423904,
+      "tag": "0009_duelli-docenti-portfolio",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793110675942,
+      "tag": "0010_annunci-solo-staff",
+      "breakpoints": true
     }
   ]
 }

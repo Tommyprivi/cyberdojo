@@ -1,0 +1,176 @@
+---
+id: W.02.008
+course: sviluppo-web
+module: 2
+title: "Le immagini e il testo alternativo"
+belt: bianca
+duration_min: 9
+prerequisites: [W.02.007]
+objectives:
+  - "Inserire un'immagine con img, src e alt"
+  - "Scrivere un testo alternativo utile, o vuoto quando l'immagine è solo decorativa"
+  - "Scegliere un formato adatto (JPG, PNG, WebP, SVG) e indicare larghezza e altezza"
+verification:
+  type: generated-numeric
+  generator: w02-immagini-alt
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare l'attributo alt, che serve a chi non vede l'immagine"
+  - "Scrivere nell'alt «immagine» o il nome del file invece di descrivere ciò che serve capire"
+  - "Usare una foto enorme e ridurla solo con la larghezza: il file resta pesante da scaricare"
+commands: []
+---
+
+<Scene title="La foto che non si vede">
+Un'allieva di Lucia, Giulia, è non vedente e usa un lettore di schermo (un programma che legge ad alta voce la pagina). Quando arriva sulla foto del vaso in vetrina, sente solo: «immagine». Non sa se è un vaso, un logo o una macchia.
+
+Succede anche a chi ha una connessione lenta e l'immagine non si carica, o a chi la pagina la riceve da un motore di ricerca.
+
+La domanda del caso: **come si descrive un'immagine a chi non la può vedere?**
+
+<Say who="sensei">Un'immagine senza descrizione è una porta chiusa per qualcuno. Il testo alternativo è la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tag img">
+Un'immagine si inserisce con `<img>`, un elemento vuoto, senza tag di chiusura:
+
+```html
+<img src="img/vaso.jpg" alt="Vaso di ceramica blu con un fiore bianco" width="400" height="300">
+```
+
+- `src` (*source*) è il **percorso** del file immagine (come hai visto nella lezione sui percorsi).
+- `alt` è il **testo alternativo**: viene letto dai lettori di schermo e mostrato se l'immagine non si carica.
+- `width` e `height` sono larghezza e altezza **in pixel** (i puntini dello schermo). Se li scrivi, il browser riserva lo spazio mentre la foto arriva e la pagina non «salta».
+
+Un'immagine può essere anche un link: basta metterla dentro `a`:
+
+```html
+<a href="corsi.html"><img src="img/vaso.jpg" alt="I nostri corsi"></a>
+```
+
+<Say who="assistente">In quest'ultimo caso l'alt descrive dove porta il link, non la foto: chi non vede deve capire dove va.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si scrive un buon alt">
+<Compare
+  caption="Testi alternativi."
+  left={{ title: "Poco utile", points: ["alt=«immagine»", "alt=«IMG_2043.jpg»", "alt=«vaso vaso vaso blu bottega»"] }}
+  right={{ title: "Utile", points: ["Descrive ciò che serve capire", "È breve, una frase al massimo", "Non dice «immagine di»"] }}
+/>
+
+Regole pratiche:
+- Descrivi quello che **serve** a chi legge: «Lucia al tornio mentre modella un vaso».
+- Non scrivere «immagine di» o «foto di»: il lettore di schermo dice già che è un'immagine.
+- Se l'immagine è **puramente decorativa** (una linea, uno sfondo), scrivi `alt=""` con le virgolette vuote: il lettore la salta.
+- Se l'immagine contiene del testo importante, ripeti quel testo nell'alt.
+
+<Callout kind="attenzione">
+L'attributo `alt` va sempre scritto, anche se vuoto. Un `img` senza `alt` è un errore che i controlli segnalano e che lascia chi usa un lettore di schermo senza informazioni.
+</Callout>
+
+<Say who="sensei">Prova a leggere solo gli alt della tua pagina: la storia deve ancora funzionare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Formati e peso">
+Le immagini più usate sul web:
+
+<Layers
+  caption="Quale formato per quale immagine."
+  items={[
+    { icon: "eye", title: "JPG", text: "Foto, con molti colori" },
+    { icon: "file", title: "PNG", text: "Grafica e immagini con sfondo trasparente" },
+    { icon: "bolt", title: "WebP", text: "Foto e grafica, spesso più leggero di JPG e PNG" },
+    { icon: "code", title: "SVG", text: "Disegni e icone fatti di linee: restano nitidi a ogni dimensione" },
+  ]}
+/>
+
+Il **peso** del file conta: più è grande, più la pagina è lenta, soprattutto sul telefono. Prima di usare una foto scattata con il telefono, riducila a una dimensione adatta alla pagina.
+
+Un attributo utile per le immagini lontane dallo schermo:
+
+```html
+<img src="img/vaso.jpg" alt="Vaso blu" width="400" height="300" loading="lazy">
+```
+
+`loading="lazy"` dice al browser di scaricare l'immagine solo quando l'utente scorre vicino a lei.
+
+<Callout kind="curiosita">
+Una foto del telefono può essere molto più grande di quello che serve. Salvarla con meno pixel e una qualità un po' più bassa la rende molto più leggera, e a occhio spesso non si nota la differenza.
+</Callout>
+
+<Say who="assistente">Usa solo immagini tue o con licenza che lo permette. Una foto trovata online non è automaticamente libera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Una linea decorativa tra due sezioni non porta alcuna informazione. Come si scrive il suo alt?"
+  options={[
+    "alt vuoto, cioè alt=«»",
+    "alt=«linea»",
+    "alt=«immagine decorativa»",
+    "Non si scrive alt",
+  ]}
+  answer={0}
+  explain="Per le immagini solo decorative si scrive alt vuoto: il lettore di schermo la salta. Un alt come «linea» o «immagine decorativa» fa perdere tempo a chi ascolta, e togliere del tutto l'attributo è un errore."
+/>
+
+<Guided
+  steps={[
+    "Metti una foto nella cartella img con un nome in minuscolo, senza spazi.",
+    "Scrivi un img con src verso quel file.",
+    "Aggiungi un alt che descriva che cosa si vede.",
+    "Aggiungi width e height in pixel.",
+    "Metti l'immagine dentro un link e riscrivi l'alt in modo che dica dove porta.",
+  ]}
+/>
+
+<Say who="sensei">Nell'alt scrivi quello che diresti a un amico al telefono per fargli capire la foto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle immagini. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-immagini-alt" pass="4/5" retries={3} />
+
+<Say who="sensei">Src per il file, alt per le persone, width e height per il browser.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un'immagine si inserisce con `img`, un elemento vuoto, con `src` e `alt`.
+- Il testo alternativo descrive ciò che serve capire; per le immagini decorative è vuoto.
+- `width` e `height` evitano che la pagina «salti» mentre l'immagine si carica.
+- JPG per le foto, PNG per le grafiche con trasparenza, WebP per entrambe e SVG per i disegni.
+- Caso chiuso: con un buon `alt` Giulia ora sente «vaso di ceramica blu con un fiore bianco».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A chi serve l'attributo alt?", a: "A chi non vede l'immagine: lettori di schermo, connessioni lente, motori di ricerca" },
+    { q: "Come si scrive l'alt di un'immagine solo decorativa?", a: "Vuoto: alt con virgolette vuote" },
+    { q: "Quale formato resta nitido a ogni dimensione?", a: "SVG" },
+    { q: "A che cosa servono width e height?", a: "A riservare lo spazio, così la pagina non salta mentre l'immagine arriva" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: commenti, spazi e caratteri speciali.</Say>
+</Scene>

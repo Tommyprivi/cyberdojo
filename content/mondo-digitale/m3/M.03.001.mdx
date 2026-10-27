@@ -1,0 +1,158 @@
+---
+id: M.03.001
+course: mondo-digitale
+module: 3
+title: "Che cos'è un indirizzo di posta elettronica"
+belt: bianca
+duration_min: 8
+prerequisites: [M.02.010]
+objectives:
+  - "Spiegare a che cosa serve un indirizzo di posta elettronica"
+  - "Riconoscere le due parti di un indirizzo: nome utente e dominio, separate dalla chiocciola"
+  - "Distinguere un indirizzo scritto bene da uno sbagliato"
+verification:
+  type: generated-numeric
+  generator: m03-indirizzo-posta
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Inserire spazi o dimenticare la chiocciola quando si scrive un indirizzo"
+  - "Cambiare una sola lettera dell'indirizzo: la lettera arriva a un'altra persona o non arriva"
+  - "Credere che l'indirizzo email sia come un numero di telefono: lo possono avere tutti e non è segreto, ma la password sì"
+commands: []
+---
+
+<Scene title="Il modulo con la riga vuota">
+Nonna Rosa ha 68 anni e vuole iscriversi a un corso di computer del suo Comune. Sul modulo trova una riga: «Indirizzo email». Chiama il nipote Davide: «Io non ce l'ho. Come si fa? E poi che cos'è, esattamente?».
+
+Davide sorride: «Nonna, è come l'indirizzo di casa, ma per la posta che viaggia su internet».
+
+La domanda del caso: **che cosa si scrive su quella riga, e perché serve?**
+
+<Say who="sensei">Un indirizzo email è il primo documento d'identità del mondo digitale. Quasi ogni servizio online te lo chiede. Capiamo com'è fatto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La cassetta delle lettere di internet">
+La **posta elettronica** (in inglese *email*) serve a mandare messaggi scritti, con eventuali file, da una persona a un'altra tramite internet. Arriva in pochi secondi, anche dall'altra parte del mondo.
+
+Per riceverla serve un **indirizzo di posta elettronica**: è come l'indirizzo della tua cassetta delle lettere. Due persone non possono avere lo stesso indirizzo, così la posta arriva alla persona giusta.
+
+<Flow
+  caption="Il viaggio di un messaggio."
+  steps={[
+    { icon: "user", title: "Chi scrive", text: "Scrive il messaggio e preme Invia" },
+    { icon: "server", title: "I server di posta", text: "Computer che smistano i messaggi, come uffici postali" },
+    { icon: "mail", title: "Chi riceve", text: "Il messaggio arriva nella sua casella" },
+  ]}
+/>
+
+<Say who="assistente">Non serve che l'altra persona sia online in quel momento: il messaggio aspetta nella sua casella finché lei non la apre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Com'è fatto un indirizzo">
+Ecco un indirizzo di esempio (inventato):
+
+`rosa.bianchi@esempio.it`
+
+Si divide in tre pezzi:
+
+<Layers
+  caption="Le parti di un indirizzo."
+  items={[
+    { icon: "user", title: "rosa.bianchi", text: "Il nome utente: chi sei dentro quel servizio" },
+    { icon: "link", title: "@", text: "La chiocciola (in inglese «at», cioè «presso»)" },
+    { icon: "globe", title: "esempio.it", text: "Il dominio: il servizio che gestisce la tua posta" },
+  ]}
+/>
+
+Si legge «rosa punto bianchi chiocciola esempio punto it».
+
+<Callout kind="regola">
+In un indirizzo non ci sono **spazi**, e c'è **una sola** chiocciola. Il nome utente può contenere lettere, numeri e in genere punti, trattini e trattini bassi. Se scrivi `rosa bianchi@esempio.it` con lo spazio, l'indirizzo non è valido.
+</Callout>
+
+<Say who="sensei">Prima della chiocciola, il nome. Dopo la chiocciola, il servizio. Sempre così.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi dà gli indirizzi, e un errore da evitare">
+Il dominio dice chi gestisce la tua casella. Può essere un **servizio di posta** gratuito aperto a tutti (ce ne sono molti, anche di grandi aziende) oppure un dominio di una scuola, di un'azienda o del tuo Comune.
+
+Gli indirizzi si scrivono **esattamente**, lettera per lettera. Un indirizzo quasi uguale ma con una lettera diversa è un altro indirizzo.
+
+<Compare
+  caption="Una lettera sbagliata cambia destinatario."
+  left={{ title: "Scritto bene", points: ["rosa.bianchi@esempio.it", "Arriva a Rosa"] }}
+  right={{ title: "Scritto male", points: ["rosa.bianci@esempio.it", "Arriva a un'altra persona, oppure torna indietro con un errore"] }}
+/>
+
+<Callout kind="attenzione">
+L'indirizzo email si può dare a molte persone: non è un segreto. Il segreto è la **password**, che permette di entrare nella casella. Non la dare mai a nessuno.
+</Callout>
+
+<Say who="assistente">Per questo, prima di dettare o scrivere un indirizzo, rileggilo. Ci vogliono pochi secondi e si evitano tanti guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Rosa deve scrivere il suo indirizzo, che sarà `rosa.bianchi` presso il dominio `esempio.it`.
+
+<Quiz
+  question="Quale di questi è un indirizzo di posta elettronica scritto correttamente?"
+  options={[
+    "rosa.bianchi@esempio.it",
+    "rosa bianchi@esempio.it",
+    "rosa.bianchi@@esempio.it",
+    "rosa.bianchiesempio.it",
+  ]}
+  answer={0}
+  explain="Un indirizzo ha il nome utente, una sola chiocciola e il dominio, senza spazi. La seconda opzione ha uno spazio, la terza due chiocciole, la quarta non ha la chiocciola."
+/>
+
+<Say who="sensei">Se ti accorgi di un errore, correggi prima di inviare. Dopo, il messaggio è già partito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli indirizzi di posta. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-indirizzo-posta" pass="4/5" retries={3} />
+
+<Say who="sensei">Nome, chiocciola, dominio. Con questa regola leggi qualunque indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La posta elettronica manda messaggi (e file) tramite internet, e arriva in pochi secondi.
+- Un indirizzo ha tre parti: nome utente, chiocciola e dominio, senza spazi.
+- Ogni indirizzo è unico e va scritto lettera per lettera: una lettera sbagliata cambia destinatario.
+- L'indirizzo si può dare agli altri; la password invece non si dà mai.
+- Caso chiuso: sulla riga del modulo Rosa scriverà il suo indirizzo, quando l'avrà creato (lo facciamo nella prossima lezione).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si chiama il simbolo @ in italiano?", a: "Chiocciola" },
+    { q: "Che cos'è il dominio in un indirizzo email?", a: "La parte dopo la chiocciola, cioè il servizio che gestisce la posta" },
+    { q: "Si può dare a qualcuno il proprio indirizzo email?", a: "Sì, serve proprio a questo; la password invece non si dà mai" },
+    { q: "Un indirizzo può avere spazi?", a: "No, mai" },
+  ]}
+/>
+
+<Say who="sensei">Caso quasi chiuso. Prossima lezione: crei il tuo primo account di posta.</Say>
+</Scene>

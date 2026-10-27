@@ -1,0 +1,175 @@
+---
+id: W.02.001
+course: sviluppo-web
+module: 2
+title: "Un documento HTML: doctype, head e body"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.010]
+objectives:
+  - "Spiegare a che cosa servono doctype, html, head e body"
+  - "Scrivere un head completo con charset, viewport e title"
+  - "Dire che cosa può succedere se manca il doctype o la codifica"
+verification:
+  type: generated-numeric
+  generator: w02-documento-html
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare il doctype: il browser passa in una modalità di compatibilità con i vecchi siti e la pagina può comportarsi in modo strano"
+  - "Mettere nel body le informazioni tecniche (come il title) o nell'head il contenuto che si deve vedere"
+  - "Dimenticare l'attributo lang sull'elemento html, che aiuta i lettori di schermo e i traduttori"
+commands: []
+---
+
+<Scene title="La pagina che si comporta male">
+Marco, un allievo di Lucia, ha copiato un pezzo di codice da un sito e l'ha incollato in un file senza la prima riga. Sul suo computer la pagina sembra a posto, ma i margini sono diversi dal solito e sul telefono tutto è minuscolo.
+
+Il codice non è sbagliato: manca l'**intestazione del documento**, quella parte che dice al browser *come* leggere la pagina.
+
+La domanda del caso: **quali righe fanno funzionare bene una pagina, anche se non si vedono?**
+
+<Say who="sensei">Nella lezione W.01.007 hai scritto lo scheletro. Oggi lo smonti pezzo per pezzo e capisci perché ogni riga è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo scheletro completo">
+Questo è lo scheletro che useremo in quasi tutte le pagine del corso:
+
+```html
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>La Bottega di Lucia</title>
+  </head>
+  <body>
+    <h1>La Bottega di Lucia</h1>
+  </body>
+</html>
+```
+
+- **`<!DOCTYPE html>`** è sempre la prima riga. Dice al browser che il documento è scritto in HTML moderno. Non è un tag come gli altri: è una dichiarazione.
+- **`<html lang="it">`** è l'elemento radice: dentro ci sta tutto il resto. L'attributo `lang` dichiara la lingua della pagina.
+- **`<head>`** contiene le informazioni **sulla** pagina.
+- **`<body>`** contiene la pagina **vera e propria**, quello che si vede.
+
+<Say who="assistente">Una pagina ha un solo `html`, un solo `head` e un solo `body`, sempre in quest'ordine: prima head, poi body.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché il doctype conta">
+Se la prima riga manca, il browser non sa quale versione dell'HTML hai in mente. Per non rompere i siti molto vecchi, entra in una **modalità di compatibilità** (in inglese *quirks mode*) e imita i vecchi comportamenti: margini, dimensioni e calcoli possono cambiare.
+
+Con `<!DOCTYPE html>` il browser usa invece le regole moderne, la **modalità standard**.
+
+<Compare
+  caption="Con e senza doctype."
+  left={{ title: "Senza doctype", points: ["Modalità di compatibilità", "Misure e margini imprevedibili", "Pagine diverse da browser a browser"] }}
+  right={{ title: "Con doctype", points: ["Modalità standard", "Regole moderne e prevedibili", "Pagine più simili ovunque"] }}
+/>
+
+<Callout kind="curiosita">
+Il doctype si può scrivere anche in minuscolo (`<!doctype html>`): per l'HTML le maiuscole qui non contano. Si usa di solito la forma maiuscola per tradizione.
+</Callout>
+
+<Say who="sensei">Una riga sola, e il browser smette di fare supposizioni. Metterla non costa niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dentro l'head">
+L'`head` non si vede nella pagina, ma lavora molto:
+
+<Layers
+  caption="Le tre righe tipiche dell'head."
+  items={[
+    { icon: "file", title: "meta charset", text: "Come leggere i caratteri: UTF-8 per accenti ed emoji" },
+    { icon: "phone", title: "meta viewport", text: "Adatta la pagina alla larghezza del telefono" },
+    { icon: "book", title: "title", text: "Il titolo della scheda e dei risultati di ricerca" },
+  ]}
+/>
+
+- `<meta charset="UTF-8">` dichiara la codifica dei caratteri. Va messo **presto** nell'head (entro i primi 1024 byte del file), prima di qualsiasi testo con lettere accentate.
+- `<meta name="viewport" content="width=device-width, initial-scale=1">` dice ai telefoni di usare la loro vera larghezza invece di fingere di essere uno schermo grande. Senza, il sito di Marco appare minuscolo.
+- `<title>` è il titolo della scheda. Ogni pagina ne ha **uno solo** e dovrebbe descrivere quella pagina.
+
+<Callout kind="regola">
+Nell'`head` ci sono le informazioni per il browser, per i motori di ricerca e per i telefoni. Nel `body` c'è tutto quello che l'utente vede.
+</Callout>
+
+<Say who="assistente">Il title è la prima cosa che si legge nei risultati di ricerca: scrivilo con cura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco vuole sistemare la sua pagina in fretta.
+
+<Quiz
+  question="Marco apre la sua pagina sul telefono e la vede minuscola, come se fosse uno schermo da computer. Quale riga nell'head la sistema?"
+  options={[
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+    "<meta charset=\"UTF-8\">",
+    "<title>Pagina per telefono</title>",
+    "<html lang=\"it\">",
+  ]}
+  answer={0}
+  explain="Il viewport dice al telefono di usare la sua larghezza reale. Il charset serve per i caratteri accentati, il title per il titolo della scheda e lang dichiara la lingua: nessuno dei tre cambia la scala su telefono."
+/>
+
+<Guided
+  steps={[
+    "Crea un file nuovo chiamato scheletro.html.",
+    "Scrivi la prima riga: il doctype.",
+    "Apri html con lang=it e dentro metti head e body.",
+    "Nell'head scrivi charset, viewport e title, in quest'ordine.",
+    "Nel body scrivi un h1 con il nome della tua pagina.",
+    "Apri il file nel browser e controlla la scritta nella scheda.",
+  ]}
+/>
+
+<Say who="sensei">Se sai a memoria questo scheletro, hai già fatto il passo più difficile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla struttura di un documento HTML. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-documento-html" pass="4/5" retries={3} />
+
+<Say who="sensei">Doctype, html, head, body. In questo ordine, ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il documento comincia con il doctype, poi viene `html` che contiene `head` e `body`.
+- Senza doctype il browser usa la modalità di compatibilità: con il doctype usa le regole moderne.
+- Nell'head stanno charset, viewport e title; nel body ciò che si vede.
+- `lang` sull'elemento `html` dichiara la lingua della pagina.
+- Caso chiuso: a Marco mancavano doctype e viewport, e per questo la pagina si comportava male.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa dice il doctype al browser?", a: "Che il documento è HTML moderno, così usa la modalità standard" },
+    { q: "A che cosa serve meta viewport?", a: "A far usare al telefono la sua larghezza reale, così la pagina non appare minuscola" },
+    { q: "Quanti title può avere una pagina?", a: "Uno solo, e descrive quella pagina" },
+    { q: "Che cosa dichiara lang=it su html?", a: "Che la pagina è scritta in italiano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: tag, attributi ed elementi, cioè le parole con cui si scrive l'HTML.</Say>
+</Scene>

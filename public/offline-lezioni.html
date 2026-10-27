@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lezioni offline · CyberDojo</title>
+<style>
+  body{margin:0;min-height:100dvh;padding:24px;background:#f4f7fb;color:#1b2433;font-family:system-ui,sans-serif}
+  main{max-width:36rem;margin:0 auto;display:grid;gap:14px}
+  h1{margin:0;font-size:1.75rem}
+  p{margin:0;color:#4d5b73;line-height:1.5}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  a.lez{display:block;min-height:48px;padding:12px 16px;border:2px solid #cfd8e6;border-radius:14px;background:#fff;color:inherit;text-decoration:none}
+  a.lez strong{display:block}
+  a.lez span{font-size:.85rem;color:#4d5b73}
+  a.home{color:#1b7a3a;font-weight:700}
+  @media (prefers-color-scheme:dark){body{background:#101826;color:#eef3fb}p,a.lez span{color:#b6c2d9}a.lez{background:#18233a;border-color:#2c3c5c}a.home{color:#58d07f}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Lezioni offline</h1>
+  <p>Queste sono le lezioni che hai già aperto su questo dispositivo: puoi rileggerle anche senza Internet. Per completare le verifiche serve la rete.</p>
+  <ul id="elenco" aria-live="polite"></ul>
+  <p id="vuoto" hidden>Nessuna lezione salvata. Si salvano da sole quando apri una lezione con la rete. Su questo dispositivo ne restano al massimo 30.</p>
+  <p><a class="home" href="/percorso">Vai al Percorso</a></p>
+</main>
+<script>
+(function () {
+  var ul = document.getElementById("elenco");
+  var vuoto = document.getElementById("vuoto");
+  function mostra(items) {
+    items.sort(function (a, b) { return b.savedAt - a.savedAt; });
+    items.forEach(function (it) {
+      var li = document.createElement("li");
+      var a = document.createElement("a");
+      a.className = "lez";
+      a.href = it.path;
+      var s = document.createElement("strong");
+      s.textContent = it.title || it.id;
+      var d = document.createElement("span");
+      d.textContent = it.id + (it.savedAt ? " · salvata il " + new Date(it.savedAt).toLocaleDateString("it-IT") : "");
+      a.appendChild(s); a.appendChild(d); li.appendChild(a); ul.appendChild(li);
+    });
+    vuoto.hidden = items.length > 0;
+  }
+  if (!("caches" in window)) { vuoto.hidden = false; return; }
+  caches.open("cyberdojo-lezioni-v1").then(function (cache) {
+    return cache.keys().then(function (keys) {
+      return Promise.all(keys.map(function (k) {
+        return cache.match(k).then(function (r) {
+          var path = new URL(k.url).pathname;
+          var title = "";
+          try { title = decodeURIComponent((r && r.headers.get("x-cd-title")) || ""); } catch (e) {}
+          return { path: path, id: path.split("/").pop(), title: title.replace(/\s*[|·-]\s*CyberDojo.*$/i, ""), savedAt: Number(r && r.headers.get("x-cd-saved-at")) || 0 };
+        });
+      }));
+    });
+  }).then(mostra).catch(function () { vuoto.hidden = false; });
+})();
+</script>
+</body>
+</html>

@@ -9,6 +9,7 @@ import { ProfileTabs } from "@/components/profilo/profile-tabs";
 import { SecuritySection } from "@/components/profilo/security-section";
 import { ReminderSettings } from "@/components/reminder-settings";
 import { InstallApp } from "@/components/pwa";
+import { HapticsToggle } from "@/components/haptics-toggle";
 import { SoundToggle } from "@/components/sound-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
@@ -17,6 +18,8 @@ import { GOALS } from "@/lib/profile-options";
 import { beltOf, levelOf, medalsFor } from "@/lib/progress/profile-stats";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
+import { getEquippedIds } from "@/lib/shop/service";
+import { lookFromEquipped } from "@/lib/shop/items";
 import { getChallengeWins } from "@/lib/social/service";
 
 export const metadata: Metadata = { title: "Profilo", robots: { index: false } };
@@ -48,6 +51,7 @@ function senseiSays(lessons: number, streak: number) {
 
 async function ProfiloContent() {
   const { user, profile, completed, completedAt, xp, streak } = await requireMember("/profilo");
+  const senseiLook = lookFromEquipped(await getEquippedIds(user.id));
   const tz = profile.timezone;
   const today = localDay(new Date(), tz);
   const goal = GOALS.find((g) => g.id === profile.goal)?.label ?? "—";
@@ -97,6 +101,7 @@ async function ProfiloContent() {
             <span className="flex flex-wrap gap-2">
               <ThemeToggle />
               <SoundToggle withLabel />
+              <HapticsToggle withLabel />
             </span>
           </div>
           <InstallApp />
@@ -160,7 +165,7 @@ async function ProfiloContent() {
       <div className="grid content-start gap-4 lg:gap-5 xl:min-h-0 xl:grid-rows-[auto_minmax(0,1fr)]">
         <Panel className="grid gap-4 p-5">
           <div className="flex items-center gap-4">
-            <Mascot size={104} mood={streakNow > 0 ? "happy" : "stern"} animate className="shrink-0" />
+            <Mascot size={104} mood={streakNow > 0 ? "happy" : "stern"} look={senseiLook} animate className="shrink-0" />
             <div className="min-w-0">
               <Eyebrow className="text-accent">Profilo</Eyebrow>
               <p className="truncate font-display text-3xl font-bold leading-tight">{name}</p>

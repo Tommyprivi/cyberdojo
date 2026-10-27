@@ -1,0 +1,22 @@
+{
+  "events": [
+    {
+      "id": "esempio-serata-log",
+      "title": "ESEMPIO - Serata di analisi dei log",
+      "description": "Evento di prova, non reale: serve solo a mostrare come appare un evento. Sostituiscilo con i tuoi.",
+      "startsAt": "2026-11-20T18:00:00+01:00",
+      "endsAt": "2026-11-20T19:30:00+01:00",
+      "where": "Online (esempio)",
+      "example": true
+    },
+    {
+      "id": "esempio-sfida-ctf",
+      "title": "ESEMPIO - Sfida lampo a squadre",
+      "description": "Evento di prova, non reale: una sfida di un'ora a data fissa. Modifica content/events.json per creare i veri eventi.",
+      "startsAt": "2026-12-05T15:00:00+01:00",
+      "endsAt": "2026-12-05T16:00:00+01:00",
+      "where": "Online (esempio)",
+      "example": true
+    }
+  ]
+}

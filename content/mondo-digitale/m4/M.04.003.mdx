@@ -1,0 +1,150 @@
+---
+id: M.04.003
+course: mondo-digitale
+module: 4
+title: "Installare e togliere le app"
+belt: bianca
+duration_min: 9
+prerequisites: [M.04.002]
+objectives:
+  - "Installare un'app dal negozio ufficiale e riconoscere i segnali di un'app dubbia"
+  - "Decidere quali permessi concedere a un'app"
+  - "Togliere un'app che non serve"
+verification:
+  type: generated-numeric
+  generator: m04-installare-app
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scaricare un'app da un link ricevuto per messaggio invece che dal negozio ufficiale"
+  - "Dire sempre «sì» ai permessi senza leggere che cosa chiede l'app"
+  - "Fidarsi del nome o dell'icona senza controllare chi ha creato l'app"
+commands: []
+---
+
+<Scene title="Un'app «gratis» sospetta">
+Giorgio riceve un messaggio: «Scarica subito l'app Super Torcia, è gratis!». Nel negozio ne trova subito cinque con quel nome, quasi tutte uguali. Una gli chiede di leggere i contatti e la posizione per accendere la torcia.
+
+La domanda del caso: **come si sceglie un'app senza farsi ingannare?**
+
+<Say who="sensei">Scaricare è facile. Scegliere bene è il mestiere. Un controllo di trenta secondi evita la maggior parte dei guai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Installare un'app">
+<Flow
+  caption="Dal negozio al telefono."
+  steps={[
+    { icon: "search", title: "Cerca", text: "Scrivi il nome nel negozio ufficiale" },
+    { icon: "eye", title: "Controlla", text: "Chi l'ha creata, voti e numero di scaricamenti" },
+    { icon: "bolt", title: "Installa", text: "Tocca Installa (o Ottieni su iPhone)" },
+    { icon: "lock", title: "Permessi", text: "Alla prima apertura decidi cosa concedere" },
+  ]}
+/>
+
+Il negozio ufficiale è il **Play Store** su Android e l'**App Store** su iPhone. Le app vengono controllate prima della pubblicazione, anche se non è un controllo perfetto: ogni tanto qualche app dannosa riesce a passare.
+
+<Callout kind="regola">
+Scarica le app solo dal negozio ufficiale, cercandole tu per nome. Non installare mai un'app da un link ricevuto per messaggio, per posta o in un annuncio: è una delle strade preferite dai truffatori.
+</Callout>
+
+<Say who="assistente">Molte app sono gratuite perché mostrano pubblicità o vendono funzioni in più. Il prezzo non è sempre in soldi: a volte sono i tuoi dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come riconoscere un'app dubbia">
+Prima di installare guarda la scheda dell'app:
+
+- **Chi l'ha creata?** Il nome dello sviluppatore deve corrispondere a quello della società vera (una banca, un servizio noto).
+- **Quanti scaricamenti ha?** Un'app famosa ne ha milioni. Un clone appena nato, pochi.
+- **Come sono le recensioni?** Diffida di tante recensioni tutte uguali o troppo entusiaste.
+- **Che cosa chiede?** Una torcia non ha bisogno di leggere i contatti.
+
+<Callout kind="attenzione">
+Occhio ai nomi quasi uguali: «WhatsApp Plus» o «Banca Online Italia» non sono le app ufficiali. Cerca sempre il sito o la pagina vera del servizio per sapere quale app usare.
+</Callout>
+
+<Say who="sensei">Se un'app ti chiede più di quello che le serve, la risposta giusta è «no» oppure «non la installo».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I permessi">
+Un **permesso** è l'autorizzazione che dai a un'app per usare una parte del telefono: posizione, fotocamera, microfono, contatti, foto.
+
+<Compare
+  caption="Il permesso ha senso o no?"
+  left={{ title: "Ha senso", points: ["Mappe che chiedono la posizione", "Videochiamata che chiede fotocamera e microfono", "App di foto che chiede le foto"] }}
+  right={{ title: "Strano", points: ["Torcia che chiede i contatti", "Gioco che chiede il microfono sempre", "Calcolatrice che chiede la posizione"] }}
+/>
+
+- Per la posizione scegli, quando puoi, **«solo mentre usi l'app»** e non «sempre».
+- I permessi si rivedono e si tolgono in ogni momento, nelle impostazioni, alla voce dedicata alla privacy o alle app.
+
+<Say who="assistente">Puoi sempre dire di no: se l'app serve davvero, te lo richiederà quando ti serve la funzione, e lì deciderai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Togliere un'app e tocca a te">
+Un'app che non usi occupa spazio e a volte lavora in segreto. Toglila.
+
+- **Android:** tieni premuta l'icona e scegli **Disinstalla** (oppure dal Play Store, nell'elenco delle app installate).
+- **iPhone:** tieni premuta l'icona, tocca **Rimuovi app** e poi **Elimina app**. Attenzione a non scegliere solo «Rimuovi dalla schermata Home», che la nasconde senza cancellarla.
+- Alcune app di sistema non si possono eliminare. Su Android spesso si possono **disattivare**.
+
+<Quiz
+  question="Quale di questi segnali deve far sospettare di un'app nel negozio?"
+  options={[
+    "Una torcia che chiede di leggere i contatti e i messaggi",
+    "Un'app di mappe che chiede la posizione",
+    "Un'app di videochiamate che chiede la fotocamera",
+    "Un'app di foto che chiede l'accesso alla galleria",
+  ]}
+  answer={0}
+  explain="Una torcia deve solo accendere il flash: i contatti e i messaggi non le servono, quindi il permesso è fuori luogo. Mappe, videochiamate e foto hanno invece bisogno proprio di posizione, fotocamera e galleria."
+/>
+
+<Say who="sensei">Il permesso deve avere un senso. Se non ce l'ha, non lo dai.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su installazione, permessi e rimozione. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-installare-app" pass="4/5" retries={3} />
+
+<Say who="sensei">Negozio ufficiale, controllo, permessi sensati. Sempre in questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le app si scaricano solo dal negozio ufficiale (Play Store o App Store), cercandole per nome.
+- Prima di installare si controllano chi l'ha creata, scaricamenti e recensioni.
+- Un permesso va concesso solo se ha senso per ciò che fa l'app; si può sempre togliere dopo.
+- Le app inutilizzate si tolgono: occupano spazio e possono lavorare in sottofondo.
+- Caso chiuso: Giorgio ha scelto l'app giusta e ha rifiutato quella che chiedeva i contatti per accendere una torcia.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Dove si scaricano le app in modo sicuro?", a: "Solo dal negozio ufficiale: Play Store o App Store" },
+    { q: "Che cos'è un permesso di un'app?", a: "L'autorizzazione a usare una parte del telefono, come posizione o fotocamera" },
+    { q: "Che cosa scegliere per la posizione, quando possibile?", a: "Solo mentre usi l'app" },
+    { q: "Si può togliere un permesso già dato?", a: "Sì, in qualsiasi momento dalle impostazioni" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le notifiche, cioè gli avvisi che arrivano da tutte queste app.</Say>
+</Scene>

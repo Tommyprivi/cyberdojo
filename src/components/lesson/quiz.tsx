@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { haptic } from "@/lib/app/haptics";
 
 export function Quiz({
   question,
@@ -36,7 +37,10 @@ export function Quiz({
               name={name}
               disabled={done}
               checked={picked === i}
-              onChange={() => setPicked(i)}
+              onChange={() => {
+                setPicked(i);
+                haptic(i === answer ? "right" : "wrong");
+              }}
               className="size-5 accent-[var(--primary)]"
             />
             <span className="font-mono text-lg">{o}</span>

@@ -1,0 +1,162 @@
+---
+id: P.01.004
+course: programmazione
+module: 1
+title: "Pseudocodice: scrivere un algoritmo a parole"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.003]
+objectives:
+  - "Spiegare che cos'è lo pseudocodice e perché non dipende da un linguaggio"
+  - "Scrivere un algoritmo con LEGGI, SCRIVI, assegnazioni e SE...ALTRIMENTI"
+  - "Rendere preciso un algoritmo vago, senza passi ambigui"
+verification:
+  type: generated-numeric
+  generator: p01-pseudocodice
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere frasi vaghe come «calcola lo sconto» senza dire come"
+  - "Credere che lo pseudocodice abbia regole fisse come un vero linguaggio: ne ha di più libere, ma l'importante è essere chiari e coerenti"
+  - "Dimenticare di chiudere un SE con FINE SE e perdere il punto in cui finisce"
+commands: []
+---
+
+<Scene title="Lo sconto del martedì">
+Elia lancia una promozione: il martedì, chi spende 50 euro o più ha il 10% di sconto. Lo spiega al suo aiutante: «Fai lo sconto a chi spende tanto». L'aiutante chiede: «Tanto quanto? Lo sconto su tutto o solo su una parte?».
+
+Domande giuste. A parole normali le regole restano ambigue. Serve un modo di scrivere che stia a metà tra il linguaggio comune e il codice.
+
+La domanda del caso: **come si scrive un algoritmo in modo preciso, senza ancora un linguaggio di programmazione?**
+
+<Say who="sensei">Chi non sa spiegare un algoritmo a parole, non lo saprà scrivere in codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è lo pseudocodice">
+Lo **pseudocodice** (letteralmente «falso codice») è un modo di scrivere un algoritmo con parole semplici e una struttura ordinata, simile al codice ma senza le regole rigide di un linguaggio. Non lo esegue nessun computer: serve a **te** e agli altri per capire.
+
+Non esiste uno standard unico: ognuno ha le sue abitudini. L'importante è essere **chiari** e **coerenti**. In questo corso usiamo poche parole chiave:
+
+<Layers
+  caption="Le parole chiave che useremo."
+  items={[
+    { icon: "mail", title: "LEGGI", text: "Prende un dato in ingresso" },
+    { icon: "file", title: "SCRIVI", text: "Mostra un risultato" },
+    { icon: "gear", title: "nome = valore", text: "Mette un valore in una variabile" },
+    { icon: "link", title: "SE ... ALLORA ... ALTRIMENTI", text: "Sceglie tra due strade" },
+  ]}
+/>
+
+<Say who="assistente">Pensalo come i tuoi appunti ben ordinati: non devi seguire regole altrui, ma deve capirli chiunque.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'algoritmo dello sconto">
+Ecco la regola di Elia scritta in pseudocodice:
+
+```text
+LEGGI prezzo
+SE prezzo >= 50 ALLORA
+    sconto = prezzo * 10 / 100
+ALTRIMENTI
+    sconto = 0
+FINE SE
+totale = prezzo - sconto
+SCRIVI totale
+```
+
+Provalo a mano con due casi:
+- `prezzo` = 80: 80 è maggiore o uguale a 50, quindi sconto = 80 per 10 diviso 100 = 8, e totale = 80 - 8 = 72.
+- `prezzo` = 30: 30 è minore di 50, quindi sconto = 0 e totale = 30.
+
+Notare:
+- Le righe dentro il SE sono **rientrate**: si vede dove cominciano e finiscono.
+- `FINE SE` chiude la scelta. Dopo, le istruzioni valgono in entrambi i casi.
+- Ora ogni ambiguità è sparita: lo sconto è sul totale speso, e vale il 10%.
+
+<Callout kind="regola">
+Un buon pseudocodice è **preciso** (nessun passo vago), **ordinato** (rientri per indicare le scelte) e **completo** (dice cosa fare in ogni caso).
+</Callout>
+
+<Say who="sensei">Se due persone leggono lo stesso pseudocodice e fanno cose diverse, non è ancora scritto bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Da vago a preciso">
+Vediamo come si migliora un algoritmo scritto male.
+
+<Compare
+  caption="Lo stesso compito, due versioni."
+  left={{ title: "Vago", points: ["Calcola il conto", "Applica lo sconto se serve", "Dillo al cliente"] }}
+  right={{ title: "Preciso", points: ["Somma i prezzi in totale", "Se totale >= 50, sconto = 10%", "Scrivi totale meno sconto"] }}
+/>
+
+Il lavoro di chi scrive pseudocodice è proprio questo: togliere ogni «se serve», «a volte», «bene» e sostituirli con **condizioni e numeri**.
+
+<Callout kind="trucco">
+Un metodo pratico: dai il tuo pseudocodice a un amico e chiedigli di eseguirlo a mano con dei numeri. Se si ferma a chiederti «ma qui che cosa intendi?», hai trovato un punto da precisare.
+</Callout>
+
+<Say who="assistente">Le domande di chi legge sono il miglior controllo: ogni dubbio è un passo da riscrivere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale riga di pseudocodice è la più precisa per applicare lo sconto di Elia?"
+  options={[
+    "SE prezzo >= 50 ALLORA sconto = prezzo * 10 / 100",
+    "Se il cliente spende molto, dagli uno sconto",
+    "Applica lo sconto in modo giusto",
+    "Controlla la spesa e vedi cosa fare",
+  ]}
+  answer={0}
+  explain="La prima riga ha una condizione con un numero (prezzo >= 50) e un calcolo preciso. Le altre usano parole vaghe come «molto», «giusto» o «vedi cosa fare»: due persone potrebbero interpretarle in modi diversi."
+/>
+
+<Say who="sensei">Numeri e condizioni, non aggettivi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su pseudocodice. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-pseudocodice" pass="4/5" retries={3} />
+
+<Say who="sensei">Se un passo ti sembra «ovvio», scrivilo comunque: la macchina non ha ovvietà.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Lo pseudocodice descrive un algoritmo con parole semplici e struttura ordinata, senza le regole di un linguaggio.
+- Non è standard: conta essere chiari e coerenti.
+- Si usano LEGGI, SCRIVI, assegnazioni e SE...ALLORA...ALTRIMENTI...FINE SE, con rientri.
+- Ogni passo vago si sostituisce con condizioni e numeri precisi.
+- Caso chiuso: la regola «10% di sconto da 50 euro in su» è ora scritta senza ambiguità.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è lo pseudocodice?", a: "Un modo di scrivere un algoritmo a parole, con struttura ordinata, senza le regole di un linguaggio" },
+    { q: "Esiste uno standard unico per lo pseudocodice?", a: "No: conta essere chiari e coerenti" },
+    { q: "A che cosa servono i rientri?", a: "A mostrare quali istruzioni appartengono a una scelta o a un ciclo" },
+    { q: "Come si rende preciso un passo vago?", a: "Sostituendo le parole generiche con condizioni e numeri" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: gli stessi algoritmi disegnati, con i diagrammi di flusso.</Say>
+</Scene>

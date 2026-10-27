@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CheckIcon, LockIcon, PlayIcon } from "@/components/icons";
 
-export type PathLesson = { id: string; title: string; minutes: number; state: "done" | "open" | "locked" };
+export type PathLesson = { id: string; title: string; minutes: number; state: "done" | "mastered" | "open" | "locked" };
 
 /** Spostamenti laterali, in rem: la strada serpeggia a destra e a sinistra. */
 const WIGGLE = [0, 3, 5, 3, 0, -3, -5, -3];
@@ -22,9 +22,9 @@ export function LessonPath({ title, lessons }: { title: string; lessons: PathLes
           const isCurrent = l.id === currentId;
           const size = isCurrent ? "size-20" : "size-14";
           const tone =
-            l.state === "done" ? "bg-success text-success-fg" : l.state === "open" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted";
+            l.state === "done" ? "bg-success text-success-fg" : l.state === "open" || l.state === "mastered" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted";
           const face =
-            l.state === "done" ? <CheckIcon width={26} height={26} /> : l.state === "locked" ? <LockIcon width={22} height={22} /> : <PlayIcon width={isCurrent ? 34 : 24} height={isCurrent ? 34 : 24} />;
+            l.state === "done" || l.state === "mastered" ? <CheckIcon width={26} height={26} /> : l.state === "locked" ? <LockIcon width={22} height={22} /> : <PlayIcon width={isCurrent ? 34 : 24} height={isCurrent ? 34 : 24} />;
           const stop = (
             <span className={`relative z-10 grid ${size} place-items-center rounded-full border-b-4 border-black/20 font-bold shadow ${tone} ${isCurrent ? "pulse-ring" : ""}`}>{face}</span>
           );
@@ -35,7 +35,7 @@ export function LessonPath({ title, lessons }: { title: string; lessons: PathLes
                   {stop}
                 </div>
               ) : (
-                <Link href={`/lezione/${l.id}`} aria-label={`${l.state === "done" ? "Rivedi" : "Inizia"}: ${l.title}`}>
+                <Link href={`/lezione/${l.id}`} aria-label={`${l.state === "done" || l.state === "mastered" ? "Rivedi" : "Inizia"}: ${l.title}`}>
                   {stop}
                 </Link>
               )}

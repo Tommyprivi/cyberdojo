@@ -1,0 +1,155 @@
+---
+id: M.03.009
+course: mondo-digitale
+module: 3
+title: "Videochiamate: come si fanno"
+belt: bianca
+duration_min: 9
+prerequisites: [M.03.008]
+objectives:
+  - "Elencare che cosa serve per una videochiamata: dispositivo, connessione, microfono, fotocamera e cuffie o altoparlanti"
+  - "Entrare in una videochiamata da un invito e usare microfono e fotocamera"
+  - "Applicare le regole di buona educazione e di privacy durante una videochiamata"
+verification:
+  type: generated-numeric
+  generator: m03-videochiamate
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Parlare con il microfono spento, o lasciarlo acceso mentre parlano altri"
+  - "Mettersi con una finestra o una lampada alle spalle: si vede solo una sagoma scura"
+  - "Condividere lo schermo con cose private aperte"
+commands: []
+---
+
+<Scene title="La lezione di computer a distanza">
+Il Comune organizza l'ultima lezione del corso in videochiamata. Rosa riceve un link. Il giorno dopo entra in sala, ma nessuno la sente: parla con il microfono spento. Poi si accende la luce e non la vedono: era seduta davanti alla finestra.
+
+La domanda del caso: **che cosa serve, e che cosa conviene controllare, prima di entrare in una videochiamata?**
+
+<Say who="sensei">Una videochiamata è come una riunione di persona. Basta prepararsi con qualche minuto di anticipo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa serve">
+Una **videochiamata** è una conversazione con voce e immagine tramite internet. Servono:
+
+<Layers
+  caption="Gli ingredienti di una videochiamata."
+  items={[
+    { icon: "laptop", title: "Un dispositivo", text: "Computer, telefono o tablet" },
+    { icon: "wifi", title: "Una connessione", text: "Wi-Fi o dati del telefono, stabile" },
+    { icon: "eye", title: "Una fotocamera", text: "Per farsi vedere (è già nei telefoni e nella maggior parte dei portatili)" },
+    { icon: "bell", title: "Microfono e cuffie", text: "Per farsi sentire e sentire" },
+  ]}
+/>
+
+Esistono molti programmi gratuiti per le videochiamate; ognuno si usa quasi allo stesso modo. Alcuni funzionano dal browser, altri richiedono di installare un'app.
+
+<Say who="assistente">Le cuffie aiutano molto: evitano l'eco e fanno sentire meglio chi parla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Entrare in una videochiamata">
+<Flow
+  caption="Dal link alla sala."
+  steps={[
+    { icon: "link", title: "Apri l'invito", text: "Il link ricevuto da chi organizza" },
+    { icon: "gear", title: "Prova audio e video", text: "Nella schermata di anteprima" },
+    { icon: "users", title: "Entra", text: "Premi «Partecipa» o «Entra»" },
+  ]}
+/>
+
+Il programma chiede il permesso di usare **microfono e fotocamera**: concedilo solo per programmi e siti di cui ti fidi. Nella schermata di anteprima vedi te stesso e controlli che tutto funzioni.
+
+Dentro la chiamata trovi in basso alcuni pulsanti: **microfono** (acceso o spento), **fotocamera** e il pulsante rosso per **uscire**.
+
+<Callout kind="regola">
+Un invito si riceve da una persona che conosci. Non cliccare link di videochiamata arrivati da sconosciuti.
+</Callout>
+
+<Say who="sensei">Entra con qualche minuto di anticipo: se c'è un problema, hai il tempo di risolverlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come stare in una videochiamata">
+- **Microfono spento** quando non parli, soprattutto se in sala sono in tanti: così i rumori di casa non disturbano.
+- **Luce davanti**, non dietro: una finestra alle spalle ti fa sembrare una sagoma scura.
+- **Fotocamera all'altezza degli occhi** e non puntata dal basso.
+- Parla un po' più piano e con calma; se c'è ritardo, aspetta che l'altro finisca.
+- Per intervenire usa il pulsante «alza la mano» o scrivi nella chat della riunione.
+
+<Compare
+  caption="Pochi gesti fanno la differenza."
+  left={{ title: "Così no", points: ["Finestra alle spalle", "Microfono sempre acceso", "Telefono appoggiato storto"] }}
+  right={{ title: "Così sì", points: ["Luce davanti al viso", "Microfono spento quando non si parla", "Telefono appoggiato e stabile"] }}
+/>
+
+<Callout kind="attenzione">
+Prima di **condividere lo schermo** chiudi le finestre private (email, documenti, conti). Gli altri vedono tutto quello che c'è sullo schermo. E ricorda che dietro di te si vede la stanza: sfoca lo sfondo se ti disturba.
+</Callout>
+
+<Say who="assistente">Se non vuoi mostrare la stanza, quasi tutti i programmi hanno lo sfondo sfocato o un'immagine al posto del fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Rosa è in videochiamata con venti persone. Sta ascoltando la spiegazione e il suo cane abbaia.
+
+<Quiz
+  question="Che cosa conviene fare a Rosa mentre non sta parlando?"
+  options={[
+    "Tenere il microfono spento",
+    "Tenere il microfono acceso, per essere pronta",
+    "Alzare al massimo il volume del telefono",
+    "Chiudere e riaprire la videochiamata ogni cinque minuti",
+  ]}
+  answer={0}
+  explain="Con il microfono spento, rumori come l'abbaiare del cane non arrivano agli altri; lo riaccendi quando devi parlare. Tenerlo acceso disturba, alzare il volume non risolve il rumore e uscire e rientrare fa solo perdere il filo."
+/>
+
+<Say who="sensei">Microfono spento, fotocamera ben messa, luce davanti. Il resto è chiacchiera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle videochiamate. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-videochiamate" pass="4/5" retries={3} />
+
+<Say who="sensei">Prepara, prova, entra. Poi parla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per una videochiamata servono dispositivo, connessione, fotocamera, microfono e meglio cuffie.
+- Si entra da un invito di una persona fidata, provando prima audio e video.
+- Microfono spento quando non parli, luce davanti, fotocamera all'altezza degli occhi.
+- Prima di condividere lo schermo si chiudono le cose private.
+- Caso chiuso: Rosa ha acceso il microfono, si è girata verso la luce e ha seguito la lezione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa serve per una videochiamata?", a: "Dispositivo, connessione, fotocamera, microfono e (meglio) cuffie" },
+    { q: "Quando si spegne il microfono?", a: "Quando non si parla, per evitare rumori" },
+    { q: "Dov'è meglio la luce?", a: "Davanti al viso, non alle spalle" },
+    { q: "Che cosa si fa prima di condividere lo schermo?", a: "Si chiudono le finestre e i documenti privati" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: scrivi una richiesta formale a una scuola o a un ufficio.</Say>
+</Scene>

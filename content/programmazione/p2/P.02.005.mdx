@@ -1,0 +1,192 @@
+---
+id: P.02.005
+course: programmazione
+module: 2
+title: "Operazioni e precedenza"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.004]
+objectives:
+  - "Usare gli operatori + - * / // % e **"
+  - "Calcolare a mano un'espressione rispettando la precedenza"
+  - "Usare le parentesi per cambiare l'ordine dei calcoli"
+verification:
+  type: generated-numeric
+  generator: p02-operazioni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare i calcoli da sinistra a destra senza rispettare la precedenza di * e / rispetto a + e -"
+  - "Confondere / (divisione, dà sempre un decimale) con // (divisione intera)"
+  - "Scrivere ^ per la potenza: in Python è **"
+commands: []
+---
+
+<Scene title="Il conto della pizzeria">
+Per il torneo, Giulia ordina pizze: 3 pizze a 6 euro l'una e una bibita da 2 euro. Scrive `3 * 6 + 2` e il computer risponde 20. Poi per sbaglio scrive `3 * (6 + 2)` e ottiene 24. Stessi numeri, risultati diversi.
+
+L'ordine in cui il computer fa i calcoli conta, e ha regole precise, le stesse della matematica che hai studiato a scuola.
+
+La domanda del caso: **in che ordine Python esegue i calcoli?**
+
+<Say who="sensei">Il computer non indovina che cosa volevi dire. Esegue le regole. Quindi le regole vanno sapute.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli operatori">
+Gli **operatori** sono i simboli dei calcoli:
+
+<Layers
+  caption="Gli operatori aritmetici di Python."
+  items={[
+    { icon: "bolt", title: "+  e  -", text: "Somma e sottrazione" },
+    { icon: "bolt", title: "*  e  /", text: "Moltiplicazione e divisione (/ dà sempre un decimale)" },
+    { icon: "bolt", title: "//  e  %", text: "Divisione intera e resto" },
+    { icon: "bolt", title: "**", text: "Potenza" },
+  ]}
+/>
+
+```python
+print(7 + 2)    # 9
+print(7 / 2)    # 3.5
+print(7 // 2)   # 3
+print(7 % 2)    # 1
+print(2 ** 3)   # 8
+```
+
+- `/` è la divisione normale e dà sempre un float: anche `6 / 2` dà `3.0`.
+- `//` è la divisione **intera**: scarta i decimali. `7 // 2` è `3`.
+- `%` è il **resto** della divisione: `7 % 2` è `1`, perché 7 = 3 volte 2 più 1.
+- `**` è la potenza: `2 ** 3` significa 2 per 2 per 2, cioè `8`. Il simbolo `^` in Python fa un'altra cosa, quindi non usarlo per le potenze.
+
+<Callout kind="trucco">
+Il resto `%` è utilissimo: `n % 2 == 0` è vero se `n` è pari. Con `%` si controlla anche se un numero è multiplo di un altro.
+</Callout>
+
+<Say who="assistente">Il resto è la parte che «avanza»: 7 caramelle divise tra 2 amici, 3 a testa e 1 che avanza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La precedenza">
+Quando in un'espressione ci sono più operatori, Python segue un ordine, dal più forte al più debole:
+
+<Flow
+  caption="L'ordine di esecuzione."
+  steps={[
+    { icon: "code", title: "1. Parentesi", text: "Si calcola prima ciò che sta dentro" },
+    { icon: "bolt", title: "2. Potenza", text: "**" },
+    { icon: "gear", title: "3. Per e diviso", text: "* / // % da sinistra a destra" },
+    { icon: "check", title: "4. Più e meno", text: "+ - da sinistra a destra" },
+  ]}
+/>
+
+Esempi, passo per passo:
+
+```python
+print(3 * 6 + 2)      # 18 + 2 = 20
+print(3 * (6 + 2))    # 3 * 8 = 24
+print(2 + 3 * 4)      # 2 + 12 = 14
+print(10 - 4 - 3)     # 6 - 3 = 3
+print(2 * 3 ** 2)     # 2 * 9 = 18
+```
+
+Ecco il mistero della pizzeria: nel primo caso la moltiplicazione va prima della somma, nel secondo le parentesi forzano a sommare prima. Quando due operatori hanno la stessa forza, si va da sinistra a destra: `10 - 4 - 3` è `6 - 3`, quindi `3`.
+
+<Callout kind="regola">
+Il dubbio si risolve con le parentesi. Anche quando non servono, le parentesi rendono chiaro che cosa intendevi: meglio una parentesi in più che un errore nascosto.
+</Callout>
+
+<Say who="sensei">Moltiplicazioni prima, somme dopo. Le parentesi comandano su tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Calcoli con le variabili">
+Gli stessi operatori funzionano con le variabili. Giulia calcola il costo a testa:
+
+```python
+pizze = 3
+prezzo = 6
+bibita = 2
+totale = pizze * prezzo + bibita
+amici = 4
+print("Totale:", totale)
+print("A testa:", totale / amici)
+print("Interi per testa:", totale // amici)
+print("Euro che avanzano:", totale % amici)
+```
+
+<Log lines={[
+  "Totale: 20",
+  "A testa: 5.0",
+  "Interi per testa: 5",
+  "Euro che avanzano: 0",
+]} caption="20 diviso 4 fa esattamente 5." />
+
+Controllo: `3 * 6 + 2` fa 20; `20 / 4` fa `5.0` (la divisione `/` dà un float); `20 // 4` fa `5`; `20 % 4` fa `0`.
+
+Esiste anche una forma abbreviata per cambiare una variabile: `totale += 5` equivale a `totale = totale + 5`. Funziona anche con `-=`, `*=` e gli altri.
+
+<Say who="assistente">Quando un conto non torna, scrivilo a mano passo per passo con la precedenza: quasi sempre trovi dove ti eri perso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un ultimo calcolo da fare a mano, senza il computer.
+
+<Quiz
+  question="Quanto vale 2 + 3 * 4 ** 2 in Python?"
+  options={[
+    "50",
+    "80",
+    "26",
+    "400",
+  ]}
+  answer={0}
+  explain="Prima la potenza: 4 ** 2 fa 16. Poi la moltiplicazione: 3 * 16 fa 48. Infine la somma: 2 + 48 fa 50. Gli altri risultati nascono da un ordine sbagliato dei calcoli."
+/>
+
+<Say who="sensei">Potenza, moltiplicazione, somma. Scendi la scala un gradino alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su operatori e precedenza. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-operazioni" pass="4/5" retries={3} />
+
+<Say who="sensei">Se hai un dubbio, scrivi i passaggi su un foglio. Non è barare, è il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli operatori sono + - * / // % e **: la divisione / dà sempre un decimale, // scarta i decimali, % dà il resto.
+- La precedenza: parentesi, poi potenza, poi per e diviso, poi più e meno.
+- A parità di forza si va da sinistra a destra.
+- Con le parentesi si dice chiaramente in che ordine fare i calcoli.
+- Caso chiuso: 3 * 6 + 2 fa 20 e 3 * (6 + 2) fa 24, perché le parentesi cambiano l'ordine.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quanto fa 7 // 2?", a: "3, la divisione intera scarta i decimali" },
+    { q: "Quanto fa 7 % 2?", a: "1, il resto della divisione" },
+    { q: "Qual è il simbolo della potenza in Python?", a: "**, per esempio 2 ** 3 fa 8" },
+    { q: "Quanto fa 2 + 3 * 4?", a: "14, perché la moltiplicazione viene prima della somma" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: if, elif ed else, cioè come far scegliere una strada al programma.</Say>
+</Scene>

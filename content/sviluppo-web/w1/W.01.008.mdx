@@ -1,0 +1,149 @@
+---
+id: W.01.008
+course: sviluppo-web
+module: 1
+title: "Aprire un file in locale e ricaricare la pagina"
+belt: bianca
+duration_min: 7
+prerequisites: [W.01.007]
+objectives:
+  - "Aprire una pagina salvata sul computer con il browser"
+  - "Seguire il ciclo di lavoro: modifica, salva, ricarica"
+  - "Riconoscere i motivi più comuni per cui una modifica non si vede"
+verification:
+  type: generated-numeric
+  generator: w01-apri-in-locale
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di salvare il file prima di ricaricare la pagina"
+  - "Guardare una copia vecchia della pagina perché si è aperto un altro file"
+  - "Confondere file:/// (il tuo computer) con https:// (un server su internet)"
+commands: []
+---
+
+<Scene title="Ho cambiato, ma non cambia">
+Lucia ha aggiunto una frase alla pagina. «Ho riscritto tutto, ma nel browser vedo ancora la versione vecchia!», ti scrive.
+
+Il 90% di questi casi ha una causa sola: un passo del **ciclo di lavoro** saltato. Oggi lo impari, perché lo ripeterai migliaia di volte.
+
+La domanda del caso: **come si apre una pagina locale e perché a volte non si aggiorna?**
+
+<Say who="sensei">Programmare è un ciclo: scrivi, salva, guarda. Chi salta un passo si arrabbia con il computer, ma il computer ha ragione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aprire il file">
+Una pagina salvata sul tuo computer si apre senza internet. Puoi:
+- fare **doppio clic** su `index.html`;
+- oppure **trascinare** il file sulla finestra del browser;
+- oppure, nel browser, premere **Ctrl + O** e scegliere il file.
+
+Guarda la barra dell'indirizzo: comincia con `file:///` e poi il percorso sul tuo computer.
+
+<Compare
+  caption="Una pagina locale e una su internet."
+  left={{ title: "file:///", points: ["Sta sul tuo computer", "La vedi solo tu", "Non serve internet"] }}
+  right={{ title: "https://", points: ["Sta su un server", "La può vedere chiunque", "Serve internet"] }}
+/>
+
+<Say who="assistente">Lucia può costruire il sito intero in locale. Lo pubblica solo alla fine, quando è pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ciclo di lavoro">
+<Flow
+  caption="Il ciclo che ripeterai sempre."
+  steps={[
+    { icon: "code", title: "Modifica", text: "Scrivi nell'editor" },
+    { icon: "folder", title: "Salva", text: "Ctrl + S" },
+    { icon: "laptop", title: "Ricarica", text: "F5 nel browser" },
+    { icon: "eye", title: "Guarda", text: "Controlla il risultato" },
+  ]}
+/>
+
+Il browser **non legge l'editor**: legge il **file salvato**. Finché non salvi, la pagina non cambia. E il browser non si ricarica da solo: devi premere **F5** (oppure **Ctrl + R**).
+
+<Callout kind="trucco">
+Il puntino o l'asterisco accanto al nome del file nell'editor significa «modifiche non salvate». Se lo vedi, premi Ctrl + S.
+</Callout>
+
+<Say who="sensei">Salva sempre prima di ricaricare. Ctrl + S diventerà un riflesso, come respirare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Se ancora non cambia">
+Hai salvato, hai ricaricato, e vedi la vecchia versione? Controlla in quest'ordine:
+
+- Stai guardando il **file giusto**? Magari hai due copie in cartelle diverse.
+- Il file ha il nome **giusto**? `index.html.txt` non è una pagina.
+- Il browser ha tenuto la copia vecchia in memoria (*cache*)? Prova il **ricaricamento forzato**: **Ctrl + Maiusc + R** (o Ctrl + F5).
+- Hai un errore di scrittura? Un tag non chiuso può far sparire pezzi di pagina.
+
+<Callout kind="regola">
+Quando qualcosa non funziona, cambia **una cosa alla volta** e ricarica. Se cambi tre cose insieme, non saprai quale ha risolto (o rotto) il problema.
+</Callout>
+
+<Say who="assistente">Quasi sempre il problema è banale. Controlla prima le cose semplici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia ha modificato il testo nell'editor e ha premuto F5 nel browser. Ancora la vecchia versione.
+
+<Quiz
+  question="Qual è la prima cosa da controllare?"
+  options={[
+    "Se il file è stato salvato nell'editor",
+    "Se il server di Lucia è acceso",
+    "Se il dominio è stato rinnovato",
+    "Se il provider internet funziona",
+  ]}
+  answer={0}
+  explain="La pagina è un file sul computer, non sta su un server: il browser legge il file salvato. Se non hai salvato, le modifiche esistono solo nell'editor. Server, dominio e provider qui non c'entrano."
+/>
+
+<Say who="sensei">Prima le cose semplici, poi quelle strane. Il computer fa quello che gli dici, non quello che volevi dire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul ciclo di lavoro. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-apri-in-locale" pass="4/5" retries={3} />
+
+<Say who="sensei">Modifica, salva, ricarica, guarda. In questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pagina locale si apre con doppio clic o trascinandola nel browser; l'indirizzo comincia con file:///.
+- Il ciclo è: modifica, salva, ricarica, guarda.
+- Se non cambia: file salvato? file giusto? nome corretto? ricarica forzata?
+- Caso chiuso: Lucia non aveva salvato il file.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Con quali tasti si ricarica una pagina?", a: "F5 oppure Ctrl + R" },
+    { q: "Con quali tasti si fa il ricaricamento forzato?", a: "Ctrl + Maiusc + R (o Ctrl + F5)" },
+    { q: "Da che cosa comincia l'indirizzo di un file locale?", a: "Da file:///" },
+    { q: "Quante cose conviene cambiare per volta quando cerchi un errore?", a: "Una sola, poi ricarichi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: guardi dentro i siti veri, senza paura.</Say>
+</Scene>

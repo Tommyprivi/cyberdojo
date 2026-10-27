@@ -1,0 +1,180 @@
+---
+id: P.01.010
+course: programmazione
+module: 1
+title: "Mettere alla prova un algoritmo a mano (traccia di esecuzione)"
+belt: bianca
+duration_min: 9
+prerequisites: [P.01.009]
+objectives:
+  - "Costruire una tabella di traccia con una colonna per ogni variabile"
+  - "Eseguire a mano un algoritmo con una scelta e un ciclo, riga per riga"
+  - "Usare la traccia per trovare un errore, anche di uno solo, in un algoritmo"
+verification:
+  type: generated-numeric
+  generator: p01-traccia-esecuzione
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Eseguire «a occhio» senza scrivere i valori e perdere un passaggio"
+  - "Provare un solo caso: serve anche un caso limite, come zero o il valore del confine"
+  - "Aggiornare le variabili in un ordine diverso da quello delle istruzioni"
+commands: []
+---
+
+<Scene title="Il totale che non torna">
+Elia ha scritto l'algoritmo per sommare i numeri da 1 a 4, per un conteggio delle pizze. Sul foglio il risultato dovrebbe essere 10, ma il suo collega, eseguendolo a mano, ottiene 6. Chi ha ragione? E dov'è l'errore?
+
+Per scoprirlo non serve un computer: serve un foglio, una matita e un metodo.
+
+La domanda del caso: **come si controlla un algoritmo, senza eseguirlo su un computer?**
+
+<Say who="sensei">Un buon programmatore non spera che l'algoritmo funzioni: lo prova. A mano, prima ancora che con il computer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La tabella di traccia">
+La **traccia di esecuzione** (in inglese *trace*) è una tabella in cui segui l'algoritmo riga per riga, scrivendo come cambiano le variabili. Si prepara così:
+
+1. Una **colonna per ogni variabile**.
+2. Una **riga** per ogni momento importante (di solito, dopo ogni giro del ciclo).
+3. Si esegue l'algoritmo **come farebbe il computer**: senza saltare niente e senza indovinare.
+
+Ecco l'algoritmo di Elia, in versione sbagliata:
+
+```text
+totale = 0
+n = 1
+RIPETI FINCHÉ n < 4
+    totale = totale + n
+    n = n + 1
+FINE RIPETI
+SCRIVI totale
+```
+
+<Say who="assistente">Il computer non ha fretta e non ha intuito: fai come lui, una riga alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Eseguirlo a mano">
+Riempiamo la tabella. Ogni riga mostra i valori **alla fine di un giro** (dopo aver eseguito le due istruzioni del corpo):
+
+<Log lines={[
+  "momento        n    totale   n < 4 ?",
+  "inizio         1    0        vero (si entra)",
+  "dopo giro 1    2    1        vero",
+  "dopo giro 2    3    3        vero",
+  "dopo giro 3    4    6        falso (si esce)",
+]} caption="Traccia dell'algoritmo con la condizione n < 4." />
+
+Quando n arriva a 4 la condizione `n < 4` è falsa e il ciclo si ferma **senza aver sommato il 4**. Si scrive 6. Il collega aveva ragione!
+
+L'errore è di **uno solo** nella condizione: doveva essere `n <= 4`, perché il 4 va incluso. Con la correzione i giri sono quattro e il totale è 1 + 2 + 3 + 4 = **10**.
+
+Lo stesso algoritmo corretto, in Python:
+
+```python
+totale = 0
+n = 1
+while n <= 4:
+    totale = totale + n
+    n = n + 1
+print(totale)    # stampa 10
+```
+
+<Callout kind="curiosita">
+Questo errore si chiama «off by one» (sbagliato di uno) ed è uno dei più comuni in tutta la programmazione, anche tra gli esperti. La traccia è il modo più rapido per scovarlo.
+</Callout>
+
+<Say who="sensei">Il foglio non mente. Se i numeri del foglio e quelli del computer sono diversi, uno dei due è sbagliato, e ora sai come scoprirlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quali casi provare">
+Non basta provare un caso solo. Per fidarti davvero di un algoritmo, prova almeno:
+
+<Layers
+  caption="I casi da mettere alla prova."
+  items={[
+    { icon: "check", title: "Un caso normale", text: "Un valore tipico, come 4" },
+    { icon: "warning", title: "I casi al confine", text: "I valori dove cambia la scelta, come 1 o 0" },
+    { icon: "cross", title: "Un caso strano", text: "Per esempio zero iterazioni: il ciclo non entra mai" },
+  ]}
+/>
+
+<Guided
+  steps={[
+    "Scrivi le variabili come colonne di una tabella.",
+    "Segna il valore iniziale di ogni variabile.",
+    "Esegui una istruzione alla volta e aggiorna solo la colonna che cambia.",
+    "A ogni controllo di condizione scrivi se è vera o falsa.",
+    "Alla fine confronta il risultato con quello atteso: se è diverso, cerca la riga dove i valori si discostano.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Se il risultato è sbagliato, confronta la tua traccia con quella che ti aspettavi, riga per riga: il **primo** punto in cui i due valori non coincidono è il bug.
+</Callout>
+
+<Say who="assistente">Provare i casi strani è il lavoro di chi vuole fidarsi del proprio algoritmo, non solo sperarci.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Traccia questo algoritmo: `x = 2`, `y = 0`, poi RIPETI FINCHÉ x <= 5 con dentro `y = y + x` e `x = x + 2`. Quanto vale y alla fine?"
+  options={[
+    "6",
+    "2",
+    "12",
+    "4",
+  ]}
+  answer={0}
+  explain="Traccia: all'inizio x = 2 e y = 0. Primo giro: y = 2, x = 4 (4 <= 5, si continua). Secondo giro: y = 6, x = 6. Ora 6 <= 5 è falso, il ciclo si ferma. Quindi y = 6. Il valore 12 si otterrebbe sommando anche il 6, che invece non entra."
+/>
+
+<Say who="sensei">Tabella, una riga alla volta, confine controllato. Così non si sbaglia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tracce ed esecuzione a mano. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-traccia-esecuzione" pass="4/5" retries={3} />
+
+<Say who="sensei">Prendi un foglio. Non fare mai i calcoli solo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La traccia di esecuzione è una tabella con una colonna per ogni variabile e una riga per ogni momento importante.
+- Si esegue l'algoritmo come il computer: una istruzione alla volta, senza saltare niente.
+- Serve a trovare errori, soprattutto quelli «di uno solo» ai confini dei cicli.
+- Si provano un caso normale, i casi al confine e un caso strano.
+- Caso chiuso: la traccia ha mostrato che con `n < 4` il totale era 6; con `n <= 4` è 10, come atteso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una traccia di esecuzione?", a: "Una tabella che mostra come cambiano le variabili mentre si esegue l'algoritmo a mano" },
+    { q: "Che cos'è un errore «off by one»?", a: "Un errore di uno solo, tipicamente nel confine di una condizione o di un ciclo" },
+    { q: "Quali casi conviene provare?", a: "Un caso normale, i casi al confine e un caso strano, come zero ripetizioni" },
+    { q: "Come si trova il punto dell'errore confrontando due tracce?", a: "È la prima riga in cui i valori non coincidono" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo finito: sai pensare un algoritmo, scriverlo, disegnarlo e provarlo. Prossimo modulo: i tuoi primi programmi in Python.</Say>
+</Scene>

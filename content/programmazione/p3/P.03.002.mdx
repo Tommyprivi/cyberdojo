@@ -1,0 +1,187 @@
+---
+id: P.03.002
+course: programmazione
+module: 3
+title: "Definire e chiamare una funzione"
+belt: bianca
+duration_min: 8
+prerequisites: [P.03.001]
+objectives:
+  - "Scrivere una funzione in Python con def, parentesi, due punti e corpo rientrato"
+  - "Distinguere definire una funzione da chiamarla"
+  - "Riconoscere gli errori tipici: chiamata prima della definizione e parentesi mancanti"
+verification:
+  type: generated-numeric
+  generator: p03-def-chiamata
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che scrivere def faccia eseguire la funzione: def la crea soltanto"
+  - "Chiamare la funzione senza parentesi: scrivere solo il nome non esegue niente"
+  - "Chiamare la funzione prima di averla definita: dà NameError"
+commands: []
+---
+
+<Scene title="La funzione che non parte">
+Elena scrive la sua prima funzione per salutare i giocatori:
+
+```python
+def saluta():
+    print("Benvenuti al torneo!")
+```
+
+Esegue il programma e... non compare niente. Nessun errore, nessun saluto.
+
+La domanda del caso: **perché la funzione non ha salutato nessuno?**
+
+<Say who="sensei">Scrivere una ricetta non significa cucinare. Prima la scrivi, poi la esegui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Definire una funzione">
+**Definire** una funzione vuol dire spiegare a Python che cosa deve fare quando la funzione viene usata. Si fa con la parola `def`.
+
+```python
+def saluta():
+    print("Benvenuti al torneo!")
+```
+
+Le parti sono quattro:
+
+- `def` dice a Python che stai creando una funzione.
+- `saluta` è il **nome** della funzione, scelto da te.
+- Le **parentesi** `()` sono obbligatorie, anche se vuote. Più avanti ci metterai dentro i dati.
+- I **due punti** `:` chiudono la riga, e il corpo va **rientrato** (di quattro spazi, come in `if` e nei cicli).
+
+<Callout kind="regola">
+Il **corpo** della funzione è tutto ciò che è rientrato sotto la riga `def`. Quando il rientro finisce, finisce anche la funzione.
+</Callout>
+
+<Say who="assistente">Il rientro lo conosci già da `if` e dai cicli: anche qui indica cosa fa parte del blocco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiamare una funzione">
+**Chiamare** una funzione vuol dire eseguirla. Si scrive il nome seguito dalle parentesi.
+
+```python
+def saluta():
+    print("Benvenuti al torneo!")
+
+saluta()
+saluta()
+```
+
+<Log lines={[
+  "Benvenuti al torneo!",
+  "Benvenuti al torneo!",
+]} caption="La funzione è definita una volta e chiamata due volte." />
+
+<Flow
+  caption="Definizione e chiamata sono due momenti diversi."
+  steps={[
+    { icon: "book", title: "Definisci", text: "def saluta(): ... Python impara il nome" },
+    { icon: "bolt", title: "Chiama", text: "saluta() Python esegue il corpo" },
+    { icon: "terminal", title: "Output", text: "Il testo compare a ogni chiamata" },
+  ]}
+/>
+
+Ecco la risposta al caso: Elena aveva solo **definito** la funzione. Senza `saluta()` in fondo, non l'ha mai **chiamata**.
+
+<Say who="sensei">Definire non esegue. Chiamare esegue. Sono due azioni, quasi sempre in due punti diversi del programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due errori da conoscere">
+Due errori molto frequenti, che vedrai spesso all'inizio.
+
+**1. Chiamare prima di definire.** Python legge dall'alto verso il basso: se chiami un nome che non ha ancora incontrato, non lo conosce.
+
+```python
+saluta()
+
+def saluta():
+    print("Benvenuti al torneo!")
+```
+
+<Log lines={[
+  "NameError: name 'saluta' is not defined",
+]} caption="Python non conosce ancora il nome saluta." />
+
+**2. Dimenticare le parentesi.** Scrivere solo `saluta` non chiama la funzione: Python vede un nome e basta, e non fa niente (e non dà errore).
+
+<Callout kind="attenzione">
+Per eseguire una funzione servono **sempre** le parentesi: `saluta()`. Senza parentesi la funzione resta ferma.
+</Callout>
+
+<Say who="assistente">Se «non succede niente» e non c'è errore, controlla subito le parentesi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un compagno di Elena scrive questo programma:
+
+```python
+def augurio():
+    print("Buona partita!")
+
+augurio
+```
+
+<Quiz
+  question="Eseguendo il programma qui sopra, che cosa compare a schermo?"
+  options={[
+    "Niente, perché la funzione non è stata chiamata",
+    "Buona partita!",
+    "Un NameError",
+    "Un errore di sintassi per i due punti",
+  ]}
+  answer={0}
+  explain="Senza parentesi la riga augurio nomina la funzione ma non la chiama, quindi il corpo non viene eseguito. Non è un NameError, perché la funzione è definita prima; i due punti ci sono e non c'è nessun errore di sintassi."
+/>
+
+<Say who="sensei">La soluzione è una coppia di parentesi. Piccolo dettaglio, grande differenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su def, chiamate ed errori. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-def-chiamata" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima def, poi la chiamata con le parentesi. In quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si definisce con `def nome():`, seguito dal corpo rientrato.
+- Definire crea la funzione, chiamarla con `nome()` la esegue.
+- Una funzione si può chiamare quante volte vuoi.
+- Python legge dall'alto: la definizione deve venire prima della chiamata, altrimenti NameError.
+- Caso chiuso: Elena aveva definito `saluta` ma non l'aveva mai chiamata.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale parola serve per creare una funzione?", a: "def" },
+    { q: "Qual è la differenza tra definire e chiamare?", a: "Definire crea la funzione, chiamare la esegue" },
+    { q: "Che cosa succede scrivendo solo il nome senza parentesi?", a: "La funzione non viene eseguita" },
+    { q: "Quale errore dà una chiamata prima della definizione?", a: "NameError" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: far entrare i dati nella funzione e farne uscire un risultato.</Say>
+</Scene>

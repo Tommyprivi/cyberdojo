@@ -1,0 +1,150 @@
+---
+id: M.04.005
+course: mondo-digitale
+module: 4
+title: "La batteria: cosa la consuma"
+belt: bianca
+duration_min: 9
+prerequisites: [M.04.004]
+objectives:
+  - "Elencare le cose che consumano di più la batteria di un telefono"
+  - "Usare il risparmio energetico e guardare quali app consumano"
+  - "Spiegare come far durare di più la batteria nel tempo"
+verification:
+  type: generated-numeric
+  generator: m04-batteria
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che chiudere ogni app dall'elenco delle app aperte faccia durare di più la batteria"
+  - "Lasciare il telefono al sole o in macchina calda mentre si ricarica"
+  - "Pensare che la batteria resti uguale per sempre: con gli anni perde capacità"
+commands: []
+---
+
+<Scene title="Già scarico a mezzogiorno">
+Il telefono di Giorgio è al 100% alle 7 di mattina e a mezzogiorno è al 20%. Eppure lo ha usato poco. Giorgio pensa che sia rotto.
+
+La domanda del caso: **che cosa consuma la batteria e come la si fa durare?**
+
+<Say who="sensei">La batteria è come un serbatoio: ogni cosa che fa il telefono lo svuota un po'. Per risparmiare bisogna sapere chi beve di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi consuma di più">
+Le cause più comuni, dalle più pesanti:
+
+<Layers
+  caption="Le cose che consumano di più."
+  items={[
+    { icon: "eye", title: "Schermo", text: "Acceso e molto luminoso: di solito il consumo più grande" },
+    { icon: "globe", title: "Segnale debole", text: "Il telefono cerca la rete e usa molta energia" },
+    { icon: "clock", title: "Posizione e app in sottofondo", text: "Mappe, giochi e app che lavorano anche chiuse" },
+    { icon: "bolt", title: "Giochi e video", text: "Usano schermo, processore e rete insieme" },
+  ]}
+/>
+
+- Il **segnale debole** pesa molto: in zone con poca copertura il telefono si consuma più in fretta.
+- Il caldo e il freddo estremi riducono la durata.
+
+<Say who="assistente">Il caso di Giorgio: spesso la causa è la luminosità al massimo e un'app che usa la posizione di continuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come risparmiare">
+<Callout kind="trucco">
+Abbassa la **luminosità** o attiva la luminosità automatica: è il gesto che fa risparmiare di più.
+</Callout>
+
+- **Risparmio energetico** (iPhone: **Modalità risparmio energetico**; Android: **Risparmio batteria**): riduce le attività in sottofondo e prolunga la carica. Puoi attivarlo anche a mano prima di una giornata lunga.
+- **Tema scuro**: aiuta solo sugli schermi di tipo OLED, che spengono i punti neri. Sugli altri schermi non cambia molto.
+- **Posizione**: spegnila per le app che non ne hanno bisogno, oppure «solo mentre usi l'app».
+- **Wi-Fi invece dei dati mobili**, quando c'è: di solito consuma meno.
+- **Modalità aereo** dove non c'è copertura, per non far cercare la rete in continuazione.
+
+<Callout kind="attenzione">
+Chiudere di continuo le app dall'elenco delle app aperte, in genere, **non** fa risparmiare: il sistema le tiene in pausa da solo. Riaprirle consuma anzi più energia. Conviene chiuderne una solo se è bloccata.
+</Callout>
+
+<Say who="sensei">Chi consuma più? Controlla, non indovinare. Il telefono ti mostra l'elenco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Guardare chi consuma e vivere a lungo">
+Nelle impostazioni, alla voce **Batteria**, c'è un grafico con le app che hanno consumato di più nelle ultime ore o giorni. Se vedi un'app sconosciuta o poco utile in cima, controlla i suoi permessi o toglila.
+
+<Flow
+  caption="Per far durare la batteria negli anni."
+  steps={[
+    { icon: "fire", title: "Evita il caldo", text: "Niente sole o cruscotto mentre ricarichi" },
+    { icon: "bolt", title: "Caricabatterie buono", text: "Usa quello del telefono o uno certificato" },
+    { icon: "clock", title: "Non aspettare lo zero", text: "Ricaricare ogni tanto è meglio che scaricare del tutto" },
+  ]}
+/>
+
+Una batteria si usura con le ricariche: dopo qualche anno tiene meno carica. Sugli iPhone puoi leggere lo **stato della batteria** (capacità massima in percentuale) nelle impostazioni; su molti Android c'è una voce simile, ma dipende dalla marca.
+
+<Say who="assistente">Quando la batteria dura troppo poco anche con tutti i trucchi, si può far sostituire da un centro assistenza: costa meno di un telefono nuovo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio guarda il grafico e vede: schermo 55%, un gioco 20%, mappe 10%.
+
+<Quiz
+  question="Quale gesto fa risparmiare più batteria a Giorgio, di solito?"
+  options={[
+    "Abbassare la luminosità dello schermo",
+    "Chiudere ogni app dall'elenco ogni volta che finisce",
+    "Spegnere e riaccendere il telefono ogni ora",
+    "Cambiare lo sfondo con uno più chiaro",
+  ]}
+  answer={0}
+  explain="Lo schermo è il consumo più grande, quindi abbassare la luminosità è il gesto che pesa di più. Chiudere le app di continuo in genere non aiuta, riavviare ogni ora non serve, e uno sfondo chiaro su schermo OLED consuma anzi di più."
+/>
+
+<Say who="sensei">Prima i consumi grandi, poi quelli piccoli. Non perdere tempo con i dettagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla batteria. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-batteria" pass="4/5" retries={3} />
+
+<Say who="sensei">Schermo, segnale, app in sottofondo: i tre sospettati principali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La batteria si consuma soprattutto con lo schermo acceso e luminoso, il segnale debole, la posizione e le app in sottofondo.
+- Per risparmiare: luminosità più bassa, risparmio energetico, posizione solo quando serve, Wi-Fi quando c'è.
+- Nelle impostazioni, alla voce Batteria, si vede quali app consumano di più.
+- Caldo e caricabatterie scadenti rovinano la batteria; con gli anni perde comunque capacità.
+- Caso chiuso: Giorgio ha abbassato la luminosità e limitato la posizione; il telefono non era rotto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è di solito il consumo più grande di batteria?", a: "Lo schermo acceso e luminoso" },
+    { q: "Quando il tema scuro fa risparmiare?", a: "Sugli schermi OLED, che spengono i punti neri" },
+    { q: "Dove si vede quali app consumano di più?", a: "Nelle impostazioni, alla voce Batteria" },
+    { q: "Che cosa danneggia la batteria mentre ricarichi?", a: "Il caldo, per esempio il sole o un'auto chiusa" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: lo spazio, cioè che cosa riempie la memoria del telefono.</Say>
+</Scene>

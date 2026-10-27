@@ -1,4 +1,4 @@
-import type { CourseId } from "@/lib/content/courses";
+import { getCourseById, type CourseId } from "@/lib/content/courses";
 
 /** Percorso di studio consigliato e consigli su come seguire i corsi. Solo calcoli: nessun dato personale esce da qui. */
 
@@ -7,8 +7,6 @@ export type PlanInput = { goal: string | null; dailyMinutes: number | null };
 export type TipsInput = PlanInput & { ageBand: string | null };
 
 type StageDef = { course: CourseId; modules: number[]; why: string };
-
-const FOLDER: Partial<Record<CourseId, string>> = { F: "fondamenta", C: "cybersecurity" };
 
 const BASICS: StageDef = { course: "F", modules: [1, 2, 3, 4, 5], why: "Computer, Linux e reti: senza queste basi il resto non si capisce." };
 const NETWORKS: StageDef = { course: "F", modules: [6, 7, 8], why: "Reti a fondo: è lì che si vedono gli attacchi e le difese." };
@@ -61,7 +59,7 @@ export function buildPlan(input: PlanInput, lessons: PlanLesson[], completed: Se
 
   const stages: Stage[] = defs
     .map((def) => {
-      const folder = FOLDER[def.course];
+      const folder = getCourseById(def.course)?.folder;
       const inStage = lessons.filter((l) => l.course === folder && def.modules.includes(l.module));
       const left = inStage.filter((l) => !completed.has(l.id));
       const minutesLeft = left.reduce((sum, l) => sum + l.minutes, 0);

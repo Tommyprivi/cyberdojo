@@ -1,0 +1,169 @@
+---
+id: P.01.009
+course: programmazione
+module: 1
+title: "Ripetere: l'idea di ciclo"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.008]
+objectives:
+  - "Spiegare che cos'è un ciclo e perché evita di scrivere le stesse istruzioni più volte"
+  - "Distinguere un ciclo con numero di ripetizioni noto da uno con condizione"
+  - "Riconoscere un ciclo infinito e capire come evitarlo"
+verification:
+  type: generated-numeric
+  generator: p01-cicli
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di cambiare qualcosa dentro il ciclo, così la condizione non diventa mai falsa (ciclo infinito)"
+  - "Sbagliare di uno il numero di ripetizioni (il classico errore «off by one»)"
+  - "Scrivere a mano venti volte la stessa istruzione invece di un ciclo"
+commands: []
+---
+
+<Scene title="Cento pizze">
+Per una festa Elia deve preparare 100 pizze identiche. Non scrive «stendi, condisci, inforna» cento volte: scrive una sola volta il gruppo di istruzioni e aggiunge «ripeti 100 volte».
+
+Quando una cosa va fatta tante volte, l'algoritmo non si allunga: si usa un **ciclo**.
+
+La domanda del caso: **come si dice al computer di ripetere, e come gli si dice quando fermarsi?**
+
+<Say who="sensei">I computer non si stancano. Ripetere è la cosa in cui sono più bravi di noi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un ciclo">
+Un **ciclo** (in inglese *loop*) ripete un gruppo di istruzioni finché serve. Il gruppo ripetuto si chiama **corpo** del ciclo, e ogni ripetizione si chiama **iterazione**.
+
+```text
+RIPETI 3 VOLTE
+    SCRIVI "Pizza pronta"
+FINE RIPETI
+```
+
+Questo scrive tre righe «Pizza pronta». Cambiando il numero cambi quante volte; non serve riscrivere le istruzioni.
+
+<Flow
+  caption="Come gira un ciclo."
+  steps={[
+    { icon: "search", title: "Controlla", text: "Devo ripetere ancora?" },
+    { icon: "gear", title: "Esegui il corpo", text: "Le istruzioni del ciclo" },
+    { icon: "link", title: "Torna su", text: "Ricomincia dal controllo" },
+    { icon: "check", title: "Esci", text: "Quando la risposta è no, si prosegue dopo il ciclo" },
+  ]}
+/>
+
+<Say who="assistente">Un ciclo è un giro: parti, fai il lavoro, torni al punto di partenza, finché non c'è più motivo di girare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due tipi di ciclo">
+Ci sono due situazioni tipiche:
+
+<Compare
+  caption="Quando si sa e quando non si sa quante volte."
+  left={{ title: "Numero noto", points: ["Ripeti 100 volte", "Sai in anticipo quanti giri", "Esempio: preparare 100 pizze"] }}
+  right={{ title: "Con condizione", points: ["Ripeti finché è vero qualcosa", "Non sai quanti giri servono", "Esempio: ripeti finché il forno non è a temperatura"] }}
+/>
+
+Un esempio con condizione, in pseudocodice:
+
+```text
+totale = 0
+RIPETI FINCHÉ totale < 20
+    totale = totale + 6
+FINE RIPETI
+SCRIVI totale
+```
+
+Dopo il primo giro totale vale 6, poi 12, poi 18, poi 24. A 24 la condizione `totale < 20` è falsa e il ciclo si ferma. Il risultato scritto è **24**: il ciclo controlla prima di ogni giro, ma una volta dentro finisce il giro.
+
+<Callout kind="regola">
+Un ciclo con condizione controlla la condizione **prima** di ogni giro. Se è già falsa all'inizio, il corpo non viene eseguito nemmeno una volta.
+</Callout>
+
+<Say who="sensei">Se sai quante volte, scrivilo. Se non lo sai, scrivi quando fermarti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ciclo infinito">
+Il pericolo più noto: un ciclo che non finisce mai. Succede quando dentro il corpo **non cambia niente** che renda falsa la condizione.
+
+```text
+totale = 0
+RIPETI FINCHÉ totale < 20
+    SCRIVI "Pizza"
+FINE RIPETI
+```
+
+Qui `totale` resta sempre 0, la condizione è sempre vera e il programma continua per sempre. È un **ciclo infinito**: il computer non si rompe, ma il programma non risponde più.
+
+Per evitarlo, ogni ciclo con condizione deve avere dentro il corpo qualcosa che **avvicina alla fine**: un contatore che cresce, un valore che si accumula, un dato che si consuma.
+
+<Callout kind="attenzione">
+Controlla sempre tre cose in un ciclo: **da dove parte** (valore iniziale), **quando si ferma** (condizione) e **che cosa cambia** a ogni giro. Se manca una delle tre, probabilmente c'è un bug.
+</Callout>
+
+<Say who="assistente">Se un programma sembra bloccato, spesso è bloccato in un ciclo che non sa come uscire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quante volte viene eseguito il corpo di questo ciclo? Partenza `n = 1`, ciclo `RIPETI FINCHÉ n <= 4`, dentro `n = n + 1`."
+  options={[
+    "4 volte",
+    "3 volte",
+    "5 volte",
+    "Infinite volte",
+  ]}
+  answer={0}
+  explain="n vale 1, 2, 3 e 4 quando la condizione n <= 4 è vera: sono 4 giri. Quando n diventa 5 la condizione è falsa e il ciclo finisce. Non è infinito perché n aumenta a ogni giro, e non sono 3 o 5 perché il 4 è incluso (<=) mentre il 5 no."
+/>
+
+<Say who="sensei">Conta con cura: il confine, ancora una volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui cicli. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-cicli" pass="4/5" retries={3} />
+
+<Say who="sensei">Parte, si ferma, cambia: tre domande per ogni ciclo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un ciclo ripete un gruppo di istruzioni (il corpo), e ogni ripetizione si chiama iterazione.
+- Con numero noto si dice quante volte; con condizione si ripete finché la condizione è vera.
+- La condizione si controlla prima di ogni giro: se è subito falsa, il corpo non gira mai.
+- Un ciclo infinito nasce quando niente, dentro il corpo, rende falsa la condizione.
+- Caso chiuso: per cento pizze Elia scrive una sola volta il gruppo di istruzioni e lo ripete cento volte.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un ciclo?", a: "Un modo per ripetere un gruppo di istruzioni finché serve" },
+    { q: "Che cos'è un'iterazione?", a: "Una singola ripetizione del corpo del ciclo" },
+    { q: "Che cos'è un ciclo infinito?", a: "Un ciclo la cui condizione non diventa mai falsa, quindi non finisce mai" },
+    { q: "Che cosa controlli in ogni ciclo?", a: "Da dove parte, quando si ferma e che cosa cambia a ogni giro" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: mettere alla prova un algoritmo a mano, con la traccia di esecuzione.</Say>
+</Scene>

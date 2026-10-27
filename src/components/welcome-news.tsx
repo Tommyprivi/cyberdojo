@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { markNewsSeen, readNewsSeen } from "@/app/actions/community";
 import { playSound } from "@/lib/sounds";
 import { NEWS_SEEN_KEY, NewsCelebration } from "./news-celebration";
 
@@ -15,25 +16,51 @@ export function WelcomeNews({ version, countdownEndsAt }: { version: string; cou
   useEffect(() => {
     if (!version) return;
     if (countdownEndsAt !== null && Date.now() < countdownEndsAt) return;
-    let seen: string | null = null;
-    try {
-      seen = localStorage.getItem(NEWS_SEEN_KEY);
-    } catch {
-      /* senza memoria nel browser la festa parte a ogni visita: meglio saltarla */
-      return;
-    }
-    if (seen === version) return;
-    // Un attimo dopo il caricamento, così la pagina è già a posto quando parte.
-    const id = window.setTimeout(() => {
+    let cancelled = false;
+    let timer: number | undefined;
+    (async () => {
+      let local: string | null = null;
+      let localOk = true;
       try {
-        localStorage.setItem(NEWS_SEEN_KEY, version);
+        local = localStorage.getItem(NEWS_SEEN_KEY);
       } catch {
-        /* già gestito sopra */
+        localOk = false;
       }
-      setOpen(true);
-      playSound("celebrate");
-    }, 700);
-    return () => window.clearTimeout(id);
+      if (local === version) return;
+      // La memoria dell'account vale su tutti i dispositivi; senza sessione resta solo il browser.
+      let server: { signedIn: boolean; version: string | null } = { signedIn: false, version: null };
+      try {
+        server = await readNewsSeen();
+      } catch {
+        /* rete assente: si usa il browser */
+      }
+      if (cancelled) return;
+      if (server.version === version) {
+        try {
+          localStorage.setItem(NEWS_SEEN_KEY, version);
+        } catch {
+          /* niente */
+        }
+        return;
+      }
+      // Senza account e senza memoria nel browser la festa partirebbe a ogni visita: meglio saltarla.
+      if (!server.signedIn && !localOk) return;
+      // Un attimo dopo il caricamento, così la pagina è già a posto quando parte.
+      timer = window.setTimeout(() => {
+        try {
+          localStorage.setItem(NEWS_SEEN_KEY, version);
+        } catch {
+          /* già gestito sopra */
+        }
+        if (server.signedIn) void markNewsSeen(version).catch(() => {});
+        setOpen(true);
+        playSound("celebrate");
+      }, 700);
+    })();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, [version, countdownEndsAt]);
 
   return open ? <NewsCelebration big onClose={() => setOpen(false)} /> : null;

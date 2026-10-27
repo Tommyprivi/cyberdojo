@@ -1,0 +1,179 @@
+---
+id: P.02.002
+course: programmazione
+module: 2
+title: "Variabili e nomi che si capiscono"
+belt: bianca
+duration_min: 8
+prerequisites: [P.02.001]
+objectives:
+  - "Creare una variabile con l'assegnazione e cambiarne il valore"
+  - "Scegliere nomi validi e chiari, scritti in minuscolo con il trattino basso"
+  - "Prevedere che cosa stampa un programma con più assegnazioni"
+verification:
+  type: generated-numeric
+  generator: p02-variabili
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Leggere il segno uguale come in matematica: in Python assegna un valore, non afferma un'uguaglianza"
+  - "Scrivere un nome con spazi o che comincia con un numero, per esempio 2giocatori"
+  - "Scrivere il nome tra virgolette dentro print: stampa la parola, non il contenuto"
+commands: []
+---
+
+<Scene title="Il nome ripetuto 40 volte">
+Giulia ha scritto 40 righe come `print("Ciao Marco, benvenuto al torneo")`. Poi si accorge che il torneo cambia nome: «Torneo di primavera». Dovrebbe correggere 40 righe!
+
+Ci vorrebbe un modo per scrivere il nome **una volta sola** e usarlo ovunque. Lo permette la **variabile**: una scatola con un'etichetta, dove il programma tiene un dato.
+
+La domanda del caso: **come si dà un nome a un dato per riusarlo?**
+
+<Say who="sensei">Un programma che ripete le stesse cose a mano è un programma scritto male. Le variabili servono a questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Creare una variabile">
+Si crea con il segno `=`, che si chiama **assegnazione**:
+
+```python
+torneo = "Torneo di primavera"
+iscritti = 40
+print(torneo)
+print(iscritti)
+```
+
+<Log lines={[
+  "Torneo di primavera",
+  "40",
+]} caption="Il programma stampa il contenuto delle scatole." />
+
+- A sinistra il **nome** (l'etichetta), a destra il **valore** (il contenuto).
+- Il `=` non significa «è uguale a» come in matematica: significa «metti questo valore in quella scatola».
+- Nel `print` il nome va **senza virgolette**: `print(torneo)` stampa il contenuto, `print("torneo")` stampa la parola torneo.
+
+<Layers
+  caption="Due variabili, due scatole."
+  items={[
+    { icon: "folder", title: "torneo", text: "contiene Torneo di primavera" },
+    { icon: "folder", title: "iscritti", text: "contiene 40" },
+  ]}
+/>
+
+<Say who="assistente">Pensa a un armadietto a scuola: il numero sulla porta è il nome, quello che c'è dentro è il valore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cambiare il valore">
+Il contenuto di una variabile può cambiare nel tempo, ed è per questo che si chiama «variabile». Python esegue una riga alla volta, quindi conta l'ordine:
+
+```python
+iscritti = 40
+print(iscritti)
+iscritti = 43
+print(iscritti)
+iscritti = iscritti + 1
+print(iscritti)
+```
+
+<Log lines={[
+  "40",
+  "43",
+  "44",
+]} caption="Il valore cambia a ogni assegnazione." />
+
+L'ultima assegnazione sembra strana ma è chiara se la leggi da destra: prima Python calcola `iscritti + 1` usando il valore attuale (43), poi mette il risultato (44) nella scatola. Il vecchio valore sparisce.
+
+<Callout kind="regola">
+Si legge **prima la parte destra** del `=`, si calcola, e poi si salva il risultato nella variabile a sinistra.
+</Callout>
+
+<Say who="sensei">Per prevedere un programma segui i valori riga per riga, come nella traccia di esecuzione del modulo precedente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Nomi che si capiscono">
+I nomi delle variabili hanno regole fisse e buone abitudini.
+
+**Regole** (se le rompi, Python dà errore):
+- Possono contenere lettere, numeri e il trattino basso `_`.
+- Non possono cominciare con un numero: `2giocatori` non va, `giocatori2` sì.
+- Non possono contenere spazi: `nome giocatore` non va.
+- Maiuscole e minuscole sono diverse: `Punti` e `punti` sono due variabili.
+
+**Buone abitudini:**
+- Scrivi in minuscolo e separa le parole con il trattino basso: `nome_giocatore`, `punti_totali`.
+- Scegli nomi che dicono che cosa c'è dentro: `eta` è meglio di `x`.
+
+<Compare
+  caption="Lo stesso programma, scritto in due modi."
+  left={{ title: "Nomi poco chiari", points: ["a = 40", "b = 12", "c = a - b"] }}
+  right={{ title: "Nomi chiari", points: ["iscritti = 40", "ritirati = 12", "rimasti = iscritti - ritirati"] }}
+/>
+
+Per questo i programmatori dicono che il codice si scrive per le persone, non solo per il computer: tra sei mesi il «te di oggi» dovrà rileggerlo.
+
+<Say who="assistente">Se devi scrivere un commento per spiegare che cosa contiene una variabile, quasi sempre basta un nome migliore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Quale di questi nomi Python accetta come nome di variabile?
+
+<Quiz
+  question="Quale di questi è un nome di variabile valido in Python?"
+  options={[
+    "punti_totali",
+    "punti totali",
+    "2punti",
+    "punti-totali",
+  ]}
+  answer={0}
+  explain="punti_totali usa solo lettere e trattino basso. Con lo spazio sarebbero due parole, 2punti comincia con un numero e nel quarto il trattino viene letto come una sottrazione."
+/>
+
+<Say who="sensei">Nome chiaro, minuscolo, trattino basso. Poi non ci pensi più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle variabili. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-variabili" pass="4/5" retries={3} />
+
+<Say who="sensei">Destra prima, sinistra dopo. Questa è la chiave.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una variabile è un nome che custodisce un valore; si crea con l'assegnazione `=`.
+- Il `=` significa «metti il risultato di destra nella variabile di sinistra».
+- Il valore si può cambiare, e Python esegue le righe in ordine.
+- I nomi: lettere, numeri e trattino basso, mai spazi né un numero all'inizio; meglio chiari e in minuscolo.
+- Caso chiuso: Giulia mette il nome del torneo in una variabile e lo cambia in un punto solo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa il segno = in Python?", a: "Assegna un valore a una variabile" },
+    { q: "Dopo x = 5 e x = x + 2, quanto vale x?", a: "7" },
+    { q: "Un nome di variabile può cominciare con un numero?", a: "No, per esempio 2giocatori non è valido" },
+    { q: "Come si scrive bene un nome di più parole?", a: "In minuscolo con il trattino basso, per esempio punti_totali" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: che tipo di dati si possono mettere nelle scatole, cioè numeri, testo e vero o falso.</Say>
+</Scene>

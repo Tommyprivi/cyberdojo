@@ -1,0 +1,157 @@
+---
+id: P.01.005
+course: programmazione
+module: 1
+title: "Diagrammi di flusso"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.004]
+objectives:
+  - "Riconoscere i simboli di base di un diagramma di flusso: inizio/fine, azione, decisione, ingresso/uscita"
+  - "Leggere un diagramma di flusso seguendo le frecce"
+  - "Tradurre una scelta SE...ALTRIMENTI in un diagramma"
+verification:
+  type: generated-numeric
+  generator: p01-diagrammi-flusso
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Disegnare una decisione con una sola uscita: ne servono due (sì e no)"
+  - "Dimenticare le frecce o disegnarle senza verso"
+  - "Usare i simboli a caso: il rombo è per le decisioni, il rettangolo per le azioni"
+commands: []
+---
+
+<Scene title="La mappa delle consegne">
+Elia vuole spiegare ai fattorini che cosa fare quando un cliente non risponde al citofono. A voce si perdono i pezzi: chi suona due volte, chi chiama, chi torna indietro.
+
+Allora disegna un foglio con riquadri e frecce: «Suona. Il cliente risponde? Se sì, consegna. Se no, telefona…». Ha appena inventato un **diagramma di flusso**.
+
+La domanda del caso: **come si disegna un algoritmo in modo che si capisca a colpo d'occhio?**
+
+<Say who="sensei">Un diagramma è una mappa. Segui le frecce e arrivi in fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I simboli">
+Un **diagramma di flusso** disegna un algoritmo con forme collegate da **frecce** che indicano l'ordine. Le forme principali sono quattro:
+
+<Layers
+  caption="I simboli di base."
+  items={[
+    { icon: "bolt", title: "Ovale", text: "Inizio e fine dell'algoritmo" },
+    { icon: "gear", title: "Rettangolo", text: "Un'azione o un calcolo" },
+    { icon: "search", title: "Rombo", text: "Una decisione con due uscite: sì e no" },
+    { icon: "mail", title: "Parallelogramma", text: "Dati in ingresso o in uscita" },
+  ]}
+/>
+
+Regole semplici:
+- Si parte dall'ovale di inizio e si segue una freccia alla volta.
+- Dal **rombo** escono sempre due frecce, etichettate «sì» e «no».
+- Ogni strada arriva prima o poi all'ovale di fine.
+
+<Say who="assistente">Quattro forme bastano per quasi tutto. Non serve ricordare altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere un diagramma">
+Ecco il problema del citofono, come lo leggeresti in un diagramma (qui scritto in sequenza, con i rombi indicati):
+
+<Flow
+  caption="Il citofono, passo dopo passo."
+  steps={[
+    { icon: "bell", title: "Suona il citofono", text: "Azione (rettangolo)" },
+    { icon: "search", title: "Il cliente risponde?", text: "Decisione (rombo)" },
+    { icon: "check", title: "Se sì: consegna", text: "Poi fine" },
+    { icon: "phone", title: "Se no: telefona", text: "Poi fine o nuovo tentativo" },
+  ]}
+/>
+
+Il rombo è il punto dove il cammino si **divide**: da lì in poi dipende dalla risposta alla domanda. È l'equivalente grafico del SE...ALTRIMENTI che hai visto nello pseudocodice.
+
+<Callout kind="regola">
+La domanda dentro il rombo deve avere una risposta **sì o no**, mai «forse» o «dipende». Esempi: «Il prezzo è almeno 50?», «Il cliente risponde?».
+</Callout>
+
+<Say who="sensei">Se non riesci a rispondere sì o no, la domanda è scritta male.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Pseudocodice e diagramma a confronto">
+Lo sconto di Elia della lezione scorsa si può scrivere in due modi. Dicono la stessa cosa.
+
+<Compare
+  caption="Stesso algoritmo, due forme."
+  left={{ title: "Pseudocodice", points: ["Si scrive con le parole", "Si legge dall'alto in basso", "Comodo per algoritmi lunghi"] }}
+  right={{ title: "Diagramma di flusso", points: ["Si disegna con forme e frecce", "Si vedono subito le strade", "Comodo per spiegare e per le scelte"] }}
+/>
+
+Quale scegliere? Il diagramma è molto chiaro per pochi passi e qualche scelta; per algoritmi lunghi diventa un groviglio di frecce. Lo pseudocodice regge meglio la lunghezza. Molti programmatori usano **entrambi**: il disegno per capire, le parole per scrivere.
+
+<Callout kind="trucco">
+Se nel disegno le frecce si incrociano troppo, è un segnale: probabilmente l'algoritmo va diviso in pezzi più piccoli, come hai imparato nella seconda lezione.
+</Callout>
+
+<Say who="assistente">Non c'è una forma migliore: c'è quella che ti fa capire di più in quel momento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale simbolo di un diagramma di flusso rappresenta una decisione, con due uscite sì e no?"
+  options={[
+    "Il rombo",
+    "L'ovale",
+    "Il rettangolo",
+    "Il parallelogramma",
+  ]}
+  answer={0}
+  explain="La decisione si disegna con un rombo, da cui escono due frecce (sì e no). L'ovale segna inizio e fine, il rettangolo un'azione o un calcolo, il parallelogramma i dati in ingresso o in uscita."
+/>
+
+<Say who="sensei">Rombo uguale domanda. Due uscite, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui diagrammi di flusso. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-diagrammi-flusso" pass="4/5" retries={3} />
+
+<Say who="sensei">Forma giusta per ogni compito, e le frecce con il verso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un diagramma di flusso disegna un algoritmo con forme e frecce che indicano l'ordine.
+- Ovale per inizio e fine, rettangolo per le azioni, rombo per le decisioni, parallelogramma per ingresso e uscita.
+- Dal rombo escono due frecce: sì e no.
+- Pseudocodice e diagramma dicono la stessa cosa in due forme; spesso si usano insieme.
+- Caso chiuso: la mappa di Elia per il citofono è un diagramma, con una decisione al centro.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa si disegna con un ovale?", a: "L'inizio e la fine dell'algoritmo" },
+    { q: "Che cosa si disegna con un rombo?", a: "Una decisione, con due uscite: sì e no" },
+    { q: "Che cosa rappresenta un rettangolo?", a: "Un'azione o un calcolo" },
+    { q: "Quante frecce escono da un rombo?", a: "Due: una per il sì e una per il no" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le domande a cui si risponde solo vero o falso.</Say>
+</Scene>

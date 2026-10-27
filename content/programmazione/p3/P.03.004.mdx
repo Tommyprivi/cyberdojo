@@ -1,0 +1,172 @@
+---
+id: P.03.004
+course: programmazione
+module: 3
+title: "Valori predefiniti e parametri con nome"
+belt: bianca
+duration_min: 8
+prerequisites: [P.03.003]
+objectives:
+  - "Dare a un parametro un valore predefinito"
+  - "Chiamare una funzione passando gli argomenti per nome"
+  - "Rispettare le regole sull'ordine dei parametri"
+verification:
+  type: generated-numeric
+  generator: p03-default-nome
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere un parametro con valore predefinito prima di uno senza: è un errore di sintassi"
+  - "Nella chiamata scrivere un argomento senza nome dopo uno con nome"
+  - "Sbagliare il nome del parametro quando lo si passa per nome"
+commands: []
+---
+
+<Scene title="Il saluto che cambia solo ogni tanto">
+Elena ha la funzione `saluta(nome, saluto)`. Quasi sempre usa «Ciao», e si stanca di scriverlo ogni volta. A volte però, per gli ospiti, vuole «Buonasera».
+
+La domanda del caso: **come si scrive una funzione che usa un valore normale, ma che si può cambiare quando serve?**
+
+<Say who="sensei">Un buon strumento ha le impostazioni giuste già pronte, e ti lascia cambiarle solo se vuoi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il valore predefinito">
+Un parametro può avere un **valore predefinito** (in inglese *default*): si scrive con `=` nella definizione. Se nella chiamata il dato manca, Python usa quello.
+
+```python
+def saluta(nome, saluto="Ciao"):
+    print(saluto + ", " + nome + "!")
+
+saluta("Elena")
+saluta("Elena", "Buonasera")
+```
+
+<Log lines={[
+  "Ciao, Elena!",
+  "Buonasera, Elena!",
+]} caption="Senza secondo argomento si usa Ciao." />
+
+Nella prima chiamata manca il saluto, quindi vale `"Ciao"`. Nella seconda il valore passato vince su quello predefinito.
+
+<Callout kind="regola">
+I parametri **con** valore predefinito vanno **dopo** quelli senza. Scrivere `def f(a=1, b):` è un errore di sintassi.
+</Callout>
+
+<Say who="assistente">Il valore predefinito è un «se non mi dici altro, faccio così».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Parametri con nome">
+Nella chiamata puoi scrivere il **nome** del parametro prima del valore: `nome=valore`. Si chiamano argomenti **con nome** (in inglese *keyword arguments*).
+
+```python
+saluta(nome="Elena", saluto="Buongiorno")
+saluta(saluto="Buongiorno", nome="Elena")
+```
+
+<Log lines={[
+  "Buongiorno, Elena!",
+  "Buongiorno, Elena!",
+]} caption="Con i nomi, l'ordine non conta." />
+
+Quando passi gli argomenti per nome, Python non guarda più l'ordine, ma il nome. Il vantaggio è la chiarezza: leggendo `saluto="Buongiorno"` si capisce subito a cosa serve il valore.
+
+<Compare
+  caption="Due modi di passare gli argomenti."
+  left={{ title: "Per posizione", points: ["saluta(\"Elena\", \"Ciao\")", "Conta l'ordine", "Breve, ma meno chiaro"] }}
+  right={{ title: "Per nome", points: ["saluta(nome=\"Elena\", saluto=\"Ciao\")", "L'ordine non conta", "Più leggibile"] }}
+/>
+
+<Say who="sensei">Con tre o quattro parametri, i nomi ti salvano dagli scambi involontari.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole da ricordare">
+Puoi mescolare i due stili, ma con una regola: nella chiamata **prima** vengono gli argomenti per posizione, **poi** quelli con nome.
+
+```python
+saluta("Elena", saluto="Ciao")      # va bene
+saluta(nome="Elena", "Ciao")        # errore di sintassi
+```
+
+Il secondo esempio dà un errore perché un argomento senza nome compare dopo uno con nome.
+
+Anche `print` usa questo meccanismo. Hai già visto `print("a", "b")` che scrive `a b`: il separatore predefinito è lo spazio. Puoi cambiarlo con `sep`:
+
+```python
+print("2026", "10", "27", sep="-")
+```
+
+<Log lines={[
+  "2026-10-27",
+]} caption="L'argomento con nome sep cambia il separatore." />
+
+<Callout kind="trucco">
+Se non sei sicuro di come si chiama un parametro, guarda la definizione della funzione: i nomi tra parentesi sono quelli da usare.
+</Callout>
+
+<Say who="assistente">Anche `end` di `print` funziona così: `print("ciao", end="")` non va a capo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena scrive una nuova funzione per il biglietto: il prezzo cambia sempre, mentre un contributo di 2 euro per la palestra deve essere predefinito.
+
+<Quiz
+  question="Quale definizione è scritta correttamente in Python?"
+  options={[
+    "def biglietto(prezzo, extra=2):",
+    "def biglietto(extra=2, prezzo):",
+    "def biglietto(prezzo=, extra):",
+    "def biglietto(prezzo, extra:2):",
+  ]}
+  answer={0}
+  explain="I parametri con valore predefinito vanno dopo quelli senza, e il valore si scrive con il segno uguale. La seconda definizione mette extra=2 prima di prezzo, la terza lascia il valore vuoto e la quarta usa i due punti al posto dell'uguale: tutte e tre danno errore di sintassi."
+/>
+
+<Say who="sensei">Prima i parametri obbligatori, dopo quelli facoltativi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su valori predefiniti e parametri con nome. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-default-nome" pass="4/5" retries={3} />
+
+<Say who="sensei">Predefinito dopo gli obbligatori, nomi dopo le posizioni. Due regole, nessuna eccezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un valore predefinito si scrive con `=` nella definizione e si usa se l'argomento manca.
+- I parametri con valore predefinito vanno dopo quelli senza.
+- Con `nome=valore` nella chiamata l'ordine non conta e il codice si legge meglio.
+- Nella chiamata prima gli argomenti per posizione, poi quelli con nome.
+- Caso chiuso: `saluta(nome, saluto="Ciao")` saluta con «Ciao» e cambia solo se serve.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si dà un valore predefinito a un parametro?", a: "Con il segno uguale nella definizione, per esempio saluto=\"Ciao\"" },
+    { q: "Dove vanno i parametri con valore predefinito?", a: "Dopo quelli senza valore predefinito" },
+    { q: "Che cos'è un argomento con nome?", a: "Un argomento passato nella forma nome=valore" },
+    { q: "Che cosa fa sep in print?", a: "Cambia il separatore tra i valori stampati" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: dove vivono le variabili, dentro e fuori dalle funzioni.</Say>
+</Scene>

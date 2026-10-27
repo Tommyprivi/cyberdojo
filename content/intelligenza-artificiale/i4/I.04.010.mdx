@@ -1,0 +1,163 @@
+---
+id: I.04.010
+course: intelligenza-artificiale
+module: 4
+title: "Le tue regole personali per usare l'IA"
+belt: bianca
+duration_min: 8
+prerequisites: [I.04.009]
+objectives:
+  - "Riassumere i principi di un uso responsabile dell'IA visti nel modulo"
+  - "Scrivere cinque regole personali chiare e applicabili"
+  - "Usare una lista di controllo prima di usare o condividere un contenuto creato con l'IA"
+verification:
+  type: generated-numeric
+  generator: i04-regole-personali
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fare regole troppo generiche («usarla bene») che non dicono che cosa fare davvero"
+  - "Scrivere regole e poi non rileggerle: vanno riviste ogni tanto, perché gli strumenti cambiano"
+  - "Dimenticare che la responsabilità di ciò che pubblichi o consegni resta tua"
+commands: []
+---
+
+<Scene title="Il patto di Marta">
+Alla fine del modulo il professor Ricci dà un compito diverso dagli altri: «Scrivete le vostre regole per usare l'IA. Cinque, non di più. Devono essere così chiare che un amico possa dire se le avete rispettate».
+
+Marta ci pensa. Ha visto lavoro, scuola, falsi, diritto d'autore, privacy, leggi e ambiente. Come si trasforma tutto questo in poche regole?
+
+La domanda del caso: **quali sono le mie regole personali per usare bene l'IA?**
+
+<Say who="sensei">Una buona regola dice che cosa fai e quando. «Usare bene l'IA» non è una regola. «Controllo i fatti prima di consegnare» sì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa abbiamo imparato">
+Un riassunto dei temi del modulo, ciascuno con la sua domanda guida.
+
+<Layers
+  caption="Le sei aree del modulo."
+  items={[
+    { icon: "users", title: "Lavoro e scuola", text: "Chi ha fatto la fatica di pensare? Sai rifarlo da solo?" },
+    { icon: "mask", title: "Falsi", text: "Fonte e conferme prima di credere o condividere" },
+    { icon: "book", title: "Diritto d'autore", text: "Di chi sono i contenuti? Che condizioni ha lo strumento?" },
+    { icon: "lock", title: "Privacy", text: "Sono dati miei da dare? Ho il permesso degli altri?" },
+    { icon: "shield", title: "Regole", text: "L'uso è permesso, vietato o ad alto rischio?" },
+    { icon: "bolt", title: "Ambiente", text: "Serve davvero? Lo strumento è adatto?" },
+  ]}
+/>
+
+<Say who="assistente">Ogni domanda guida può diventare una regola. Basta scriverla come azione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scrivere regole che funzionano">
+Una buona regola personale è:
+
+- **concreta**: dice che cosa fai, non solo cosa pensi;
+- **verificabile**: chiunque può controllare se l'hai rispettata;
+- **breve**: una riga;
+- **tua**: la scegli tu, e sai spiegare perché.
+
+<Compare
+  caption="Da generica a utile."
+  left={{ title: "Regola vaga", points: ["Userò l'IA in modo responsabile", "Starò attento ai falsi", "Rispetterò la privacy"] }}
+  right={{ title: "Regola concreta", points: ["Controllo almeno una fonte prima di consegnare", "Prima di condividere un contenuto scioccante, cerco la fonte", "Non incollo nomi o foto di altri senza permesso"] }}
+/>
+
+Ecco un esempio di cinque regole, da adattare:
+
+1. Quando studio, uso l'IA per capire, non per copiare; dichiaro come l'ho usata.
+2. Controllo i fatti importanti su una fonte affidabile prima di fidarmi.
+3. Non incollo dati personali miei o di altri senza permesso.
+4. Davanti a un contenuto sorprendente, cerco la fonte prima di condividere.
+5. Se non so se è permesso, chiedo.
+
+<Say who="sensei">Cinque regole che ricordi valgono più di venti che dimentichi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una lista di controllo prima di consegnare">
+Prima di consegnare o pubblicare qualcosa fatto con l'IA, passa in rassegna queste domande.
+
+<Flow
+  caption="Quattro controlli prima di inviare."
+  steps={[
+    { icon: "check", title: "Vero?", text: "Ho controllato fatti, numeri e fonti" },
+    { icon: "lock", title: "Privato?", text: "Non ci sono dati personali miei o di altri" },
+    { icon: "book", title: "Permesso?", text: "Rispetta le regole di scuola, lavoro e licenze" },
+    { icon: "user", title: "Mio?", text: "Posso spiegarlo e risponderne io" },
+  ]}
+/>
+
+<Callout kind="regola">
+Se anche solo una risposta è «non so», fermati. Chiedi, controlla, cambia. La responsabilità di ciò che consegni o pubblichi resta sempre tua.
+</Callout>
+
+Le regole non sono eterne: gli strumenti, le leggi e le tue esigenze cambiano. Rileggile ogni tanto e aggiornale.
+
+<Say who="assistente">Una lista di controllo non rallenta: evita i guai che fanno perdere più tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marta ha scritto queste regole. Una sola è davvero concreta e verificabile.
+
+<Quiz
+  question="Quale di queste è una buona regola personale?"
+  options={[
+    "Prima di inviare un testo fatto con l'IA, controllo i nomi, le date e i numeri su una fonte affidabile",
+    "Userò l'IA in modo giusto",
+    "Cercherò di non fare danni",
+    "Farò sempre la cosa migliore",
+  ]}
+  answer={0}
+  explain="La prima dice che cosa si fa e quando, e chiunque può verificare se è stata rispettata. Le altre sono intenzioni generiche, senza azioni controllabili."
+/>
+
+<Say who="sensei">Quando scrivi una regola, chiediti: un altro saprebbe dire se l'ho rispettata?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su uso responsabile e regole personali. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-regole-personali" pass="4/5" retries={3} />
+
+<Say who="sensei">Concreta, verificabile, breve, tua. Ripetilo prima di scrivere ogni regola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il modulo ha toccato lavoro, scuola, falsi, diritto d'autore, privacy, AI Act e ambiente: ogni tema porta una domanda guida.
+- Una buona regola personale è concreta, verificabile, breve e tua.
+- Prima di consegnare o pubblicare: è vero, è privato, è permesso, è mio?
+- La responsabilità di ciò che pubblichi o consegni resta sempre tua, anche se l'ha scritto l'IA.
+- Caso chiuso: Marta ha scritto le sue cinque regole e le riguarderà ogni tanto, perché gli strumenti cambiano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali quattro caratteristiche ha una buona regola personale?", a: "Concreta, verificabile, breve e tua" },
+    { q: "Quali sono i quattro controlli prima di consegnare?", a: "Vero, privato, permesso, mio" },
+    { q: "Di chi è la responsabilità di ciò che pubblichi con l'IA?", a: "Tua, anche se l'ha scritto l'IA" },
+    { q: "Ogni quanto vanno riviste le regole?", a: "Ogni tanto, perché strumenti e leggi cambiano" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo chiuso. Hai finito il blocco sul capire l'IA: il prossimo modulo comincia con l'apprendimento automatico.</Say>
+</Scene>

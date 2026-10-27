@@ -1,0 +1,157 @@
+---
+id: I.01.003
+course: intelligenza-artificiale
+module: 1
+title: "Programmi con regole e programmi che imparano"
+belt: bianca
+duration_min: 9
+prerequisites: [I.01.002]
+objectives:
+  - "Spiegare la differenza tra un programma a regole scritte e uno che impara dagli esempi"
+  - "Descrivere le fasi di addestramento e di uso di un modello"
+  - "Capire perché la qualità degli esempi decide la qualità del modello"
+verification:
+  type: generated-numeric
+  generator: i01-regole-imparare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un modello impari da solo, senza esempi"
+  - "Pensare che più regole scritte a mano risolvano sempre il problema"
+  - "Dimenticare che esempi sbilanciati o sbagliati producono un modello sbagliato"
+commands: []
+---
+
+<Scene title="Il filtro dei messaggi">
+La radio della scuola riceve centinaia di messaggi al giorno, e molti sono pubblicità. Teo scrive un filtro: se il messaggio contiene «gratis», «vinci» o «premio», va nella cartella spam.
+
+Funziona per un giorno. Poi arrivano messaggi con «V1nci» e «gr4tis», e il filtro non li riconosce più.
+
+La domanda del caso: **come si può costruire un filtro che si adatti da solo ai nuovi trucchi?**
+
+<Say who="sensei">Le regole scritte a mano si rompono appena il mondo cambia. Vediamo l'alternativa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il programma con regole">
+Il filtro di Teo è un normale programma: una persona scrive le regole.
+
+```python
+def e_spam(testo):
+    parole = ["vinci", "gratis", "premio"]
+    for p in parole:
+        if p in testo.lower():
+            return True
+    return False
+
+print(e_spam("Hai vinto un PREMIO gratis"))   # True
+print(e_spam("Ciao, ci vediamo alle 5"))      # False
+```
+
+La funzione controlla se una delle parole vietate compare nel testo (scritto in minuscolo con `lower()`). Va bene finché le regole bastano. Ma chi scrive spam cambia le parole di continuo, e noi dovremmo aggiornare l'elenco ogni giorno.
+
+<Callout kind="attenzione">
+Per problemi come riconoscere una faccia o capire una frase, le regole da scrivere sarebbero migliaia e piene di eccezioni. Nessuno riesce a scriverle tutte.
+</Callout>
+
+<Say who="assistente">Il programma con regole è come una ricetta: precisa, ma fa solo ciò che c'è scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il programma che impara">
+L'idea del **machine learning** (apprendimento automatico) è rovesciare il lavoro: invece di scrivere le regole, **diamo esempi** e lasciamo che sia il computer a ricavarle.
+
+<Compare
+  caption="Chi scrive le regole?"
+  left={{ title: "Regole scritte", points: ["La persona scrive le regole", "Dati e regole entrano, risposte escono", "Si rompe con casi nuovi"] }}
+  right={{ title: "Apprendimento", points: ["Il computer ricava le regole", "Dati e risposte giuste entrano, escono le regole", "Si adatta se ha nuovi esempi"] }}
+/>
+
+Per il filtro: diamo al computer 10.000 messaggi già etichettati «spam» o «normale». Il computer cerca da solo ciò che distingue le due famiglie: parole, stile, orari. Il risultato è il **modello**.
+
+<Say who="sensei">Dal «come si fa» passiamo al «ecco degli esempi di come va fatto».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Addestramento e uso">
+Un modello ha due vite:
+
+<Flow
+  caption="Le due fasi di un modello."
+  steps={[
+    { icon: "database", title: "Addestramento", text: "Il modello vede molti esempi e si aggiusta" },
+    { icon: "check", title: "Verifica", text: "Lo si prova su esempi mai visti" },
+    { icon: "bolt", title: "Uso", text: "Riceve un messaggio nuovo e dà una risposta" },
+  ]}
+/>
+
+- **Addestramento** (in inglese *training*): il modello vede gli esempi e corregge i suoi numeri interni finché sbaglia poco.
+- **Verifica**: si tengono da parte alcuni esempi che il modello non ha mai visto. Se va bene anche su quelli, ha davvero imparato; se va bene solo sugli esempi già visti, li ha solo imparati a memoria.
+- **Uso** (si dice anche *inferenza*): il modello già pronto lavora su casi nuovi.
+
+<Callout kind="regola">
+La qualità del modello dipende dalla qualità degli esempi. Se tra gli esempi quasi tutti i messaggi sono «normali», il modello sbaglierà spesso proprio sullo spam.
+</Callout>
+
+<Say who="assistente">Come a scuola: si studia sugli esercizi, ma si è davvero preparati solo se si risolvono anche quelli nuovi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Qual è la differenza principale tra un programma a regole e un modello di apprendimento automatico?"
+  options={[
+    "Nel primo le regole le scrive una persona, nel secondo le ricava il computer dagli esempi",
+    "Il primo funziona solo su internet, il secondo no",
+    "Il primo non usa mai numeri, il secondo sì",
+    "Il secondo non può mai sbagliare perché è intelligente",
+  ]}
+  answer={0}
+  explain="Nel programma a regole è la persona a scrivere le istruzioni; nel modello è il computer a ricavarle dagli esempi. Entrambi possono girare ovunque e usare numeri, e un modello può sbagliare, soprattutto con esempi cattivi."
+/>
+
+<Say who="sensei">Quando scegli tra le due strade, chiediti: riesco a scrivere le regole in una pagina? Se sì, bastano le regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su regole ed esempi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-regole-imparare" pass="4/5" retries={3} />
+
+<Say who="sensei">Regole scritte da noi, oppure ricavate dagli esempi. Tieni a mente questa distinzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un programma a regole segue istruzioni scritte da una persona; si rompe quando il mondo cambia.
+- Il machine learning ricava le regole dagli esempi: il risultato è un modello.
+- Un modello ha una fase di addestramento, una di verifica su esempi nuovi e una di uso.
+- Esempi pochi, sbilanciati o sbagliati danno un modello sbagliato.
+- Caso chiuso: il filtro di Teo funziona meglio se impara da messaggi etichettati, invece di un elenco di parole fisso.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il machine learning?", a: "Un modo di fare programmi che ricavano le regole dagli esempi" },
+    { q: "Che cosa significa addestrare un modello?", a: "Mostrargli molti esempi perché corregga i suoi numeri interni e sbagli meno" },
+    { q: "Perché si prova il modello su esempi mai visti?", a: "Per capire se ha davvero imparato o se ha solo memorizzato" },
+    { q: "Da che cosa dipende la qualità di un modello?", a: "Soprattutto dalla qualità e dalla varietà degli esempi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le parole giuste, cioè apprendimento automatico, reti neurali e IA generativa.</Say>
+</Scene>

@@ -1,0 +1,185 @@
+---
+id: P.04.001
+course: programmazione
+module: 4
+title: "Tipi di errore: di sintassi, a runtime e di logica"
+belt: bianca
+duration_min: 8
+prerequisites: [P.03.010]
+objectives:
+  - "Distinguere un errore di sintassi, un errore a runtime e un errore di logica"
+  - "Riconoscere quale tipo di errore dà un messaggio e quale invece passa in silenzio"
+  - "Dire con quale strategia si cerca ciascun tipo di errore"
+verification:
+  type: generated-numeric
+  generator: p04-tipi-di-errore
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che se il programma parte e non dà errori allora è giusto: gli errori di logica non fanno rumore"
+  - "Leggere solo la riga dove Python segnala l'errore di sintassi: il guaio può stare nella riga prima"
+  - "Confondere errore di sintassi (il programma non parte) con errore a runtime (il programma parte e poi si ferma)"
+commands: []
+---
+
+<Scene title="Due programmi, due guai">
+Elena tiene la cassa del gruppo di teatro. Ha scritto due piccoli programmi in Python per dividere le spese. Il primo non parte nemmeno: compare un messaggio rosso. Il secondo parte, finisce, non si lamenta di niente... ma dice che la quota a testa è di 10 euro, mentre dai conti a mano ne servono 7.
+
+Sono due guai molto diversi. Dare loro lo stesso nome («errore») è comodo, ma non aiuta a ripararli.
+
+La domanda del caso: **come si riconosce che tipo di errore si ha davanti?**
+
+<Say who="sensei">Un medico non cura tutti i sintomi allo stesso modo. Prima capisce che cosa ha il paziente. Lo stesso vale per il codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore di sintassi">
+Un **errore di sintassi** è una frase scritta male: manca un segno, una parentesi, un due punti. Python legge tutto il file **prima** di eseguirlo, e se la grammatica è sbagliata si rifiuta di partire.
+
+```python
+quota = 60 / 4
+if quota > 10
+    print("Quota alta")
+```
+
+<Log lines={[
+  "  File \"quota.py\", line 2",
+  "    if quota > 10",
+  "                 ^",
+  "SyntaxError: expected ':'",
+]} caption="Nelle versioni recenti di Python il messaggio dice che cosa manca (il testo esatto può cambiare da versione a versione)." />
+
+Qui manca il **due punti** a fine riga dopo `if`. Nota: nemmeno la prima riga, quella giusta, viene eseguita. Con un errore di sintassi non gira niente.
+
+<Callout kind="trucco">
+A volte il guaio sta nella riga **prima** di quella indicata: una parentesi aperta e mai chiusa fa lamentare Python alla riga dopo. Se la riga segnalata sembra giusta, guarda sopra.
+</Callout>
+
+<Say who="assistente">Gli errori di sintassi sono i più facili: Python ti dice quasi sempre dove guardare. Respira e leggi il messaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore a runtime">
+Un **errore a runtime** (cioè «mentre il programma gira») compare quando la grammatica è giusta, ma a un certo punto Python non riesce a fare quello che gli chiedi. Il programma parte, esegue le righe buone, e poi **si ferma** con un messaggio.
+
+```python
+persone = 0
+print("Inizio")
+print(60 / persone)
+print("Fine")
+```
+
+<Log lines={[
+  "Inizio",
+  "Traceback (most recent call last):",
+  "  File \"quota.py\", line 3, in <module>",
+  "    print(60 / persone)",
+  "ZeroDivisionError: division by zero",
+]} caption="Stampa «Inizio», poi si ferma. «Fine» non compare mai." />
+
+Esempi tipici di errori a runtime:
+- `ZeroDivisionError`: dividere per zero.
+- `ValueError`: valore sbagliato, per esempio `int("ciao")`.
+- `NameError`: usare un nome che non esiste, per esempio per un errore di battitura.
+- `TypeError`: operazione su tipi che non vanno d'accordo, per esempio `"5" + 3`.
+
+<Say who="sensei">Il messaggio ha un nome e una spiegazione. Il nome è la categoria del guaio. Leggili sempre, tutti e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Errore di logica">
+Un **errore di logica** è il più furbo: il programma parte, arriva in fondo, non dà alcun messaggio... e il risultato è sbagliato. Il codice fa esattamente quello che hai scritto, ma non quello che volevi.
+
+```python
+spesa_a = 6
+spesa_b = 8
+media = spesa_a + spesa_b / 2
+print(media)
+```
+
+Stampa `10.0`, invece di `7.0`. La divisione ha la **precedenza** sulla somma: Python calcola `8 / 2` e poi aggiunge 6. Servivano le parentesi: `(spesa_a + spesa_b) / 2`.
+
+<Layers
+  caption="Tre tipi di errore, tre momenti in cui compaiono."
+  items={[
+    { icon: "warning", title: "Sintassi", text: "Prima di partire: il programma non gira per niente" },
+    { icon: "fire", title: "Runtime", text: "Mentre gira: il programma si ferma con un messaggio" },
+    { icon: "bug", title: "Logica", text: "Mai un messaggio: il risultato è semplicemente sbagliato" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Contro l'errore di logica non c'è nessun messaggio ad aiutarti. Servono **prove**: provare il programma con numeri di cui conosci già la risposta e confrontare.
+</Callout>
+
+<Say who="assistente">Il computer non sa che cosa volevi: sa solo che cosa hai scritto. Per questo l'errore di logica è sempre colpa nostra, e sempre risolvibile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un programma si avvia, stampa metà dei risultati e poi si interrompe con `ValueError`.
+
+<Quiz
+  question="Di che tipo di errore si tratta quando un programma parte, esegue alcune righe e poi si ferma con un messaggio?"
+  options={[
+    "Un errore a runtime",
+    "Un errore di sintassi",
+    "Un errore di logica",
+    "Un errore del computer, non del codice",
+  ]}
+  answer={0}
+  explain="Un programma che parte e poi si ferma con un messaggio ha un errore a runtime. Con un errore di sintassi non partirebbe nemmeno; con un errore di logica arriverebbe in fondo senza messaggi, ma con un risultato sbagliato. E il messaggio indica quasi sempre un problema nel codice, non nel computer."
+/>
+
+<Guided
+  steps={[
+    "Il programma non parte e compare SyntaxError: guarda la riga indicata e quella sopra.",
+    "Il programma parte e si ferma con un messaggio: leggi il nome dell'errore e la riga.",
+    "Il programma finisce ma il risultato è sbagliato: prova con numeri di cui sai la risposta.",
+  ]}
+/>
+
+<Say who="sensei">Tre sintomi, tre strategie. Prima il sintomo, poi la cura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui tre tipi di errore. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-tipi-di-errore" pass="4/5" retries={3} />
+
+<Say who="sensei">Quando parte? Quando si ferma? Che cosa stampa? Tre domande e sai già con chi hai a che fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un errore di sintassi è una frase scritta male: Python non fa partire il programma.
+- Un errore a runtime ferma il programma mentre gira, con un messaggio che ha un nome e una spiegazione.
+- Un errore di logica non dà alcun messaggio: il risultato è sbagliato e si trova solo provando.
+- Caso chiuso: il primo programma di Elena aveva un errore di sintassi, il secondo un errore di logica (la precedenza dei calcoli).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando si manifesta un errore di sintassi?", a: "Prima che il programma parta: Python rifiuta di eseguirlo" },
+    { q: "Che cosa succede con un errore a runtime?", a: "Il programma parte e si ferma con un messaggio" },
+    { q: "Quale errore non dà alcun messaggio?", a: "L'errore di logica: il risultato è sbagliato ma il programma finisce" },
+    { q: "Come si trova un errore di logica?", a: "Provando il programma con dati di cui si conosce già il risultato" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si legge un traceback, il messaggio lungo che Python stampa quando qualcosa si ferma.</Say>
+</Scene>

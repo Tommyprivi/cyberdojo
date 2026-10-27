@@ -1,0 +1,190 @@
+---
+id: W.02.007
+course: sviluppo-web
+module: 2
+title: "Percorsi dei file: relativi e assoluti"
+belt: bianca
+duration_min: 9
+prerequisites: [W.02.006]
+objectives:
+  - "Distinguere un percorso relativo da uno assoluto"
+  - "Scrivere percorsi con cartelle, con ../ e con il nome del file"
+  - "Evitare gli errori tipici: maiuscole, spazi e barre sbagliate"
+verification:
+  type: generated-numeric
+  generator: w02-percorsi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere un percorso che parte da C: o da una cartella del proprio computer: sul sito pubblicato non esiste"
+  - "Cambiare maiuscole e minuscole: Foto.JPG e foto.jpg possono essere file diversi su un server"
+  - "Usare spazi o lettere accentate nei nomi dei file, che creano indirizzi difficili da gestire"
+commands: []
+---
+
+<Scene title="Le immagini sono sparite">
+Lucia ha spostato le foto dei vasi in una cartella chiamata `img` e riordinato le pagine in sottocartelle. Da quel momento, nella pagina compaiono i riquadri vuoti con l'icona dell'immagine rotta, e alcuni link portano a «pagina non trovata».
+
+Non è un guasto: ha solo cambiato i file di posto, e gli indirizzi dentro la pagina non sono stati aggiornati. Per scrivere indirizzi giusti serve capire i **percorsi**.
+
+La domanda del caso: **come si dice al browser dove si trova un file?**
+
+<Say who="sensei">Un percorso è un indirizzo di casa. Dipende da dove parti: dalla stessa via, dalla piazza, o dall'inizio della città.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un esempio di cartelle">
+Immagina questa struttura per il sito di Lucia:
+
+```text
+bottega/
+  index.html
+  corsi.html
+  img/
+    vaso.jpg
+  corsi/
+    tornio.html
+```
+
+La cartella `bottega` è la **radice** del progetto. Dentro ci sono due pagine, una cartella `img` con una foto e una cartella `corsi` con un'altra pagina.
+
+<Layers
+  caption="La struttura del sito, dall'alto in basso."
+  items={[
+    { icon: "folder", title: "bottega/", text: "La cartella del progetto" },
+    { icon: "file", title: "index.html e corsi.html", text: "Le pagine nella radice" },
+    { icon: "folder", title: "img/ e corsi/", text: "Sottocartelle con foto e altre pagine" },
+  ]}
+/>
+
+<Say who="assistente">Tieni davanti questa struttura mentre leggi i percorsi: sembra un albero, e lo è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percorsi relativi">
+Un percorso **relativo** parte dalla posizione del file che lo contiene.
+
+Da `index.html` (nella radice):
+```html
+<a href="corsi.html">I corsi</a>
+<img src="img/vaso.jpg" alt="Un vaso blu">
+<a href="corsi/tornio.html">Il tornio</a>
+```
+
+- `corsi.html` è nella **stessa cartella**: basta il nome.
+- `img/vaso.jpg` entra nella sottocartella `img`.
+- Le cartelle si separano con la barra `/`.
+
+Da `corsi/tornio.html`, per tornare indietro, serve `../`, che significa «sali di una cartella»:
+```html
+<a href="../index.html">Torna alla home</a>
+<img src="../img/vaso.jpg" alt="Un vaso blu">
+```
+
+<Flow
+  caption="Dal tornio alla foto del vaso."
+  steps={[
+    { icon: "file", title: "Parti da", text: "corsi/tornio.html" },
+    { icon: "folder", title: "Sali con ../", text: "Arrivi nella cartella bottega" },
+    { icon: "file", title: "Scendi in img/", text: "Trovi vaso.jpg" },
+  ]}
+/>
+
+<Callout kind="regola">
+`nome.html` = stessa cartella, `cartella/nome.html` = scendi, `../nome.html` = sali. Un percorso relativo funziona anche se sposti tutto il sito insieme.
+</Callout>
+
+<Say who="sensei">Se sposti l'intera cartella del sito, i relativi continuano a funzionare. È il loro vantaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Percorsi assoluti">
+Un percorso **assoluto** non dipende da dove ti trovi: dice l'indirizzo completo.
+
+```html
+<a href="https://www.labottegadilucia.it/corsi.html">I corsi</a>
+<img src="https://www.example.com/img/vaso.jpg" alt="Un vaso">
+```
+
+Si usa per puntare a **altri siti**. Per i file del tuo sito, di solito si preferiscono i relativi.
+
+Esiste anche una via di mezzo, che comincia con una barra: `/img/vaso.jpg`. Significa «parti dalla radice del sito». Funziona bene quando il sito è pubblicato online, ma **non** quando apri il file direttamente dal computer: il browser lo cerca dall'inizio del disco e non lo trova.
+
+<Callout kind="attenzione">
+Non scrivere mai un percorso come `C:\Users\Lucia\Immagini\vaso.jpg`. Esiste solo sul tuo computer: online l'immagine non si vedrà.
+</Callout>
+
+<Say who="assistente">Nel dubbio, per le tue pagine: relativo, partendo dalla posizione del file.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Ricorda questi accorgimenti sui nomi dei file: tutto minuscolo, niente spazi, niente accenti, trattini al posto degli spazi (`vaso-blu.jpg`).
+
+<Quiz
+  question="Nella struttura bottega/index.html, bottega/img/vaso.jpg e bottega/corsi/tornio.html, quale src, scritto in tornio.html, mostra vaso.jpg?"
+  options={[
+    "../img/vaso.jpg",
+    "img/vaso.jpg",
+    "corsi/img/vaso.jpg",
+    "vaso.jpg",
+  ]}
+  answer={0}
+  explain="Da tornio.html, nella cartella corsi, bisogna salire con ../ nella cartella bottega e poi scendere in img. Gli altri percorsi cercherebbero img dentro corsi, oppure il file nella cartella corsi stessa, dove non c'è."
+/>
+
+<Guided
+  steps={[
+    "Crea la cartella bottega con index.html, una cartella img e una cartella corsi.",
+    "Metti una foto qualsiasi in img con un nome in minuscolo e senza spazi.",
+    "In index.html scrivi un img con percorso relativo verso la foto.",
+    "In corsi/tornio.html mostra la stessa foto con ../",
+    "Apri i file nel browser: le immagini devono comparire in entrambe le pagine.",
+  ]}
+/>
+
+<Say who="sensei">Percorso che non va? Disegna le cartelle su carta e conta quante volte devi salire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui percorsi dei file. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-percorsi" pass="4/5" retries={3} />
+
+<Say who="sensei">Partenza, salita con ../, discesa nelle cartelle. Non c'è altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un percorso relativo parte dalla posizione del file; uno assoluto è l'indirizzo completo.
+- Si scende nelle cartelle con `nome/`, si sale con `../`.
+- Mai percorsi che partono da `C:` o da cartelle del tuo computer.
+- Nomi di file in minuscolo, senza spazi né accenti: i server distinguono maiuscole e minuscole.
+- Caso chiuso: Lucia ha corretto i percorsi con `img/` e `../img/`, e le foto sono tornate.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa ../ in un percorso?", a: "Sali di una cartella" },
+    { q: "Quando si usa un percorso assoluto con https?", a: "Per puntare a un altro sito" },
+    { q: "Perché non si usa un percorso come C:\\Users\\...?", a: "Perché esiste solo sul tuo computer e online non funziona" },
+    { q: "Come conviene scrivere i nomi dei file?", a: "In minuscolo, senza spazi né accenti, con trattini" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le immagini e il testo alternativo.</Say>
+</Scene>

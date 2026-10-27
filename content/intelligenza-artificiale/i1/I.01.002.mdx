@@ -1,0 +1,140 @@
+---
+id: I.01.002
+course: intelligenza-artificiale
+module: 1
+title: "Una breve storia dell'IA"
+belt: bianca
+duration_min: 9
+prerequisites: [I.01.001]
+objectives:
+  - "Collocare nel tempo le tappe principali dell'IA, dal 1950 a oggi"
+  - "Spiegare perché ci sono stati periodi di entusiasmo e periodi di delusione"
+  - "Dire che cosa ha reso possibile l'IA moderna: più dati e computer più potenti"
+verification:
+  type: generated-numeric
+  generator: i01-storia
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che l'IA sia nata con ChatGPT: le idee risalgono agli anni Cinquanta"
+  - "Pensare che il progresso sia stato sempre continuo, senza delusioni"
+  - "Confondere Deep Blue (scacchi, 1997) con AlphaGo (Go, 2016)"
+commands: []
+---
+
+<Scene title="L'IA è nata ieri?">
+Teo racconta alla radio della scuola: «L'intelligenza artificiale è arrivata nel 2022». Un compagno, Davide, lo corregge: «Mio zio ci lavorava già nel 1990».
+
+Chi ha ragione?
+
+La domanda del caso: **da quanto tempo esiste l'IA, e perché se ne parla tanto proprio adesso?**
+
+<Say who="sensei">Un buon cronista controlla le date. Facciamo un giro nel tempo, con poche tappe importanti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli inizi: 1950-1960">
+- **1950**: il matematico britannico Alan Turing pubblica un articolo in cui si chiede «le macchine possono pensare?» e propone un test, oggi detto **test di Turing**: se in una conversazione scritta non si distingue la macchina da una persona, la macchina lo supera.
+- **1956**: a una conferenza al Dartmouth College (Stati Uniti) viene usata per la prima volta l'espressione **intelligenza artificiale**, proposta da John McCarthy.
+- **1958**: Frank Rosenblatt costruisce il **perceptron**, uno dei primi modelli ispirati ai neuroni.
+
+<Callout kind="curiosita">
+Nel 1966 Joseph Weizenbaum scrisse ELIZA, un programma che simulava una psicoterapeuta ripetendo le frasi dell'utente in forma di domanda. Era semplicissimo, eppure molte persone sentivano di essere capite.
+</Callout>
+
+<Say who="assistente">Già negli anni Cinquanta c'erano le idee giuste. Mancava la potenza dei computer.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Alti e bassi">
+Le prime promesse furono troppo grandi, e i risultati più lenti del previsto. Il finanziamento calò, e si parla di **inverni dell'IA**: periodi di delusione, soprattutto negli anni Settanta e poi tra fine anni Ottanta e anni Novanta.
+
+<Flow
+  caption="Entusiasmo, delusione, ripartenza."
+  steps={[
+    { icon: "bolt", title: "Entusiasmo", text: "Grandi promesse nei primi anni" },
+    { icon: "cross", title: "Inverno", text: "I risultati non arrivano, i fondi calano" },
+    { icon: "chart", title: "Ripartenza", text: "Nuovi metodi, più dati e computer migliori" },
+  ]}
+/>
+
+Nel frattempo ci furono successi spettacolari in ambiti stretti: nel **1997** il computer **Deep Blue** di IBM batté a scacchi il campione del mondo Garry Kasparov.
+
+<Say who="sensei">Gli inverni insegnano la prudenza: ogni volta che qualcuno promette «la macchina che fa tutto», chiedi una prova.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La svolta moderna">
+Dal 2010 circa l'IA decolla grazie a tre cose insieme: **moltissimi dati** (internet), **computer molto più potenti** (in particolare le schede grafiche, usate per fare tanti calcoli in parallelo) e metodi migliori di **apprendimento profondo**.
+
+- **2012**: la rete **AlexNet** vince la gara di riconoscimento di immagini ImageNet con un distacco enorme sui metodi precedenti.
+- **2016**: **AlphaGo** (DeepMind) batte il campione Lee Sedol a Go, 4 partite a 1.
+- **2017**: un gruppo di ricercatori di Google presenta i **Transformer** nell'articolo «Attention Is All You Need»: l'idea alla base dei moderni modelli di linguaggio.
+- **2022**: a novembre esce **ChatGPT**, e l'IA generativa arriva al grande pubblico.
+
+<Callout kind="regola">
+L'IA moderna funziona perché si sono incontrati tre fattori: dati abbondanti, computer potenti e metodi nuovi. Le idee di base erano vecchie di decenni.
+</Callout>
+
+<Say who="assistente">Ecco perché Teo e Davide hanno ragione tutti e due: l'IA esiste dagli anni Cinquanta, ma il boom per il grande pubblico è recente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Che cosa ha contribuito più di tutto al boom dell'IA dopo il 2010?"
+  options={[
+    "Tanti dati, computer più potenti e metodi di apprendimento profondo",
+    "L'invenzione del primo computer",
+    "La scoperta che le macchine hanno una coscienza",
+    "Una legge che ha obbligato le aziende a usare l'IA",
+  ]}
+  answer={0}
+  explain="Il boom è nato dall'incontro di dati abbondanti, hardware potente e nuovi metodi. Il primo computer è molto più vecchio, le macchine non hanno coscienza e non c'è stata nessuna legge che imponesse l'IA."
+/>
+
+<Say who="sensei">Date e nomi vanno ricordati con la storia dietro: una tappa si ricorda meglio se sai perché è stata importante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla storia dell'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-storia" pass="4/5" retries={3} />
+
+<Say who="sensei">Turing, Dartmouth, Deep Blue, AlphaGo, Transformer, ChatGPT: la linea del tempo è questa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Le idee dell'IA nascono negli anni Cinquanta: Turing (1950) e il termine «intelligenza artificiale» (1956).
+- Ci sono stati «inverni»: periodi di delusione dopo promesse troppo grandi.
+- Deep Blue ha battuto Kasparov a scacchi nel 1997; AlphaGo ha battuto Lee Sedol a Go nel 2016.
+- Il boom moderno viene da dati abbondanti, computer potenti e apprendimento profondo; i Transformer (2017) hanno aperto la strada ai modelli di linguaggio.
+- Caso chiuso: l'IA ha oltre 70 anni, ma ChatGPT (2022) l'ha portata a tutti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "In quale anno Turing propose il suo test?", a: "Nel 1950" },
+    { q: "Che cos'è un inverno dell'IA?", a: "Un periodo di delusione e meno fondi dopo promesse troppo grandi" },
+    { q: "Chi batté Deep Blue a scacchi nel 1997?", a: "Garry Kasparov, il campione del mondo, fu battuto da Deep Blue" },
+    { q: "Quale invenzione del 2017 è alla base dei moderni modelli di linguaggio?", a: "I Transformer" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la differenza tra programmi con regole scritte da noi e programmi che imparano.</Say>
+</Scene>

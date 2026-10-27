@@ -1,0 +1,162 @@
+---
+id: P.01.002
+course: programmazione
+module: 1
+title: "Scomporre un problema in pezzi piccoli"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.001]
+objectives:
+  - "Scomporre un problema grande in sotto-problemi più piccoli"
+  - "Riconoscere quando un pezzo è abbastanza piccolo da essere risolto direttamente"
+  - "Mettere in ordine i sotto-problemi e capire che cosa serve a ciascuno"
+verification:
+  type: generated-numeric
+  generator: p01-scomporre-problemi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Partire a scrivere la soluzione senza aver diviso il problema, e perdersi"
+  - "Fare pezzi ancora troppo grandi, che si possono dividere di nuovo"
+  - "Dimenticare i dati che un pezzo riceve dall'altro: l'uscita di un pezzo è l'ingresso del successivo"
+commands: []
+---
+
+<Scene title="Gli ordini online">
+Elia vuole che i clienti possano ordinare le pizze dal telefono. Si siede e scrive in cima al foglio: «Fare il sistema per gli ordini». Poi si blocca: da dove si comincia?
+
+È una reazione normale. «Fare il sistema» è un problema troppo grande per essere affrontato in un colpo solo.
+
+La domanda del caso: **come si affronta un problema troppo grande per la testa?**
+
+<Say who="sensei">Nessun programmatore risolve un problema grosso. Ne risolve tanti piccoli, uno alla volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dividere per conquistare">
+**Scomporre** un problema vuol dire spezzarlo in **sotto-problemi** più piccoli e più semplici. Si ripete finché ogni pezzo è così piccolo da sapere già come risolverlo.
+
+<Flow
+  caption="Il problema di Elia, scomposto."
+  steps={[
+    { icon: "book", title: "Mostrare il menu", text: "Elenco pizze e prezzi" },
+    { icon: "check", title: "Scegliere le pizze", text: "Il cliente indica cosa vuole" },
+    { icon: "coin", title: "Calcolare il totale", text: "Somma dei prezzi" },
+    { icon: "mail", title: "Confermare l'ordine", text: "Un messaggio con il riepilogo" },
+  ]}
+/>
+
+Ogni pezzo ha un compito solo, e si può risolvere (e provare) da solo. Il problema grande è la somma dei pezzi risolti.
+
+<Callout kind="regola">
+Un pezzo è «abbastanza piccolo» quando riesci a descriverlo in poche istruzioni chiare, senza dire «poi vedo». Se dici «poi vedo», va diviso ancora.
+</Callout>
+
+<Say who="assistente">Non devi sapere subito come risolvere tutto. Devi solo sapere come spezzare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scomporre ancora">
+Prendi il pezzo «Calcolare il totale» e guardalo da vicino. Si può dividere di nuovo:
+
+1. Partire da un totale uguale a 0.
+2. Per ogni pizza scelta, trovare il suo prezzo.
+3. Aggiungere quel prezzo al totale.
+
+Con una Margherita da 6 euro e una Diavola da 8 euro il totale è 6 + 8 = 14 euro. Ora ogni passo è semplice.
+
+<Layers
+  caption="I livelli della scomposizione."
+  items={[
+    { icon: "bolt", title: "Problema grande", text: "Sistema per gli ordini" },
+    { icon: "folder", title: "Sotto-problemi", text: "Menu, scelta, totale, conferma" },
+    { icon: "check", title: "Passi semplici", text: "Azzerare, cercare il prezzo, sommare" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Quando dividi, controlla i **collegamenti**: l'uscita di un pezzo è l'ingresso del successivo. La scelta delle pizze produce l'elenco da cui il totale parte. Se un pezzo non riceve ciò che gli serve, la catena si rompe.
+</Callout>
+
+<Say who="sensei">Un buon indizio: se due pezzi fanno la stessa cosa, hai diviso male. Ogni pezzo ha un compito suo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un metodo in quattro mosse">
+Davanti a un problema nuovo puoi seguire sempre lo stesso metodo:
+
+<Guided
+  steps={[
+    "Scrivi il problema in una frase: che cosa deve fare, alla fine?",
+    "Elenca i grandi pezzi, nell'ordine in cui servono.",
+    "Per ogni pezzo chiediti: so già risolverlo? Se no, dividilo ancora.",
+    "Per ogni pezzo scrivi che cosa riceve e che cosa produce.",
+  ]}
+/>
+
+<Callout kind="trucco">
+Scomporre non serve solo con i programmi. Organizzare un viaggio, preparare una cena, studiare per un esame: si dividono in pezzi nello stesso modo.
+</Callout>
+
+<Say who="assistente">Con un po' di pratica comincerai a dividere i problemi senza accorgertene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Elia deve «gestire la consegna delle pizze a domicilio». Quale scomposizione è la più adatta?"
+  options={[
+    "Raccogliere indirizzo e orario, preparare l'ordine, assegnare un fattorino, avvisare il cliente",
+    "Fare tutto subito, cominciando dal pezzo più difficile e poi si vede",
+    "Consegnare, consegnare bene, consegnare in fretta",
+    "Comprare un furgone, poi un secondo furgone, poi un terzo",
+  ]}
+  answer={0}
+  explain="La prima opzione divide il problema in pezzi diversi, ognuno con un compito chiaro e in ordine logico. La seconda non divide niente, la terza ripete la stessa cosa con parole diverse, la quarta non descrive i passi di un lavoro."
+/>
+
+<Say who="sensei">Pezzi diversi, compiti chiari, ordine logico. Ricordalo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla scomposizione dei problemi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-scomporre-problemi" pass="4/5" retries={3} />
+
+<Say who="sensei">Se ti blocchi, torna alla domanda: questo pezzo si può dividere ancora?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Scomporre vuol dire spezzare un problema grande in sotto-problemi più piccoli.
+- Si divide finché ogni pezzo è abbastanza semplice da risolvere direttamente.
+- L'uscita di un pezzo è spesso l'ingresso del successivo: controlla i collegamenti.
+- Il metodo vale per ogni problema, anche fuori dall'informatica.
+- Caso chiuso: Elia ha diviso «gli ordini online» in menu, scelta, totale e conferma, e ora sa da dove cominciare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa scomporre un problema?", a: "Dividerlo in sotto-problemi più piccoli e più semplici" },
+    { q: "Quando smetti di dividere?", a: "Quando ogni pezzo è abbastanza semplice da risolvere direttamente" },
+    { q: "Che cosa devi controllare tra un pezzo e l'altro?", a: "Che l'uscita di un pezzo sia ciò che serve in ingresso al successivo" },
+    { q: "Che cosa indica che due pezzi sono divisi male?", a: "Fanno la stessa cosa, oppure uno non ha i dati che gli servono" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: l'ordine delle istruzioni e perché cambiarlo cambia il risultato.</Say>
+</Scene>

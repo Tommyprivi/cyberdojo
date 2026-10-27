@@ -1,0 +1,148 @@
+---
+id: M.02.009
+course: mondo-digitale
+module: 2
+title: "Schede, finestre e come tenere ordine"
+belt: bianca
+duration_min: 8
+prerequisites: [M.02.008]
+objectives:
+  - "Distinguere una scheda da una finestra del browser"
+  - "Aprire, chiudere e cambiare scheda con mouse e tastiera"
+  - "Tenere ordine con schede fissate, gruppi e chiusura di ciò che non serve"
+verification:
+  type: generated-numeric
+  generator: m02-schede-finestre
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aprire decine di schede e non ritrovare più quella che serviva"
+  - "Cliccare dentro finestre pubblicitarie improvvise (pop-up) invece di chiuderle"
+  - "Chiudere per sbaglio una scheda e non sapere di poterla riaprire"
+commands: []
+---
+
+<Scene title="Venti schede aperte">
+Marta guarda lo schermo del nonno Aldo: venti schede aperte, tutte con il titolo troncato. «Nonno, dov'è la banca?». «Non lo so, l'avevo aperta stamattina».
+
+Con poche mosse si può avere un browser ordinato, dove ogni cosa si ritrova in un attimo.
+
+La domanda del caso: **come si tiene ordine tra tante pagine aperte?**
+
+<Say who="sensei">Un browser pieno di schede è come una scrivania coperta di fogli. Si ripulisce in tre minuti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scheda e finestra">
+Una **finestra** è il riquadro del browser sul tuo schermo. Dentro una finestra puoi avere tante **schede**, ognuna con una pagina diversa.
+
+<Layers
+  caption="Finestra, schede e pagina."
+  items={[
+    { icon: "laptop", title: "Finestra", text: "Il riquadro del browser; puoi averne più di una" },
+    { icon: "folder", title: "Schede", text: "Le linguette in alto, una per pagina" },
+    { icon: "file", title: "Pagina", text: "Quella della scheda selezionata" },
+  ]}
+/>
+
+Quando usare una **nuova finestra** (Ctrl + N): quando vuoi tenere due pagine una accanto all'altra sullo schermo, per esempio per copiare un dato da una all'altra. Per tutto il resto bastano le schede.
+
+<Say who="assistente">Le schede sono i cassetti di un solo armadio. Le finestre sono più armadi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Muoversi tra le schede">
+Le mosse più utili, su computer:
+
+- **Ctrl + T**: nuova scheda.
+- **Ctrl + W**: chiude la scheda corrente.
+- **Ctrl + Tab**: passa alla scheda successiva. **Ctrl + Maiusc + Tab**: alla precedente.
+- **Ctrl + Maiusc + T**: riapre l'ultima scheda chiusa (in Chrome, Edge e Firefox).
+- **Ctrl + click** su un link (o click con la rotella del mouse): lo apre in una scheda nuova, senza lasciare la pagina.
+
+<Callout kind="trucco">
+Hai chiuso per sbaglio una scheda importante? Non farti prendere dal panico: premi **Ctrl + Maiusc + T** e torna.
+</Callout>
+
+Sul telefono le schede sono un pulsante con un numero (le schede aperte): da lì le vedi tutte e le chiudi una a una.
+
+<Say who="sensei">Imparane due: Ctrl + T e Ctrl + W. Già così ti cambia la giornata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tenere ordine">
+Con tante pagine aperte il browser diventa lento e tu ti perdi. Ecco come tenere ordine.
+
+- **Chiudi** le schede che non servono più.
+- **Fissa** una scheda (tasto destro, voce **Fissa**): diventa piccola e resta a sinistra. Va bene per posta o musica che usi tutto il giorno.
+- **Raggruppa** le schede (in Chrome e Edge: tasto destro, **Aggiungi a un nuovo gruppo**): dai un nome e un colore a un gruppo, per esempio «Compiti» o «Viaggio».
+- **Salva con un segnalibro** le pagine che vuoi ritrovare, invece di lasciarle aperte per giorni.
+
+Se una pagina fa comparire all'improvviso una **finestra pubblicitaria** (pop-up) o avvisi che ti dicono di chiamare un numero o scaricare qualcosa: **chiudi** la finestra con il pulsante di chiusura del browser, non cliccare dentro e non chiamare.
+
+<Callout kind="attenzione">
+Nessun sito serio ti dice «il tuo computer è infetto, chiama questo numero». Se compare un messaggio così, chiudi la scheda o la finestra, senza fare altro.
+</Callout>
+
+<Say who="assistente">Ordine e prudenza vanno d'accordo: meno schede, meno confusione, meno clic sbagliati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai chiuso per sbaglio una scheda con una pagina importante. Che cosa puoi fare su un computer con Chrome?"
+  options={[
+    "Premere Ctrl + Maiusc + T per riaprire l'ultima scheda chiusa",
+    "Premere Ctrl + W per riaprirla",
+    "Premere Ctrl + N per riaprirla",
+    "Niente: una scheda chiusa è persa per sempre",
+  ]}
+  answer={0}
+  explain="Ctrl + Maiusc + T riapre l'ultima scheda chiusa. Ctrl + W la chiude, Ctrl + N apre una finestra nuova e vuota. Inoltre la pagina si può anche ritrovare nella cronologia."
+/>
+
+<Say who="sensei">Sapere che si può tornare indietro toglie metà dell'ansia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su schede e finestre. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-schede-finestre" pass="4/5" retries={3} />
+
+<Say who="sensei">Ctrl + T, Ctrl + W, Ctrl + Maiusc + T. Tre scorciatoie, e il browser ti obbedisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una finestra contiene tante schede; ogni scheda ha una pagina.
+- Ctrl + T apre una scheda, Ctrl + W la chiude, Ctrl + Maiusc + T riapre l'ultima chiusa.
+- Per tenere ordine: chiudi ciò che non serve, fissa le schede importanti, raggruppa e usa i segnalibri.
+- Pop-up e avvisi allarmanti vanno chiusi, senza cliccare dentro né chiamare numeri.
+- Caso chiuso: Marta ha ripulito le venti schede e il nonno ora ritrova la banca al primo colpo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra scheda e finestra?", a: "La finestra è il riquadro del browser; la scheda è una pagina dentro la finestra" },
+    { q: "Con quale scorciatoia riapri l'ultima scheda chiusa?", a: "Ctrl + Maiusc + T" },
+    { q: "Che cosa fai con un pop-up che dice «il tuo computer è infetto»?", a: "Lo chiudi senza cliccare dentro né chiamare numeri" },
+    { q: "A che cosa serve fissare una scheda?", a: "A tenerla piccola e sempre a portata, per le pagine che usi tutto il giorno" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: un esercizio per cercare e confrontare tre fonti sullo stesso argomento.</Say>
+</Scene>

@@ -5,6 +5,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { parseVerdict, scoreOf, type Verdict } from "@/lib/ai/verdict";
 import { playSound } from "@/lib/sounds";
 import { Mascot } from "../mascot";
+import { MicButton, ReadAloud } from "./voice-controls";
 
 type Lesson = { id: string; title: string };
 type Catalog = { id: string; title: string; modules: { n: number; title: string; lessons: Lesson[] }[] }[];
@@ -14,14 +15,14 @@ type Mode = "chat" | "quiz";
 const START = "Inizia l'interrogazione.";
 const NOTICE =
   "Le domande vengono elaborate da un servizio esterno (Google Gemini, piano gratuito): non scrivere dati personali. Le risposte dell'IA possono sbagliare: controlla sempre le lezioni.";
-const LESSON_LINK = /(\/lezione\/[FCDTH]\.\d{2}\.\d{3})/g;
+const LESSON_LINK = /(\/lezione\/[A-Z]\.\d{2}\.\d{3})/g;
 
 /** Testo del Sensei: i riferimenti /lezione/<id> diventano collegamenti. */
 function Rich({ text }: { text: string }) {
   return (
     <>
       {text.split(LESSON_LINK).map((part, i) =>
-        /^\/lezione\/[FCDTH]\.\d{2}\.\d{3}$/.test(part) ? (
+        /^\/lezione\/[A-Z]\.\d{2}\.\d{3}$/.test(part) ? (
           <Link key={i} href={part} className="font-semibold text-primary underline underline-offset-2">
             {part.slice(9)}
           </Link>
@@ -291,6 +292,11 @@ export function DojoApp({ catalog, initialLessonId, configured }: { catalog: Cat
               <p className="font-display text-xl font-bold text-foreground">
                 {mode === "chat" ? "Chiedi pure." : "Pronto a metterti alla prova?"}
               </p>
+              {mode === "chat" && (
+                <Link href="/ripasso" className="btn btn-primary mt-2 min-h-11 w-fit">
+                  Allenami sui miei errori
+                </Link>
+              )}
               <p>
                 {mode === "chat"
                   ? "Scegli la lezione (nelle scelte) e fai una domanda. Il Sensei risponde solo con ciò che c'è nei corsi."
@@ -379,6 +385,8 @@ export function DojoApp({ catalog, initialLessonId, configured }: { catalog: Cat
             }}
             className="field max-h-32 min-h-11 flex-1 resize-none py-2.5 text-base"
           />
+          <MicButton value={input} onChange={setInput} disabled={!canType} />
+          <ReadAloud text={loading ? "" : parseVerdict(messages.findLast((m) => m.role === "assistant")?.content ?? "").text} />
           <button type="submit" disabled={!canType || !input.trim()} className="btn btn-primary min-h-11 min-w-11 px-4">
             Invia
           </button>

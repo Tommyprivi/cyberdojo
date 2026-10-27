@@ -1,0 +1,191 @@
+---
+id: W.03.010
+course: sviluppo-web
+module: 3
+title: "Progetto: la pagina di presentazione di un'associazione"
+belt: bianca
+duration_min: 10
+prerequisites: [W.03.009]
+objectives:
+  - "Costruire una pagina HTML completa con struttura semantica, tabella e modulo"
+  - "Controllare la pagina con la tastiera e con l'indice dei titoli"
+  - "Rivedere il proprio lavoro con una lista di controllo"
+verification:
+  type: generated-numeric
+  generator: w03-progetto-associazione
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Costruire tutta la pagina con div e poi aggiungere la semantica a fine lavoro"
+  - "Dimenticare label, alt o title: sono i dettagli che rendono la pagina utilizzabile da tutti"
+  - "Non provare la pagina con la tastiera prima di considerarla finita"
+commands: []
+---
+
+<Scene title="Il sito di Marco, per intero">
+Marco ha tutti i pezzi: tag semantici, tabella, modulo, titoli, accessibilità. Ora il direttivo gli chiede la pagina di presentazione dell'associazione «Amici dell'Orto»: chi siamo, i turni, e un modulo per iscriversi.
+
+Oggi non si impara niente di nuovo: si mette tutto insieme in **una sola pagina**, curata.
+
+La domanda del caso: **come si costruisce una pagina completa che sia ordinata e usabile da tutti?**
+
+<Say who="sensei">Un progetto vero non ha trucchi: ha ordine. Un pezzo alla volta, e dopo ogni pezzo un controllo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il piano">
+Prima di scrivere, decidi la struttura. Una lista di controllo per la pagina:
+
+<Layers
+  caption="Le parti del progetto."
+  items={[
+    { icon: "file", title: "header e nav", text: "Titolo del sito e menu con i link" },
+    { icon: "book", title: "main con sezioni", text: "Chi siamo, turni, iscrizione" },
+    { icon: "mail", title: "footer", text: "Contatti" },
+  ]}
+/>
+
+- Un solo `<h1>` e sotto i titoli `<h2>` delle sezioni.
+- Una `<table>` con `<caption>` e intestazioni `<th>` per i turni.
+- Un `<form>` con `label`, `name` e controlli di base.
+- Testo alternativo per ogni immagine, e `lang="it"`.
+
+<Say who="assistente">Scrivi la pagina a pezzi: scheletro, poi sezione per sezione. Così se qualcosa non va, sai dove guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lo scheletro e la tabella">
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amici dell'Orto</title>
+</head>
+<body>
+  <header>
+    <h1>Amici dell'Orto</h1>
+    <nav>
+      <a href="#chi-siamo">Chi siamo</a>
+      <a href="#turni">Turni</a>
+      <a href="#iscrizione">Iscriviti</a>
+    </nav>
+  </header>
+  <main>
+    <section id="chi-siamo">
+      <h2>Chi siamo</h2>
+      <p>Coltiviamo insieme un orto del quartiere.</p>
+    </section>
+    <section id="turni">
+      <h2>Turni di annaffiatura</h2>
+      <table>
+        <caption>Turni della settimana</caption>
+        <thead>
+          <tr><th scope="col">Volontario</th><th scope="col">Giorno</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Anna</td><td>Lunedì</td></tr>
+          <tr><td>Luca</td><td>Giovedì</td></tr>
+        </tbody>
+      </table>
+    </section>
+```
+
+Noti le novità: i link del menu usano `#chi-siamo` per saltare a una sezione con quell'`id`; la riga `meta name="viewport"` serve per far leggere bene la pagina sul telefono.
+
+<Say who="sensei">Controlla: un solo h1, titoli h2 per le sezioni, caption e scope sulla tabella.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il modulo e il piè di pagina">
+```html
+    <section id="iscrizione">
+      <h2>Iscriviti</h2>
+      <form action="/iscrizione" method="post">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" required minlength="2">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <input type="checkbox" id="news" name="news">
+        <label for="news">Voglio ricevere le novità</label>
+
+        <button type="submit">Iscriviti</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>Contatti: info@esempio.it</p>
+  </footer>
+</body>
+</html>
+```
+
+<Callout kind="attenzione">
+Il modulo manda i dati a `/iscrizione`, un indirizzo che per ora **non esiste**: premendo il pulsante il browser mostrerà un errore, e va bene così. Il lato server si impara più avanti nel corso. Quello che conta ora è che il modulo sia scritto bene.
+</Callout>
+
+<Say who="assistente">Ogni campo ha la sua label, ogni dato ha il suo name, e l'email ha il suo `type`. Hai usato quasi tutto il modulo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Salva tutto in un file `index.html`, aprilo nel browser e fai il giro di controllo.
+
+<Guided
+  steps={[
+    "Copia lo scheletro e controlla che ogni tag aperto sia chiuso.",
+    "Cambia i dati con quelli di un'associazione inventata da te: nome, turni, contatti.",
+    "Leggi solo i titoli: h1 e poi h2 in ordine, nessun salto?",
+    "Metti da parte il mouse e prova la pagina con Tab: raggiungi ogni link e ogni campo, e vedi dove sta il focus?",
+    "Lascia vuoto il campo del nome e premi Iscriviti: il browser blocca l'invio?",
+    "Aggiungi un'immagine con un testo alternativo (alt) che descriva davvero ciò che mostra.",
+  ]}
+/>
+
+<Say who="sensei">Se una prova non passa, correggi e riprova. Un progetto si finisce quando passa tutti i controlli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande che ripassano tutto il modulo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-progetto-associazione" pass="4/5" retries={3} />
+
+<Say who="sensei">Semantica, tabelle, moduli, titoli, accessibilità: sono tutti nel tuo progetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={30}>
+- Una pagina completa mette insieme struttura semantica, titoli ordinati, tabella, modulo e testi alternativi.
+- Si costruisce a pezzi e si controlla dopo ogni pezzo: titoli, tastiera, validazione.
+- La validazione nel browser aiuta, ma il server deve sempre ricontrollare i dati.
+- Caso chiuso: Marco ha una pagina di presentazione ordinata, che anche Elena e Giorgio riescono a usare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa serve per saltare a una sezione con un link del menu?", a: "Un link che punta a #nome e la sezione con id uguale a nome" },
+    { q: "Quali tag descrivono le parti principali di una pagina?", a: "header, nav, main e footer" },
+    { q: "Come si prova se una pagina si può usare senza mouse?", a: "Si naviga con Tab, Maiusc + Tab, Invio e Spazio" },
+    { q: "Che cosa serve a un modulo perché i dati arrivino davvero?", a: "Un server che li riceva, e campi con l'attributo name" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo chiuso. Prossimo modulo: il CSS, per dare stile a tutto questo.</Say>
+</Scene>

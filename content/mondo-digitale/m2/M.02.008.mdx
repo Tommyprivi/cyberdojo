@@ -1,0 +1,154 @@
+---
+id: M.02.008
+course: mondo-digitale
+module: 2
+title: "Scaricare file e cosa controllare"
+belt: bianca
+duration_min: 9
+prerequisites: [M.02.007]
+objectives:
+  - "Dire che cos'è un download e dove finisce il file scaricato"
+  - "Riconoscere un file potenzialmente pericoloso dall'estensione"
+  - "Applicare controlli semplici prima di aprire un file scaricato"
+verification:
+  type: generated-numeric
+  generator: m02-scaricare-file
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aprire subito un file scaricato senza guardare da dove arriva e che estensione ha"
+  - "Fidarsi di un nome come «fattura.pdf» senza vedere l'estensione reale"
+  - "Scaricare programmi da siti non ufficiali, per esempio versioni «gratis» di programmi a pagamento"
+commands: []
+---
+
+<Scene title="La fattura che non si apre">
+Il nonno Aldo riceve un messaggio: «Scarica la tua fattura». Scarica il file, fa doppio click, e non succede niente di strano. Poi il computer comincia a rallentare e compaiono finestre che non conosce.
+
+Marta guarda il file: si chiama **fattura.pdf.exe**. Non era un documento: era un **programma**.
+
+La domanda del caso: **come si capisce se un file scaricato è sicuro da aprire?**
+
+<Say who="sensei">Scaricare è facile. Il difficile è decidere che cosa aprire e che cosa buttare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un download">
+**Scaricare** (in inglese *download*) vuol dire copiare un file da un server al tuo dispositivo. Il browser lo mette di solito nella cartella **Download** (o **Scaricati**). Dal menu, voce **Download** (in Chrome ed Edge anche con Ctrl + J), vedi la lista dei file scaricati.
+
+Scaricare un file non lo apre né lo esegue: il rischio comincia quando **lo apri**.
+
+<Flow
+  caption="Dal sito al tuo computer."
+  steps={[
+    { icon: "server", title: "Il sito", text: "Offre il file" },
+    { icon: "folder", title: "Cartella Download", text: "Il browser lo salva qui" },
+    { icon: "eye", title: "Prima di aprire", text: "Controlli da dove viene e che file è" },
+  ]}
+/>
+
+<Say who="assistente">Il file scaricato è come un pacco sulla soglia: non fa niente finché non lo apri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'estensione dice che cosa è">
+Il nome di un file finisce con un **punto** e poche lettere: l'**estensione**. Dice di che tipo è il file.
+
+- Documenti e immagini: `.pdf`, `.docx`, `.jpg`, `.png`, `.mp3`. Di solito sono dati da leggere.
+- **Programmi** che si eseguono: `.exe` e `.msi` (Windows), `.apk` (Android), `.dmg` (Mac). Se li apri, **eseguono istruzioni** sul tuo dispositivo.
+- Archivi compressi: `.zip`, che contengono altri file e vanno aperti con cautela.
+
+<Callout kind="attenzione">
+Su Windows le estensioni possono essere **nascoste** di default: il file «fattura.pdf.exe» si vedrebbe solo come «fattura.pdf», ma è un programma. Nelle opzioni di Esplora file si può attivare la visualizzazione delle estensioni dei file. Conta solo l'**ultima** estensione.
+</Callout>
+
+<Compare
+  caption="Che cosa fa aprire un file."
+  left={{ title: "Documento o immagine", points: [".pdf, .jpg, .docx", "Si legge o si guarda", "Meno rischioso, ma non è sempre innocuo"] }}
+  right={{ title: "Programma", points: [".exe, .msi, .apk", "Esegue istruzioni sul dispositivo", "Va installato solo se ti fidi della fonte"] }}
+/>
+
+<Say who="sensei">Un documento vero non finisce mai con .exe. Se succede, è una trappola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Controlli prima di aprire">
+Prima di aprire un file scaricato, fai queste domande:
+
+1. **L'ho cercato io, o mi è arrivato?** Un file non richiesto, ricevuto da sconosciuti, è sospetto.
+2. **Da dove viene?** Preferisci il sito ufficiale o gli store ufficiali (Microsoft Store, App Store, Google Play).
+3. **Il nome e l'estensione sono giusti?** Una fattura dovrebbe essere un `.pdf`, non un programma.
+4. **Chi me l'ha mandato è davvero chi dice?** Se un amico ti manda un file che non ti aspetti, chiedigli conferma con un altro mezzo.
+
+Altri accorgimenti:
+
+- Diffida di versioni «gratis» di programmi o giochi a pagamento: sono spesso un modo per far installare virus.
+- Tieni attivo l'**antivirus**: su Windows c'è già Microsoft Defender, incluso nel sistema.
+- Se un documento Office ti chiede di «abilitare le macro» o i contenuti, **non farlo** se non sei sicuro: è un modo noto per far partire istruzioni nascoste.
+
+<Callout kind="regola">
+Nel dubbio, **non aprire**. Cancella il file o chiedi a una persona di fiducia. Un file non aperto non può fare danni.
+</Callout>
+
+<Say who="assistente">Non devi diventare un esperto di virus. Ti basta farti le quattro domande.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai scaricato un file chiamato «foto-vacanza.jpg.exe». Che cosa è in realtà?"
+  options={[
+    "Un programma, perché conta l'ultima estensione, e non va aperto",
+    "Una foto, perché il nome comincia con foto-vacanza",
+    "Un documento di testo, perché ha due estensioni",
+    "Un archivio compresso, perché ha un punto nel nome",
+  ]}
+  answer={0}
+  explain="Conta l'ultima estensione: .exe indica un programma per Windows. Il resto del nome serve a ingannare. Non va aperto: va cancellato."
+/>
+
+<Say who="sensei">Guarda sempre la fine del nome. È lì che sta la verità.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sullo scaricare file. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-scaricare-file" pass="4/5" retries={3} />
+
+<Say who="sensei">Fonte, estensione, nome. E nel dubbio non aprire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Scaricare vuol dire copiare un file sul tuo dispositivo, di solito nella cartella Download.
+- Il rischio comincia quando apri il file; conta l'ultima estensione del nome.
+- File come .exe, .msi e .apk sono programmi: si installano solo da fonti di cui ti fidi.
+- Controlla la fonte, l'estensione e se il file te lo aspettavi; nel dubbio, non aprire.
+- Caso chiuso: «fattura.pdf.exe» era un programma travestito da documento.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'estensione di un file?", a: "Le lettere dopo l'ultimo punto del nome, che dicono il tipo di file" },
+    { q: "Che cosa sono i file .exe?", a: "Programmi per Windows che eseguono istruzioni quando li apri" },
+    { q: "Dove si scaricano i programmi in modo più prudente?", a: "Dal sito ufficiale o dagli store ufficiali" },
+    { q: "Che cosa fai se hai un dubbio su un file?", a: "Non lo apri: lo cancelli o chiedi a una persona di fiducia" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: schede, finestre e come tenere ordine.</Say>
+</Scene>

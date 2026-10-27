@@ -1,0 +1,147 @@
+---
+id: I.02.004
+course: intelligenza-artificiale
+module: 2
+title: "Fare domande a più passaggi"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.003]
+objectives:
+  - "Spezzare un compito grande in passaggi piccoli"
+  - "Usare le domande di seguito per correggere e approfondire una risposta"
+  - "Capire che una conversazione molto lunga può far perdere dettagli e che conviene ripartire con un riepilogo"
+verification:
+  type: generated-numeric
+  generator: i02-piu-passaggi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Chiedere un lavoro enorme in un solo messaggio e accettare il primo risultato"
+  - "Continuare una conversazione lunghissima senza accorgersi che l'assistente dimentica i dettagli iniziali"
+  - "Cambiare argomento a metà conversazione senza dirlo, mescolando due compiti"
+commands: []
+---
+
+<Scene title="Una presentazione in un solo messaggio">
+Marta deve fare una presentazione di 5 diapositive sull'energia solare. Scrive un unico messaggio: «Fammi la presentazione sull'energia solare». Arriva un blocco di testo generico, con diapositive troppo piene e senza un filo.
+
+Il suo compagno Luca invece procede a tappe: prima chiede l'elenco degli argomenti, poi sceglie quelli che gli piacciono, poi fa scrivere una diapositiva alla volta.
+
+La domanda del caso: **perché procedere a passaggi dà risultati migliori?**
+
+<Say who="sensei">Un lavoro grande si fa a pezzi, anche con le persone. Con l'assistente vale uguale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spezzare il compito">
+Un compito grande contiene tante scelte. Se le lasci tutte all'assistente, le prende lui, a modo suo. Se le fai una alla volta, le controlli tu.
+
+<Flow
+  caption="La presentazione di Luca, a tappe."
+  steps={[
+    { icon: "search", title: "1. Idee", text: "Elenca 6 argomenti sull'energia solare" },
+    { icon: "check", title: "2. Scelta", text: "Luca ne sceglie 4" },
+    { icon: "file", title: "3. Scaletta", text: "Un titolo e 3 punti per ogni diapositiva" },
+    { icon: "book", title: "4. Testo", text: "Una diapositiva alla volta, in 3 righe" },
+  ]}
+/>
+
+Un trucco utile: prima del lavoro vero, chiedi un **piano**. «Prima di scrivere, dimmi in che passaggi lo faresti.» Lo leggi, lo correggi, poi dici «va bene, partiamo dal primo».
+
+<Say who="assistente">Il piano è la tua occasione per fermare un errore quando costa ancora zero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le domande di seguito">
+Dopo la prima risposta puoi continuare con domande brevi. L'assistente le legge insieme a tutto quello che avete già detto.
+
+- **Approfondire**: «Spiegami meglio il secondo punto.»
+- **Correggere**: «Hai scritto 2020, ma nel mio libro c'è 2021: ricontrolla.»
+- **Cambiare forma**: «Ora trasforma tutto in una tabella.»
+- **Chiedere alternative**: «Dammi altre due versioni più brevi.»
+- **Mettere alla prova**: «Dammi tre domande da interrogazione su questo testo.»
+
+<Callout kind="regola">
+Una domanda di seguito vale più di una richiesta nuova da zero: l'assistente ha già davanti tutto il lavoro fatto.
+</Callout>
+
+<Say who="sensei">Ogni risposta è una bozza. La conversazione serve a rifinirla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quando la chat diventa troppo lunga">
+L'assistente può tenere presente solo una quantità limitata di testo alla volta: questo limite si chiama **finestra di contesto**. In una conversazione molto lunga, i messaggi più vecchi possono essere trascurati o non entrare più nella finestra. Allora l'assistente può dimenticare una regola che gli avevi dato all'inizio, o confondere dettagli.
+
+Segnali che la chat è diventata troppo lunga:
+- si dimentica ciò che avevi detto all'inizio;
+- si contraddice;
+- ripete cose già scritte.
+
+La soluzione è semplice: apri una **nuova chat** e incolla un breve **riepilogo** (scopo, scelte già fatte, regole da rispettare).
+
+<Callout kind="trucco">
+Prima di chiudere una chat lunga, chiedi: «Riassumi in 5 righe che cosa abbiamo deciso». Quel riepilogo è il punto di partenza della prossima.
+</Callout>
+
+<Say who="assistente">Non è pigrizia: è un limite del sistema. Meglio saperlo, che arrabbiarsi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai una chat lunghissima e l'assistente ha dimenticato una regola che gli avevi dato all'inizio. Che cosa conviene fare?"
+  options={[
+    "Aprire una nuova chat e incollare un breve riepilogo con le regole",
+    "Ripetere la stessa regola dieci volte nella stessa chat",
+    "Spegnere il computer e sperare che la regola ricompaia",
+    "Chiedere all'assistente di ricordare meglio, senza cambiare niente",
+  ]}
+  answer={0}
+  explain="Con una chat molto lunga l'assistente può perdere i messaggi più vecchi: ripartire con un riepilogo breve rimette le regole in primo piano. Ripeterle nella stessa chat allunga ancora il testo, e chiedere di «ricordare meglio» non cambia il limite."
+/>
+
+<Say who="sensei">Se noti che l'assistente perde il filo, non insistere: riparti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle conversazioni a più passaggi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-piu-passaggi" pass="4/5" retries={3} />
+
+<Say who="sensei">Piano, passaggio, controllo. Poi ancora un passaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I compiti grandi si spezzano in passaggi piccoli, controllando ciascuno.
+- Chiedere prima un piano permette di correggere la direzione subito.
+- Le domande di seguito servono ad approfondire, correggere e cambiare forma.
+- In una chat molto lunga l'assistente può perdere dettagli: meglio ripartire con un riepilogo.
+- Caso chiuso: Luca ha fatto la presentazione a tappe, scegliendo lui gli argomenti; Marta ha avuto un blocco generico perché ha lasciato tutte le scelte all'assistente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Perché spezzare un compito grande?", a: "Perché controlli ogni scelta invece di lasciarle tutte all'assistente" },
+    { q: "A che cosa serve chiedere un piano prima del lavoro?", a: "A correggere la direzione prima di scrivere tutto" },
+    { q: "Che cos'è la finestra di contesto?", a: "La quantità limitata di testo che l'assistente riesce a tenere presente alla volta" },
+    { q: "Che cosa fare se la chat è troppo lunga e si perde il filo?", a: "Aprire una nuova chat e incollare un breve riepilogo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: un problema serio, le risposte inventate.</Say>
+</Scene>

@@ -1,0 +1,166 @@
+---
+id: P.04.002
+course: programmazione
+module: 4
+title: "Leggere un traceback"
+belt: bianca
+duration_min: 8
+prerequisites: [P.04.001]
+objectives:
+  - "Individuare in un traceback il tipo di errore, il messaggio e la riga del problema"
+  - "Leggere un traceback dal basso verso l'alto"
+  - "Seguire la catena di chiamate tra funzioni indicata nel traceback"
+verification:
+  type: generated-numeric
+  generator: p04-leggere-traceback
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Cominciare a leggere dall'alto: l'informazione più utile è nell'ultima riga"
+  - "Ignorare il messaggio perché è in inglese: contiene quasi sempre la risposta"
+  - "Credere che l'errore stia sempre nell'ultima funzione della catena: a volte il dato sbagliato arriva da prima"
+commands: []
+---
+
+<Scene title="Il muro di testo">
+Elena fa partire il programma dei voti del corso di teatro e sullo schermo compaiono sette righe di testo rosso. Si spaventa: «Si è rotto tutto!».
+
+Non si è rotto niente. Quel testo si chiama **traceback** («traccia a ritroso») ed è il modo con cui Python ti dice **dove** e **perché** si è fermato. È un aiuto, non un'accusa.
+
+La domanda del caso: **da dove si comincia a leggere un traceback?**
+
+<Say who="sensei">Un traceback è un biglietto lasciato da Python. Si legge dal fondo, perché il fondo è la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il programma">
+Ecco il programma di Elena. Calcola la media dei voti.
+
+```python
+def media(voti):
+    return sum(voti) / len(voti)
+
+def rapporto(voti):
+    return "Media: " + str(media(voti))
+
+print(rapporto([]))
+```
+
+Le righe sono numerate da 1: la riga 2 è il `return` di `media`, la riga 5 è quello di `rapporto`, la riga 7 è il `print` finale. La lista dei voti è vuota, e dividere per `len([])`, cioè 0, non si può.
+
+<Say who="assistente">Prova a seguire il percorso a mente: il print chiama rapporto, rapporto chiama media, media divide per zero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il traceback">
+<Log lines={[
+  "Traceback (most recent call last):",
+  "  File \"voti.py\", line 7, in <module>",
+  "    print(rapporto([]))",
+  "  File \"voti.py\", line 5, in rapporto",
+  "    return \"Media: \" + str(media(voti))",
+  "  File \"voti.py\", line 2, in media",
+  "    return sum(voti) / len(voti)",
+  "ZeroDivisionError: division by zero",
+]} caption="Il traceback del programma dei voti (nelle versioni recenti possono comparire anche dei segni ^^^ sotto la riga)." />
+
+Come si legge:
+- **L'ultima riga** dice il **tipo** (`ZeroDivisionError`) e il **messaggio** (`division by zero`, «divisione per zero»). È la prima cosa da leggere.
+- Poco sopra c'è la riga di codice dove il problema è avvenuto: `return sum(voti) / len(voti)`, alla riga 2 di `voti.py`.
+- Le coppie `File ... line ...` più in alto sono la **catena delle chiamate**: chi ha chiamato chi.
+
+<Callout kind="regola">
+Si legge **dal basso**: prima il tipo e il messaggio, poi la riga del problema, e solo se serve si risale la catena per capire come ci si è arrivati.
+</Callout>
+
+<Say who="sensei">La frase «most recent call last» significa che l'ultima chiamata sta in fondo. Ecco perché si parte da lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La catena delle chiamate">
+Il traceback elenca le funzioni dalla prima all'ultima chiamata.
+
+<Flow
+  caption="Il percorso del programma, dall'alto in basso nel traceback."
+  steps={[
+    { icon: "code", title: "Programma principale", text: "riga 7: print(rapporto([]))" },
+    { icon: "gear", title: "rapporto", text: "riga 5: chiama media(voti)" },
+    { icon: "bug", title: "media", text: "riga 2: divide per zero e si ferma" },
+  ]}
+/>
+
+La riga dove Python si ferma è l'ultima, ma la **causa** può stare più su: qui il vero guaio è che il programma principale ha passato una lista vuota. Dividere per zero è solo il punto dove la cosa è diventata impossibile.
+
+<Callout kind="trucco">
+Alcuni errori comuni e il loro significato: `NameError` (un nome che non esiste, spesso per un errore di battitura), `TypeError` (tipi che non vanno insieme, come testo più numero), `IndexError` (posizione fuori da una lista), `KeyError` (chiave assente in un dizionario).
+</Callout>
+
+<Say who="assistente">Il messaggio ti dice cosa non è andato. La catena ti dice come ci sei arrivato. Servono tutti e due.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un altro traceback finisce così:
+
+<Log lines={[
+  "  File \"spese.py\", line 4, in <module>",
+  "    print(totale)",
+  "NameError: name 'totale' is not defined",
+]} caption="Le ultime righe di un traceback." />
+
+<Quiz
+  question="Che cosa dice l'ultima riga, NameError: name 'totale' is not defined?"
+  options={[
+    "Il nome totale non esiste: non è stato creato o è scritto in modo diverso",
+    "Il programma ha diviso un numero per zero",
+    "Il testo totale non può essere stampato",
+    "Il file spese.py non è stato trovato",
+  ]}
+  answer={0}
+  explain="NameError significa che Python ha incontrato un nome che non conosce: la variabile totale non è mai stata creata o è scritta diversamente (per esempio Totale). Non c'entrano la divisione per zero, il tipo del dato o il file."
+/>
+
+<Say who="sensei">Tipo, messaggio, riga. In quest'ordine. Quasi sempre bastano questi tre dati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla lettura dei traceback. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-leggere-traceback" pass="4/5" retries={3} />
+
+<Say who="sensei">Si parte dal fondo. Sempre. Anche quando il traceback è lungo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il traceback è il messaggio con cui Python spiega dove e perché si è fermato.
+- Si legge dal basso: l'ultima riga ha il tipo e il messaggio dell'errore.
+- Le righe sopra danno il file, il numero di riga e la catena di chiamate tra le funzioni.
+- Caso chiuso: nel programma dei voti, ZeroDivisionError in media era causato da una lista vuota passata dall'inizio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Da dove si comincia a leggere un traceback?", a: "Dall'ultima riga, che dice tipo e messaggio dell'errore" },
+    { q: "Che cosa mostrano le righe File ... line ...?", a: "Il file, il numero di riga e la funzione della catena di chiamate" },
+    { q: "Che cosa indica NameError?", a: "Un nome (di variabile o funzione) che Python non conosce" },
+    { q: "Che cosa vuol dire most recent call last?", a: "Che la chiamata più recente, cioè dove si è fermato, sta in fondo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il debug, cioè come cercare un errore quando il messaggio non basta.</Say>
+</Scene>

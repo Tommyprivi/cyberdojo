@@ -1,0 +1,154 @@
+---
+id: W.01.009
+course: sviluppo-web
+module: 1
+title: "Leggere il codice di un sito vero senza paura"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.008]
+objectives:
+  - "Aprire il sorgente di una pagina e riconoscerne le parti già note"
+  - "Distinguere il sorgente originale dal contenuto che mostrano gli strumenti per sviluppatori"
+  - "Spiegare perché si può leggere il codice per imparare ma non copiarlo per intero"
+verification:
+  type: generated-numeric
+  generator: w01-leggere-codice
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Spaventarsi davanti a un codice lungo: si legge a pezzi, cercando solo ciò che si conosce"
+  - "Copiare un sito altrui e pubblicarlo come proprio: il codice e le immagini hanno un autore"
+  - "Pensare che il codice minimizzato sia ciò che ha scritto la persona: è solo compresso per pesare meno"
+commands: []
+---
+
+<Scene title="Un codice lunghissimo">
+Lucia ammira il sito di una bottega concorrente e vuole vedere come è fatto. Clicca «Visualizza sorgente» e si ritrova migliaia di righe. «Non capirò mai niente», dice.
+
+Capirai più di quanto pensi. Un codice lungo non è un codice difficile: è fatto di pochi pezzi che hai già visto, ripetuti molte volte.
+
+La domanda del caso: **come si legge un sito vero senza perdersi?**
+
+<Say who="sensei">Nessuno legge tutto. Si cerca ciò che si conosce e si ignora il resto. Come in una città nuova: ti orienti con i punti di riferimento.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il sorgente della pagina">
+Su qualsiasi sito, premi **Ctrl + U** (oppure clic destro e «Visualizza sorgente pagina»). Si apre una scheda con l'HTML che il server ha mandato al browser, riga per riga.
+
+Cerca con **Ctrl + F** parole che conosci:
+- `<title>` per il titolo della scheda;
+- `<h1>` per il titolo principale;
+- `<p>` per i paragrafi;
+- `<img` per le immagini;
+- `<link` e `<script` per i file di stile e di programma che la pagina carica.
+
+<Flow
+  caption="Come orientarsi in un sorgente lungo."
+  steps={[
+    { icon: "search", title: "Cerca", text: "Ctrl + F con una parola nota" },
+    { icon: "eye", title: "Riconosci", text: "Vedi i tag che già conosci" },
+    { icon: "book", title: "Cerca il resto", text: "Per ciò che non conosci, la documentazione" },
+  ]}
+/>
+
+<Say who="assistente">Anche i siti dei professionisti cominciano con doctype, html, head e body. È lo scheletro che hai già scritto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sorgente o Elementi?">
+Nei siti moderni ciò che vedi nella scheda **Elementi** può essere diverso dal **sorgente**. Perché? Perché JavaScript, dopo il caricamento, può aggiungere o cambiare pezzi di pagina.
+
+<Compare
+  caption="Due modi di guardare la stessa pagina."
+  left={{ title: "Sorgente (Ctrl + U)", points: ["L'HTML come lo ha mandato il server", "Non cambia mentre usi la pagina"] }}
+  right={{ title: "Elementi (strumenti)", points: ["La pagina com'è adesso, dopo JavaScript", "Cambia quando la pagina si aggiorna"] }}
+/>
+
+Spesso incontrerai codice **minimizzato**: senza spazi né a capo, in una riga sola. È più leggero da scaricare, ma illeggibile. Chi l'ha scritto lavorava con codice ordinato; quello è una versione compressa per il pubblico.
+
+<Callout kind="curiosita">
+Gli strumenti del browser hanno un pulsante con le parentesi graffe `{ }` (in inglese *pretty print*) che rimette in ordine il codice minimizzato.
+</Callout>
+
+<Say who="sensei">Per capire un sito guarda gli Elementi. Per capire cosa ha mandato il server guarda il sorgente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Imparare senza copiare">
+Leggere il codice degli altri è **uno dei modi migliori per imparare**. Chi scrive per il web lo sa, e tutti i siti mostrano il loro HTML per forza: il browser ne ha bisogno.
+
+Ma c'è un limite. Il codice, i testi, le foto e i loghi di un sito hanno un **autore** e sono protetti dal diritto d'autore. Puoi:
+- osservare come è fatto un trucco e poi **riscriverlo con parole tue**;
+- usare codice pubblicato con una **licenza libera**, rispettando le condizioni.
+
+Non puoi **copiare un sito intero** e metterlo online come tuo.
+
+<Callout kind="attenzione">
+Copiare un sito e usare lo stesso nome, logo e testi, magari per ingannare chi lo visita, può essere illegale e fa danno agli altri. Studia le idee, costruisci il tuo.
+</Callout>
+
+<Say who="assistente">Se un'idea ti piace, chiediti: come lo hanno fatto? Poi fallo a modo tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un amico dice a Lucia: «Quel sito l'ho visto uguale in un altro negozio: copiamolo tutto e cambiamo solo il nome».
+
+<Quiz
+  question="Quale comportamento è corretto?"
+  options={[
+    "Studiare come è fatto e poi scrivere il proprio sito con testi e immagini propri",
+    "Copiare tutti i file e cambiare solo il nome della bottega",
+    "Copiare le foto, perché sono visibili a tutti",
+    "Usare il codice di un altro sito perché si vede nel browser, quindi è libero",
+  ]}
+  answer={0}
+  explain="Il fatto che il codice sia visibile non lo rende libero: ha un autore. Si può imparare dalle idee e riscriverle a modo proprio, usando testi e immagini propri o con licenza che lo permette."
+/>
+
+<Say who="sensei">Imparare dagli altri è un onore. Copiare è un furto. La differenza sta nel lavoro che ci metti tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla lettura del codice di un sito. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-leggere-codice" pass="4/5" retries={3} />
+
+<Say who="sensei">Cerca ciò che conosci. Il resto lo imparerai strada facendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il sorgente di una pagina si apre con Ctrl + U; si cerca con Ctrl + F le parole che si conoscono.
+- Il sorgente è l'HTML mandato dal server; Elementi mostra la pagina com'è dopo JavaScript.
+- Il codice minimizzato è compresso e illeggibile, ma si può rimettere in ordine.
+- Si impara dal codice altrui, ma non lo si copia intero: ha un autore.
+- Caso chiuso: Lucia ha riconosciuto title, h1 e img nel sito che ammirava, e ha deciso di scrivere il suo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si apre il sorgente di una pagina?", a: "Con Ctrl + U oppure con il clic destro e «Visualizza sorgente pagina»" },
+    { q: "Che cos'è il codice minimizzato?", a: "Codice senza spazi né a capo, compresso per pesare meno" },
+    { q: "Perché si può vedere il codice di qualsiasi sito?", a: "Perché il browser ne ha bisogno per disegnare la pagina" },
+    { q: "Posso copiare un sito intero e pubblicarlo come mio?", a: "No: codice, testi e immagini hanno un autore" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: come si impara a programmare senza scoraggiarsi.</Say>
+</Scene>

@@ -1,0 +1,150 @@
+---
+id: I.02.001
+course: intelligenza-artificiale
+module: 2
+title: "Che cos'è un assistente di IA e come risponde"
+belt: bianca
+duration_min: 8
+prerequisites: [I.01.010]
+objectives:
+  - "Spiegare che un assistente di IA genera testo un pezzetto alla volta, scegliendo ciò che è più probabile"
+  - "Distinguere un assistente di IA da un motore di ricerca"
+  - "Dire perché la stessa domanda può dare risposte diverse"
+verification:
+  type: generated-numeric
+  generator: i02-assistente-risposta
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'assistente «sappia» le cose come una persona, invece di generare testo plausibile"
+  - "Trattarlo come un motore di ricerca che pesca la risposta già scritta da qualche parte"
+  - "Credere che ricordi tutte le chat precedenti: di norma vede solo la conversazione in corso"
+commands: []
+---
+
+<Scene title="Una risposta sicura di sé">
+Marta ha 15 anni e deve preparare una ricerca sui vulcani. Apre un assistente di IA e scrive: «Spiegami come nasce un vulcano». In pochi secondi arriva un testo ordinato, scritto bene, con un tono sicuro. Poi Marta fa la stessa domanda una seconda volta: le parole sono diverse, ma il senso è simile.
+
+Marta si chiede: sta leggendo una pagina già scritta da qualcuno? Oppure il programma sta «pensando»?
+
+La domanda del caso: **come fa un assistente di IA a scrivere una risposta?**
+
+<Say who="sensei">Prima di usare uno strumento, capisci come funziona. Altrimenti ti fidi troppo, o troppo poco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un assistente di IA">
+Un **assistente di IA** è un programma con cui si parla scrivendo (o a voce): tu mandi un testo, lui risponde con un altro testo. Dentro c'è un **modello linguistico**: un grande programma di IA generativa, già vista nel modulo I.01, addestrato su enormi quantità di testi.
+
+- **Prompt** (si legge «prompt»): il testo che gli mandi. È la tua richiesta.
+- **Risposta**: il testo che il modello genera.
+- **Conversazione**: la serie di messaggi avanti e indietro.
+
+Esistono molti assistenti, di aziende diverse, spesso con un piano gratuito e uno a pagamento. Cambiano i dettagli, ma l'idea di base è la stessa.
+
+<Callout kind="regola">
+Un assistente di IA **genera** testo nuovo a ogni risposta. Non apre un cassetto per tirare fuori una risposta già scritta.
+</Callout>
+
+<Say who="assistente">Pensa a un amico che ha letto moltissimo e ti risponde a parole sue. Può essere utile, ma non è un oracolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un pezzetto alla volta">
+Il modello scrive **un pezzetto alla volta**. Il pezzetto si chiama **token** e può essere una parola intera, parte di una parola o un segno di punteggiatura. A ogni passo il modello calcola quali pezzetti potrebbero venire dopo e quanto sono probabili, poi ne sceglie uno. Poi ripete, tenendo conto anche di quello che ha appena scritto.
+
+<Flow
+  caption="Come nasce una risposta."
+  steps={[
+    { icon: "user", title: "Il tuo prompt", text: "Il testo che scrivi" },
+    { icon: "gear", title: "Il modello calcola", text: "Quali pezzetti sono più probabili" },
+    { icon: "code", title: "Sceglie un token", text: "Lo aggiunge alla risposta" },
+    { icon: "check", title: "Ripete", text: "Fino a una risposta completa" },
+  ]}
+/>
+
+Per questo le risposte sono **plausibili**: assomigliano a ciò che di solito si scrive su quel tema. Plausibile però non vuol dire sempre **vero**.
+
+<Say who="sensei">Il modello non ha un archivio di verità. Ha imparato come si scrive, e lo applica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non è un motore di ricerca">
+<Compare
+  caption="Due strumenti diversi."
+  left={{ title: "Motore di ricerca", points: ["Ti mostra pagine che esistono già", "Ogni risultato ha un indirizzo da aprire", "Sta a te leggere e scegliere"] }}
+  right={{ title: "Assistente di IA", points: ["Scrive un testo nuovo per te", "Di solito non cita da dove viene", "Può sbagliare con tono sicuro"] }}
+/>
+
+Alcuni assistenti hanno anche una funzione di **ricerca sul web**, che a volte si attiva da sola e a volte va accesa: allora cercano delle pagine e le usano per scrivere. Senza quella funzione, il modello lavora solo con ciò che ha imparato durante l'addestramento, che si ferma a una certa data.
+
+Altre due cose da sapere:
+- **Le risposte cambiano.** C'è una parte di casualità nella scelta dei pezzetti: la stessa domanda può dare testi diversi.
+- **Vede la conversazione in corso.** Di norma non porta con sé le chat precedenti, a meno che il servizio abbia una funzione di memoria e tu l'abbia attiva.
+
+<Callout kind="attenzione">
+Un testo ben scritto non è per forza un testo corretto. Il tono sicuro fa parte dello stile del modello, non della sua precisione.
+</Callout>
+
+<Say who="assistente">Alla seconda domanda Marta ha ottenuto parole diverse: è normale, non vuol dire che uno dei due testi sia «quello vero».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Che cosa fa, in sostanza, un modello linguistico quando risponde?"
+  options={[
+    "Genera il testo un pezzetto alla volta, scegliendo ciò che è più probabile",
+    "Cerca la risposta già scritta in un grande archivio di verità",
+    "Chiama una persona esperta che scrive la risposta",
+    "Copia la prima pagina che trova su internet",
+  ]}
+  answer={0}
+  explain="Il modello genera il testo a pezzetti (token), calcolando quali sono i più probabili. Non pesca da un archivio di risposte vere, non ha esperti umani dietro ogni risposta e non copia la prima pagina trovata: quello, semmai, lo fa una ricerca sul web."
+/>
+
+<Say who="sensei">Se hai capito questo, hai già capito perché serve controllare. Ci arriveremo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come risponde un assistente di IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-assistente-risposta" pass="4/5" retries={3} />
+
+<Say who="sensei">Genera, non pesca. Plausibile, non garantito. Tienilo a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un assistente di IA riceve un prompt e genera una risposta usando un modello linguistico.
+- Il testo nasce un token alla volta, scegliendo i pezzetti più probabili.
+- Non è un motore di ricerca: scrive un testo nuovo e può sbagliare con tono sicuro.
+- La stessa domanda può dare risposte diverse, e di norma l'assistente vede solo la conversazione in corso.
+- Caso chiuso: Marta non leggeva una pagina già scritta, ma un testo generato al momento; per questo la seconda risposta era diversa.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un prompt?", a: "Il testo che mandi all'assistente: la tua richiesta" },
+    { q: "Che cos'è un token?", a: "Un pezzetto di testo: una parola, parte di una parola o un segno" },
+    { q: "Un assistente di IA è un motore di ricerca?", a: "No: genera un testo nuovo, non mostra pagine già esistenti" },
+    { q: "Perché la stessa domanda può dare risposte diverse?", a: "Perché nella scelta dei pezzetti c'è una parte di casualità" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come scrivere una richiesta che ottiene risposte migliori.</Say>
+</Scene>

@@ -1,0 +1,179 @@
+---
+id: W.01.003
+course: sviluppo-web
+module: 1
+title: "Richieste e risposte in parole semplici"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.002]
+objectives:
+  - "Descrivere una richiesta HTTP e una risposta HTTP con le loro parti"
+  - "Riconoscere i codici di stato più comuni: 200, 301, 404 e 500"
+  - "Spiegare la differenza tra una richiesta GET e una POST"
+verification:
+  type: generated-numeric
+  generator: w01-richieste-risposte
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che 404 sia un errore del tuo computer: è la risposta del server che non trova la pagina"
+  - "Mettere dati riservati (come una password) nei parametri dell'URL di una richiesta GET"
+  - "Confondere 404 (pagina non trovata) con 500 (errore del server)"
+commands: []
+---
+
+<Scene title="Pagina non trovata">
+Un allievo di Lucia scrive: «Ho cliccato sul link dei corsi e mi è comparsa la scritta 404. Ho rotto qualcosa?».
+
+No, non ha rotto niente. Quel **404** è un numero con un significato preciso: è la **risposta** del server alla richiesta del browser. Browser e server parlano un linguaggio fatto di **richieste** e **risposte**, e quel linguaggio si chiama **HTTP**.
+
+La domanda del caso: **che cosa si dicono, esattamente, browser e server?**
+
+<Say who="sensei">HTTP è un dialogo molto formale. Il browser chiede, il server risponde. Sempre in quest'ordine, sempre con le stesse regole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La richiesta">
+Una **richiesta** HTTP dice tre cose: *che cosa vuoi fare*, *su quale risorsa* e *con quali informazioni di contorno*.
+
+<Log lines={[
+  "GET /corsi/ceramica HTTP/1.1",
+  "Host: www.labottegadilucia.it",
+  "Accept-Language: it",
+  "User-Agent: Mozilla/5.0 (...)",
+]} caption="Una richiesta del browser, semplificata." />
+
+- La prima riga ha il **metodo** (`GET`, cioè «dammi»), il **percorso** (`/corsi/ceramica`) e la versione del protocollo.
+- Le righe successive sono le **intestazioni** (in inglese *headers*): coppie `nome: valore` che danno informazioni, come il sito richiesto (`Host`), la lingua preferita o il browser usato.
+
+I due metodi che incontrerai di più:
+
+<Compare
+  caption="GET chiede, POST manda."
+  left={{ title: "GET", points: ["Chiede una pagina o un dato", "Non cambia niente sul server", "I parametri stanno nell'URL"] }}
+  right={{ title: "POST", points: ["Manda dati al server", "Per esempio un modulo compilato", "I dati stanno nel corpo, non nell'URL"] }}
+/>
+
+<Callout kind="attenzione">
+Nei parametri dell'URL (`?nome=valore`) tutto è visibile: finisce nella cronologia del browser e nei registri dei server. Per questo password e dati personali **non** viaggiano mai in una richiesta GET.
+</Callout>
+
+<Say who="assistente">Quando clicchi un link, il browser fa quasi sempre una GET. Quando premi «Invia» su un modulo, spesso fa una POST.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La risposta">
+Il server risponde con tre parti: una **riga di stato**, le **intestazioni** e il **corpo**.
+
+<Log lines={[
+  "HTTP/1.1 200 OK",
+  "Content-Type: text/html; charset=UTF-8",
+  "Content-Length: 5120",
+  "",
+  "<!DOCTYPE html>",
+  "<html lang=\"it\"> ...",
+]} caption="Una risposta del server: stato, intestazioni, riga vuota e corpo." />
+
+- La riga di stato ha un **codice** (qui `200`) e una breve descrizione (`OK`).
+- Le intestazioni dicono che tipo di contenuto arriva (`text/html` è una pagina) e quanto è lungo.
+- Il **corpo** è il contenuto vero e proprio: la pagina HTML, un'immagine, dei dati.
+
+<Flow
+  caption="Il dialogo tra browser e server."
+  steps={[
+    { icon: "laptop", title: "Richiesta", text: "GET /corsi/ceramica" },
+    { icon: "server", title: "Il server cerca", text: "Trova la pagina richiesta" },
+    { icon: "file", title: "Risposta", text: "200 OK e il contenuto della pagina" },
+  ]}
+/>
+
+<Say who="sensei">Ogni risposta comincia con un numero. Quel numero ti dice com'è andata, prima ancora di guardare il contenuto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I codici di stato">
+I codici sono numeri di tre cifre. La **prima cifra** indica la famiglia.
+
+<Layers
+  caption="Le famiglie dei codici di stato."
+  items={[
+    { icon: "check", title: "2xx", text: "Tutto bene: 200 OK" },
+    { icon: "link", title: "3xx", text: "Vai altrove: 301 la pagina si è spostata" },
+    { icon: "warning", title: "4xx", text: "Errore di chi chiede: 404 non trovata" },
+    { icon: "fire", title: "5xx", text: "Errore del server: 500 problema interno" },
+  ]}
+/>
+
+- **200 OK**: la richiesta è andata a buon fine.
+- **301**: la pagina è stata spostata in modo permanente; il browser la segue da solo verso il nuovo indirizzo.
+- **404 Not Found**: il server non ha trovato niente a quel percorso. Il link è sbagliato o la pagina è stata tolta.
+- **500 Internal Server Error**: il server ha avuto un problema suo. Chi chiede non può farci niente.
+
+<Callout kind="trucco">
+Il **4** è «colpa di chi chiede» (indirizzo sbagliato), il **5** è «colpa del server». Un 404 si risolve correggendo il link; un 500 lo deve risolvere chi gestisce il sito.
+</Callout>
+
+<Say who="assistente">Quel 404 dell'allievo di Lucia: la pagina dei corsi non c'era più a quell'indirizzo. Probabilmente Lucia l'aveva rinominata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Tre allievi scrivono a Lucia. Quale problema è colpa del server e non del link?
+
+<Quiz
+  question="Quale di queste risposte indica un problema del server stesso, non dell'indirizzo scritto?"
+  options={[
+    "500 Internal Server Error",
+    "404 Not Found",
+    "301 Moved Permanently",
+    "200 OK",
+  ]}
+  answer={0}
+  explain="Il 500 è un errore interno del server: la richiesta era corretta, ma il server non è riuscito a rispondere. Il 404 dice che il percorso non esiste, il 301 che la pagina si è spostata e il 200 che è andato tutto bene."
+/>
+
+<Say who="sensei">Quando un sito non funziona, il primo dato utile è il codice di stato. Imparerai a cercarlo anche negli strumenti del browser.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su richieste, risposte e codici. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-richieste-risposte" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima cifra del codice, poi il resto. Con questo ordine non sbagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Browser e server dialogano con richieste e risposte, secondo le regole del protocollo HTTP.
+- La richiesta ha metodo, percorso e intestazioni; la risposta ha riga di stato, intestazioni e corpo.
+- GET chiede, POST manda dati; i dati riservati non vanno mai nell'URL.
+- Codici: 2xx va bene, 3xx rimanda altrove, 4xx è un errore di chi chiede, 5xx è un errore del server.
+- Caso chiuso: il 404 dell'allievo voleva dire «pagina non trovata», non «hai rotto qualcosa».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa 404?", a: "Il server non ha trovato la pagina richiesta" },
+    { q: "Qual è la differenza tra GET e POST?", a: "GET chiede una risorsa, POST manda dei dati al server" },
+    { q: "Che cosa indica un codice che inizia con 5?", a: "Un errore del server" },
+    { q: "Perché una password non va in un parametro dell'URL?", a: "Perché l'URL resta visibile nella cronologia e nei registri dei server" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i tre linguaggi con cui si costruisce una pagina.</Say>
+</Scene>

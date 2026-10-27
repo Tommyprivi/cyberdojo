@@ -1,0 +1,160 @@
+---
+id: I.04.001
+course: intelligenza-artificiale
+module: 4
+title: "IA e lavoro: cosa cambia e cosa no"
+belt: bianca
+duration_min: 8
+prerequisites: [I.03.010]
+objectives:
+  - "Distinguere un mestiere dai compiti che lo compongono"
+  - "Descrivere i tre effetti più comuni dell'IA sul lavoro: automatizza, affianca, crea"
+  - "Spiegare perché le previsioni sul lavoro del futuro vanno prese con prudenza"
+verification:
+  type: generated-numeric
+  generator: i04-lavoro
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che un'IA sostituisca un mestiere intero, mentre di solito cambia alcuni compiti dentro il mestiere"
+  - "Fidarsi di una previsione con cifre sicure sul futuro del lavoro: nessuno le conosce davvero"
+  - "Credere che usare l'IA senza controllare il risultato sia un risparmio: la responsabilità resta della persona"
+commands: []
+---
+
+<Scene title="Lo zio Paolo ha paura">
+Marta ha 15 anni. Lo zio Paolo fa il grafico in una piccola agenzia e ieri a cena ha detto: «Con l'IA che disegna da sola, tra due anni sono senza lavoro».
+
+Marta non sa che cosa rispondere. Sa solo che l'IA oggi sa fare molte cose, e che i giornali parlano di lavori che spariscono.
+
+La domanda del caso: **l'IA toglie il lavoro alle persone, oppure lo cambia?**
+
+<Say who="sensei">Domanda seria, risposta a tre livelli. Oggi li guardiamo uno alla volta, senza panico e senza facili promesse.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un mestiere è fatto di compiti">
+Il primo errore è pensare al lavoro come a un blocco unico. Un **mestiere** è fatto di tanti **compiti**: piccole attività diverse.
+
+Il grafico, per esempio, ogni giorno:
+- parla con il cliente per capire che cosa vuole;
+- prepara bozze e idee;
+- ritaglia e sistema le immagini;
+- sceglie quale proposta è quella giusta;
+- si prende la responsabilità di consegnare il lavoro.
+
+L'IA può aiutare in alcuni di questi compiti (le bozze, i ritagli). In altri, no: parlare con il cliente e decidere restano alla persona.
+
+<Flow
+  caption="Dal mestiere ai compiti."
+  steps={[
+    { icon: "user", title: "Il mestiere", text: "Il grafico dell'agenzia" },
+    { icon: "folder", title: "Tanti compiti", text: "Ascoltare, abbozzare, ritagliare, scegliere" },
+    { icon: "bolt", title: "L'IA ne fa alcuni", text: "Bozze e ritocchi veloci" },
+    { icon: "check", title: "La persona", text: "Controlla, sceglie e risponde del lavoro" },
+  ]}
+/>
+
+<Say who="assistente">Quando senti «l'IA sostituisce i grafici», chiediti: quali compiti, esattamente? La risposta cambia tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre effetti dell'IA sul lavoro">
+Nella storia della tecnologia succede quasi sempre lo stesso: una novità cambia **come** si lavora. L'IA fa tre cose, spesso insieme.
+
+- **Automatizza** alcuni compiti: quelli ripetitivi e con regole chiare, come trascrivere una registrazione o smistare messaggi.
+- **Affianca** la persona: propone una bozza, un riassunto o un suggerimento, e la persona decide. Un po' come una calcolatrice per chi fa i conti.
+- **Crea** nuovi compiti e nuovi lavori: chi prepara e controlla i dati, chi verifica le risposte dei modelli, chi sa usare questi strumenti nel proprio settore.
+
+<Callout kind="regola">
+Più un compito è ripetitivo e con regole chiare, più è facile da automatizzare. Più richiede giudizio, relazioni con le persone o lavoro fisico in ambienti sempre diversi (come riparare un tubo in una casa vecchia), più resta umano.
+</Callout>
+
+<Callout kind="curiosita">
+Anche il foglio di calcolo ha cambiato il lavoro di chi fa i conti: non ha cancellato la figura di chi se ne occupa, ha cambiato i compiti. Con l'IA succederà qualcosa di simile, ma non possiamo dire con precisione quanto.
+</Callout>
+
+<Say who="sensei">Automatizza, affianca, crea. Ricordali in questo ordine: sono i tre verbi della lezione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Cosa non cambia, e come prepararsi">
+Alcune cose restano come prima:
+
+<Compare
+  caption="Cosa fa l'IA e cosa resta alla persona."
+  left={{ title: "L'IA può fare", points: ["Bozze e riassunti veloci", "Compiti ripetitivi con regole chiare", "Cercare schemi in tanti dati"] }}
+  right={{ title: "Resta alla persona", points: ["La responsabilità del risultato", "Il rapporto con le persone", "Decidere cosa è giusto o opportuno"] }}
+/>
+
+Le previsioni su quanti lavori cambieranno o spariranno sono **stime**, non fatti: gli esperti non sono d'accordo e le cifre cambiano da studio a studio. Diffida di chi ti promette certezze, in positivo o in negativo.
+
+Che cosa puoi fare, in concreto:
+- imparare a usare l'IA come uno strumento, controllando sempre ciò che produce;
+- coltivare le competenze che restano utili in ogni caso: capire bene un problema, comunicare, imparare cose nuove;
+- rispettare le regole del posto dove lavorerai su quali strumenti e quali dati si possono usare.
+
+<Say who="assistente">Non serve indovinare il futuro. Serve restare curiosi e saper imparare, e questo si allena da subito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lo zio Paolo usa l'IA per generare tre bozze di un logo, poi ne sceglie una e la rifinisce a mano prima di consegnarla al cliente.
+
+<Quiz
+  question="Quale frase descrive meglio che cosa è successo nel lavoro dello zio Paolo?"
+  options={[
+    "Un compito (le bozze) è stato affiancato dall'IA, mentre scelta e responsabilità sono rimaste a lui",
+    "L'IA ha sostituito l'intero mestiere del grafico",
+    "Il lavoro di Paolo non è cambiato per niente",
+    "La responsabilità del logo è passata all'IA",
+  ]}
+  answer={0}
+  explain="L'IA ha affiancato Paolo in un compito preciso (le bozze), ma la scelta, la rifinitura e la responsabilità verso il cliente sono rimaste a lui. Il mestiere non è sparito, ma nemmeno è rimasto identico; e la responsabilità non passa mai a uno strumento."
+/>
+
+<Say who="sensei">Guarda sempre i compiti, non l'etichetta del mestiere. Lì si vede cosa cambia davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su lavoro e intelligenza artificiale. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-lavoro" pass="4/5" retries={3} />
+
+<Say who="sensei">Compiti, non mestieri. Automatizza, affianca, crea.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un mestiere è fatto di tanti compiti, e l'IA di solito cambia alcuni compiti, non l'intero mestiere.
+- I tre effetti più comuni: automatizza compiti ripetitivi, affianca la persona, crea nuovi lavori.
+- Responsabilità, rapporto con le persone e giudizio restano umani.
+- Le previsioni sul futuro del lavoro sono stime incerte: meglio imparare a usare l'IA e a verificarla.
+- Caso chiuso: a Paolo l'IA ha cambiato i compiti, non gli ha tolto il mestiere, e Marta ora sa come rispondergli.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Di che cosa è fatto un mestiere?", a: "Di tanti compiti diversi, non di un blocco unico" },
+    { q: "Quali sono i tre effetti più comuni dell'IA sul lavoro?", a: "Automatizza alcuni compiti, affianca la persona, crea nuovi lavori" },
+    { q: "Che cosa resta sempre alla persona?", a: "La responsabilità del risultato e il giudizio finale" },
+    { q: "Come vanno trattate le previsioni sul lavoro del futuro?", a: "Come stime incerte, non come fatti sicuri" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: l'IA a scuola, tra aiuto vero e scorciatoie.</Say>
+</Scene>

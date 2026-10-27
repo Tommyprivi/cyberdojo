@@ -5,7 +5,7 @@ export const BELT_IDS = ["bianca", "gialla", "arancione", "verde", "blu", "marro
 /** Stati editoriali. `published` richiede approvazione esplicita del titolare (vedi lint). */
 export const STATUSES = ["draft", "ai-reviewed", "tested", "published"] as const;
 
-export const LESSON_ID = /^([FCDTH])\.(\d{2})\.(\d{3})$/;
+export const LESSON_ID = /^([A-Z])\.(\d{2})\.(\d{3})$/;
 
 const verification = z.object({
   type: z.enum(["generated-numeric", "sql", "python", "sim-terminal", "flag-lab", "report"]),

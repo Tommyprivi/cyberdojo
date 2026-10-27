@@ -1,0 +1,172 @@
+---
+id: W.03.006
+course: sviluppo-web
+module: 3
+title: "Validazione di base dei campi nel browser"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.005]
+objectives:
+  - "Usare required, minlength, maxlength, min, max e pattern"
+  - "Sfruttare il controllo automatico di type email e number"
+  - "Spiegare perché la validazione nel browser non basta da sola"
+verification:
+  type: generated-numeric
+  generator: w03-validazione
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Fidarsi solo della validazione del browser: chi vuole può aggirarla, il server deve ricontrollare"
+  - "Usare min e max su un campo di testo: valgono per numeri e date"
+  - "Dimenticare che un campo vuoto passa il controllo se non è required"
+commands: []
+---
+
+<Scene title="Il modulo con le email sbagliate">
+Marco guarda l'elenco degli iscritti e trova guai: un'email scritta «anna.esempio.it» senza la chiocciola, un'età di 400 anni, un nome lasciato vuoto.
+
+Il browser può bloccare questi errori **prima** dell'invio, senza che Marco scriva una riga di programma. Si chiama **validazione**: controllare che i dati siano nella forma giusta.
+
+La domanda del caso: **come si fa controllare i campi al browser?**
+
+<Say who="sensei">Meglio fermare l'errore a casa dell'utente che scoprirlo nel tuo elenco. Ma ricorda cosa significa «controllo»: fino a un certo punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli attributi di controllo">
+Si scrivono come attributi nel tag del campo:
+
+- `required`: il campo non può restare vuoto.
+- `minlength` e `maxlength`: lunghezza minima e massima del testo.
+- `min` e `max`: valore minimo e massimo, per **numeri e date**.
+- `pattern`: una forma da rispettare, scritta con un'espressione regolare.
+- `type="email"`, `type="number"`: il browser controlla che sia un'email o un numero.
+
+```html
+<form action="/iscrizione" method="post">
+  <label for="nome">Nome</label>
+  <input type="text" id="nome" name="nome" required minlength="2">
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="eta">Età</label>
+  <input type="number" id="eta" name="eta" min="14" max="99">
+
+  <button type="submit">Iscriviti</button>
+</form>
+```
+
+<Say who="assistente">Se un campo non rispetta le regole, il browser blocca l'invio e mostra un messaggio vicino al campo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa controlla davvero">
+<Compare
+  caption="Che cosa fanno questi attributi."
+  left={{ title: "Controllano", points: ["Campo vuoto (required)", "Numero di caratteri (minlength, maxlength)", "Intervallo di un numero (min, max)"] }}
+  right={{ title: "Non garantiscono", points: ["Che l'email esista davvero", "Che il dato sia vero", "Che nessuno aggiri il controllo"] }}
+/>
+
+- `type="email"` controlla che ci sia la forma di un indirizzo (un testo, una chiocciola, un testo), non che la casella esista.
+- Un `pattern` descrive la forma. Esempio: `pattern="[0-9]{5}"` accetta cinque cifre, come un CAP italiano.
+- `min` e `max` su `type="text"` **non fanno niente**: vanno su numeri e date.
+
+```html
+<input type="text" name="cap" pattern="[0-9]{5}" title="Cinque cifre, per esempio 00100" required>
+```
+
+Il `title` spiega all'utente che forma si aspetta il campo.
+
+<Callout kind="trucco">
+Un campo vuoto **non** è controllato dal `pattern` o dal `type="email"` se non è anche `required`. Se il campo è obbligatorio, aggiungi sempre `required`.
+</Callout>
+
+<Say who="sensei">Controlla la forma, non la verità. «a@b.it» è una forma valida anche se non esiste nessuno con quella email.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il browser non basta">
+La validazione nel browser è un **aiuto per chi usa il modulo**, non una difesa. Chi sa usare gli strumenti del browser può togliere `required` dal codice, o inviare i dati senza passare dalla tua pagina.
+
+<Flow
+  caption="Dove si controllano i dati."
+  steps={[
+    { icon: "laptop", title: "Nel browser", text: "Comodo: avvisa subito l'utente" },
+    { icon: "bolt", title: "Invio", text: "I dati partono verso il server" },
+    { icon: "shield", title: "Sul server", text: "Obbligatorio: ricontrolla tutto" },
+  ]}
+/>
+
+<Callout kind="regola">
+Si fa **sempre** doppio controllo: nel browser per comodità, sul server per sicurezza. Il server non deve mai fidarsi di ciò che arriva. Come si scrive la parte server lo vedrai più avanti nel corso.
+</Callout>
+
+<Callout kind="curiosita">
+Se per qualche motivo vuoi disattivare i controlli automatici di un form (per esempio mentre provi), si aggiunge `novalidate` al tag `<form>`.
+</Callout>
+
+<Say who="assistente">Il controllo del browser è come il campanello alla porta: avvisa chi sbaglia. La serratura vera sta nel server.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco vuole che l'età sia un numero tra 14 e 99.
+
+<Quiz
+  question="Quale campo accetta solo numeri compresi tra 14 e 99?"
+  options={[
+    "<input type=\"number\" min=\"14\" max=\"99\">",
+    "<input type=\"text\" min=\"14\" max=\"99\">",
+    "<input type=\"number\" minlength=\"14\" maxlength=\"99\">",
+    "<input type=\"number\" required=\"14-99\">",
+  ]}
+  answer={0}
+  explain="min e max valgono per i campi numerici (e per le date). Su un campo di testo non fanno niente; minlength e maxlength contano i caratteri, non il valore; required non accetta un intervallo."
+/>
+
+<Say who="sensei">Gli attributi hanno un campo d'azione. Scegli quello giusto per il tipo di dato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulla validazione. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-validazione" pass="4/5" retries={3} />
+
+<Say who="sensei">Il browser aiuta, il server decide. Ripetilo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il browser può controllare i campi prima dell'invio con `required`, `minlength`, `maxlength`, `min`, `max`, `pattern` e i `type` come `email` e `number`.
+- `min` e `max` valgono per numeri e date; `minlength` e `maxlength` per la lunghezza del testo.
+- I controlli verificano la forma del dato, non che sia vero.
+- La validazione nel browser si può aggirare: il server deve sempre ricontrollare.
+- Caso chiuso: Marco ha aggiunto i controlli, ma sa che il server deve fare il suo controllo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa fa required?", a: "Impedisce di inviare il modulo se il campo è vuoto" },
+    { q: "Su quali campi valgono min e max?", a: "Su numeri e date" },
+    { q: "Basta la validazione del browser per essere al sicuro?", a: "No: si può aggirare, il server deve ricontrollare i dati" },
+    { q: "Che cosa descrive pattern?", a: "La forma che il testo deve rispettare, con un'espressione regolare" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: audio, video e contenuti incorporati.</Say>
+</Scene>

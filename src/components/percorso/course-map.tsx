@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { CheckIcon, LockIcon, PlayIcon } from "../icons";
 
-export type MapLesson = { id: string; title: string; minutes: number; state: "done" | "open" | "locked" };
+export type MapLesson = { id: string; title: string; minutes: number; state: "done" | "mastered" | "open" | "locked" };
 export type MapModule = { n: number; title: string; summary: string; cover: string; own: boolean; lessons: MapLesson[] };
 export type MapCourse = { id: string; title: string; done: number; total: number; modules: MapModule[] };
 
@@ -110,15 +110,15 @@ export function CourseMap({ courses, initialCourse, initialModule }: { courses: 
                       <span
                         aria-hidden
                         className={`grid size-10 shrink-0 place-items-center rounded-md font-mono text-sm font-bold ${
-                          l.state === "done" ? "bg-success text-success-fg" : l.state === "open" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted"
+                          l.state === "done" ? "bg-success text-success-fg" : l.state === "open" || l.state === "mastered" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted"
                         }`}
                       >
-                        {l.state === "done" ? <CheckIcon width={18} height={18} /> : l.state === "locked" ? <LockIcon width={16} height={16} /> : String(i + 1).padStart(2, "0")}
+                        {l.state === "done" || l.state === "mastered" ? <CheckIcon width={18} height={18} /> : l.state === "locked" ? <LockIcon width={16} height={16} /> : String(i + 1).padStart(2, "0")}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold">{l.title}</span>
                         <span className="block font-mono text-xs text-muted">
-                          {l.id} · {l.minutes} min · {l.state === "done" ? "fatta" : l.state === "open" ? "da fare" : "bloccata"}
+                          {l.id} · {l.minutes} min · {l.state === "done" ? "fatta" : l.state === "mastered" ? "padroneggiata" : l.state === "open" ? "da fare" : "bloccata"}
                         </span>
                       </span>
                       {l.state === "open" && <PlayIcon width={18} height={18} className="shrink-0 text-primary" />}
@@ -137,7 +137,7 @@ export function CourseMap({ courses, initialCourse, initialModule }: { courses: 
                       ) : (
                         <Link
                           href={`/lezione/${l.id}`}
-                          aria-label={`${l.state === "done" ? "Rivedi" : "Inizia"}: ${l.title}`}
+                          aria-label={`${l.state === "done" || l.state === "mastered" ? "Rivedi" : "Inizia"}: ${l.title}`}
                           className={`flex min-h-14 items-center gap-3 rounded-md border p-2.5 hover:border-foreground ${l.state === "open" ? "border-primary" : "border-border"}`}
                         >
                           {row}

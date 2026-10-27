@@ -1,0 +1,155 @@
+---
+id: I.02.003
+course: intelligenza-artificiale
+module: 2
+title: "Dare un contesto, un ruolo e un formato"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.002]
+objectives:
+  - "Aggiungere a una richiesta il contesto che serve all'assistente"
+  - "Usare un ruolo per cambiare tono e livello di una risposta, sapendo che non la rende più affidabile"
+  - "Chiedere un formato preciso: elenco, tabella, numero di righe"
+verification:
+  type: generated-numeric
+  generator: i02-contesto-ruolo-formato
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che dire «sei un esperto» renda la risposta più vera: cambia lo stile, non i fatti"
+  - "Dare un contesto troppo lungo e confuso invece dei dati che servono davvero"
+  - "Non chiedere un formato e poi dover riscrivere a mano la risposta"
+commands: []
+---
+
+<Scene title="Un voto da migliorare">
+Marta ha preso 5 in matematica sulle frazioni. Scrive all'assistente: «Aiutami con le frazioni». La risposta è una lezione generale che lei conosce già.
+
+Allora riprova, e stavolta scrive: «Ho 15 anni, in classe facciamo la somma di frazioni con denominatori diversi e non capisco quando serve il denominatore comune. Fai finta di essere un tutor paziente. Spiegamelo in 5 righe con un esempio numerico».
+
+La risposta è molto più utile.
+
+La domanda del caso: **che cosa ha aggiunto Marta alla sua richiesta?**
+
+<Say who="sensei">Ha aggiunto tre ingredienti: contesto, ruolo e formato. Li vediamo uno per uno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contesto">
+Il **contesto** è l'informazione che l'assistente non può sapere da solo: chi sei, a che punto sei, che cosa devi fare con il risultato.
+
+<Layers
+  caption="Che cosa vale la pena dire."
+  items={[
+    { icon: "user", title: "Chi sei", text: "Ho 15 anni, faccio il secondo anno di superiori" },
+    { icon: "book", title: "A che punto sei", text: "Conosco già le frazioni semplici, non quelle con denominatori diversi" },
+    { icon: "check", title: "Lo scopo", text: "Mi serve per un compito in classe di venerdì" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Dai il contesto che serve, non la tua vita. Nome e cognome, indirizzo o dati di altre persone non servono quasi mai. Ne riparleremo nell'ultima lezione del modulo.
+</Callout>
+
+<Say who="assistente">Senza contesto l'assistente risponde a una persona qualunque. Con il contesto risponde a te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il ruolo">
+Puoi chiedere all'assistente di rispondere **nel ruolo** di qualcuno: «Rispondi come un tutor paziente», «Fai il professore che interroga», «Spiega come a un bambino di 10 anni».
+
+Il ruolo cambia:
+- il **tono** (amichevole, formale, scherzoso);
+- il **livello** (semplice o tecnico);
+- il **modo** di rispondere (spiega, domanda, corregge).
+
+<Callout kind="attenzione">
+Il ruolo cambia lo stile, **non** la conoscenza. Se scrivi «sei un medico», la risposta suonerà da medico ma non diventa una visita, e può contenere errori come prima. Per salute, leggi e soldi serve una persona vera, qualificata.
+</Callout>
+
+<Say who="sensei">Il ruolo è un costume. Il testo sotto il costume è lo stesso e va controllato lo stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il formato">
+Il **formato** è la forma della risposta. Chiederlo ti evita di dover riscrivere tutto.
+
+```text
+Spiegami la differenza tra Wi-Fi e rete mobile.
+Rispondi con una tabella di 2 colonne e 4 righe.
+Usa frasi di massimo 8 parole.
+```
+
+Alcuni formati utili:
+- un **elenco puntato** o numerato;
+- una **tabella** con colonne che scegli tu;
+- un **numero di righe o di parole** massimo;
+- uno **schema a passi**: «prima, poi, infine»;
+- un **tono**: «formale», «semplice», «da messaggio».
+
+<Callout kind="trucco">
+Se non sai che formato chiedere, parti da: «Rispondi con un elenco di 5 punti, una riga ciascuno». Poi aggiusta.
+</Callout>
+
+<Say who="assistente">Se ti serve un riassunto da incollare nei tuoi appunti, chiedilo in elenco: è già pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Marta scrive «Rispondi come un professore di storia». Che cosa cambia davvero?"
+  options={[
+    "Il tono e il modo di spiegare, ma i fatti vanno controllati come sempre",
+    "La risposta diventa sicuramente vera e senza errori",
+    "L'assistente accede ai libri di testo della scuola di Marta",
+    "L'assistente diventa un vero professore abilitato",
+  ]}
+  answer={0}
+  explain="Un ruolo cambia lo stile della risposta, non la sua affidabilità: il modello può sbagliare anche «da professore». Non dà accesso a libri della scuola e non crea una persona abilitata."
+/>
+
+<Say who="sensei">Contesto per essere preciso, ruolo per lo stile, formato per risparmiare tempo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su contesto, ruolo e formato. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-contesto-ruolo-formato" pass="4/5" retries={3} />
+
+<Say who="sensei">Un costume non cambia chi lo indossa. Ricordalo ogni volta che scegli un ruolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il contesto dice all'assistente chi sei, a che punto sei e a che cosa ti serve la risposta.
+- Il ruolo cambia tono e livello, ma non rende la risposta più affidabile.
+- Il formato (elenco, tabella, numero di righe) evita di dover riscrivere.
+- Il contesto va dato con misura: niente dati personali inutili.
+- Caso chiuso: Marta ha aggiunto la sua classe, il problema preciso, il ruolo del tutor paziente e il formato in 5 righe con esempio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il contesto di una richiesta?", a: "Le informazioni che l'assistente non può sapere da solo: chi sei, a che punto sei, a che scopo" },
+    { q: "Un ruolo come «sei un esperto» rende le risposte più vere?", a: "No: cambia tono e stile, non l'affidabilità" },
+    { q: "Che cos'è il formato?", a: "La forma della risposta: elenco, tabella, numero di righe, tono" },
+    { q: "Si può dare qualunque dato personale come contesto?", a: "No: solo ciò che serve, senza dati personali inutili" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: fare domande a più passaggi.</Say>
+</Scene>

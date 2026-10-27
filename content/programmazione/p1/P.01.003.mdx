@@ -1,0 +1,169 @@
+---
+id: P.01.003
+course: programmazione
+module: 1
+title: "Istruzioni in sequenza: la ricetta e l'ordine"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.002]
+objectives:
+  - "Spiegare che le istruzioni si eseguono una dopo l'altra, nell'ordine in cui sono scritte"
+  - "Usare una variabile come una scatola con un nome che contiene un valore"
+  - "Prevedere il risultato di una breve sequenza di istruzioni"
+verification:
+  type: generated-numeric
+  generator: p01-sequenza-ordine
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'ordine non conti: cambiare l'ordine cambia il risultato"
+  - "Usare un valore prima di averlo messo in una variabile"
+  - "Credere che dopo «b = a» le due variabili restino legate: b ha solo copiato il valore di quel momento"
+commands: []
+---
+
+<Scene title="La pizza al contrario">
+Un nuovo aiutante di Elia segue la ricetta alla lettera, ma nel verso sbagliato: inforna la pizza, poi stende l'impasto, poi aggiunge il pomodoro. Il risultato è un disastro, anche se tutte le azioni erano giuste.
+
+Gli ingredienti c'erano tutti. Mancava l'**ordine**.
+
+La domanda del caso: **perché l'ordine delle istruzioni cambia il risultato?**
+
+<Say who="sensei">Un computer esegue le istruzioni dall'alto in basso, una alla volta. Non ne salta e non ne riordina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La sequenza">
+Una **sequenza** è un gruppo di istruzioni eseguite una dopo l'altra, nell'ordine in cui sono scritte. È la struttura più semplice di tutti gli algoritmi.
+
+<Flow
+  caption="Una sequenza: l'ordine è parte della ricetta."
+  steps={[
+    { icon: "file", title: "1. Stendere", text: "L'impasto sulla teglia" },
+    { icon: "fire", title: "2. Condire", text: "Pomodoro e mozzarella" },
+    { icon: "clock", title: "3. Infornare", text: "Per qualche minuto" },
+    { icon: "check", title: "4. Servire", text: "La pizza è pronta" },
+  ]}
+/>
+
+Cambia l'ordine e ottieni un altro risultato, o nessun risultato. Spesso un passo **dipende** dal precedente: non puoi condire una pizza che non hai ancora steso.
+
+<Callout kind="regola">
+In una sequenza, ogni istruzione parte quando la precedente è finita. Per capire cosa fa un algoritmo, leggi le righe dall'alto in basso, una alla volta.
+</Callout>
+
+<Say who="assistente">Quando un risultato è strano, rileggi l'ordine: spesso il problema è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le variabili: scatole con un nome">
+Il computer, mentre lavora, deve ricordare dei valori. Lo fa con le **variabili**: una variabile è una scatola con un **nome** che contiene un **valore**. Il valore si può cambiare.
+
+```text
+prezzo = 6
+quantita = 3
+totale = prezzo * quantita
+```
+
+Lettura riga per riga:
+- Riga 1: la scatola `prezzo` contiene 6.
+- Riga 2: la scatola `quantita` contiene 3.
+- Riga 3: calcola 6 per 3 e mette 18 nella scatola `totale`.
+
+Il segno `=` qui non significa «è uguale a», ma «metti nella scatola». A sinistra c'è la scatola, a destra il valore da metterci.
+
+<Callout kind="attenzione">
+Se scrivi la riga 3 **prima** delle righe 1 e 2, il computer non sa ancora quanto valgono `prezzo` e `quantita`. L'ordine è obbligatorio: prima si riempiono le scatole, poi si usano.
+</Callout>
+
+<Say who="sensei">Una variabile ricorda solo il valore di adesso. Se la riempi di nuovo, il vecchio valore sparisce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scambiare due valori">
+Un classico: hai due bicchieri, uno con l'acqua e uno con il succo. Vuoi scambiarli. Non puoi versare uno nell'altro: ti serve un **terzo bicchiere**.
+
+Con le variabili è uguale. Parti da `a = 3` e `b = 5`:
+
+```text
+a = 3
+b = 5
+tmp = a
+a = b
+b = tmp
+```
+
+Seguila riga per riga:
+- Dopo le prime due righe: a vale 3, b vale 5.
+- `tmp = a`: tmp vale 3 (copia di a).
+- `a = b`: a vale 5.
+- `b = tmp`: b vale 3.
+
+Alla fine a vale 5 e b vale 3: scambiate. Senza la variabile `tmp`, scrivendo `a = b` perderesti il 3 e non lo ritroveresti più.
+
+<Callout kind="trucco">
+Quando non sei sicuro di cosa faccia una sequenza, prendi un foglio e scrivi i valori di ogni variabile dopo ogni riga. È la «traccia», che imparerai a fondo nell'ultima lezione del modulo.
+</Callout>
+
+<Say who="assistente">Copiare un valore non lo sposta: l'originale resta dov'era finché non lo sovrascrivi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Dopo queste righe, quanto vale x? Righe: `x = 4`, poi `x = x + 3`, poi `x = x * 2`."
+  options={[
+    "14",
+    "10",
+    "8",
+    "11",
+  ]}
+  answer={0}
+  explain="Si va dall'alto in basso: x vale 4; poi x diventa 4 + 3 = 7; poi x diventa 7 per 2 = 14. Se si invertisse l'ordine delle ultime due righe si avrebbe (4 per 2) + 3 = 11: l'ordine cambia il risultato."
+/>
+
+<Say who="sensei">Una riga alla volta, dall'alto in basso. Non c'è altro segreto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sequenze e variabili. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-sequenza-ordine" pass="4/5" retries={3} />
+
+<Say who="sensei">Se hai dubbi, fai la traccia sul foglio. Funziona sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una sequenza è un gruppo di istruzioni eseguite una dopo l'altra, dall'alto in basso.
+- L'ordine conta: cambiarlo cambia il risultato, e un passo può dipendere dal precedente.
+- Una variabile è una scatola con un nome che contiene un valore; il segno `=` significa «metti nella scatola».
+- Per scambiare due valori serve una terza variabile d'appoggio.
+- Caso chiuso: la pizza è riuscita male perché le azioni erano giuste ma in ordine sbagliato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una sequenza?", a: "Istruzioni eseguite una dopo l'altra, nell'ordine in cui sono scritte" },
+    { q: "Che cos'è una variabile?", a: "Una scatola con un nome che contiene un valore che può cambiare" },
+    { q: "Che cosa fa `x = x + 1`?", a: "Prende il valore di x, aggiunge 1 e rimette il risultato in x" },
+    { q: "Perché per scambiare due valori serve una terza variabile?", a: "Per non perdere il primo valore quando viene sovrascritto" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: scrivere un algoritmo a parole, con lo pseudocodice.</Say>
+</Scene>

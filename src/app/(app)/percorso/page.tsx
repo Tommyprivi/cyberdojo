@@ -14,16 +14,18 @@ import { moduleCover } from "@/lib/content/covers";
 import { loadCatalog, type LessonInfo } from "@/lib/content/catalog";
 import { firstName as firstNameOf } from "@/lib/display-name";
 import { beltOf, levelOf } from "@/lib/progress/profile-stats";
-import { canOpenLesson } from "@/lib/progress/unlock";
+import { LEVELS, LEVEL_LABEL, levelOfBelt, parseLevelFilter } from "@/lib/mastery/levels";
+import { Tutorial } from "@/components/mastery/tutorial";
+import { lessonState } from "@/lib/progress/unlock";
 import { effectiveStreak, localDay } from "@/lib/progress/streak";
 import { requireMember } from "@/lib/session";
 
 export const metadata: Metadata = { title: "Percorso" };
 
-export default function Percorso() {
+export default function Percorso({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   return (
     <Suspense fallback={<Skeleton />}>
-      <PercorsoContent />
+      <PercorsoContent searchParams={searchParams} />
     </Suspense>
   );
 }
@@ -58,12 +60,14 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
   <p className={`font-mono text-xs font-bold uppercase tracking-[0.2em] ${className}`}>{children}</p>
 );
 
-async function PercorsoContent() {
-  const { user, profile, completed, completedAt, xp, streak } = await requireMember("/percorso");
+async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const { user, profile, completed, mastered, completedAt, xp, streak } = await requireMember("/percorso");
   const lessons = loadCatalog();
+  const level = parseLevelFilter((await searchParams).livello);
+  /** Filtro a chip: nasconde solo le lezioni di altri livelli; numeri e sblocchi restano uguali. */
+  const visible = (l: LessonInfo) => !level || levelOfBelt(l.belt) === level;
 
-  const stateOf = (l: LessonInfo): "done" | "open" | "locked" =>
-    completed.has(l.id) ? "done" : canOpenLesson(l, { completed }) ? "open" : "locked";
+  const stateOf = (l: LessonInfo) => lessonState(l, { completed, mastered });
 
   const next = lessons.find((l) => stateOf(l) === "open");
   const nextCourse = next ? COURSES.find((c) => c.folder === next.course) : undefined;
@@ -98,7 +102,7 @@ async function PercorsoContent() {
         title: m.title,
         summary: m.summary,
         ...(({ src, own }) => ({ cover: src, own }))(moduleCover(c.id, m.n)),
-        lessons: all.filter((l) => l.module === m.n).map((l) => ({ id: l.id, title: l.title, minutes: l.minutes, state: stateOf(l) })),
+        lessons: all.filter((l) => l.module === m.n && visible(l)).map((l) => ({ id: l.id, title: l.title, minutes: l.minutes, state: stateOf(l) })),
       })),
     };
   });
@@ -107,6 +111,8 @@ async function PercorsoContent() {
 
   return (
     <div className="grid gap-x-8 gap-y-6 lg:h-full lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_auto_minmax(0,1fr)] lg:gap-y-5 xl:grid-cols-[minmax(0,1fr)_23rem] xl:gap-x-10">
+      {!profile.tutorialDone && <Tutorial />}
+
       {/* Saluto */}
       <header className="rise flex items-end justify-between gap-4 lg:col-start-1">
         <div className="grid gap-1">
@@ -216,6 +222,22 @@ async function PercorsoContent() {
           <span aria-hidden className="font-bold text-primary">→</span>
         </Link>
 
+        <Link href="/padronanza" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 hover:bg-surface-muted">
+          <span>
+            <span className="block font-semibold">Prove di padronanza</span>
+            <span className="block text-sm text-muted">Sai già un modulo? Superalo con un test e vai avanti</span>
+          </span>
+          <span aria-hidden className="font-bold text-primary">→</span>
+        </Link>
+
+        <Link href="/ripasso" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 hover:bg-surface-muted">
+          <span>
+            <span className="block font-semibold">Ripasso intelligente</span>
+            <span className="block text-sm text-muted">Le domande che dimentichi tornano al momento giusto</span>
+          </span>
+          <span aria-hidden className="font-bold text-primary">→</span>
+        </Link>
+
         <AnnouncementsLink variant="card" latestId={readAnnouncements()[0]?.id ?? ""} />
 
         <section aria-label="Obiettivo di oggi" className="grid gap-3 rounded-lg border border-border bg-surface p-4">
@@ -255,6 +277,19 @@ async function PercorsoContent() {
         </section>
       </aside>
 
+      {/* Livelli: filtro a chip (Base, Medio, Avanzato) */}
+      <nav aria-label="Filtra per livello" className="flex flex-wrap items-center gap-2 lg:col-start-1">
+        <span className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-muted">Livello</span>
+        <Link href="/percorso" aria-current={level === null ? "page" : undefined} className={`chip min-h-11 ${level === null ? "border-primary bg-surface-muted" : ""}`}>
+          Tutti
+        </Link>
+        {LEVELS.map((lv) => (
+          <Link key={lv} href={`/percorso?livello=${lv}`} aria-current={level === lv ? "page" : undefined} className={`chip min-h-11 ${level === lv ? "border-primary bg-surface-muted" : ""}`}>
+            {LEVEL_LABEL[lv]}
+          </Link>
+        ))}
+      </nav>
+
       {/* Mappa dei corsi: PC, un modulo per volta */}
       <div className="hidden min-h-0 lg:col-start-1 lg:flex lg:flex-col">
         <CourseMap courses={mapCourses} initialCourse={nextCourse?.id ?? "F"} initialModule={next?.module ?? 1} />
@@ -265,7 +300,7 @@ async function PercorsoContent() {
         <div className="lg:hidden">
           <LessonPath
             title={`${nextCourse?.id}${next.module} · ${nextModule.title}`}
-            lessons={sameModule.map((l) => ({ id: l.id, title: l.title, minutes: l.minutes, state: stateOf(l) }))}
+            lessons={sameModule.filter(visible).map((l) => ({ id: l.id, title: l.title, minutes: l.minutes, state: stateOf(l) }))}
           />
         </div>
       ) : null}
@@ -294,7 +329,7 @@ async function PercorsoContent() {
 
               <div className="grid gap-3">
                 {course.modules.map((m) => {
-                  const inModule = all.filter((l) => l.module === m.n);
+                  const inModule = all.filter((l) => l.module === m.n && visible(l));
                   if (inModule.length === 0) return null; // i moduli vuoti stanno in un blocco solo, in fondo
                   const doneInModule = inModule.filter((l) => completed.has(l.id)).length;
                   const pct = Math.round((doneInModule / inModule.length) * 100);
@@ -329,16 +364,16 @@ async function PercorsoContent() {
                             <>
                               <span
                                 className={`grid size-10 shrink-0 place-items-center rounded-md font-mono text-sm font-bold ${
-                                  st === "done" ? "bg-success text-success-fg" : st === "open" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted"
+                                  st === "done" ? "bg-success text-success-fg" : st === "open" || st === "mastered" ? "bg-primary text-primary-fg" : "bg-surface-muted text-muted"
                                 }`}
                                 aria-hidden
                               >
-                                {st === "done" ? <CheckIcon width={18} height={18} /> : st === "locked" ? <LockIcon width={16} height={16} /> : String(i + 1).padStart(2, "0")}
+                                {st === "done" || st === "mastered" ? <CheckIcon width={18} height={18} /> : st === "locked" ? <LockIcon width={16} height={16} /> : String(i + 1).padStart(2, "0")}
                               </span>
                               <span className="min-w-0 flex-1">
                                 <span className="block truncate font-semibold">{l.title}</span>
                                 <span className="block font-mono text-xs text-muted">
-                                  {l.id} · {l.minutes} min · {st === "done" ? "fatta" : st === "open" ? "da fare" : "bloccata"}
+                                  {l.id} · {l.minutes} min · {LEVEL_LABEL[levelOfBelt(l.belt)]} · {st === "done" ? "fatta" : st === "mastered" ? "padroneggiata" : st === "open" ? "da fare" : "bloccata"}
                                 </span>
                               </span>
                               {st === "open" && <PlayIcon width={18} height={18} className="shrink-0 text-primary" />}
@@ -357,7 +392,7 @@ async function PercorsoContent() {
                               ) : (
                                 <Link
                                   href={`/lezione/${l.id}`}
-                                  aria-label={`${st === "done" ? "Rivedi" : "Inizia"}: ${l.title}`}
+                                  aria-label={`${st === "done" || st === "mastered" ? "Rivedi" : "Inizia"}: ${l.title}`}
                                   className={`flex min-h-14 items-center gap-3 rounded-md border p-2.5 hover:border-foreground ${
                                     st === "open" ? "border-primary" : "border-border"
                                   }`}

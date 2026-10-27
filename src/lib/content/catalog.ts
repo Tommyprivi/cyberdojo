@@ -9,6 +9,8 @@ export type LessonInfo = {
   course: string;
   module: number;
   minutes: number;
+  /** Cintura scritta nella lezione: da qui si ricava il livello (Base/Medio/Avanzato). */
+  belt: string;
   prerequisites: string[];
 };
 
@@ -17,7 +19,7 @@ export function loadCatalog(): LessonInfo[] {
     .flatMap((l) => {
       const fm = lessonFrontmatter.safeParse(l.data);
       return fm.success && isVisible(fm.data.status)
-        ? [{ id: fm.data.id, title: fm.data.title, course: l.file.split("/")[0], module: fm.data.module, minutes: fm.data.duration_min, prerequisites: fm.data.prerequisites }]
+        ? [{ id: fm.data.id, title: fm.data.title, course: l.file.split("/")[0], module: fm.data.module, minutes: fm.data.duration_min, belt: fm.data.belt, prerequisites: fm.data.prerequisites }]
         : [];
     })
     .sort((a, b) => a.id.localeCompare(b.id));

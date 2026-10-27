@@ -4,6 +4,7 @@ import { BitGrid, Callout, Envelope, Log } from "./bits";
 import { Recap, Say, Scene } from "./blocks";
 import { Compare, Flow, Layers } from "./diagrams";
 import { Flashcards } from "./flashcards";
+import { GlossTerm } from "./gloss-term";
 import { Guided } from "./guided";
 import { Practice } from "./practice";
 import { Quiz } from "./quiz";
@@ -17,6 +18,7 @@ type P<T extends keyof React.JSX.IntrinsicElements> = ComponentPropsWithoutRef<T
 
 export const lessonComponents = {
   Scene,
+  GlossTerm,
   Say,
   Recap,
   Quiz,

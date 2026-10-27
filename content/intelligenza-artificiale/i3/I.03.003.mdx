@@ -1,0 +1,146 @@
+---
+id: I.03.003
+course: intelligenza-artificiale
+module: 3
+title: "Esempi ed etichette"
+belt: bianca
+duration_min: 8
+prerequisites: [I.03.002]
+objectives:
+  - "Distinguere le caratteristiche di un esempio dalla sua etichetta"
+  - "Spiegare la differenza tra apprendimento con etichette e senza etichette"
+  - "Descrivere perché etichette sbagliate producono un modello che sbaglia"
+verification:
+  type: generated-numeric
+  generator: i03-esempi-etichette
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere la caratteristica (ciò che si osserva) con l'etichetta (la risposta giusta)"
+  - "Pensare che le etichette siano sempre giuste: le mettono persone, che possono sbagliare"
+  - "Credere che serva sempre l'etichetta: alcuni metodi cercano gruppi anche senza"
+commands: []
+---
+
+<Scene title="Il filtro anti-spam del club">
+Il club di robotica riceve ogni giorno decine di email. Dario vuole un filtro che sposti da solo la posta indesiderata. Ha 300 email e un'idea: «Faccio vedere al programma le email e lui impara».
+
+Marta lo ferma: «Come fa a sapere quali sono spam? Gli hai detto la risposta giusta per ognuna?».
+
+La domanda del caso: **che cosa deve avere ogni esempio perché il programma possa imparare?**
+
+<Say who="sensei">Un esempio senza risposta è come un esercizio senza soluzione: puoi guardarlo, ma non sai se hai capito.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Caratteristiche ed etichetta">
+Ogni **esempio** ha due parti.
+
+- Le **caratteristiche** (in inglese *features*): ciò che si può osservare. Per un'email: quante volte compare la parola «gratis», se ci sono molti punti esclamativi, quanti link contiene.
+- L'**etichetta** (in inglese *label*): la risposta giusta che vogliamo far imparare. Per l'email: «spam» oppure «non spam».
+
+<Log lines={[
+  "gratis | punti_escl | link | etichetta",
+  "3      | 5          | 4    | spam",
+  "0      | 0          | 1    | non spam",
+  "1      | 2          | 6    | spam",
+  "0      | 1          | 0    | non spam",
+]} caption="Quattro esempi: le prime tre colonne sono le caratteristiche, l'ultima è l'etichetta." />
+
+Il modello cerca quali caratteristiche sono collegate a quale etichetta. Poi, davanti a un'email nuova, senza etichetta, propone la sua.
+
+<Say who="assistente">Le caratteristiche sono gli indizi, l'etichetta è la soluzione. Il modello impara a passare dagli indizi alla soluzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Con etichette e senza">
+Quando gli esempi hanno l'etichetta si parla di apprendimento **supervisionato**: è come studiare con le soluzioni sul libro. Si usa per **classificare** (spam o no, mela o pera) e per **prevedere un numero** (il prezzo di una casa).
+
+Quando le etichette non ci sono, si parla di apprendimento **non supervisionato**. Il programma non riceve risposte: cerca da solo dei gruppi di esempi simili tra loro. Per esempio, può raggruppare i clienti di un negozio in categorie, senza che nessuno gli dica quali.
+
+<Compare
+  caption="Due modi di imparare."
+  left={{ title: "Con etichette (supervisionato)", points: ["Ogni esempio ha la risposta giusta", "Impara a prevedere l'etichetta", "Esempio: spam o non spam"] }}
+  right={{ title: "Senza etichette (non supervisionato)", points: ["Gli esempi non hanno risposta", "Cerca gruppi di casi simili", "Esempio: gruppi di clienti"] }}
+/>
+
+<Say who="sensei">Il primo ha un maestro. Il secondo esplora da solo. Per cominciare ci occupiamo soprattutto del primo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chi mette le etichette">
+Le etichette le mettono quasi sempre **persone**: leggono le email e scrivono «spam» o «non spam». Il loro lavoro si chiama **etichettatura** (in inglese *labeling*). Le etichette giuste, quelle di riferimento, si chiamano a volte *ground truth*, cioè «verità di base».
+
+Se le etichette sono sbagliate, il modello impara cose sbagliate. Succede spesso per tre motivi:
+
+- **Stanchezza e fretta**: dopo cento email uguali si sbaglia.
+- **Regole poco chiare**: una pubblicità che il lettore aveva chiesto di ricevere è spam o no?
+- **Opinioni diverse**: due persone possono etichettare lo stesso esempio in modo diverso.
+
+<Callout kind="trucco">
+Buona pratica: scrivere le regole di etichettatura prima di cominciare, far etichettare alcuni esempi a due persone e controllare dove non sono d'accordo. I punti di disaccordo mostrano dove le regole sono poco chiare.
+</Callout>
+
+<Say who="assistente">Etichettare è lavoro vero e richiede attenzione. Un modello è bravo quanto le etichette da cui impara.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Dario ha raccolto dati sui voti di una classe: ore di studio a settimana, assenze, e se lo studente ha passato l'anno («sì» o «no»).
+
+<Quiz
+  question="In questa tabella, quale colonna è l'etichetta?"
+  options={[
+    "La colonna che dice se lo studente ha passato l'anno",
+    "La colonna delle ore di studio a settimana",
+    "La colonna del numero di assenze",
+    "Tutte le colonne sono etichette",
+  ]}
+  answer={0}
+  explain="L'etichetta è la risposta che il modello deve imparare a prevedere: qui, se l'anno è stato passato. Ore di studio e assenze sono caratteristiche, cioè indizi osservabili. Non tutte le colonne sono etichette: l'etichetta è una sola."
+/>
+
+<Say who="sensei">Prima di allenare un modello chiediti sempre: qual è la risposta che voglio ottenere? Quella è l'etichetta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su caratteristiche, etichette e apprendimento. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-esempi-etichette" pass="4/5" retries={3} />
+
+<Say who="sensei">Indizi e soluzione. Se tieni distinti i due concetti, il resto viene da sé.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un esempio ha caratteristiche (ciò che si osserva) ed etichetta (la risposta giusta).
+- Con le etichette si fa apprendimento supervisionato; senza, il programma cerca gruppi da solo.
+- Le etichette le mettono persone e possono sbagliare: servono regole chiare.
+- Caso chiuso: per il filtro anti-spam, Dario deve prima segnare per ogni email se è spam o no.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'etichetta di un esempio?", a: "La risposta giusta che il modello deve imparare a prevedere" },
+    { q: "Che cosa sono le caratteristiche?", a: "Gli indizi osservabili di un esempio, come il numero di link in un'email" },
+    { q: "Che cosa fa l'apprendimento non supervisionato?", a: "Cerca gruppi di esempi simili senza etichette" },
+    { q: "Perché etichette sbagliate sono un problema?", a: "Perché il modello impara risposte sbagliate" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si divide un insieme di dati per allenare e per controllare.</Say>
+</Scene>

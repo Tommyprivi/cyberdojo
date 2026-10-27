@@ -1,0 +1,155 @@
+---
+id: M.02.003
+course: mondo-digitale
+module: 2
+title: "L'indirizzo di un sito"
+belt: bianca
+duration_min: 9
+prerequisites: [M.02.002]
+objectives:
+  - "Dividere un indirizzo web nelle sue parti: protocollo, dominio e percorso"
+  - "Trovare il vero dominio di un sito leggendo l'indirizzo da destra verso sinistra"
+  - "Riconoscere un indirizzo che finge di essere un altro"
+verification:
+  type: generated-numeric
+  generator: m02-indirizzo-sito
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Leggere l'indirizzo da sinistra e fidarsi del primo nome che si vede, invece di cercare il dominio vero"
+  - "Credere che «www» sia obbligatorio o che indichi un sito più sicuro"
+  - "Non notare lettere scambiate o aggiunte nel nome del dominio"
+commands: []
+---
+
+<Scene title="Il messaggio sul telefono">
+Il nonno Aldo riceve un messaggio: «Il tuo conto ha un problema, vai su **mia-banca.it.accesso-sicuro.com**». Dice a Marta: «Ma c'è scritto "mia-banca.it", è la mia banca, no?».
+
+Marta non è sicura. Per capire serve saper leggere un indirizzo web: ha delle parti, e una sola di esse dice a chi appartiene davvero il sito.
+
+La domanda del caso: **come si capisce di chi è un sito guardando il suo indirizzo?**
+
+<Say who="sensei">Un indirizzo si legge come una targa: ogni pezzo ha un posto e un significato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti di un indirizzo">
+L'indirizzo completo di una pagina si chiama **URL**. Un esempio inventato:
+
+```
+https://www.cucina-facile.it/ricette/pasta
+```
+
+<Layers
+  caption="Le parti di un URL."
+  items={[
+    { icon: "lock", title: "https://", text: "Il protocollo: il modo in cui si parla con il sito" },
+    { icon: "globe", title: "www.cucina-facile.it", text: "Il nome del sito (il dominio con il suo prefisso)" },
+    { icon: "file", title: "/ricette/pasta", text: "Il percorso: quale pagina dentro il sito" },
+  ]}
+/>
+
+- **https** è il protocollo; ne parleremo nella lezione sui siti sicuri.
+- **www** è solo un prefisso, **non è obbligatorio** e non rende il sito più sicuro.
+- **cucina-facile.it** è il **dominio**: il nome che identifica il sito.
+- **/ricette/pasta** è il **percorso**, come le cartelle sul computer.
+
+<Say who="assistente">Il percorso è come il numero dell'interno in un condominio: l'edificio è il dominio, l'interno è la pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il dominio si legge da destra">
+Un dominio si divide con i punti. L'ultima parte, a destra, è la **terminazione** (in inglese *TLD*): `.it` per l'Italia, `.com`, `.org`, `.edu` e così via. Prima di essa c'è il nome che qualcuno ha registrato. Quello che sta ancora più a sinistra è un **sottodominio**, che il proprietario può scegliere come vuole.
+
+Per trovare il vero dominio, leggi **da destra**, partendo dalla prima barra: prendi la terminazione e il nome subito prima.
+
+<Flow
+  caption="Come trovare il vero dominio."
+  steps={[
+    { icon: "search", title: "Isola", text: "Prendi la parte prima della prima barra" },
+    { icon: "code", title: "Da destra", text: "Prima .com, poi il nome subito prima" },
+    { icon: "check", title: "Ecco il dominio", text: "Quello è il proprietario del sito" },
+  ]}
+/>
+
+Esempio: in `mia-banca.it.accesso-sicuro.com` leggi da destra: `.com`, poi `accesso-sicuro`. Il dominio vero è **accesso-sicuro.com**. Il pezzo `mia-banca.it` è solo un sottodominio scelto da chi gestisce quel sito per ingannare.
+
+<Callout kind="attenzione">
+Chiunque può registrare un dominio con un nome che somiglia a un altro: `banca-mia.com`, `mia-banca.it.altro.com`, oppure un nome con una lettera cambiata. Il nome in mezzo all'indirizzo non basta: guarda sempre il dominio vero.
+</Callout>
+
+<Say who="sensei">Da destra, sempre. Quello che sta a sinistra lo scrive chi vuole.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come funziona dietro le quinte">
+I computer non cercano i siti per nome, ma per **numero** (l'indirizzo IP). Un servizio di internet chiamato **DNS** funziona come una rubrica: traduce il nome del sito nel numero del server. Se vuoi capire meglio come funziona, ne parla il corso Reti e internet.
+
+Dal lato pratico ti serve sapere questo:
+
+- Scrivere l'indirizzo **nella barra degli indirizzi** ti porta direttamente al sito.
+- Cliccare un link può portarti altrove rispetto a ciò che dice il testo: passa il mouse sopra il link e guarda l'indirizzo che compare in basso.
+- Se non sei sicuro, **scrivi tu il nome** del sito invece di cliccare, oppure usa un segnalibro che hai salvato con fiducia.
+
+<Say who="assistente">Il nonno non deve cliccare il messaggio. Può aprire il browser e scrivere lui l'indirizzo della banca, quello che conosce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Qual è il vero dominio nell'indirizzo https://mia-banca.it.accesso-sicuro.com/login ?"
+  options={[
+    "accesso-sicuro.com",
+    "mia-banca.it",
+    "login",
+    "https",
+  ]}
+  answer={0}
+  explain="Si legge da destra fino alla prima barra: .com e il nome accesso-sicuro prima. «mia-banca.it» è solo un sottodominio scelto da chi gestisce il sito, «login» è il percorso e «https» è il protocollo."
+/>
+
+<Say who="sensei">Se il dominio vero non è quello che ti aspetti, non entrare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli indirizzi web. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-indirizzo-sito" pass="4/5" retries={3} />
+
+<Say who="sensei">Da destra, fino alla prima barra. Tienilo a mente ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un URL ha protocollo, dominio e percorso.
+- Il dominio vero si trova leggendo da destra, nella parte prima della prima barra: terminazione e nome subito prima.
+- Il resto a sinistra è un sottodominio, scelto da chi gestisce il sito; «www» non è obbligatorio e non indica sicurezza.
+- Nel dubbio, scrivi tu l'indirizzo nel browser invece di cliccare un link ricevuto.
+- Caso chiuso: «mia-banca.it.accesso-sicuro.com» appartiene a accesso-sicuro.com, non alla banca del nonno.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si chiama l'indirizzo completo di una pagina web?", a: "URL" },
+    { q: "Da che parte si legge il dominio vero?", a: "Da destra, nella parte prima della prima barra" },
+    { q: "Che cos'è il percorso in un URL?", a: "La parte dopo il dominio, che dice quale pagina del sito aprire" },
+    { q: "Il prefisso www rende un sito più sicuro?", a: "No, non indica sicurezza e non è obbligatorio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: cercare con un motore di ricerca.</Say>
+</Scene>

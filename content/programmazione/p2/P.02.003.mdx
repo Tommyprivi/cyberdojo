@@ -1,0 +1,195 @@
+---
+id: P.02.003
+course: programmazione
+module: 2
+title: "Numeri, testo e booleani"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.002]
+objectives:
+  - "Distinguere i tipi int, float, str e bool"
+  - "Usare type() per scoprire il tipo di un valore"
+  - "Spiegare la differenza tra il numero 5 e il testo «5»"
+verification:
+  type: generated-numeric
+  generator: p02-tipi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che 5 e «5» siano la stessa cosa: il primo è un numero, il secondo un testo"
+  - "Scrivere true o false in minuscolo: in Python sono True e False"
+  - "Mettere la virgola nei numeri decimali invece del punto"
+commands: []
+---
+
+<Scene title="Due più due fa 22?">
+Giulia scrive questo programma per contare i giocatori di due squadre:
+
+```python
+squadra_a = "12"
+squadra_b = "10"
+print(squadra_a + squadra_b)
+```
+
+Si aspetta 22. Sullo schermo compare `1210`. Che cosa è successo?
+
+Il computer tratta i dati in modo diverso a seconda del loro **tipo**: un numero si può sommare, un testo si può solo attaccare a un altro testo.
+
+La domanda del caso: **perché il computer ha incollato i numeri invece di sommarli?**
+
+<Say who="sensei">Per noi 12 e «12» sono uguali. Per Python no: è la sorpresa più comune dei primi giorni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro tipi base">
+Ogni valore in Python ha un tipo. Questi sono i quattro di base:
+
+<Layers
+  caption="I tipi di dato fondamentali."
+  items={[
+    { icon: "coin", title: "int", text: "Numero intero: 7, 0, -3" },
+    { icon: "chart", title: "float", text: "Numero con la virgola: 3.5, 0.25" },
+    { icon: "file", title: "str", text: "Testo (stringa): \"ciao\"" },
+    { icon: "check", title: "bool", text: "Vero o falso: True, False" },
+  ]}
+/>
+
+- **int** (da *integer*): numeri interi, positivi o negativi.
+- **float**: numeri con la parte decimale. In Python il separatore è il **punto**, non la virgola: `3.5`.
+- **str** (da *string*): testo tra virgolette.
+- **bool** (da *boolean*): solo due valori, `True` e `False`, con la lettera maiuscola.
+
+Per scoprire il tipo si usa `type()`:
+
+```python
+print(type(7))
+print(type(3.5))
+print(type("ciao"))
+print(type(True))
+```
+
+<Log lines={[
+  "<class 'int'>",
+  "<class 'float'>",
+  "<class 'str'>",
+  "<class 'bool'>",
+]} caption="type() dice a quale classe appartiene il valore." />
+
+<Say who="assistente">Il tipo non sta nella variabile ma nel valore. Se cambi il valore, può cambiare anche il tipo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="5 non è «5»">
+Tra virgolette, anche un numero diventa testo.
+
+```python
+print(5 + 3)
+print("5" + "3")
+print("ab" * 3)
+```
+
+<Log lines={[
+  "8",
+  "53",
+  "ababab",
+]} caption="Con i numeri si somma, con i testi si incolla e si ripete." />
+
+- Con i numeri `+` **somma**: `5 + 3` fa `8`.
+- Con i testi `+` **incolla** (si dice concatenare): `"5" + "3"` fa `"53"`.
+- Un testo moltiplicato per un intero si **ripete**: `"ab" * 3` fa `"ababab"`.
+- Mescolare le due cose dà errore: `"5" + 3` produce un `TypeError`.
+
+Il caso di Giulia ora è chiaro: `"12"` e `"10"` erano testi, quindi `+` li ha incollati in `"1210"`. Con `12 + 10` avrebbe avuto 22.
+
+<Callout kind="trucco">
+Per sapere la lunghezza di un testo c'è `len()`: `len("scacchi")` dà `7`, perché conta i caratteri.
+</Callout>
+
+<Say who="sensei">Prima di calcolare, chiediti sempre: questi sono numeri o testo? La risposta decide che cosa farà il più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vero, falso e decimali">
+Un **booleano** è il risultato di una domanda con risposta sì o no. Lo conosci già dalla logica del modulo precedente:
+
+```python
+print(10 > 3)
+print(10 == 3)
+print(type(10 > 3))
+```
+
+<Log lines={[
+  "True",
+  "False",
+  "<class 'bool'>",
+]} caption="Un confronto produce un bool." />
+
+- `>` significa «maggiore di»; `==` (due uguali) significa «è uguale a», e non va confuso con `=` che assegna.
+- Si scrive `True` e `False`, con la prima lettera maiuscola.
+
+Una curiosità sui decimali: i computer li memorizzano in binario e alcuni non sono esatti. Per esempio `0.1 + 0.2` dà `0.30000000000000004`. Non è un errore del tuo programma: è il modo in cui funzionano i float. Per mostrare un risultato in modo ordinato si usa `round(0.1 + 0.2, 2)`, che dà `0.3`.
+
+<Say who="assistente">Per i conti di tutti i giorni i float vanno benissimo. Basta sapere che il risultato può avere una piccola coda in fondo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia vuole sommare due numeri letti da un file, ma sono testi.
+
+<Quiz
+  question="Che cosa stampa print(\"7\" + \"2\")?"
+  options={[
+    "72",
+    "9",
+    "7 + 2",
+    "Un errore",
+  ]}
+  answer={0}
+  explain="Tra virgolette 7 e 2 sono testi, e il più tra due testi li incolla: viene 72. Il 9 si otterrebbe con 7 + 2 senza virgolette. Non c'è errore perché entrambi i valori sono testi."
+/>
+
+<Say who="sensei">Se il risultato ti sembra «strano», controlla il tipo con type(). Di solito ti dà la risposta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su tipi di dato. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-tipi" pass="4/5" retries={3} />
+
+<Say who="sensei">Virgolette uguale testo. Punto decimale. True con la maiuscola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I tipi base sono int (interi), float (decimali), str (testo) e bool (True o False).
+- type() mostra il tipo di un valore; i decimali usano il punto.
+- Tra virgolette un numero diventa testo: "5" non è 5.
+- Il più somma i numeri e incolla i testi; un testo per un intero si ripete.
+- Caso chiuso: Giulia otteneva 1210 perché sommava due testi; con i numeri 12 + 10 fa 22.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che tipo è 3.5?", a: "float, un numero con la parte decimale" },
+    { q: "Che cosa stampa print(\"4\" + \"4\")?", a: "44, perché sono testi e vengono incollati" },
+    { q: "Quali sono i due valori di un bool?", a: "True e False, con la maiuscola" },
+    { q: "Che cosa fa len(\"ciao\")?", a: "Conta i caratteri: dà 4" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come far scrivere i dati all'utente con input.</Say>
+</Scene>

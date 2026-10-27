@@ -1,0 +1,147 @@
+---
+id: I.01.001
+course: intelligenza-artificiale
+module: 1
+title: "Intelligenza artificiale: di cosa stiamo parlando"
+belt: bianca
+duration_min: 8
+prerequisites: []
+objectives:
+  - "Spiegare con parole semplici che cos'è l'intelligenza artificiale"
+  - "Riconoscere i tre ingredienti di un sistema di IA: dati, modello e compito"
+  - "Distinguere un'IA da un normale programma e dall'intelligenza umana"
+verification:
+  type: generated-numeric
+  generator: i01-cosa-e-ia
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'IA sia una mente che ragiona come una persona"
+  - "Credere che ogni programma intelligente o complicato sia IA"
+  - "Immaginare l'IA come un robot, mentre quasi sempre è solo software"
+commands: []
+---
+
+<Scene title="La domanda della nonna">
+Teo ha 15 anni e fa il tecnico della radio della scuola. Un giorno la nonna Rina gli chiede: «Sento parlare ovunque di intelligenza artificiale. Ma è un robot che pensa da solo?».
+
+Teo apre la bocca per rispondere e si accorge di non saperlo spiegare bene.
+
+La domanda del caso: **che cos'è, davvero, l'intelligenza artificiale?**
+
+<Say who="sensei">Se non sai spiegare una cosa a tua nonna, non l'hai ancora capita. Cominciamo da qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una definizione semplice">
+L'**intelligenza artificiale** (in breve **IA**; in inglese *AI*, da *artificial intelligence*) è un insieme di tecniche con cui un computer svolge compiti che di solito richiedono intelligenza umana: riconoscere un volto, tradurre una frase, consigliare un film, rispondere a una domanda.
+
+Due cose da tenere a mente:
+- È **software**: programmi che girano su computer. Un robot può usarla, ma l'IA in sé non ha un corpo.
+- Il suo scopo è **svolgere un compito**. Non è una persona e non «pensa» come noi.
+
+<Callout kind="regola">
+IA = un programma che esegue un compito «da persona» (riconoscere, tradurre, prevedere, creare) usando dati. Non è una mente e non ha desideri.
+</Callout>
+
+<Say who="assistente">Quando senti «IA» pensa a un programma molto bravo in un lavoro preciso, non a un cervello in una scatola.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tre ingredienti">
+Quasi ogni sistema di IA ha tre ingredienti:
+
+<Flow
+  caption="Dati, modello, compito."
+  steps={[
+    { icon: "database", title: "Dati", text: "Esempi da cui il sistema ricava le sue regole" },
+    { icon: "gear", title: "Modello", text: "Il programma che ha imparato dai dati" },
+    { icon: "check", title: "Compito", text: "Per esempio riconoscere un animale in una foto" },
+  ]}
+/>
+
+- I **dati** sono gli esempi: migliaia di foto, frasi, numeri.
+- Il **modello** è il «risultato dell'allenamento»: un programma pieno di numeri che ha ricavato dagli esempi come comportarsi.
+- Il **compito** è ciò che gli chiediamo: riceve un input (una foto) e produce un output (la parola «gatto»).
+
+<Say who="sensei">Senza dati buoni non c'è IA buona. Ricordalo: lo ritroverai in tutto il corso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IA o non IA?">
+Non tutto ciò che è «smart» è IA. Una calcolatrice fa conti difficilissimi, ma segue regole scritte da una persona, senza imparare niente.
+
+<Compare
+  caption="Programma normale e IA."
+  left={{ title: "Programma normale", points: ["Le regole le scrive una persona", "Fa sempre la stessa cosa con lo stesso input", "Esempio: la calcolatrice"] }}
+  right={{ title: "IA", points: ["Ricava le regole da esempi", "Può sbagliare e dare risposte diverse", "Esempio: un filtro anti-spam che impara"] }}
+/>
+
+<Callout kind="curiosita">
+Esiste anche un fenomeno curioso: quando una tecnologia diventa normale, smettiamo di chiamarla «IA». Il correttore automatico del telefono, ai tempi, sembrava fantascienza.
+</Callout>
+
+<Say who="assistente">La differenza chiave: nel programma normale le regole le scrive qualcuno, nell'IA le ricava il modello dagli esempi. Ci torneremo nella lezione 3.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Teo prova a spiegarlo alla nonna con un esempio.
+
+<Quiz
+  question="Quale frase descrive meglio l'intelligenza artificiale?"
+  options={[
+    "Software che svolge compiti «da persona» usando dati e modelli",
+    "Un robot con una coscienza simile a quella umana",
+    "Qualsiasi programma che usa internet",
+    "Un computer che non può mai sbagliare",
+  ]}
+  answer={0}
+  explain="L'IA è software che svolge compiti come riconoscere, tradurre o prevedere, partendo da dati. Non è per forza un robot, non ha coscienza, non coincide con ogni programma online e può sbagliare."
+/>
+
+<Say who="sensei">Se la nonna capisce «un programma bravo a fare un lavoro preciso», hai già vinto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su che cos'è l'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-cosa-e-ia" pass="4/5" retries={3} />
+
+<Say who="sensei">Dati, modello, compito. Se ti ricordi questi tre, hai la base.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'IA è software che svolge compiti «da persona» (riconoscere, tradurre, prevedere, creare) usando dati.
+- Gli ingredienti sono tre: dati, modello e compito.
+- Non è per forza un robot e non è una mente: è un programma che ricava le regole dagli esempi.
+- Può sbagliare, perché non «capisce» come noi.
+- Caso chiuso: Teo ha detto alla nonna «è un programma che ha imparato da tanti esempi a fare bene un lavoro preciso».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è l'intelligenza artificiale?", a: "Software che svolge compiti che di solito richiedono intelligenza umana, usando dati" },
+    { q: "Quali sono i tre ingredienti di un sistema di IA?", a: "Dati, modello e compito" },
+    { q: "Che cos'è il modello?", a: "Il programma ottenuto dall'allenamento sui dati" },
+    { q: "L'IA è sempre un robot?", a: "No: quasi sempre è solo software" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: una breve storia dell'IA, dagli anni Cinquanta a oggi.</Say>
+</Scene>

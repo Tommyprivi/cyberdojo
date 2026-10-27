@@ -1,0 +1,152 @@
+---
+id: M.02.002
+course: mondo-digitale
+module: 2
+title: "Il browser e le sue parti"
+belt: bianca
+duration_min: 8
+prerequisites: [M.02.001]
+objectives:
+  - "Dire che cos'è un browser e farne qualche esempio"
+  - "Riconoscere barra degli indirizzi, schede, pulsanti indietro, avanti e ricarica, e menu"
+  - "Usare le scorciatoie di base per ricaricare e per tornare indietro"
+verification:
+  type: generated-numeric
+  generator: m02-browser-parti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere il browser (il programma) con il motore di ricerca (il sito per cercare)"
+  - "Scrivere un indirizzo nella casella di ricerca di una pagina invece che nella barra degli indirizzi del browser"
+  - "Premere più volte il pulsante «indietro» invece di usare la cronologia quando ci si perde"
+commands: []
+---
+
+<Scene title="«Ho aperto Google, ma quale programma?»">
+Il nonno Aldo racconta a Marta: «Ho aperto Google e ho letto il giornale». Marta guarda lo schermo e vede che sta usando **Chrome**. Non è Google il programma: è il **browser**. Google è un sito, un motore di ricerca.
+
+Se capisci le parti del browser, ti perdi molto meno.
+
+La domanda del caso: **che cos'è il browser e dove sono i suoi comandi?**
+
+<Say who="sensei">Il browser è la finestra sul web. Conoscerne i comandi è come conoscere il cruscotto dell'auto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un browser">
+Il **browser** è il programma che chiede le pagine ai server e le mostra sullo schermo. I più usati sono **Chrome**, **Safari** (sui dispositivi Apple), **Edge** (di Microsoft) e **Firefox**. Sono tutti gratuiti e funzionano in modo molto simile.
+
+<Callout kind="attenzione">
+Browser e motore di ricerca sono due cose diverse. Il **browser** è il programma che installi (Chrome, Safari, Edge, Firefox). Il **motore di ricerca** è un sito che si usa dentro il browser (per esempio Google, Bing o DuckDuckGo).
+</Callout>
+
+<Say who="assistente">Il browser è la macchina, il motore di ricerca è un posto dove andare. Puoi guidare la stessa macchina verso posti diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti da conoscere">
+Le parti principali, dall'alto verso il basso:
+
+<Layers
+  caption="La finestra di un browser."
+  items={[
+    { icon: "folder", title: "Schede", text: "Una linguetta per ogni pagina aperta" },
+    { icon: "search", title: "Barra degli indirizzi", text: "Qui scrivi l'indirizzo o le parole da cercare" },
+    { icon: "file", title: "La pagina", text: "Il contenuto del sito che stai guardando" },
+  ]}
+/>
+
+Vicino alla barra degli indirizzi trovi:
+
+- **Indietro** e **avanti**: due frecce per tornare alla pagina vista prima e poi andare di nuovo avanti.
+- **Ricarica**: una freccia che gira in tondo; chiede di nuovo la pagina al server. Serve quando una pagina si è bloccata o è cambiata.
+- **Menu**: in molti browser sono tre puntini o tre righe; qui trovi impostazioni, cronologia, download e altro.
+- Nella barra o accanto c'è spesso la **stella** per salvare la pagina nei preferiti (lo vedrai in una lezione dedicata).
+
+<Say who="sensei">Se non trovi un comando, cerca il menu. Quasi sempre è lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le scorciatoie più utili">
+Su un computer puoi usare la tastiera, come hai visto nel modulo sui computer.
+
+- **F5** oppure **Ctrl + R**: ricarica la pagina.
+- **Alt + freccia sinistra**: torna indietro (su Mac si usa Cmd e la parentesi quadra aperta).
+- **Ctrl + L**: seleziona la barra degli indirizzi, pronta per scrivere.
+- **Ctrl + T**: apre una scheda nuova.
+
+<Callout kind="trucco">
+Se una pagina si blocca o sembra vecchia, prova prima a ricaricarla. Se non basta, chiudi la scheda e riaprila. Spesso è sufficiente.
+</Callout>
+
+<Flow
+  caption="Che cosa succede quando premi Ricarica."
+  steps={[
+    { icon: "laptop", title: "Tu premi", text: "Ricarica" },
+    { icon: "server", title: "Il server", text: "Riceve di nuovo la richiesta" },
+    { icon: "file", title: "La pagina", text: "Torna aggiornata sul tuo schermo" },
+  ]}
+/>
+
+<Say who="assistente">Sul telefono non ci sono i tasti: di solito basta trascinare la pagina verso il basso, e il browser la ricarica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale pulsante del browser chiede di nuovo la pagina al server, utile quando la pagina sembra bloccata?"
+  options={[
+    "Ricarica",
+    "Indietro",
+    "Avanti",
+    "Il menu con i tre puntini",
+  ]}
+  answer={0}
+  explain="Ricarica rifà la richiesta al server e mostra la versione aggiornata. Indietro e Avanti ti spostano tra pagine già viste; il menu apre impostazioni e altre funzioni, ma non è il pulsante che ricarica."
+/>
+
+<Say who="sensei">Nel dubbio, ricarica. Costa un click.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul browser. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-browser-parti" pass="4/5" retries={3} />
+
+<Say who="sensei">Programma, barra, schede, pulsanti. Sono queste le parole da ricordare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il browser è il programma che mostra le pagine web: Chrome, Safari, Edge e Firefox sono esempi.
+- Il motore di ricerca (come Google) è un sito, non un browser.
+- Parti principali: schede, barra degli indirizzi, indietro e avanti, ricarica e menu.
+- Scorciatoie utili: F5 o Ctrl + R per ricaricare, Ctrl + L per la barra degli indirizzi, Ctrl + T per una scheda nuova.
+- Caso chiuso: il nonno usava Chrome (il browser) per aprire Google (un sito).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un browser?", a: "Il programma che chiede le pagine ai server e le mostra sullo schermo" },
+    { q: "A che cosa serve il pulsante Ricarica?", a: "A chiedere di nuovo la pagina al server" },
+    { q: "Che cosa fa Ctrl + T?", a: "Apre una scheda nuova" },
+    { q: "Chrome e Google sono la stessa cosa?", a: "No: Chrome è un browser, Google è un motore di ricerca" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: l'indirizzo di un sito e come leggerlo.</Say>
+</Scene>

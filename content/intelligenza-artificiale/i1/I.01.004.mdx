@@ -1,0 +1,155 @@
+---
+id: I.01.004
+course: intelligenza-artificiale
+module: 1
+title: "Apprendimento automatico, reti neurali, IA generativa: le parole giuste"
+belt: bianca
+duration_min: 9
+prerequisites: [I.01.003]
+objectives:
+  - "Mettere in ordine i termini IA, apprendimento automatico, apprendimento profondo e IA generativa"
+  - "Descrivere in modo semplice che cos'è una rete neurale artificiale"
+  - "Spiegare che un modello di linguaggio prevede la prossima parola"
+verification:
+  type: generated-numeric
+  generator: i01-parole-giuste
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare IA, machine learning e deep learning come se fossero la stessa cosa"
+  - "Credere che una rete neurale artificiale sia una copia del cervello"
+  - "Pensare che l'IA generativa «sappia» le cose invece di prevedere il testo più probabile"
+commands: []
+---
+
+<Scene title="Troppe parole">
+Teo prepara una puntata per la radio. Nei suoi appunti ci sono: «IA», «machine learning», «deep learning», «rete neurale», «IA generativa», «modello di linguaggio». Davide gli dice: «Ma sono tutte la stessa cosa?».
+
+Non lo sono. Alcune stanno dentro altre, come bambole russe.
+
+La domanda del caso: **come si collegano tra loro queste parole?**
+
+<Say who="sensei">Usare la parola giusta non è pignoleria: è il modo per non farsi ingannare dai titoli dei giornali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le bambole russe">
+<Layers
+  caption="Dalla più grande alla più piccola."
+  items={[
+    { icon: "globe", title: "Intelligenza artificiale", text: "Il campo grande: ogni tecnica per far svolgere compiti «da persona»" },
+    { icon: "database", title: "Apprendimento automatico", text: "IA che ricava le regole dagli esempi" },
+    { icon: "gear", title: "Apprendimento profondo", text: "Apprendimento automatico con reti neurali a molti strati" },
+    { icon: "bolt", title: "IA generativa", text: "Modelli profondi che creano testi, immagini, suoni" },
+  ]}
+/>
+
+- L'**apprendimento automatico** (*machine learning*) è una parte dell'IA.
+- L'**apprendimento profondo** (*deep learning*) è una parte dell'apprendimento automatico: usa reti neurali con molti strati.
+- L'**IA generativa** crea contenuti nuovi e di solito si basa su modelli profondi.
+
+<Say who="assistente">Ogni IA generativa è IA, ma non ogni IA è generativa: un filtro anti-spam non crea niente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La rete neurale">
+Una **rete neurale artificiale** è un modello fatto di tanti piccoli calcolatori collegati, chiamati **neuroni artificiali**. Il nome viene da un'ispirazione lontana ai neuroni del cervello, ma è molto più semplice: è matematica, non un cervello.
+
+Un neurone artificiale fa tre cose: riceve dei numeri, li moltiplica per dei **pesi**, li somma e dà in uscita un nuovo numero.
+
+```text
+ingressi: 1 e 0
+pesi:     0.5 e 0.8     bias: -0.2
+somma:    0.5*1 + 0.8*0 - 0.2 = 0.3
+```
+
+Una rete mette tanti neuroni in **strati**: il primo riceve i dati (per esempio i pixel di una foto), gli strati nascosti li elaborano, l'ultimo dà la risposta. Durante l'addestramento si cambiano i pesi, che sono i **parametri** del modello, finché la risposta è giusta più spesso.
+
+<Callout kind="curiosita">
+I modelli grandi hanno miliardi di parametri. GPT-3, uscito nel 2020, ne ha 175 miliardi.
+</Callout>
+
+<Say who="sensei">Pesi, strati, parametri. Quando senti «il modello ha imparato», significa «ha cambiato i suoi numeri».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="IA generativa e modelli di linguaggio">
+Un **modello di linguaggio** è un modello addestrato su enormi quantità di testo per fare una cosa sola: **prevedere la parte di testo che viene dopo**. Il testo è diviso in pezzetti chiamati **token** (parole intere o frammenti).
+
+<Flow
+  caption="Come scrive un modello di linguaggio."
+  steps={[
+    { icon: "file", title: "Testo di partenza", text: "Il cielo è..." },
+    { icon: "gear", title: "Il modello calcola", text: "Quali token sono più probabili" },
+    { icon: "check", title: "Aggiunge un token", text: "«sereno», e si ricomincia" },
+  ]}
+/>
+
+Ripetendo questo passo molte volte, il modello scrive frasi intere. I modelli di linguaggio grandi si chiamano **LLM** (*large language model*). Esistono anche modelli generativi per le immagini, la musica e i video.
+
+<Callout kind="attenzione">
+Un modello di linguaggio produce il testo **più probabile**, non il testo **verificato**. Per questo a volte scrive cose false dette con sicurezza. Approfondiremo nel corso.
+</Callout>
+
+<Say who="assistente">Funziona un po' come il completamento automatico del telefono, ma molto più grande e addestrato su molto più testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale affermazione sui termini dell'IA è corretta?"
+  options={[
+    "L'apprendimento profondo è una parte dell'apprendimento automatico, che a sua volta è una parte dell'IA",
+    "L'IA è una parte dell'apprendimento profondo",
+    "Apprendimento automatico e IA generativa sono due nomi dello stesso identico concetto",
+    "Le reti neurali artificiali sono copie esatte del cervello umano",
+  ]}
+  answer={0}
+  explain="L'ordine è IA, poi apprendimento automatico, poi apprendimento profondo. L'IA è il campo più grande, non una parte del deep learning; le due espressioni indicate come uguali non lo sono; e le reti artificiali sono solo ispirate ai neuroni, non sono copie del cervello."
+/>
+
+<Say who="sensei">Se ti confondi, disegna le bambole russe. Funziona sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle parole giuste. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-parole-giuste" pass="4/5" retries={3} />
+
+<Say who="sensei">IA, apprendimento automatico, apprendimento profondo, IA generativa: dal più grande al più piccolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- IA contiene l'apprendimento automatico, che contiene l'apprendimento profondo; l'IA generativa usa di solito modelli profondi.
+- Una rete neurale artificiale è fatta di neuroni artificiali in strati; i pesi sono i parametri che si cambiano durante l'addestramento.
+- Un modello di linguaggio (LLM) prevede il token successivo, ripetutamente, e così scrive testi.
+- Produce il testo più probabile, non per forza quello vero.
+- Caso chiuso: Teo ha messo in ordine gli appunti con le bambole russe, e la puntata è chiara.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il deep learning?", a: "Apprendimento automatico con reti neurali a molti strati" },
+    { q: "Che cosa sono i parametri di un modello?", a: "I numeri interni (come i pesi) che cambiano durante l'addestramento" },
+    { q: "Che cosa fa un modello di linguaggio?", a: "Prevede il pezzetto di testo (token) che viene dopo" },
+    { q: "Che cosa vuol dire LLM?", a: "Large language model, cioè modello di linguaggio di grandi dimensioni" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: IA stretta e IA generale, cioè che cosa esiste davvero.</Say>
+</Scene>

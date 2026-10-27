@@ -1,0 +1,173 @@
+---
+id: W.02.004
+course: sviluppo-web
+module: 2
+title: "Grassetto, corsivo e altri tag di testo"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.003]
+objectives:
+  - "Usare strong ed em per dare importanza e enfasi al testo"
+  - "Distinguere strong ed em da b e i"
+  - "Usare mark, code, sub, sup e abbr nel testo"
+verification:
+  type: generated-numeric
+  generator: w02-testo-inline
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare strong o em solo per ottenere grassetto o corsivo, invece di pensare al significato"
+  - "Sovrapporre i tag, per esempio strong e em chiusi nell'ordine sbagliato"
+  - "Usare il tag u o i tag di stile al posto del CSS per decorare il testo"
+commands: []
+---
+
+<Scene title="Parole che devono spiccare">
+Lucia scrive nella pagina: «Iscrizioni aperte fino al 30 giugno. Posti limitati». Vorrebbe che si capisse bene la data, che il nome di un termine tecnico (la «cottura biscotto») sia in corsivo e che la formula del biossido di silicio sia scritta bene.
+
+Per questi piccoli ritocchi dentro una frase non servono nuovi paragrafi: servono i **tag di testo**.
+
+La domanda del caso: **come si dà valore alle singole parole di una frase?**
+
+<Say who="sensei">Dentro una riga di testo non si costruiscono nuovi blocchi: si evidenziano parole. Per questo questi tag si chiamano «di testo» (in inglese *inline*).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Strong ed em: importanza ed enfasi">
+```html
+<p>Iscrizioni aperte <strong>fino al 30 giugno</strong>.</p>
+<p>Ti serve davvero <em>molta</em> pazienza.</p>
+```
+
+- `<strong>` dice che le parole sono **importanti**. I browser le mostrano in grassetto.
+- `<em>` (da *emphasis*, «enfasi») dice che le parole hanno un **accento** nel discorso, come quando le pronunci con più forza. I browser le mostrano in corsivo.
+
+Il significato è la cosa importante: un lettore di schermo cambia anche il tono della voce.
+
+<Callout kind="regola">
+Grassetto e corsivo sono l'aspetto di default. Il significato è «importante» per `strong` e «enfasi» per `em`. Se vuoi solo cambiare l'aspetto, userai il CSS.
+</Callout>
+
+<Say who="assistente">Una frase può avere pochi strong: se tutto è importante, niente lo è più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="B, i e gli altri">
+Esistono anche `<b>` e `<i>`. Oggi hanno un significato proprio, diverso dai due precedenti:
+
+<Compare
+  caption="Significato contro aspetto."
+  left={{ title: "strong ed em", points: ["Dicono che cosa significa", "Importanza ed enfasi", "Cambiano anche la lettura vocale"] }}
+  right={{ title: "b ed i", points: ["Attirano l'attenzione senza dire importanza", "Es.: nome di un prodotto o termine tecnico", "Mostrati in grassetto e corsivo"] }}
+/>
+
+Altri tag di testo utili:
+
+```html
+<p>Cottura a <mark>1000</mark> gradi.</p>
+<p>Il comando <code>git status</code> mostra lo stato.</p>
+<p>L'acqua è H<sub>2</sub>O e l'area si misura in m<sup>2</sup>.</p>
+<p><abbr title="Hypertext Markup Language">HTML</abbr> è il linguaggio delle pagine.</p>
+<p><small>Prezzi indicativi.</small></p>
+```
+
+- `<mark>` evidenzia una parola, come un pennarello.
+- `<code>` mostra un pezzo di codice, di solito con un carattere a larghezza fissa.
+- `<sub>` abbassa il testo (pedice), `<sup>` lo alza (apice).
+- `<abbr>` è un'abbreviazione: con `title` mostra la spiegazione al passaggio del mouse.
+- `<small>` è per le note a margine, come le avvertenze scritte in piccolo.
+
+<Say who="sensei">Prima scegli il tag giusto per il significato. L'aspetto, se non ti piace, lo cambi dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Annidare i tag di testo">
+Puoi mettere più tag di testo uno dentro l'altro, ma devi chiuderli nell'ordine giusto:
+
+```html
+<p>Posti <strong>davvero <em>molto</em> limitati</strong>.</p>
+```
+
+Qui `em` sta dentro `strong`: si apre `strong`, poi `em`; si chiude `em`, poi `strong`.
+
+<Callout kind="attenzione">
+Non incrociare i tag: `<strong><em>testo</strong></em>` è sbagliato, perché `em` si apre dopo `strong` ma si chiude dopo. L'ultimo aperto deve chiudersi per primo.
+</Callout>
+
+<Callout kind="curiosita">
+Il tag `<u>` (sottolineato) esiste ancora, ma è sconsigliato per il testo normale: nelle pagine web le sottolineature sono associate ai link e confondono chi legge.
+</Callout>
+
+<Say who="assistente">Nel caso di Lucia: la data va in strong, il termine tecnico in em, e H<sub>2</sub>O come pedice si scrive con sub.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale tag dice che una parte di frase è importante, e fa leggere in modo diverso anche chi usa un lettore di schermo?"
+  options={[
+    "strong",
+    "b",
+    "mark",
+    "small",
+  ]}
+  answer={0}
+  explain="strong indica importanza e può cambiare anche la voce di un lettore di schermo. b attira solo l'attenzione, mark evidenzia come un pennarello e small serve per le note a margine."
+/>
+
+<Guided
+  steps={[
+    "Scrivi un paragrafo con una data e mettila in strong.",
+    "Scrivi un termine tecnico e mettilo in em.",
+    "Scrivi la formula H2O usando sub per il 2.",
+    "Scrivi m2 usando sup per il 2.",
+    "Scrivi il nome di un comando dentro code.",
+    "Controlla che tutti i tag si chiudano nell'ordine giusto.",
+  ]}
+/>
+
+<Say who="sensei">Un tag per ogni significato. Non usare strong al posto di un titolo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui tag di testo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-testo-inline" pass="4/5" retries={3} />
+
+<Say who="sensei">Significato prima, aspetto dopo. Con il CSS, tra poco, scegli come vuoi vedere i tag.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `strong` indica importanza, `em` indica enfasi: di solito grassetto e corsivo.
+- `b` e `i` attirano l'attenzione senza dire importanza.
+- `mark`, `code`, `sub`, `sup`, `abbr` e `small` hanno ciascuno un compito preciso.
+- I tag di testo si annidano chiudendo prima l'ultimo aperto.
+- Caso chiuso: la data in `strong`, il termine tecnico in `em` e la formula con `sub` fanno capire tutto a primo colpo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa indica em?", a: "Enfasi: parole dette con più forza, di solito mostrate in corsivo" },
+    { q: "Che cosa fa sub?", a: "Abbassa il testo, come il 2 di H2O" },
+    { q: "A che cosa serve abbr con title?", a: "A spiegare un'abbreviazione quando si passa con il mouse" },
+    { q: "Che differenza c'è tra strong e b?", a: "strong dice che il testo è importante, b attira solo l'attenzione" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: gli elenchi puntati e numerati.</Say>
+</Scene>

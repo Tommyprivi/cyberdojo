@@ -31,3 +31,24 @@ L'unico testo libero visibile ad altri è il soprannome (molto vincolato). I nom
 - Limiti (30/40/5/3) senza blocco di concorrenza: richieste parallele possono superarli di poco.
 - Limite dei tentativi sui codici in memoria (per istanza). Le serie dei congelamenti degli amici non sono mostrate.
 - Lista di parole vietate da ampliare; i testi legali vanno rivisti da un professionista (versioni dei documenti non cambiate).
+
+## Community grande (annunci, reazioni, classifiche per corso, squadre)
+Codice: `src/lib/community/*` (regole pure con test), `src/app/actions/community.ts` (azioni), `src/components/announcements/*`, `src/components/social/teams-compare.tsx`. Database: migrazione 0006.
+
+- **Commenti a frasi, niente testo libero.** Sotto un annuncio si sceglie da un elenco chiuso: reazioni 👍 🔥 🎉 ❤️ 🤯 👏 (una per persona e per annuncio) e frasi `grazie`, `bellissimo`, `non-vedo-lora`, `ottimo-lavoro`, `ho-una-domanda`, `funziona-bene`, `ho-unidea` (testi in `reactions.ts`). Il database ripete l'elenco con un vincolo CHECK. Gli altri vedono solo i conteggi (funzioni SQL `announcement_reaction_counts` e `announcement_phrase_counts`), mai chi ha scelto cosa. Se cambi l'elenco, cambialo anche in una nuova migrazione. Limite: 20 azioni al minuto per persona (in memoria, per istanza).
+- **Annunci dello staff** (`/annunci/scrivi`). Staff = riga in `staff_roles` OPPURE email verificata nella variabile `STAFF_EMAILS` (separata da virgole). Il controllo sta in ogni azione lato server (403 per gli altri). Testo semplice o Markdown limitato (titoletti, elenchi, grassetto, corsivo, codice, link https): mai MDX né HTML, e il testo con tag o graffe viene rifiutato. Resa con elementi React, mai HTML grezzo. Il registro di chi ha fatto cosa va nei log del server (`audit: "annunci"`, azione, id utente, id annuncio). Gli annunci dei file in `content/announcements` restano come archivio; gli id del database iniziano per `db-`, quindi non collidono.
+- **Attenzione:** le regole del database permettono di scrivere gli annunci solo a chi ha una riga in `staff_roles`. Chi è staff solo per email deve avere anche quella riga.
+- **Classifica per corso:** funzione SQL `course_leaderboard` (stessa forma di `social_leaderboard`, conta gli XP delle sole lezioni del corso nella settimana). Stesse regole: solo chi partecipa, solo la propria fascia d'età.
+- **Sfide a squadre:** nessuna tabella nuova. Confronto dei gruppi dell'utente per XP della settimana (solo totali di gruppo, più la media per persona), separato per fascia (minori/adulti).
+- **Novità viste per account:** `profiles.seen_news_version`; il localStorage resta come ripiego senza sessione.
+
+## Docente verificato e classi
+Codice: `src/lib/docente/*` (regole pure con test), `src/app/actions/docente.ts`, `src/app/(app)/docente/page.tsx` (pagina `/docente`), `src/components/social/share-progress-toggle.tsx`. Database: migrazione 0009 (funzione `class_progress`, ancora da applicare).
+
+- **Il ruolo docente non si auto-assegna.** Lo dà solo il proprietario del database: `npx tsx --env-file=.env.local scripts/aggiungi-staff.mts nome@scuola.it --ruolo docente` (senza `--ruolo` resta «staff»; `--togli` toglie qualunque ruolo). Una riga sola per persona in `staff_roles`: rilanciare con l'altro ruolo lo cambia.
+- **Docente e staff sono separati.** Il docente non scrive gli annunci (`hasStaffRole` conta solo staff e admin); lo staff semplice non vede le classi. Attenzione: le policy SQL degli annunci (migrazione 0006) accettano qualunque riga di `staff_roles`, quindi un docente potrebbe scrivere annunci aggirando l'app. Da stringere con una nuova migrazione (`role in ('staff','admin')`).
+- **Una classe è un gruppo di studio** creato dal docente (adulto) con audience «minori» o «adulti»; gli studenti entrano col codice. Nessun nuovo canale: niente chat, niente messaggi.
+- **Consenso esplicito dello studente** (`group_members.share_progress`, spento di default): interruttore nella scheda del gruppo, con la spiegazione di cosa vede il docente (soprannome, lezioni completate, XP, ultimo giorno attivo). Mai email, risposte o testi. Si spegne quando si vuole; uscendo dal gruppo la riga sparisce.
+- **`/docente`**: controllo SEMPRE lato server (ruolo letto dal database; chi non è docente vede «non trovata»). I progressi arrivano solo da `class_progress(gruppo)`, che ripete il controllo (docente o admin E creatore del gruppo) e restituisce solo gli studenti consenzienti. `toProgressRow` tiene solo i campi permessi.
+- **Non fatto di proposito:** «mentore» con messaggi tra utenti (rischio per i minori).
+- **Da verificare dopo la migrazione 0009:** `class_progress` sul database vero (finora mai provata) e il flusso docente -> classe -> studente consenziente.

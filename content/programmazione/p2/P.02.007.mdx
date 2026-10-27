@@ -1,0 +1,193 @@
+---
+id: P.02.007
+course: programmazione
+module: 2
+title: "Il ciclo while"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.006]
+objectives:
+  - "Scrivere un ciclo while con una condizione e un contatore"
+  - "Riconoscere e interrompere un ciclo infinito"
+  - "Usare break per uscire da un ciclo"
+verification:
+  type: generated-numeric
+  generator: p02-while
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare di aggiornare la variabile della condizione: il ciclo non finisce mai"
+  - "Sbagliare di uno il numero di ripetizioni, per esempio usando < invece di <="
+  - "Dimenticare l'indentazione o i due punti dopo il while"
+commands: []
+---
+
+<Scene title="Un saluto per ogni iscritto">
+Giulia ora sa stampare un saluto. Ma i 40 iscritti sono 40 saluti: scrivere 40 `print` sarebbe lo stesso lavoro noioso di prima. Serve un modo per dire al computer: «ripeti questa cosa finché serve».
+
+Questa idea l'hai già incontrata nel modulo di logica: il **ciclo**. Oggi lo scrivi in Python con `while`, che significa «finché».
+
+La domanda del caso: **come si fa ripetere un'azione molte volte senza riscriverla?**
+
+<Say who="sensei">Il computer non si stanca e non si annoia. Fagli fare le ripetizioni: è il suo mestiere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La forma del while">
+```python
+n = 1
+while n <= 3:
+    print("Iscritto numero", n)
+    n = n + 1
+print("Fine")
+```
+
+<Log lines={[
+  "Iscritto numero 1",
+  "Iscritto numero 2",
+  "Iscritto numero 3",
+  "Fine",
+]} caption="Il blocco rientrato si ripete finché n è minore o uguale a 3." />
+
+<Flow
+  caption="Come ragiona il while."
+  steps={[
+    { icon: "search", title: "Controlla", text: "La condizione n <= 3 è vera?" },
+    { icon: "gear", title: "Esegue il blocco", text: "Stampa e aumenta n di 1" },
+    { icon: "clock", title: "Ricontrolla", text: "Torna in cima e rifà la domanda" },
+  ]}
+/>
+
+- Il `while` controlla la condizione **prima** di ogni giro.
+- Se è vera, esegue il blocco rientrato e poi **torna a controllare**.
+- Quando diventa falsa, il ciclo finisce e Python passa alla riga dopo (qui `print("Fine")`, che non è rientrata).
+
+Traccia dei valori di `n`: parte da 1, poi 2, poi 3, poi 4. Con `n = 4` la condizione `4 <= 3` è falsa e il ciclo si ferma: sono stati fatti 3 giri.
+
+<Say who="assistente">Come nella traccia d'esecuzione: segna su un foglio il valore di n a ogni giro e vedrai esattamente che cosa succede.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il contatore e il ciclo infinito">
+Nel ciclo di prima c'è una variabile, `n`, che fa da **contatore**: parte da un valore, cambia a ogni giro e fa diventare falsa la condizione. Tre cose da avere sempre:
+
+1. **Inizializzazione**: dare un valore di partenza (`n = 1`).
+2. **Condizione**: la domanda che decide se continuare (`n <= 3`).
+3. **Aggiornamento**: cambiare la variabile dentro il ciclo (`n = n + 1`).
+
+Se dimentichi l'aggiornamento succede questo:
+
+```python
+n = 1
+while n <= 3:
+    print("Iscritto numero", n)
+```
+
+`n` resta sempre 1, la condizione è sempre vera e il programma stampa all'infinito: un **ciclo infinito**.
+
+<Callout kind="attenzione">
+Se il programma non si ferma più, premi **Ctrl + C** nel terminale: Python viene interrotto. Poi cerca la riga che dovrebbe far cambiare la condizione.
+</Callout>
+
+Un altro errore frequente è sbagliare di uno: con `while n < 3` il ciclo gira solo per 1 e 2, cioè 2 volte. Per i 3 giri serve `<= 3`.
+
+<Say who="sensei">Un ciclo infinito non è un guasto del computer. È una condizione che non diventa mai falsa. Cercala.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Chiedere finché non va bene">
+Il `while` è perfetto quando **non sai quante volte** dovrai ripetere. Giulia vuole chiedere un punteggio valido, tra 0 e 10:
+
+```python
+punti = int(input("Punti (0-10)? "))
+while punti < 0 or punti > 10:
+    print("Valore non valido")
+    punti = int(input("Punti (0-10)? "))
+print("Registrati", punti, "punti")
+```
+
+<Log lines={[
+  "Punti (0-10)? 15",
+  "Valore non valido",
+  "Punti (0-10)? 7",
+  "Registrati 7 punti",
+]} caption="Chiede di nuovo finché il valore è tra 0 e 10." />
+
+Con `break` si può uscire subito da un ciclo, anche se la condizione è ancora vera. Questo programma si ferma quando scrivi `0`:
+
+```python
+somma = 0
+while True:
+    n = int(input("Numero (0 per finire): "))
+    if n == 0:
+        break
+    somma = somma + n
+print("Somma:", somma)
+```
+
+`while True` è una condizione sempre vera: il ciclo si ferma solo grazie al `break`.
+
+<Say who="assistente">Il break è come l'uscita di emergenza: ti permette di decidere dentro il ciclo quando basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Prova a prevedere quanti giri fa questo ciclo.
+
+<Quiz
+  question="Un programma parte con n = 0 e, finché n < 4, stampa n e poi aumenta n di 1. Quanti giri fa il ciclo?"
+  options={[
+    "4 volte, con n uguale a 0, 1, 2 e 3",
+    "3 volte, con n uguale a 1, 2 e 3",
+    "5 volte, con n uguale a 0, 1, 2, 3 e 4",
+    "Infinite volte",
+  ]}
+  answer={0}
+  explain="n parte da 0 ed è stampato finché n < 4: i valori sono 0, 1, 2 e 3, quindi 4 giri. Con n = 4 la condizione è falsa. Non è infinito perché n aumenta a ogni giro."
+/>
+
+<Say who="sensei">Controlla sempre il valore di partenza e quello in cui la condizione diventa falsa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul ciclo while. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-while" pass="4/5" retries={3} />
+
+<Say who="sensei">Partenza, condizione, aggiornamento. Se manca uno dei tre, il ciclo ha un problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- while ripete un blocco finché la condizione è vera, controllandola prima di ogni giro.
+- Servono un valore di partenza, una condizione e un aggiornamento dentro il ciclo.
+- Senza aggiornamento il ciclo è infinito: si interrompe con Ctrl + C.
+- break esce subito dal ciclo; while True con break è un modo per «ripeti finché non dico basta».
+- Caso chiuso: Giulia saluta i 40 iscritti con un ciclo di poche righe invece di 40 print.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando il while smette di ripetere?", a: "Quando la condizione diventa falsa" },
+    { q: "Come si interrompe un ciclo infinito nel terminale?", a: "Premendo Ctrl + C" },
+    { q: "Che cosa fa break?", a: "Esce subito dal ciclo" },
+    { q: "Quante volte gira while n < 3 partendo da n = 0, aumentando n di 1?", a: "3 volte, con n uguale a 0, 1 e 2" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il ciclo for e range, più comodo quando sai già quante volte ripetere.</Say>
+</Scene>

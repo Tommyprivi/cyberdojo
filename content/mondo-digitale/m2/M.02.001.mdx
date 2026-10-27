@@ -1,0 +1,147 @@
+---
+id: M.02.001
+course: mondo-digitale
+module: 2
+title: "Internet e il web: la differenza"
+belt: bianca
+duration_min: 8
+prerequisites: [M.01.010]
+objectives:
+  - "Spiegare che internet è la rete che collega i computer e che il web è uno dei servizi che ci viaggiano sopra"
+  - "Fare esempi di servizi di internet che non sono il web, come la posta elettronica"
+  - "Dire che cosa sono un server, un sito e un link"
+verification:
+  type: generated-numeric
+  generator: m02-internet-web
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che internet e il web siano la stessa cosa"
+  - "Credere che internet sia «dentro» il computer o il telefono, invece di essere una rete di collegamenti"
+  - "Pensare che senza wifi si possa usare solo il web: anche la posta e le app usano internet"
+commands: []
+---
+
+<Scene title="Il nonno e la parola «internet»">
+Marta ha 16 anni. Suo nonno Aldo le dice: «Mi si è rotto internet: non riesco più a leggere il giornale». Poi aggiunge: «Però WhatsApp funziona!».
+
+Marta ci pensa un attimo. Se internet fosse rotto, WhatsApp non funzionerebbe. Quello che non va è probabilmente **una pagina web**, non internet intero. Ma qual è la differenza?
+
+La domanda del caso: **internet e web sono la stessa cosa?**
+
+<Say who="sensei">Quasi tutti usano le due parole come se fossero una sola. Non lo sono. Oggi le separi per sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Internet: la rete">
+**Internet** è una rete enorme che collega tra loro milioni di computer, telefoni e altri dispositivi in tutto il mondo. Pensala come le **strade** e i **cavi** che permettono a due dispositivi di scambiarsi dati.
+
+<Layers
+  caption="Internet è la base: sopra ci viaggiano i servizi."
+  items={[
+    { icon: "globe", title: "Servizi", text: "Web, posta elettronica, videochiamate, giochi online" },
+    { icon: "wifi", title: "Internet", text: "La rete che collega i dispositivi tra loro" },
+    { icon: "server", title: "Cavi e antenne", text: "Fibra, cavi sottomarini, ripetitori, wifi" },
+  ]}
+/>
+
+Internet non sta «dentro» il tuo telefono. Il tuo telefono, quando è collegato, diventa **un punto della rete**.
+
+<Say who="assistente">La rete è come una rete stradale: non è né il negozio né la lettera, ma ci passa tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il web: le pagine">
+Il **web** (in inglese *World Wide Web*, «ragnatela mondiale») è **uno dei servizi** che usano internet. È un insieme di **pagine** e di contenuti collegati tra loro da **link**, cioè i punti su cui clicchi per passare da una pagina all'altra.
+
+- Un **sito** è un gruppo di pagine che appartengono allo stesso posto, per esempio quelle di un giornale.
+- Le pagine stanno su computer sempre accesi chiamati **server**.
+- Per leggerle usi un programma chiamato **browser** (lo vedrai nella prossima lezione).
+
+<Callout kind="curiosita">
+Il web è stato inventato da Tim Berners-Lee, che lavorava al CERN di Ginevra: lo propose nel 1989. Internet, invece, esisteva già da prima: il web è arrivato dopo, come un nuovo servizio sulla stessa rete.
+</Callout>
+
+<Say who="sensei">Il web è la parte di internet che si legge con il browser. Ma internet fa anche altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quello che non è il web">
+Molte cose che fai ogni giorno usano internet **senza essere pagine web**:
+
+- la **posta elettronica**, quando i messaggi arrivano al programma di posta;
+- le **app di messaggi** come WhatsApp e le **videochiamate**;
+- i **giochi online** e lo streaming di musica o video dalle app;
+- gli **aggiornamenti** automatici del telefono.
+
+<Compare
+  caption="Una rete, tanti servizi."
+  left={{ title: "Internet", points: ["È la rete che collega i dispositivi", "Ci passano tutti i servizi", "Non si «apre» con un programma"] }}
+  right={{ title: "Il web", points: ["È uno dei servizi", "Pagine collegate da link", "Si apre con il browser"] }}
+/>
+
+<Callout kind="regola">
+Se il wifi è spento, non funziona né il web né WhatsApp. Se il wifi funziona ma una pagina non si apre, il problema è di quella pagina o del suo server, non di internet.
+</Callout>
+
+<Say who="assistente">Il nonno aveva ragione a dire che WhatsApp funzionava: la rete era a posto, mancava solo quella pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un amico dice: «Il wifi va, la posta arriva, ma il sito del mio giornale non si apre». Che cosa è più probabile?"
+  options={[
+    "Internet funziona; c'è un problema con quel sito o con il suo server",
+    "Internet è rotto in tutta la casa",
+    "Il web non esiste più",
+    "La posta elettronica ha bloccato il browser",
+  ]}
+  answer={0}
+  explain="Se la posta arriva, la connessione a internet c'è. Il sito non si apre per un problema suo: server fermo, indirizzo sbagliato o pagina tolta. Il web non può «non esistere» e la posta non blocca il browser."
+/>
+
+<Say who="sensei">Prima controlla se funziona qualcos'altro. Poi decidi dove sta il problema.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su internet e web. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m02-internet-web" pass="4/5" retries={3} />
+
+<Say who="sensei">Internet è la rete, il web è un servizio. Tieni a mente questa frase.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Internet è la rete che collega dispositivi in tutto il mondo.
+- Il web è uno dei servizi di internet: pagine collegate da link, ospitate su server e lette con il browser.
+- Posta, app di messaggi, videochiamate e giochi online usano internet senza essere pagine web.
+- Caso chiuso: quando il nonno non leggeva il giornale, internet funzionava; era la pagina a non aprirsi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è internet?", a: "La rete che collega tra loro i dispositivi di tutto il mondo" },
+    { q: "Che cos'è il web?", a: "Uno dei servizi di internet: pagine collegate da link" },
+    { q: "Fai un esempio di servizio di internet che non è il web", a: "La posta elettronica (oppure le videochiamate o i giochi online)" },
+    { q: "Che cos'è un server?", a: "Un computer sempre acceso che conserva i siti e li manda a chi li chiede" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il browser, il programma con cui leggi il web, e le sue parti.</Say>
+</Scene>

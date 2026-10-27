@@ -1,0 +1,164 @@
+---
+id: I.03.002
+course: intelligenza-artificiale
+module: 3
+title: "Dati strutturati e non strutturati"
+belt: bianca
+duration_min: 8
+prerequisites: [I.03.001]
+objectives:
+  - "Distinguere dati strutturati, semi-strutturati e non strutturati con esempi"
+  - "Spiegare che anche foto, testi e suoni diventano numeri per un computer"
+  - "Scegliere il tipo di dato adatto a un compito semplice"
+verification:
+  type: generated-numeric
+  generator: i03-strutturati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che i dati siano solo tabelle: foto, testi e audio sono dati a tutti gli effetti"
+  - "Pensare che i dati non strutturati siano senza informazioni: contengono molto, ma va estratto"
+  - "Confondere un file JSON (semi-strutturato) con un testo libero"
+commands: []
+---
+
+<Scene title="La biblioteca della scuola">
+La biblioteca della scuola vuole un sistema che consigli libri ai ragazzi. Ha tre tipi di materiale: un registro dei prestiti (data, classe, titolo), le recensioni scritte dai ragazzi in un modulo libero e le foto delle copertine.
+
+Il bibliotecario, il signor Neri, chiede a Marta: «Posso usare tutto questo per l'IA, o solo il registro?».
+
+La domanda del caso: **tutti questi materiali sono dati, anche se non sono tabelle?**
+
+<Say who="sensei">Sì, sono tutti dati. Ma non sono tutti uguali: cambia il modo di prepararli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati strutturati">
+I dati **strutturati** hanno una forma fissa: righe e colonne, come in un foglio di calcolo o in una tabella di database. Ogni colonna ha un significato e ogni riga è un caso.
+
+<Log lines={[
+  "data       | classe | titolo",
+  "2025-10-03 | 2B     | Il giovane Holden",
+  "2025-10-04 | 1A     | Harry Potter",
+  "2025-10-07 | 2B     | Il Piccolo Principe",
+]} caption="Il registro dei prestiti: dati strutturati." />
+
+Sono i più facili da usare: si possono contare, ordinare e confrontare. Come si lavora con le tabelle è spiegato nel corso Analista di dati (moduli D1 e D8): qui ci basta riconoscerle.
+
+<Say who="assistente">Se puoi dire «questa è la colonna dei titoli e questa la colonna delle classi», sono dati strutturati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati non strutturati">
+I dati **non strutturati** non hanno righe e colonne ordinate. Sono testi liberi, immagini, audio, video. Hanno dentro tante informazioni, ma non sono già divise in campi.
+
+- Una recensione: «Bello, ma il finale mi ha deluso» è testo libero.
+- Una foto di copertina è un'immagine.
+- Una registrazione della voce è audio.
+
+In mezzo ci sono i dati **semi-strutturati**: hanno una forma, ma non quella di una tabella. Un esempio è il formato JSON, molto usato dai siti per scambiarsi informazioni.
+
+```json
+{ "titolo": "Il Piccolo Principe", "pagine": 96, "voti": [8, 9, 7] }
+```
+
+<Layers
+  caption="Dal più ordinato al meno ordinato."
+  items={[
+    { icon: "database", title: "Strutturati", text: "Tabelle: righe e colonne" },
+    { icon: "code", title: "Semi-strutturati", text: "JSON e simili: etichette e valori, ma forma libera" },
+    { icon: "file", title: "Non strutturati", text: "Testi liberi, foto, audio, video" },
+  ]}
+/>
+
+<Say who="sensei">Non strutturato non vuol dire inutile. Vuol dire che prima di usarlo c'è più lavoro da fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tutto diventa numeri">
+Un computer lavora solo con numeri. Quindi anche una foto o una frase vengono trasformate.
+
+- Una **foto** è una griglia di puntini chiamati **pixel**. Ogni pixel ha dei numeri per i colori: in un formato comune, ogni colore va da 0 a 255.
+- Un **testo** viene tagliato in piccoli pezzi (parole o parti di parola, dette **token**), e ogni pezzo diventa un numero.
+- Un **suono** è misurato migliaia di volte al secondo e ogni misura diventa un numero.
+
+<Flow
+  caption="Come una foto arriva al modello."
+  steps={[
+    { icon: "file", title: "Foto", text: "Una copertina di libro" },
+    { icon: "gear", title: "Pixel", text: "Griglia di numeri per i colori" },
+    { icon: "bolt", title: "Modello", text: "Calcola con quei numeri" },
+  ]}
+/>
+
+<Callout kind="esempio">
+Una copertina di 100 per 100 pixel ha 10.000 pixel. Con tre colori per pixel (rosso, verde, blu) sono 30.000 numeri per una sola immagine.
+</Callout>
+
+<Callout kind="trucco">
+Il conto: 100 × 100 = 10.000 pixel, e 10.000 × 3 = 30.000 numeri.
+</Callout>
+
+<Say who="assistente">Per questo i dati non strutturati sono pesanti: una sola foto può essere fatta di migliaia di numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Il signor Neri vuole sapere quale classe prende più libri in prestito. Poi vuole capire se i ragazzi sono contenti delle letture.
+
+<Quiz
+  question="Quale dato è non strutturato?"
+  options={[
+    "Le recensioni scritte a mano libera dai ragazzi",
+    "Il numero di prestiti per ogni classe",
+    "La colonna con la data del prestito",
+    "L'elenco dei titoli in una tabella",
+  ]}
+  answer={0}
+  explain="Un testo libero non ha righe e colonne: è non strutturato. Il numero di prestiti, la colonna delle date e l'elenco dei titoli in tabella sono tutti dati strutturati, perché stanno in campi con un significato preciso."
+/>
+
+<Say who="sensei">Per la prima domanda basta la tabella. Per la seconda serve il testo: più lavoro, ma più informazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sui tipi di dati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-strutturati" pass="4/5" retries={3} />
+
+<Say who="sensei">Tabella, JSON o testo libero? Riconoscili e hai già fatto metà del lavoro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I dati strutturati hanno righe e colonne; i non strutturati sono testi liberi, immagini, audio e video.
+- I semi-strutturati, come JSON, hanno etichette e valori ma non la forma di una tabella.
+- Per il computer tutto diventa numeri: pixel, pezzi di testo, misure del suono.
+- Caso chiuso: registro, recensioni e copertine sono tutti dati, e ognuno va preparato a modo suo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato strutturato?", a: "Un dato con forma fissa, in righe e colonne come una tabella" },
+    { q: "Fai un esempio di dato non strutturato", a: "Un testo libero, una foto, una registrazione audio" },
+    { q: "Che cos'è un pixel?", a: "Un puntino di un'immagine, descritto da numeri per i colori" },
+    { q: "A che formato appartiene un file JSON?", a: "Ai dati semi-strutturati" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come dare agli esempi la risposta giusta, cioè le etichette.</Say>
+</Scene>

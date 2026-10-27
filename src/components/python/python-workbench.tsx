@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { DOWNLOAD_HINT } from "@/lib/python/config";
 import { CodeEditor } from "./code-editor";
+import { SenseiReview } from "./sensei-review";
 import { usePython, type Seg, type SegChannel } from "./use-python";
 
 const SEG_CLASS: Record<SegChannel, string> = {
@@ -108,6 +109,7 @@ export function PythonWorkbench({
   const showLine = py.status === "input" || (py.mode === "repl" && (py.status === "ready" || py.status === "running"));
   const prompt = py.status === "input" ? "›" : py.replMore ? "..." : ">>>";
 
+  const errorText = py.program.filter((x) => x.channel === "err").map((x) => x.text).join("");
   const split = layout === "split";
   return (
     <div
@@ -167,6 +169,7 @@ export function PythonWorkbench({
         <p className="border-t border-border bg-surface-muted px-3 py-1.5 font-mono text-[0.7rem] text-muted">
           Tab = 4 spazi · Esc poi Tab per uscire · Ctrl+Invio esegue
         </p>
+        <SenseiReview code={code} errorText={errorText} />
       </div>
 
       <div className="flex min-h-0 flex-col bg-deep text-deep-fg">

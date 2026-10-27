@@ -1,0 +1,150 @@
+---
+id: M.03.005
+course: mondo-digitale
+module: 3
+title: "Allegati: inviare e ricevere"
+belt: bianca
+duration_min: 9
+prerequisites: [M.03.004]
+objectives:
+  - "Allegare un file a un'email e verificare che sia davvero allegato"
+  - "Spiegare perché esiste un limite alla dimensione degli allegati"
+  - "Riconoscere gli allegati rischiosi prima di aprirli"
+verification:
+  type: generated-numeric
+  generator: m03-allegati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere «in allegato» e dimenticare di allegare il file"
+  - "Aprire un allegato inatteso solo perché il messaggio sembra urgente"
+  - "Non guardare l'estensione: un file chiamato fattura.pdf.exe non è un PDF"
+commands: []
+---
+
+<Scene title="Il file che non c'era">
+Rosa scrive al Comune: «Gentile ufficio, in allegato trovate il mio documento d'identità». Preme Invia. Due ore dopo arriva la risposta: «Non c'è nessun allegato».
+
+Rosa aveva scritto «in allegato», ma non aveva collegato nessun file. Capita a tutti.
+
+La domanda del caso: **come si allega un file, e come si evita di dimenticarlo?**
+
+<Say who="sensei">Scrivere «in allegato» non allega niente. Il file va aggiunto con un gesto preciso, e poi controllato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si allega">
+Un **allegato** è un file (una foto, un PDF, un documento) mandato insieme al messaggio. Quasi tutti i programmi di posta usano il simbolo della **graffetta**.
+
+<Flow
+  caption="Allegare un file."
+  steps={[
+    { icon: "mail", title: "Scrivi il messaggio", text: "Con destinatario e oggetto" },
+    { icon: "file", title: "Premi la graffetta", text: "Scegli il file dal computer o dal telefono" },
+    { icon: "check", title: "Controlla", text: "Il nome del file compare sotto il testo" },
+  ]}
+/>
+
+Prima di inviare guarda che il nome del file sia **comparso** nel messaggio. Se scrivi «in allegato» nel testo, molti programmi ti avvertono se hai dimenticato di allegare: non fare affidamento solo su questo.
+
+<Say who="assistente">Allega il file per primo, poi scrivi il testo. Così non te ne dimentichi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Peso e formati">
+Ogni file ha un **peso** (si misura in kilobyte, megabyte...). Foto e video pesano molto di più dei testi.
+
+I servizi di posta mettono un **limite** al peso degli allegati: in molti casi qualche decina di megabyte al massimo. Se un file è troppo grosso:
+
+- si può **ridurre** (le foto si possono mandare in dimensione ridotta);
+- più file si possono mettere in una cartella **compressa** (un file di tipo ZIP, che occupa meno spazio);
+- si può mandare un **link** a un servizio di archiviazione online, dove il file resta salvato.
+
+<Callout kind="regola">
+Per i documenti che il destinatario deve solo leggere, il formato **PDF** è la scelta più comoda: si apre allo stesso modo su qualunque computer e telefono, e le pagine non si spostano.
+</Callout>
+
+<Say who="sensei">Se la foto pesa quanto un film, non è colpa della posta. Riducila, oppure manda un link.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Allegati ricevuti: attenzione">
+Gli allegati sono il modo più comune con cui i truffatori cercano di far entrare **programmi dannosi** nel computer. Un programma si riconosce spesso dal tipo di file (**estensione**, le lettere dopo il punto): `.exe`, `.bat`, `.scr` e simili.
+
+<Layers
+  caption="Più prudenza, meno prudenza."
+  items={[
+    { icon: "warning", title: "Da evitare", text: "Programmi come .exe o file inattesi da sconosciuti" },
+    { icon: "eye", title: "Da controllare", text: "Documenti attesi, ma da persone verificate" },
+    { icon: "check", title: "Meno rischiosi", text: "Foto e PDF da persone conosciute, che li hanno annunciati (rischio zero non esiste)" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Occhio ai nomi doppi: `fattura.pdf.exe` sembra un PDF, ma è un programma. Se non te lo aspetti, non aprirlo, anche se il mittente sembra un conoscente: potrebbe avere l'account rubato. Chiedi conferma con una telefonata.
+</Callout>
+
+<Say who="assistente">Regola semplice: allegato inatteso, anche da un amico, si chiede prima. Un messaggio breve di conferma costa dieci secondi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Arriva un messaggio da un indirizzo che non conosci: «Fattura scaduta, apri subito l'allegato». Il file si chiama `fattura.pdf.exe`.
+
+<Quiz
+  question="Che cosa fai con l'allegato fattura.pdf.exe da uno sconosciuto?"
+  options={[
+    "Non lo apro e segnalo il messaggio come spam",
+    "Lo apro subito, perché c'è scritto PDF",
+    "Lo inoltro a un amico per sapere se è sicuro",
+    "Lo scarico e lo apro solo se è un giorno feriale",
+  ]}
+  answer={0}
+  explain="L'estensione finale .exe indica un programma, non un PDF, e il mittente è sconosciuto: non si apre e si segnala. Aprirlo o inoltrarlo mette in pericolo te e gli altri; il giorno della settimana non cambia il rischio."
+/>
+
+<Say who="sensei">Estensione finale, mittente, attesa. Tre controlli, nessuna fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli allegati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m03-allegati" pass="4/5" retries={3} />
+
+<Say who="sensei">Graffetta, controllo, peso, estensione. Con questo non sbagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Si allega con la graffetta e si controlla che il file compaia nel messaggio.
+- I file grossi si riducono, si comprimono o si mandano con un link.
+- Il PDF è comodo per i documenti da leggere.
+- Gli allegati inattesi o con estensione .exe non si aprono.
+- Caso chiuso: Rosa rimanda il messaggio con il documento davvero allegato e controlla il nome sotto il testo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quale simbolo serve per allegare un file?", a: "La graffetta" },
+    { q: "Che cosa significa .exe alla fine di un file?", a: "È un programma da eseguire, da non aprire se non te lo aspetti" },
+    { q: "Che cosa si può fare con un file troppo pesante?", a: "Ridurlo, comprimerlo o mandare un link" },
+    { q: "Perché il PDF è comodo?", a: "Si apre allo stesso modo su qualunque dispositivo" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: rubrica, copia e copia nascosta.</Say>
+</Scene>

@@ -1,0 +1,173 @@
+---
+id: P.04.007
+course: programmazione
+module: 4
+title: "Il formato CSV"
+belt: bianca
+duration_min: 9
+prerequisites: [P.04.006]
+objectives:
+  - "Descrivere il formato CSV: righe, colonne e separatore"
+  - "Leggere e scrivere un file CSV con il modulo csv"
+  - "Ricordare che i valori letti da un CSV sono sempre testo"
+verification:
+  type: generated-numeric
+  generator: p04-csv
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Spezzare le righe con split(\",\") a mano: si rompe quando un valore contiene una virgola"
+  - "Dimenticare che i numeri letti da un CSV sono testo e vanno convertiti con float o int"
+  - "Dimenticare newline=\"\" in open e ritrovare righe vuote in più sul file scritto"
+commands: []
+---
+
+<Scene title="La tabella delle spese">
+Elena registra le spese del gruppo: data, categoria, importo. Sono dati a tabella, con righe e colonne, e vorrebbe poterli aprire anche con un foglio di calcolo.
+
+Un file di testo semplice non basta: dove finisce una colonna e comincia l'altra? Serve un **formato**, cioè una regola condivisa per scrivere i dati.
+
+La domanda del caso: **come si salva una tabella in un file che anche altri programmi capiscano?**
+
+<Say who="sensei">Un formato è un accordo: io scrivo così, tu leggi così. Il CSV è uno dei più semplici e diffusi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un CSV">
+**CSV** sta per *Comma-Separated Values*, «valori separati da virgola». Ogni riga è una riga della tabella; i valori di una riga sono separati da un carattere, di solito la virgola. La prima riga contiene spesso i nomi delle colonne.
+
+<Log lines={[
+  "data,categoria,importo",
+  "2026-03-01,cibo,12.50",
+  "2026-03-02,treno,3.20",
+  "2026-03-04,luci,20.00",
+]} caption="Il file spese.csv: una intestazione e tre righe di dati." />
+
+Un file CSV è **testo semplice**: lo apri con qualunque editor, e con i fogli di calcolo (come Excel, LibreOffice Calc, Fogli Google).
+
+<Callout kind="attenzione">
+Alcuni programmi in italiano salvano il CSV con il **punto e virgola** come separatore, perché da noi la virgola si usa per i decimali. Se un file sembra «tutto in una colonna», prova `delimiter=";"`.
+</Callout>
+
+<Say who="assistente">Il CSV è tutto qui: testo, righe e un separatore. Niente di magico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Leggere con il modulo csv">
+Si potrebbe spezzare le righe con `split(",")`, ma si rompe appena un valore contiene una virgola, per esempio `"pizza, birra"`. Meglio usare il modulo `csv`, già incluso in Python.
+
+```python
+import csv
+
+totale = 0.0
+with open("spese.csv", newline="", encoding="utf-8") as f:
+    for riga in csv.DictReader(f):
+        totale += float(riga["importo"])
+print("Totale:", totale)
+```
+
+- `csv.DictReader` legge ogni riga come un **dizionario**, usando la prima riga come nomi delle colonne.
+- `riga["importo"]` è il valore di quella colonna.
+- Con `csv.reader(f)` si ottengono invece liste: `riga[2]`.
+- `newline=""` è la raccomandazione ufficiale quando si apre un CSV.
+
+<Callout kind="regola">
+Tutto ciò che leggi da un CSV è **testo**, anche i numeri. Per fare i conti converti: `float("12.50")` dà `12.5`, `int("3")` dà `3`.
+</Callout>
+
+<Say who="sensei">Il testo «12.50» non è un numero. Sommarlo con un altro testo li incolla: «12.50» più «3.20» fa «12.503.20».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scrivere un CSV">
+Per scrivere si usa `csv.DictWriter`: gli si danno i nomi delle colonne.
+
+```python
+import csv
+
+spese = [
+    {"data": "2026-03-01", "categoria": "cibo", "importo": "12.50"},
+    {"data": "2026-03-02", "categoria": "treno", "importo": "3.20"},
+]
+with open("spese.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.DictWriter(f, fieldnames=["data", "categoria", "importo"])
+    w.writeheader()
+    w.writerows(spese)
+```
+
+- `writeheader()` scrive la riga con i nomi delle colonne.
+- `writerows(lista)` scrive tutte le righe; `writerow(riga)` ne scrive una.
+- Se un valore contiene una virgola, il modulo lo circonda da solo con virgolette: così non si confonde con un separatore.
+
+<Layers
+  caption="Dal programma al file e ritorno."
+  items={[
+    { icon: "code", title: "Programma", text: "Lista di dizionari in memoria" },
+    { icon: "gear", title: "Modulo csv", text: "DictWriter scrive, DictReader legge" },
+    { icon: "file", title: "File spese.csv", text: "Testo con righe e virgole, apribile con un foglio di calcolo" },
+  ]}
+/>
+
+<Say who="assistente">Quando scrivi, converti tu i numeri in testo con str o con un formato: il file contiene solo testo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena legge un CSV e ottiene `"12.50"`, con le virgolette.
+
+<Quiz
+  question="Che tipo di dato restituisce il modulo csv per un valore come 12.50 letto da un file?"
+  options={[
+    "Una stringa (testo), da convertire con float",
+    "Un numero decimale già pronto per i conti",
+    "Un numero intero, arrotondato",
+    "Un valore booleano",
+  ]}
+  answer={0}
+  explain="Il modulo csv restituisce sempre testo: per fare conti bisogna convertire il valore con float o int. Non fa nessuna conversione automatica, né a decimale, né a intero, né a booleano."
+/>
+
+<Say who="sensei">Se un calcolo dà un risultato strano su dati letti da un file, controlla prima il tipo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul formato CSV. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p04-csv" pass="4/5" retries={3} />
+
+<Say who="sensei">Testo, righe, separatore. E prima dei conti, la conversione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un CSV è un file di testo con una riga per ogni riga della tabella e valori separati da un carattere, di solito la virgola.
+- Il modulo csv legge (reader, DictReader) e scrive (writer, DictWriter), e gestisce da solo virgole dentro ai valori.
+- Tutto ciò che si legge da un CSV è testo: per i calcoli si converte con float o int.
+- Caso chiuso: le spese del gruppo ora stanno in spese.csv e si aprono anche con un foglio di calcolo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa significa CSV?", a: "Comma-Separated Values, valori separati da virgola" },
+    { q: "Che tipo hanno i valori letti con il modulo csv?", a: "Sono sempre stringhe (testo)" },
+    { q: "Che cosa fa csv.DictReader?", a: "Legge ogni riga come dizionario, usando la prima riga come nomi delle colonne" },
+    { q: "Che cosa fare se un CSV italiano sembra tutto in una colonna?", a: "Provare delimiter=\";\" perché spesso il separatore è il punto e virgola" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il formato JSON, per dati con una struttura più ricca di una tabella.</Say>
+</Scene>

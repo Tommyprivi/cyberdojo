@@ -1,0 +1,189 @@
+---
+id: P.03.006
+course: programmazione
+module: 3
+title: "Funzioni che ne chiamano altre"
+belt: bianca
+duration_min: 8
+prerequisites: [P.03.005]
+objectives:
+  - "Scrivere una funzione che ne usa un'altra al proprio interno"
+  - "Seguire l'ordine di esecuzione quando una chiamata contiene altre chiamate"
+  - "Usare il risultato di una funzione come argomento di un'altra"
+verification:
+  type: generated-numeric
+  generator: p03-funzioni-annidate
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una funzione possa usarne un'altra solo se è scritta dentro di essa"
+  - "Dimenticare return nella funzione chiamata e ricevere None"
+  - "Sbagliare l'ordine di esecuzione quando una chiamata ne contiene altre"
+commands: []
+---
+
+<Scene title="Il campo diagonale">
+Elena vuole sapere quanto è lunga la diagonale di un campo rettangolare di 3 metri per 4, per tendere una corda. Dal corso di matematica sa che la diagonale è la radice quadrata di «base al quadrato più altezza al quadrato».
+
+Per calcolare un quadrato ha già una funzione. Non vuole riscrivere quel calcolo.
+
+La domanda del caso: **può una funzione usarne un'altra, come fa Elena con il quadrato?**
+
+<Say who="sensei">Certo. Le funzioni sono mattoncini: con quelli piccoli ne costruisci di più grandi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una funzione dentro l'altra">
+Una funzione può chiamarne un'altra, purché sia definita **prima che la chiamata avvenga** (non prima della definizione di chi chiama).
+
+```python
+def quadrato(n):
+    return n * n
+
+def ipotenusa(a, b):
+    return (quadrato(a) + quadrato(b)) ** 0.5
+
+print(ipotenusa(3, 4))
+```
+
+<Log lines={[
+  "5.0",
+]} caption="9 più 16 fa 25, e 25 elevato a 0,5 è la radice quadrata: 5.0." />
+
+La funzione `ipotenusa` usa `quadrato` due volte. L'operatore `** 0.5` calcola la radice quadrata (elevare a 0,5 è come estrarre la radice).
+
+Il risultato è `5.0` e non `5` perché l'elevamento a potenza con un numero decimale dà sempre un numero decimale.
+
+<Callout kind="regola">
+Non importa quale delle due funzioni è scritta per prima, ma entrambe devono essere **definite prima che la chiamata parta**: qui basta che le definizioni stiano sopra la riga `print`.
+</Callout>
+
+<Say who="assistente">Il nome `quadrato` viene cercato solo quando `ipotenusa` viene eseguita, non quando viene scritta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ordine di esecuzione">
+Che cosa succede, passo dopo passo, con `ipotenusa(3, 4)`?
+
+<Flow
+  caption="Ogni chiamata aspetta il risultato della successiva."
+  steps={[
+    { icon: "bolt", title: "Parte ipotenusa", text: "a vale 3 e b vale 4" },
+    { icon: "code", title: "Chiama quadrato(3)", text: "Torna 9" },
+    { icon: "code", title: "Chiama quadrato(4)", text: "Torna 16" },
+    { icon: "check", title: "Finisce", text: "(9 + 16) ** 0.5 torna 5.0" },
+  ]}
+/>
+
+Python lavora così: quando una funzione ne chiama un'altra, **si ferma e aspetta** che quella finisca e restituisca il risultato. Poi riprende da dove era rimasta. È come una catena di persone che si passano un compito: chi chiede resta in attesa della risposta.
+
+Lo stesso vale per le chiamate dentro altre chiamate: Python calcola prima quelle più interne.
+
+```python
+print(quadrato(quadrato(2)))
+```
+
+Prima `quadrato(2)` dà 4, poi `quadrato(4)` dà 16, infine `print` mostra 16.
+
+<Say who="sensei">Dal centro verso l'esterno: la parentesi più interna si risolve per prima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Costruire in strati">
+Con questa tecnica costruisci funzioni sempre più grandi senza mai riscrivere i calcoli di base.
+
+```python
+def costo_biglietti(prezzo, quanti):
+    return prezzo * quanti
+
+def costo_con_extra(prezzo, quanti, extra=2):
+    return costo_biglietti(prezzo, quanti) + extra
+
+print(costo_con_extra(5, 3))
+```
+
+<Log lines={[
+  "17",
+]} caption="5 per 3 fa 15, più 2 di contributo: 17." />
+
+<Layers
+  caption="Funzioni a strati."
+  items={[
+    { icon: "bolt", title: "Programma", text: "Chiama costo_con_extra" },
+    { icon: "gear", title: "costo_con_extra", text: "Aggiunge il contributo" },
+    { icon: "coin", title: "costo_biglietti", text: "Moltiplica prezzo e quantità" },
+  ]}
+/>
+
+Ogni funzione fa **una cosa sola**. Quella sopra si fida di quella sotto, senza sapere come funziona dentro.
+
+<Say who="assistente">Come in cucina: la salsa è una funzione, la pasta al sugo ne usa un'altra. Ciascuna ha un compito chiaro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quanto vale il risultato di somma_doppia(2, 3) con le definizioni qui sotto?"
+  options={[
+    "10",
+    "5",
+    "7",
+    "12",
+  ]}
+  answer={0}
+  explain="somma_doppia calcola doppio(2) più doppio(3), cioè 4 più 6, quindi 10. Il 5 sarebbe la somma semplice, il 7 e il 12 vengono da calcoli che non corrispondono alle funzioni."
+/>
+
+```python
+def doppio(n):
+    return n * 2
+
+def somma_doppia(a, b):
+    return doppio(a) + doppio(b)
+```
+
+<Say who="sensei">Prova a seguire i passi con carta e penna: è l'allenamento migliore per leggere il codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su funzioni che ne chiamano altre. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-funzioni-annidate" pass="4/5" retries={3} />
+
+<Say who="sensei">Dall'interno verso l'esterno. Segui ogni chiamata come un messaggio che viaggia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una funzione può chiamarne un'altra: le funzioni si combinano come mattoncini.
+- La funzione che chiama aspetta il risultato di quella chiamata, poi riprende.
+- Con più chiamate una dentro l'altra, Python parte da quella più interna.
+- Ogni funzione dovrebbe fare una cosa sola e fidarsi delle altre.
+- Caso chiuso: Elena calcola la diagonale di 3 per 4 con `ipotenusa(3, 4)` e ottiene 5.0.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Una funzione può chiamarne un'altra?", a: "Sì, basta che l'altra sia definita prima della chiamata" },
+    { q: "Che cosa fa Python quando una funzione ne chiama un'altra?", a: "Aspetta il risultato dell'altra, poi riprende" },
+    { q: "In print(quadrato(quadrato(2))) quale chiamata parte per prima?", a: "quadrato(2), la più interna" },
+    { q: "Quanto fa 25 ** 0.5 in Python?", a: "5.0, la radice quadrata di 25" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: spezzare un programma intero in funzioni.</Say>
+</Scene>

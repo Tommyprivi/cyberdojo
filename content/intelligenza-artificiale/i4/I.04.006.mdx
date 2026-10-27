@@ -1,0 +1,158 @@
+---
+id: I.04.006
+course: intelligenza-artificiale
+module: 4
+title: "Privacy e IA"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.005]
+objectives:
+  - "Spiegare che cos'è un dato personale e che cos'è il GDPR in sintesi"
+  - "Descrivere i diritti principali delle persone sui propri dati"
+  - "Indicare come tutelare la propria privacy quando si usano strumenti di IA"
+verification:
+  type: generated-numeric
+  generator: i04-privacy
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che una chat con l'IA sia privata come un diario: il servizio può conservare e, in certi casi, usare i testi"
+  - "Condividere dati di altre persone (foto, nomi, messaggi) senza che lo sappiano"
+  - "Credere che «gratuito» voglia dire senza costi: spesso si paga con i propri dati"
+commands: []
+---
+
+<Scene title="La foto dei compagni">
+Marta vuole farsi aiutare da un'app di IA a «migliorare» la foto di gruppo della gita, con tutti i compagni. L'app è gratuita e chiede di caricare la foto. Un compagno, Davide, le scrive: «Non voglio che la mia faccia finisca chissà dove».
+
+Marta capisce che la questione non è solo sua.
+
+La domanda del caso: **che cosa succede ai dati personali quando li dai a un'IA, e che diritti hai?**
+
+<Say who="sensei">Cosa non incollare in una chat lo hai già visto nel modulo I2. Qui guardiamo le regole: chi può usare i dati di chi, e con quali diritti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati personali e GDPR">
+Un **dato personale** è qualunque informazione che riguarda una persona identificata o identificabile: nome, volto, voce, indirizzo, numero di telefono, posizione, e anche un identificativo online.
+
+In Unione Europea la protezione di questi dati è regolata dal **GDPR** (regolamento generale sulla protezione dei dati, in vigore dal 2018). Alcuni principi, in sintesi:
+
+- **Liceità e trasparenza:** chi usa i tuoi dati deve avere una base legittima (per esempio il consenso) e dirtelo chiaramente.
+- **Finalità:** i dati si usano per lo scopo dichiarato, non per altro.
+- **Minimizzazione:** se ne raccolgono solo quanti servono.
+- **Sicurezza:** vanno protetti.
+
+Alcune informazioni sono **particolarmente delicate** (salute, convinzioni religiose o politiche, origine etnica, dati biometrici per identificare una persona): hanno regole più rigide.
+
+<Callout kind="curiosita">
+In Italia un ragazzo o una ragazza può dare da solo il consenso al trattamento dei propri dati per i servizi online a partire da 14 anni; sotto quell'età serve il consenso di chi esercita la responsabilità genitoriale.
+</Callout>
+
+<Say who="assistente">Una foto con un volto è un dato personale, anche se la scatti tu e anche se l'app è gratuita.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I tuoi diritti">
+Il GDPR ti dà dei **diritti** verso chi tratta i tuoi dati:
+
+<Layers
+  caption="Alcuni diritti principali."
+  items={[
+    { icon: "eye", title: "Accesso", text: "Sapere quali dati hanno su di te e come li usano" },
+    { icon: "gear", title: "Rettifica", text: "Far correggere dati sbagliati" },
+    { icon: "cross", title: "Cancellazione", text: "Chiedere di cancellare i dati, nei casi previsti" },
+    { icon: "lock", title: "Opposizione", text: "Opporti a certi usi dei tuoi dati" },
+  ]}
+/>
+
+Nel mondo dell'IA questi diritti sono importanti: i servizi spesso conservano i testi o le immagini che invii e, in alcuni casi, possono usarli per migliorare i modelli. Molti servizi hanno **impostazioni** che permettono di scegliere se i tuoi contenuti vengano usati per l'addestramento. Per le istituzioni, in Italia lo strumento di tutela è il **Garante per la protezione dei dati personali**, che nel 2023 ha anche messo temporaneamente dei limiti a un noto servizio di chat finché non ha corretto alcuni aspetti sul trattamento dei dati.
+
+<Say who="sensei">I diritti ci sono, ma vanno esercitati: leggi le impostazioni, non accettare tutto senza guardare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole pratiche per te">
+<Flow
+  caption="Prima di dare qualcosa a un'IA."
+  steps={[
+    { icon: "search", title: "Chiediti", text: "Contiene dati miei o di altri?" },
+    { icon: "shield", title: "Riduci", text: "Togli nomi, volti, indirizzi e numeri" },
+    { icon: "gear", title: "Controlla", text: "Guarda le impostazioni su conservazione e addestramento" },
+    { icon: "check", title: "Chiedi il permesso", text: "Se riguarda altri, chiedilo a loro" },
+  ]}
+/>
+
+- **Dati di altre persone:** foto, messaggi e nomi di amici e compagni non sono tuoi da dare. Chiedi prima.
+- **Dati molto personali** (salute, documenti, password): non vanno nelle chat di IA.
+- **Condizioni e impostazioni:** leggi, almeno a grandi linee, che cosa il servizio fa con ciò che invii.
+- **Se un servizio ti sembra eccessivo,** cerca un'alternativa o non usarlo.
+
+<Callout kind="attenzione">
+Se hai meno di 14 anni, per molti servizi serve il consenso di un genitore. Se ne hai di più, hai comunque il dovere di rispettare la privacy degli altri.
+</Callout>
+
+<Say who="assistente">La privacy è un rispetto reciproco: proteggere i tuoi dati e quelli dei tuoi amici.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Vuoi chiedere a un'IA di riassumere una chat di gruppo con messaggi di cinque amici, nomi compresi.
+
+<Quiz
+  question="Qual è la scelta migliore per la privacy?"
+  options={[
+    "Togliere i nomi e i dati personali, o prima chiedere il permesso agli amici",
+    "Incollare tutto, tanto sono solo messaggi",
+    "Incollare tutto, ma solo se l'app è gratuita",
+    "Incollare tutto e poi cancellare la chat dal telefono",
+  ]}
+  answer={0}
+  explain="I messaggi contengono dati di altre persone: conviene toglierli o chiedere il permesso. Gratuito non vuol dire privato; e cancellare la chat dal telefono non cancella ciò che il servizio ha già ricevuto."
+/>
+
+<Say who="sensei">Una frase d'ordine: «Questi dati sono miei da dare?». Se no, fermati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su privacy e IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-privacy" pass="4/5" retries={3} />
+
+<Say who="sensei">Dato personale, GDPR, diritti. Tre parole da tenere a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un dato personale è qualsiasi informazione che riguarda una persona identificabile: anche un volto o una voce.
+- Il GDPR europeo chiede liceità, finalità, minimizzazione e sicurezza, e dà diritti di accesso, rettifica, cancellazione e opposizione.
+- I servizi di IA possono conservare ciò che invii: leggi le impostazioni e riduci i dati.
+- I dati di altre persone non sono tuoi da dare: chiedi il permesso.
+- Caso chiuso: Marta ha tolto la foto o ha chiesto il permesso ai compagni, come voleva Davide.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato personale?", a: "Un'informazione che riguarda una persona identificata o identificabile, come nome, volto o voce" },
+    { q: "Che cos'è il GDPR?", a: "Il regolamento europeo sulla protezione dei dati personali, in vigore dal 2018" },
+    { q: "Cita un diritto che il GDPR ti dà.", a: "Accesso, rettifica, cancellazione oppure opposizione" },
+    { q: "Prima di dare a un'IA dati di altre persone, che cosa fai?", a: "Chiedi il permesso o li togli" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il regolamento europeo sull'IA, detto AI Act.</Say>
+</Scene>

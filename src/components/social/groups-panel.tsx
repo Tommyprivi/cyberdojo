@@ -9,6 +9,8 @@ import type { GroupView, SocialSettings } from "@/lib/social/service";
 import { Avatar } from "./avatar";
 import { CodeBox } from "./code-box";
 import { ReportButton } from "./report-button";
+import { ShareProgressToggle } from "./share-progress-toggle";
+import { TeamsCompare } from "./teams-compare";
 import { NoticeLine, useAction } from "./use-action";
 
 function GroupCard({ g }: { g: GroupView }) {
@@ -50,6 +52,8 @@ function GroupCard({ g }: { g: GroupView }) {
           </li>
         ))}
       </ol>
+
+      {!g.isOwner && <ShareProgressToggle groupId={g.id} />}
 
       {g.isOwner && g.code && (
         <div className="grid gap-2 rounded-md border border-border bg-background p-3">
@@ -112,6 +116,7 @@ export function GroupsPanel({ settings, groups }: { settings: SocialSettings; gr
             Non sei in nessun gruppo. I gruppi servono a studiare insieme (una classe, una squadra): si entra solo con un codice che ti dà chi lo ha creato.
           </p>
         )}
+        <TeamsCompare groups={groups} />
         {groups.map((g) => (
           <GroupCard key={g.id} g={g} />
         ))}

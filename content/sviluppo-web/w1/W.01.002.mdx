@@ -1,0 +1,166 @@
+---
+id: W.01.002
+course: sviluppo-web
+module: 1
+title: "Browser, server e indirizzi (URL)"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.001]
+objectives:
+  - "Scomporre un URL nelle sue parti: protocollo, dominio, percorso, parametri e frammento"
+  - "Dire che cosa indicano http, https e il lucchetto del browser"
+  - "Distinguere il nome di dominio dal percorso di una pagina"
+verification:
+  type: generated-numeric
+  generator: w01-url-indirizzi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che il lucchetto garantisca che il sito sia onesto: dice solo che la connessione è cifrata"
+  - "Confondere il dominio (labottegadilucia.it) con il percorso (/corsi/ceramica)"
+  - "Pensare che le maiuscole e le minuscole non contino mai: nel percorso possono contare"
+commands: []
+---
+
+<Scene title="Un link che non si apre">
+Lucia ti manda un messaggio: «Ho dato ai miei allievi questo indirizzo e dicono che non funziona: `https://www.labottegadilucia.it/corsi/ceramica?livello=base#orari`. Che cosa c'è che non va?».
+
+Per scoprirlo bisogna sapere leggere un indirizzo web, che si chiama **URL**. Un URL non è una stringa magica: è un indirizzo con parti precise, ognuna con un compito.
+
+La domanda del caso: **come si legge un URL, pezzo per pezzo?**
+
+<Say who="sensei">Un indirizzo si legge da sinistra a destra, come un indirizzo di casa: prima il modo di arrivare, poi la città, poi la via, poi il numero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le parti di un URL">
+Prendiamo l'indirizzo di Lucia e dividiamolo.
+
+<Log lines={[
+  "https://www.labottegadilucia.it/corsi/ceramica?livello=base#orari",
+  "",
+  "https                    -> protocollo: come si parla",
+  "www.labottegadilucia.it  -> dominio: quale server",
+  "/corsi/ceramica          -> percorso: quale pagina o file",
+  "?livello=base            -> parametri: informazioni in più",
+  "#orari                   -> frammento: un punto della pagina",
+]} caption="Le cinque parti dell'URL di Lucia." />
+
+- Il **protocollo** dice al browser come comunicare. Nel web si usa `http` oppure `https`.
+- Il **dominio** è il nome del sito: dice a quale server rivolgersi.
+- Il **percorso** dice quale pagina o file si vuole, come le cartelle di un computer.
+- I **parametri** (dopo il `?`) aggiungono informazioni, per esempio un filtro. Si scrivono come `nome=valore`.
+- Il **frammento** (dopo il `#`) fa scorrere la pagina fino a un punto preciso. Non viene mandato al server: lo usa solo il browser.
+
+<Callout kind="trucco">
+Ordine da ricordare: **come** (protocollo), **dove** (dominio), **che cosa** (percorso), **come lo vuoi** (parametri), **in quale punto** (frammento).
+</Callout>
+
+<Say who="assistente">Se manca il percorso, il server di solito manda la pagina principale del sito. Per questo `labottegadilucia.it` apre la home.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il dominio">
+Il dominio si legge **da destra a sinistra**. Prendiamo `www.labottegadilucia.it`.
+
+<Layers
+  caption="Un dominio si legge da destra verso sinistra, dal più grande al più piccolo."
+  items={[
+    { icon: "globe", title: "it", text: "Il livello più alto: qui indica l'Italia" },
+    { icon: "folder", title: "labottegadilucia", text: "Il nome scelto da Lucia: il dominio vero e proprio" },
+    { icon: "server", title: "www", text: "Un prefisso (sottodominio): di solito indica il sito web" },
+  ]}
+/>
+
+Il nome si compra, in genere con un abbonamento annuale, da un'azienda chiamata *registrar*. Nessuno può avere due volte lo stesso dominio.
+
+<Callout kind="attenzione">
+`labottegadilucia.it` e `labottegadilucia.com` sono due domini **diversi**, di proprietari diversi. Una lettera in più o in meno cambia sito: è così che certi siti truffa imitano quelli veri.
+</Callout>
+
+<Say who="sensei">Il dominio decide di chi è il sito. Controllalo sempre prima di fidarti di una pagina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="http, https e il lucchetto">
+Il protocollo `http` manda i dati **in chiaro**: chiunque stia in mezzo (per esempio chi gestisce un Wi-Fi pubblico) potrebbe leggerli. Il protocollo `https` li **cifra**: sono illeggibili per chi li intercetta. La **s** sta per *secure*, sicuro.
+
+<Compare
+  caption="Stessa pagina, due modi di viaggiare."
+  left={{ title: "http", points: ["Dati in chiaro", "Leggibili da chi sta in mezzo", "I browser lo segnalano come non sicuro"] }}
+  right={{ title: "https", points: ["Dati cifrati", "Illeggibili da chi li intercetta", "Il browser mostra il lucchetto"] }}
+/>
+
+Oggi i siti seri usano `https` ovunque, e i certificati che lo rendono possibile si ottengono gratuitamente.
+
+<Callout kind="attenzione">
+Il lucchetto dice che la **connessione è cifrata**, non che il sito sia onesto. Anche un sito truffa può avere `https` e il lucchetto.
+</Callout>
+
+<Callout kind="curiosita">
+Ogni protocollo ha una porta di partenza: 80 per `http` e 443 per `https`. Non si scrive nell'URL, perché il browser la sceglie da solo. Si scrive solo se è diversa, come in `http://localhost:3000`.
+</Callout>
+
+<Say who="assistente">Quando scrivi un sito da solo a casa, userai spesso `localhost`: significa «questo stesso computer».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Torniamo al problema di Lucia. Un allievo ha scritto l'indirizzo a mano e ha sbagliato una lettera nel dominio: `labotegadilucia.it`.
+
+<Quiz
+  question="Che cosa succede quando si digita un dominio con una lettera sbagliata?"
+  options={[
+    "Il browser cerca un altro dominio, che di solito non esiste o appartiene a qualcun altro",
+    "Il browser lo corregge sempre da solo e apre il sito di Lucia",
+    "Il server di Lucia riceve la richiesta e la corregge",
+    "Si apre la pagina principale di internet",
+  ]}
+  answer={0}
+  explain="Per il DNS ogni nome è un nome diverso: una lettera in meno vuol dire un altro dominio. Se non esiste, il browser mostra un errore; se esiste, può essere il sito di qualcun altro. Per questo conviene salvare i siti nei preferiti invece di riscriverli a mano."
+/>
+
+<Say who="sensei">Un solo carattere cambia tutto. Quando un sito non si apre, controlla prima l'indirizzo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su come si legge un URL. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-url-indirizzi" pass="4/5" retries={3} />
+
+<Say who="sensei">Se ti confondi, torna alla lista delle cinque parti. Un URL è sempre quello.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un URL ha cinque parti: protocollo, dominio, percorso, parametri e frammento.
+- Il dominio si legge da destra a sinistra e identifica il sito: una lettera diversa è un sito diverso.
+- https cifra i dati; il lucchetto non dice che il sito sia onesto.
+- Caso chiuso: l'indirizzo di Lucia era corretto; era stato scritto male da chi lo aveva ricopiato a mano.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono le parti di un URL?", a: "Protocollo, dominio, percorso, parametri e frammento" },
+    { q: "Che cosa indica la «s» di https?", a: "Che la connessione è cifrata (secure)" },
+    { q: "Che cosa si trova dopo il punto interrogativo?", a: "I parametri, nella forma nome=valore" },
+    { q: "Il lucchetto garantisce che il sito sia onesto?", a: "No: garantisce solo che la connessione è cifrata" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: che cosa si dicono browser e server, parola per parola.</Say>
+</Scene>

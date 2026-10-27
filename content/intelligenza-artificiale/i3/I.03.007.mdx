@@ -1,0 +1,147 @@
+---
+id: I.03.007
+course: intelligenza-artificiale
+module: 3
+title: "Da dove vengono i dati: raccolti, acquistati, generati"
+belt: bianca
+duration_min: 8
+prerequisites: [I.03.006]
+objectives:
+  - "Distinguere dati raccolti, acquistati o ottenuti con licenza, e generati"
+  - "Indicare un vantaggio e un rischio di ciascuna fonte"
+  - "Spiegare perché un dato trovato su internet non è automaticamente libero da usare"
+verification:
+  type: generated-numeric
+  generator: i03-origine-dati
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che ciò che si trova su internet sia libero da usare per qualsiasi scopo"
+  - "Non leggere la licenza di un insieme di dati prima di usarlo"
+  - "Pensare che i dati generati artificialmente siano sempre migliori di quelli reali"
+commands: []
+---
+
+<Scene title="Dove li prendiamo?">
+Il gruppo di Marta e Dario vuole un'IA che riconosca il rumore di un motore difettoso nei carrelli della scuola. Hanno il codice pronto, ma non hanno i dati.
+
+Dario propone: «Scarichiamo registrazioni da internet!». Marta: «Ma possiamo usarle? E chi le ha fatte?».
+
+La domanda del caso: **da dove si possono prendere i dati e che cosa bisogna controllare?**
+
+<Say who="sensei">I dati non cadono dal cielo. Qualcuno li ha raccolti, e quel qualcuno ha delle regole su come si possono usare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre fonti">
+<Layers
+  caption="Le tre fonti principali dei dati."
+  items={[
+    { icon: "bolt", title: "Raccolti", text: "Li prendi tu: sensori, moduli, registrazioni, foto scattate da te" },
+    { icon: "folder", title: "Acquistati o ottenuti con licenza", text: "Li prendi da altri: insiemi di dati pubblici, di aziende, di istituzioni" },
+    { icon: "gear", title: "Generati", text: "Li crei con simulazioni o programmi: dati sintetici" },
+  ]}
+/>
+
+<Say who="assistente">Anche un'idea semplice come «registro io il motore con il telefono» è una fonte di dati: è raccolta da te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Raccolti e ottenuti da altri">
+**Dati raccolti**: sono su misura per il tuo problema e sai da dove vengono. Ma costano tempo e fatica, e se sei in pochi a raccoglierli rischiano di essere poco vari.
+
+**Dati ottenuti da altri**: risparmi lavoro e spesso sono grandi. Esistono molti insiemi pubblici, per esempio i **dati aperti** (*open data*) pubblicati da enti pubblici. Ma devi controllare tre cose:
+
+- **la licenza**: dice a quali condizioni puoi usarli (per esempio, solo per studio, o citando l'autore);
+- **la qualità**: chi li ha preparati, come sono state messe le etichette;
+- **la somiglianza**: sono davvero simili ai casi che vuoi risolvere?
+
+<Callout kind="attenzione">
+Un contenuto che è visibile su internet non è per questo libero da usare. Foto, testi e registrazioni hanno chi li ha creati e possono avere diritti d'autore o limiti di licenza. Prima di usarli per addestrare un modello, controlla le condizioni; nei casi dubbi chiedi a un adulto o al docente.
+</Callout>
+
+<Say who="sensei">La domanda prima di scaricare: «Chi dice che posso usarli, e per quale scopo?». La risposta sta nella licenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Dati generati">
+I dati **generati** (o *sintetici*) non vengono dal mondo reale ma da un programma o da una simulazione. Sono utili quando i dati veri sono pochi, costosi o delicati.
+
+- Per esercitarsi a riconoscere guasti rari, si può **simulare** il rumore di un motore difettoso.
+- Per variare le foto, si possono ruotare, schiarire o ritagliare quelle che si hanno: si chiama **aumento dei dati** (in inglese *data augmentation*).
+- Per dati con informazioni personali, si possono creare persone inventate che somigliano a quelle vere nelle statistiche.
+
+<Compare
+  caption="Dati generati: pro e contro."
+  left={{ title: "Vantaggi", points: ["Si creano quanti ne servono", "Si possono simulare casi rari", "Niente persone vere coinvolte"] }}
+  right={{ title: "Rischi", points: ["Copiano gli errori di chi li genera", "Possono non somigliare al mondo reale", "Troppi dati generati da IA possono peggiorare il modello"] }}
+/>
+
+<Callout kind="curiosita">
+Se un modello viene allenato di continuo su testi prodotti da altri modelli, la qualità può peggiorare generazione dopo generazione, perché si perdono i casi rari. I ricercatori lo chiamano collasso del modello.
+</Callout>
+
+<Say who="assistente">I dati generati sono un ottimo complemento, ma non sostituiscono del tutto quelli veri: servono sempre esempi reali per controllare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un gruppo ha pochissime foto di un insetto raro. Per averne di più, ruotano e schiariscono le foto che hanno già.
+
+<Quiz
+  question="Come si chiama questa tecnica e di che fonte di dati si tratta?"
+  options={[
+    "Aumento dei dati: i dati vengono generati a partire da quelli raccolti",
+    "Dati acquistati: si prendono foto già pronte da un venditore",
+    "Dati aperti: foto pubblicate da un ente pubblico",
+    "Pulizia dei dati: si tolgono i duplicati",
+  ]}
+  answer={0}
+  explain="Ruotare, schiarire o ritagliare le foto che si hanno già per ottenerne di nuove è aumento dei dati, una forma di dati generati. Non si acquista niente, non sono dati aperti e non si tolgono duplicati: anzi, si creano varianti."
+/>
+
+<Say who="sensei">Attenzione: le varianti aiutano ma non aggiungono informazioni davvero nuove. Una foto ruotata mostra sempre lo stesso insetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'origine dei dati. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-origine-dati" pass="4/5" retries={3} />
+
+<Say who="sensei">Raccolti, ottenuti o generati: per ognuno ricorda un vantaggio e un rischio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I dati si raccolgono, si ottengono da altri (con licenza) o si generano.
+- Di quelli ottenuti da altri si controllano licenza, qualità e somiglianza al proprio problema.
+- Un contenuto visibile su internet non è automaticamente libero da usare.
+- I dati generati servono a simulare casi rari e a variare gli esempi, ma non sostituiscono quelli reali.
+- Caso chiuso: per i carrelli, il gruppo registra il rumore da sé e controlla la licenza di ogni altra registrazione.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cosa sono i dati aperti (open data)?", a: "Dati pubblicati, spesso da enti pubblici, che chiunque può usare alle condizioni indicate" },
+    { q: "Che cosa dice una licenza?", a: "A quali condizioni si possono usare certi dati o contenuti" },
+    { q: "Che cos'è l'aumento dei dati?", a: "Creare nuovi esempi modificando quelli esistenti, per esempio ruotando le foto" },
+    { q: "Un rischio dei dati generati?", a: "Possono copiare gli errori di chi li genera e non somigliare al mondo reale" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: quando i dati parlano di persone vere, con il consenso.</Say>
+</Scene>

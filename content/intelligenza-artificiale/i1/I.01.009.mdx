@@ -1,0 +1,144 @@
+---
+id: I.01.009
+course: intelligenza-artificiale
+module: 1
+title: "Miti e paure: separare i fatti dalle storie"
+belt: bianca
+duration_min: 9
+prerequisites: [I.01.008]
+objectives:
+  - "Riconoscere i miti più comuni sull'IA: coscienza, ribellione, lavoro, neutralità"
+  - "Distinguere i rischi reali (errori, pregiudizi, falsi, privacy) dalle paure da film"
+  - "Sapere che esistono regole, come l'AI Act europeo, e che la responsabilità è umana"
+verification:
+  type: generated-numeric
+  generator: i01-miti-fatti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che l'IA abbia sentimenti o volontà propria"
+  - "Pensare che l'IA sia sempre oggettiva perché è matematica"
+  - "Ignorare i rischi reali (falsi, privacy, errori) perché troppo concentrati sulle paure da film"
+commands: []
+---
+
+<Scene title="Paura o fatti?">
+Alla radio della scuola, un ascoltatore scrive: «Ho letto che l'IA presto prenderà il controllo del mondo e ci toglierà il lavoro a tutti. È vero?». Un altro risponde: «Tranquilli, è solo una moda».
+
+Teo non vuole dire né «tutto bene» né «catastrofe». Vuole i fatti.
+
+La domanda del caso: **quali paure sull'IA sono fondate, e quali sono storie?**
+
+<Say who="sensei">Un buon cronista non spaventa e non rassicura a vuoto. Pesa le prove.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Quattro miti">
+<Layers
+  caption="Miti comuni e che cosa dicono i fatti."
+  items={[
+    { icon: "skull", title: "«L'IA si ribellerà»", text: "Oggi i sistemi non hanno volontà né obiettivi propri: eseguono compiti per cui sono costruiti" },
+    { icon: "user", title: "«L'IA pensa e sente come noi»", text: "Produce risposte simili a quelle umane, ma non c'è alcuna prova che provi emozioni o coscienza" },
+    { icon: "chart", title: "«L'IA è oggettiva»", text: "Impara dai dati, e i dati possono contenere pregiudizi" },
+    { icon: "globe", title: "«L'IA è un'unica cosa»", text: "Sono molti sistemi diversi, ciascuno per un compito" },
+  ]}
+/>
+
+Il linguaggio aiuta il mito: diciamo che il modello «pensa», «vuole», «sa», ma sono modi di dire. Il modello esegue calcoli.
+
+<Say who="assistente">Quando un assistente scrive «sono felice di aiutarti», è una frase appresa dal testo umano, non un sentimento provato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Lavoro: che cosa dicono i fatti">
+Sul lavoro non c'è una risposta semplice e sicura, e chi la dà fa una previsione.
+
+- Alcuni compiti saranno automatizzati, altri **cambieranno**, e nasceranno mestieri nuovi: è accaduto anche con altre tecnologie (le macchine nelle fabbriche, i computer).
+- Gli studi e gli esperti non sono d'accordo su quanti posti cambieranno e quanto in fretta.
+- Una certezza utile: chi sa usare bene gli strumenti di IA nel proprio mestiere ha un vantaggio. Per questo si studia.
+
+<Callout kind="attenzione">
+Diffida di chi afferma con certezza «tra due anni il lavoro sparirà» oppure «non cambierà niente». Sono entrambe previsioni sicure di cose che nessuno sa con precisione.
+</Callout>
+
+<Say who="sensei">Imparare a lavorare con l'IA è più utile che temerla o ignorarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I rischi reali">
+Le preoccupazioni più concrete di oggi non sono i robot ribelli, ma:
+
+<Layers
+  caption="Rischi reali, qui e ora."
+  items={[
+    { icon: "bug", title: "Errori", text: "Risposte sbagliate usate senza controllo" },
+    { icon: "mask", title: "Pregiudizi", text: "Decisioni ingiuste per via di dati sbilanciati" },
+    { icon: "eye", title: "Contenuti falsi", text: "Immagini, voci e video creati con l'IA (deepfake) per ingannare" },
+    { icon: "lock", title: "Privacy", text: "Dati personali raccolti o incollati dove non dovrebbero" },
+  ]}
+/>
+
+Per questo esistono regole. In Europa c'è il **regolamento sull'intelligenza artificiale** (in inglese *AI Act*, Regolamento UE 2024/1689), che divide i sistemi per livello di rischio e vieta alcune pratiche giudicate inaccettabili. Il principio di fondo è che chi costruisce e usa un'IA ne risponde.
+
+<Say who="assistente">I rischi veri sono meno spettacolari dei film, ma più vicini: riguardano quello che fai tu oggi con questi strumenti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale preoccupazione sull'IA è oggi concreta e documentata?"
+  options={[
+    "Contenuti falsi come i deepfake e decisioni distorte da dati sbilanciati",
+    "Le macchine che decidono di ribellarsi agli umani",
+    "Gli assistenti che provano davvero emozioni e soffrono",
+    "L'IA che sceglie da sola di prendere il controllo delle centrali elettriche",
+  ]}
+  answer={0}
+  explain="Falsi e pregiudizi nei dati sono problemi reali di oggi. Le altre opzioni sono scenari da film: oggi i sistemi non hanno volontà propria né emozioni provate."
+/>
+
+<Say who="sensei">Se la paura riguarda qualcosa che puoi controllare oggi, è quasi sempre una paura utile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su miti e fatti. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i01-miti-fatti" pass="4/5" retries={3} />
+
+<Say who="sensei">Fatti prima, storie dopo. È la regola di ogni buon cronista.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I miti più diffusi: l'IA si ribella, prova emozioni, è sempre oggettiva, è una cosa sola. I fatti dicono altro.
+- Sul lavoro cambieranno molti compiti: nessuno sa con precisione quanto; conviene imparare a usare l'IA.
+- I rischi reali di oggi sono errori, pregiudizi, contenuti falsi e privacy.
+- In Europa esiste l'AI Act (Regolamento UE 2024/1689), che regola l'IA in base al rischio.
+- Caso chiuso: Teo ha detto agli ascoltatori né «catastrofe» né «moda»: i fatti, i rischi reali e che cosa si può fare.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Un'IA può avere sentimenti?", a: "Non ci sono prove: produce frasi che li imitano, ma non li prova" },
+    { q: "Perché un'IA può non essere oggettiva?", a: "Perché impara da dati che possono contenere pregiudizi" },
+    { q: "Che cos'è un deepfake?", a: "Un'immagine, voce o video falsi creati con l'IA per sembrare veri" },
+    { q: "Che cos'è l'AI Act?", a: "Il regolamento europeo sull'IA, che distingue i sistemi per livello di rischio" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: addestri un riconoscitore di immagini, senza scrivere codice.</Say>
+</Scene>

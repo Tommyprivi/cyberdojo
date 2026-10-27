@@ -1,0 +1,153 @@
+---
+id: I.03.001
+course: intelligenza-artificiale
+module: 3
+title: "Perché per l'IA i dati contano più del codice"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.010]
+objectives:
+  - "Spiegare la differenza tra un programma con regole scritte a mano e un modello che impara dai dati"
+  - "Descrivere perché lo stesso codice con dati diversi dà risultati diversi"
+  - "Elencare le qualità di un buon insieme di dati: pertinente, corretto, vario e abbastanza grande"
+verification:
+  type: generated-numeric
+  generator: i03-dati-contano
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che basti un programma molto avanzato: con dati scarsi o sbagliati anche il programma migliore sbaglia"
+  - "Credere che l'IA abbia già in sé le regole: le ricava dagli esempi che le dai"
+  - "Pensare che più dati significhi sempre dati migliori, senza guardare se sono corretti e vari"
+commands: []
+---
+
+<Scene title="Le mele di Marta">
+Marta e Dario, due compagni di classe, vogliono costruire un'app che riconosca la frutta dalla fotocamera. Usano lo stesso programma di addestramento, copiato dalla stessa guida.
+
+Marta lo allena con 20 foto, tutte di mele rosse su un tavolo bianco. Dario lo allena con 200 foto: mele rosse, verdi e gialle, con sfondi e luci diversi. Poi provano entrambi con una mela verde sul davanzale. L'app di Marta dice «non è una mela». Quella di Dario dice «mela».
+
+La domanda del caso: **perché lo stesso programma, con gli stessi comandi, funziona in modo così diverso?**
+
+<Say who="sensei">Il codice era identico. Quello che è cambiato sono gli esempi. Oggi capisci perché, nell'IA, sono spesso gli esempi a decidere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Regole scritte e regole imparate">
+Un programma **tradizionale** funziona con regole scritte da una persona: «se il voto è sotto il 6, scrivi insufficiente». Chi programma pensa a tutti i casi e li scrive.
+
+Per riconoscere una mela le regole sarebbero impossibili da scrivere: quanto rossa? Quanto rotonda? E se è mezza nascosta dietro un'arancia? Con l'**IA** si fa il contrario: non si scrivono le regole, si mostrano **esempi** e il programma ricava da solo i criteri.
+
+<Compare
+  caption="Due modi di far fare un lavoro a un computer."
+  left={{ title: "Programma tradizionale", points: ["Una persona scrive le regole", "Le regole sono visibili e precise", "Funziona bene se i casi si possono elencare"] }}
+  right={{ title: "IA che impara dai dati", points: ["Una persona fornisce gli esempi", "Le regole le ricava il programma", "Funziona bene se gli esempi sono buoni"] }}
+/>
+
+<Say who="assistente">Pensa a come impari tu a riconoscere un cane: nessuno ti ha dato un elenco di regole, hai visto tanti cani. L'IA fa qualcosa di simile, ma con i numeri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Stesso codice, dati diversi">
+Il percorso è sempre lo stesso: gli **esempi** (i dati) entrano in una fase di **addestramento**, che produce un **modello**. Il modello è ciò che poi fa le **previsioni** sui casi nuovi.
+
+<Flow
+  caption="Dal dato alla previsione."
+  steps={[
+    { icon: "database", title: "Dati", text: "Gli esempi da cui imparare" },
+    { icon: "gear", title: "Addestramento", text: "Il programma cerca schemi negli esempi" },
+    { icon: "bolt", title: "Modello", text: "Ciò che il programma ha imparato" },
+    { icon: "eye", title: "Previsione", text: "La risposta su un caso nuovo" },
+  ]}
+/>
+
+Il programma di addestramento è lo stesso per Marta e per Dario. Ma il modello di Marta ha visto solo mele rosse su sfondo bianco: ha imparato che «mela» vuol dire «macchia rossa su bianco». Quello di Dario ha visto più varietà e ha imparato a guardare altro, come la forma.
+
+<Callout kind="regola">
+Un modello può imparare **solo** da ciò che ha visto. Se negli esempi manca qualcosa, il modello non lo sa: non perché sia stupido, ma perché nessuno glielo ha mostrato.
+</Callout>
+
+<Say who="sensei">Il modello è lo specchio dei suoi dati. Se lo specchio è storto, anche il riflesso lo è.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa rende buoni i dati">
+In inglese si dice *garbage in, garbage out*: «spazzatura dentro, spazzatura fuori». Se i dati sono sbagliati, anche le risposte lo saranno. Quattro qualità da controllare:
+
+- **Pertinenti**: parlano davvero del problema. Foto di arance non servono per riconoscere le mele.
+- **Corretti**: senza errori. Una foto di una pera con scritto «mela» insegna una cosa falsa.
+- **Vari**: coprono i casi diversi che il modello incontrerà (luci, sfondi, colori, angolazioni).
+- **Abbastanza**: serve una certa quantità, ma non è l'unica cosa che conta.
+
+<Callout kind="attenzione">
+Più dati non vuol dire automaticamente dati migliori. Mille foto tutte uguali insegnano meno di cento foto ben variate.
+</Callout>
+
+<Callout kind="curiosita">
+Questo non vuol dire che il codice non conti: il programma di addestramento serve, e un buon programma dà risultati migliori. Ma in molti progetti, migliorare i dati dà più risultato che rifinire il codice.
+</Callout>
+
+<Say who="assistente">Quando un'IA sbaglia, la prima domanda utile non è «che cosa non va nel programma?» ma «con quali esempi è stata allenata?».</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un gruppo costruisce un'IA che riconosce se una email è spam. L'hanno allenata con 5.000 email, tutte scritte in inglese. Ora la provano con email in italiano e sbaglia molto.
+
+<Quiz
+  question="Qual è la causa più probabile degli errori sulle email in italiano?"
+  options={[
+    "Gli esempi di addestramento non comprendevano email in italiano",
+    "Il computer usato era troppo lento",
+    "Il programma di addestramento è stato scritto in un linguaggio sbagliato",
+    "Cinquemila email sono un numero troppo piccolo per qualsiasi modello",
+  ]}
+  answer={0}
+  explain="Il modello ha visto solo email in inglese, quindi non ha mai incontrato il caso dell'italiano: i dati non erano vari. La velocità del computer non cambia ciò che il modello impara, il linguaggio di programmazione non c'entra e 5.000 esempi possono bastare per certi compiti, a patto che siano adatti."
+/>
+
+<Say who="sensei">Se il modello sbaglia su un tipo di caso, controlla se quel caso era presente negli esempi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su dati, modelli e qualità degli esempi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-dati-contano" pass="4/5" retries={3} />
+
+<Say who="sensei">Dati, addestramento, modello, previsione. Il filo è sempre questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un programma tradizionale segue regole scritte da una persona; un'IA ricava le regole dagli esempi.
+- Il percorso è: dati, addestramento, modello, previsione.
+- Lo stesso programma con dati diversi dà modelli diversi, perché il modello impara solo da ciò che ha visto.
+- Dati buoni vuol dire pertinenti, corretti, vari e in quantità sufficiente.
+- Caso chiuso: l'app di Marta sbagliava perché aveva visto solo mele rosse su sfondo bianco; quella di Dario aveva visto più varietà.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un modello di IA?", a: "Ciò che il programma ha imparato dagli esempi e usa per fare previsioni" },
+    { q: "Che cosa significa garbage in, garbage out?", a: "Con dati sbagliati anche le risposte saranno sbagliate" },
+    { q: "Perché l'app di Marta sbagliava con la mela verde?", a: "Perché negli esempi c'erano solo mele rosse su sfondo bianco" },
+    { q: "Quali sono quattro qualità di buoni dati?", a: "Pertinenti, corretti, vari e in quantità sufficiente" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i dati hanno forme diverse, da una tabella a una fotografia.</Say>
+</Scene>

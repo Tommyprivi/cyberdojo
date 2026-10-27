@@ -1,0 +1,214 @@
+---
+id: P.03.010
+course: programmazione
+module: 3
+title: "Esercizi: un convertitore di unità fatto bene"
+belt: bianca
+duration_min: 10
+prerequisites: [P.03.009]
+objectives:
+  - "Costruire un programma a funzioni che converte chilometri, gradi e chili"
+  - "Applicare parametri, return, nomi chiari e docstring in un programma completo"
+  - "Provare ogni funzione con valori di cui conosci il risultato"
+verification:
+  type: generated-numeric
+  generator: p03-convertitore
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere la formula sbagliata, come dimenticare di moltiplicare per 9 e dividere per 5 nei gradi Fahrenheit"
+  - "Convertire il testo di input in numero dimenticando float"
+  - "Provare il programma solo con un valore, senza controllare casi noti come 0 e 100 gradi"
+commands: []
+---
+
+<Scene title="Il torneo diventa internazionale">
+Una squadra americana si iscrive al torneo di Elena. I loro allenatori parlano di miglia, gradi Fahrenheit e libbre. Elena vuole un programma che converta in pochi secondi.
+
+Questa è l'ultima lezione del modulo: usi tutto quello che hai imparato, dalle funzioni ai commenti.
+
+La domanda del caso: **come si scrive un convertitore che sia corretto, leggibile e facile da ampliare?**
+
+<Say who="sensei">Una prova finale non è un esame: è un progetto vero, piccolo, da fare bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le formule">
+Prima di scrivere codice servono le formule. Sono fatti noti, ma controllali sempre due volte:
+
+- **Chilometri in miglia**: 1 miglio vale 1,609344 km, quindi miglia = km diviso 1,609344.
+- **Celsius in Fahrenheit**: F = C per 9, diviso 5, più 32.
+- **Chili in libbre**: 1 chilo vale circa 2,20462 libbre.
+
+Per le prove servono casi in cui conosci già il risultato:
+
+<Layers
+  caption="Valori noti per controllare le formule."
+  items={[
+    { icon: "check", title: "0 gradi C", text: "Deve dare 32 gradi F" },
+    { icon: "check", title: "100 gradi C", text: "Deve dare 212 gradi F" },
+    { icon: "check", title: "-40 gradi C", text: "Deve dare -40 gradi F: i due scali coincidono" },
+  ]}
+/>
+
+<Callout kind="trucco">
+Un programma «che gira» non è un programma giusto. Provalo sempre con numeri di cui sai già la risposta: se 100 gradi non diventano 212, c'è un errore nella formula.
+</Callout>
+
+<Say who="assistente">Controllare con valori noti è il modo più rapido per fidarsi del proprio codice.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le funzioni di conversione">
+Una funzione per ogni conversione, con nome chiaro, docstring e `return`.
+
+```python
+def km_in_miglia(km):
+    """Converte chilometri in miglia (1 miglio = 1,609344 km)."""
+    return km / 1.609344
+
+def celsius_in_fahrenheit(celsius):
+    """Converte gradi Celsius in gradi Fahrenheit."""
+    return celsius * 9 / 5 + 32
+
+def kg_in_libbre(kg):
+    """Converte chilogrammi in libbre (circa 2,20462 libbre per kg)."""
+    return kg * 2.20462
+```
+
+Nessuna di queste funzioni usa `input` o `print`: calcolano e basta. Così le puoi riusare in qualsiasi programma, e provare da sole.
+
+Una prova rapida:
+
+```python
+print(celsius_in_fahrenheit(100))
+print(celsius_in_fahrenheit(0))
+print(celsius_in_fahrenheit(-40))
+```
+
+<Log lines={[
+  "212.0",
+  "32.0",
+  "-40.0",
+]} caption="I tre valori noti tornano tutti." />
+
+<Say who="sensei">Se le tre prove tornano, la formula è giusta. Se no, sai che l'errore sta in quella funzione, e solo lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La funzione main">
+Ora serve la parte che parla con l'utente. Usa le funzioni sopra, senza ripetere i calcoli.
+
+```python
+def main():
+    print("1 = km in miglia, 2 = Celsius in Fahrenheit, 3 = kg in libbre")
+    scelta = input("Scelta: ")
+    valore = float(input("Valore: "))
+    if scelta == "1":
+        print(round(km_in_miglia(valore), 2), "miglia")
+    elif scelta == "2":
+        print(round(celsius_in_fahrenheit(valore), 1), "gradi F")
+    elif scelta == "3":
+        print(round(kg_in_libbre(valore), 2), "libbre")
+    else:
+        print("Scelta non valida")
+
+main()
+```
+
+<Log lines={[
+  "1 = km in miglia, 2 = Celsius in Fahrenheit, 3 = kg in libbre",
+  "Scelta: 2",
+  "Valore: 100",
+  "212.0 gradi F",
+]} caption="Esempio di esecuzione." />
+
+`round(numero, 2)` arrotonda a due decimali. `float(...)` trasforma il testo digitato in numero. Il valore dell'utente viene letto sempre come testo, perciò la scelta si confronta con `"1"`, `"2"`, `"3"` tra virgolette.
+
+<Callout kind="attenzione">
+Un valore non numerico, come «ciao», farebbe fermare il programma con un errore. Gestire questi casi è il tema del prossimo modulo.
+</Callout>
+
+<Say who="assistente">Fai attenzione: l'input è sempre testo. Per questo `float` è indispensabile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ogni passo, un controllo">
+<Guided
+  steps={[
+    "Scrivi km_in_miglia, celsius_in_fahrenheit e kg_in_libbre, ciascuna con docstring e return.",
+    "Prova ogni funzione da sola con un valore noto: 0, 100 e -40 gradi per Celsius.",
+    "Scrivi la funzione main con il menu e le tre scelte.",
+    "Controlla che main usi float per il valore e il confronto con testo per la scelta.",
+    "Aggiungi la chiamata main() in fondo al file e provalo con le tre conversioni.",
+    "Rileggi: nomi chiari? docstring ovunque? nessun calcolo ripetuto in main?",
+  ]}
+/>
+
+<Callout kind="trucco">
+Per ampliarlo basta una funzione nuova (per esempio litri in galloni) e un ramo `elif` in `main`. Il resto non si tocca: è il vantaggio di averlo scritto bene.
+</Callout>
+
+<Say who="sensei">Un programma ben fatto si amplia aggiungendo, non riscrivendo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Che cosa restituisce celsius_in_fahrenheit(100) con la formula celsius * 9 / 5 + 32?"
+  options={[
+    "212.0",
+    "132.0",
+    "180.0",
+    "100.0",
+  ]}
+  answer={0}
+  explain="100 per 9 fa 900, diviso 5 fa 180, più 32 fa 212: è il punto di ebollizione dell'acqua in gradi Fahrenheit. Il 132 viene dal dimenticare di moltiplicare per 9 e dividere per 5 (100 più 32), il 180 dal dimenticare di sommare 32, il 100 da nessuna conversione."
+/>
+
+<Say who="sensei">Con 0, 100 e -40 puoi provare quasi ogni versione della formula. Tienili a mente.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul convertitore e su tutto il modulo. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-convertitore" pass="4/5" retries={3} />
+
+<Say who="sensei">Formule giuste, funzioni piccole, prove con valori noti. Questo è il metodo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={25}>
+- Un programma ben fatto è una raccolta di funzioni piccole, con nomi chiari e docstring.
+- Le funzioni di calcolo usano `return`; `input` e `print` stanno in `main`.
+- Si prova ogni funzione con valori noti, come 0, 100 e -40 gradi Celsius.
+- L'input è sempre testo: per i numeri serve `float`.
+- Caso chiuso: Elena converte miglia, gradi e libbre per la squadra americana, con un programma che si amplia facilmente.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la formula da Celsius a Fahrenheit?", a: "F = C * 9 / 5 + 32" },
+    { q: "Quanto fa 100 gradi Celsius in Fahrenheit?", a: "212" },
+    { q: "Perché usare float con input?", a: "Perché input restituisce testo e per calcolare serve un numero" },
+    { q: "Come si prova una funzione di conversione?", a: "Con valori di cui si conosce già il risultato" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso, e modulo finito. Prossimo modulo: leggere gli errori e capire cosa dicono.</Say>
+</Scene>

@@ -2,6 +2,12 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Mascot } from "../mascot";
 import type { Announcement } from "@/lib/announcements";
+import type { EngagementSummary } from "@/lib/community/reactions";
+import { Engagement } from "./engagement";
+import { SafeMarkdown } from "./safe-markdown";
+
+/** Un annuncio da mostrare: quelli dei file (MDX fidato) o del database (Markdown limitato, rendering sicuro). */
+export type FeedItem = Announcement & { source?: "file" | "db"; pinned?: boolean };
 
 const TAG_STYLE: Record<string, string> = {
   novità: "bg-primary/15 text-primary",
@@ -14,22 +20,34 @@ const when = (date: string) =>
   new Date(`${date}T00:00:00Z`).toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
 /** Il canale «annunci»: messaggi dello staff, dal più recente, come in una chat di comunità. Sola lettura. */
-export async function AnnouncementFeed({ list }: { list: Announcement[] }) {
+export async function AnnouncementFeed({ list, engagement }: { list: FeedItem[]; engagement?: Record<string, EngagementSummary> }) {
   if (list.length === 0) {
     return <p className="rounded-2xl border-2 border-dashed border-border p-6 text-muted">Ancora nessun annuncio. Il primo arriva presto.</p>;
   }
   return (
     <ol className="grid gap-5" aria-label="Annunci, dal più recente">
-      {await Promise.all(list.map((a, i) => <Message key={a.id} a={a} pinned={i === 0} />))}
+      {await Promise.all(list.map((a, i) => <Message key={a.id} a={a} pinned={Boolean(a.pinned)} latest={i === list.findIndex((x) => !x.pinned)} engagement={engagement?.[a.id]} />))}
     </ol>
   );
 }
 
-async function Message({ a, pinned }: { a: Announcement; pinned: boolean }) {
-  const { content } = await compileMDX({
-    source: a.body,
-    options: { blockJS: false, mdxOptions: { remarkPlugins: [remarkGfm] } },
-  });
+async function Message({ a, pinned, latest, engagement }: { a: FeedItem; pinned: boolean; latest: boolean; engagement?: EngagementSummary }) {
+  // Solo i file del repository (scritti da chi ha accesso al codice) passano da MDX; il testo dello staff mai.
+  const body =
+    a.source === "db" ? (
+      <SafeMarkdown source={a.body} />
+    ) : (
+      <div className="legal-body">
+        {
+          (
+            await compileMDX({
+              source: a.body,
+              options: { blockJS: false, mdxOptions: { remarkPlugins: [remarkGfm] } },
+            })
+          ).content
+        }
+      </div>
+    );
   return (
     <li id={a.id} className="grid grid-cols-[auto_minmax(0,1fr)] gap-3 scroll-mt-20">
       <div className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-full border-2 border-border bg-surface">
@@ -42,7 +60,7 @@ async function Message({ a, pinned }: { a: Announcement; pinned: boolean }) {
           <time dateTime={a.date} className="text-xs text-muted">
             {when(a.date)}
           </time>
-          {pinned ? <span className="text-xs font-bold text-accent">📌 L&apos;ultimo annuncio</span> : null}
+          {pinned ? <span className="text-xs font-bold text-accent">📌 Fissato in alto</span> : latest ? <span className="text-xs font-bold text-accent">📌 L&apos;ultimo annuncio</span> : null}
         </p>
         <div className="mt-2 grid gap-3 rounded-2xl rounded-tl-sm border-2 border-border bg-surface p-4">
           <h2 className="font-display text-xl font-bold leading-tight">{a.title}</h2>
@@ -55,7 +73,8 @@ async function Message({ a, pinned }: { a: Announcement; pinned: boolean }) {
               ))}
             </p>
           ) : null}
-          <div className="legal-body">{content}</div>
+          {body}
+          {engagement ? <Engagement id={a.id} initial={engagement} /> : null}
         </div>
       </div>
     </li>

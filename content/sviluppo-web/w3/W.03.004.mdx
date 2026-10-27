@@ -1,0 +1,177 @@
+---
+id: W.03.004
+course: sviluppo-web
+module: 3
+title: "Un modulo: form, input e pulsanti"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.003]
+objectives:
+  - "Scrivere un form con action e method"
+  - "Usare input con il giusto type e l'attributo name"
+  - "Distinguere GET e POST nell'invio di un modulo"
+verification:
+  type: generated-numeric
+  generator: w03-form-base
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare l'attributo name: senza, il valore del campo non viene inviato"
+  - "Usare il metodo GET per dati riservati, che finiscono nell'URL"
+  - "Credere che un form HTML da solo salvi i dati: serve un server che li riceva"
+commands: []
+---
+
+<Scene title="Iscriversi all'orto">
+L'associazione vuole un modulo di iscrizione: nome, indirizzo email e un pulsante «Iscriviti». Marco scrive i campi, ma quando prova a premere il pulsante succede poco, e i dati non arrivano da nessuna parte.
+
+In HTML un modulo si costruisce con il tag `<form>`. Il browser sa raccogliere i campi e inviarli, ma bisogna dirgli **dove** e **come**.
+
+La domanda del caso: **che cosa serve perché un modulo funzioni davvero?**
+
+<Say who="sensei">Un form è una busta con un indirizzo. Dentro ci metti i campi, fuori scrivi dove spedirla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il tag form">
+Il `<form>` racchiude tutti i campi e ha due attributi importanti:
+
+- `action`: l'indirizzo (URL) del server che riceve i dati.
+- `method`: il metodo HTTP con cui li invia, `get` oppure `post`. Se lo ometti, è `get`.
+
+```html
+<form action="/iscrizione" method="post">
+  <input type="text" name="nome">
+  <input type="email" name="email">
+  <button type="submit">Iscriviti</button>
+</form>
+```
+
+<Compare
+  caption="Come partono i dati."
+  left={{ title: "GET", points: ["I dati finiscono nell'URL", "Si vedono e restano nella cronologia", "Va bene per le ricerche"] }}
+  right={{ title: "POST", points: ["I dati stanno nel corpo della richiesta", "Non compaiono nell'URL", "Va usato per i dati personali"] }}
+/>
+
+<Callout kind="attenzione">
+Il form manda i dati a un **server** che li deve ricevere e salvare. HTML da solo non basta: la parte lato server si impara più avanti nel corso. Per ora ci occupiamo di scrivere bene il modulo.
+</Callout>
+
+<Say who="assistente">Su HTTP, GET e POST li hai già incontrati nel modulo 1: qui li usiamo davvero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli input e il name">
+Il tag `<input>` crea un campo. Cambia comportamento in base al suo **type**:
+
+- `type="text"`: testo su una riga.
+- `type="email"`: un indirizzo email.
+- `type="password"`: i caratteri compaiono come puntini.
+- `type="number"`: un numero.
+
+L'attributo che molti dimenticano è **name**. È il nome con cui il valore viaggia verso il server.
+
+<Flow
+  caption="Che cosa parte quando premi il pulsante."
+  steps={[
+    { icon: "user", title: "Scrivi", text: "Anna nel campo con name nome" },
+    { icon: "bolt", title: "Premi invio", text: "Il browser raccoglie i campi" },
+    { icon: "server", title: "Il server riceve", text: "nome=Anna&email=..." },
+  ]}
+/>
+
+<Callout kind="regola">
+Un campo **senza** `name` non viene inviato: per il server è come se non esistesse. Ricorda: `name` è il nome del dato, e lo scegli tu.
+</Callout>
+
+<Callout kind="curiosita">
+`type="password"` nasconde solo i caratteri sullo schermo. Non rende la password sicura: per quello serve HTTPS e un server fatto bene.
+</Callout>
+
+<Say who="sensei">Se un dato non arriva, il primo sospettato è sempre il name mancante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I pulsanti">
+Il tag `<button>` ha tre tipi, scelti con l'attributo `type`:
+
+- `type="submit"`: invia il modulo. È il comportamento predefinito dentro un form.
+- `type="reset"`: riporta i campi ai valori iniziali.
+- `type="button"`: non fa niente da solo; serve quando poi lo programmi con JavaScript.
+
+```html
+<form action="/iscrizione" method="post">
+  <input type="text" name="nome">
+  <button type="submit">Iscriviti</button>
+  <button type="reset">Svuota</button>
+</form>
+```
+
+<Callout kind="trucco">
+Scrivi sempre il `type` in modo esplicito: eviti sorprese. Un button senza type, dentro un form, invia il modulo anche se non lo volevi.
+</Callout>
+
+<Say who="assistente">Un pulsante «Svuota» è comodo ma pericoloso: si clicca per errore e si perde tutto. Usalo solo quando serve.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco ha scritto un campo per il nome, ma sul server non arriva niente.
+
+<Quiz
+  question="Che cosa succede ai dati di un campo input scritto senza l'attributo name?"
+  options={[
+    "Non vengono inviati con il modulo",
+    "Vengono inviati con il nome «input»",
+    "Vengono inviati con il valore del type",
+    "Il browser indovina il nome dal testo accanto",
+  ]}
+  answer={0}
+  explain="Senza name il campo non partecipa all'invio: il server non riceve il suo valore. Il browser non inventa nomi, né li prende dal type o dal testo vicino."
+/>
+
+<Say who="sensei">Il name è l'etichetta con cui il dato viaggia. Senza, resta a casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su moduli, input e pulsanti. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-form-base" pass="4/5" retries={3} />
+
+<Say who="sensei">Form, action, method, name. Quattro parole che ti salvano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il `<form>` racchiude i campi; `action` dice dove inviare i dati e `method` come (GET o POST).
+- GET mette i dati nell'URL, POST nel corpo della richiesta: per dati personali si usa POST.
+- Ogni campo ha un `type` e un `name`: senza `name` il valore non viene inviato.
+- `<button>` può essere `submit`, `reset` o `button`; HTML da solo non salva i dati, serve un server.
+- Caso chiuso: il modulo di Marco non inviava niente perché mancavano i `name` e un server che ricevesse i dati.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve action in un form?", a: "A indicare l'indirizzo del server che riceve i dati" },
+    { q: "Qual è il metodo predefinito di un form?", a: "GET" },
+    { q: "Che cosa succede a un campo senza name?", a: "Il suo valore non viene inviato" },
+    { q: "Che cosa fa un button di tipo reset?", a: "Riporta i campi ai valori iniziali" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: etichette, campi di testo, scelte e menu.</Say>
+</Scene>

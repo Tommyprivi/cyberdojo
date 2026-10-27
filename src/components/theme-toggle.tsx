@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import { themeColorFor } from "@/lib/app/app-mode";
 
 type Theme = "light" | "dark" | "system";
 const ORDER: Theme[] = ["light", "dark", "system"];
@@ -44,6 +45,21 @@ export function ThemeSync() {
   const theme = useTheme();
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
+    // Barra di stato del telefono coerente col tema (anche quando segue il dispositivo).
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const paint = () => {
+      const color = themeColorFor(theme, mq.matches);
+      const metas = document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]');
+      if (metas.length === 0) {
+        const m = document.createElement("meta");
+        m.name = "theme-color";
+        m.content = color;
+        document.head.appendChild(m);
+      } else metas.forEach((m) => (m.content = color));
+    };
+    paint();
+    mq.addEventListener("change", paint);
+    return () => mq.removeEventListener("change", paint);
   }, [theme]);
   return null;
 }

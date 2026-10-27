@@ -8,6 +8,16 @@ export const COURSE_COVER: Record<CourseId, string> = {
   D: "/img/corsi/dati.svg",
   T: "/img/corsi/trading.svg",
   H: "/img/corsi/hedge.svg",
+  W: "/img/corsi/sviluppo-web.svg",
+  P: "/img/corsi/programmazione.svg",
+  A: "/img/corsi/app-telefono.svg",
+  I: "/img/corsi/intelligenza-artificiale.svg",
+  B: "/img/corsi/database-grandi-dati.svg",
+  L: "/img/corsi/cloud-devops.svg",
+  R: "/img/corsi/reti-internet.svg",
+  E: "/img/corsi/hacking-etico.svg",
+  X: "/img/corsi/blockchain.svg",
+  M: "/img/corsi/mondo-digitale.svg",
 };
 
 const MODULE_COVER: Record<string, string> = {

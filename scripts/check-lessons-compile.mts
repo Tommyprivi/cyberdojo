@@ -8,8 +8,11 @@ const allowed = new Set<string>(PIC_NAMES);
 let bad = 0;
 let diagrams = 0;
 async function main() {
+// Uso: npx tsx scripts/check-lessons-compile.mts [prefisso ID, es. W.01]: controlla solo le lezioni che iniziano così.
+const prefix = process.argv[2];
 for (const l of readRawLessons()) {
   const id = String(l.data.id);
+  if (prefix && !id.startsWith(prefix)) continue;
   const screens = splitScreens(l.body);
   for (const [i, src] of screens.entries()) {
     try {

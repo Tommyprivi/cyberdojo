@@ -1,0 +1,171 @@
+---
+id: P.03.001
+course: programmazione
+module: 3
+title: "Perché esistono le funzioni"
+belt: bianca
+duration_min: 8
+prerequisites: [P.02.010]
+objectives:
+  - "Riconoscere il codice ripetuto e spiegare perché è un problema"
+  - "Dire che cos'è una funzione: un pezzo di codice con un nome, riutilizzabile"
+  - "Elencare i vantaggi delle funzioni: meno ripetizioni, meno errori, programmi più leggibili"
+verification:
+  type: generated-numeric
+  generator: p03-perche-funzioni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Copiare e incollare lo stesso blocco di codice invece di dargli un nome e riusarlo"
+  - "Pensare che una funzione serva solo quando il codice è lungo: serve anche per dare un nome a un'idea"
+  - "Credere che una funzione si esegua da sola appena viene scritta"
+commands: []
+---
+
+<Scene title="Tre biglietti, tre modifiche">
+Elena organizza il torneo di pallavolo del suo gruppo. Scrive un programma che stampa un biglietto per ogni squadra: un titolo, il nome della squadra e un augurio. Per tre squadre copia e incolla lo stesso blocco tre volte.
+
+Il giorno dopo decide di cambiare il titolo. Deve modificarlo in tre punti. Ne cambia due e ne dimentica uno: un biglietto esce con il titolo vecchio.
+
+La domanda del caso: **come si cambia il titolo una volta sola, in un solo punto?**
+
+<Say who="sensei">Se ti trovi a copiare e incollare, fermati. Quasi sempre c'è un modo migliore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il problema della ripetizione">
+Ecco il programma di Elena, con due squadre per brevità:
+
+```python
+print("=== Torneo di pallavolo ===")
+print("Squadra: Aquile")
+print("Buona fortuna!")
+print("=== Torneo di pallavolo ===")
+print("Squadra: Lupi")
+print("Buona fortuna!")
+```
+
+Le righe 1 e 3 sono uguali, e anche le righe 4 e 6. Cambia solo il nome della squadra. Il codice ripetuto ha tre difetti:
+
+- **Fatica**: più squadre ci sono, più righe da scrivere.
+- **Errori**: se cambi una copia e ti dimentichi le altre, il programma fa cose diverse in posti diversi.
+- **Confusione**: dopo un po' non si capisce più dove sia la parte importante.
+
+<Callout kind="regola">
+Una regola dei programmatori: **non ripeterti**. Se la stessa cosa serve due volte, scrivila una volta sola e dalle un nome.
+</Callout>
+
+<Say who="assistente">Anche nella vita lo fai: non rispieghi la ricetta della pasta ogni volta, dici «fai la pasta» e basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La funzione: un pezzo con un nome">
+Una **funzione** è un pezzo di codice a cui dai un **nome**. Quando vuoi eseguirlo, usi quel nome. Il codice sta scritto in un posto solo, e lo puoi usare tutte le volte che vuoi.
+
+<Flow
+  caption="Scrivi una volta, usi molte volte."
+  steps={[
+    { icon: "code", title: "Scrivi", text: "Il blocco di codice, una volta sola" },
+    { icon: "book", title: "Dai un nome", text: "Per esempio biglietto" },
+    { icon: "bolt", title: "Usa", text: "Scrivi il nome ogni volta che serve" },
+  ]}
+/>
+
+Il programma di Elena con una funzione (i dettagli della scrittura li vedrai nella prossima lezione):
+
+```python
+def biglietto(squadra):
+    print("=== Torneo di pallavolo ===")
+    print("Squadra:", squadra)
+    print("Buona fortuna!")
+
+biglietto("Aquile")
+biglietto("Lupi")
+```
+
+Ora il titolo compare in **un solo punto**. Per cambiarlo basta modificare una riga.
+
+<Say who="sensei">Hai già usato funzioni senza saperlo: `print` è una funzione scritta da altri, che usi scrivendo il suo nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I vantaggi">
+<Compare
+  caption="Senza funzioni e con le funzioni."
+  left={{ title: "Senza funzioni", points: ["Lo stesso codice scritto più volte", "Una modifica va fatta in tanti punti", "Il programma è una lunga lista"] }}
+  right={{ title: "Con le funzioni", points: ["Il codice è scritto una volta sola", "Una modifica vale ovunque", "I nomi raccontano cosa fa il programma"] }}
+/>
+
+Oltre a ridurre le ripetizioni, le funzioni aiutano in altri due modi:
+
+- **Leggibilità**: leggere `biglietto("Aquile")` è più chiaro di leggere tre righe di `print`.
+- **Prove più facili**: una funzione piccola la puoi provare da sola, e se sbaglia sai dove cercare.
+
+<Callout kind="curiosita">
+Anche i programmi più grandi sono fatti di migliaia di funzioni piccole. Nessuno scrive tutto in una lista unica.
+</Callout>
+
+<Say who="assistente">Una funzione è come un nome dato a una mossa: «schiacciata». Basta dire il nome, e tutti sanno cosa fare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena ha il suo blocco di tre righe copiato cinque volte e vuole cambiare l'augurio finale.
+
+<Quiz
+  question="Qual è il vantaggio principale di mettere il blocco ripetuto dentro una funzione?"
+  options={[
+    "Per cambiare qualcosa basta modificare un solo punto",
+    "Il programma diventa sempre più veloce da eseguire",
+    "Il codice smette di dare errori",
+    "Il computer capisce meglio i commenti",
+  ]}
+  answer={0}
+  explain="Con la funzione il codice è scritto in un solo posto, quindi una modifica vale ovunque. Non è detto che il programma vada più veloce, e gli errori non spariscono da soli: restano quelli che scrivi tu. I commenti non c'entrano."
+/>
+
+<Say who="sensei">Meno copie, meno guai. Ricordalo la prossima volta che premi Ctrl+V.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su ripetizione e funzioni. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-perche-funzioni" pass="4/5" retries={3} />
+
+<Say who="sensei">Se vedi due blocchi uguali, pensa subito a una funzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Il codice copiato e incollato è fatica, rischio di errori e confusione.
+- Una funzione è un pezzo di codice con un nome, scritto una volta e usato tante volte.
+- Cambiando la funzione cambi il comportamento ovunque la usi.
+- `print` è già una funzione: le funzioni le usi dal primo giorno.
+- Caso chiuso: Elena mette il biglietto in una funzione e il titolo si cambia in un solo punto.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una funzione?", a: "Un pezzo di codice con un nome, che puoi usare più volte" },
+    { q: "Che cosa significa «non ripeterti»?", a: "Se serve due volte la stessa cosa, scrivila una volta sola e dalle un nome" },
+    { q: "Perché il codice copiato è pericoloso?", a: "Se cambi una copia e ne dimentichi un'altra, il programma si comporta in modo diverso" },
+    { q: "Un esempio di funzione già pronta in Python?", a: "print" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si scrive e si chiama una funzione, riga per riga.</Say>
+</Scene>

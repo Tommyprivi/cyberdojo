@@ -20,13 +20,14 @@ export const staffRoles = pgTable(
     userId: text("user_id")
       .primaryKey()
       .references(() => user.id, { onDelete: "cascade" }),
-    role: text("role", { enum: ["staff", "admin"] }).notNull().default("staff"),
+    role: text("role", { enum: ["staff", "admin", "docente"] }).notNull().default("staff"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [pgPolicy("own_staff_row", { for: "select", using: sql`${t.userId} = ${me}` })],
 ).enableRLS();
 
-const isStaff = sql`exists (select 1 from staff_roles s where s.user_id = ${me})`;
+// Solo staff e admin scrivono gli annunci: il docente (altro ruolo) no.
+const isStaff = sql`exists (select 1 from staff_roles s where s.user_id = ${me} and s.role in ('staff', 'admin'))`;
 
 /** Gli annunci (prima solo file in content/announcements). Testo semplice o Markdown, mai MDX. */
 export const announcements = pgTable(
@@ -126,4 +127,85 @@ export const pushSubscriptions = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [uniqueIndex("push_endpoint").on(t.endpoint), index("push_user_idx").on(t.userId), ownRow("user_id")],
+).enableRLS();
+
+/** Oggetti del negozio (colori e accessori del Sensei) comprati con le monete guadagnate studiando. Niente soldi veri. */
+export const shopPurchases = pgTable(
+  "shop_purchases",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    itemId: text("item_id").notNull(),
+    equipped: boolean("equipped").notNull().default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.itemId] }), ownRow("user_id")],
+).enableRLS();
+
+/** Segnalibri: una schermata di una lezione da ritrovare. */
+export const lessonBookmarks = pgTable(
+  "lesson_bookmarks",
+  {
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    lessonId: text("lesson_id").notNull(),
+    screen: integer("screen").notNull().default(0),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.lessonId, t.screen] }), ownRow("user_id")],
+).enableRLS();
+
+/** Duello a turni tra due amici: stesse domande (dal seme), si risponde entro 24 ore, vince il punteggio più alto. */
+export const duels = pgTable(
+  "duels",
+  {
+    id: text("id").primaryKey(),
+    challengerId: text("challenger_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    opponentId: text("opponent_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    seed: text("seed").notNull(),
+    course: text("course"),
+    status: text("status", { enum: ["pending", "active", "done", "declined", "expired"] }).notNull().default("pending"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    expiresAt: timestamp("expires_at").notNull(),
+  },
+  (t) => [
+    index("duels_challenger_idx").on(t.challengerId),
+    index("duels_opponent_idx").on(t.opponentId),
+    check("duels_not_self", sql`${t.challengerId} <> ${t.opponentId}`),
+    pgPolicy("duel_select", { for: "select", using: sql`${t.challengerId} = ${me} or ${t.opponentId} = ${me}` }),
+    // Si sfida solo un amico (amicizia accettata).
+    pgPolicy("duel_insert", {
+      for: "insert",
+      withCheck: sql`${t.challengerId} = ${me} and exists (select 1 from friendships f where f.status = 'accepted' and ((f.requester_id = ${me} and f.addressee_id = ${t.opponentId}) or (f.addressee_id = ${me} and f.requester_id = ${t.opponentId})))`,
+    }),
+    pgPolicy("duel_update", { for: "update", using: sql`${t.challengerId} = ${me} or ${t.opponentId} = ${me}`, withCheck: sql`${t.challengerId} = ${me} or ${t.opponentId} = ${me}` }),
+  ],
+).enableRLS();
+
+/** Il risultato di ciascuno nel duello. L'avversario vede il tuo punteggio solo a duello concluso (funzione duel_detail). */
+export const duelResults = pgTable(
+  "duel_results",
+  {
+    duelId: text("duel_id").notNull().references(() => duels.id, { onDelete: "cascade" }),
+    userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+    score: integer("score").notNull(),
+    total: integer("total").notNull(),
+    finishedAt: timestamp("finished_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.duelId, t.userId] }), ownRow("user_id")],
+).enableRLS();
+
+/** Pagina pubblica facoltativa (portfolio): spenta di default. Mostra solo soprannome, avatar, cintura e certificati. Solo adulti. */
+export const portfolioPages = pgTable(
+  "portfolio_pages",
+  {
+    userId: text("user_id").primaryKey().references(() => user.id, { onDelete: "cascade" }),
+    enabled: boolean("enabled").notNull().default(false),
+    showCertificates: boolean("show_certificates").notNull().default(true),
+    showBelt: boolean("show_belt").notNull().default(true),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  () => [ownRow("user_id")],
 ).enableRLS();

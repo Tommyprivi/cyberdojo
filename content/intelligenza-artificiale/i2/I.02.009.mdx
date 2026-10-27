@@ -1,0 +1,165 @@
+---
+id: I.02.009
+course: intelligenza-artificiale
+module: 2
+title: "IA per scrivere, riassumere e tradurre"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.008]
+objectives:
+  - "Usare l'assistente per una bozza e rivederla con la propria voce"
+  - "Chiedere un riassunto fedele a un testo dato e controllarlo"
+  - "Controllare una traduzione: nomi, numeri e sfumature"
+verification:
+  type: generated-numeric
+  generator: i02-scrivere-riassumere
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare il riassunto senza controllare che non abbia tolto o aggiunto dei fatti"
+  - "Tradurre un testo importante senza controllare nomi, numeri e date"
+  - "Inviare una bozza dell'IA senza rileggerla e senza metterci la propria voce"
+commands: []
+---
+
+<Scene title="Una mail da scrivere">
+Marta deve scrivere una mail alla biblioteca del paese per chiedere se può fare una visita con la classe. Non sa da dove cominciare. Chiede all'assistente una bozza, la legge e si accorge che dice «la nostra scuola ha 400 alunni»: un numero che lei non aveva mai scritto.
+
+L'assistente lo ha aggiunto da solo, per far suonare bene la frase.
+
+La domanda del caso: **come si usa l'assistente per scrivere, riassumere e tradurre senza farsi mettere in bocca cose false?**
+
+<Say who="sensei">Una bozza è un punto di partenza. Il testo finale è tuo, e ne rispondi tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scrivere: bozza e voce tua">
+L'assistente è bravo a dare una **prima forma**: una mail, un invito, un titolo, una scaletta.
+
+```text
+Scrivi una bozza di mail alla biblioteca comunale.
+Chiedo se la classe 2B può visitarla in primavera.
+Tono cortese e semplice, massimo 6 righe.
+Non aggiungere dati che non ti ho dato:
+lascia [numero alunni] dove manca un'informazione.
+```
+
+Nota l'ultima riga: dice all'assistente di **non inventare** e di lasciare un segnaposto tra parentesi quadre. Dopo la bozza:
+
+1. **Riempi** i segnaposto con i dati veri.
+2. **Controlla** nomi, date, numeri e promesse.
+3. **Riscrivi** a parole tue le frasi che non ti somigliano.
+
+<Callout kind="trucco">
+Una bozza troppo «perfetta» tradisce subito che non l'hai scritta tu. Aggiungi le tue parole, il tuo modo di dire.
+</Callout>
+
+<Say who="assistente">Lascia sempre dei segnaposto per i dati che solo tu conosci: nomi, date, cifre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Riassumere con fedeltà">
+Per riassumere bene, **incolla tu il testo** e chiedi di restare dentro il testo:
+
+```text
+Riassumi in 4 punti il testo qui sotto.
+Usa solo ciò che c'è scritto, senza aggiungere altro.
+Se un'informazione manca, scrivi «non indicato».
+
+[qui incolli il testo]
+```
+
+Un riassunto può sbagliare in tre modi:
+- **toglie** un dettaglio importante;
+- **aggiunge** qualcosa che nel testo non c'era;
+- **cambia il senso**, per esempio trasforma «forse» in «sicuramente».
+
+<Layers
+  caption="Dopo il riassunto, controlla."
+  items={[
+    { icon: "search", title: "Numeri e nomi", text: "Sono uguali all'originale?" },
+    { icon: "warning", title: "Sfumature", text: "«Forse», «di solito», «secondo» sono rimasti?" },
+    { icon: "check", title: "Niente di nuovo", text: "Ogni punto si ritrova nel testo" },
+  ]}
+/>
+
+<Callout kind="attenzione">
+Non incollare testi riservati o con dati di altre persone: ne parliamo nella prossima lezione.
+</Callout>
+
+<Say who="sensei">Un riassunto che non hai confrontato con l'originale è solo un'ipotesi di riassunto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tradurre">
+Gli assistenti traducono bene i testi comuni tra le lingue più diffuse. Ma quattro cose vanno controllate:
+
+- **Nomi propri** e luoghi: possono essere cambiati o tradotti quando non dovrebbero.
+- **Numeri, date e unità**: controlla che siano uguali (e che i formati, come 03/04, siano quelli giusti).
+- **Modi di dire**: tradotti alla lettera possono perdere senso.
+- **Tono**: formale o informale? Specificalo: «Traduci in inglese, tono formale».
+
+Un buon trucco: chiedi la traduzione e poi la **ritraduzione** in italiano, e confronta con l'originale. Se qualcosa è cambiato, hai trovato un punto da guardare meglio. Per testi importanti (documenti, contratti, moduli) serve comunque una persona che conosca bene la lingua.
+
+<Say who="assistente">La traduzione automatica è utile per capire il senso di un testo. Per un documento ufficiale non basta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Hai chiesto un riassunto di un articolo che hai incollato. Qual è il controllo più utile?"
+  options={[
+    "Confrontare numeri, nomi e sfumature del riassunto con l'articolo originale",
+    "Controllare solo che il riassunto sia più corto",
+    "Chiedere all'assistente se il riassunto è fedele",
+    "Controllare che il riassunto abbia un bel titolo",
+  ]}
+  answer={0}
+  explain="Un riassunto può togliere dettagli, aggiungerne di nuovi o cambiare il senso: lo si controlla ritrovando ogni punto nell'originale. La lunghezza e il titolo non dicono niente sulla fedeltà, e chiedere all'assistente se ha fatto bene non è un controllo indipendente."
+/>
+
+<Say who="sensei">Il riassunto è una scorciatoia. Il controllo è ciò che la rende sicura.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su scrivere, riassumere e tradurre con l'IA. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-scrivere-riassumere" pass="4/5" retries={3} />
+
+<Say who="sensei">Bozza, controllo, voce tua. Sempre in questo ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per scrivere, l'assistente dà una bozza: tu inserisci i dati veri e la tua voce.
+- Si chiede all'assistente di non inventare dati e di lasciare segnaposto dove manca un'informazione.
+- Un riassunto fedele si ottiene incollando il testo e si controlla con l'originale: numeri, nomi, sfumature.
+- Le traduzioni vanno verificate su nomi, numeri e modi di dire; per documenti importanti serve una persona esperta.
+- Caso chiuso: nella mail di Marta l'assistente aveva aggiunto «400 alunni»; con il segnaposto e la rilettura, il numero falso non sarebbe mai entrato.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come evitare che l'assistente inventi dati in una bozza?", a: "Chiedendogli di non aggiungere dati e di lasciare un segnaposto dove manca un'informazione" },
+    { q: "In quali tre modi può sbagliare un riassunto?", a: "Toglie un dettaglio, aggiunge qualcosa o cambia il senso" },
+    { q: "Che cosa controllare in una traduzione?", a: "Nomi propri, numeri e date, modi di dire e tono" },
+    { q: "A che cosa serve la ritraduzione?", a: "A scoprire punti in cui il senso è cambiato, confrontando con l'originale" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: che cosa non incollare mai in una chat.</Say>
+</Scene>

@@ -56,3 +56,13 @@ next-env.d.ts
 
 # Copie di sicurezza del database (dati personali)
 /backups/
+
+# App Android: chiave di firma e file generati (la chiave non va MAI su git)
+/android/*.keystore
+/android/*.jks
+/android/keystore-pass.txt
+/android/app/
+/android/build/
+/android/.gradle/
+/android/*.apk
+/android/*.aab

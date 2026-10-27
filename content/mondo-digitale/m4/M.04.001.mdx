@@ -1,0 +1,152 @@
+---
+id: M.04.001
+course: mondo-digitale
+module: 4
+title: "Android e iPhone: le basi in comune"
+belt: bianca
+duration_min: 8
+prerequisites: [M.03.010]
+objectives:
+  - "Distinguere hardware, sistema operativo e app di uno smartphone"
+  - "Dire che cosa hanno in comune Android e iPhone"
+  - "Spiegare a che cosa servono l'account e il blocco schermo"
+verification:
+  type: generated-numeric
+  generator: m04-basi-comuni
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un telefono Android sia fatto da Google e un iPhone da Apple: iPhone è sempre di Apple, ma Android è un sistema usato da molte marche"
+  - "Pensare che le app di un telefono funzionino sull'altro senza cercarle nel suo negozio"
+  - "Lasciare il telefono senza blocco schermo perché «tanto non ho niente di segreto»"
+commands: []
+---
+
+<Scene title="Un telefono nuovo, due mondi">
+Giorgio ha 63 anni e ha ricevuto in regalo il suo primo smartphone: un Android. Il suo amico Franco ne ha uno diverso, un iPhone, e gli dice: «Il mio funziona in un altro modo, non puoi capire il tuo con me!».
+
+Giorgio è preoccupato: dovrà imparare due cose diverse?
+
+La domanda del caso: **che cosa hanno in comune tutti gli smartphone, qualunque marca?**
+
+<Say who="sensei">Le differenze si vedono subito. Le somiglianze sono molte di più e contano di più. Cominciamo da quelle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tre strati">
+Uno smartphone è un piccolo computer con una SIM per telefonare. Come ogni computer, ha tre strati.
+
+<Layers
+  caption="Gli strati di uno smartphone."
+  items={[
+    { icon: "phone", title: "Hardware", text: "Schermo, batteria, fotocamera: la parte che tocchi" },
+    { icon: "gear", title: "Sistema operativo", text: "Il programma principale che gestisce tutto" },
+    { icon: "code", title: "App", text: "I programmi che installi: messaggi, mappe, foto" },
+  ]}
+/>
+
+- Il **sistema operativo** del telefono di Apple si chiama **iOS** (sul tablet iPad: **iPadOS**) e c'è solo sui prodotti Apple.
+- Il sistema operativo **Android** è creato da Google, ma è usato da molte marche: Samsung, Xiaomi, Motorola e altre.
+
+<Say who="assistente">Per questo i telefoni Android di marche diverse non sono identici: la marca può cambiare l'aspetto e i nomi di alcuni menu. Se non trovi una voce, cercala con la lente nelle impostazioni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa è uguale">
+Android e iPhone si usano in modo molto simile.
+
+- **Schermo tattile**: si tocca, si scorre, si ingrandisce con le dita.
+- **SIM**: la piccola scheda che dà il numero di telefono e i dati mobili (alcuni telefoni hanno anche una SIM elettronica, la eSIM).
+- **Impostazioni**: l'icona a forma di ingranaggio, dove si cambia tutto.
+- **Negozio di app**: su Android si chiama **Play Store**, su iPhone **App Store**. Le app si prendono da lì.
+- **Fotocamera, rubrica, messaggi, mappe e browser**: ci sono su entrambi.
+
+<Callout kind="regola">
+Le app di un telefono non passano all'altro: se cambi da Android a iPhone devi riscaricare le app dal negozio giusto. Spesso però i tuoi dati si recuperano, perché stanno nell'account.
+</Callout>
+
+<Say who="sensei">Impara i concetti, non i percorsi dei menu. I percorsi cambiano a ogni aggiornamento, i concetti restano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Account e blocco schermo">
+Due cose vanno sistemate subito, su qualsiasi telefono.
+
+**L'account.** È l'identità che lega il telefono ai tuoi dati (contatti, copie di sicurezza, acquisti). Su Android è di solito un account **Google**, su iPhone un account **Apple**. Serve per scaricare le app e per recuperare i dati se il telefono si rompe.
+
+**Il blocco schermo.** Impedisce a chi trova o prende il tuo telefono di aprirlo.
+
+<Compare
+  caption="Modi per sbloccare."
+  left={{ title: "Qualcosa che sai", points: ["Un PIN di 6 cifre o più", "Una password", "Meglio evitare 123456 e la data di nascita"] }}
+  right={{ title: "Qualcosa che sei", points: ["Impronta digitale", "Riconoscimento del volto", "Comodo, ma resta il PIN come riserva"] }}
+/>
+
+<Callout kind="attenzione">
+Il PIN dello schermo e la password dell'account non si danno a nessuno, neanche a chi dice di essere «dell'assistenza». Nessun servizio serio le chiede per telefono o per messaggio.
+</Callout>
+
+<Say who="assistente">Anche se pensi di non avere segreti, nel telefono ci sono le foto, i contatti e l'accesso alla posta. Il blocco protegge tutto questo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio vuole mettere sul suo Android l'app di Franco, che usa un iPhone.
+
+<Quiz
+  question="Dove deve cercare Giorgio la versione per il suo telefono Android di un'app?"
+  options={[
+    "Nel Play Store",
+    "Nell'App Store di Apple",
+    "Nel sito di un'altra marca di telefoni",
+    "Nel file di Franco, copiandolo con un cavo",
+  ]}
+  answer={0}
+  explain="Il Play Store è il negozio ufficiale di Android. L'App Store è solo per i prodotti Apple. Le app non si copiano da un telefono all'altro come file: ogni sistema ha la sua versione, da prendere dal suo negozio."
+/>
+
+<Say who="sensei">Un negozio ufficiale è il posto più sicuro. Ne parleremo ancora quando installeremo le app.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle basi in comune di Android e iPhone. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-basi-comuni" pass="4/5" retries={3} />
+
+<Say who="sensei">Hardware, sistema, app. Tre strati, sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Uno smartphone ha tre strati: hardware, sistema operativo e app.
+- iPhone usa iOS ed è di Apple; Android è un sistema di Google usato da molte marche.
+- Schermo tattile, SIM, impostazioni e negozio di app (Play Store o App Store) ci sono su entrambi.
+- L'account lega il telefono ai tuoi dati; il blocco schermo protegge chi lo trova.
+- Caso chiuso: Giorgio non deve imparare due cose diverse, ma una sola cosa con due aspetti.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è il negozio di app di Android?", a: "Il Play Store" },
+    { q: "Qual è il sistema operativo dell'iPhone?", a: "iOS" },
+    { q: "A che cosa serve il blocco schermo?", a: "A impedire che altri aprano il telefono se lo trovano o lo prendono" },
+    { q: "Che cosa dà la SIM?", a: "Il numero di telefono e i dati mobili" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: lo schermo principale e i gesti con le dita.</Say>
+</Scene>

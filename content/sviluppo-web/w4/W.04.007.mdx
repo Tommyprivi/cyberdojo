@@ -1,0 +1,166 @@
+---
+id: W.04.007
+course: sviluppo-web
+module: 4
+title: "Sfondi, bordi e ombre"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.006]
+objectives:
+  - "Impostare colore e immagine di sfondo di un elemento"
+  - "Scrivere un bordo completo e arrotondare gli angoli con border-radius"
+  - "Aggiungere un'ombra con box-shadow leggendone i valori"
+verification:
+  type: generated-numeric
+  generator: w04-sfondi-bordi-ombre
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere border con spessore e colore ma senza stile: senza lo stile (solid, dashed…) il bordo non compare"
+  - "Mettere testo chiaro su un'immagine di sfondo chiara, senza controllare il contrasto"
+  - "Credere che box-shadow occupi spazio: l'ombra non sposta gli elementi vicini"
+commands: []
+---
+
+<Scene title="Le schede dei corsi">
+Lucia vuole che ogni corso della bottega sia una «scheda» ben distinta: sfondo crema, un bordo sottile, gli angoli un po' morbidi e una leggera ombra, come un cartoncino appoggiato sulla pagina.
+
+Con quello che sai già (colori, padding, margini) hai quasi tutto. Mancano tre strumenti: sfondi, bordi e ombre.
+
+La domanda del caso: **come si fa sembrare una scheda un semplice blocco di testo?**
+
+<Say who="sensei">Un blocco di testo diventa una scheda quando ha un bordo, un po' d'aria e una piccola ombra. Niente di più.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Gli sfondi">
+Conosci già `background-color`. Per un'immagine di sfondo c'è `background-image`:
+
+```css
+.intestazione {
+  background-color: #fdf6e3;
+  background-image: url("img/ceramiche.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+```
+
+- `url("img/ceramiche.jpg")` è il percorso del file immagine (qui un esempio, deve esistere nella tua cartella).
+- `background-size: cover` ingrandisce l'immagine fino a coprire tutto l'elemento, tagliando ciò che avanza.
+- `background-repeat: no-repeat` evita che l'immagine si ripeta a mosaico (è la ripetizione il comportamento di base).
+- `background-position: center` la centra.
+- Il colore di sfondo resta come riserva mentre l'immagine non è ancora arrivata.
+
+<Callout kind="attenzione">
+Se scrivi del testo sopra un'immagine, controlla il contrasto in ogni punto dell'immagine. Un testo bianco su un cielo chiaro non si legge. Un trucco comune è un colore di sfondo di riserva scuro e un'immagine non troppo luminosa.
+</Callout>
+
+<Say who="assistente">Le immagini che sono contenuto (una foto di un corso) vanno nell'HTML con il tag img. Nello sfondo mettiamo solo decorazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I bordi">
+`border` si scrive con **tre** valori: spessore, stile e colore.
+
+```css
+.scheda {
+  border: 2px solid #8b4513;
+  border-radius: 8px;
+}
+```
+
+- Lo **stile** è obbligatorio: `solid` (continuo), `dashed` (tratteggiato), `dotted` (puntini). Senza stile il bordo non si vede, perché di base è `none`.
+- `border-radius` arrotonda gli angoli. Con un valore uguale alla metà del lato di un quadrato, o `50%`, ottieni un cerchio.
+- Puoi bordare un solo lato: `border-bottom: 1px solid #cccccc;` è una riga sotto l'elemento.
+
+<Compare
+  caption="Con e senza bordo."
+  left={{ title: "Senza stile", points: ["border: 2px #8b4513;", "Niente bordo visibile", "Lo stile manca"] }}
+  right={{ title: "Con stile", points: ["border: 2px solid #8b4513;", "Linea continua marrone", "Spessore, stile e colore"] }}
+/>
+
+<Say who="sensei">Spessore, stile, colore. Se uno dei tre manca (soprattutto lo stile), il bordo non appare come ti aspetti.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le ombre">
+`box-shadow` disegna un'ombra dietro la scatola.
+
+```css
+.scheda {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+```
+
+I valori, in ordine:
+
+1. **Spostamento orizzontale** (0: nessuno; positivo verso destra).
+2. **Spostamento verticale** (4px: l'ombra scende di 4 pixel).
+3. **Sfocatura** (8px: più è alto, più l'ombra è sfumata).
+4. **Colore**. Qui `rgba(0, 0, 0, 0.25)` è nero con trasparenza del 75%: il quarto numero, da 0 a 1, indica quanto il colore è coprente.
+
+Una ombra sottile e sfumata dà un effetto elegante; un'ombra scura e dura sembra pesante. Ricorda: l'ombra **non occupa spazio** e non sposta gli elementi vicini, quindi se serve aria attorno devi aggiungere margine.
+
+<Say who="assistente">Più dolce è l'ombra, più la scheda sembra leggera. Esagerare è il difetto più comune.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Nella regola box-shadow: 2px 5px 10px #000000; che cosa indica il secondo valore, 5px?"
+  options={[
+    "Lo spostamento verticale dell'ombra",
+    "La sfocatura dell'ombra",
+    "Lo spostamento orizzontale dell'ombra",
+    "Lo spessore del bordo",
+  ]}
+  answer={0}
+  explain="L'ordine è: spostamento orizzontale (2px), verticale (5px), sfocatura (10px) e colore. La sfocatura è il terzo valore, lo spostamento orizzontale il primo; box-shadow non ha niente a che fare con lo spessore del bordo."
+/>
+
+<Say who="sensei">Orizzontale, verticale, sfocatura, colore. Un ordine da ricordare a memoria.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su sfondi, bordi e ombre. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-sfondi-bordi-ombre" pass="4/5" retries={3} />
+
+<Say who="sensei">Per il bordo, le tre parole sono spessore, stile e colore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `background-color` e `background-image` dipingono lo sfondo; `background-size: cover` copre tutto l'elemento.
+- `border` vuole spessore, stile e colore; senza stile non si vede. `border-radius` arrotonda gli angoli.
+- `box-shadow` ha spostamento orizzontale, verticale, sfocatura e colore; l'ombra non occupa spazio.
+- Su un'immagine di sfondo controlla sempre il contrasto del testo.
+- Caso chiuso: la scheda di Lucia ha ora sfondo crema, bordo `2px solid`, angoli arrotondati e un'ombra leggera.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali tre valori servono a border?", a: "Spessore, stile e colore, per esempio 2px solid #8b4513" },
+    { q: "Che cosa fa background-size: cover?", a: "Ingrandisce l'immagine fino a coprire tutto l'elemento" },
+    { q: "In che ordine si scrivono i valori di box-shadow?", a: "Spostamento orizzontale, verticale, sfocatura, colore" },
+    { q: "Con che proprietà si arrotondano gli angoli?", a: "border-radius" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le pseudo-classi, per far reagire gli elementi al mouse e alla tastiera.</Say>
+</Scene>

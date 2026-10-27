@@ -1,0 +1,145 @@
+---
+id: M.04.004
+course: mondo-digitale
+module: 4
+title: "Le notifiche: quali servono"
+belt: bianca
+duration_min: 8
+prerequisites: [M.04.003]
+objectives:
+  - "Spiegare che cos'è una notifica e dove si vedono le notifiche"
+  - "Scegliere per ogni app se le notifiche servono, con le impostazioni del telefono"
+  - "Riconoscere una notifica truffa e usare la modalità Non disturbare"
+verification:
+  type: generated-numeric
+  generator: m04-notifiche
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Spegnere tutte le notifiche e perdersi anche quelle importanti, come telefonate e messaggi"
+  - "Toccare una notifica che dice «il telefono è infetto» o «hai vinto»"
+  - "Credere che il numero rosso sull'icona (il badge) sia sempre una cosa urgente"
+commands: []
+---
+
+<Scene title="Il telefono che non smette di suonare">
+Giorgio ha scaricato sei app. Da quel giorno il telefono suona e vibra di continuo: un negozio che offre sconti, un gioco che lo invita a tornare, un'app meteo che avvisa di tutto. Ieri si è perso un messaggio della figlia, nascosto tra gli altri.
+
+La domanda del caso: **come si fa a ricevere solo gli avvisi che servono?**
+
+<Say who="sensei">Un avviso va ascoltato se ti serve. Se ti disturba e basta, è rumore. Si può spegnere app per app.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è una notifica">
+Una **notifica** è un breve avviso che un'app mostra sul telefono, anche quando non la stai usando. Può comparire in alto sullo schermo, nella schermata bloccata e in un elenco.
+
+- **L'elenco delle notifiche** si apre scorrendo dall'alto dello schermo verso il basso.
+- Il **badge** è il numerino sull'icona dell'app: dice quante cose da vedere ci sono.
+- Una notifica può avere un **suono**, una **vibrazione**, un **banner** (la striscia che compare) o essere **silenziosa**, solo nell'elenco.
+
+<Callout kind="regola">
+Le notifiche non sono tutte uguali. Quelle di telefonate, messaggi delle persone e allarmi servono. Quelle di sconti e giochi quasi mai.
+</Callout>
+
+<Say who="assistente">Sul telefono le notifiche sono un servizio: le app non hanno diritto di disturbarti. Il potere di decidere è tuo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scegliere app per app">
+<Flow
+  caption="Come sistemare le notifiche di un'app."
+  steps={[
+    { icon: "gear", title: "Impostazioni", text: "Apri la voce Notifiche" },
+    { icon: "bell", title: "Scegli l'app", text: "Tocca l'app che ti disturba" },
+    { icon: "check", title: "Decidi", text: "Spegni, oppure lascia solo quelle importanti" },
+  ]}
+/>
+
+Per ogni app puoi:
+- **spegnere** tutte le notifiche;
+- tenerne solo alcune **categorie** (per esempio, solo i messaggi diretti e non gli inviti);
+- toglierle dalla **schermata bloccata**, così chi vede il telefono sul tavolo non legge i tuoi messaggi.
+
+<Callout kind="trucco">
+Un modo veloce: quando arriva una notifica inutile, tieni premuto o scorri leggermente per trovare le opzioni, e spegni lì l'app che disturba.
+</Callout>
+
+<Say who="sensei">Una app alla volta, ogni volta che una ti disturba. In due settimane il telefono è tranquillo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Non disturbare e notifiche truffa">
+Di notte, a cena o in una riunione, non vuoi essere disturbato. La modalità **Non disturbare** (su iPhone si chiama anche **Concentrazione**) silenzia le notifiche in certi orari o quando decidi tu. Puoi scegliere chi può comunque raggiungerti, per esempio i familiari.
+
+<Callout kind="attenzione">
+Alcune notifiche sono **truffe**. Per esempio: «Il tuo telefono ha 5 virus, tocca qui», «Hai vinto un premio» o «La tua batteria è danneggiata». Un telefono non ti avvisa così. Non toccarle: scorri via e, se arrivano da un sito, chiudi la scheda del browser.
+</Callout>
+
+- Dalle impostazioni del browser puoi togliere il permesso ai siti di mandarti notifiche.
+- Un messaggio dalla banca vero non ti chiede mai dati personali tramite notifica.
+
+<Say who="assistente">Se non sei sicuro che una notifica sia vera, apri tu l'app direttamente dall'icona o dal negozio: non toccare il suo link.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Ti arriva una notifica: «ATTENZIONE: il tuo telefono è infetto, tocca per ripulirlo subito».
+
+<Quiz
+  question="Che cosa è meglio fare davanti a una notifica che dice che il telefono è infetto e chiede di toccare?"
+  options={[
+    "Non toccarla, chiuderla e togliere le notifiche al sito o all'app che l'ha mandata",
+    "Toccarla subito per eliminare il virus",
+    "Rispondere con il PIN del telefono per sicurezza",
+    "Spegnere tutte le notifiche di tutte le app per sempre",
+  ]}
+  answer={0}
+  explain="Un telefono non ti avvisa così: è un tentativo di truffa. La cosa giusta è non toccarla e togliere il permesso a chi l'ha mandata. Toccarla o dare il PIN è esattamente ciò che vuole il truffatore, e spegnere tutto fa perdere anche gli avvisi utili."
+/>
+
+<Say who="sensei">Chi ti mette fretta ha qualcosa da nascondere. La fretta è lo strumento della truffa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle notifiche. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-notifiche" pass="4/5" retries={3} />
+
+<Say who="sensei">Poche notifiche, ma buone. Il telefono lavora per te, non il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una notifica è un avviso di un'app; si vede in alto, sulla schermata bloccata e nell'elenco.
+- Si possono spegnere o ridurre app per app, dalle impostazioni, e togliere dalla schermata bloccata.
+- Non disturbare silenzia le notifiche quando serve, lasciando passare chi scegli tu.
+- Le notifiche che dicono «virus» o «hai vinto» sono truffe: non si toccano.
+- Caso chiuso: Giorgio ha spento gli sconti e il gioco, e il messaggio della figlia non si perde più.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è il badge di un'app?", a: "Il numerino sull'icona che indica le cose da vedere" },
+    { q: "A che cosa serve Non disturbare?", a: "A silenziare le notifiche in certi orari o situazioni" },
+    { q: "Come si regolano le notifiche di una singola app?", a: "Nelle impostazioni, alla voce Notifiche, scegliendo l'app" },
+    { q: "Che cosa fare davanti a una notifica che parla di virus?", a: "Non toccarla: è un tentativo di truffa" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: la batteria e che cosa la consuma.</Say>
+</Scene>

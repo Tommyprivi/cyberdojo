@@ -1,0 +1,152 @@
+---
+id: M.04.006
+course: mondo-digitale
+module: 4
+title: "Lo spazio: cosa occupa memoria"
+belt: bianca
+duration_min: 9
+prerequisites: [M.04.005]
+objectives:
+  - "Dire che cosa occupa lo spazio del telefono e dove si vede"
+  - "Liberare spazio senza perdere cose importanti"
+  - "Spiegare perché conviene fare una copia di sicurezza prima di cancellare"
+verification:
+  type: generated-numeric
+  generator: m04-spazio
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che un telefono da 128 GB abbia 128 GB liberi: una parte è occupata dal sistema"
+  - "Cancellare foto senza averne una copia di sicurezza"
+  - "Cancellare a caso file di cui non si conosce la funzione"
+commands: []
+---
+
+<Scene title="Memoria piena">
+Giorgio vuole fare una foto al nipote e il telefono dice: «Spazio esaurito». Eppure Giorgio ha solo qualche app e qualche foto. Dove sono finiti i gigabyte?
+
+La domanda del caso: **che cosa riempie la memoria del telefono e come si libera spazio?**
+
+<Say who="sensei">La memoria del telefono è un armadio. Si riempie piano, e un giorno non chiude più. Ora facciamo ordine, con calma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa occupa spazio">
+La memoria del telefono si misura in **gigabyte** (GB). Un telefono da 128 GB non ha 128 GB tutti per te: una parte è occupata dal sistema operativo e dalle app preinstallate.
+
+<Layers
+  caption="Che cosa riempie la memoria."
+  items={[
+    { icon: "eye", title: "Foto e video", text: "Di solito la parte più grande, soprattutto i video" },
+    { icon: "code", title: "App", text: "Alcune, come giochi e mappe offline, sono molto pesanti" },
+    { icon: "file", title: "File scaricati e allegati", text: "PDF, musica, documenti dimenticati" },
+    { icon: "mail", title: "Messaggi con foto e video", text: "Le chat salvano ogni file ricevuto" },
+  ]}
+/>
+
+Per vedere come stai messo: nelle impostazioni, alla voce **Archiviazione** (su iPhone: **Generali** e poi **Spazio iPhone**) c'è un grafico che mostra chi occupa di più.
+
+<Say who="assistente">Un video di pochi minuti può occupare più spazio di cento foto. Se vedi i video in cima al grafico, sai già dove cercare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Fare spazio, passo dopo passo">
+<Guided
+  steps={[
+    "Apri le impostazioni e guarda la voce Archiviazione per vedere chi occupa di più.",
+    "Cancella i video e le foto che non vuoi più, a partire dai doppioni e dagli screenshot.",
+    "Apri il gestore delle chat e controlla i file ricevuti: spesso sono molti, e si possono togliere.",
+    "Elimina le app che non usi più.",
+    "Svuota la cartella dei file scaricati se contiene roba vecchia.",
+  ]}
+/>
+
+<Callout kind="regola">
+Le foto cancellate finiscono in un cestino («Eliminati di recente» su iPhone, cestino nell'app foto su Android) e restano lì per un certo tempo, di solito 30 giorni. Lo spazio si libera davvero solo svuotando il cestino.
+</Callout>
+
+- Su iPhone c'è anche la funzione di **scaricare le app non usate** (in inglese *offload*): toglie l'app ma conserva i suoi dati, così se la reinstalli li ritrovi.
+- Su Android la **cache** (file temporanei di un'app) si cancella dalle impostazioni dell'app. Si ricrea da sola: è una soluzione di emergenza, non definitiva.
+- App gratuite come Files by Google aiutano a trovare doppioni e file grandi.
+
+<Say who="sensei">Prima i video, poi le chat, poi le app. È l'ordine che libera più spazio con meno fatica.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Prima di cancellare: la copia di sicurezza">
+Prima di cancellare foto che ti piacciono, falle salvare altrove. La **copia di sicurezza** (in inglese *backup*) è una seconda copia al sicuro.
+
+<Compare
+  caption="Dove tenere una copia."
+  left={{ title: "Nel cloud", points: ["Un servizio online con il tuo account", "Foto Google, iCloud: hanno uno spazio gratuito limitato", "Serve connessione per caricare"] }}
+  right={{ title: "Sul computer o su un disco", points: ["Collegando il telefono con un cavo", "Nessun abbonamento", "Va ricordato di farlo ogni tanto"] }}
+/>
+
+<Callout kind="attenzione">
+Una foto che è solo sul telefono, se il telefono si rompe o viene perso, sparisce con lui. Una copia sul cloud o sul computer la salva.
+</Callout>
+
+<Say who="assistente">Quando le foto sono al sicuro altrove, puoi cancellarle dal telefono senza paura. Controlla però che siano davvero state caricate, prima di eliminarle.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giorgio vede nel grafico: foto e video 70 GB, app 20 GB, sistema 15 GB, altro 8 GB.
+
+<Quiz
+  question="Da dove conviene cominciare a fare spazio, se la parte più grande della memoria è occupata da foto e video?"
+  options={[
+    "Dalle foto e dai video, dopo averne salvato una copia",
+    "Dal sistema operativo, cancellandolo",
+    "Dalle impostazioni, ripristinando il telefono",
+    "Da tutte le app, cancellandole tutte",
+  ]}
+  answer={0}
+  explain="La parte più grande va ridotta per prima, ma si salva una copia prima di cancellare, per non perdere ricordi. Il sistema operativo non si cancella, ripristinare il telefono cancella tutto e non serve, e togliere tutte le app è eccessivo."
+/>
+
+<Say who="sensei">Si comincia da dove c'è più roba. E si salva sempre prima di buttare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sullo spazio del telefono. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-spazio" pass="4/5" retries={3} />
+
+<Say who="sensei">Guarda il grafico, salva una copia, poi cancella. Mai al contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La memoria si misura in gigabyte; una parte è già occupata dal sistema.
+- Di solito riempiono più spazio foto e video, poi app, file scaricati e file delle chat.
+- Nelle impostazioni, alla voce Archiviazione, si vede che cosa occupa di più.
+- Le foto cancellate restano nel cestino per un periodo: lo spazio si libera svuotandolo.
+- Caso chiuso: Giorgio ha trovato i video, ne ha salvata una copia e ha liberato lo spazio per la foto del nipote.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "In che unità si misura la memoria di un telefono?", a: "In gigabyte (GB)" },
+    { q: "Che cos'è una copia di sicurezza (backup)?", a: "Una seconda copia dei dati, tenuta al sicuro altrove" },
+    { q: "Che cosa occupa di solito più spazio?", a: "Foto e video" },
+    { q: "Dove finiscono le foto cancellate?", a: "In un cestino, dove restano per un periodo prima di sparire davvero" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: gli aggiornamenti del sistema e delle app.</Say>
+</Scene>

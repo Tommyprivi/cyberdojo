@@ -1,0 +1,192 @@
+---
+id: P.02.006
+course: programmazione
+module: 2
+title: "Condizioni con if, elif ed else"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.005]
+objectives:
+  - "Scrivere una condizione con if, elif ed else e con l'indentazione giusta"
+  - "Usare i confronti ==, !=, <, >, <= e >= e gli operatori and, or, not"
+  - "Prevedere quale ramo di un programma viene eseguito"
+verification:
+  type: generated-numeric
+  generator: p02-if
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere = invece di == in un confronto"
+  - "Dimenticare i due punti alla fine della riga di if, elif o else"
+  - "Sbagliare l'indentazione: le righe dentro il blocco vanno rientrate allo stesso modo"
+commands: []
+---
+
+<Scene title="Chi ha vinto?">
+Giulia chiede i punti di un giocatore e vuole che il programma risponda in modo diverso: «Hai vinto il torneo» se ha 8 punti o più, «Sei in finale» se ne ha almeno 5, altrimenti «Hai chiuso il torneo».
+
+Finora il programma faceva sempre tutto, riga dopo riga. Ora deve **scegliere**: eseguire alcune righe solo se una condizione è vera. Lo hai già visto nelle «condizioni a più strade» del modulo precedente; adesso si scrive in Python.
+
+La domanda del caso: **come fa un programma a scegliere tra più strade?**
+
+<Say who="sensei">Un programma che non sceglie non è molto utile. La condizione è il suo bivio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="if ed else">
+Una **condizione** è una domanda a cui si risponde `True` o `False`. Per farla si usano i **confronti**:
+
+<Layers
+  caption="Gli operatori di confronto."
+  items={[
+    { icon: "check", title: "==  e  !=", text: "Uguale a, diverso da" },
+    { icon: "chart", title: "<  e  >", text: "Minore di, maggiore di" },
+    { icon: "chart", title: "<=  e  >=", text: "Minore o uguale, maggiore o uguale" },
+  ]}
+/>
+
+Con `if` («se») si esegue un blocco solo quando la condizione è vera; con `else` («altrimenti») si dice che cosa fare negli altri casi:
+
+```python
+punti = int(input("Punti? "))
+if punti >= 5:
+    print("Sei in finale")
+else:
+    print("Torneo finito")
+```
+
+Tre dettagli che fanno la differenza:
+- Dopo la condizione ci sono i **due punti** `:`.
+- Le righe dentro il blocco sono **rientrate** (4 spazi): è l'indentazione che dice a Python quali righe appartengono all'`if`.
+- Il confronto di uguaglianza è `==` con due uguali; un solo `=` assegna.
+
+<Callout kind="attenzione">
+`if punti = 5:` dà errore di sintassi. Per confrontare scrivi `if punti == 5:`.
+</Callout>
+
+<Say who="assistente">L'indentazione in Python non è estetica: è parte del linguaggio. Se la sbagli, il programma fa altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Più strade con elif">
+Per più di due strade c'è `elif` (da *else if*, «altrimenti se»). Python controlla le condizioni **in ordine** e si ferma alla prima vera:
+
+```python
+punti = int(input("Punti? "))
+if punti >= 8:
+    print("Hai vinto il torneo")
+elif punti >= 5:
+    print("Sei in finale")
+else:
+    print("Hai chiuso il torneo")
+```
+
+<Flow
+  caption="Il percorso con tre strade."
+  steps={[
+    { icon: "search", title: "punti >= 8?", text: "Se sì: Hai vinto il torneo" },
+    { icon: "search", title: "punti >= 5?", text: "Se sì: Sei in finale" },
+    { icon: "check", title: "Altrimenti", text: "Hai chiuso il torneo" },
+  ]}
+/>
+
+<Log lines={[
+  "Con 9 punti: Hai vinto il torneo",
+  "Con 6 punti: Sei in finale",
+  "Con 2 punti: Hai chiuso il torneo",
+]} caption="Che cosa stampa il programma." />
+
+Con 9 punti la prima condizione è vera, quindi le altre non vengono nemmeno controllate. Con 6 la prima è falsa, la seconda è vera. L'`else` finale prende tutto il resto. Per questo l'ordine conta: se metti `punti >= 5` per primo, chi ha 9 punti leggerà «Sei in finale».
+
+<Say who="sensei">Dalla condizione più stretta alla più larga. L'ordine delle strade è parte del programma.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="and, or, not">
+Le condizioni si combinano con gli operatori logici della lezione di logica:
+
+- `and`: vero se **entrambe** sono vere.
+- `or`: vero se **almeno una** è vera.
+- `not`: rovescia il valore.
+
+```python
+eta = 15
+iscritto = True
+if eta >= 14 and iscritto:
+    print("Puoi giocare")
+if eta < 14 or not iscritto:
+    print("Controlla l'iscrizione")
+```
+
+Qui `eta >= 14 and iscritto` è vero (15 è almeno 14 e `iscritto` è `True`), quindi stampa «Puoi giocare». La seconda condizione è falsa: `eta < 14` è falso e `not iscritto` è falso, quindi non stampa niente.
+
+<Callout kind="trucco">
+Un `if` può stare dentro un altro `if`, rientrando ancora di 4 spazi. Ma spesso `and` rende il codice più corto e leggibile.
+</Callout>
+
+Per controllare più valori si possono anche **concatenare** i confronti: `5 <= punti < 8` è vero quando `punti` è 5, 6 o 7 (se è intero).
+
+<Say who="assistente">Se non ricordi la tabella di verità di and e or, rivedi il modulo di logica: serve proprio qui.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia prova il programma con 5 punti.
+
+<Quiz
+  question="Con punti = 5, un programma fa così: se punti > 5 stampa A; altrimenti se punti >= 5 stampa B; altrimenti stampa C. Che cosa stampa?"
+  options={[
+    "B",
+    "A",
+    "C",
+    "A e B",
+  ]}
+  answer={0}
+  explain="La prima condizione, 5 > 5, è falsa. La seconda, 5 >= 5, è vera e stampa B; da lì Python salta tutto il resto. Non stampa A perché 5 non è maggiore di 5, e non stampa C perché una strada è già stata scelta."
+/>
+
+<Say who="sensei">Segui le condizioni dall'alto: la prima vera vince, il resto si salta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su if, elif ed else. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-if" pass="4/5" retries={3} />
+
+<Say who="sensei">Due punti, rientro, due uguali per confrontare. Sono i tre errori più comuni.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- if esegue un blocco solo se la condizione è vera, else prende gli altri casi, elif aggiunge strade intermedie.
+- I confronti sono == != < > <= >=; con un solo = si assegna, non si confronta.
+- Dopo la condizione servono i due punti e il blocco va rientrato di 4 spazi.
+- Python controlla in ordine e si ferma alla prima condizione vera: l'ordine conta.
+- Caso chiuso: il programma di Giulia risponde in tre modi diversi in base ai punti del giocatore.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è l'operatore che confronta due valori per uguaglianza?", a: "==, con due uguali" },
+    { q: "Che cosa serve alla fine della riga di un if?", a: "I due punti" },
+    { q: "Che cosa fa elif?", a: "Aggiunge un'altra condizione da controllare se le precedenti sono false" },
+    { q: "Quando è vera una condizione con and?", a: "Quando entrambe le parti sono vere" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il ciclo while, per ripetere finché una condizione è vera.</Say>
+</Scene>

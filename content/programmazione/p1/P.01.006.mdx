@@ -1,0 +1,159 @@
+---
+id: P.01.006
+course: programmazione
+module: 1
+title: "Vero e falso: la logica booleana"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.005]
+objectives:
+  - "Spiegare che una condizione ha sempre un valore: vero o falso"
+  - "Usare i confronti: uguale, diverso, maggiore, minore, maggiore o uguale, minore o uguale"
+  - "Distinguere l'assegnazione (metti nella scatola) dal confronto (è uguale?)"
+verification:
+  type: generated-numeric
+  generator: p01-logica-booleana
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere = (assegnazione) con == (confronto) in molti linguaggi, come Python"
+  - "Sbagliare il confine: maggiore di 18 non include il 18, maggiore o uguale a 18 sì"
+  - "Credere che una condizione possa avere un valore intermedio: è sempre solo vero o falso"
+commands: []
+---
+
+<Scene title="Maggiorenni a tavola">
+Elia organizza una serata di giochi da tavolo nella pizzeria, riservata ai maggiorenni. Un'amica, Sara, gli dice: «Devi far entrare solo chi ha 18 anni o più». Elia pensa: «La domanda "ha 18 anni o più?" ha una risposta sola: sì oppure no».
+
+Proprio così: tutte le decisioni dei programmi si riducono a domande con due sole risposte.
+
+La domanda del caso: **come ragiona un computer quando deve decidere?**
+
+<Say who="sensei">Un computer non ha dubbi: ogni condizione per lui è vera oppure falsa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Vero e falso">
+Una **condizione** è un'affermazione che può essere **vera** o **falsa**, mai una via di mezzo. Esempi:
+
+- «L'età è almeno 18» con età 20: **vero**.
+- «L'età è almeno 18» con età 16: **falso**.
+- «Il cliente ha pagato» quando non ha pagato: **falso**.
+
+I due valori «vero» e «falso» si chiamano **valori booleani**, dal nome del matematico inglese George Boole (1815-1864), che nell'Ottocento studiò la logica con regole matematiche. La **logica booleana** è la base di tutti i computer.
+
+<Callout kind="curiosita">
+Nei linguaggi di programmazione i valori booleani hanno nomi propri. In Python si scrivono `True` e `False`, con l'iniziale maiuscola.
+</Callout>
+
+<Say who="assistente">Una condizione è una domanda che ha una sola risposta giusta: sì o no, vero o falso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I confronti">
+Per costruire le condizioni si **confrontano** due valori. Ecco i sei confronti principali:
+
+<Layers
+  caption="I confronti più usati."
+  items={[
+    { icon: "check", title: "uguale a", text: "In Python si scrive con due segni ==" },
+    { icon: "cross", title: "diverso da", text: "In Python si scrive !=" },
+    { icon: "chart", title: "maggiore / minore", text: "Si scrivono con i segni di maggiore e minore" },
+    { icon: "bolt", title: "maggiore o uguale / minore o uguale", text: "Includono anche il valore stesso: >= e <=" },
+  ]}
+/>
+
+Con `eta = 18`:
+- `eta >= 18` è **vero** (18 è uguale a 18).
+- `eta > 18` è **falso** (18 non è maggiore di 18).
+- `eta == 18` è **vero**.
+- `eta != 18` è **falso**.
+
+<Callout kind="attenzione">
+Il confine è la parte più insidiosa. «Più di 18» esclude il 18, «almeno 18» lo include. Nelle regole, ogni parola conta: leggile con calma.
+</Callout>
+
+<Say who="sensei">La maggior parte dei bug nelle condizioni sta nel confine: uguale o no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un segno, due significati">
+In molti linguaggi, Python compreso, il segno `=` e il doppio segno `==` fanno cose diverse:
+
+```python
+eta = 20          # assegnazione: metti 20 nella scatola eta
+eta == 20         # confronto: eta è uguale a 20? Risposta: True
+eta == 18         # confronto: eta è uguale a 18? Risposta: False
+```
+
+- `=` **cambia** il contenuto di una scatola.
+- `==` **chiede** se due valori sono uguali, senza cambiare niente.
+
+Confonderli è uno dei primi errori di chi comincia. Se leggi `=` pensa «diventa», se leggi `==` pensa «è uguale a?».
+
+<Callout kind="regola">
+Un confronto **non cambia niente**: restituisce solo vero o falso. Per cambiare una variabile serve un'assegnazione.
+</Callout>
+
+<Say who="assistente">Due segni uguali, una domanda. Un segno solo, un ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con `eta = 18`, quale di queste condizioni è VERA?"
+  options={[
+    "eta >= 18",
+    "eta > 18",
+    "eta < 18",
+    "eta != 18",
+  ]}
+  answer={0}
+  explain="18 è maggiore o uguale a 18, quindi eta >= 18 è vera. eta > 18 è falsa perché 18 non è maggiore di sé stesso, eta < 18 è falsa, eta != 18 è falsa perché 18 è proprio uguale a 18."
+/>
+
+<Say who="sensei">Per il caso della serata: la condizione giusta è eta maggiore o uguale a 18.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su vero, falso e confronti. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-logica-booleana" pass="4/5" retries={3} />
+
+<Say who="sensei">Presta attenzione al confine: maggiore o maggiore-uguale?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una condizione è sempre vera o falsa: sono i valori booleani, da George Boole.
+- I confronti sono uguale, diverso, maggiore, minore, maggiore o uguale, minore o uguale.
+- Attenzione al confine: «più di 18» esclude il 18, «almeno 18» lo include.
+- In Python `=` assegna un valore, `==` confronta due valori.
+- Caso chiuso: per far entrare chi ha 18 anni o più, la condizione è «età maggiore o uguale a 18».
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali valori può avere una condizione?", a: "Solo vero o falso" },
+    { q: "Che differenza c'è tra = e == in Python?", a: "= mette un valore in una variabile, == confronta due valori" },
+    { q: "18 >= 18 è vero o falso?", a: "Vero: 18 è maggiore o uguale a 18" },
+    { q: "Da chi prendono il nome i valori booleani?", a: "Dal matematico inglese George Boole" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: combinare più condizioni con AND, OR e NOT.</Say>
+</Scene>

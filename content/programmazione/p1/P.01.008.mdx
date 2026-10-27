@@ -1,0 +1,161 @@
+---
+id: P.01.008
+course: programmazione
+module: 1
+title: "Condizioni a più strade"
+belt: bianca
+duration_min: 8
+prerequisites: [P.01.007]
+objectives:
+  - "Scrivere una scelta con più di due strade usando SE, ALTRIMENTI SE e ALTRIMENTI"
+  - "Spiegare che il computer sceglie la prima condizione vera e ignora le altre"
+  - "Mettere le condizioni nell'ordine giusto, dalla più specifica alla più generale"
+verification:
+  type: generated-numeric
+  generator: p01-condizioni-strade
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Mettere prima la condizione più larga: scatta sempre e le altre non vengono mai viste"
+  - "Dimenticare l'ALTRIMENTI finale e lasciare scoperto un caso"
+  - "Scrivere tanti SE separati invece di una catena, facendo scattare più strade insieme"
+commands: []
+---
+
+<Scene title="Tre prezzi per tre età">
+Il cinema vicino alla pizzeria ha tre prezzi: i bambini sotto i 12 anni pagano 5 euro, i ragazzi da 12 a 17 anni pagano 7 euro, dai 18 in su si pagano 10 euro. Elia vuole scrivere la regola per il suo biglietto «pizza e film».
+
+Qui non bastano due strade (sì o no): ce ne sono **tre**. Una sola domanda non basta; ne servono più, in fila.
+
+La domanda del caso: **come si sceglie tra più di due strade?**
+
+<Say who="sensei">Una scelta a due strade è un bivio. Una a tre o più strade è una serie di bivi uno dopo l'altro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La catena di scelte">
+Si usa una **catena**: SE, poi uno o più ALTRIMENTI SE, infine un ALTRIMENTI per tutti gli altri casi.
+
+```text
+LEGGI eta
+SE eta < 12 ALLORA
+    prezzo = 5
+ALTRIMENTI SE eta < 18 ALLORA
+    prezzo = 7
+ALTRIMENTI
+    prezzo = 10
+FINE SE
+SCRIVI prezzo
+```
+
+Provala a mano:
+- `eta` = 8: la prima condizione (8 < 12) è vera, prezzo = 5. Il resto si salta.
+- `eta` = 15: la prima è falsa; la seconda (15 < 18) è vera, prezzo = 7.
+- `eta` = 30: la prima è falsa, la seconda è falsa, si va all'ALTRIMENTI e prezzo = 10.
+
+<Callout kind="regola">
+Le condizioni si controllano **dall'alto in basso** e si usa la **prima vera**. Le altre non vengono nemmeno guardate. L'ALTRIMENTI finale prende tutto quello che resta.
+</Callout>
+
+<Say who="assistente">Pensa a una fila di porte: apri la prima, se è giusta entri e ti fermi lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="L'ordine conta">
+Nella seconda condizione, `eta < 18`, non serve scrivere «e anche eta >= 12»: se si arriva lì, è già sicuro che la prima era falsa, cioè `eta >= 12`. Questo semplifica molto.
+
+Ma per lo stesso motivo l'**ordine** è importante. Vediamo cosa succede mettendolo al contrario:
+
+<Compare
+  caption="Lo stesso insieme di regole, due ordini."
+  left={{ title: "Ordine giusto", points: ["eta < 12 poi eta < 18", "Un bambino di 8 anni: 5 euro", "Un ragazzo di 15 anni: 7 euro"] }}
+  right={{ title: "Ordine sbagliato", points: ["eta < 18 poi eta < 12", "Un bambino di 8 anni: 7 euro", "La regola dei 5 euro non scatta mai"] }}
+/>
+
+Con l'ordine sbagliato, la condizione più larga (`eta < 18`) scatta anche per i bambini e blocca tutto: la regola dei 5 euro diventa **irraggiungibile**.
+
+<Callout kind="trucco">
+Regola pratica: metti per prime le condizioni **più specifiche** (le più strette), poi le più generali, e in fondo l'ALTRIMENTI.
+</Callout>
+
+<Say who="sensei">Il bug più subdolo è quello che non dà errori: il programma funziona, ma sceglie la strada sbagliata.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Catena o tanti SE?">
+Attenzione a non confondere due cose:
+
+<Layers
+  caption="Due modi diversi di scrivere."
+  items={[
+    { icon: "link", title: "Catena (ALTRIMENTI SE)", text: "Scatta una sola strada: la prima vera" },
+    { icon: "bolt", title: "SE separati", text: "Ogni SE è controllato per conto suo: possono scattare più strade insieme" },
+  ]}
+/>
+
+Se Elia scrivesse tre SE separati con le condizioni `eta < 12`, `eta < 18` e `eta >= 18`, un bambino di 8 anni farebbe scattare **due** SE (il primo e il secondo) e il prezzo finale sarebbe quello dell'ultimo scattato: 7, non 5. Con la catena questo non succede.
+
+Per essere sicuro di coprire tutti i casi, finisci sempre con un ALTRIMENTI: così nessuna età resta senza prezzo.
+
+<Say who="assistente">Una catena garantisce una risposta sola. I SE separati no.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Con la catena della lezione (SE eta < 12 prezzo 5, ALTRIMENTI SE eta < 18 prezzo 7, ALTRIMENTI prezzo 10), quanto paga chi ha esattamente 18 anni?"
+  options={[
+    "10 euro",
+    "7 euro",
+    "5 euro",
+    "Niente: nessuna condizione scatta",
+  ]}
+  answer={0}
+  explain="Con 18 anni la prima condizione (18 < 12) è falsa e la seconda (18 < 18) è falsa, quindi scatta l'ALTRIMENTI finale: 10 euro. Il 18 non è minore di 18, e l'ALTRIMENTI garantisce che qualcosa scatti sempre."
+/>
+
+<Say who="sensei">Il confine, ancora lui: 18 non è minore di 18.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle condizioni a più strade. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-condizioni-strade" pass="4/5" retries={3} />
+
+<Say who="sensei">Dall'alto in basso, la prima vera vince. E in fondo, sempre un ALTRIMENTI.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Per scegliere tra più di due strade si usa una catena: SE, ALTRIMENTI SE, ALTRIMENTI.
+- Le condizioni si controllano dall'alto in basso e si usa la prima vera; le altre vengono ignorate.
+- L'ordine conta: prima le condizioni più specifiche, poi le più generali.
+- Un ALTRIMENTI finale evita casi senza risposta; una catena è diversa da tanti SE separati.
+- Caso chiuso: i tre prezzi del cinema (5, 7 e 10 euro) si scrivono con una catena di due condizioni e un ALTRIMENTI.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quante strade esegue una catena SE / ALTRIMENTI SE / ALTRIMENTI?", a: "Una sola: quella della prima condizione vera" },
+    { q: "A che cosa serve l'ALTRIMENTI finale?", a: "A coprire tutti i casi che le condizioni sopra non hanno preso" },
+    { q: "Quali condizioni vanno messe per prime?", a: "Le più specifiche, poi le più generali" },
+    { q: "Che differenza c'è tra una catena e tanti SE separati?", a: "Nella catena scatta una sola strada, con i SE separati ne possono scattare più d'una" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: ripetere le istruzioni con i cicli.</Say>
+</Scene>

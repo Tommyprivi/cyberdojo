@@ -1,0 +1,153 @@
+---
+id: I.04.007
+course: intelligenza-artificiale
+module: 4
+title: "Il regolamento europeo sull'IA (AI Act) in sintesi"
+belt: bianca
+duration_min: 9
+prerequisites: [I.04.006]
+objectives:
+  - "Spiegare che cos'è l'AI Act e a chi si applica"
+  - "Descrivere l'idea dei quattro livelli di rischio"
+  - "Indicare gli obblighi di trasparenza che riguardano chatbot e contenuti creati dall'IA"
+verification:
+  type: generated-numeric
+  generator: i04-ai-act
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che l'AI Act proibisca l'IA: regola gli usi in base al rischio, e ne vieta solo alcuni"
+  - "Credere che valga solo per le aziende europee: si applica a chi mette un sistema sul mercato dell'Unione, ovunque abbia sede"
+  - "Confondere l'AI Act (regole sull'IA) con il GDPR (regole sui dati personali)"
+commands: []
+---
+
+<Scene title="Una legge per le macchine">
+Il professor Ricci spiega in classe: «L'Europa ha una legge sull'intelligenza artificiale». Marta alza la mano: «Ma come si fa a fare una legge su qualcosa che cambia ogni mese? Vieta l'IA?».
+
+No, non la vieta. È una legge pensata con un'idea precisa: **più un uso dell'IA può fare danni alle persone, più le regole sono severe.**
+
+La domanda del caso: **come funziona la legge europea sull'IA, in sintesi?**
+
+<Say who="sensei">Questa è una lezione di sintesi, non di consulenza legale. Per un caso vero si leggono i testi ufficiali o si chiede a un esperto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è l'AI Act">
+L'**AI Act** è il regolamento europeo sull'intelligenza artificiale: Regolamento (UE) 2024/1689. È entrato in vigore il 1° agosto 2024 e si applica **a tappe**: prima i divieti, poi le regole per i modelli di uso generale, poi le altre, in un periodo di qualche anno. Alcune scadenze possono essere aggiornate: per le date esatte guarda sempre le fonti ufficiali dell'Unione.
+
+Alcuni punti base:
+- È un **regolamento**: vale direttamente in tutti i Paesi dell'Unione, senza dover essere ripreso da leggi nazionali.
+- Si applica a chi **mette sul mercato o usa** sistemi di IA nell'Unione, anche se l'azienda ha sede fuori dall'Europa.
+- Non è il GDPR: il **GDPR** riguarda i dati personali, l'AI Act riguarda i **sistemi di IA** e i loro rischi. Le due leggi possono valere insieme.
+- Esistono ruoli: chi **sviluppa** (fornitore) e chi **usa** (utilizzatore) un sistema ha obblighi diversi.
+
+<Callout kind="curiosita">
+È considerata la prima legge generale sull'IA al mondo. Per questo viene studiata anche fuori dall'Europa.
+</Callout>
+
+<Say who="assistente">Una legge «a tappe» è come aprire un cantiere a zone: non tutto parte lo stesso giorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro livelli di rischio">
+Il cuore dell'AI Act è la **classificazione in base al rischio**:
+
+<Layers
+  caption="Più è alto il rischio, più sono severe le regole."
+  items={[
+    { icon: "skull", title: "Rischio inaccettabile", text: "Usi vietati" },
+    { icon: "warning", title: "Rischio alto", text: "Permessi, ma con obblighi severi" },
+    { icon: "eye", title: "Rischio limitato", text: "Obblighi di trasparenza" },
+    { icon: "check", title: "Rischio minimo", text: "Nessun obbligo particolare: per esempio filtri antispam o videogiochi" },
+  ]}
+/>
+
+La maggior parte dei sistemi di IA che usiamo ogni giorno cade nel **rischio minimo**. Nelle prossime due lezioni vedremo cosa succede ai livelli più alti, cioè i divieti e i sistemi ad alto rischio.
+
+<Say who="sensei">Pensa al codice della strada: la regola dipende da quanto un errore può far male. Qui è lo stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Trasparenza e modelli di uso generale">
+Per il **rischio limitato** le regole riguardano soprattutto la **trasparenza**:
+
+- Se parli con un **chatbot**, devi essere informato che stai parlando con una macchina (salvo che sia ovvio).
+- I contenuti **creati o modificati dall'IA** (immagini, audio, video, testi in certi casi) devono essere segnalati e, tecnicamente, marcati in modo che una macchina possa riconoscerli.
+- I **deepfake** devono essere etichettati come tali.
+
+L'AI Act ha regole anche per i **modelli di IA di uso generale**, cioè quelli che servono a molti scopi, come i grandi modelli di linguaggio. Chi li sviluppa deve, tra l'altro, preparare documentazione tecnica, rispettare il diritto d'autore e pubblicare una sintesi dei contenuti usati per l'addestramento. Per i modelli più potenti, che possono creare «rischi sistemici», gli obblighi sono maggiori.
+
+<Flow
+  caption="Come funziona la logica del regolamento."
+  steps={[
+    { icon: "search", title: "Che uso è?", text: "Si guarda a cosa serve il sistema" },
+    { icon: "chart", title: "Che rischio ha?", text: "Inaccettabile, alto, limitato o minimo" },
+    { icon: "book", title: "Quali regole?", text: "Divieto, obblighi severi, trasparenza o libertà" },
+  ]}
+/>
+
+<Say who="assistente">Chi non rispetta le regole rischia sanzioni anche molto pesanti, fino a milioni di euro o a una percentuale del fatturato mondiale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un'azienda americana offre un chatbot di assistenza clienti a utenti che vivono in Italia.
+
+<Quiz
+  question="Che cosa dice l'AI Act su questo caso?"
+  options={[
+    "Il regolamento può applicarsi anche se l'azienda ha sede fuori dall'UE, e chi parla con il chatbot deve essere informato che è una macchina",
+    "Non si applica, perché l'azienda non è europea",
+    "Il chatbot è vietato perché è un'IA",
+    "Basta che l'azienda rispetti il GDPR, l'AI Act non c'entra mai con i chatbot",
+  ]}
+  answer={0}
+  explain="L'AI Act guarda a dove il sistema è offerto e usato, non alla sede dell'azienda; per i chatbot vale l'obbligo di trasparenza. Non vieta l'IA in generale, e non va confuso con il GDPR, che riguarda i dati personali."
+/>
+
+<Say who="sensei">Regole dal rischio, trasparenza dove serve, divieti solo per l'inaccettabile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sull'AI Act. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i04-ai-act" pass="4/5" retries={3} />
+
+<Say who="sensei">Quattro livelli: inaccettabile, alto, limitato, minimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'AI Act è il Regolamento (UE) 2024/1689, in vigore dal 1° agosto 2024 e applicato a tappe.
+- Divide l'IA in quattro livelli di rischio: inaccettabile, alto, limitato, minimo.
+- Per chatbot e contenuti creati dall'IA valgono obblighi di trasparenza; i modelli di uso generale hanno regole proprie.
+- Non è il GDPR: l'AI Act regola i sistemi di IA, il GDPR i dati personali.
+- Caso chiuso: la legge non vieta l'IA, ma regola gli usi in base al rischio, ed è questa la risposta al dubbio di Marta.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali sono i quattro livelli di rischio dell'AI Act?", a: "Inaccettabile, alto, limitato, minimo" },
+    { q: "Che cosa deve sapere chi parla con un chatbot?", a: "Che sta parlando con una macchina" },
+    { q: "Che differenza c'è tra AI Act e GDPR?", a: "L'AI Act regola i sistemi di IA, il GDPR la protezione dei dati personali" },
+    { q: "L'AI Act si applica solo alle aziende europee?", a: "No: riguarda chi offre o usa sistemi di IA nell'Unione, anche con sede fuori" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i rischi alti e gli usi vietati, uno per uno.</Say>
+</Scene>

@@ -1,0 +1,167 @@
+---
+id: W.01.004
+course: sviluppo-web
+module: 1
+title: "I tre linguaggi del web: HTML, CSS, JavaScript"
+belt: bianca
+duration_min: 8
+prerequisites: [W.01.003]
+objectives:
+  - "Dire a che cosa serve ciascuno dei tre linguaggi: contenuto, aspetto, comportamento"
+  - "Riconoscere a quale linguaggio appartiene un pezzo di codice"
+  - "Spiegare perché conviene tenere i tre compiti separati"
+verification:
+  type: generated-numeric
+  generator: w01-tre-linguaggi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che JavaScript e Java siano lo stesso linguaggio: sono due linguaggi diversi"
+  - "Pensare che HTML sia un linguaggio di programmazione: descrive un contenuto, non esegue calcoli"
+  - "Usare l'HTML per scegliere i colori invece del CSS"
+commands: []
+---
+
+<Scene title="Tre mestieri, una pagina">
+Lucia ha disegnato su un foglio la sua pagina: un titolo grande, una foto di un vaso, un paragrafo e un pulsante «Iscriviti» che, quando lo tocchi, mostra un messaggio di ringraziamento. Ti chiede: «In che linguaggio si scrive tutto questo?».
+
+La risposta è: **in tre**. Una pagina web è costruita con tre linguaggi che hanno tre compiti diversi. Capire la divisione dei compiti è il modo più veloce per smettere di confondersi.
+
+La domanda del caso: **chi decide che cosa c'è, chi decide come appare e chi decide che cosa succede?**
+
+<Say who="sensei">Un buon sito è come una buona squadra. Ognuno fa il suo lavoro e non quello degli altri.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La casa e i suoi tre livelli">
+Pensa a una casa.
+
+- I **muri e le stanze** sono la struttura: quello che c'è. È l'**HTML** (*HyperText Markup Language*, «linguaggio a marcatori per ipertesti»). Dice: qui un titolo, qui un paragrafo, qui un'immagine, qui un link.
+- La **pittura, i mobili e le luci** sono l'aspetto. È il **CSS** (*Cascading Style Sheets*, «fogli di stile a cascata»). Dice: il titolo è rosso e grande, i paragrafi hanno più spazio.
+- L'**impianto elettrico** è il comportamento: premi un interruttore e succede qualcosa. È **JavaScript**. Dice: quando si tocca il pulsante, mostra un messaggio.
+
+<Layers
+  caption="Tre linguaggi, tre compiti."
+  items={[
+    { icon: "code", title: "JavaScript", text: "Comportamento: che cosa succede" },
+    { icon: "gear", title: "CSS", text: "Aspetto: come si vede" },
+    { icon: "file", title: "HTML", text: "Struttura: che cosa c'è" },
+  ]}
+/>
+
+<Callout kind="regola">
+**HTML = contenuto, CSS = aspetto, JavaScript = comportamento.** Senza HTML non c'è niente da mostrare; senza CSS la pagina è spoglia ma funziona; senza JavaScript la pagina è ferma ma si legge.
+</Callout>
+
+<Say who="assistente">Se togli il CSS, una pagina diventa bianca e nera con il testo in Times New Roman. Brutta, ma leggibile. È una prova che puoi fare dopo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come sono fatti">
+Guarda lo stesso pezzo di pagina scritto nei tre linguaggi. Non devi capirlo tutto adesso: serve solo per riconoscerne la *forma*.
+
+```html
+<h1>La Bottega di Lucia</h1>
+```
+L'**HTML** usa **tag** tra parentesi angolari: `<h1>` apre un titolo, `</h1>` lo chiude.
+
+```css
+h1 {
+  color: firebrick;
+  font-size: 2rem;
+}
+```
+Il **CSS** sceglie *che cosa* stilare (`h1`) e poi, tra parentesi graffe, dice *come*: coppie `proprietà: valore;`.
+
+```js
+console.log("Ciao dalla bottega");
+```
+**JavaScript** è scritto come un programma: istruzioni, una dopo l'altra, che finiscono con il punto e virgola.
+
+<Callout kind="attenzione">
+**JavaScript non è Java.** Il nome è un caso storico: sono due linguaggi diversi, con usi diversi. Se cerchi aiuto, scrivi sempre «JavaScript» per intero.
+</Callout>
+
+<Say who="sensei">Tre forme diverse: tag, regole tra graffe, istruzioni. Quando vedi un pezzo di codice, riconosci prima la forma e poi il linguaggio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Perché tenerli separati">
+Potresti scrivere colori e comportamento dentro l'HTML, mescolando tutto. Funziona, ma è una brutta idea. Tenere i tre compiti **in file separati** dà tre vantaggi:
+
+<Compare
+  caption="Tutto mescolato o ben separato."
+  left={{ title: "Tutto insieme", points: ["Per cambiare un colore devi cercarlo in mille punti", "Il codice diventa illeggibile", "Difficile lavorare in due"] }}
+  right={{ title: "Tre file separati", points: ["Un colore si cambia in un punto solo", "Ogni file è corto e chiaro", "Chi disegna e chi programma non si pestano i piedi"] }}
+/>
+
+Per questo un sito semplice ha di solito una cartella con tre file: `index.html`, `stile.css` e `script.js`. L'HTML dice al browser di caricare gli altri due.
+
+<Say who="assistente">È la stessa ragione per cui in cucina non tieni sale, pentole e coltelli nello stesso cassetto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Lucia vuole che il pulsante «Iscriviti» diventi verde quando ci passi sopra con il mouse, e che al clic compaia un messaggio di ringraziamento.
+
+<Guided
+  steps={[
+    "Il pulsante deve esistere nella pagina: questo è compito dell'HTML (struttura).",
+    "Deve diventare verde quando ci passi sopra: questo è compito del CSS (aspetto).",
+    "Al clic deve comparire un messaggio: questo è compito di JavaScript (comportamento).",
+    "Tre richieste, tre linguaggi: nessuno ha fatto il lavoro di un altro.",
+  ]}
+/>
+
+<Quiz
+  question="Quale linguaggio decide che il titolo della pagina sia rosso?"
+  options={["CSS", "HTML", "JavaScript", "HTTP"]}
+  answer={0}
+  explain="I colori sono aspetto, e l'aspetto è compito del CSS. L'HTML dice che il titolo esiste, JavaScript fa succedere cose, HTTP è il protocollo con cui browser e server si parlano."
+/>
+
+<Say who="sensei">Prima di scrivere una riga, chiediti: è contenuto, aspetto o comportamento? La risposta ti dice in quale file andare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su HTML, CSS e JavaScript. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w01-tre-linguaggi" pass="4/5" retries={3} />
+
+<Say who="sensei">Contenuto, aspetto, comportamento. Se te lo ricordi, hai già superato la parte più difficile.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- HTML dà la struttura (che cosa c'è), CSS l'aspetto (come si vede), JavaScript il comportamento (che cosa succede).
+- HTML si scrive con tag, CSS con regole tra parentesi graffe, JavaScript con istruzioni.
+- JavaScript non è Java: sono due linguaggi diversi.
+- Tenere i tre compiti in file separati rende il sito più facile da cambiare.
+- Caso chiuso: la pagina di Lucia usa HTML per il titolo e il pulsante, CSS per il verde, JavaScript per il messaggio.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve l'HTML?", a: "A descrivere la struttura e il contenuto della pagina" },
+    { q: "A che cosa serve il CSS?", a: "A decidere l'aspetto: colori, caratteri, spazi" },
+    { q: "A che cosa serve JavaScript?", a: "A far succedere cose nella pagina, per esempio al clic" },
+    { q: "JavaScript e Java sono lo stesso linguaggio?", a: "No, sono due linguaggi diversi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: gli strumenti nascosti nel browser, quelli che usano i professionisti.</Say>
+</Scene>

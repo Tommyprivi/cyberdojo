@@ -1,0 +1,183 @@
+---
+id: W.02.009
+course: sviluppo-web
+module: 2
+title: "Commenti, spazi e caratteri speciali"
+belt: bianca
+duration_min: 8
+prerequisites: [W.02.008]
+objectives:
+  - "Scrivere un commento HTML e sapere che resta visibile nel codice"
+  - "Mostrare nella pagina i caratteri speciali con le entità (&lt;, &gt;, &amp;)"
+  - "Usare lo spazio non separabile e il tag pre quando servono"
+verification:
+  type: generated-numeric
+  generator: w02-commenti-caratteri
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Scrivere nei commenti informazioni riservate, come password o note private: chiunque guardi il codice le può leggere"
+  - "Scrivere un tag nel testo senza usare le entità: il browser lo prende per un tag vero"
+  - "Usare tanti spazi non separabili per impaginare, invece del CSS"
+commands: []
+---
+
+<Scene title="Il tag che sparisce">
+Lucia vuole scrivere nella pagina una piccola spiegazione: «Per un paragrafo si usa il tag &lt;p&gt;». Scrive la frase, salva, apre la pagina e legge: «Per un paragrafo si usa il tag». Il pezzo tra parentesi è sparito.
+
+Il browser ha preso `<p>` per un tag vero e non per un testo da mostrare.
+
+La domanda del caso: **come si mostra un carattere che l'HTML usa per i propri scopi?**
+
+<Say who="sensei">Alcuni caratteri sono riservati: l'HTML li usa per i suoi tag. Per mostrarli come testo servono dei codici speciali.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I commenti">
+Prima, un altro modo di nascondere qualcosa: il **commento**. Un commento è una nota nel codice che il browser **non mostra**:
+
+```html
+<!-- Qui comincia la sezione dei corsi -->
+<h2>I corsi</h2>
+<!-- <p>Questo paragrafo è spento per ora.</p> -->
+```
+
+Si apre con `<!--` e si chiude con `-->`. Serve per:
+- lasciare note a te stesso o a chi leggerà il codice;
+- **spegnere** temporaneamente un pezzo di codice senza cancellarlo.
+
+<Callout kind="attenzione">
+Il commento non si vede nella pagina, ma si vede nel **codice sorgente**: chiunque può aprirlo con gli strumenti del browser. Non scriverci mai password, dati personali o note private.
+</Callout>
+
+<Say who="assistente">In quasi tutti gli editor si commenta una riga selezionandola e premendo Ctrl+/ (su Mac, Cmd+/).</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le entità: caratteri speciali">
+Per mostrare un carattere riservato si usa una **entità**: un codice che comincia con `&` e finisce con `;`. Il browser lo trasforma nel carattere.
+
+<Layers
+  caption="Le entità più usate."
+  items={[
+    { icon: "code", title: "&lt;", text: "Mostra il segno «minore di»" },
+    { icon: "code", title: "&gt;", text: "Mostra il segno «maggiore di»" },
+    { icon: "code", title: "&amp;", text: "Mostra il simbolo «e commerciale»" },
+    { icon: "code", title: "&quot;", text: "Mostra le virgolette doppie" },
+  ]}
+/>
+
+Così Lucia scrive la sua frase:
+
+```html
+<p>Per un paragrafo si usa il tag &lt;p&gt;.</p>
+```
+
+e la pagina mostra: «Per un paragrafo si usa il tag <p>.»
+
+Altre entità comode: `&copy;` mostra ©, `&euro;` mostra €, `&hellip;` mostra …
+
+<Callout kind="regola">
+Se la pagina è in UTF-8 (come quella dello scheletro), le lettere accentate e i simboli come € si possono scrivere direttamente. Le entità servono soprattutto per `&lt;`, `&gt;` e `&amp;`, che hanno un significato speciale per l'HTML.
+</Callout>
+
+<Say who="sensei">Se un giorno vedi la sequenza `&amp;` in una pagina, ora sai: è un «e commerciale» nascosto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Spazi, spazi non separabili e pre">
+Hai già visto che il browser **comprime gli spazi**. Due strumenti per controllare quando serve:
+
+<Compare
+  caption="Due modi di governare lo spazio."
+  left={{ title: "Spazio non separabile", points: ["Si scrive con l'entità nbsp", "Non si comprime e non va a capo", "Per tenere unite due parole"] }}
+  right={{ title: "Elemento pre", points: ["Mantiene spazi e a capo come nel file", "Usa un carattere a larghezza fissa", "Per pezzi di codice o testo allineato"] }}
+/>
+
+```html
+<p>Via dei Vasai 5, 48018&nbsp;Faenza</p>
+<pre>
+Lunedì   10:00
+Martedì  chiuso
+</pre>
+```
+
+- `&nbsp;` (*non-breaking space*) è uno spazio che il browser non comprime e che non spezza la riga: «48018 Faenza» resta unito.
+- `<pre>` (*preformatted*, «preformattato») mostra il testo esattamente come lo scrivi.
+
+<Callout kind="trucco">
+Non usare tanti `&nbsp;` di fila per spostare o centrare il testo: per l'impaginazione c'è il CSS, che vedrai nel prossimo corso.
+</Callout>
+
+<Say who="assistente">Per un pezzo di codice lungo si usa spesso `pre` con `code` dentro: il primo mantiene la forma, il secondo dà il significato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale testo HTML fa comparire nella pagina la scritta 5 < 7, senza che il browser pensi a un tag?"
+  options={[
+    "5 &lt; 7",
+    "5 &amp;lt 7",
+    "5 <!-- minore --> 7",
+    "5 < 7 (senza altro)",
+  ]}
+  answer={0}
+  explain="L'entità lt (less than) produce il segno minore di. La seconda opzione è scritta male e mostrerebbe testo strano; la terza è un commento e non mostra nulla; la quarta lascia il segno nudo, che in certi casi il browser potrebbe leggere come l'inizio di un tag."
+/>
+
+<Guided
+  steps={[
+    "Scrivi un commento con una nota per te sopra un titolo.",
+    "Spegni un paragrafo mettendolo dentro un commento.",
+    "Scrivi una frase che mostra un tag, usando lt e gt.",
+    "Scrivi un indirizzo con un nbsp per tenere unito il codice postale e la città.",
+    "Aggiungi un pre con un orario scritto su più righe e controlla il risultato.",
+  ]}
+/>
+
+<Say who="sensei">Controlla il risultato nel browser, poi guarda il codice sorgente: vedrai i commenti anche lì.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su commenti, entità e spazi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w02-commenti-caratteri" pass="4/5" retries={3} />
+
+<Say who="sensei">Commento per te, entità per i simboli, pre per la forma. Tre strumenti diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un commento si scrive tra `<!--` e `-->`: non si vede nella pagina, ma è leggibile nel codice.
+- Le entità, come `&lt;`, `&gt;` e `&amp;`, mostrano i caratteri riservati.
+- `&nbsp;` è uno spazio che non si comprime e non va a capo.
+- `pre` mantiene gli spazi e gli a capo del file.
+- Caso chiuso: con `&lt;p&gt;` Lucia mostra il tag come testo e il browser non lo scambia per un tag vero.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si apre e si chiude un commento HTML?", a: "Con <!-- e -->" },
+    { q: "Si può leggere un commento nel codice sorgente della pagina?", a: "Sì, chiunque lo può leggere: niente password nei commenti" },
+    { q: "Quale entità mostra il segno minore di?", a: "&lt;" },
+    { q: "A che cosa serve il tag pre?", a: "A mantenere spazi e a capo come nel file" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: validare l'HTML e leggere gli errori.</Say>
+</Scene>

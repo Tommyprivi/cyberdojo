@@ -1,0 +1,159 @@
+---
+id: P.01.001
+course: programmazione
+module: 1
+title: "Che cos'è un programma e che cos'è un algoritmo"
+belt: bianca
+duration_min: 8
+prerequisites: []
+objectives:
+  - "Spiegare che cos'è un algoritmo e che cos'è un programma"
+  - "Riconoscere le tre caratteristiche di un buon algoritmo: passi chiari, ordine preciso, una fine"
+  - "Distinguere l'algoritmo (l'idea) dal programma (l'idea scritta per un computer)"
+verification:
+  type: generated-numeric
+  generator: p01-programma-algoritmo
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Pensare che il computer capisca da solo cosa vogliamo: esegue solo ciò che è scritto, passo per passo"
+  - "Confondere algoritmo e programma: l'algoritmo è il metodo, il programma è quel metodo scritto in un linguaggio"
+  - "Scrivere passi vaghi come «prepara bene» invece di istruzioni precise"
+commands: []
+---
+
+<Scene title="La pizzeria di Elia">
+Elia ha una pizzeria e ogni sera conta a mano gli incassi: ci mette mezz'ora e a volte sbaglia. Sua cugina gli dice: «Fai fare il conto a un computer».
+
+Ma un computer non sa che cosa sia un incasso. Sa solo seguire istruzioni. Prima di tutto Elia deve spiegargli, passo per passo, **come** si fa il conto.
+
+La domanda del caso: **come si spiega a una macchina un lavoro, senza lasciare niente al caso?**
+
+<Say who="sensei">Un computer è velocissimo e totalmente privo di intuito. Fa esattamente quello che gli dici, né più né meno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un algoritmo">
+Un **algoritmo** è una sequenza di passi chiari che porta a un risultato. Non serve un computer: una ricetta, le istruzioni per montare un mobile, il metodo per fare una divisione in colonna sono tutti algoritmi.
+
+La parola viene dal nome di un matematico persiano del IX secolo, al-Khwarizmi, che descrisse metodi di calcolo precisi.
+
+Un buon algoritmo ha tre caratteristiche:
+
+- **Passi chiari**: ogni istruzione si capisce e si può eseguire senza dover indovinare.
+- **Ordine preciso**: si sa sempre quale passo viene prima e quale dopo.
+- **Una fine**: dopo un numero limitato di passi si arriva al risultato e ci si ferma.
+
+<Callout kind="esempio">
+«Prepara bene il caffè» non è un algoritmo, è un desiderio. «Metti l'acqua nella caldaia, il caffè nel filtro, chiudi, accendi il fuoco, spegni quando esce» lo è.
+</Callout>
+
+<Say who="assistente">Se un'istruzione ti fa dire «ma che cosa intende?», non è ancora abbastanza chiara per una macchina.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un programma">
+Un **programma** è un algoritmo scritto in un linguaggio che il computer può eseguire. Si scrive con un **linguaggio di programmazione**, come Python, che ha regole precise: una virgola fuori posto e il computer si ferma.
+
+<Flow
+  caption="Dall'idea al computer."
+  steps={[
+    { icon: "bolt", title: "Problema", text: "Contare gli incassi della sera" },
+    { icon: "book", title: "Algoritmo", text: "I passi pensati con la testa" },
+    { icon: "code", title: "Programma", text: "I passi scritti in un linguaggio" },
+    { icon: "laptop", title: "Esecuzione", text: "Il computer li esegue" },
+  ]}
+/>
+
+La parte difficile e interessante è la seconda: **inventare l'algoritmo**. Il linguaggio si impara, la logica è il vero mestiere. Per questo in questo modulo non scrivi ancora codice: impari a ragionare.
+
+<Say who="sensei">Prima si pensa, poi si scrive. Chi scrive subito di solito riscrive tre volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Ingredienti: input, elaborazione, output">
+Quasi ogni programma fa tre cose:
+
+<Layers
+  caption="Le tre fasi di un programma."
+  items={[
+    { icon: "mail", title: "Input", text: "I dati che entrano: gli importi della serata" },
+    { icon: "gear", title: "Elaborazione", text: "Il lavoro: sommare gli importi" },
+    { icon: "file", title: "Output", text: "Il risultato: il totale dell'incasso" },
+  ]}
+/>
+
+Un esempio per Elia, a parole:
+
+1. Parti da un totale uguale a 0.
+2. Per ogni scontrino, aggiungi il suo importo al totale.
+3. Quando gli scontrini sono finiti, mostra il totale.
+
+Con tre scontrini da 12, 8 e 15 euro il totale finale è 35. Il passo 2 è ripetuto più volte: fra poche lezioni lo chiamerai **ciclo**.
+
+<Callout kind="regola">
+Un algoritmo funziona per **tutti** i dati possibili dello stesso tipo, non solo per un esempio: lo stesso metodo vale con tre scontrini o con trecento.
+</Callout>
+
+<Say who="assistente">Quando scrivi un algoritmo, chiediti sempre: che cosa entra, che cosa faccio, che cosa esce?</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Qual è la differenza tra un algoritmo e un programma?"
+  options={[
+    "L'algoritmo è il metodo, il programma è quel metodo scritto in un linguaggio per il computer",
+    "L'algoritmo si scrive solo in Python, il programma in qualunque linguaggio",
+    "L'algoritmo gira sul computer, il programma si esegue solo a mano",
+    "Sono due parole che indicano esattamente la stessa cosa",
+  ]}
+  answer={0}
+  explain="L'algoritmo è l'idea: i passi per risolvere il problema. Il programma è la stessa idea scritta in un linguaggio che il computer capisce. L'algoritmo non è legato a Python o a un computer (una ricetta è un algoritmo) e le due parole non sono sinonimi."
+/>
+
+<Say who="sensei">Se capisci questa differenza, hai già capito metà della programmazione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su algoritmi e programmi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p01-programma-algoritmo" pass="4/5" retries={3} />
+
+<Say who="sensei">Passi chiari, ordine preciso, una fine. Se manca uno dei tre, non è un algoritmo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un algoritmo è una sequenza di passi chiari, in ordine preciso, che arriva a una fine.
+- Un programma è un algoritmo scritto in un linguaggio che il computer può eseguire.
+- Un computer esegue alla lettera: non capisce da solo ciò che vogliamo.
+- Il lavoro principale è inventare l'algoritmo; scriverlo in un linguaggio viene dopo.
+- Caso chiuso: per far contare gli incassi a un computer, Elia deve prima descrivere il metodo in passi precisi.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un algoritmo?", a: "Una sequenza di passi chiari, in ordine preciso, che porta a un risultato" },
+    { q: "Che cos'è un programma?", a: "Un algoritmo scritto in un linguaggio che il computer può eseguire" },
+    { q: "Quali sono le tre fasi tipiche di un programma?", a: "Input (dati che entrano), elaborazione, output (risultato)" },
+    { q: "Un'istruzione come «prepara bene» è adatta a un algoritmo?", a: "No: è vaga, i passi devono essere chiari e precisi" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: come si spezza un problema grande in pezzi piccoli.</Say>
+</Scene>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fredoka, IBM_Plex_Mono, Nunito } from "next/font/google";
 import { ConsentBanner } from "@/components/consent/consent-banner";
 import { ConsentProvider } from "@/components/consent/consent-provider";
@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   title: { default: SITE.name, template: `%s | ${SITE.name}` },
   description: SITE.description,
 };
+
+// Colore della barra di stato: come lo sfondo (chiaro di partenza). ThemeSync lo aggiorna se si sceglie scuro o sistema.
+export const viewport: Viewport = { themeColor: "#f4f7fb", viewportFit: "cover" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

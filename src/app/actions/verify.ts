@@ -2,7 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { headers } from "next/headers";
-import { and, count, desc, eq, gte, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { schema } from "@/lib/db";
 import { withUser } from "@/lib/db/scoped";
 import { getRawLesson } from "@/lib/content/load";
@@ -70,12 +70,14 @@ export async function startVerification(lessonId: string): Promise<StartResult> 
   return withUser(user.id, async (tx) => {
     // Si può fare la verifica solo se i prerequisiti sono stati completati (avanzamento in ordine).
     if (prerequisites.length > 0) {
-      const done = await tx
-        .select({ id: schema.lessonProgress.lessonId })
+      const rows = await tx
+        .select({ id: schema.lessonProgress.lessonId, status: schema.lessonProgress.status })
         .from(schema.lessonProgress)
-        .where(and(eq(schema.lessonProgress.userId, user.id), eq(schema.lessonProgress.status, "completata")));
-      const doneIds = new Set(done.map((d) => d.id));
-      if (!canOpenLesson({ id: lessonId, prerequisites }, { completed: doneIds })) throw new Error("Completa prima le lezioni precedenti.");
+        .where(and(eq(schema.lessonProgress.userId, user.id), inArray(schema.lessonProgress.status, ["completata", "padroneggiata"])));
+      const completed = new Set(rows.filter((r) => r.status === "completata").map((r) => r.id));
+      const mastered = new Set(rows.filter((r) => r.status === "padroneggiata").map((r) => r.id));
+      // «Padroneggiata» conta come prerequisito soddisfatto; anche la lezione stessa, se l'hai padroneggiata, si può completare.
+      if (!mastered.has(lessonId) && !canOpenLesson({ id: lessonId, prerequisites }, { completed, mastered })) throw new Error("Completa prima le lezioni precedenti.");
     }
 
     const since = new Date(Date.now() - WINDOW_MS);

@@ -1,0 +1,152 @@
+---
+id: I.02.008
+course: intelligenza-artificiale
+module: 2
+title: "IA per studiare senza barare"
+belt: bianca
+duration_min: 8
+prerequisites: [I.02.007]
+objectives:
+  - "Distinguere un uso dell'assistente che aiuta a imparare da uno che sostituisce il lavoro"
+  - "Usare l'assistente come tutor: spiegazioni, domande di ripasso, controllo del proprio ragionamento"
+  - "Rispettare le regole della scuola e dichiarare l'aiuto ricevuto quando serve"
+verification:
+  type: generated-numeric
+  generator: i02-studiare
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Consegnare come proprio un testo scritto dall'assistente"
+  - "Chiedere la soluzione di un esercizio senza provare prima, e credere di aver imparato"
+  - "Non controllare le regole dell'insegnante o della scuola sull'uso dell'IA"
+commands: []
+---
+
+<Scene title="Il tema già pronto">
+Luca deve scrivere un tema di una pagina sull'acqua come risorsa. È stanco, quindi chiede all'assistente: «Scrivi il tema». Lo copia, lo consegna e prende 8. Una settimana dopo c'è una verifica orale sullo stesso argomento: Luca non sa dire niente.
+
+Marta, invece, ha usato l'assistente in modo diverso: ha scritto il tema da sola, poi ha chiesto «dimmi dove non è chiaro».
+
+La domanda del caso: **quando l'IA aiuta a studiare e quando fa solo finta?**
+
+<Say who="sensei">Uno studia per imparare, non per consegnare un foglio. Chi consegna senza imparare ha perso il tempo due volte.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Due modi di usarla">
+<Compare
+  caption="Aiuto o sostituzione."
+  left={{ title: "Aiuta a imparare", points: ["Ti spiega un concetto in un altro modo", "Ti fa domande per ripassare", "Controlla il ragionamento che hai fatto tu"] }}
+  right={{ title: "Sostituisce il tuo lavoro", points: ["Scrive il tema al posto tuo", "Fa l'esercizio e tu copi il risultato", "Tu non capisci cosa c'è scritto"] }}
+/>
+
+Un test semplice: **dopo averla usata, riesci a spiegare tutto a voce, senza guardare?** Se sì, hai imparato. Se no, hai solo spostato il lavoro all'assistente.
+
+Consegnare come tuo un testo scritto da altri, persona o IA, è **barare**: è scorretto verso gli insegnanti e verso i compagni, e in molte scuole è vietato dal regolamento.
+
+<Say who="assistente">Non è l'assistente il problema: è come lo usi. Può essere un buon tutor oppure una scorciatoia che ti lascia a metà strada.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come usarla da tutor">
+Alcune richieste che funzionano bene:
+
+- **Spiegare**: «Spiegami la fotosintesi in modo semplice, poi con un esempio».
+- **Interrogare**: «Fammi 5 domande sul Risorgimento, una alla volta, e correggi le mie risposte».
+- **Controllare**: «Ecco come ho risolto questa equazione: dimmi se c'è un errore e dove, senza darmi la soluzione».
+- **Schemi di studio**: «Aiutami a fare una mappa dei concetti di questo capitolo».
+- **Spiegare ciò che non capisci**: «Non ho capito il passaggio 3: riscrivilo con parole più semplici».
+
+<Callout kind="trucco">
+Prima prova da solo, poi chiedi aiuto. Un esercizio sbagliato fatto da te insegna più di uno giusto copiato.
+</Callout>
+
+<Flow
+  caption="Un ripasso con l'assistente."
+  steps={[
+    { icon: "book", title: "Studia", text: "Leggi il capitolo da solo" },
+    { icon: "search", title: "Fatti interrogare", text: "L'assistente fa le domande" },
+    { icon: "check", title: "Controlla", text: "Confronta con il libro" },
+    { icon: "bolt", title: "Ripeti", text: "Rifai i punti che hai sbagliato" },
+  ]}
+/>
+
+<Say who="sensei">Nota l'ultimo passo: tu confronti col libro, perché l'assistente può sbagliare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le regole e l'onestà">
+Ogni scuola e ogni insegnante può avere regole proprie sull'uso dell'IA: a volte è permessa per ripassare ma non per i compiti in classe, a volte va dichiarata. Le regole si **chiedono** e si **rispettano**.
+
+Alcune buone abitudini:
+- **Chiedi** all'insegnante che cosa è permesso, se non è scritto.
+- **Dichiara** l'aiuto ricevuto quando ti viene chiesto, per esempio «ho usato un assistente per fare domande di ripasso».
+- **Controlla** ciò che ti dice, come nelle lezioni precedenti.
+- **Non copiare** testi interi e consegnarli come tuoi.
+
+<Callout kind="attenzione">
+Un testo scritto dall'IA non diventa tuo perché lo hai ricopiato a mano. E un testo che non capisci ti tradisce alla prima domanda dell'insegnante.
+</Callout>
+
+<Say who="assistente">Se hai dubbi su cosa è permesso, chiedi prima. Una domanda all'inizio costa poco.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale uso dell'assistente aiuta davvero a imparare?"
+  options={[
+    "Risolvere un esercizio da solo e poi farti dire dove hai sbagliato",
+    "Farti scrivere il tema e consegnarlo così com'è",
+    "Copiare la soluzione dell'esercizio senza leggerla",
+    "Farti fare il compito in classe di nascosto",
+  ]}
+  answer={0}
+  explain="Provare prima e poi farsi controllare è il modo di usarla come tutor: il lavoro lo fai tu. Le altre tre opzioni sostituiscono il tuo lavoro, e l'ultima è anche contro le regole."
+/>
+
+<Say who="sensei">Se alla fine non sai spiegarlo senza l'assistente, non l'hai imparato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su studiare con l'IA in modo onesto. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i02-studiare" pass="4/5" retries={3} />
+
+<Say who="sensei">Prima ci provi tu. Poi chiedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- L'assistente può essere un tutor: spiega, interroga, controlla il tuo ragionamento.
+- Se scrive o risolve al posto tuo, sostituisce il tuo lavoro e non impari.
+- Il test: dopo averla usata, sai spiegare tutto a voce senza guardare?
+- Si rispettano le regole della scuola, si chiede se non è chiaro e si dichiara l'aiuto quando serve.
+- Caso chiuso: Luca ha consegnato un tema che non sapeva spiegare; Marta lo ha scritto da sola e usato l'assistente per migliorarlo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come puoi usare l'assistente da tutor?", a: "Chiedendo spiegazioni, domande di ripasso e controllo del tuo ragionamento" },
+    { q: "Qual è il test per capire se hai imparato?", a: "Riesci a spiegare tutto a voce, senza guardare?" },
+    { q: "Consegnare un testo scritto dall'IA come tuo è corretto?", a: "No: è barare, e spesso vietato dal regolamento" },
+    { q: "Che cosa fare se non sai che cosa è permesso?", a: "Chiedere all'insegnante prima di usare l'assistente" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: usare l'IA per scrivere, riassumere e tradurre.</Say>
+</Scene>

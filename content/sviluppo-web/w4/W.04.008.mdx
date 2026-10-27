@@ -1,0 +1,177 @@
+---
+id: W.04.008
+course: sviluppo-web
+module: 4
+title: "Pseudo-classi: hover, focus e le altre"
+belt: bianca
+duration_min: 9
+prerequisites: [W.04.007]
+objectives:
+  - "Usare :hover, :focus e :active per far reagire un elemento"
+  - "Selezionare elementi per posizione con :first-child e :nth-child"
+  - "Spiegare perché hover non basta e perché non si toglie il contorno del focus"
+verification:
+  type: generated-numeric
+  generator: w04-pseudo-classi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Affidare un'informazione importante al solo hover: sul telefono il mouse non c'è"
+  - "Togliere il contorno del focus con outline: none senza metterne un altro: chi usa la tastiera non vede più dov'è"
+  - "Scrivere uno spazio prima dei due punti (a :hover invece di a:hover): cambia il significato del selettore"
+commands: []
+---
+
+<Scene title="Il pulsante che non risponde">
+I pulsanti e i link della pagina di Lucia sono tutti uguali, fermi: quando ci passi sopra con il mouse non succede niente, e chi naviga con la tastiera non vede dove si trova. Sul web moderno ci si aspetta che gli elementi **reagiscano**.
+
+Il CSS sa farlo senza una riga di programma: si chiamano **pseudo-classi**, selettori che descrivono lo **stato** di un elemento.
+
+La domanda del caso: **come si dà uno stile diverso a un elemento solo quando succede qualcosa?**
+
+<Say who="sensei">Una pagina che reagisce dice a chi la usa: «sì, ti ho visto». È una cortesia, e aiuta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Hover, focus e active">
+Una pseudo-classe si scrive attaccata al selettore, con **due punti** e senza spazi.
+
+```css
+a {
+  color: #8b4513;
+  text-decoration: none;
+}
+a:hover {
+  color: #c2552d;
+  text-decoration: underline;
+}
+```
+
+Le tre che userai di più:
+
+- `:hover`: quando il puntatore del mouse è **sopra** l'elemento.
+- `:focus`: quando l'elemento ha il **focus**, cioè è quello attivo per la tastiera (un campo dove stai scrivendo, un link raggiunto con il tasto Tab).
+- `:active`: nell'istante in cui l'elemento viene **premuto**.
+
+Per i link esistono anche `:link` (non ancora visitato) e `:visited` (già visitato). Se le usi insieme, l'ordine tradizionale è `:link`, `:visited`, `:hover`, `:active` (si ricorda con la parola inglese «LoVe HAte»).
+
+<Flow
+  caption="Gli stati di un pulsante."
+  steps={[
+    { icon: "eye", title: "A riposo", text: "Stile normale" },
+    { icon: "search", title: "Hover", text: "Il mouse ci passa sopra" },
+    { icon: "bolt", title: "Active", text: "Viene premuto" },
+  ]}
+/>
+
+<Say who="assistente">Per ogni stato scrivi una regola che cambia solo ciò che deve cambiare: di solito basta il colore.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il focus e la tastiera">
+Molte persone non usano il mouse: navigano con la tastiera (tasto Tab per passare da un elemento all'altro) o con strumenti speciali. Per loro il **contorno del focus** è l'unico segnale di dove si trovano.
+
+```css
+input:focus,
+button:focus {
+  outline: 3px solid #1a73e8;
+}
+```
+
+<Callout kind="attenzione">
+Non scrivere mai `outline: none;` senza mettere un altro segnale al suo posto: la pagina diventa inutilizzabile per chi usa la tastiera. Esiste anche `:focus-visible`, che mostra lo stile del focus soprattutto quando serve (navigazione con tastiera) e non al click con il mouse.
+</Callout>
+
+<Callout kind="regola">
+Il `:hover` non esiste sul telefono, dove si tocca con il dito. Non nascondere mai informazioni importanti dietro al solo passaggio del mouse: l'hover è un **di più**, mai l'unico modo.
+</Callout>
+
+<Say who="sensei">Se sulla tua pagina tocchi Tab e non capisci dove sei, la pagina ha un difetto. Correggilo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Scegliere per posizione">
+Altre pseudo-classi scelgono gli elementi in base alla **posizione** tra i fratelli:
+
+```css
+li:first-child {
+  font-weight: bold;
+}
+li:last-child {
+  border-bottom: none;
+}
+li:nth-child(even) {
+  background-color: #f3e9dc;
+}
+```
+
+- `:first-child`: il primo tra i figli del suo genitore.
+- `:last-child`: l'ultimo.
+- `:nth-child(2)`: il secondo. Con `odd` si scelgono i dispari (1, 3, 5…), con `even` i pari (2, 4, 6…).
+
+Qui `li:nth-child(even)` dà lo sfondo alle righe pari di un elenco: un effetto «a righe alterne» facile da leggere, senza toccare l'HTML.
+
+Una piccola aggiunta: per far scorrere il cambio di colore invece di farlo scattare, si può scrivere `transition: background-color 0.2s;` nella regola base, dove `0.2s` è la durata in secondi.
+
+<Say who="assistente">Le pseudo-classi di posizione sono comode per elenchi e tabelle: niente classi in più nell'HTML.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale selettore cambia lo stile di un campo di testo mentre l'utente ci sta scrivendo?"
+  options={[
+    "input:focus",
+    "input:hover",
+    "input:active",
+    "input:first-child",
+  ]}
+  answer={0}
+  explain="Il focus indica l'elemento attivo per la tastiera, cioè quello dove si sta scrivendo. Hover scatta solo con il mouse sopra, active nell'istante della pressione, first-child sceglie il primo tra i fratelli."
+/>
+
+<Say who="sensei">Mouse sopra: hover. Tastiera dentro: focus. Premuto: active.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sulle pseudo-classi. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-pseudo-classi" pass="4/5" retries={3} />
+
+<Say who="sensei">Due punti, nessuno spazio, il nome dello stato. E un occhio sempre alla tastiera.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una pseudo-classe descrive lo stato di un elemento e si scrive attaccata al selettore con i due punti: `a:hover`.
+- `:hover` è il mouse sopra, `:focus` è l'elemento attivo per la tastiera, `:active` è l'istante della pressione.
+- `:first-child`, `:last-child` e `:nth-child()` scelgono gli elementi per posizione.
+- Non togliere il contorno del focus senza sostituirlo, e non affidare informazioni importanti al solo hover.
+- Caso chiuso: i link di Lucia cambiano colore al passaggio e al focus, e la pagina si può usare anche con la sola tastiera.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quando scatta :hover?", a: "Quando il puntatore del mouse è sopra l'elemento" },
+    { q: "Che cosa indica :focus?", a: "Che l'elemento è quello attivo per la tastiera" },
+    { q: "Che cosa sceglie li:nth-child(even)?", a: "Gli elementi li in posizione pari: il secondo, il quarto e così via" },
+    { q: "Perché non si toglie il contorno del focus?", a: "Perché chi usa la tastiera non vedrebbe più dove si trova" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: specificità e cascata, per capire chi vince quando due regole si contraddicono.</Say>
+</Scene>

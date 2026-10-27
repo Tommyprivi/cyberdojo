@@ -1,0 +1,170 @@
+---
+id: W.04.005
+course: sviluppo-web
+module: 4
+title: "Il box model: contenuto, padding, bordo e margine"
+belt: bianca
+duration_min: 10
+prerequisites: [W.04.004]
+objectives:
+  - "Descrivere i quattro strati di ogni elemento: contenuto, padding, bordo e margine"
+  - "Scrivere padding e margin con uno, due o quattro valori"
+  - "Spiegare l'effetto di box-sizing: border-box sulla larghezza"
+verification:
+  type: generated-numeric
+  generator: w04-box-model
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Confondere padding (spazio dentro il bordo) con margin (spazio fuori dal bordo)"
+  - "Dimenticare che, di base, padding e bordo si sommano alla larghezza dichiarata"
+  - "Ricordare i quattro valori di margin e padding in ordine sbagliato: l'ordine è sopra, destra, sotto, sinistra"
+commands: []
+---
+
+<Scene title="La scatola che non entra">
+Lucia mette un riquadro largo 300 pixel con un po' di spazio interno e un bordo. Poi guarda lo schermo: il riquadro occupa più di 300 pixel e sfora la colonna.
+
+Il CSS non ha sbagliato. Ogni elemento è una **scatola**, e la larghezza che scrivi riguarda solo una parte di essa.
+
+La domanda del caso: **da quali strati è fatta la scatola di un elemento, e come si calcolano le sue misure?**
+
+<Say who="sensei">Tutto, in CSS, è una scatola dentro un'altra scatola. Capisci la scatola e capisci metà del CSS.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I quattro strati">
+Ogni elemento è fatto, dall'interno verso l'esterno, di quattro strati:
+
+<Layers
+  caption="Il box model, dal centro verso fuori."
+  items={[
+    { icon: "file", title: "Contenuto", text: "Il testo o l'immagine" },
+    { icon: "folder", title: "Padding", text: "Spazio dentro il bordo, attorno al contenuto" },
+    { icon: "shield", title: "Bordo", text: "La linea che circonda il padding" },
+    { icon: "globe", title: "Margine", text: "Spazio fuori dal bordo, verso gli altri elementi" },
+  ]}
+/>
+
+- **Padding**: lo spazio **interno**. Lo sfondo dell'elemento riempie anche il padding.
+- **Border**: il bordo. Può avere spessore, stile e colore.
+- **Margin**: lo spazio **esterno**. È trasparente: lo sfondo dell'elemento non arriva fin lì.
+
+```css
+.riquadro {
+  width: 300px;
+  padding: 20px;
+  border: 5px solid #8b4513;
+  margin: 30px;
+}
+```
+
+<Say who="assistente">Una cornice: il quadro è il contenuto, il passepartout è il padding, il legno è il bordo, la parete attorno è il margine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Una, due o quattro misure">
+`padding` e `margin` possono avere più valori:
+
+- `padding: 10px;` uguale su tutti e quattro i lati.
+- `padding: 10px 20px;` **sopra e sotto** 10, **destra e sinistra** 20.
+- `padding: 10px 20px 5px 0;` quattro valori in senso orario: **sopra, destra, sotto, sinistra**.
+
+Per un solo lato esistono le proprietà singole: `margin-top`, `padding-left`, e così via.
+
+Il margine ha un trucco molto usato per **centrare** un blocco: se ha una larghezza dichiarata, `margin: 0 auto;` divide lo spazio libero a sinistra e destra in parti uguali.
+
+<Callout kind="curiosita">
+Tra due blocchi uno sotto l'altro, i margini verticali **non si sommano**: si fondono e vale il più grande. Se uno ha `margin-bottom: 30px` e quello sotto ha `margin-top: 20px`, lo spazio tra i due è 30px, non 50px.
+</Callout>
+
+<Say who="sensei">Sopra, destra, sotto, sinistra: come le lancette dell'orologio, a partire da mezzogiorno.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il calcolo della larghezza">
+Ecco il motivo del riquadro di Lucia. Di base (`box-sizing: content-box`) la `width` riguarda **solo il contenuto**. Padding e bordo si aggiungono fuori.
+
+Per il riquadro di prima, `width: 300px`, padding 20px e bordo 5px:
+
+- contenuto: 300
+- padding: 20 a sinistra e 20 a destra, quindi 40
+- bordo: 5 a sinistra e 5 a destra, quindi 10
+- **larghezza totale: 300 + 40 + 10 = 350 px** (il margine è fuori e non conta qui).
+
+Per evitare questi calcoli si usa `box-sizing: border-box`, che fa sì che la `width` comprenda anche padding e bordo:
+
+```css
+* {
+  box-sizing: border-box;
+}
+```
+
+Con `border-box`, il riquadro di 300px resta largo 300px in totale, e il contenuto scende a 300 - 40 - 10 = 250 px. L'asterisco `*` è il selettore universale: significa «tutti gli elementi».
+
+<Callout kind="trucco">
+Quasi tutti i siti moderni aprono il CSS con la regola `* { box-sizing: border-box; }`: le misure diventano quelle che ti aspetti.
+</Callout>
+
+<Say who="assistente">Con border-box la larghezza è quella che scrivi. Senza, devi fare la somma ogni volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Un elemento ha width: 200px, padding: 10px su tutti i lati, nessun bordo e box-sizing predefinito (content-box). Quanto è larga in totale la sua scatola, margine escluso?"
+  options={[
+    "220px",
+    "200px",
+    "210px",
+    "230px",
+  ]}
+  answer={0}
+  explain="Il padding si aggiunge su entrambi i lati: 200 + 10 + 10 = 220 px. 200 sarebbe la larghezza con border-box; 210 conta il padding su un lato solo; 230 aggiunge un padding di troppo."
+/>
+
+<Say who="sensei">Prima di dire che il CSS sbaglia, rifai il conto strato per strato.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sul box model. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w04-box-model" pass="4/5" retries={3} />
+
+<Say who="sensei">Contenuto, padding, bordo, margine. Dentro verso fuori.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Ogni elemento è una scatola con quattro strati: contenuto, padding, bordo e margine.
+- Padding e bordo sono dentro lo spazio dell'elemento, il margine è fuori; lo sfondo riempie il padding ma non il margine.
+- Con più valori l'ordine è sopra, destra, sotto, sinistra; con due valori, verticale e orizzontale.
+- Di base la larghezza riguarda solo il contenuto; con `box-sizing: border-box` comprende anche padding e bordo.
+- Caso chiuso: il riquadro di Lucia era 350 px perché padding e bordo si erano sommati ai 300 px; con border-box resta 300.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la differenza tra padding e margin?", a: "Il padding è spazio dentro il bordo, il margin è spazio fuori dal bordo" },
+    { q: "In che ordine si scrivono quattro valori di margin?", a: "Sopra, destra, sotto, sinistra" },
+    { q: "Che cosa fa box-sizing: border-box?", a: "Fa includere padding e bordo nella larghezza dichiarata" },
+    { q: "Che cosa fa margin: 0 auto su un blocco con larghezza?", a: "Lo centra in orizzontale" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: le unità di misura, per dare misure che si adattano a ogni schermo.</Say>
+</Scene>

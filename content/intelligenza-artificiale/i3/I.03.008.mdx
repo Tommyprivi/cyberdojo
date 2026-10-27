@@ -1,0 +1,157 @@
+---
+id: I.03.008
+course: intelligenza-artificiale
+module: 3
+title: "I dati personali e il consenso"
+belt: bianca
+duration_min: 9
+prerequisites: [I.03.007]
+objectives:
+  - "Dire che cos'è un dato personale e riconoscere i dati particolari più delicati"
+  - "Spiegare che cosa rende valido un consenso: libero, specifico, informato e revocabile"
+  - "Spiegare perché togliere il nome non rende sempre un dato anonimo"
+verification:
+  type: generated-numeric
+  generator: i03-dati-personali
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Credere che togliere il nome basti a rendere anonimi i dati"
+  - "Raccogliere più informazioni del necessario «tanto potrebbero servire»"
+  - "Usare dati raccolti per uno scopo per un altro scopo senza dirlo alle persone"
+commands: []
+---
+
+<Scene title="Le foto dei compagni">
+Dario ha un'idea: un'app che riconosca i compagni di classe dal volto per segnare le presenze. Per allenarla vuole fotografare tutta la classe e anche scaricare altre foto dai profili social dei ragazzi.
+
+Marta frena: «Questi sono i volti di persone vere. Gli abbiamo chiesto il permesso?».
+
+La domanda del caso: **si possono usare le foto delle persone per allenare un'IA senza chiedere niente?**
+
+<Say who="sensei">Dietro ogni riga di dati ci può essere una persona. Prima di usarla, bisogna chiedersi se ne ha diritto qualcuno oltre a te.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cos'è un dato personale">
+Un **dato personale** è qualsiasi informazione che riguarda una persona identificata o che si può identificare. Lo dice il regolamento europeo sulla protezione dei dati, noto come **GDPR** (Regolamento UE 2016/679, applicato dal 2018).
+
+Esempi: nome e cognome, indirizzo, numero di telefono, email, foto del volto, voce, indirizzo IP, ma anche una combinazione di informazioni che porta a una persona precisa.
+
+Alcuni dati sono **particolari** e richiedono ancora più attenzione: salute, origine etnica, opinioni politiche, religione, orientamento sessuale, dati genetici e dati biometrici usati per identificare una persona (come l'impronta o il volto).
+
+<Callout kind="regola">
+Se un dato permette di riconoscere una persona, anche indirettamente, è un dato personale. Il volto in una foto lo è.
+</Callout>
+
+<Say who="assistente">Anche una voce registrata o l'indirizzo IP possono essere dati personali. Non solo il nome.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il consenso e i suoi limiti">
+Per usare dati personali serve una **base giuridica**: una ragione prevista dalla legge. Una delle più note è il **consenso** della persona. Per essere valido deve essere:
+
+<Layers
+  caption="Un consenso valido."
+  items={[
+    { icon: "check", title: "Libero", text: "Nessuna pressione e nessuno svantaggio se si dice di no" },
+    { icon: "eye", title: "Informato", text: "La persona sa chi usa i dati e a quale scopo" },
+    { icon: "key", title: "Specifico", text: "Vale per uno scopo preciso, non per «qualsiasi cosa»" },
+    { icon: "clock", title: "Revocabile", text: "Si può ritirare in qualsiasi momento" },
+  ]}
+/>
+
+Altre regole importanti:
+
+- **Scopo**: usa i dati solo per lo scopo dichiarato.
+- **Minimizzazione**: raccogli solo ciò che serve davvero.
+- **Diritti**: le persone possono chiedere di vedere, correggere o cancellare i propri dati.
+
+In Italia i ragazzi dai 14 anni possono dare da soli il consenso per servizi online; sotto i 14 serve quello di chi esercita la responsabilità genitoriale. Per un progetto di scuola chiedi sempre a un docente prima di raccogliere dati su altre persone. Le regole le fa rispettare il **Garante per la protezione dei dati personali**.
+
+<Say who="sensei">Vale anche per i compagni di classe: foto e voci degli altri non sono tue solo perché le hai in mano.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Anonimo non vuol dire senza nome">
+Togliere il nome da una tabella non basta a renderla anonima. Una combinazione di dettagli può riportare a una persona precisa.
+
+<Log lines={[
+  "classe | data_nascita | CAP   | voto_medio",
+  "2B     | 14/03/2011   | 00100 | 8",
+  "2B     | 02/09/2010   | 00100 | 6",
+]} caption="Senza nomi, ma in una classe di pochi alunni sono facili da riconoscere." />
+
+Si distinguono due casi:
+
+- **Pseudonimizzati**: il nome è sostituito da un codice, ma qualcuno ha la chiave per risalire alla persona. Restano dati personali.
+- **Anonimi**: non è più possibile riconoscere la persona con mezzi ragionevoli. Non sono più dati personali, ma ottenerlo davvero è difficile.
+
+<Callout kind="trucco">
+Per ridurre i rischi: raccogli meno informazioni, togli quelle che non servono, rendi i dati meno precisi (la fascia di età invece della data di nascita) e chiedi se ti serve proprio quel dettaglio.
+</Callout>
+
+<Say who="assistente">Pensa: se un compagno vedesse questa riga, capirebbe di chi si tratta? Se sì, non è anonima.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Un gruppo vuole allenare un riconoscitore di volti con le foto dei compagni.
+
+<Quiz
+  question="Qual è il modo corretto di procedere?"
+  options={[
+    "Spiegare lo scopo, chiedere il consenso alle persone (e ai genitori sotto i 14 anni) e raccogliere solo il necessario",
+    "Scaricare le foto dai profili social: sono pubbliche e quindi libere",
+    "Togliere i nomi dalle foto: così i volti diventano anonimi",
+    "Tenere le foto per tutti gli usi futuri, tanto potrebbero servire",
+  ]}
+  answer={0}
+  explain="Serve informare, chiedere il consenso e raccogliere solo ciò che serve per lo scopo. Una foto pubblica non è libera per qualsiasi uso. Togliere il nome non rende anonimo un volto, che identifica da solo, e tenere i dati per usi futuri non specificati va contro i principi di scopo e minimizzazione."
+/>
+
+<Say who="sensei">Prima chiedi, poi raccogli. Mai il contrario.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su dati personali e consenso. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="i03-dati-personali" pass="4/5" retries={3} />
+
+<Say who="sensei">Informa, chiedi, raccogli il minimo. Sono tre parole da portarsi dietro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Un dato personale permette di riconoscere una persona, anche indirettamente: nome, volto, voce, indirizzo IP.
+- I dati particolari (salute, opinioni, dati biometrici...) richiedono ancora più attenzione.
+- Il consenso deve essere libero, informato, specifico e revocabile.
+- Togliere il nome non rende anonimo un dato: i dettagli insieme possono ricondurre alla persona.
+- Caso chiuso: per l'app delle presenze, Dario spiega lo scopo e chiede il consenso, invece di scaricare le foto dai profili.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è un dato personale?", a: "Un'informazione che riguarda una persona identificata o identificabile" },
+    { q: "Quando è valido un consenso?", a: "Quando è libero, informato, specifico e revocabile" },
+    { q: "Che cos'è la minimizzazione dei dati?", a: "Raccogliere solo i dati che servono davvero allo scopo" },
+    { q: "Togliere il nome rende anonimi i dati?", a: "Non sempre: altri dettagli possono riportare alla persona" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i pregiudizi che possono nascondersi nei dati.</Say>
+</Scene>

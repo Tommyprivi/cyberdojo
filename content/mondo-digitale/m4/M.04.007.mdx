@@ -1,0 +1,150 @@
+---
+id: M.04.007
+course: mondo-digitale
+module: 4
+title: "Aggiornare il sistema e le app"
+belt: bianca
+duration_min: 8
+prerequisites: [M.04.006]
+objectives:
+  - "Spiegare perché gli aggiornamenti servono, soprattutto per la sicurezza"
+  - "Aggiornare il sistema e le app in modo sicuro, dalle impostazioni e dal negozio"
+  - "Riconoscere un falso avviso di aggiornamento"
+verification:
+  type: generated-numeric
+  generator: m04-aggiornamenti
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Rimandare gli aggiornamenti per mesi perché «tanto funziona»"
+  - "Cliccare su un messaggio che dice «aggiorna il telefono» invece di aprire le impostazioni"
+  - "Cominciare un aggiornamento con poca batteria o senza una copia di sicurezza"
+commands: []
+---
+
+<Scene title="Il telefono che chiede di aggiornarsi">
+Ogni settimana il telefono di Giorgio mostra un avviso: «Aggiornamento disponibile». Giorgio lo ignora: «Funziona bene così, perché cambiare?». Poi un amico gli dice che un'app del suo vecchio telefono ha smesso di funzionare.
+
+La domanda del caso: **perché è importante aggiornare, e come si fa senza rischi?**
+
+<Say who="sensei">Un aggiornamento non è una moda. È la riparazione di buchi che qualcuno ha già trovato. Lasciarli aperti è un invito per i malintenzionati.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Che cosa c'è in un aggiornamento">
+Un aggiornamento può contenere:
+
+- **correzioni di sicurezza**: chiudono falle scoperte nel sistema o nelle app (la ragione più importante);
+- **correzioni di errori**: risolvono blocchi e malfunzionamenti;
+- **novità**: nuove funzioni o un nuovo aspetto.
+
+<Layers
+  caption="Due livelli di aggiornamento."
+  items={[
+    { icon: "phone", title: "Sistema operativo", text: "Android o iOS: cambia il cuore del telefono" },
+    { icon: "code", title: "App", text: "Ogni app ha i suoi, dal Play Store o dall'App Store" },
+  ]}
+/>
+
+<Callout kind="regola">
+Gli aggiornamenti di sicurezza sono la difesa più semplice che hai. Un telefono non aggiornato è più facile da attaccare.
+</Callout>
+
+<Say who="assistente">Un telefono molto vecchio smette a un certo punto di ricevere aggiornamenti dal produttore. Quando succede, conviene cominciare a pensare a cambiarlo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Aggiornare il sistema">
+<Flow
+  caption="Aggiornare il sistema senza rischi."
+  steps={[
+    { icon: "bolt", title: "Prepara", text: "Batteria carica o telefono in carica, Wi-Fi attivo" },
+    { icon: "folder", title: "Copia di sicurezza", text: "Salva foto e dati importanti" },
+    { icon: "gear", title: "Impostazioni", text: "Cerca Aggiornamento software e avvia" },
+    { icon: "check", title: "Riavvio", text: "Il telefono si riavvia da solo e ti avvisa" },
+  ]}
+/>
+
+- Su iPhone: **Impostazioni**, **Generali**, **Aggiornamento software**.
+- Su Android: **Impostazioni**, **Aggiornamento software** (il nome e la posizione cambiano da marca a marca; se non lo trovi, usa la ricerca nelle impostazioni).
+- Gli aggiornamenti grandi possono pesare diversi gigabyte: meglio il **Wi-Fi** e il telefono in carica.
+- Durante l'aggiornamento il telefono si riavvia e per qualche minuto non si può usare.
+
+<Say who="sensei">Un aggiornamento si fa quando hai tempo e il telefono è in carica. Mai a metà di una giornata fuori casa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Le app e i falsi avvisi">
+Anche le **app** si aggiornano. Dal Play Store o dall'App Store puoi lasciare che lo facciano da sole (**aggiornamento automatico**, di solito con il Wi-Fi) oppure farlo a mano dall'elenco delle app con aggiornamenti disponibili.
+
+<Callout kind="attenzione">
+I truffatori mandano falsi avvisi: un SMS o un sito che dice «Aggiorna subito il tuo telefono» con un link. Gli aggiornamenti veri non arrivano da link: si cercano da soli nelle impostazioni del telefono o nel negozio ufficiale.
+</Callout>
+
+- Un sito che mostra una finestra «il browser è vecchio, scarica l'aggiornamento» è quasi sempre una truffa.
+- Se un'app ufficiale non si apre più dopo un aggiornamento, riavvia il telefono e aggiorna anche il sistema: spesso risolve.
+
+<Say who="assistente">La regola è semplice: gli aggiornamenti si cercano tu, dalla fonte ufficiale. Non li accetti da chi te li offre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Arriva un SMS: «Il tuo sistema è obsoleto. Aggiorna ora: www.aggiorna-telefono.example».
+
+<Quiz
+  question="Come si aggiorna in modo sicuro il telefono?"
+  options={[
+    "Dalle impostazioni del telefono, alla voce Aggiornamento software",
+    "Toccando il link ricevuto per SMS",
+    "Scaricando un file da un sito trovato con una ricerca",
+    "Rispondendo all'SMS con il proprio PIN",
+  ]}
+  answer={0}
+  explain="Gli aggiornamenti veri si fanno dalle impostazioni del telefono. Un link ricevuto per SMS, un file da un sito qualsiasi o un PIN mandato a un numero sconosciuto sono tutte strade usate dai truffatori."
+/>
+
+<Say who="sensei">L'aggiornamento vero non ti cerca: lo cerchi tu, nel posto giusto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande sugli aggiornamenti. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="m04-aggiornamenti" pass="4/5" retries={3} />
+
+<Say who="sensei">Sicurezza prima di tutto: aggiorna, e solo dalla fonte ufficiale.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Gli aggiornamenti correggono errori, aggiungono novità e, soprattutto, chiudono falle di sicurezza.
+- Si fanno dalle impostazioni del telefono (sistema) e dal negozio ufficiale (app).
+- Meglio con Wi-Fi, batteria carica e una copia di sicurezza fatta prima.
+- Un avviso di aggiornamento ricevuto da un link o da un sito è quasi sempre una truffa.
+- Caso chiuso: Giorgio ha capito che aggiornare protegge, e ora lo fa dalle impostazioni.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Qual è la ragione più importante per aggiornare?", a: "Chiudere le falle di sicurezza" },
+    { q: "Dove si aggiorna il sistema?", a: "Nelle impostazioni, alla voce Aggiornamento software" },
+    { q: "Dove si aggiornano le app?", a: "Nel negozio ufficiale: Play Store o App Store" },
+    { q: "Si fa un aggiornamento cliccando su un link ricevuto per SMS?", a: "No, è un tentativo di truffa" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: il Wi-Fi e i dati del telefono.</Say>
+</Scene>

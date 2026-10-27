@@ -1,0 +1,194 @@
+---
+id: P.02.008
+course: programmazione
+module: 2
+title: "Il ciclo for e range"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.007]
+objectives:
+  - "Scrivere un ciclo for con range(n), range(a, b) e range(a, b, passo)"
+  - "Dire quali valori produce un range, ricordando che il limite finale è escluso"
+  - "Scegliere tra for e while"
+verification:
+  type: generated-numeric
+  generator: p02-for-range
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aspettarsi che range(5) arrivi fino a 5: si ferma a 4"
+  - "Dimenticare che range(5) parte da 0 e non da 1"
+  - "Usare while quando il numero di ripetizioni è noto: il for è più corto e non ha il rischio del ciclo infinito"
+commands: []
+---
+
+<Scene title="Dieci giri esatti">
+Per il torneo, Giulia vuole stampare i numeri di tavolo da 1 a 10. Con il `while` deve scrivere il contatore, la condizione e l'aggiornamento: tre cose da non sbagliare, per un compito semplice.
+
+Quando il **numero di ripetizioni è noto**, Python offre il ciclo `for`, più corto e più sicuro: non c'è l'aggiornamento da dimenticare, quindi non può diventare un ciclo infinito.
+
+La domanda del caso: **come si conta da 1 a 10 con il minimo sforzo?**
+
+<Say who="sensei">While quando non sai quanto durerà. For quando lo sai. Impara a scegliere.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="for e range">
+La forma base è `for` + una variabile + `in range(...)`:
+
+```python
+for i in range(5):
+    print(i)
+```
+
+<Log lines={[
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+]} caption="range(5) produce i valori 0, 1, 2, 3 e 4." />
+
+- `range(5)` produce 5 valori: da **0** a **4**. Parte da zero e il numero finale è **escluso**.
+- La variabile `i` (che può avere qualunque nome) assume un valore a ogni giro.
+- Il blocco rientrato si esegue una volta per valore.
+
+<Callout kind="regola">
+`range(n)` ripete esattamente `n` volte, con i valori da `0` a `n - 1`. Il limite finale non viene mai raggiunto.
+</Callout>
+
+<Say who="assistente">Contare da zero sembra strano all'inizio. In informatica è la norma: ti ci abituerai in fretta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="range con inizio e passo">
+`range` può avere anche due o tre numeri:
+
+<Layers
+  caption="Le tre forme di range."
+  items={[
+    { icon: "code", title: "range(5)", text: "0, 1, 2, 3, 4" },
+    { icon: "code", title: "range(1, 6)", text: "1, 2, 3, 4, 5 (inizio compreso, fine esclusa)" },
+    { icon: "code", title: "range(0, 10, 2)", text: "0, 2, 4, 6, 8 (passo di 2)" },
+  ]}
+/>
+
+Ecco la soluzione per i tavoli da 1 a 10: bisogna fermarsi a 11, perché il limite è escluso.
+
+```python
+for tavolo in range(1, 11):
+    print("Tavolo", tavolo)
+```
+
+Per contare all'indietro si mette un **passo negativo**:
+
+```python
+for i in range(5, 0, -1):
+    print(i)
+print("Via!")
+```
+
+<Log lines={[
+  "5",
+  "4",
+  "3",
+  "2",
+  "1",
+  "Via!",
+]} caption="Un conto alla rovescia: range(5, 0, -1) arriva a 1 e si ferma prima di 0." />
+
+<Say who="sensei">Inizio compreso, fine esclusa. Ripetilo finché è automatico.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Un ciclo che fa un lavoro">
+Un ciclo diventa utile quando dentro fa qualcosa con la variabile. Giulia somma i punti dei turni da 1 a 5:
+
+```python
+totale = 0
+for turno in range(1, 6):
+    totale = totale + turno
+print("Totale:", totale)
+```
+
+Traccia: `totale` parte da 0; i giri sono con `turno` uguale a 1, 2, 3, 4, 5, e il totale diventa 1, 3, 6, 10, 15. Il programma stampa `Totale: 15`.
+
+Si può ripetere anche un testo un numero di volte noto, senza usare la variabile:
+
+```python
+for _ in range(3):
+    print("Benvenuti al torneo")
+```
+
+Il trattino basso `_` è un nome che si usa per dire «questa variabile non mi serve».
+
+<Compare
+  caption="Quando usare l'uno o l'altro."
+  left={{ title: "for", points: ["Il numero di giri è noto", "Il contatore si gestisce da solo", "Non diventa infinito"] }}
+  right={{ title: "while", points: ["Non sai quanti giri servono", "Ripeti finché una condizione è vera", "Devi aggiornare tu la condizione"] }}
+/>
+
+<Say who="assistente">Se ti accorgi di scrivere un contatore a mano con il while per contare fino a un numero fisso, un for fa lo stesso con meno righe.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia vuole i numeri pari da 2 a 10.
+
+<Quiz
+  question="Quale range produce 2, 4, 6, 8 e 10?"
+  options={[
+    "range(2, 11, 2)",
+    "range(2, 10, 2)",
+    "range(10, 2, 2)",
+    "range(1, 10, 2)",
+  ]}
+  answer={0}
+  explain="Con range(2, 11, 2) si parte da 2, si salta di 2 in 2 e ci si ferma prima di 11: 2, 4, 6, 8, 10. range(2, 10, 2) si ferma a 8 perché il 10 è escluso; range(10, 2, 2) non produce niente; range(1, 10, 2) produce i dispari 1, 3, 5, 7, 9."
+/>
+
+<Say who="sensei">Se vuoi includere il 10, il limite deve essere 11. Il limite non fa mai parte della sequenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su for e range. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-for-range" pass="4/5" retries={3} />
+
+<Say who="sensei">Parte da zero, fine esclusa. Con queste due frasi risolvi quasi tutto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- for variabile in range(...) ripete un blocco per ogni valore della sequenza.
+- range(n) dà da 0 a n - 1; range(a, b) dà da a a b - 1; range(a, b, passo) salta di passo in passo.
+- Il limite finale è sempre escluso; con un passo negativo si conta all'indietro.
+- for quando i giri sono noti, while quando dipendono da una condizione.
+- Caso chiuso: Giulia stampa i tavoli da 1 a 10 con range(1, 11).
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Quali valori dà range(4)?", a: "0, 1, 2, 3" },
+    { q: "Quali valori dà range(1, 4)?", a: "1, 2, 3" },
+    { q: "Quali valori dà range(0, 10, 3)?", a: "0, 3, 6, 9" },
+    { q: "Come si conta all'indietro con range?", a: "Con un passo negativo, per esempio range(5, 0, -1)" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: cicli dentro i cicli, per fare tabelle e griglie.</Say>
+</Scene>

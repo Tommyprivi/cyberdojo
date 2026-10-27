@@ -1,0 +1,188 @@
+---
+id: P.03.003
+course: programmazione
+module: 3
+title: "Parametri e valore restituito"
+belt: bianca
+duration_min: 9
+prerequisites: [P.03.002]
+objectives:
+  - "Usare i parametri per far entrare dei dati in una funzione"
+  - "Usare return per far uscire un risultato e conservarlo in una variabile"
+  - "Distinguere return da print"
+verification:
+  type: generated-numeric
+  generator: p03-parametri-return
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare print dentro la funzione e aspettarsi di poter usare il risultato: senza return la funzione dà None"
+  - "Scrivere codice dopo return: non viene mai eseguito"
+  - "Passare gli argomenti in ordine sbagliato"
+commands: []
+---
+
+<Scene title="Il campo non si calcola da solo">
+Elena deve sapere quante piastrelle servono per il pavimento della palestra: serve l'area di vari rettangoli di misure diverse. Una funzione che stampa sempre la stessa area non le serve: vuole dare lei le misure e riavere il risultato.
+
+La domanda del caso: **come si fanno entrare dei dati in una funzione, e come se ne fa uscire un risultato?**
+
+<Say who="sensei">Una funzione utile è come una macchinetta: metti qualcosa dentro, ne esce qualcosa di diverso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I parametri: i dati che entrano">
+I **parametri** sono nomi che scrivi tra le parentesi della definizione. Sono come variabili che ricevono i dati al momento della chiamata.
+
+```python
+def saluta(nome):
+    print("Ciao,", nome)
+
+saluta("Elena")
+saluta("Marco")
+```
+
+<Log lines={[
+  "Ciao, Elena",
+  "Ciao, Marco",
+]} caption="Stessa funzione, dati diversi." />
+
+I valori che scrivi nella chiamata (`"Elena"`, `"Marco"`) si chiamano **argomenti**. Python li assegna ai parametri **in ordine**: il primo argomento al primo parametro, il secondo al secondo.
+
+<Callout kind="regola">
+**Parametro** è il nome nella definizione, **argomento** è il valore nella chiamata. Si dice anche solo «parametri» per tutti e due: la cosa importante è l'ordine.
+</Callout>
+
+<Say who="assistente">Il parametro è un segnaposto: dice «qui arriverà un dato». L'argomento è il dato vero.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="return: il risultato che esce">
+Per far uscire un risultato dalla funzione si usa `return`.
+
+```python
+def area_rettangolo(base, altezza):
+    return base * altezza
+
+area = area_rettangolo(5, 3)
+print(area)
+```
+
+<Log lines={[
+  "15",
+]} caption="La funzione restituisce 15, che finisce nella variabile area." />
+
+Quando Python incontra `return`, **la funzione finisce subito** e il valore torna a chi l'ha chiamata. Per questo ciò che è scritto dopo `return` non viene mai eseguito.
+
+<Flow
+  caption="I dati entrano, il risultato esce."
+  steps={[
+    { icon: "file", title: "Argomenti", text: "5 e 3" },
+    { icon: "gear", title: "La funzione", text: "base * altezza" },
+    { icon: "check", title: "return", text: "Il valore 15 torna indietro" },
+  ]}
+/>
+
+<Say who="sensei">Ora puoi usare il risultato: metterlo in una variabile, sommarlo, passarlo a un'altra funzione.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="return e print non sono la stessa cosa">
+È l'errore più comune. `print` **mostra** un valore sullo schermo. `return` **consegna** un valore al programma.
+
+```python
+def doppio_con_print(n):
+    print(n * 2)
+
+def doppio_con_return(n):
+    return n * 2
+
+a = doppio_con_print(4)
+b = doppio_con_return(4)
+print(a)
+print(b)
+```
+
+<Log lines={[
+  "8",
+  "None",
+  "8",
+]} caption="La prima riga viene dalla funzione, poi a vale None, poi b vale 8." />
+
+La funzione con `print` ha mostrato 8, ma non l'ha restituito: `a` vale `None`, che in Python significa «niente». La funzione con `return` ha consegnato 8 e `b` lo contiene.
+
+<Callout kind="trucco">
+Domanda da farti: «mi serve **vedere** il risultato o **usarlo** dopo?». Se lo devi usare, serve `return`. Un print finale puoi sempre farlo fuori dalla funzione.
+</Callout>
+
+<Say who="assistente">Una funzione senza return restituisce comunque qualcosa: `None`. Così sai che è vuoto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Elena scrive una funzione per il prezzo di un biglietto con sconto:
+
+```python
+def sconto(prezzo):
+    print(prezzo - 2)
+
+totale = sconto(10) + 5
+```
+
+<Quiz
+  question="Perché l'ultima riga del programma qui sopra dà un errore?"
+  options={[
+    "La funzione non ha return e restituisce None, che non si può sommare a 5",
+    "La funzione ha un parametro e non dovrebbe averlo",
+    "Il numero 10 non può essere un argomento",
+    "La variabile totale non si può chiamare così",
+  ]}
+  answer={0}
+  explain="La funzione stampa 8 ma non lo restituisce: la chiamata vale None e sommare None a 5 dà un TypeError. Il parametro è corretto, 10 è un argomento valido e totale è un nome accettabile. La correzione è usare return al posto di print."
+/>
+
+<Say who="sensei">Se ti serve il risultato dopo, return. Se ti serve solo vederlo, print.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su parametri e return. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-parametri-return" pass="4/5" retries={3} />
+
+<Say who="sensei">Dentro con i parametri, fuori con return. Ripetilo a voce.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I parametri sono i nomi tra parentesi nella definizione e ricevono i dati.
+- Gli argomenti sono i valori nella chiamata e vanno in ordine ai parametri.
+- `return` restituisce un valore e termina subito la funzione.
+- `print` mostra un valore, non lo restituisce: una funzione senza return dà `None`.
+- Caso chiuso: con `area_rettangolo(base, altezza)` Elena calcola l'area di qualsiasi rettangolo.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che differenza c'è tra parametro e argomento?", a: "Il parametro è il nome nella definizione, l'argomento è il valore passato nella chiamata" },
+    { q: "Che cosa fa return?", a: "Restituisce un valore e fa finire subito la funzione" },
+    { q: "Che cosa vale una funzione senza return?", a: "None" },
+    { q: "Qual è la differenza tra print e return?", a: "print mostra a schermo, return consegna il valore al programma" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: valori predefiniti e parametri con nome.</Say>
+</Scene>

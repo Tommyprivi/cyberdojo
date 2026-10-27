@@ -1,0 +1,209 @@
+---
+id: P.03.005
+course: programmazione
+module: 3
+title: "Variabili locali e globali"
+belt: bianca
+duration_min: 9
+prerequisites: [P.03.004]
+objectives:
+  - "Distinguere una variabile locale da una globale"
+  - "Spiegare perché una variabile creata in una funzione non esiste fuori"
+  - "Preferire parametri e return alla parola global"
+verification:
+  type: generated-numeric
+  generator: p03-scope
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Aspettarsi di usare fuori dalla funzione una variabile creata dentro"
+  - "Assegnare a una variabile globale dentro una funzione senza dichiararla global: Python ne crea una locale"
+  - "Usare global dappertutto invece di passare i dati con parametri e return"
+commands: []
+---
+
+<Scene title="Il punteggio che non sale">
+Elena tiene il punteggio del torneo in una variabile. Scrive una funzione per aggiungere un punto:
+
+```python
+punti = 0
+
+def aggiungi_punto():
+    punti = punti + 1
+
+aggiungi_punto()
+```
+
+Il programma va in errore. Eppure `punti` esiste, è la riga sopra!
+
+La domanda del caso: **perché una funzione non riesce a modificare la variabile `punti`?**
+
+<Say who="sensei">Ogni funzione ha la sua stanza, con le sue variabili. Quello che c'è fuori lo può guardare, ma non toccare con leggerezza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Variabili locali">
+Una variabile creata **dentro** una funzione è **locale**: esiste solo mentre la funzione è in esecuzione, e solo lì dentro.
+
+```python
+def calcola():
+    totale = 10
+
+calcola()
+print(totale)
+```
+
+<Log lines={[
+  "NameError: name 'totale' is not defined",
+]} caption="Fuori dalla funzione, totale non esiste." />
+
+Anche i **parametri** sono variabili locali. Quando la funzione finisce, tutte le sue variabili locali spariscono.
+
+Il vantaggio è che funzioni diverse possono usare gli stessi nomi (`totale`, `n`, `i`) senza disturbarsi a vicenda.
+
+<Layers
+  caption="Ogni funzione ha la propria stanza."
+  items={[
+    { icon: "globe", title: "Programma (globale)", text: "Variabili create fuori da ogni funzione" },
+    { icon: "code", title: "Funzione A", text: "Le sue variabili locali, solo qui" },
+    { icon: "code", title: "Funzione B", text: "Altre variabili locali, anche con gli stessi nomi" },
+  ]}
+/>
+
+<Say who="assistente">Come un quaderno per materia: le note di matematica non finiscono nel quaderno di storia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Variabili globali">
+Una variabile creata **fuori** da ogni funzione è **globale**. Una funzione può **leggerla**:
+
+```python
+squadra = "Aquile"
+
+def presenta():
+    print("Gioca la squadra", squadra)
+
+presenta()
+```
+
+<Log lines={[
+  "Gioca la squadra Aquile",
+]} caption="Leggere una variabile globale è permesso." />
+
+Ma se dentro la funzione **assegni** un valore a quel nome, Python crea una nuova variabile **locale**, anche se ne esiste una globale con lo stesso nome. Nel caso di Elena, `punti = punti + 1` cerca di leggere la `punti` locale prima che esista: da qui l'errore (`UnboundLocalError`).
+
+<Callout kind="attenzione">
+Dentro una funzione, **assegnare** a un nome lo rende locale per tutta la funzione. Leggere un nome senza assegnarlo lo cerca anche fuori.
+</Callout>
+
+<Say who="sensei">Leggere sì, assegnare no. Questa è la regola di partenza.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Come si risolve">
+Python ha la parola `global`, che dice «voglio modificare la variabile globale». Funziona:
+
+```python
+punti = 0
+
+def aggiungi_punto():
+    global punti
+    punti = punti + 1
+
+aggiungi_punto()
+print(punti)
+```
+
+<Log lines={[
+  "1",
+]} caption="Con global la funzione modifica la variabile esterna." />
+
+Funziona, ma di solito **non è la soluzione migliore**: una funzione che cambia variabili esterne è difficile da capire e da provare, perché il suo effetto dipende da qualcosa che non vedi nella chiamata. Meglio far entrare i dati con un parametro e farli uscire con `return`:
+
+```python
+def aggiungi_punto(punti):
+    return punti + 1
+
+punti = 0
+punti = aggiungi_punto(punti)
+print(punti)
+```
+
+<Callout kind="regola">
+Preferisci **parametri e return** a `global`. La funzione diventa autonoma: tutto quello che usa lo vedi nelle parentesi, tutto quello che produce lo vedi nel return.
+</Callout>
+
+<Say who="assistente">Chiamata dopo chiamata, il punteggio cresce: `punti = aggiungi_punto(punti)` è chiaro anche a chi legge per la prima volta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Guarda questo programma.
+
+```python
+x = 10
+
+def cambia():
+    x = 5
+
+cambia()
+print(x)
+```
+
+<Quiz
+  question="Che cosa stampa il programma qui sopra?"
+  options={[
+    "10",
+    "5",
+    "15",
+    "Un errore",
+  ]}
+  answer={0}
+  explain="Dentro la funzione, x = 5 crea una variabile locale che non tocca la x globale, che resta 10. Il print finale è fuori dalla funzione e legge la globale, quindi stampa 10. Non è un errore, perché le due x sono variabili diverse."
+/>
+
+<Say who="sensei">Stesso nome, due variabili diverse. Succede più spesso di quanto pensi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su variabili locali e globali. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-scope" pass="4/5" retries={3} />
+
+<Say who="sensei">Dentro la stanza, fuori dalla stanza. Se segui questa immagine non sbagli.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- Una variabile creata dentro una funzione è locale e sparisce quando la funzione finisce.
+- Una variabile creata fuori da ogni funzione è globale e si può leggere ovunque.
+- Assegnare a un nome dentro una funzione crea una variabile locale, non modifica la globale.
+- `global` permette di modificarla, ma è meglio passare i dati con parametri e return.
+- Caso chiuso: Elena scrive `punti = aggiungi_punto(punti)` e il punteggio sale senza errori.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che cos'è una variabile locale?", a: "Una variabile creata dentro una funzione, che esiste solo lì" },
+    { q: "Una funzione può leggere una variabile globale?", a: "Sì, può leggerla senza dichiarare niente" },
+    { q: "Che cosa fa la parola global?", a: "Permette a una funzione di modificare una variabile globale" },
+    { q: "Che alternativa a global è preferibile?", a: "Passare i dati con i parametri e restituire il risultato con return" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: funzioni che chiamano altre funzioni.</Say>
+</Scene>

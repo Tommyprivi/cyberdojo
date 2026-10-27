@@ -1,0 +1,184 @@
+---
+id: P.02.004
+course: programmazione
+module: 2
+title: "Chiedere un dato all'utente: input"
+belt: bianca
+duration_min: 9
+prerequisites: [P.02.003]
+objectives:
+  - "Leggere un dato dalla tastiera con input"
+  - "Convertire il dato con int e float prima di fare calcoli"
+  - "Comporre una frase con una f-string"
+verification:
+  type: generated-numeric
+  generator: p02-input
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare che input restituisce sempre un testo, anche se l'utente scrive un numero"
+  - "Convertire con int un testo che non è un numero: viene un ValueError"
+  - "Dimenticare la lettera f davanti alla f-string: le graffe restano scritte così come sono"
+commands: []
+---
+
+<Scene title="Ciao, chi sei?">
+Il programma di Giulia saluta sempre «Marco», perché il nome è scritto dentro il codice. Ma gli iscritti sono 40: serve che ognuno scriva il proprio nome e il programma lo usi.
+
+Un programma che si limita a stampare è un monologo. Con `input` diventa un dialogo: il programma **chiede**, l'utente **risponde** dalla tastiera.
+
+La domanda del caso: **come si fa a far scrivere il nome all'utente e a usarlo?**
+
+<Say who="sensei">Finora il tuo programma parlava da solo. Da oggi ascolta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La funzione input">
+`input` mostra una domanda, aspetta che l'utente scriva e prema Invio, e **restituisce** ciò che è stato scritto. Lo metti in una variabile:
+
+```python
+nome = input("Come ti chiami? ")
+print("Ciao", nome)
+```
+
+<Log lines={[
+  "Come ti chiami? Sara",
+  "Ciao Sara",
+]} caption="L'utente ha scritto Sara; il programma lo ripete." />
+
+- Il testo tra le parentesi è la **domanda** mostrata all'utente. Uno spazio alla fine la separa dalla risposta.
+- Ciò che l'utente scrive finisce nella variabile `nome`.
+
+<Flow
+  caption="Il giro dei dati con input."
+  steps={[
+    { icon: "terminal", title: "Domanda", text: "input mostra Come ti chiami?" },
+    { icon: "user", title: "Risposta", text: "L'utente scrive Sara e preme Invio" },
+    { icon: "folder", title: "Variabile", text: "Il testo finisce in nome" },
+  ]}
+/>
+
+<Say who="assistente">Se esegui il programma e sembra fermo, probabilmente sta aspettando te: guarda se c'è il cursore che lampeggia.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Attenzione: arriva sempre testo">
+Questa è la regola da ricordare: `input` restituisce **sempre una stringa**, anche se scrivi un numero.
+
+```python
+eta = input("Quanti anni hai? ")
+print(type(eta))
+```
+
+<Log lines={[
+  "Quanti anni hai? 15",
+  "<class 'str'>",
+]} caption="15 è arrivato come testo." />
+
+Per fare calcoli bisogna **convertire**:
+- `int(testo)` trasforma in numero intero.
+- `float(testo)` trasforma in numero decimale.
+
+```python
+eta = int(input("Quanti anni hai? "))
+print("Fra dieci anni ne avrai", eta + 10)
+```
+
+<Log lines={[
+  "Quanti anni hai? 15",
+  "Fra dieci anni ne avrai 25",
+]} caption="Con int, eta è un numero e la somma funziona." />
+
+<Callout kind="attenzione">
+Se l'utente scrive `ciao` e tu fai `int("ciao")`, Python si ferma con un `ValueError`: «ciao» non si può trasformare in numero. Per ora ci si fida; più avanti si imparerà a controllare.
+</Callout>
+
+<Say who="sensei">Un dato che arriva da fuori è sempre testo finché non lo converti. Fissalo bene.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Frasi ordinate con le f-string">
+Mettere insieme testo e variabili con le virgole funziona, ma c'è un modo più comodo: la **f-string**. Si scrive una `f` prima delle virgolette e si mettono i nomi delle variabili tra parentesi graffe:
+
+```python
+nome = input("Nome? ")
+posto = int(input("Posto in classifica? "))
+print(f"Ciao {nome}, sei al posto {posto}.")
+```
+
+<Log lines={[
+  "Nome? Sara",
+  "Posto in classifica? 3",
+  "Ciao Sara, sei al posto 3.",
+]} caption="Le graffe vengono sostituite dal valore." />
+
+Dentro le graffe puoi mettere anche un piccolo calcolo: `f"Fra un anno avrai {eta + 1} anni"`.
+
+<Callout kind="regola">
+La `f` davanti alle virgolette è obbligatoria. Senza, Python stampa le graffe così come sono, con il nome dentro.
+</Callout>
+
+<Say who="assistente">Le f-string sono il modo più leggibile di costruire frasi. Le userai moltissimo.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Giulia legge i punti di un giocatore e vuole sommarne 5 di bonus.
+
+<Quiz
+  question="Quale versione somma davvero 5 ai punti scritti dall'utente?"
+  options={[
+    "punti = int(input(\"Punti? \")) + 5",
+    "punti = input(\"Punti? \") + 5",
+    "punti = input(\"Punti? \" + 5)",
+    "punti = str(input(\"Punti? \")) + 5",
+  ]}
+  answer={0}
+  explain="input dà un testo: va convertito con int prima di sommare 5. La seconda unisce un testo e un numero e dà TypeError; nella terza il 5 finisce dentro la domanda e dà errore; nella quarta il testo resta testo e sommarlo a 5 dà errore."
+/>
+
+<Say who="sensei">Prima input, poi int, poi il calcolo. Sempre in quest'ordine.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su input e conversioni. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p02-input" pass="4/5" retries={3} />
+
+<Say who="sensei">Se arriva da input, è testo. Punto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- input mostra una domanda e restituisce ciò che l'utente scrive.
+- Il risultato è sempre una stringa: per i calcoli si converte con int o float.
+- Un testo che non è un numero fa fallire int con un ValueError.
+- Una f-string (con la f davanti e le graffe) compone frasi con le variabili.
+- Caso chiuso: ogni iscritto scrive il proprio nome e il programma lo saluta per nome.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Di che tipo è il valore restituito da input?", a: "Sempre str, un testo" },
+    { q: "Come si trasforma un testo in numero intero?", a: "Con int(testo)" },
+    { q: "Come si scrive una f-string?", a: "Con una f prima delle virgolette e le variabili tra graffe" },
+    { q: "Che errore dà int(\"ciao\")?", a: "ValueError, perché ciao non è un numero" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: i calcoli e l'ordine in cui Python li esegue.</Say>
+</Scene>

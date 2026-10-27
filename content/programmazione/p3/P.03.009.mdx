@@ -1,0 +1,179 @@
+---
+id: P.03.009
+course: programmazione
+module: 3
+title: "Nomi, commenti e docstring"
+belt: bianca
+duration_min: 8
+prerequisites: [P.03.008]
+objectives:
+  - "Scegliere nomi chiari per variabili e funzioni seguendo le convenzioni di Python"
+  - "Scrivere commenti che spiegano il perché, non il cosa"
+  - "Scrivere la docstring di una funzione e leggerla con help"
+verification:
+  type: generated-numeric
+  generator: p03-nomi-docstring
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare nomi di una lettera o senza significato, come x1 e dati2"
+  - "Commentare ogni riga con ciò che il codice già dice, invece di spiegare il perché"
+  - "Scrivere la docstring con il cancelletto invece che con le virgolette triple"
+commands: []
+---
+
+<Scene title="Il codice che nessuno capisce">
+Tre mesi dopo, Elena riapre il suo programma del torneo. Trova questo:
+
+```python
+def f(a, b):
+    c = a * b * 1.2
+    return c
+```
+
+Non ricorda cosa fa `f`, cosa sono `a` e `b`, né da dove viene quel 1.2. Il programma funziona, ma lei non lo capisce più.
+
+La domanda del caso: **come si scrive codice che si capisce anche dopo mesi, anche da chi non l'ha scritto?**
+
+<Say who="sensei">Il codice si scrive una volta e si legge cento. Scrivilo per chi lo leggerà, e quella persona sarai spesso tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I nomi">
+Un nome ben scelto vale più di mille commenti. Le regole di Python (raccolte nella guida di stile chiamata **PEP 8**) sono semplici:
+
+- variabili e funzioni in **minuscolo con il trattino basso**: `prezzo_biglietto`, `calcola_media` (stile *snake_case*, «serpente»);
+- il nome dice **cosa è** (per le variabili) o **cosa fa** (per le funzioni, di solito con un verbo): `squadre`, `calcola_totale`, `chiedi_numero`;
+- niente nomi di una lettera, tranne dove sono d'uso comune (per esempio `i` in un ciclo);
+- un nome non può iniziare con un numero né contenere spazi.
+
+<Compare
+  caption="Lo stesso codice con nomi diversi."
+  left={{ title: "Nomi poveri", points: ["def f(a, b):", "c = a * b * 1.2", "Non si capisce cosa faccia"] }}
+  right={{ title: "Nomi chiari", points: ["def costo_con_extra(prezzo, quantita):", "totale = prezzo * quantita * 1.2", "Si capisce subito"] }}
+/>
+
+<Callout kind="regola">
+Se per capire un nome devi leggere il codice intorno, il nome non è abbastanza buono.
+</Callout>
+
+<Say who="assistente">Un buon nome è un commento che non può mai diventare vecchio, perché sta nel codice stesso.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="I commenti">
+Un **commento** è una nota per chi legge: Python lo ignora. Inizia con il cancelletto `#` e arriva fino a fine riga.
+
+```python
+# il 1.2 è il margine del 20% per la gestione del torneo
+totale = prezzo * quantita * 1.2
+```
+
+Un commento utile spiega il **perché**, non il **cosa**. Il codice già dice cosa fa:
+
+```python
+totale = totale + 1   # aggiungo 1 al totale     (inutile)
+totale = totale + 1   # conto anche l'arbitro    (utile)
+```
+
+Un altro buon consiglio: dai un **nome** ai numeri misteriosi (i «numeri magici») invece di commentarli.
+
+```python
+MARGINE = 1.2
+totale = prezzo * quantita * MARGINE
+```
+
+I nomi scritti tutto in maiuscolo sono una convenzione per le **costanti**, cioè valori che non cambiano mai. Python non lo impone, ma tutti la rispettano.
+
+<Say who="sensei">Pochi commenti, buoni. Se il codice è chiaro, il commento serve solo per ciò che il codice non può dire.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La docstring">
+Una **docstring** (in inglese *documentation string*) è il testo che descrive una funzione. Si scrive come **prima riga del corpo**, tra virgolette triple.
+
+```python
+def area_rettangolo(base, altezza):
+    """Calcola l'area di un rettangolo moltiplicando base per altezza."""
+    return base * altezza
+
+help(area_rettangolo)
+```
+
+<Log lines={[
+  "Help on function area_rettangolo in module __main__:",
+  "",
+  "area_rettangolo(base, altezza)",
+  "    Calcola l'area di un rettangolo moltiplicando base per altezza.",
+]} caption="help legge la docstring e la mostra." />
+
+A differenza di un commento con `#`, la docstring **non viene ignorata**: Python la conserva, e la puoi leggere con `help(nome)` oppure con `nome.__doc__`.
+
+Una buona docstring dice in una frase **cosa fa** la funzione, e se serve cosa riceve e cosa restituisce.
+
+<Callout kind="trucco">
+Anche le funzioni che usi tutti i giorni hanno una docstring: prova `help(print)` e leggi come funziona.
+</Callout>
+
+<Say who="assistente">La docstring è il cartellino sulla scatola: chi apre la scatola sa cosa contiene senza smontarla.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+<Quiz
+  question="Quale di queste è la docstring corretta di una funzione in Python?"
+  options={[
+    "Una frase tra virgolette triple come prima riga del corpo della funzione",
+    "Una riga che inizia con il cancelletto prima della def",
+    "Un commento scritto in fondo al file",
+    "Il nome della funzione scritto in maiuscolo",
+  ]}
+  answer={0}
+  explain="La docstring è una stringa tra virgolette triple posta subito sotto la riga def, e help la mostra. Un commento con il cancelletto viene ignorato da Python e non è una docstring; né il commento in fondo al file né il nome in maiuscolo hanno questo ruolo."
+/>
+
+<Say who="sensei">Una frase, tra virgolette triple, subito sotto la def. Facile da scrivere, preziosa da trovare.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su nomi, commenti e docstring. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="p03-nomi-docstring" pass="4/5" retries={3} />
+
+<Say who="sensei">Il codice chiaro è un regalo per il te del futuro.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- I nomi seguono lo stile snake_case e dicono cosa è o cosa fa quello che nominano.
+- I commenti con `#` spiegano il perché, non il cosa.
+- I valori misteriosi si sostituiscono con costanti dal nome chiaro, scritte in maiuscolo.
+- La docstring è una frase tra virgolette triple sotto la riga `def`, e si legge con `help`.
+- Caso chiuso: Elena riscrive `f(a, b)` come `costo_con_extra(prezzo, quantita)` con una docstring.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Che stile si usa in Python per i nomi di variabili e funzioni?", a: "snake_case: minuscolo con il trattino basso" },
+    { q: "Che cosa deve spiegare un buon commento?", a: "Il perché di una scelta, non cosa fa la riga" },
+    { q: "Che cos'è una docstring?", a: "Una stringa tra virgolette triple sotto la def che descrive la funzione" },
+    { q: "Come si legge la docstring di una funzione?", a: "Con help(nome_funzione)" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Ultima lezione del modulo: un convertitore di unità, con tutto quello che hai imparato.</Say>
+</Scene>

@@ -1,0 +1,174 @@
+---
+id: W.03.007
+course: sviluppo-web
+module: 3
+title: "Audio, video e incorporamenti"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.006]
+objectives:
+  - "Inserire audio e video con i tag audio e video e l'attributo controls"
+  - "Offrire più formati con source e sottotitoli con track"
+  - "Incorporare un contenuto esterno con iframe, spiegando i rischi e l'attributo title"
+verification:
+  type: generated-numeric
+  generator: w03-audio-video
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Dimenticare controls: senza, il lettore non ha pulsanti e l'utente non può avviare nulla"
+  - "Far partire l'audio da solo: i browser lo bloccano e disturba chi visita la pagina"
+  - "Incorporare con iframe contenuti di siti di cui non ci si fida, o dimenticare il title"
+commands: []
+---
+
+<Scene title="L'intervista all'ortolano">
+L'associazione ha registrato un'intervista di due minuti con l'ortolano più anziano del quartiere, e Marco vuole metterla sul sito. Vuole anche mostrare la posizione dell'orto con una mappa.
+
+Fino a qualche anno fa serviva software aggiuntivo. Oggi HTML ha tag per tutto: `<audio>` per i suoni, `<video>` per i filmati e `<iframe>` per mostrare dentro la pagina un contenuto che sta su un altro sito.
+
+La domanda del caso: **come si mettono suono, video e mappe in una pagina?**
+
+<Say who="sensei">Un file audio o video è un file come gli altri: sta sul server, e il browser lo riproduce con un lettore già pronto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Audio e video">
+I due tag funzionano in modo quasi identico:
+
+```html
+<audio controls src="intervista.mp3">
+  Il tuo browser non supporta l'audio.
+</audio>
+
+<video controls width="480" poster="copertina.jpg">
+  <source src="orto.mp4" type="video/mp4">
+  <source src="orto.webm" type="video/webm">
+  Il tuo browser non supporta il video.
+</video>
+```
+
+- `controls` mostra i pulsanti (play, pausa, volume). **Senza, non c'è modo di far partire il file.**
+- `<source>` permette di offrire **più formati**: il browser sceglie il primo che sa riprodurre. Formati comuni: MP3 per l'audio, MP4 e WebM per il video.
+- `poster` è l'immagine mostrata prima del play (solo per il video).
+- Il testo dentro il tag compare solo se il browser non conosce quel tag.
+
+<Callout kind="attenzione">
+Evita `autoplay` (parte da solo): disturba e i browser lo bloccano quasi sempre, a meno che il video sia anche `muted` (senza audio). Lascia a chi visita la pagina la scelta di premere play.
+</Callout>
+
+<Say who="assistente">Altri attributi utili: `loop` per ripetere in continuazione e `muted` per partire senza audio.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Sottotitoli e trascrizioni">
+Non tutti possono ascoltare un audio: c'è chi è sordo, chi è in treno senza cuffie. I sottotitoli aiutano tutti.
+
+```html
+<video controls width="480">
+  <source src="orto.mp4" type="video/mp4">
+  <track kind="subtitles" src="orto-it.vtt" srclang="it" label="Italiano">
+</video>
+```
+
+<Layers
+  caption="Come rendere un video accessibile."
+  items={[
+    { icon: "eye", title: "Sottotitoli", text: "Con track: il testo di ciò che si dice" },
+    { icon: "book", title: "Trascrizione", text: "Il testo completo nella pagina, per l'audio" },
+    { icon: "bolt", title: "Niente autoplay", text: "Parte solo se l'utente lo sceglie" },
+  ]}
+/>
+
+- Il file dei sottotitoli è in formato **WebVTT** (estensione `.vtt`), un semplice file di testo con i tempi.
+- Per un file solo audio non ci sono sottotitoli: si mette una **trascrizione** scritta nella pagina.
+
+<Say who="sensei">Un contenuto che non si può ascoltare o vedere deve avere un'alternativa. È la regola più importante.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Incorporare con iframe">
+Il tag `<iframe>` apre una «finestra» dentro la pagina che mostra un altro sito: una mappa, un video di una piattaforma, un modulo esterno.
+
+```html
+<iframe
+  src="https://www.esempio.it/mappa-orto"
+  title="Mappa con la posizione dell'orto"
+  width="600"
+  height="400"
+  loading="lazy"
+></iframe>
+```
+
+- `src` è l'indirizzo del contenuto esterno (qui un indirizzo inventato per l'esempio).
+- `title` descrive il contenuto: i lettori di schermo lo leggono, quindi **va sempre scritto**.
+- `loading="lazy"` rimanda il caricamento finché l'iframe non è vicino allo schermo: la pagina parte più in fretta.
+
+<Callout kind="attenzione">
+Un iframe porta dentro la tua pagina un sito di altri: quel sito può caricare dati, tracciare chi visita e cambiare quello che mostra. Incorpora **solo** contenuti di siti di cui ti fidi. L'attributo `sandbox` permette di limitare ciò che l'iframe può fare.
+</Callout>
+
+<Say who="assistente">Molte piattaforme di mappe e video offrono un codice «incorpora» già pronto da copiare. Controlla che ci sia il title, e se manca, aggiungilo tu.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco ha scritto il tag `<video>` ma nella pagina compare solo un'immagine ferma, senza pulsanti.
+
+<Quiz
+  question="Quale attributo mostra i pulsanti di riproduzione (play, pausa, volume) in un tag audio o video?"
+  options={[
+    "controls",
+    "poster",
+    "loop",
+    "muted",
+  ]}
+  answer={0}
+  explain="Con controls compaiono i pulsanti del lettore. Poster è solo l'immagine mostrata prima del play, loop ripete il file e muted lo avvia senza audio: nessuno dei tre aggiunge i pulsanti."
+/>
+
+<Say who="sensei">Il lettore c'è sempre, ma senza controls non lo vedi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su audio, video e iframe. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-audio-video" pass="4/5" retries={3} />
+
+<Say who="sensei">Controls, source, track, title. Con questi quattro sei a posto.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- `<audio>` e `<video>` riproducono file; senza `controls` non ci sono pulsanti.
+- `<source>` offre più formati; `<track>` aggiunge i sottotitoli; per l'audio serve una trascrizione.
+- Niente `autoplay`: i browser lo bloccano e disturba.
+- `<iframe>` mostra un contenuto esterno: serve il `title`, e ci si fida solo di siti sicuri.
+- Caso chiuso: l'intervista di Marco ha i pulsanti e la trascrizione scritta, e la mappa ha un titolo che il lettore di schermo legge.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "A che cosa serve controls?", a: "A mostrare i pulsanti del lettore audio o video" },
+    { q: "Che cosa fa il tag source?", a: "Offre un file in più formati: il browser sceglie il primo che sa riprodurre" },
+    { q: "Per che cosa si usa track?", a: "Per aggiungere sottotitoli a un video" },
+    { q: "Perché un iframe deve avere un title?", a: "Perché i lettori di schermo lo leggono per dire che cosa contiene" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: titoli e struttura, l'indice della pagina.</Say>
+</Scene>

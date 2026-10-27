@@ -1,0 +1,175 @@
+---
+id: W.03.005
+course: sviluppo-web
+module: 3
+title: "Etichette, campi di testo, scelte e menu"
+belt: bianca
+duration_min: 9
+prerequisites: [W.03.004]
+objectives:
+  - "Collegare ogni campo alla sua label con for e id"
+  - "Scegliere tra textarea, checkbox, radio e select"
+  - "Costruire un modulo completo e accessibile"
+verification:
+  type: generated-numeric
+  generator: w03-etichette-campi
+  pass: "4/5"
+  retries: 3
+audio: true
+status: draft
+approved: false
+human_reviewed: false
+known_pitfalls:
+  - "Usare il placeholder al posto della label: sparisce appena si scrive"
+  - "Dare nomi diversi ai radio dello stesso gruppo: così si possono scegliere tutti"
+  - "Dimenticare che for della label deve coincidere con l'id del campo"
+commands: []
+---
+
+<Scene title="Che cosa vuol dire questo campo?">
+Il modulo di Marco ora ha quattro campi vuoti, con solo del testo scritto accanto. Un socio usa un lettore di schermo e sente: «campo di testo, campo di testo». Non sa che cosa scrivere in nessuno.
+
+Il testo accanto al campo non basta: va **collegato** al campo. Ci pensa il tag `<label>`.
+
+La domanda del caso: **come si dice al browser a quale campo appartiene un testo?**
+
+<Say who="sensei">Un campo senza etichetta è una porta senza targa. Funziona, ma nessuno sa dove porta.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="La label">
+La label si collega al campo con due attributi che devono avere **lo stesso valore**: `for` sulla label e `id` sul campo.
+
+```html
+<label for="nome">Il tuo nome</label>
+<input type="text" id="nome" name="nome">
+```
+
+<Layers
+  caption="Collegamento label e campo."
+  items={[
+    { icon: "book", title: "label for=nome", text: "Il testo che l'utente legge" },
+    { icon: "link", title: "Lo stesso valore", text: "for e id devono coincidere" },
+    { icon: "file", title: "input id=nome", text: "Il campo collegato" },
+  ]}
+/>
+
+Cosa si ottiene: un lettore di schermo legge «Il tuo nome» quando arriva sul campo, e **cliccando sulla label** il cursore va nel campo (bersaglio più grande, utile con il dito).
+
+<Callout kind="attenzione">
+Il **placeholder** (il testo grigio dentro il campo) non è una label: sparisce appena si scrive, e non sempre viene letto bene. Usalo al massimo come suggerimento, mai come unica etichetta.
+</Callout>
+
+<Say who="assistente">Non confondere `id` e `name`: l'id serve a collegare la label, il name serve all'invio dei dati. Spesso si scrivono uguali, ma fanno lavori diversi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Testo lungo e scelte">
+Altri campi comuni:
+
+```html
+<label for="messaggio">Messaggio</label>
+<textarea id="messaggio" name="messaggio" rows="4"></textarea>
+
+<input type="checkbox" id="news" name="news">
+<label for="news">Voglio ricevere le novità</label>
+```
+
+- `<textarea>` è per testi lunghi su più righe. Ha il tag di chiusura.
+- `type="checkbox"` è una casella da spuntare o no. Si possono spuntare più caselle insieme.
+
+Per scegliere **una sola** opzione tra poche si usano i radio. Per riconoscerli come gruppo devono avere lo **stesso** `name`:
+
+```html
+<input type="radio" id="mattina" name="turno" value="mattina">
+<label for="mattina">Mattina</label>
+<input type="radio" id="sera" name="turno" value="sera">
+<label for="sera">Sera</label>
+```
+
+<Callout kind="regola">
+Radio con lo stesso `name`: si sceglie una sola opzione. Il `value` è ciò che viene inviato (qui «mattina» o «sera»).
+</Callout>
+
+<Say who="sensei">Checkbox: più scelte. Radio: una scelta sola. Se i radio hanno nomi diversi, si rompono.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Il menu a tendina">
+Quando le opzioni sono tante, un elenco di radio occupa troppo spazio. Si usa `<select>` con tante `<option>`:
+
+```html
+<label for="attivita">Attività preferita</label>
+<select id="attivita" name="attivita">
+  <option value="semina">Semina</option>
+  <option value="raccolta">Raccolta</option>
+  <option value="compost">Compost</option>
+</select>
+```
+
+- Il `value` di ogni `<option>` è il dato che viene inviato; il testo in mezzo è quello che l'utente legge.
+- `selected` su un'opzione la rende quella scelta all'inizio; `checked` fa lo stesso per checkbox e radio.
+
+<Callout kind="trucco">
+Una regola per scegliere: 2-4 opzioni e una sola scelta, radio; molte opzioni e una sola scelta, `select`; scelte multiple, checkbox.
+</Callout>
+
+<Say who="assistente">Un `select` con una prima opzione tipo «Scegli...» aiuta a capire che bisogna selezionare qualcosa.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Tocca a te">
+Marco vuole che i soci scelgano **un solo** turno tra mattina e sera.
+
+<Quiz
+  question="Che cosa serve perché due radio formino un gruppo in cui si sceglie una sola opzione?"
+  options={[
+    "Che abbiano lo stesso attributo name",
+    "Che abbiano lo stesso attributo id",
+    "Che abbiano lo stesso attributo value",
+    "Che siano scritti uno dopo l'altro",
+  ]}
+  answer={0}
+  explain="Il name uguale raggruppa i radio: il browser ne lascia attivo uno solo. L'id deve essere unico in tutta la pagina e il value deve essere diverso per distinguere le scelte; scriverli vicini non basta."
+/>
+
+<Say who="sensei">Id unico, name condiviso nei radio, value diverso per ogni scelta. Tre ruoli, tre attributi.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Verifica pratica">
+Cinque domande su label, campi e scelte. Ne servono quattro giuste.
+
+Hai 3 tentativi, e a ogni tentativo le domande cambiano.
+
+<Practice generator="w03-etichette-campi" pass="4/5" retries={3} />
+
+<Say who="sensei">Ogni campo ha la sua label. Sempre.</Say>
+</Scene>
+
+{/* screen */}
+
+<Scene title="Rapporto finale">
+<Recap xp={20}>
+- La `<label>` si collega al campo con `for` uguale all'`id` del campo; cliccando sulla label si va nel campo.
+- Il placeholder non sostituisce la label.
+- `<textarea>` per testi lunghi, checkbox per scelte multiple, radio con lo stesso `name` per una scelta sola, `<select>` per tante opzioni.
+- Caso chiuso: ogni campo del modulo di Marco ora ha la sua etichetta, e il lettore di schermo la legge.
+</Recap>
+
+<Flashcards
+  cards={[
+    { q: "Come si collega una label a un campo?", a: "Con for sulla label uguale all'id del campo" },
+    { q: "Che differenza c'è tra checkbox e radio?", a: "Con i checkbox si scelgono più opzioni, con i radio dello stesso name una sola" },
+    { q: "Che cosa contiene value in una option?", a: "Il dato che viene inviato quando quella opzione è scelta" },
+    { q: "Il placeholder può sostituire la label?", a: "No: sparisce quando si scrive e non è un'etichetta vera" },
+  ]}
+/>
+
+<Say who="sensei">Caso chiuso. Prossima lezione: controllare i campi nel browser prima dell'invio.</Say>
+</Scene>
