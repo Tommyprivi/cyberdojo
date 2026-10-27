@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { lessonBookmarkScreens, toggleBookmark } from "@/app/actions/bookmarks";
 
-/** Segnalibro discreto: segna o toglie la schermata che stai leggendo. Vedi tutti i segnalibri in /segnalibri. */
-export function LessonBookmark({ lessonId, screen }: { lessonId: string; screen: number }) {
+/** Stato e azione del segnalibro della schermata che stai leggendo (lo usa il menu «Strumenti»). */
+export function useLessonBookmark(lessonId: string, screen: number) {
   const [saved, setSaved] = useState<ReadonlySet<number>>(new Set());
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -39,6 +39,12 @@ export function LessonBookmark({ lessonId, screen }: { lessonId: string; screen:
     setBusy(false);
   };
 
+  return { on, busy, message, toggle };
+}
+
+/** Segnalibro con bottone proprio (non più usato dal lettore: c'è il menu «Strumenti»). */
+export function LessonBookmark({ lessonId, screen }: { lessonId: string; screen: number }) {
+  const { on, busy, message, toggle } = useLessonBookmark(lessonId, screen);
   return (
     <div className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] right-3 z-40 grid justify-items-end gap-1 lg:bottom-36 lg:right-6">
       <button

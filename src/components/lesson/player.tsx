@@ -8,9 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "../nav-icons";
 import { Mascot } from "../mascot";
 import { ThemeToggle } from "../theme-toggle";
 import { AskPush } from "../push/ask-push";
-import { LessonCalculator } from "./lesson-calculator";
-import { LessonNotes } from "./notes";
-import { LessonBookmark } from "./bookmark";
+import { LessonTools } from "./lesson-tools";
 import { PlayerContext, type LessonVideo } from "./player-context";
 import { PageArt } from "@/components/page-art";
 
@@ -33,6 +31,7 @@ export function LessonPlayer({
   screens,
   video,
   calculator = false,
+  listen,
 }: {
   lessonId: string;
   title: string;
@@ -40,6 +39,8 @@ export function LessonPlayer({
   video?: LessonVideo;
   /** Mostra la calcolatrice nella lezione (decide la pagina: vedi src/lib/lesson-calculator.ts). */
   calculator?: boolean;
+  /** Testi parlati di ogni schermata, per «Ascolta la lezione» dal menu Strumenti. */
+  listen?: string[][];
 }) {
   const [index, setIndex] = useState(0);
   const [reached, setReached] = useState(0); // schermata più avanti raggiunta: fin lì l'indice è cliccabile
@@ -303,9 +304,7 @@ export function LessonPlayer({
           </nav>
         </div>
       </div>
-      {calculator ? <LessonCalculator /> : null}
-      <LessonNotes lessonId={lessonId} />
-      <LessonBookmark lessonId={lessonId} screen={index} />
+      <LessonTools lessonId={lessonId} title={title} screen={index} calculator={calculator} listen={listen} />
     </PlayerContext.Provider>
   );
 }

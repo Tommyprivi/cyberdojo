@@ -9,8 +9,24 @@ import { PageArt } from "@/components/page-art";
  * Appunti personali della lezione: bottone discreto + pannello con una casella di testo semplice.
  * Si carica solo all'apertura e si salva da solo poco dopo l'ultima modifica.
  */
-export function LessonNotes({ lessonId }: { lessonId: string }) {
-  const [open, setOpen] = useState(false);
+export function LessonNotes({
+  lessonId,
+  open: openProp,
+  onOpenChange,
+  hideTrigger = false,
+}: {
+  lessonId: string;
+  /** Se passato, il pannello lo comanda il menu «Strumenti». */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+}) {
+  const [openState, setOpenState] = useState(false);
+  const open = openProp ?? openState;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setOpenState(v);
+  };
   const [text, setText] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "saving" | "saved" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -72,13 +88,15 @@ export function LessonNotes({ lessonId }: { lessonId: string }) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] right-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-24 lg:right-6"
-      >
-        Appunti
-      </button>
+      {hideTrigger ? null : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom))] right-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-24 lg:right-6"
+        >
+          Appunti
+        </button>
+      )}
       {open ? (
         <div role="dialog" aria-label="I tuoi appunti" className="fixed inset-x-0 bottom-0 z-50 grid gap-3 border-t border-border bg-background p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-lg lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[26rem] lg:rounded-lg lg:border">
           <div className="flex items-center justify-between gap-3">

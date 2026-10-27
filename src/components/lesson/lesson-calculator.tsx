@@ -4,11 +4,24 @@ import { useEffect, useRef, useState } from "react";
 import { Calculator } from "@/components/practice/calculator";
 
 /**
- * Calcolatrice dentro la lezione: bottone discreto a sinistra (gli appunti stanno a destra) e pannello in basso
- * sul telefono, a lato su PC. Si chiude con «Chiudi» o con Esc. Tutto resta nel browser.
+ * Calcolatrice dentro la lezione: pannello in basso sul telefono, a lato su PC. Si chiude con «Chiudi» o con Esc.
+ * Di solito la apre il menu «Strumenti» (open/onOpenChange); da sola mostra un bottone proprio. Tutto resta nel browser.
  */
-export function LessonCalculator() {
-  const [open, setOpen] = useState(false);
+export function LessonCalculator({
+  open: openProp,
+  onOpenChange,
+  hideTrigger = false,
+}: {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideTrigger?: boolean;
+}) {
+  const [openState, setOpenState] = useState(false);
+  const open = openProp ?? openState;
+  const setOpen = (v: boolean) => {
+    if (onOpenChange) onOpenChange(v);
+    else setOpenState(v);
+  };
   const panel = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
 
@@ -17,26 +30,28 @@ export function LessonCalculator() {
     panel.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setOpen(false);
+        if (onOpenChange) onOpenChange(false);
+        else setOpenState(false);
         opener.current?.focus();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, onOpenChange]);
 
   return (
     <>
-      <button
-        ref={opener}
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-haspopup="dialog"
-        // Sopra «Ascolta la lezione» (stessa colonna): telefono a sinistra, PC accanto agli altri bottoni. Mai nello stesso punto.
-        className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] left-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-36 lg:left-auto lg:right-40"
-      >
-        <span aria-hidden>🧮 </span>Calcolatrice
-      </button>
+      {hideTrigger ? null : (
+        <button
+          ref={opener}
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-haspopup="dialog"
+          className="fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] left-3 z-40 min-h-11 rounded-full border border-border bg-surface px-4 text-sm font-semibold shadow-sm lg:bottom-36 lg:left-auto lg:right-40"
+        >
+          <span aria-hidden>🧮 </span>Calcolatrice
+        </button>
+      )}
       {open ? (
         <div
           ref={panel}

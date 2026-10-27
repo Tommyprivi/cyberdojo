@@ -6,7 +6,6 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { remarkGlossary } from "@/lib/glossary/remark-glossary";
 import { CountdownBar } from "@/components/countdown-bar";
-import { ListenLesson } from "@/components/lesson/listen-lesson";
 import { extractSayTexts } from "@/lib/listen/listen";
 import { LessonPlayer, type PlayerScreen } from "@/components/lesson/player";
 import { lessonComponents } from "@/components/lesson/mdx-components";
@@ -82,8 +81,14 @@ async function Lesson({ params }: { params: PageProps<"/lezione/[id]">["params"]
     <>
       <UiSounds />
       <OfflineSupport lessonId={lesson.fm.id} />
-      <LessonPlayer lessonId={lesson.fm.id} title={lesson.fm.title} screens={screens} video={lesson.fm.video} calculator={lessonWantsCalculator(lesson.fm.id, lesson.body)} />
-      <ListenLesson lessonId={lesson.fm.id} title={lesson.fm.title} screens={splitScreens(lesson.body).map(extractSayTexts)} />
+      <LessonPlayer
+        lessonId={lesson.fm.id}
+        title={lesson.fm.title}
+        screens={screens}
+        video={lesson.fm.video}
+        calculator={lessonWantsCalculator(lesson.fm.id, lesson.body)}
+        listen={splitScreens(lesson.body).map(extractSayTexts)}
+      />
       {countdown ? <CountdownBar variant="floating" endsAt={countdown.endsAt} label={countdown.label} newsVersion={readAnnouncements()[0]?.id ?? ""} maintenance={countdown.maintenance} /> : null}
     </>
   );

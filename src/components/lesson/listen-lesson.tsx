@@ -42,7 +42,26 @@ function readPoint(lessonId: string) {
  * Usa gli audio già generati se passati in `audio` (schermata -> indirizzo); altrimenti la voce
  * del browser (gratuita). Non avvia mai nessuna generazione a pagamento.
  */
-export function ListenLesson({ lessonId, title, screens, audio }: { lessonId: string; title: string; screens: string[][]; audio?: Record<number, string> }) {
+export function ListenLesson({
+  lessonId,
+  title,
+  screens,
+  audio,
+  hideTrigger = false,
+  openRequest = 0,
+  onAvailable,
+}: {
+  lessonId: string;
+  title: string;
+  screens: string[][];
+  audio?: Record<number, string>;
+  /** Con il menu «Strumenti» il bottone proprio non serve: lo apre il menu. */
+  hideTrigger?: boolean;
+  /** Ogni volta che aumenta, apre il pannello. */
+  openRequest?: number;
+  /** Dice al menu se «Ascolta» è disponibile su questo dispositivo. */
+  onAvailable?: (ok: boolean) => void;
+}) {
   const queue = useMemo(() => buildQueue(screens, audio), [screens, audio]);
   const speechOk = useSyncExternalStore(noSub, hasSpeech, () => false);
   const ok = queue.length > 0 && (speechOk || queue.some((q) => q.audioUrl));
@@ -191,6 +210,22 @@ export function ListenLesson({ lessonId, title, screens, audio }: { lessonId: st
     setOpen(true);
   };
 
+  // Il menu «Strumenti» chiede di aprire il pannello (openRequest) e vuole sapere se «Ascolta» c'è.
+  const openPanelRef = useRef(openPanel);
+  useEffect(() => {
+    openPanelRef.current = openPanel;
+  });
+  const handled = useRef(0);
+  useEffect(() => {
+    if (openRequest > handled.current) {
+      handled.current = openRequest;
+      openPanelRef.current();
+    }
+  }, [openRequest]);
+  useEffect(() => {
+    onAvailable?.(ok);
+  }, [ok, onAvailable]);
+
   // Tasti della schermata di blocco (Media Session).
   useEffect(() => {
     if (!playing || !("mediaSession" in navigator)) return;
@@ -237,7 +272,7 @@ export function ListenLesson({ lessonId, title, screens, audio }: { lessonId: st
 
   return (
     <>
-      {!open && (
+      {!open && !hideTrigger && (
         <button
           type="button"
           onClick={openPanel}
