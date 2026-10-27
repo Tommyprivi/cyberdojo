@@ -25,14 +25,15 @@ export function CourseMap({ courses, initialCourse, initialModule }: { courses: 
   return (
     <section aria-label="Mappa dei corsi" className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-border bg-surface">
       <div className="flex items-stretch justify-between gap-4 border-b border-border">
-        <div role="group" aria-label="Corso" className="flex">
+        {/* Con 15 corsi le schede non stanno: una riga sola, che scorre di lato */}
+        <div role="group" aria-label="Corso" className="flex min-w-0 overflow-x-auto">
           {courses.map((c) => (
             <button
               key={c.id}
               type="button"
               aria-pressed={c.id === course.id}
               onClick={() => setCourseId(c.id)}
-              className={`-mb-px min-h-12 border-b-2 px-4 text-left text-sm font-semibold ${
+              className={`-mb-px min-h-12 shrink-0 whitespace-nowrap border-b-2 px-4 text-left text-sm font-semibold ${
                 c.id === course.id ? "border-accent text-foreground" : "border-transparent text-muted hover:text-foreground"
               }`}
             >

@@ -110,7 +110,7 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
   const nextCover = nextCourse && next ? moduleCover(nextCourse.id, next.module) : null;
 
   return (
-    <div className="grid gap-x-8 gap-y-6 lg:h-full lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_auto_auto_minmax(0,1fr)] lg:gap-y-5 xl:grid-cols-[minmax(0,1fr)_23rem] xl:gap-x-10">
+    <div className="grid gap-x-8 gap-y-6 lg:min-h-full lg:grid-cols-[minmax(0,1fr)_19rem] lg:grid-rows-[auto_auto_auto_minmax(30rem,1fr)] lg:gap-y-5 xl:grid-cols-[minmax(0,1fr)_23rem] xl:gap-x-10">
       {!profile.tutorialDone && <Tutorial />}
 
       {/* Saluto */}
@@ -127,10 +127,10 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
       {next ? (
         <section
           aria-label="Prossimo caso"
-          className="rise grid overflow-hidden rounded-lg border border-border bg-deep text-deep-fg lg:col-start-1 lg:grid-cols-[minmax(0,1fr)_20rem]"
+          className="rise grid overflow-hidden rounded-lg border border-border bg-deep text-deep-fg lg:col-start-1 xl:grid-cols-[minmax(0,1fr)_20rem]"
           style={{ "--d": "0.1s" } as CSSProperties}
         >
-          <div className="order-2 grid content-start gap-4 p-5 sm:p-6 lg:order-1 lg:p-6">
+          <div className="order-2 grid content-start gap-4 p-5 sm:p-6 xl:order-1">
             <Eyebrow className="text-deep-fg/80">
               Prossimo caso · {nextCourse?.id}
               {next.module}
@@ -159,15 +159,15 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
                 <div className="h-full bg-primary" style={{ width: `${Math.max(modulePct, 3)}%` }} />
               </div>
             </div>
-            <Link href={`/lezione/${next.id}`} className="btn btn-primary pulse-ring mt-1 min-h-14 w-full text-base lg:w-fit lg:min-w-52">
+            <Link href={`/lezione/${next.id}`} className="btn btn-primary pulse-ring mt-1 min-h-14 w-full text-base xl:w-fit xl:min-w-52">
               {moduleDone > 0 ? "Continua il caso" : "Apri il caso"}
             </Link>
           </div>
           {nextCover && (
-            <div className="relative order-1 h-36 sm:h-48 lg:order-2 lg:h-auto">
+            <div className="relative order-1 h-36 sm:h-48 xl:order-2 xl:h-auto">
               <Image src={nextCover.src} alt="" fill sizes="(min-width: 1024px) 320px, 100vw" className="object-cover" priority />
-              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-deep/70 to-transparent lg:bg-gradient-to-r lg:from-deep/60" />
-              <div className="peek pointer-events-none absolute -bottom-2 right-3 hidden lg:block" style={{ "--d": "0.7s" } as CSSProperties}>
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-deep/70 to-transparent xl:bg-gradient-to-r xl:from-deep/60" />
+              <div className="peek pointer-events-none absolute -bottom-2 right-3 hidden xl:block" style={{ "--d": "0.7s" } as CSSProperties}>
                 <Mascot size={88} mood="stern" animate />
               </div>
             </div>
