@@ -32,6 +32,6 @@
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "fullScopeUrl": "https://cyberdojo-nine.vercel.app/",
-  "minSdkVersion": 21,
+  "minSdkVersion": 24,
   "orientationDefault": "portrait"
 }
