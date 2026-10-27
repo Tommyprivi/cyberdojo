@@ -20,7 +20,7 @@ async function Mappa() {
   const member = await requireMember("/mappa");
   const map = buildKnowledgeMap(COURSES, loadCatalog(), member.completed);
   return (
-    <div className="mx-auto grid max-w-3xl gap-8 lg:mx-0">
+    <div className="mx-auto grid max-w-3xl grid-cols-1 gap-8 lg:mx-0">
       <header className="grid gap-1">
         <p className="font-mono text-xs font-bold uppercase tracking-widest text-accent">Mappa del sapere</p>
         <h1 className="font-display text-3xl font-bold lg:text-4xl">Dove sei arrivato</h1>
@@ -81,7 +81,7 @@ function CourseMapSvg({ course }: { course: MapCourseNode }) {
     return { x: 8 + R + x * GAP, y: 8 + R + row * GAP };
   };
   return (
-    <section aria-labelledby={`m-${course.id}`} className="grid gap-3 rounded-xl border border-border bg-surface p-4">
+    <section aria-labelledby={`m-${course.id}`} className="grid grid-cols-1 gap-3 rounded-xl border border-border bg-surface p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id={`m-${course.id}`} className="font-display text-xl font-bold">
           {course.title}
@@ -115,7 +115,7 @@ function CourseMapSvg({ course }: { course: MapCourseNode }) {
           );
         })}
       </svg>
-      <ul className="grid gap-1 text-sm sm:grid-cols-2">
+      <ul className="grid grid-cols-1 gap-1 text-sm sm:grid-cols-2">
         {course.modules.map((m) => (
           <li key={m.n} className="flex justify-between gap-3 border-b border-border py-1">
             <span className="min-w-0 truncate">

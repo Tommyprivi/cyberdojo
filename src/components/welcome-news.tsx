@@ -46,7 +46,13 @@ export function WelcomeNews({ version, countdownEndsAt }: { version: string; cou
       // Senza account e senza memoria nel browser la festa partirebbe a ogni visita: meglio saltarla.
       if (!server.signedIn && !localOk) return;
       // Un attimo dopo il caricamento, così la pagina è già a posto quando parte.
-      timer = window.setTimeout(() => {
+      // Una finestra alla volta: se è aperto il tutorial di benvenuto, la festa aspetta che si chiuda.
+      const show = () => {
+        if (cancelled) return;
+        if (document.querySelector('[data-overlay="tutorial"]')) {
+          timer = window.setTimeout(show, 800);
+          return;
+        }
         try {
           localStorage.setItem(NEWS_SEEN_KEY, version);
         } catch {
@@ -55,7 +61,8 @@ export function WelcomeNews({ version, countdownEndsAt }: { version: string; cou
         if (server.signedIn) void markNewsSeen(version).catch(() => {});
         setOpen(true);
         playSound("celebrate");
-      }, 700);
+      };
+      timer = window.setTimeout(show, 700);
     })();
     return () => {
       cancelled = true;

@@ -2,7 +2,6 @@
 import { SITE } from "@/lib/config";
 import { TopNav } from "./bottom-nav";
 import { Seal } from "./seal";
-import { SoundToggle } from "./sound-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import { UserMenu } from "./user-menu";
 
@@ -20,13 +19,8 @@ export function SiteHeader({ wide = false, app = false }: { wide?: boolean; app?
             <Seal size={30} />
             {SITE.name}
           </Link>
-          <div className="flex items-center gap-2">
-            <span className="app-hide flex items-center gap-2">
-              <SoundToggle />
-              <ThemeToggle />
-            </span>
-            <UserMenu variant="avatar" />
-          </div>
+          {/* Tema e suoni stanno nel Profilo: in cima al telefono restano solo marchio e account. */}
+          <UserMenu variant="avatar" />
         </div>
       </header>
     );

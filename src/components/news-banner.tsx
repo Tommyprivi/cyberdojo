@@ -27,16 +27,18 @@ export function NewsBanner() {
 
   return (
     <aside role="region" aria-label="Novità" className="border-b border-border bg-deep text-deep-fg">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-2 text-sm">
-        <p className="flex-1">
+      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-1.5 text-xs sm:gap-3 sm:py-2 sm:text-sm">
+        {/* Da telefono una riga sola: il testo intero sta in /aggiornamenti. */}
+        <p className="min-w-0 flex-1 truncate sm:whitespace-normal">
           <strong>Novità:</strong> nuova grafica più semplice anche da telefono, <strong>piano di studio consigliato</strong> in base al tuo obiettivo, lezioni con schemi illustrati, cinture per livello. In arrivo: app Android e calcolatrice integrata.
         </p>
-        <Link href="/aggiornamenti" className="font-bold underline">
-          Scopri di più
+        <Link href="/aggiornamenti" className="shrink-0 font-bold underline">
+          Scopri
         </Link>
         <button
           type="button"
-          className="font-bold underline"
+          aria-label="Chiudi le novità"
+          className="grid size-8 shrink-0 place-items-center rounded-full text-base font-bold hover:bg-white/10"
           onClick={() => {
             try {
               localStorage.setItem(KEY, VERSION);
@@ -46,7 +48,7 @@ export function NewsBanner() {
             setHidden(true);
           }}
         >
-          Chiudi
+          <span aria-hidden>×</span>
         </button>
       </div>
     </aside>

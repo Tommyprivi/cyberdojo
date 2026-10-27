@@ -40,6 +40,7 @@ export const EXPLORE_GROUPS: ExploreGroup[] = [
     title: "Il tuo account",
     items: [
       { href: "/profilo", emoji: "🥷", label: "Profilo", text: "Cintura, serie e impostazioni" },
+      { href: "/app", emoji: "📱", label: "App Android", text: "Scarica l'app e verifica il file" },
       { href: "/profilo/notifiche", emoji: "🔔", label: "Notifiche", text: "Promemoria e novità, quando vuoi tu" },
       { href: "/certificato/F", emoji: "🎓", label: "Certificati", text: "Quando finisci un corso" },
     ],

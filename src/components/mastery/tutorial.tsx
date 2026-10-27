@@ -32,7 +32,7 @@ export function Tutorial() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4 sm:place-items-center" role="presentation">
+    <div data-overlay="tutorial" className="fixed inset-0 z-50 grid place-items-end bg-black/50 p-4 sm:place-items-center" role="presentation">
       <div
         ref={ref}
         tabIndex={-1}

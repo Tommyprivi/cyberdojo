@@ -71,10 +71,10 @@ export function AnnouncementsLink({ latestId, variant = "row" }: { latestId: str
 
   if (variant === "card") {
     return (
-      <Link href="/annunci" className="nav-press flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 hover:bg-surface-muted">
+      <Link href="/annunci" className="nav-press flex items-center justify-between gap-2 rounded-2xl border-2 border-border bg-surface p-3 hover:bg-surface-muted lg:p-4">
         <span>
-          <span className="block font-semibold"># annunci</span>
-          <span className="block text-sm text-muted">Gli aggiornamenti di CyberDojo, come in una chat</span>
+          <span className="block font-semibold leading-tight"># annunci</span>
+          <span className="hidden text-sm text-muted lg:block">Gli aggiornamenti di CyberDojo, come in una chat</span>
         </span>
         {dot ?? <span aria-hidden className="font-bold text-primary">→</span>}
       </Link>

@@ -30,6 +30,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-border px-4 py-5">
         <nav aria-label="Informazioni legali" className="mx-auto flex max-w-[1680px] flex-wrap items-center gap-x-4 gap-y-2 text-sm lg:px-14">
+          <Link href="/app" className="w-fit hover:underline">App Android</Link>
           <Link href="/aggiornamenti" className="w-fit hover:underline">Aggiornamenti</Link>
           <Link href="/privacy" className="w-fit hover:underline">Privacy</Link>
           <Link href="/termini" className="w-fit hover:underline">Termini</Link>

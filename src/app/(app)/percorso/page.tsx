@@ -214,32 +214,6 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
           )}
         </section>
 
-        <Link href="/piano" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-primary bg-surface p-4 hover:bg-surface-muted">
-          <span>
-            <span className="block font-semibold">Il tuo piano di studio</span>
-            <span className="block text-sm text-muted">Tappe consigliate e consigli su come seguire i corsi</span>
-          </span>
-          <span aria-hidden className="font-bold text-primary">→</span>
-        </Link>
-
-        <Link href="/padronanza" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 hover:bg-surface-muted">
-          <span>
-            <span className="block font-semibold">Prove di padronanza</span>
-            <span className="block text-sm text-muted">Sai già un modulo? Superalo con un test e vai avanti</span>
-          </span>
-          <span aria-hidden className="font-bold text-primary">→</span>
-        </Link>
-
-        <Link href="/ripasso" className="flex items-center justify-between gap-3 rounded-2xl border-2 border-border bg-surface p-4 hover:bg-surface-muted">
-          <span>
-            <span className="block font-semibold">Ripasso intelligente</span>
-            <span className="block text-sm text-muted">Le domande che dimentichi tornano al momento giusto</span>
-          </span>
-          <span aria-hidden className="font-bold text-primary">→</span>
-        </Link>
-
-        <AnnouncementsLink variant="card" latestId={readAnnouncements()[0]?.id ?? ""} />
-
         <section aria-label="Obiettivo di oggi" className="grid gap-3 rounded-lg border border-border bg-surface p-4">
           <div className="flex items-center gap-3">
             <span className="grid size-10 shrink-0 place-items-center rounded-md bg-surface-muted text-primary">
@@ -255,6 +229,32 @@ async function PercorsoContent({ searchParams }: { searchParams: Promise<{ [key:
           </div>
           <Bar pct={goalPct} label="Obiettivo giornaliero" />
         </section>
+
+        {/* Scorciatoie: riquadro 2×2 su telefono (poco spazio prima del sentiero), elenco con spiegazioni su PC */}
+        <div className="grid grid-cols-2 gap-2 lg:grid-cols-1 lg:gap-4">
+          <Link href="/piano" className="flex items-center justify-between gap-2 rounded-2xl border-2 border-primary bg-surface p-3 hover:bg-surface-muted lg:p-4">
+            <span>
+              <span className="block font-semibold leading-tight">Piano di studio</span>
+              <span className="hidden text-sm text-muted lg:block">Tappe consigliate e consigli su come seguire i corsi</span>
+            </span>
+            <span aria-hidden className="font-bold text-primary">→</span>
+          </Link>
+          <Link href="/padronanza" className="flex items-center justify-between gap-2 rounded-2xl border-2 border-border bg-surface p-3 hover:bg-surface-muted lg:p-4">
+            <span>
+              <span className="block font-semibold leading-tight">Prove di padronanza</span>
+              <span className="hidden text-sm text-muted lg:block">Sai già un modulo? Superalo con un test e vai avanti</span>
+            </span>
+            <span aria-hidden className="font-bold text-primary">→</span>
+          </Link>
+          <Link href="/ripasso" className="flex items-center justify-between gap-2 rounded-2xl border-2 border-border bg-surface p-3 hover:bg-surface-muted lg:p-4">
+            <span>
+              <span className="block font-semibold leading-tight">Ripasso</span>
+              <span className="hidden text-sm text-muted lg:block">Le domande che dimentichi tornano al momento giusto</span>
+            </span>
+            <span aria-hidden className="font-bold text-primary">→</span>
+          </Link>
+          <AnnouncementsLink variant="card" latestId={readAnnouncements()[0]?.id ?? ""} />
+        </div>
 
         <section aria-label="Avanzamento dei corsi" className="hidden gap-4 rounded-lg border border-border bg-surface p-4 lg:grid">
           <Eyebrow className="text-muted">Avanzamento</Eyebrow>
