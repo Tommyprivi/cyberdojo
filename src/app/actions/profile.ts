@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { schema } from "@/lib/db";
 import { withUser } from "@/lib/db/scoped";
+import { checkAgeChange, createAgeChangeLimiter } from "@/lib/age-change";
 import { sendMail } from "@/lib/email";
 import { welcomeEmail } from "@/lib/mail/templates";
 import { profileInput } from "@/lib/profile-options";
@@ -55,6 +56,30 @@ export async function saveProfile(input: unknown): Promise<ActionResult> {
     }
   }
   return { ok: true };
+}
+
+const ageLimiter = createAgeChangeLimiter(3, 60 * 60_000);
+
+/**
+ * Cambia la fascia d'età dalle impostazioni. È un dato dichiarato dalla persona: si può correggere, ma se cambia
+ * il gruppo (ragazzi/adulti) il social si azzera subito (soprannome, amici, gruppi): nessun passaggio di gruppo.
+ */
+export async function changeAgeBand(input: { band: string; confirmed: boolean }): Promise<ActionResult & { reset?: boolean }> {
+  const user = await getSessionUser();
+  if (!user) return { ok: false, error: "Sessione scaduta: accedi di nuovo." };
+  if (!ageLimiter.allow(user.id)) return { ok: false, error: "Troppi cambi di fila: riprova tra un'ora." };
+
+  const current = await withUser(user.id, async (tx) => {
+    const [p] = await tx.select({ ageBand: schema.profiles.ageBand }).from(schema.profiles).where(eq(schema.profiles.id, user.id)).limit(1);
+    return p?.ageBand ?? null;
+  });
+  const check = checkAgeChange(current, String(input?.band ?? ""), input?.confirmed === true);
+  if (!check.ok) return { ok: false, error: check.error };
+  if (!check.changed) return { ok: true };
+
+  await withUser(user.id, (tx) => tx.update(schema.profiles).set({ ageBand: input.band as (typeof schema.profiles.$inferInsert)["ageBand"] }).where(eq(schema.profiles.id, user.id)));
+  if (check.changesGroup) await resetSocialIfAgeChanged(user.id);
+  return { ok: true, reset: check.changesGroup };
 }
 
 /**

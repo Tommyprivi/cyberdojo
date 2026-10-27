@@ -11,6 +11,7 @@ import { ReminderSettings } from "@/components/reminder-settings";
 import { InstallApp } from "@/components/pwa";
 import { HapticsToggle } from "@/components/haptics-toggle";
 import { SoundToggle } from "@/components/sound-toggle";
+import { AgeSettings } from "@/components/profilo/age-settings";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SignOutButton } from "@/components/user-menu";
 import { displayName } from "@/lib/display-name";
@@ -92,6 +93,7 @@ async function ProfiloContent() {
               </div>
             ))}
           </dl>
+          <AgeSettings current={profile.ageBand} />
           <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-background p-3">
             <p>
               <span className="block font-semibold">Tema</span>
